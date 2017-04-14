@@ -90,8 +90,8 @@ class SystemChecksStep extends InstallStep {
 		      'warning' => true,
 		      'notice' => sprintf(
 			  _("Warning: This version of Gallery 2 performs best with PHP Version 7.0.0 " .
-			    "or newer but you have PHP Version %s installed. Gallery can function " .
-			    "with your version of PHP but may require additional server resources."), 
+			    "or newer but you have PHP Version %s installed. This version can function " .
+			    "with your version of PHP but may be slower and require additional server resources."), 
 			    PHP_VERSION));
 	} else {
 	    $templateData['check'][] =
