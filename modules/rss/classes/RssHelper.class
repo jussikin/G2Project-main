@@ -227,12 +227,17 @@ class RssHelper {
 	    foreach ($items as $item) {
 		$itemIds[] = $item->getId();
 	    }
-
-	    list ($ret, $param['thumbnails']) =
-		GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
-	    if ($ret) {
-		return $ret;
-	    }
+			
+	    list($ret, $param['resizes']) = GalleryCoreApi::fetchResizesByItemIds($itemIds);
+	    if ($ret)
+		{
+			return $ret;
+        }
+		
+		list ($ret, $param['thumbnails']) = GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
+		if ($ret) {
+			return $ret;
+		}
 	}
 
 	/* go through subitems array and pass data to generator */
@@ -291,8 +296,45 @@ class RssHelper {
 	    $description = '';
 	}
 
+	$displayThumbnail = 0;
 	$itemSettings = array();
-
+	if (!empty($param['resizes']) && !empty($param['resizes'][$item->getId()])) 
+	{
+	    $resizes = $param['resizes'][$item->getId()];
+	
+		$maxSize  = 450;
+		$bestSize = 0;
+		$bestImage = null;
+		foreach ($resizes as $resize) 
+		{
+			$size = max($resize->getWidth(), $resize->getHeight());
+			if (($size <= $maxSize) and ($size >= $bestSize)) 
+			{
+				$bestSize = $size;
+				$bestImage = $resize;
+			}
+		}
+		if ($bestImage <> null)
+		{
+			$imageUrl = $urlGenerator->generateUrl(
+			array(
+				'view' => 'core.DownloadItem',
+				'itemId' => $bestImage->getId()),
+			array(
+				'forceSessionId' => false,
+				'forceFullUrl' => true));	  
+			$description = '<center><a href="' . $url .'"><img border="0" src="' . $imageUrl .
+			'" width="' . $bestImage->getWidth() .
+			'" height="' . $bestImage->getHeight() .
+			'"/></a></center>' . (!empty($description) ? '<br/>' . $description : $description);
+		}
+	}
+	else 
+	{
+		$displayThumbnail = 1;
+	}
+	
+	
 	if (!empty($param['thumbnails']) && !empty($param['thumbnails'][$item->getId()])) {
 	    $thumbnail = $param['thumbnails'][$item->getId()];
 	    $imageUrl = $urlGenerator->generateUrl(
@@ -303,11 +345,14 @@ class RssHelper {
 		    'forceSessionId' => false,
 		    'forceFullUrl' => true));
 
-	    $description = '<a href="' . $url .'"><img border="0" src="' . $imageUrl .
-		'" width="' . $thumbnail->getWidth() .
-		'" height="' . $thumbnail->getHeight() .
-		'"/></a>' . (!empty($description) ? '<br/>' . $description : $description);
-
+ 		if ($displayThumbnail == 1)
+ 		{
+ 		    $description = '<center><a href="' . $url .'"><img border="0" src="' . $imageUrl .
+ 			'" width="' . $thumbnail->getWidth() .
+ 			'" height="' . $thumbnail->getHeight() .
+ 			'"/></a></center>' . (!empty($description) ? '<br/>' . $description : $description);
+ 		}
+ 		
 	    $itemSettings['thumbnail']['url'] = $imageUrl;
 	    $itemSettings['thumbnail']['width'] = $thumbnail->getWidth();
 	    $itemSettings['thumbnail']['height'] = $thumbnail->getHeight();
