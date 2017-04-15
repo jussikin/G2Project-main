@@ -98,6 +98,14 @@ class EditFeedController extends GalleryController {
 		}
 	    }
 
+	    /* Force podcast compatibility items */
+	    if (isset($form['usePodcast'])) {
+		//FIXME Maybe we should inform the user that we are doing this.
+		$form['version'] = '2.0';
+		$form['useEnclosure'] = '1';
+		unset($form['useMedia']);
+	    }
+
 	    /* check the name */
 	    if (empty($form['feedName'])) {
 		$error[] = 'form[error][feedName]';
@@ -125,7 +133,8 @@ class EditFeedController extends GalleryController {
 		    'useImage' => (isset($form['useImage']) ? '1' : '0'),
 		    'useEnclosure' => (isset($form['useEnclosure']) ? '1' : '0'),
 		    'useCloud' => (isset($form['useCloud']) ? '1' : '0'),
-		    'useMedia' => (isset($form['useMedia']) ? '1' : '0'));
+		    'useMedia' => (isset($form['useMedia']) ? '1' : '0'),
+		    'usePodcast' => (isset($form['usePodcast']) ? '1' : '0'));
 
 		if ($parameters['feedType'] == 'photosRecursive') {
 		    $parameters['photosRecursiveLimit'] = $form['photosRecursiveLimit'];
@@ -138,6 +147,14 @@ class EditFeedController extends GalleryController {
 			      'cloudPath' => $form['cloudPath'],
 			      'cloudRegisterProcedure' => $form['cloudRegisterProcedure'],
 			      'cloudProtocol' => $form['cloudProtocol']));
+		}
+
+		if (isset($form['usePodcast'])) {
+		    $parameters = array_merge($parameters, 
+			array('podcastSubtitle' => $form['podcastSubtitle'],
+			      'podcastAuthor' => $form['podcastAuthor'], 
+			      'podcastOwnerName' => $form['podcastOwnerName'],
+			      'podcastOwnerEmail' => $form['podcastOwnerEmail']));
 		}
 
 		/* Check if we need to update a current feed, or create a new one */
@@ -278,12 +295,17 @@ class EditFeedView extends GalleryView {
 			       'useEnclosure' => false,
 			       'useCloud' => false,
 			       'useMedia' => true,
+			       'usePodcast' => false,
 			       'cloudDomain' => '',
 			       'cloudPort' => '',
 			       'cloudPath' => '',
 			       'cloudRegisterProcedure' => '',
 			       'cloudProtocol' => '',
 			       'photosRecursiveLimit' => '0',
+			       'podcastSubtitle' => '',
+			       'podcastAuthor' => '',
+			       'podcastOwnerName' => '',
+			       'podcastOwnerEmail' => '',
 			       'ttl' => $param['defaultTtl'],
 			       'category' => '',
 			       'description' => '',

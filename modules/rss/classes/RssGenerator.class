@@ -202,11 +202,11 @@ class RssGenerator {
 	$platform =& $gallery->getPlatform();
 	$lf = $platform->getLineEnding();
 
-	if (isset($this->_properties['useMedia']) && $this->_properties['useMedia'] == 1) {
-	    $data = '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">';
-	} else {
-	    $data = '<rss version="2.0">';
-	}
+	$data = '<rss version="2.0"' . (isset($this->_properties['podcast']) ? 
+	    ' xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"' : '') . 
+	    (isset($this->_properties['useMedia']) && $this->_properties['useMedia'] == 1 ? 
+	    ' xmlns:media="http://search.yahoo.com/mrss/"' : '') . 
+	    '>';
 	$data .= $lf . '<channel>' . $lf .
 	    '<title>' . $this->cdata(GalleryUtilities::markup($this->_properties['title'])) .
 	    '</title>' . $lf .
@@ -243,6 +243,19 @@ class RssGenerator {
 	       $this->cdata(GalleryUtilities::markup($this->_properties['image']['title'])) .
 		'</title>' . $lf .
 		' <link>' . $this->_properties['image']['link'] . '</link></image>' . $lf : '');
+
+	    if (isset($this->_properties['podcast'])) {
+		$data .= '<itunes:summary>' . $this->cdata(GalleryUtilities::markup($this->_properties['description'])) . '</itunes:summary>' . $lf . 
+		  (!empty($this->_properties['podcastSubtitle']) ?
+		    '<itunes:subtitle>' . $this->cdata(GalleryUtilities::markup($this->_properties['podcastSubtitle'])) . '</itunes:podcastSubtitle>' . $lf  : '') .
+		  (!empty($this->_properties['podcastAuthor']) ?
+                    '<itunes:author>' . GalleryUtilities::markup($this->_properties['podcastAuthor']) . '</itunes:author>' . $lf  : '') .
+		  (!empty($this->_properties['podcastOwnerName']) || !empty($this->_properties['podcastOwnerEmail']) ?
+		    '<itunes:owner>' . $lf .
+		        '<itunes:name>' . GalleryUtilities::markup($this->_properties['podcastOwnerName']) . '</itunes:name>' . $lf .
+		        '<itunes:email>' . GalleryUtilities::markup($this->_properties['podcastOwnerEmail']) . '</itunes:email>' . $lf .  
+		    '</itunes:owner>' . $lf  : '');
+	    }
 
 	$userMap = array();
 	foreach ($this->_items as $item) {
@@ -287,6 +300,12 @@ class RssGenerator {
 		    $data .= ' <comments>' . GalleryUtilities::markup($item['comments']) .
 			     '</comments>' . $lf;
 		}
+
+		if (isset($this->_properties['podcast'])) {
+		    $data .= ' <itunes:author>' . GalleryUtilities::markup($name) . '</itunes:author>' . $lf .
+			' <itunes:explicit>no</itunes:explicit>' . $lf .
+			' <itunes:summary>' . $this->cdata(GalleryUtilities::markup($item['description'])) . '</itunes:summary>' . $lf;
+                }
 
 		if (isset($item['enclosure'])) {
 		    $data .= ' <enclosure url="' . $item['enclosure']['url'] . '" length="' .

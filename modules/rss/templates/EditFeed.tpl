@@ -277,7 +277,7 @@
     <td>
       <select name="{g->formVar var="form[version]"}">
         {html_options values=$EditFeed.rssVersionList selected=$EditFeed.version
-	  output=$EditFeed.rssVersionList}
+    output=$EditFeed.rssVersionList}
       </select>
     </td>
     <td>
@@ -417,10 +417,10 @@
     <br />
     {g->text text="Example: "}
     &lt;cloud domain="<b>{g->text text="domain"}</b>"
-	      port="<b>{g->text text="port"}</b>"
-	      path="<b>{g->text text="path"}</b>"
-	      registerProcedure="<b>{g->text text="registerProcedure"}</b>"
-	      protocol="<b>{g->text text="protocol"}</b>" /&gt;
+        port="<b>{g->text text="port"}</b>"
+        path="<b>{g->text text="path"}</b>"
+        registerProcedure="<b>{g->text text="registerProcedure"}</b>"
+        protocol="<b>{g->text text="protocol"}</b>" /&gt;
   </p>
   <table class="gbDataTable"><tr>
     <td>{g->text text="Cloud tag"}</td>
@@ -440,7 +440,7 @@
     <td>{g->text text="domain"}</td>
     <td>
       <input type="text" name="{g->formVar var="form[cloudDomain]"}"
-	{if isset($EditFeed.cloudDomain)}value="{$EditFeed.cloudDomain}"{/if} />
+  {if isset($EditFeed.cloudDomain)}value="{$EditFeed.cloudDomain}"{/if} />
     </td>
     <td>
       {if isset($form.error.cloudDomain)}
@@ -455,7 +455,7 @@
       <input type="text" name="{g->formVar var="form[cloudPort]"}"
         {if isset($EditFeed.cloudPort)}
           value="{$EditFeed.cloudPort}"
-	{/if} />
+  {/if} />
     </td>
     <td>
       {if isset($form.error.cloudPort)}
@@ -469,8 +469,8 @@
     <td>
       <input type="text" name="{g->formVar var="form[cloudPath]"}"
         {if isset($EditFeed.cloudPath)}
-	  value="{$EditFeed.cloudPath}"
-	{/if} />
+    value="{$EditFeed.cloudPath}"
+  {/if} />
     </td>
     <td>
       {if isset($form.error.cloudPath)}
@@ -484,8 +484,8 @@
     <td>
       <input type="text" name="{g->formVar var="form[cloudRegisterProcedure]"}"
         {if isset($EditFeed.cloudRegisterProcedure)}
-	  value="{$EditFeed.cloudRegisterProcedure}"
-	{/if} />
+    value="{$EditFeed.cloudRegisterProcedure}"
+  {/if} />
     </td>
     <td>
       {if isset($form.error.cloudRegiserProcedure)}
@@ -500,7 +500,7 @@
       <input type="text" name="{g->formVar var="form[cloudProtocol]"}"
         {if isset($EditFeed.cloudProtocol)}
           value="{$EditFeed.cloudProtocol}"
-	{/if} />
+  {/if} />
     </td>
     <td>
       {if isset($form.error.cloudProtocol)}
@@ -510,6 +510,90 @@
       {/if}
     </td>
   </tr></table>
+  
+  <h3> {g->text text="Podcast tags (RSS 2.0)"} </h3>
+  <p class="giDescription">
+    {g->text text="If you would like to add podcast support, enable the following items."}
+    <br />
+    {g->text text="Podcasts require RSS 2.0 and enclosure tags."}
+  </p>
+  <table class="gbDataTable">
+    <tr>
+      <td>{g->text text="Podcast tags"}</td>
+      <td>
+        <input type="checkbox"
+          {if isset($EditFeed.usePodcast) && $EditFeed.usePodcast} checked="checked"{/if}
+          name="{g->formVar var="form[usePodcast]"}"/> {g->text text="Include podcast tags"}
+      </td>
+      <td>
+        {if isset($form.error.usePodcast)}
+        <div class="giError">
+          {g->text text="Invalid value"}
+        </div>
+        {/if}
+      </td>
+    </tr>
+    
+    <tr>
+      <td>{g->text text="subtitle"}</td>
+      <td>
+        <input type="text" name="{g->formVar var="form[podcastSubtitle]"}"
+          {if isset($EditFeed.podcastSubtitle)}value="{$EditFeed.podcastSubtitle}"{/if} />
+      </td>
+      <td>
+        {if isset($form.error.podcastSubtitle)}
+          <div class="giError">
+            {g->text text="Invalid string"}
+          </div>
+        {/if}
+      </td>
+    </tr>
+    
+    <tr>
+      <td>{g->text text="author"}</td>
+      <td>
+        <input type="text" name="{g->formVar var="form[podcastAuthor]"}"
+          {if isset($EditFeed.podcastAuthor)}value="{$EditFeed.podcastAuthor}"{/if} />
+      </td>
+      <td>
+        {if isset($form.error.podcastAuthor)}
+          <div class="giError">
+            {g->text text="Invalid string"}
+          </div>
+        {/if}
+      </td>
+    </tr>
+    
+    <tr>
+      <td>{g->text text="owner name"}</td>
+      <td>
+        <input type="text" name="{g->formVar var="form[podcastOwnerName]"}"
+          {if isset($EditFeed.podcastOwnerName)}value="{$EditFeed.podcastOwnerName}"{/if} />
+      </td>
+      <td>
+        {if isset($form.error.podcastOwnerName)}
+          <div class="giError">
+            {g->text text="Invalid string"}
+          </div>
+        {/if}
+      </td>
+    </tr>
+    
+    <tr>
+      <td>{g->text text="owner email"}</td>
+      <td>
+        <input type="text" name="{g->formVar var="form[podcastOwnerEmail]"}"
+          {if isset($EditFeed.podcastOwnerEmail)}value="{$EditFeed.podcastOwnerEmail}"{/if} />
+      </td>
+      <td>
+        {if isset($form.error.podcastOwnerEmail)}
+          <div class="giError">
+            {g->text text="Invalid string"}
+          </div>
+        {/if}
+      </td>
+    </tr>
+  </table>
   </div>
 
 <div class="gbBlock gcBackground1">
@@ -539,22 +623,22 @@
       <th> {g->text text="Actions"} </th>
     </tr>
     {foreach from=$EditFeed.feeds item=feed}
-	  <tr class="{cycle values="gbEven,gbOdd"}">
-	    <td><a href="{g->url arg1="view=rss.Render" arg2="name=`$feed.name`"}">
-	      {$feed.name}</a></td>
-	    <td>{$EditFeed.types[$feed.params.feedType]}</td>
-	    <td>
-	      <a href="{g->url arg1="controller=rss.EditFeed"
-	        arg2="form[action][delete]=`$feed.name`" arg3="itemId=`$feed.itemId`"}">
-		{g->text text="delete"}</a>
-	      <a href="{g->url arg1="view=core.ItemAdmin" arg2="subView=rss.EditFeed"
-	        arg3="form[feedName]=`$feed.name`" arg4="itemId=`$feed.itemId`"
-		arg5="mode=edit"}">
-		{g->text text="edit"}</a>
-	    </td>
-	  </tr>
+    <tr class="{cycle values="gbEven,gbOdd"}">
+      <td><a href="{g->url arg1="view=rss.Render" arg2="name=`$feed.name`"}">
+        {$feed.name}</a></td>
+      <td>{$EditFeed.types[$feed.params.feedType]}</td>
+      <td>
+        <a href="{g->url arg1="controller=rss.EditFeed"
+          arg2="form[action][delete]=`$feed.name`" arg3="itemId=`$feed.itemId`"}">
+    {g->text text="delete"}</a>
+        <a href="{g->url arg1="view=core.ItemAdmin" arg2="subView=rss.EditFeed"
+          arg3="form[feedName]=`$feed.name`" arg4="itemId=`$feed.itemId`"
+    arg5="mode=edit"}">
+    {g->text text="edit"}</a>
+      </td>
+    </tr>
     {/foreach}
-	</table>
+  </table>
   {/if}
 </div>
 
