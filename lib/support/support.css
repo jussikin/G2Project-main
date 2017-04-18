@@ -207,13 +207,13 @@ div.example pre {
 }
 
 div.center {
-	padding: 10px;
-	margin: 20px;
-	text-align: center;
+    padding: 10px;
+    margin: 20px;
+    text-align: center;
 }
 
 fieldset {
-	background-color: #999888;
+    background-color: #999888;
 }
 
 .btn { display: block; position: relative; background: #aaa; padding: 5px; margin-right: 1em; float: left; color: #000 !important; text-decoration: none; cursor: pointer; }
@@ -247,32 +247,32 @@ fieldset {
 
 
 div.box {
-	border: solid #ddd 1px;
-	margin: 15px;
-	padding: 10px;
+    border: solid #ddd 1px;
+    margin: 15px;
+    padding: 10px;
 }
 
 div.option {
-	display: block;
-	color: #919191;
+    display: block;
+    color: #919191;
 }
 
 ul.option li a, ul.option li a:hover {
-	color: #333;
-	text-decoration: none;
+    color: #333;
+    text-decoration: none;
 }
 
 ul.option li a:hover {
-	color: #adadad;
-	text-decoration: underline;
+    color: #adadad;
+    text-decoration: underline;
 }
 
 .round {
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px
 }
 
 option.disabled {
-	background-color: #e5e5e3;
+    background-color: #e5e5e3;
 }

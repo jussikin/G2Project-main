@@ -32,27 +32,29 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryPackage.clas
  * @subpackage Controllers
  * @module PackagePluginController
  */
-class PackagePluginControllerAndView extends RepositoryControllerAndView {
+class PackagePluginControllerAndView extends RepositoryControllerAndView
+{
 
     /**
      * Displays the available plugins that can be packaged.
      *
      * @return GalleryStatus a status code
      */
-    function showAvailablePlugins() {
-	list ($ret, $plugins) = $this->getAvailablePluginList(array(
-	    'package' => array('controller' => 'PackagePlugin', 'action' => 'packagePlugin')));
-	if ($ret) {
-	    return $ret;
-	}
+    function showAvailablePlugins()
+    {
+        list ($ret, $plugins) = $this->getAvailablePluginList(array(
+        'package' => array('controller' => 'PackagePlugin', 'action' => 'packagePlugin')));
+        if ($ret) {
+            return $ret;
+        }
 
-	$ret = $this->showView('PackagePlugin', array(
-	    'formVariablePrefix' => GALLERY_FORM_VARIABLE_PREFIX, 'plugins' => $plugins));
-	if ($ret) {
-	    return $ret;
-	}
+        $ret = $this->showView('PackagePlugin', array(
+        'formVariablePrefix' => GALLERY_FORM_VARIABLE_PREFIX, 'plugins' => $plugins));
+        if ($ret) {
+            return $ret;
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -60,27 +62,35 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView {
      *
      * @return GalleryStatus a status code
      */
-    function packagePlugin() {
-	list ($pluginId, $pluginType) =
-	    GalleryUtilities::getRequestVariables('pluginId', 'pluginType');
+    function packagePlugin()
+    {
+        list ($pluginId, $pluginType) =
+        GalleryUtilities::getRequestVariables('pluginId', 'pluginType');
 
-	if (empty($pluginId) || empty($pluginType)) {
-	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-	    				sprintf('pluginId [%s] and/or pluginType [%s] not set.',
-	    					$pluginId, $pluginType));
-	}
+        if (empty($pluginId) || empty($pluginType)) {
+            return GalleryCoreApi::error(
+                ERROR_BAD_PARAMETER,
+                __FILE__,
+                __LINE__,
+                sprintf(
+                    'pluginId [%s] and/or pluginType [%s] not set.',
+                    $pluginId,
+                    $pluginType
+                )
+            );
+        }
 
-	list ($ret, $pluginInfo) = $this->doPackagePlugin($pluginType, $pluginId);
-	if ($ret) {
-	    return $ret;
-	}
+        list ($ret, $pluginInfo) = $this->doPackagePlugin($pluginType, $pluginId);
+        if ($ret) {
+            return $ret;
+        }
 
-	$ret = $this->showView('PackageResults', array('results' => array($pluginInfo)));
-	if ($ret) {
-	    return $ret;
-	}
+        $ret = $this->showView('PackageResults', array('results' => array($pluginInfo)));
+        if ($ret) {
+            return $ret;
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -88,34 +98,35 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView {
      *
      * @return GalleryStatus a status code
      */
-    function packagePlugins() {
-	global $gallery;
-	$pluginsPackaged = 0;
+    function packagePlugins()
+    {
+        global $gallery;
+        $pluginsPackaged = 0;
 
-	/* Set default filter if none is provided. */
-	$filter = GalleryUtilities::getRequestVariables('filter');
-	if (strlen($filter) < 3) { /* Is there a check to see if a regexp is valid? */
-	    $filter = '/.*/';
-	}
+    /* Set default filter if none is provided. */
+        $filter = GalleryUtilities::getRequestVariables('filter');
+        if (strlen($filter) < 3) { /* Is there a check to see if a regexp is valid? */
+            $filter = '/.*/';
+        }
 
-	list ($ret, $plugins) = $this->getAvailablePluginList(array());
-	if ($ret) {
-	    return $ret;
-	}
+        list ($ret, $plugins) = $this->getAvailablePluginList(array());
+        if ($ret) {
+            return $ret;
+        }
 
-	$packagedPluginList = array();
-	foreach ($plugins as $pluginId => $plugin) {
-	    $gallery->guaranteeTimeLimit(60);
-	    if (preg_match($filter, $pluginId)) {
-		list ($ret, $pluginInfo) = $this->doPackagePlugin($plugin['type'], $pluginId);
-		if ($ret) {
-		    return $ret;
-		}
-		$packagedPluginList[] = $pluginInfo;
-	    }
-	}
-	$this->showView('PackageResults', array('results' => $packagedPluginList));
-	return null;
+        $packagedPluginList = array();
+        foreach ($plugins as $pluginId => $plugin) {
+            $gallery->guaranteeTimeLimit(60);
+            if (preg_match($filter, $pluginId)) {
+                list ($ret, $pluginInfo) = $this->doPackagePlugin($plugin['type'], $pluginId);
+                if ($ret) {
+                    return $ret;
+                }
+                $packagedPluginList[] = $pluginInfo;
+            }
+        }
+        $this->showView('PackageResults', array('results' => $packagedPluginList));
+        return null;
     }
 
     /**
@@ -125,60 +136,61 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView {
      *               array('pluginId' => ..., 'outputDir' => ...,
      *                     'packageInfo' => ..., 'errors' => ...)
      */
-    function doPackagePlugin($pluginType, $pluginId) {
-	global $gallery;
-	$outputDir = $gallery->getConfig('repository.path');
+    function doPackagePlugin($pluginType, $pluginId)
+    {
+        global $gallery;
+        $outputDir = $gallery->getConfig('repository.path');
 
-	list ($ret, $plugin) = GalleryCoreApi::loadPlugin($pluginType, $pluginId, true);
-	if ($ret) {
-	    return array($ret, null);
-	}
+        list ($ret, $plugin) = GalleryCoreApi::loadPlugin($pluginType, $pluginId, true);
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	$outputDir .= sprintf('%ss', $pluginType);
+        $outputDir .= sprintf('%ss', $pluginType);
 
-	$descriptor = new RepositoryDescriptor();
-	$ret = $descriptor->init($outputDir);
-	if ($ret) {
-	    return array($ret, null);
-	}
+        $descriptor = new RepositoryDescriptor();
+        $ret = $descriptor->init($outputDir);
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	$ret = $descriptor->generate($plugin);
-	if ($ret) {
-	    return array($ret, null);
-	}
+        $ret = $descriptor->generate($plugin);
+        if ($ret) {
+            return array($ret, null);
+        }
 
         $overwrite = GalleryUtilities::getRequestVariables('overwrite');
 
-	$integrityErrors = $descriptor->checkIntegrity();
-	$pluginInfo = array('pluginId' => $descriptor->getPluginId(),
-			    'outputDir' => $descriptor->getOutputDir());
+        $integrityErrors = $descriptor->checkIntegrity();
+        $pluginInfo = array('pluginId' => $descriptor->getPluginId(),
+                'outputDir' => $descriptor->getOutputDir());
 
-	if (empty($integrityErrors)) {
-	    $ret = $descriptor->writeToDisk($overwrite, true);
-	    if ($ret) {
-		return array($ret, null);
-	    }
+        if (empty($integrityErrors)) {
+            $ret = $descriptor->writeToDisk($overwrite, true);
+            if ($ret) {
+                return array($ret, null);
+            }
 
-	    $package = new RepositoryPackage();
-	    $ret = $package->init($descriptor, $descriptor->getOutputDir());
-	    if ($ret) {
-		return array($ret, null);
-	    }
+            $package = new RepositoryPackage();
+            $ret = $package->init($descriptor, $descriptor->getOutputDir());
+            if ($ret) {
+                return array($ret, null);
+            }
 
-	    list ($ret, $packagesWritten) = $package->writeAllPackagesToDisk($overwrite, true);
-	    if ($ret) {
-		return array($ret, null);
-	    }
+            list ($ret, $packagesWritten) = $package->writeAllPackagesToDisk($overwrite, true);
+            if ($ret) {
+                return array($ret, null);
+            }
 
-	    $pluginInfo['packageInfo'] = $packagesWritten;
-	    $pluginInfo['errors'] = array();
-	} else {
-	    $pluginInfo['packageInfo'] = array('packagesWritten' => array(),
-					       'packagesSkipped' => array());
-	    $pluginInfo['errors'] = $integrityErrors;
-	}
+            $pluginInfo['packageInfo'] = $packagesWritten;
+            $pluginInfo['errors'] = array();
+        } else {
+            $pluginInfo['packageInfo'] = array('packagesWritten' => array(),
+                           'packagesSkipped' => array());
+            $pluginInfo['errors'] = $integrityErrors;
+        }
 
-	return array(null, $pluginInfo);
+        return array(null, $pluginInfo);
     }
 
     /**
@@ -186,36 +198,36 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView {
      *
      * @param array $links 'action' => array(UrlGeneratorParameters)
      * @return array GalleryStatus a status code
-     *		     array plugin list
+     *           array plugin list
      */
-    function getAvailablePluginList($links) {
-	global $gallery;
-	$urlGenerator =& $gallery->getUrlGenerator();
-	$data = array();
-	$pluginTypes = array('module', 'theme');
+    function getAvailablePluginList($links)
+    {
+        global $gallery;
+        $urlGenerator =& $gallery->getUrlGenerator();
+        $data = array();
+        $pluginTypes = array('module', 'theme');
 
-	foreach ($pluginTypes as $pluginType) {
-	    list ($ret, $plugins) = GalleryCoreApi::fetchPluginStatus($pluginType, true);
-	    if ($ret) {
-		return array($ret, null);
-	    }
+        foreach ($pluginTypes as $pluginType) {
+            list ($ret, $plugins) = GalleryCoreApi::fetchPluginStatus($pluginType, true);
+            if ($ret) {
+                return array($ret, null);
+            }
 
-	    ksort($plugins);
-	    foreach ($plugins as $pluginId => $plugin) {
-		$data[$pluginId]['type'] = $pluginType;
-		$data[$pluginId]['active'] = isset($plugin['active']) ? 'active' : 'inactive';
-		$data[$pluginId]['available'] = isset($plugin['available']) ? 'available'
-									    : 'unavailable';
+            ksort($plugins);
+            foreach ($plugins as $pluginId => $plugin) {
+                $data[$pluginId]['type'] = $pluginType;
+                $data[$pluginId]['active'] = isset($plugin['active']) ? 'active' : 'inactive';
+                $data[$pluginId]['available'] = isset($plugin['available']) ? 'available'
+                                        : 'unavailable';
 
-		$pluginUrlParameters = array('pluginId' => $pluginId, 'pluginType' => $pluginType);
-		foreach ($links as $link => $extraUrlParameters) {
-		    $data[$pluginId]['links'][$link] =
-			$urlGenerator->generateUrl($extraUrlParameters + $pluginUrlParameters);
-		}
-	    }
-	}
+                $pluginUrlParameters = array('pluginId' => $pluginId, 'pluginType' => $pluginType);
+                foreach ($links as $link => $extraUrlParameters) {
+                    $data[$pluginId]['links'][$link] =
+                    $urlGenerator->generateUrl($extraUrlParameters + $pluginUrlParameters);
+                }
+            }
+        }
 
-	return array(null, $data);
+        return array(null, $data);
     }
 }
-?>

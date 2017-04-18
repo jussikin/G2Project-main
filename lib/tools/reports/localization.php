@@ -29,7 +29,7 @@ set_time_limit(0);
 $type = 'summary';
 if (!empty($_REQUEST['type']) && $_REQUEST['type'] == 'detail') {
     $type = 'detail';
-} else if (php_sapi_name() == 'cli' && $argv[1] == 'detail') {
+} elseif (php_sapi_name() == 'cli' && $argv[1] == 'detail') {
     $type = 'detail';
 }
 $precision = isset($_GET['precision']) ? (int)$_GET['precision'] : ($type == 'detail' ? 2 : 1);
@@ -41,31 +41,33 @@ list ($reportData, $mostRecentPoDate, $totalTranslated) = parsePoFiles($poFiles)
 require(dirname(__FILE__) . '/localization/main_' . $type . '.inc');
 exit;
 
-function findPoFiles($dir) {
+function findPoFiles($dir)
+{
     $results = array();
     if (!is_dir($dir)) {
-	return $results;
+        return $results;
     }
 
     if ($dh = opendir($dir)) {
-	while (($file = readdir($dh)) !== false) {
-	    if ($file == '.' || $file == '..') {
-		continue;
-	    }
-	    $path = $dir . '/' . $file;
-	    if (is_dir($path)) {
-		$results = array_merge($results, findPoFiles($path));
-	    } else {
-		if (preg_match("/\.po$/", $file)) {
-		    $results[] = $path;
-		}
-	    }
-	}
+        while (($file = readdir($dh)) !== false) {
+            if ($file == '.' || $file == '..') {
+                continue;
+            }
+            $path = $dir . '/' . $file;
+            if (is_dir($path)) {
+                $results = array_merge($results, findPoFiles($path));
+            } else {
+                if (preg_match("/\.po$/", $file)) {
+                    $results[] = $path;
+                }
+            }
+        }
     }
     return $results;
 }
 
-function parsePoFiles($poFiles) {
+function parsePoFiles($poFiles)
+{
     /*
      * Parse each .po file for relevant statistics and gather it together into a
      * single data structure.
@@ -74,18 +76,18 @@ function parsePoFiles($poFiles) {
     $poData = $seenPlugins = $maxMessageCount = array();
     $mostRecentPoDate = $totalTranslated = 0;
     foreach ($poFiles as $poFile) {
-	if (!preg_match("|((?:\w+/)+)po/(\w{2}(?:_\w{2})?)\.po|", $poFile, $matches)) {
-	    continue;
-	}
-	list ($plugin, $locale) = array($matches[1], $matches[2]);
-	$seenPlugins[$plugin] = 1;
-	$stat = stat($poFile);
-	if ($stat && $stat['mtime'] > $mostRecentPoDate) {
-	    $mostRecentPoDate = $stat['mtime'];
-	}
+        if (!preg_match("|((?:\w+/)+)po/(\w{2}(?:_\w{2})?)\.po|", $poFile, $matches)) {
+            continue;
+        }
+        list ($plugin, $locale) = array($matches[1], $matches[2]);
+        $seenPlugins[$plugin] = 1;
+        $stat = stat($poFile);
+        if ($stat && $stat['mtime'] > $mostRecentPoDate) {
+            $mostRecentPoDate = $stat['mtime'];
+        }
 
-	$fuzzy = $translated = $untranslated = $obsolete = 0;
-	/*
+        $fuzzy = $translated = $untranslated = $obsolete = 0;
+    /*
 	 * Untranslated:
 	 *   msgid "foo"
 	 *   msgstr ""
@@ -124,165 +126,165 @@ function parsePoFiles($poFiles) {
 	 *   #~ msgstr "bar"
 	 *
 	 */
-	$msgId = null;
-	$nextIsFuzzy = $lastLineWasEmptyMsgStr = $lastLineWasEmptyMsgId = 0;
-	foreach (file($poFile) as $line) {
-	    /*
-	     * Scan for:
-	     *   msgid "foo bar"
-	     *
-	     * and:
-	     *   msgid ""
-	     *   "foo bar"
-	     */
-	    if (preg_match('/^msgid "(.*)"/', $line, $matches)) {
-		if (empty($matches[1])) {
-		    $lastLineWasEmptyMsgId = 1;
-		} else {
-		    $msgId = $line;
-		}
-		continue;
-	    }
+        $msgId = null;
+        $nextIsFuzzy = $lastLineWasEmptyMsgStr = $lastLineWasEmptyMsgId = 0;
+        foreach (file($poFile) as $line) {
+            /*
+             * Scan for:
+             *   msgid "foo bar"
+             *
+             * and:
+             *   msgid ""
+             *   "foo bar"
+             */
+            if (preg_match('/^msgid "(.*)"/', $line, $matches)) {
+                if (empty($matches[1])) {
+                    $lastLineWasEmptyMsgId = 1;
+                } else {
+                    $msgId = $line;
+                }
+                continue;
+            }
 
-	    /*
-	     * Scan for:
-	     *   msgid ""
-	     *   "foo bar"
-	     */
-	    if ($lastLineWasEmptyMsgId) {
-		if (preg_match('/^\s*"(.*)"/', $line, $matches)) {
-		    $msgId = $line;
-		}
-		$lastLineWasEmptyMsgId = 0;
-		continue;
-	    }
+            /*
+             * Scan for:
+             *   msgid ""
+             *   "foo bar"
+             */
+            if ($lastLineWasEmptyMsgId) {
+                if (preg_match('/^\s*"(.*)"/', $line, $matches)) {
+                    $msgId = $line;
+                }
+                $lastLineWasEmptyMsgId = 0;
+                continue;
+            }
 
-	    if (strpos($line, '#, fuzzy') === 0) {
-		$nextIsFuzzy = 1;
-		continue;
-	    }
+            if (strpos($line, '#, fuzzy') === 0) {
+                $nextIsFuzzy = 1;
+                continue;
+            }
 
-	    if (preg_match('/^#~ msgid "(.*)"/', $line, $matches)) {
-		$obsolete++;
-		$nextIsFuzzy = 0;
-	    }
+            if (preg_match('/^#~ msgid "(.*)"/', $line, $matches)) {
+                $obsolete++;
+                $nextIsFuzzy = 0;
+            }
 
-	    /*
-	     * Scan for:
-	     *   msgstr ""
-	     *   "foo bar"
-	     */
-	    if ($lastLineWasEmptyMsgStr) {
-		if (preg_match('/^\s*".+"/', $line)) {
-		    if ($nextIsFuzzy) {
-			$fuzzy++;
-		    }
-		    $translated++;
-		} else {
-		    if ($nextIsFuzzy) {
-			print "ERROR: DISCARD FUZZY for [$locale, $plugin, $msgId]<br>";
-		    }
-		    $untranslated++;
-		}
-		$msgId = null;
-		$nextIsFuzzy = 0;
-		$lastLineWasEmptyMsgStr = 0;
-	    }
+            /*
+             * Scan for:
+             *   msgstr ""
+             *   "foo bar"
+             */
+            if ($lastLineWasEmptyMsgStr) {
+                if (preg_match('/^\s*".+"/', $line)) {
+                    if ($nextIsFuzzy) {
+                        $fuzzy++;
+                    }
+                    $translated++;
+                } else {
+                    if ($nextIsFuzzy) {
+                        print "ERROR: DISCARD FUZZY for [$locale, $plugin, $msgId]<br>";
+                    }
+                    $untranslated++;
+                }
+                $msgId = null;
+                $nextIsFuzzy = 0;
+                $lastLineWasEmptyMsgStr = 0;
+            }
 
-	    /*
-	     * Scan for:
-	     *   msgstr "foo bar"
-	     *
-	     * or:
-	     *   msgstr ""
-	     *   "foo bar"
-	     */
-	    if (!empty($msgId)) {
-		if (preg_match('/^msgstr/', $line)) {
-		    if (preg_match('/^msgstr[\d\[\]]*\s*""\s*$/', $line)) {
-			$lastLineWasEmptyMsgStr = 1;
-		    } else {
-			if ($nextIsFuzzy) {
-			    $fuzzy++;
-			}
-			$translated++;
-			$msgId = null;
-			$nextIsFuzzy = 0;
-		    }
-		}
-	    }
-	}
-	/* Catch msgstr "" in last line */
-	if (!empty($msgId) && $lastLineWasEmptyMsgStr) {
-	    $untranslated++;
-	}
+            /*
+             * Scan for:
+             *   msgstr "foo bar"
+             *
+             * or:
+             *   msgstr ""
+             *   "foo bar"
+             */
+            if (!empty($msgId)) {
+                if (preg_match('/^msgstr/', $line)) {
+                    if (preg_match('/^msgstr[\d\[\]]*\s*""\s*$/', $line)) {
+                        $lastLineWasEmptyMsgStr = 1;
+                    } else {
+                        if ($nextIsFuzzy) {
+                            $fuzzy++;
+                        }
+                        $translated++;
+                        $msgId = null;
+                        $nextIsFuzzy = 0;
+                    }
+                }
+            }
+        }
+    /* Catch msgstr "" in last line */
+        if (!empty($msgId) && $lastLineWasEmptyMsgStr) {
+            $untranslated++;
+        }
 
-	$total = $translated + $untranslated;
-	if (empty($total)) {
-	    $percentDone = $exactPercentDone = 0;
-	} else {
-	    $percentDone = floor(($translated - $fuzzy) * 100 * $pow / $total) / $pow;
-	    $exactPercentDone = ($translated - $fuzzy) * 100 / $total;
-	}
-	$poData[$locale]['plugins'][$plugin] = array('translated' => $translated,
-						     'untranslated' => $untranslated,
-						     'total' => $total,
-						     'fuzzy' => $fuzzy,
-						     'obsolete' => $obsolete,
-						     'percentDone' => $percentDone,
-						     'exactPercentDone' => $exactPercentDone,
-						     'name' => $plugin);
-	$totalTranslated += $translated - $fuzzy;
+        $total = $translated + $untranslated;
+        if (empty($total)) {
+            $percentDone = $exactPercentDone = 0;
+        } else {
+            $percentDone = floor(($translated - $fuzzy) * 100 * $pow / $total) / $pow;
+            $exactPercentDone = ($translated - $fuzzy) * 100 / $total;
+        }
+        $poData[$locale]['plugins'][$plugin] = array('translated' => $translated,
+                             'untranslated' => $untranslated,
+                             'total' => $total,
+                             'fuzzy' => $fuzzy,
+                             'obsolete' => $obsolete,
+                             'percentDone' => $percentDone,
+                             'exactPercentDone' => $exactPercentDone,
+                             'name' => $plugin);
+        $totalTranslated += $translated - $fuzzy;
 
-	foreach (array('translated', 'untranslated', 'fuzzy', 'obsolete') as $key) {
-	    if (!isset($summary[$locale][$key])) {
-		$summary[$locale][$key] = 0;
-	    }
+        foreach (array('translated', 'untranslated', 'fuzzy', 'obsolete') as $key) {
+            if (!isset($summary[$locale][$key])) {
+                $summary[$locale][$key] = 0;
+            }
 
-	    $summary[$locale][$key] += $poData[$locale]['plugins'][$plugin][$key];
-	}
+            $summary[$locale][$key] += $poData[$locale]['plugins'][$plugin][$key];
+        }
 
-	/* Keep track of the largest message count we've seen per plugin */
-	if (empty($maxMessageCount[$plugin]) || $total > $maxMessageCount[$plugin]) {
-	    $maxMessageCount[$plugin] = $total;
-	}
+    /* Keep track of the largest message count we've seen per plugin */
+        if (empty($maxMessageCount[$plugin]) || $total > $maxMessageCount[$plugin]) {
+            $maxMessageCount[$plugin] = $total;
+        }
     }
 
     /* Overall total message count */
     $overallTotal = array_sum(array_values($maxMessageCount));
 
     foreach (array_keys($poData) as $locale) {
-	$pluginTotal = 0;
+        $pluginTotal = 0;
 
-	/* Fill in any missing locales */
-	foreach (array_keys($seenPlugins) as $plugin) {
-	    if (!isset($poData[$locale]['plugins'][$plugin])) {
-		$poData[$locale]['plugins'][$plugin]['missing'] = 1;
-		$poData[$locale]['plugins'][$plugin]['percentDone'] = 0;
-		$poData[$locale]['plugins'][$plugin]['exactPercentDone'] = 0;
-		$poData[$locale]['plugins'][$plugin]['name'] = $plugin;
-	    } else {
-		$pluginTotal +=
-		    $poData[$locale]['plugins'][$plugin]['translated'] -
-		    $poData[$locale]['plugins'][$plugin]['fuzzy'];
-	    }
-	}
-	uasort($poData[$locale]['plugins'], 'sortByPercentDone');
+    /* Fill in any missing locales */
+        foreach (array_keys($seenPlugins) as $plugin) {
+            if (!isset($poData[$locale]['plugins'][$plugin])) {
+                $poData[$locale]['plugins'][$plugin]['missing'] = 1;
+                $poData[$locale]['plugins'][$plugin]['percentDone'] = 0;
+                $poData[$locale]['plugins'][$plugin]['exactPercentDone'] = 0;
+                $poData[$locale]['plugins'][$plugin]['name'] = $plugin;
+            } else {
+                $pluginTotal +=
+                $poData[$locale]['plugins'][$plugin]['translated'] -
+                $poData[$locale]['plugins'][$plugin]['fuzzy'];
+            }
+        }
+        uasort($poData[$locale]['plugins'], 'sortByPercentDone');
 
-	/* Figure out total percentage */
-	if (empty($overallTotal)) {
-	    $poData[$locale]['percentDone'] = $poData[$locale]['exactPercentDone'] = 0;
-	} else {
-	    $poData[$locale]['percentDone'] =
-		floor($pluginTotal * 100 * $pow / $overallTotal) / $pow;
-	    $poData[$locale]['exactPercentDone'] = $pluginTotal * 100 / $overallTotal;
-	}
+    /* Figure out total percentage */
+        if (empty($overallTotal)) {
+            $poData[$locale]['percentDone'] = $poData[$locale]['exactPercentDone'] = 0;
+        } else {
+            $poData[$locale]['percentDone'] =
+            floor($pluginTotal * 100 * $pow / $overallTotal) / $pow;
+            $poData[$locale]['exactPercentDone'] = $pluginTotal * 100 / $overallTotal;
+        }
 
-	foreach (array('translated', 'untranslated', 'fuzzy', 'obsolete') as $key) {
-	    $poData[$locale]['summary'][$key] =
-		floor($summary[$locale][$key] * 100 * $pow / $overallTotal) / $pow;
-	}
-	$poData[$locale]['summary']['total'] = $overallTotal;
+        foreach (array('translated', 'untranslated', 'fuzzy', 'obsolete') as $key) {
+            $poData[$locale]['summary'][$key] =
+            floor($summary[$locale][$key] * 100 * $pow / $overallTotal) / $pow;
+        }
+        $poData[$locale]['summary']['total'] = $overallTotal;
     }
 
     /* Sort locales by overall total */
@@ -303,56 +305,60 @@ function parsePoFiles($poFiles) {
  * @param array $b second entry to sort
  * @return int   -1, 0, +1, depending on the comparision
  */
-function sortByPercentDone($a, $b) {
+function sortByPercentDone($a, $b)
+{
     if (isset($a['missing']) && !isset($b['missing'])) {
-	return 1;
-    } else if (isset($b['missing']) && !isset($a['missing'])) {
-	return -1;
+        return 1;
+    } elseif (isset($b['missing']) && !isset($a['missing'])) {
+        return -1;
     }
 
     if ($a['exactPercentDone'] == $b['exactPercentDone']) {
-	if (isset($a['name']) && isset($b['name'])) {
-	    return ($a['name'] < $b['name']) ? -1 : 1;
-	}
-	return 0;
+        if (isset($a['name']) && isset($b['name'])) {
+            return ($a['name'] < $b['name']) ? -1 : 1;
+        }
+        return 0;
     }
     return ($a['exactPercentDone'] < $b['exactPercentDone']) ? 1 : -1;
 }
 
-function percentColor($percent) {
+function percentColor($percent)
+{
     $border=50;
     if ($percent < $border) {
-	$color = dechex(255 - $percent * 2) . "0000";
+        $color = dechex(255 - $percent * 2) . "0000";
     } else {
-	$color= "00" . dechex( 55 + $percent * 2 ). "00";
+        $color= "00" . dechex(55 + $percent * 2). "00";
     }
     if (strlen($color) <6) {
-	$color= "0" . $color;
+        $color= "0" . $color;
     }
 
     return $color;
 }
 
-function newRow() {
+function newRow()
+{
     $count =& getRowCount();
     $count++;
 }
 
-function &getRowCount() {
+function &getRowCount()
+{
     static $count;
     if (!isset($count)) {
-	$count = 0;
+        $count = 0;
     }
     return $count;
 }
 
-function modifier($string) {
+function modifier($string)
+{
     $count =& getRowCount();
 
     if ($count % 2) {
-	return $string . '_light';
+        return $string . '_light';
     } else {
-	return $string . '_dark';
+        return $string . '_dark';
     }
 }
-?>

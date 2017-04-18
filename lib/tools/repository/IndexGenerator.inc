@@ -32,42 +32,44 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryIndex.class'
  * @subpackage Controllers
  * @module IndexGeneratorController
  */
-class IndexGeneratorControllerAndView extends RepositoryControllerAndView {
+class IndexGeneratorControllerAndView extends RepositoryControllerAndView
+{
 
     /**
      * Regenerates the repository index.
      *
      * @return GalleryStatus a status code
      */
-    function generate() {
-	global $gallery;
-	$index = new RepositoryIndex();
-	$urlGenerator =& $gallery->getUrlGenerator();
+    function generate()
+    {
+        global $gallery;
+        $index = new RepositoryIndex();
+        $urlGenerator =& $gallery->getUrlGenerator();
 
-	$repositoryDir = $gallery->getConfig('repository.path');
+        $repositoryDir = $gallery->getConfig('repository.path');
 
-	$ret = $index->init($repositoryDir);
-	if ($ret) {
-	    return $ret;
-	}
+        $ret = $index->init($repositoryDir);
+        if ($ret) {
+            return $ret;
+        }
 
-	list ($ret, $pluginCounts) = $index->generate();
-	if ($ret) {
-	    return $ret;
-	}
+        list ($ret, $pluginCounts) = $index->generate();
+        if ($ret) {
+            return $ret;
+        }
 
-	$viewData = array('moduleCount' => $pluginCounts['modules'],
-			  'themeCount' => $pluginCounts['themes'],
-			  'outputDir' => $repositoryDir,
-			  'browseRepositoryLink' => $urlGenerator->generateUrl(
-			      array('controller' => 'RepositoryManager', 'action' => 'browse')));
+        $viewData = array('moduleCount' => $pluginCounts['modules'],
+              'themeCount' => $pluginCounts['themes'],
+              'outputDir' => $repositoryDir,
+              'browseRepositoryLink' => $urlGenerator->generateUrl(
+                  array('controller' => 'RepositoryManager', 'action' => 'browse')
+              ));
 
-	$ret = $this->showView('IndexGenerationResults', $viewData);
-	if ($ret) {
-	    return $ret;
-	}
+        $ret = $this->showView('IndexGenerationResults', $viewData);
+        if ($ret) {
+            return $ret;
+        }
 
-	return null;
+        return null;
     }
 }
-?>

@@ -9,28 +9,29 @@ ob_start();
 define('G2_SUPPORT', true);
 if (!empty($_SERVER['QUERY_STRING'])) {
     foreach (array('phpinfo', 'cache', 'gd', 'chmod', 'import', 'password', 'search_db') as $script) {
-    	/*
+        /*
     	 * Don't use isset($_GET[$script]) since we want to allow for GET args could collide
     	 * with the above mentioned script names
     	 */
-	if ($_SERVER['QUERY_STRING'] == $script ||
-	        strncmp($_SERVER['QUERY_STRING'], $script . '&', strlen($script)+1) == 0) {
-	    include(dirname(__FILE__) . '/' . $script . '.php');
-	    $results = ob_get_contents();
-	    ob_end_clean();
-	    print $results;
-	    return;
-	}
+        if ($_SERVER['QUERY_STRING'] == $script ||
+            strncmp($_SERVER['QUERY_STRING'], $script . '&', strlen($script)+1) == 0) {
+            include(dirname(__FILE__) . '/' . $script . '.php');
+            $results = ob_get_contents();
+            ob_end_clean();
+            print $results;
+            return;
+        }
     }
 }
-function generateUrl($uri, $print=true) {
+function generateUrl($uri, $print = true)
+{
     /* If session.use_trans_sid is on then it will add the session id. */
     if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
-	$sid = session_name() . '=' . session_id();
-	$uri .= (!strpos($uri, '?') ? '?' : '&amp;') . $sid;
+        $sid = session_name() . '=' . session_id();
+        $uri .= (!strpos($uri, '?') ? '?' : '&amp;') . $sid;
     }
     if ($print) {
-	print $uri;
+        print $uri;
     }
     return $uri;
 }
@@ -48,8 +49,8 @@ function generateUrl($uri, $print=true) {
       </div>
 
       <h2>
-	This is a collection of scripts that you use to troubleshoot problems with
-	your Gallery installation.
+    This is a collection of scripts that you use to troubleshoot problems with
+    your Gallery installation.
       </h2>
 
       <h2>

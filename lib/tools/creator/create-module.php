@@ -38,7 +38,7 @@ if (function_exists('posix_getlogin')) {
     $author = posix_getlogin();
     $tmp = posix_getpwnam($author);
     if (!empty($tmp['gecos'])) {
-	$authorFullName = $tmp['gecos'];
+        $authorFullName = $tmp['gecos'];
     }
 }
 
@@ -80,8 +80,10 @@ while (empty($moduleName)) {
 }
 
 while (empty($moduleId)) {
-    $moduleId = ask('What is the id of your module?',
-		    strtolower(preg_replace('/ /', '', $moduleName)));
+    $moduleId = ask(
+        'What is the id of your module?',
+        strtolower(preg_replace('/ /', '', $moduleName))
+    );
 }
 $moduleId = preg_replace('/\W/', '', $moduleId);
 $ucModuleId = ucfirst($moduleId);
@@ -155,55 +157,60 @@ print "Then you can go to the Site Admin -> Modules \n";
 print "page and install and activate your module!\n";
 print "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
 
-function ask($prompt, $default='') {
+function ask($prompt, $default = '')
+{
     print $prompt;
     if (!empty($default)) {
-	print " [$default]";
+        print " [$default]";
     }
     print ' ';
     $line = trim(fgets(stdin()));
     if (empty($line)) {
-	return $default;
+        return $default;
     }
     return $line;
 }
 
-function error($message) {
+function error($message)
+{
     fwrite(stderr(), "$message\n");
     fwrite(stderr(), "*** Exiting!\n");
     cleanup();
     exit(1);
 }
 
-function cleanup() {
+function cleanup()
+{
     global $tmpdir;
     if (file_exists($tmpdir)) {
-	system("rm -rf $tmpdir");
+        system("rm -rf $tmpdir");
     }
 }
 
-function safe_fopen($path) {
+function safe_fopen($path)
+{
     ($fd = fopen($path, 'wb')) || error("Can't write to $path");
     return $fd;
 }
 
-function stdin() {
+function stdin()
+{
     static $stdin;
     if (!defined('STDERR')) {
-	/* Already defined for CLI but not for CGI */
-	$stdin = fopen('php://stdin', 'w');
-	define('STDERR', $stdin);
+    /* Already defined for CLI but not for CGI */
+        $stdin = fopen('php://stdin', 'w');
+        define('STDERR', $stdin);
     }
     return STDERR;
 }
 
-function stderr() {
+function stderr()
+{
     static $stderr;
     if (!defined('STDERR')) {
-	/* Already defined for CLI but not for CGI */
-	$stderr = fopen('php://stderr', 'w');
-	define('STDERR', $stderr);
+    /* Already defined for CLI but not for CGI */
+        $stderr = fopen('php://stderr', 'w');
+        define('STDERR', $stderr);
     }
     return STDERR;
 }
-?>

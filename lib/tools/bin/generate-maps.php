@@ -59,36 +59,36 @@ foreach ($root[0]['child'] as $map) {
     $mapName = $map['child'][0]['content'];
 
     for ($j = 2; $j < count($map['child']); $j++) {
-	$child = $map['child'][$j];
-	if ($child['name'] == 'MEMBER') {
-	    $member = array(
-		'name' => $child['child'][0]['content'],
-		'type' => 'STORAGE_TYPE_' . $child['child'][1]['content']);
+        $child = $map['child'][$j];
+        if ($child['name'] == 'MEMBER') {
+            $member = array(
+            'name' => $child['child'][0]['content'],
+            'type' => 'STORAGE_TYPE_' . $child['child'][1]['content']);
 
-	    if (!empty($child['child'][2]['name']) &&
-		    $child['child'][2]['name'] == 'MEMBER-SIZE') {
-		$member['size'] = 'STORAGE_SIZE_' . $child['child'][2]['content'];
-	    } else {
-		$member['size'] = 'STORAGE_SIZE_MEDIUM';
-	    }
+            if (!empty($child['child'][2]['name']) &&
+                $child['child'][2]['name'] == 'MEMBER-SIZE') {
+                $member['size'] = 'STORAGE_SIZE_' . $child['child'][2]['content'];
+            } else {
+                $member['size'] = 'STORAGE_SIZE_MEDIUM';
+            }
 
-	    for ($k = 2; $k < count($child['child']); $k++) {
-		if (!empty($child['child'][$k]['name'])) {
-		    $elem = $child['child'][$k];
-		    if ($elem['name'] == 'PRIMARY' || $elem['name'] == 'REQUIRED') {
-			if ($elem['name'] != 'REQUIRED' || empty($elem['attrs']['EMPTY']) ||
-			        $elem['attrs']['EMPTY'] != 'allowed') {
-			    $member['notNull'] = true;
-			} else {
-			    $member['notNullEmptyAllowed'] = true;
-			}
-			break;
-		    }
-		}
-	    }
+            for ($k = 2; $k < count($child['child']); $k++) {
+                if (!empty($child['child'][$k]['name'])) {
+                    $elem = $child['child'][$k];
+                    if ($elem['name'] == 'PRIMARY' || $elem['name'] == 'REQUIRED') {
+                        if ($elem['name'] != 'REQUIRED' || empty($elem['attrs']['EMPTY']) ||
+                            $elem['attrs']['EMPTY'] != 'allowed') {
+                            $member['notNull'] = true;
+                        } else {
+                            $member['notNullEmptyAllowed'] = true;
+                        }
+                        break;
+                    }
+                }
+            }
 
-	    $maps[$mapName][] = $member;
-	}
+                $maps[$mapName][] = $member;
+        }
     }
 }
 
@@ -106,12 +106,12 @@ fclose($fd);
 /* Done */
 cleanExit(0);
 
-function cleanExit($status=0) {
+function cleanExit($status = 0)
+{
     /* Clean up the cheap and easy way */
     global $tmpdir;
     if (file_exists($tmpdir)) {
-	system("rm -rf $tmpdir");
+        system("rm -rf $tmpdir");
     }
     exit($status);
 }
-?>

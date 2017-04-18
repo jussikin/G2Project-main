@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-if (!defined('G2_SUPPORT')) { 
-	require_once(dirname(__FILE__) . '/lib/support/defaultloc.inc'); 
+if (!defined('G2_SUPPORT')) {
+    require_once(dirname(__FILE__) . '/lib/support/defaultloc.inc');
 }
 
 
@@ -67,23 +67,22 @@ if (!file_exists($path)) {
 $permissions = (string)getRequestVariable('permissions');
 if (empty($permissions)) {
     $permissions = $DEFAULT_FOLDER_PERMISSIONS->getAsString() .
-    		   $DEFAULT_FILE_PERMISSIONS->getAsString();
+               $DEFAULT_FILE_PERMISSIONS->getAsString();
 }
 if (strlen($permissions) != 6) {
     $status['error'][] =
-	"Unknown permissions '$permissions'! Aborting action and resetting permissions.";
+    "Unknown permissions '$permissions'! Aborting action and resetting permissions.";
 }
 if (empty($status['error'])) {
     $folderPermissions = PermissionBits::fromString(substr($permissions, 0, 3));
     $filePermissions = PermissionBits::fromString(substr($permissions, 3, 3));
     if (!$folderPermissions->isValid()) {
-	$status['error'][] =
-	    'Invalid folder permissions! Aborting action and resetting permissions.';
-	$folderPermissions = $DEFAULT_FOLDER_PERMISSIONS;
+        $status['error'][] = 'Invalid folder permissions! Aborting action and resetting permissions.';
+        $folderPermissions = $DEFAULT_FOLDER_PERMISSIONS;
     }
     if (!$filePermissions->isValid()) {
-	$status['error'][] = 'Invalid file permissions! Aborting action and resetting permissions.';
-	$filePermissions = $DEFAULT_FILE_PERMISSIONS;
+        $status['error'][] = 'Invalid file permissions! Aborting action and resetting permissions.';
+        $filePermissions = $DEFAULT_FILE_PERMISSIONS;
     }
 } else {
     $folderPermissions = $DEFAULT_FOLDER_PERMISSIONS;
@@ -99,16 +98,16 @@ printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermissions, $p
 if (empty($status['error'])) {
     $command = trim(getRequestVariable('command'));
     switch ($command) {
-    case CMD_ADVANCED:
+        case CMD_ADVANCED:
         /* Advanced Options, allow chmod of any folder / file */
         $ret = chmodRecursively($path, $folderPermissions->getAsInt(),
-		     $filePermissions->getAsInt(), time() - 60);
-	if (!empty($ret)) {
+             $filePermissions->getAsInt(), time() - 60);
+    if (!empty($ret)) {
             $status['error'][] = "Failed to change the filesystem permissions "
-		. "of '$path'.";
+        . "of '$path'.";
         } else {
-	    $status['message'] = "Successfully changed the filesystem permissions "
-		. "of '$path'.";
+        $status['message'] = "Successfully changed the filesystem permissions "
+        . "of '$path'.";
         }
         break;
     case CMD_CHMOD_MODULES_AND_THEMES_DIR:
@@ -120,10 +119,10 @@ if (empty($status['error'])) {
             $ret = chmodModulesAndThemesDir($mode == 'open');
             if (!empty($ret)) {
                 $status['error'][] = 'Failed to change the filesystem permissions '
-		    . 'of the modules/ and themes/ folder.';
+            . 'of the modules/ and themes/ folder.';
             } else {
-            	$status['message'] = 'Successfully changed the filesystem permissions '
-		    . 'of the modules/ and the themes/ folder.';
+                $status['message'] = 'Successfully changed the filesystem permissions '
+            . 'of the modules/ and the themes/ folder.';
             }
         }
         break;
@@ -141,10 +140,10 @@ if (empty($status['error'])) {
             $ret = chmodPluginDir($pluginPath, $mode == 'open');
             if (!empty($ret)) {
                 $status['error'][] = "Failed to change the filesystem permissions "
-		    . "of the '$pluginPath' folder.";
+            . "of the '$pluginPath' folder.";
             } else {
-            	$status['message'] = "Successfully changed the filesystem permissions "
-		    . "of the '$pluginPath' folder.";
+                $status['message'] = "Successfully changed the filesystem permissions "
+            . "of the '$pluginPath' folder.";
             }
         }
 
@@ -158,33 +157,33 @@ if (empty($status['error'])) {
             $ret = chmodGalleryDirRecursively($mode == 'open');
             if (!empty($ret)) {
                 $status['error'][] = 'Failed to change the filesystem permissions '
-		    . 'of the Gallery folder.';
+            . 'of the Gallery folder.';
             } else {
-            	$status['message'] = 'Successfully changed the filesystem permissions '
-		    . 'of the Gallery folder.';
+                $status['message'] = 'Successfully changed the filesystem permissions '
+            . 'of the Gallery folder.';
             }
         }
         break;
     case CMD_CHMOD_STORAGE_DIR:
         /* Chmod the entire storage dir writeable */
-	$ret = chmodStorageDirRecursively();
-	if (!empty($ret)) {
+    $ret = chmodStorageDirRecursively();
+    if (!empty($ret)) {
             $status['error'][] = 'Failed to change the filesystem permissions '
-		. 'of the storage folder.';
+        . 'of the storage folder.';
         } else {
             $status['message'] = 'Successfully changed the filesystem permissions '
-		. 'of the storage folder.';
+        . 'of the storage folder.';
         }
         break;
     case CMD_CHMOD_LOCALE_DIR:
         /* Chmod the entire locale dir writeable */
-	$ret = chmodLocaleDirRecursively();
-	if (!empty($ret)) {
+    $ret = chmodLocaleDirRecursively();
+    if (!empty($ret)) {
             $status['error'][] = 'Failed to change the filesystem permissions '
-		. 'of the locale folder.';
+        . 'of the locale folder.';
         } else {
             $status['message'] = 'Successfully changed the filesystem permissions '
-		. 'of the locale folder.';
+        . 'of the locale folder.';
         }
         break;
     default:
@@ -215,11 +214,11 @@ function chmodRecursively($filename, $folderPermissions, $filePermissions, $star
     $error = 0;
     /* Try to prevent timeouts */
     if (time() - $start > 55) {
-	if (function_exists('apache_reset_timeout')) {
-    	    @apache_reset_timeout();
-    	}
-    	@set_time_limit(600);
-	$start = time();
+    if (function_exists('apache_reset_timeout')) {
+            @apache_reset_timeout();
+        }
+        @set_time_limit(600);
+    $start = time();
     }
     /*
      * Have to chmod first before the is_dir check because is_dir does a stat on the
@@ -228,42 +227,42 @@ function chmodRecursively($filename, $folderPermissions, $filePermissions, $star
      * files anyway and then change the permissions for folders with a second call.
      */
     if (!@chmod($filename, $filePermissions)) {
-    	error("[ERROR]", $filename);
-    	$error = 1;
+        error("[ERROR]", $filename);
+        $error = 1;
     }
     if (is_dir($filename)) {
-    	/* For folders, we change the permissions to the right ones with a second chmod call. */
-    	if (!$error) {
+        /* For folders, we change the permissions to the right ones with a second chmod call. */
+        if (!$error) {
             if (!@chmod($filename, $folderPermissions)) {
-    	        error("[ERROR]", $filename);
-    	        $error = 1;
-	    } else {
-	        status("[OK]", $filename);
-    	    }
+                error("[ERROR]", $filename);
+                $error = 1;
+        } else {
+            status("[OK]", $filename);
+            }
         }
-    	/*
-    	 * Recurse into subdirectories: Open all files / sub-dirs and change the
-    	 * permissions recursively.
-    	 */
-	if ($fd = opendir($filename)) {
-	    while (($child = readdir($fd)) !== false) {
-		if ($child == '.' || $child == '..') {
-		    continue;
-		}
-		$fullpath = "$filename/$child";
-		$ret = chmodRecursively($fullpath, $folderPermissions,
-					$filePermissions, $start);
-		$error |= $ret;
-	    }
-	    closedir($fd);
-	} else {
-	    error("Cannot open directory", $filename);
-	    return 1;
-	}
+        /*
+         * Recurse into subdirectories: Open all files / sub-dirs and change the
+         * permissions recursively.
+         */
+    if ($fd = opendir($filename)) {
+        while (($child = readdir($fd)) !== false) {
+        if ($child == '.' || $child == '..') {
+            continue;
+        }
+        $fullpath = "$filename/$child";
+        $ret = chmodRecursively($fullpath, $folderPermissions,
+                    $filePermissions, $start);
+        $error |= $ret;
+        }
+        closedir($fd);
+    } else {
+        error("Cannot open directory", $filename);
+        return 1;
+    }
     }
 
     if ($error) {
-	return 1;
+    return 1;
     }
 
     return null;
@@ -279,11 +278,11 @@ function getPermissionSets() {
     $permissionSets = array();
 
     $permissionSets[] = array(PermissionBits::fromString("777"),
-    			      PermissionBits::fromString("666"));
+                      PermissionBits::fromString("666"));
     $permissionSets[] = array(PermissionBits::fromString("555"),
-    			      PermissionBits::fromString("444"));
+                      PermissionBits::fromString("444"));
     $permissionSets[] = array(PermissionBits::fromString("755"),
-    			      PermissionBits::fromString("644"));
+                      PermissionBits::fromString("644"));
     return $permissionSets;
 }
 
@@ -306,11 +305,11 @@ class PermissionBits {
      * @param int $bits permission bits in decimal integer representation, eg. octdec(0755)
      */
     function __construct($bits) {
-	$this->PermissionBits($bits);
+    $this->PermissionBits($bits);
     }
 
     function PermissionBits($bits) {
-    	$this->_bits = decoct($bits);
+        $this->_bits = decoct($bits);
     }
 
     /**
@@ -320,15 +319,15 @@ class PermissionBits {
      * @static
      */
     function fromString($bitsAsString) {
-    	$bitsAsString = (string)$bitsAsString;
-    	if (strlen($bitsAsString) && $bitsAsString{0} != '0') {
-    	    $bitsAsString = '0' . $bitsAsString;
-    	}
-    	return new PermissionBits(octdec($bitsAsString));
+        $bitsAsString = (string)$bitsAsString;
+        if (strlen($bitsAsString) && $bitsAsString{0} != '0') {
+            $bitsAsString = '0' . $bitsAsString;
+        }
+        return new PermissionBits(octdec($bitsAsString));
     }
 
     function getAsString() {
-    	return (string)$this->_bits;
+        return (string)$this->_bits;
     }
 
     /**
@@ -336,7 +335,7 @@ class PermissionBits {
      * @return int the permission set as decimal integer
      */
     function getAsInt() {
-    	return octdec($this->_bits);
+        return octdec($this->_bits);
     }
 
     /**
@@ -344,27 +343,27 @@ class PermissionBits {
      * @XXX rethink the whole concept, maybe just show a owner/group/world vs. r+w+x matrix
      */
     function getDescription() {
-    	switch (intval($this->_bits, 8)) {
-    	    case 0777:
-		return 'Read + Write + Execute for Everyone';
-	    case 0555:
-		return 'Read + Execute for Everyone';
-	    case 0666:
-		return 'Read And Write for Everyone';
-	    case 0444:
-		return 'Read Only for Everyone, Including Owner';
-	    case 0755:
-		return 'Read + Execute for Everyone, Plus Write for Owner';
-	    case 0644:
-		return 'Read And Write for Owner, Read for Everyone Else';
-	    default:
-	        /* No description available */
-	        return null;
-    	}
+        switch (intval($this->_bits, 8)) {
+            case 0777:
+        return 'Read + Write + Execute for Everyone';
+        case 0555:
+        return 'Read + Execute for Everyone';
+        case 0666:
+        return 'Read And Write for Everyone';
+        case 0444:
+        return 'Read Only for Everyone, Including Owner';
+        case 0755:
+        return 'Read + Execute for Everyone, Plus Write for Owner';
+        case 0644:
+        return 'Read And Write for Owner, Read for Everyone Else';
+        default:
+            /* No description available */
+            return null;
+        }
     }
 
     function getAsDescriptiveString() {
-    	return $this->getAsString() . ' (' . $this->getDescription() . ' )';
+        return $this->getAsString() . ' (' . $this->getDescription() . ' )';
     }
 
     function equals($permissionBits) {
@@ -372,8 +371,8 @@ class PermissionBits {
     }
 
     function isValid() {
-    	$description = $this->getDescription();
-    	return !empty($description);
+        $description = $this->getDescription();
+        return !empty($description);
     }
 }
 
@@ -405,13 +404,13 @@ function chmodModulesAndThemesDir($makeItWriteable) {
     $mode = $makeItWriteable ? 0777 : 0555;
     $ret = null;
     foreach (array('/modules/', '/themes/') as $dir) {
-    	if (file_exists(GallerySetupUtilities::getConfigDir() . $dir)) {
-    	    /* Try to chmod all dirs, even if one fails */
-	    if (!@chmod(GallerySetupUtilities::getConfigDir() . $dir, $mode)) {
-		error("[ERROR]", GallerySetupUtilities::getConfigDir() . $dir);
-	        $ret = 1;
-	    }
-    	}
+        if (file_exists(GallerySetupUtilities::getConfigDir() . $dir)) {
+            /* Try to chmod all dirs, even if one fails */
+        if (!@chmod(GallerySetupUtilities::getConfigDir() . $dir, $mode)) {
+        error("[ERROR]", GallerySetupUtilities::getConfigDir() . $dir);
+            $ret = 1;
+        }
+        }
     }
     return $ret;
 }
@@ -430,7 +429,7 @@ function chmodGalleryDirRecursively($makeItWriteable) {
     $folderMode = $makeItWriteable ? 0777 : 0555;
     $fileMode = $makeItWriteable ? 0666 : 0444;
     return chmodRecursively(GallerySetupUtilities::getConfigDir(), $folderMode, $fileMode,
-			    time() - 60);
+                time() - 60);
 }
 
 /* Chmod a specific plugin dir recursively */
@@ -439,7 +438,7 @@ function chmodPluginDir($pluginPath, $makeItWriteable) {
     $folderMode = $makeItWriteable ? 0777 : 0555;
     $fileMode = $makeItWriteable ? 0666 : 0444;
     return chmodRecursively(GallerySetupUtilities::getConfigDir() . $pluginPath, $folderMode,
-			    $fileMode, time() - 60);
+                $fileMode, time() - 60);
 }
 
 function chmodStorageDirRecursively() {
@@ -464,26 +463,26 @@ function getPluginList() {
      */
     $plugins = array();
     foreach (array('/modules/', '/themes/') as $base) {
-	if (!file_exists(GallerySetupUtilities::getConfigDir() . $base)) {
-	    continue;
-	}
-	$fh = opendir(GallerySetupUtilities::getConfigDir() . $base);
-	if (empty($fh)) {
-	  continue;
+    if (!file_exists(GallerySetupUtilities::getConfigDir() . $base)) {
+        continue;
+    }
+    $fh = opendir(GallerySetupUtilities::getConfigDir() . $base);
+    if (empty($fh)) {
+      continue;
         }
 
-	/* For each folder in the plugin dir, check if it's writeable */
-	while (($folderName = readdir($fh)) !== false) {
-	    if ($folderName == '.' || $folderName == '..' || $folderName == '.svn') {
-		continue;
-	    }
-	    $pluginId = $base . trim($folderName);
-	    if ((int)is_dir(GallerySetupUtilities::getConfigDir() . $base . $folderName)) {
+    /* For each folder in the plugin dir, check if it's writeable */
+    while (($folderName = readdir($fh)) !== false) {
+        if ($folderName == '.' || $folderName == '..' || $folderName == '.svn') {
+        continue;
+        }
+        $pluginId = $base . trim($folderName);
+        if ((int)is_dir(GallerySetupUtilities::getConfigDir() . $base . $folderName)) {
                 $plugins[$pluginId] = (int)is_writeable(
-                	GallerySetupUtilities::getConfigDir() . $base . $folderName);
+                    GallerySetupUtilities::getConfigDir() . $base . $folderName);
             }
-    	}
-	closedir($fh);
+        }
+    closedir($fh);
     }
     ksort($plugins);
     return $plugins;
@@ -491,9 +490,9 @@ function getPluginList() {
 
 function getRequestVariable($varName) {
     foreach (array($_POST, $_GET) as $requestVars) {
-	if (isset($requestVars[$varName])) {
-	    return $requestVars[$varName];
-	}
+    if (isset($requestVars[$varName])) {
+        return $requestVars[$varName];
+    }
     }
 
     return null;
@@ -505,13 +504,13 @@ function getRequestVariable($varName) {
  */
 function printStatus($status) {
     if (!empty($status['error'])) {
-	printf('<script type="text/javascript">printErrorMessage(\'%s\');</script>',
-	       str_replace(array("\\", "'"), array("\\\\", "\\'"),
-	       		   implode('<br>', $status['error'])));
+    printf('<script type="text/javascript">printErrorMessage(\'%s\');</script>',
+           str_replace(array("\\", "'"), array("\\\\", "\\'"),
+                      implode('<br>', $status['error'])));
     }
     if (!empty($status['message'])) {
-	printf('<script type="text/javascript">printStatusMessage(\'%s\');</script>',
-	       str_replace(array("\\", "'"), array("\\\\", "\\'"), $status['message']));
+    printf('<script type="text/javascript">printStatusMessage(\'%s\');</script>',
+           str_replace(array("\\", "'"), array("\\\\", "\\'"), $status['message']));
     }
 }
 
@@ -542,17 +541,17 @@ function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermis
 
       function setEditOrSecure(pluginId, formObj) {
         if (pluginId == -1) {
-	  formObj.mode.value='';
-	  formObj.open.disabled = true;
-	  formObj.secure.disabled = true;
+      formObj.mode.value='';
+      formObj.open.disabled = true;
+      formObj.secure.disabled = true;
         } else if (plugins[pluginId]) {
-	  formObj.mode.value='secure';
-	  formObj.open.disabled = true;
-	  formObj.secure.disabled = false;
+      formObj.mode.value='secure';
+      formObj.open.disabled = true;
+      formObj.secure.disabled = false;
         } else {
-	  formObj.mode.value='open';
-	  formObj.open.disabled = false;
-	  formObj.secure.disabled = true;
+      formObj.mode.value='open';
+      formObj.open.disabled = false;
+      formObj.secure.disabled = true;
         }
       }
 
@@ -576,9 +575,9 @@ function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermis
   <body>
     <div id="content">
       <div id="title">
-	<a href="../../">Gallery</a> &raquo;
-	<a href="<?php generateUrl('index.php') ?>">Support</a> &raquo;
-	Change Filesystem Permissions
+    <a href="../../">Gallery</a> &raquo;
+    <a href="<?php generateUrl('index.php') ?>">Support</a> &raquo;
+    Change Filesystem Permissions
       </div>
       <h2>
         This tool lets you change the filesystem permissions of files and folders owned
@@ -606,52 +605,52 @@ function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermis
 
       <?php if (!isModulesOrThemesDirWriteable()): ?>
       <h2>
-	<a href="<?php generateUrl('index.php?chmod&amp;command=' . CMD_CHMOD_MODULES_AND_THEMES_DIR
-	 . '&amp;mode=open') ?>">Make modules &amp; themes directories writeable</a>
+    <a href="<?php generateUrl('index.php?chmod&amp;command=' . CMD_CHMOD_MODULES_AND_THEMES_DIR
+     . '&amp;mode=open') ?>">Make modules &amp; themes directories writeable</a>
       </h2>
       <p class="description">
-	Useful when adding a new module or theme.  This makes your modules and
-	themes folders writeable. It only works if you have installed Gallery with the
-	pre-installer. Usually you can change the filesystem permissions with your FTP
-	program or command line shell.
+    Useful when adding a new module or theme.  This makes your modules and
+    themes folders writeable. It only works if you have installed Gallery with the
+    pre-installer. Usually you can change the filesystem permissions with your FTP
+    program or command line shell.
       </p>
       <?php else: ?>
       <h2>
-	<a href="<?php generateUrl('index.php?chmod&amp;command=' . CMD_CHMOD_MODULES_AND_THEMES_DIR
-	 . '&amp;mode=secure') ?>">Make modules &amp; themes directories read-only</a>
+    <a href="<?php generateUrl('index.php?chmod&amp;command=' . CMD_CHMOD_MODULES_AND_THEMES_DIR
+     . '&amp;mode=secure') ?>">Make modules &amp; themes directories read-only</a>
       </h2>
       <p class="description">
-	Useful when you're not going to be making changes by hand. This makes your
-	modules and themes folders writeable. Only works if you have installed Gallery
-	with the pre-installer. Usually you can change the filesystem permissions with
-	your FTP program or command line shell.
+    Useful when you're not going to be making changes by hand. This makes your
+    modules and themes folders writeable. Only works if you have installed Gallery
+    with the pre-installer. Usually you can change the filesystem permissions with
+    your FTP program or command line shell.
       </p>
       <?php endif; ?>
 
       <hr class="faint">
 
       <?php startForm('index.php?chmod&amp;command=' . CMD_CHMOD_PLUGIN_DIR, 'pluginForm'); ?>
-	<h2 id="themeOrModule">
-	  Make a specific theme or module editable
-	</h2>
-	<p class="description">
-	  If you want to edit a page template file of a specific module or theme and your
-	  Gallery was originally installed with the pre-installer, you might have to make
-	  the corresponding plugin folder writeable first.
-	</p>
-	<p class="description">
-	  <select name="pluginId"
-	    onchange="setEditOrSecure(this.options[this.selectedIndex].value, this.form)">
-	    <option value="-1">&laquo; select a module or theme &raquo;</option>
-	    <?php foreach ($plugins as $pluginId => $writeable): ?>
-	    <option value="<?php print $pluginId ?>"> <?php print $pluginId ?> </option>
-	    <?php endforeach; ?>
-	  </select>
-	  &nbsp;&nbsp;
-	  <input type="hidden" name="mode" value="open">
-	  <input type="submit" disabled="disabled" name="open" value="Make it open (read/write)"> |
-	  <input type="submit" disabled="disabled" name="secure" value="Make it secure (read-only)">
-	</p>
+    <h2 id="themeOrModule">
+      Make a specific theme or module editable
+    </h2>
+    <p class="description">
+      If you want to edit a page template file of a specific module or theme and your
+      Gallery was originally installed with the pre-installer, you might have to make
+      the corresponding plugin folder writeable first.
+    </p>
+    <p class="description">
+      <select name="pluginId"
+        onchange="setEditOrSecure(this.options[this.selectedIndex].value, this.form)">
+        <option value="-1">&laquo; select a module or theme &raquo;</option>
+        <?php foreach ($plugins as $pluginId => $writeable): ?>
+        <option value="<?php print $pluginId ?>"> <?php print $pluginId ?> </option>
+        <?php endforeach; ?>
+      </select>
+      &nbsp;&nbsp;
+      <input type="hidden" name="mode" value="open">
+      <input type="submit" disabled="disabled" name="open" value="Make it open (read/write)"> |
+      <input type="submit" disabled="disabled" name="secure" value="Make it secure (read-only)">
+    </p>
       </form>
 
       <hr class="faint">
@@ -698,29 +697,29 @@ function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermis
 
       <h2>Advanced: Choose the path and the permissions manually</h2>
       <?php startForm('index.php?chmod&amp;command=' . CMD_ADVANCED); ?>
-	<p class="description">
-	  <b> Path to change: </b>
-	  <input type="text" name="path" size="50" value="<?php print $path; ?>">
+    <p class="description">
+      <b> Path to change: </b>
+      <input type="text" name="path" size="50" value="<?php print $path; ?>">
           <br>
-	  <span class="subtext">
-	    Gallery folder: <i><?php print GallerySetupUtilities::getConfigDir(); ?></i> <br>
+      <span class="subtext">
+        Gallery folder: <i><?php print GallerySetupUtilities::getConfigDir(); ?></i> <br>
             Gallery data folder: <i><?php print getGalleryStoragePath(); ?></i> <br>
-	  </span>
+      </span>
           <br>
           <b> New permissions: </b>
-	  <?php
-	   foreach ($permissionBitSets as $permissionBitSet):
-	       $checked = $permissionBitSet[1]->equals($filePermissions) ? 'checked="checked"' : '';
-	       $value = $permissionBitSet[0]->getAsString() . $permissionBitSet[1]->getAsString();
+      <?php
+       foreach ($permissionBitSets as $permissionBitSet):
+           $checked = $permissionBitSet[1]->equals($filePermissions) ? 'checked="checked"' : '';
+           $value = $permissionBitSet[0]->getAsString() . $permissionBitSet[1]->getAsString();
           ?>
-	  <br>
-	  <input id="set_<?php print $value?>" type="radio" name="permissions" value="<?php print $value ?>" <?php print $checked ?>>
-	    <label for="set_<?php print $value?>">
-	      <span class="hasToolTip" title="Files: <?php print $permissionBitSet[1]->getAsString(); ?>, Folders: <?php print $permissionBitSet[0]->getAsString(); ?>"> <?php print $permissionBitSet[1]->getDescription() ?></span>
-	    </label>
-	  </input>
-	  <?php endforeach; ?>
-	  <br><br>
+      <br>
+      <input id="set_<?php print $value?>" type="radio" name="permissions" value="<?php print $value ?>" <?php print $checked ?>>
+        <label for="set_<?php print $value?>">
+          <span class="hasToolTip" title="Files: <?php print $permissionBitSet[1]->getAsString(); ?>, Folders: <?php print $permissionBitSet[0]->getAsString(); ?>"> <?php print $permissionBitSet[1]->getDescription() ?></span>
+        </label>
+      </input>
+      <?php endforeach; ?>
+      <br><br>
 
           <input type="submit" value="Change the Permissions now!">
         </p>

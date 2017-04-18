@@ -32,80 +32,90 @@ define('GALLERY_MAIN_PHP', 'index.php');
 if (php_sapi_name() == 'cli') {
     $argv = GalleryUtilities::getServerVar('argv');
     for ($i = 1; $i < count($argv); $i++) {
-	$arg = explode('=', $argv[$i]);
-	GalleryUtilities::putRequestVariable($arg[0], $arg[1], false);
+        $arg = explode('=', $argv[$i]);
+        GalleryUtilities::putRequestVariable($arg[0], $arg[1], false);
     }
 }
 
-function RepositoryToolsMain() {
+function RepositoryToolsMain()
+{
     $ret = GalleryInitFirstPass();
     if ($ret) {
-	return $ret;
+        return $ret;
     }
 
     $ret = GalleryInitSecondPass();
     if ($ret) {
-	return $ret;
+        return $ret;
     }
 
     global $gallery;
 
     if (php_sapi_name() == 'cli') {
-	$isSiteAdmin = true;
+        $isSiteAdmin = true;
     } else {
-	list ($ret, $isSiteAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
-	if ($ret) {
-	    return $ret;
-	}
+        list ($ret, $isSiteAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
+        if ($ret) {
+            return $ret;
+        }
     }
 
     GalleryCoreApi::requireOnce(
-	'lib/tools/repository/classes/RepositoryControllerAndView.class');
+        'lib/tools/repository/classes/RepositoryControllerAndView.class'
+    );
 
     /* Set repository configuration data. Allow config.php to override. */
     $repositoryPath = @$gallery->getConfig('repository.path');
     if (empty($repositoryPath)) {
-	$repositoryPath = $gallery->getConfig('data.gallery.base') . '/repository/';
-	$gallery->setConfig('repository.path', $repositoryPath);
+        $repositoryPath = $gallery->getConfig('data.gallery.base') . '/repository/';
+        $gallery->setConfig('repository.path', $repositoryPath);
     }
     $gallery->setConfig('repository.templates', 'lib/tools/repository/templates/');
 
     if ($isSiteAdmin) {
-	/* Verify our repository structure exists */
-	$platform =& $gallery->getPlatform();
-	foreach (array($repositoryPath . '/modules',
-		       $repositoryPath . '/themes') as $path) {
-	    list ($success) = GalleryUtilities::guaranteeDirExists($path);
-	    if (!$success) {
-		return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__,
-						 "Unable to create directory: $path");
-	    }
-	}
+    /* Verify our repository structure exists */
+        $platform =& $gallery->getPlatform();
+        foreach (array($repositoryPath . '/modules',
+               $repositoryPath . '/themes') as $path) {
+            list ($success) = GalleryUtilities::guaranteeDirExists($path);
+            if (!$success) {
+                return GalleryCoreApi::error(
+                    ERROR_PLATFORM_FAILURE,
+                    __FILE__,
+                    __LINE__,
+                    "Unable to create directory: $path"
+                );
+            }
+        }
 
-	/* Load controller. */
-	$controllerName = (string)GalleryUtilities::getRequestVariables('controller');
-	if (!preg_match('/^[A-Za-z]*$/', $controllerName)) {
-	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-					 "Bad controller '$controllerName'");
-	}
-	$methodName = GalleryUtilities::getRequestVariables('action');
-	$controllerPath = sprintf('%s/%s.inc', dirname(__FILE__), $controllerName);
+    /* Load controller. */
+        $controllerName = (string)GalleryUtilities::getRequestVariables('controller');
+        if (!preg_match('/^[A-Za-z]*$/', $controllerName)) {
+            return GalleryCoreApi::error(
+                ERROR_BAD_PARAMETER,
+                __FILE__,
+                __LINE__,
+                "Bad controller '$controllerName'"
+            );
+        }
+        $methodName = GalleryUtilities::getRequestVariables('action');
+        $controllerPath = sprintf('%s/%s.inc', dirname(__FILE__), $controllerName);
     }
 
     /* Configure our url Generator for repository mode. */
     $urlGenerator = new GalleryUrlGenerator();
     $ret = $urlGenerator->init();
     if ($ret) {
-	return $ret;
+        return $ret;
     }
     $gallery->setUrlGenerator($urlGenerator);
 
     $platform =& $gallery->getPlatform();
     if (!$isSiteAdmin || !$platform->file_exists($controllerPath)) {
-	/* Set default controller. */
-	$controllerName = 'MainPage';
-	$controllerPath = sprintf('%s/%s.inc', dirname(__FILE__), $controllerName);
-	$methodName = 'showAvailableActions';
+    /* Set default controller. */
+        $controllerName = 'MainPage';
+        $controllerPath = sprintf('%s/%s.inc', dirname(__FILE__), $controllerName);
+        $methodName = 'showAvailableActions';
     }
 
     $controllerClassName = $controllerName . 'ControllerAndView';
@@ -115,13 +125,17 @@ function RepositoryToolsMain() {
 
     /* Call a controller method. */
     if (!method_exists($controller, $methodName)) {
-	return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-				    "Method [$methodName] does not exist in $controllerClassName");
+        return GalleryCoreApi::error(
+            ERROR_BAD_PARAMETER,
+            __FILE__,
+            __LINE__,
+            "Method [$methodName] does not exist in $controllerClassName"
+        );
     }
 
     $ret = $controller->$methodName();
     if ($ret) {
-	return $ret;
+        return $ret;
     }
 
     return null;
@@ -133,4 +147,3 @@ if ($ret) {
     print $gallery->getDebugBuffer();
     return;
 }
-?>
