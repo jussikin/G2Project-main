@@ -12,3 +12,6 @@ Thumbs.db
 ##############
 **/.svn
 
+# phpcs Â#
+##########
+phpcs.xml

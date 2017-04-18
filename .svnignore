@@ -2,3 +2,4 @@
 .gitignore
 .svnignore
 README.mediawiki
+phpcs.xml
