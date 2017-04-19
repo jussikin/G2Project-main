@@ -57,8 +57,9 @@ define('INDEX_PHP', basename(__FILE__));
  * and just pass the string on through in English
  */
 if (!function_exists('_')) {
-    function _($s) {
-	return $s;
+    function _($s)
+    {
+        return $s;
     }
 }
 
@@ -98,11 +99,11 @@ if (function_exists('dgettext')) {
     bindtextdomain('gallery2_install', dirname(dirname(__FILE__)) . '/locale');
     textdomain('gallery2_install');
     if (function_exists('bind_textdomain_codeset')) {
-	bind_textdomain_codeset('gallery2_install', 'UTF-8');
+        bind_textdomain_codeset('gallery2_install', 'UTF-8');
     }
     /* Set the appropriate charset in our HTTP header */
     if (!headers_sent()) {
-	header('Content-Type: text/html; charset=UTF-8');
+        header('Content-Type: text/html; charset=UTF-8');
     }
 }
 
@@ -115,7 +116,7 @@ unset($galleryStub);
 if (!isset($_GET['startOver']) && !empty($_SESSION['install_steps'])) {
     $steps = unserialize($_SESSION['install_steps']);
     if (isset($_SESSION['galleryStub'])) {
-	$galleryStub = unserialize($_SESSION['galleryStub']);
+        $galleryStub = unserialize($_SESSION['galleryStub']);
     }
 }
 
@@ -123,15 +124,15 @@ if (!isset($_GET['startOver']) && !empty($_SESSION['install_steps'])) {
 if (empty($steps) || !is_array($steps)) {
     $steps = array();
     for ($i = 0; $i < count($stepOrder); $i++) {
-	$className = $stepOrder[$i] . 'Step';
-	$step = new $className();
-	if ($step->isRelevant()) {
-	    $step->setIsLastStep(false);
-	    $step->setStepNumber($i);
-	    $step->setInError(false);
-	    $step->setComplete(false);
-	    $steps[] = $step;
-	}
+        $className = $stepOrder[$i] . 'Step';
+        $step = new $className();
+        if ($step->isRelevant()) {
+            $step->setIsLastStep(false);
+            $step->setStepNumber($i);
+            $step->setInError(false);
+            $step->setComplete(false);
+            $steps[] = $step;
+        }
     }
 
     /* Don't do this in the loop, since not all steps are relevant */
@@ -143,8 +144,8 @@ $stepNumber = isset($_GET['step']) ? (int)$_GET['step'] : 0;
 /* Make sure all steps up to the current one are ok */
 for ($i = 0; $i < $stepNumber; $i++) {
     if (!$steps[$i]->isComplete() && !$steps[$i]->isOptional()) {
-	$stepNumber = $i;
-	break;
+        $stepNumber = $i;
+        break;
     }
 }
 $currentStep =& $steps[$stepNumber];
@@ -156,8 +157,8 @@ if (!empty($_GET['doOver'])) {
 /* If the current step is incomplete, the rest of the steps can't be complete either */
 if (!$currentStep->isComplete()) {
     for ($i = $stepNumber+1; $i < count($steps); $i++) {
-	$steps[$i]->setComplete(false);
-	$steps[$i]->setInError(false);
+        $steps[$i]->setComplete(false);
+        $steps[$i]->setInError(false);
     }
 }
 
@@ -174,40 +175,41 @@ if ($currentStep->processRequest()) {
     $template->renderHeaderBodyAndFooter($templateData);
 }
 
-function processAutoCompleteRequest() {
+function processAutoCompleteRequest()
+{
     $path = !empty($_GET['path']) ? $_GET['path'] : '';
     /* Undo the damage caused by magic_quotes */
     if (get_magic_quotes_gpc()) {
-	$path = stripslashes($path);
+        $path = stripslashes($path);
     }
 
     if (is_dir($path)) {
-	$match = '';
+        $match = '';
     } else {
-	$match = basename($path);
-	$matchLength = strlen($match);
-	$path = dirname($path);
-	if (!is_dir($path)) {
-	    return;
-	}
+        $match = basename($path);
+        $matchLength = strlen($match);
+        $path = dirname($path);
+        if (!is_dir($path)) {
+            return;
+        }
     }
 
     $dirList = array();
     if ($dir = opendir($path)) {
-	if ($path{strlen($path)-1} != DIRECTORY_SEPARATOR) {
-	    $path .= DIRECTORY_SEPARATOR;
-	}
-	while (($file = readdir($dir)) !== false) {
-	    if ($file == '.' || $file == '..' || ($match && strncmp($file, $match, $matchLength))) {
-		continue;
-	    }
-	    $file = $path . $file;
-	    if (is_dir($file)) {
-		$dirList[] = $file;
-	    }
-	}
-	closedir($dir);
-	sort($dirList);
+        if ($path{strlen($path)-1} != DIRECTORY_SEPARATOR) {
+            $path .= DIRECTORY_SEPARATOR;
+        }
+        while (($file = readdir($dir)) !== false) {
+            if ($file == '.' || $file == '..' || ($match && strncmp($file, $match, $matchLength))) {
+                continue;
+            }
+            $file = $path . $file;
+            if (is_dir($file)) {
+                $dirList[] = $file;
+            }
+        }
+        closedir($dir);
+        sort($dirList);
     }
 
     header("Content-Type: text/plain");
@@ -221,39 +223,40 @@ function processAutoCompleteRequest() {
  * @param string $dataBase absolute filesystem path of the storage directory
  * @return boolean success whether the structure was created successfully
  */
-function populateDataDirectory($dataBase) {
+function populateDataDirectory($dataBase)
+{
     /* Use non-restrictive umask to create directories with lax permissions */
     umask(0);
 
     if ($dataBase{strlen($dataBase)-1} != DIRECTORY_SEPARATOR) {
-	$dataBase .= DIRECTORY_SEPARATOR;
+        $dataBase .= DIRECTORY_SEPARATOR;
     }
 
     /* Create the sub directories, if necessary */
     foreach (array('albums',
-		   'cache',
-		   'locks',
-		   'tmp',
-		   'plugins_data',
-		   'plugins_data/modules',
-		   'plugins_data/themes',
-		   'smarty',
-		   'smarty/templates_c') as $key) {
-	$dir = $dataBase . $key;
+           'cache',
+           'locks',
+           'tmp',
+           'plugins_data',
+           'plugins_data/modules',
+           'plugins_data/themes',
+           'smarty',
+           'smarty/templates_c') as $key) {
+        $dir = $dataBase . $key;
 
-	if (file_exists($dir) && !is_dir($dir)) {
-	    return false;
-	}
+        if (file_exists($dir) && !is_dir($dir)) {
+            return false;
+        }
 
-	if (!file_exists($dir)) {
-	    if (!@mkdir($dir, 0755)) {
-		return false;
-	    }
-	}
+        if (!file_exists($dir)) {
+            if (!@mkdir($dir, 0755)) {
+                return false;
+            }
+        }
 
-	if (!is_writeable($dir)) {
-	    return false;
-	}
+        if (!is_writeable($dir)) {
+            return false;
+        }
     }
 
     return secureStorageFolder($dataBase);
@@ -268,30 +271,32 @@ function populateDataDirectory($dataBase) {
  * @param string $dataBase absolute filesystem path to the storage folder
  * @return boolean true if the .htaccess file has been created successfully
  */
-function secureStorageFolder($dataBase) {
+function secureStorageFolder($dataBase)
+{
     $htaccessPath = $dataBase . '.htaccess';
     $fh = @fopen($htaccessPath, 'w');
     if ($fh) {
-	$htaccessContents = "DirectoryIndex .htaccess\n" .
-			    "SetHandler Gallery_Security_Do_Not_Remove\n" .
-			    "Options None\n" .
-			    "<IfModule mod_rewrite.c>\n" .
-			    "RewriteEngine off\n" .
-			    "</IfModule>\n" .
-			    "Order allow,deny\n" .
-			    "Deny from all\n";
-	fwrite($fh, $htaccessContents);
-	fclose($fh);
+        $htaccessContents = "DirectoryIndex .htaccess\n" .
+                "SetHandler Gallery_Security_Do_Not_Remove\n" .
+                "Options None\n" .
+                "<IfModule mod_rewrite.c>\n" .
+                "RewriteEngine off\n" .
+                "</IfModule>\n" .
+                "Order allow,deny\n" .
+                "Deny from all\n";
+        fwrite($fh, $htaccessContents);
+        fclose($fh);
     }
 
     return file_exists($htaccessPath);
 }
 
 /* Returns something like https://example.com */
-function getBaseUrl() {
+function getBaseUrl()
+{
     /* Can't use GalleryUrlGenerator::makeUrl since it's an object method */
     if (!($hostName = GalleryUtilities::getServerVar('HTTP_X_FORWARDED_HOST'))) {
-	$hostName = GalleryUtilities::getServerVar('HTTP_HOST');
+        $hostName = GalleryUtilities::getServerVar('HTTP_HOST');
     }
     $protocol = (GalleryUtilities::getServerVar('HTTPS') == 'on') ? 'https' : 'http';
 
@@ -299,12 +304,16 @@ function getBaseUrl() {
 }
 
 /** Returns the URL to the G2 folder, e.g. http://example.com/gallery2/. */
-function getGalleryDirUrl() {
+function getGalleryDirUrl()
+{
     global $g2Base;
 
     require_once($g2Base . 'modules/core/classes/GalleryUrlGenerator.class');
-    $urlPath = preg_replace('|^(.*/)install/index.php(?:\?.*)?$|s', '$1',
-			    GalleryUrlGenerator::getCurrentRequestUri());
+    $urlPath = preg_replace(
+        '|^(.*/)install/index.php(?:\?.*)?$|s',
+        '$1',
+        GalleryUrlGenerator::getCurrentRequestUri()
+    );
 
     return getBaseUrl() . $urlPath;
 }
@@ -312,22 +321,23 @@ function getGalleryDirUrl() {
 /**
  * Mini url generator for the installer
  */
-function generateUrl($uri, $print=true) {
+function generateUrl($uri, $print = true)
+{
     if (!strncmp($uri, 'index.php', 9)) {
-	/* Cookieless browsing: If session.use_trans_sid is on then it will add the session id. */
-	if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
-	    /*
-	     * Don't use SID since it's a constant and we change (regenerate) the session id
-	     * in the request
-	     */
-	    $sid = session_name() . '=' . session_id();
-	    $uri .= !strpos($uri, '?') ? '?' : '&amp;';
-	    $uri .= $sid;
-	}
+    /* Cookieless browsing: If session.use_trans_sid is on then it will add the session id. */
+        if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
+            /*
+             * Don't use SID since it's a constant and we change (regenerate) the session id
+             * in the request
+             */
+            $sid = session_name() . '=' . session_id();
+            $uri .= !strpos($uri, '?') ? '?' : '&amp;';
+            $uri .= $sid;
+        }
     }
 
     if ($print) {
-	print $uri;
+        print $uri;
     }
     return $uri;
 }
@@ -341,4 +351,3 @@ $_SESSION['install_steps'] = serialize($steps);
 if (isset($galleryStub)) {
     $_SESSION['galleryStub'] = serialize($galleryStub);
 }
-?>
