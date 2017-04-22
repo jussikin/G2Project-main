@@ -1,5 +1,8 @@
+# svn propset svn:ignore -F .svnignore . && svn pg -R svn:ignore .
 .git
 .gitignore
 .svnignore
 README.mediawiki
 phpcs.xml
+.php_cs.cache
+.php_cs.dist
