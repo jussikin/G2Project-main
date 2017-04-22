@@ -3306,12 +3306,12 @@ class SessionTestPhpVm extends GalleryPhpVm {
 	return md5($string);
     }
 
-    function rand($min=null, $max=null) {
+    function genRandInt($min=null, $max=null) {
 	if (isset($this->_randValue)) {
 	    return $this->_randValue;
 	}
 
-	parent::rand($min, $max);
+	parent::genRandInt($min, $max);
     }
 
     function time() {

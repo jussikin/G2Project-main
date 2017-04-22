@@ -108,7 +108,7 @@ class UnitTestPhpVm extends MockObject {
 	return $this->_makeReply('exit_', array($status));
     }
 
-    function rand($min=null, $max=null) {
+    function genRandInt($min=null, $max=null) {
 	return $this->_makeReply('rand', array($min, $max));
     }
 
