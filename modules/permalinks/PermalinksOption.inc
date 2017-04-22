@@ -48,10 +48,22 @@ class PermalinksOption extends ItemEditOption {
 		    return array($ret, null, null);
 		}
 
-		/* Set our error status and fall back to the view. */
+		
+
+
+/*  Set our error status and fall back to the view.  */
+
+
+
 		$error[] = 'form[error][PermalinksOption][exists]';
 	    } else {
-		/* don't do anything if we're successful */
+		
+
+
+/*  don't do anything if we're successful  */
+
+
+
 	    }
 	}
 
@@ -62,7 +74,13 @@ class PermalinksOption extends ItemEditOption {
 		    return array($ret, null, null);
 		}
 
-		/* don't do anything if we're successful */
+		
+
+
+/*  don't do anything if we're successful  */
+
+
+
 	    }
 	    $warning[] = $module->translate('Permalink(s) deleted successfully');
 	}

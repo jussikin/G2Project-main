@@ -100,7 +100,13 @@ class InstallOtherModulesStep extends InstallStep {
 		}
 
 		if (!$success) {
-		    /* This is not really an error, just a warning */
+		    
+
+
+/*  This is not really an error, just a warning  */
+
+
+
 		    $templateData['needsConfiguration'][$moduleId] = $module->getName();
 		    $this->resetL10Domain();
 		    continue;

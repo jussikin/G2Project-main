@@ -76,13 +76,25 @@ class FotokastenModule extends GalleryModule {
 		return $ret;
 	    }
 
-	    /* Register our permission */
+	    
+
+
+/*  Register our permission  */
+
+
+
 	    $ret = GalleryCoreApi::registerPermission($this->getId(), 'fotokasten.print',
 						      $gallery->i18n('[fotokasten] Print'));
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* Give everybody print permission by default */
+	    
+
+
+/*  Give everybody print permission by default  */
+
+
+
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],

@@ -32,7 +32,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
     }
 
     function _createTopAlbum() {
-	/* Create a new album and image, set thumbnail and highlight */
+	
+
+
+/*  Create a new album and image, set thumbnail and highlight  */
+
+
+
 	list ($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return array($ret, null);
@@ -57,7 +63,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
     }
 
     function _createSubAlbumWithItems($parentId) {
-	/* Create a new album and image, set thumbnail and highlight */
+	
+
+
+/*  Create a new album and image, set thumbnail and highlight  */
+
+
+
 	list ($ret, $album) = $this->_createRandomAlbum($parentId);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -227,7 +239,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Prepare the test by first disabling the subalbum */
+	
+
+
+/*  Prepare the test by first disabling the subalbum  */
+
+
+
 	$ret = ImageBlockHelper::setDisabledFlag($this->_subAlbum, false, true);
 	if ($ret) {
 	    return $ret;
@@ -239,7 +257,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	}
 	$itemIds[] = (int)$this->_subAlbum->getId();
 
-	/* Verify the precondition of the test */
+	
+
+
+/*  Verify the precondition of the test  */
+
+
+
 	list ($ret, $searchResults) = GalleryCoreApi::getMapEntry('ImageBlockDisabledMap',
 								  array('itemId'),
 								  array('itemId' => $itemIds));
@@ -257,7 +281,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	$this->assertEquals($itemIds, $dbItemIds,
 			    'Precondition: Items not added to the DisableMap');
 
-	/* Execute the test: Ensure that we succeed and don't attempt to insert duplicate rows. */
+	
+
+
+/*  Execute the test: Ensure that we succeed and don't attempt to insert duplicate rows.  */
+
+
+
 	$ret = ImageBlockHelper::setDisabledFlag($this->_topAlbum, true, true);
 	if ($ret) {
 	    return $ret;
@@ -268,7 +298,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	}
 	$itemIds[] = (int)$this->_topAlbum->getId();
 
-	/* Verify the results */
+	
+
+
+/*  Verify the results  */
+
+
+
 	list ($ret, $searchResults) = GalleryCoreApi::getMapEntry('ImageBlockDisabledMap',
 								  array('itemId'),
 								  array('itemId' => $itemIds));
@@ -331,7 +367,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	}
 
 	list ($ret, $results) = ImageBlockHelper::_getBlockData(
-	    'Album', 'recent', 1, $top->getId(), false, null, 200 /* maxSize */);
+	    'Album', 'recent', 1, $top->getId(), false, null, 200 
+
+
+/*  maxSize  */
+
+
+);
 	if ($ret) {
 	    return $ret;
 	}
@@ -383,7 +425,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	}
 
 	list ($ret, $results) = ImageBlockHelper::_getBlockData(
-	    'Image', 'specific', 1, $photo->getId(), false, null, 130 /* maxSize */);
+	    'Image', 'specific', 1, $photo->getId(), false, null, 130 
+
+
+/*  maxSize  */
+
+
+);
 	if ($ret) {
 	    return $ret;
 	}
@@ -428,7 +476,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 
 	$userId = (int)$gallery->getActiveUserId();
 
-	/* The isCached query must be fired before checking the random number range query */
+	
+
+
+/*  The isCached query must be fired before checking the random number range query  */
+
+
+
 	$isCachedQuery =
 	    'SELECT COUNT(*) FROM [ImageBlockCacheMap] WHERE [ImageBlockCacheMap::userId] = ?';
 	$storage->setReply('search', array($isCachedQuery, array($userId), array()),
@@ -485,7 +539,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	}
 	$this->_markForCleanup($album);
 
-	/* Thumbnails must be generated for the cache to be properly updated */
+	
+
+
+/*  Thumbnails must be generated for the cache to be properly updated  */
+
+
+
 	foreach( $items as $item ) {
 	    list ($ret, $thumbnail) = $this->_createDerivative(
 		$item, $item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, '',
@@ -495,7 +555,13 @@ class ImageBlockHelperTest extends GalleryTestCase {
 	    }
 	}
 
-	/* Ensure that wrap around must be used by rigging the random key */
+	
+
+
+/*  Ensure that wrap around must be used by rigging the random key  */
+
+
+
 	$gallery->_phpVm = new UnitTestPhpVm();
 	$phpVm = $gallery->getPhpVm();
 	$phpVm->setReply('rand', '*', $max);

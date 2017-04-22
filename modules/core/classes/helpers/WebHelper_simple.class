@@ -39,10 +39,22 @@ class WebHelper_simple {
 	    $depth=0) {
 	global $gallery;
 
-	/* Convert illegal characters */
+	
+
+
+/*  Convert illegal characters  */
+
+
+
 	$url = str_replace(' ', '%20', $url);
 
-	/* Don't redirect too far */
+	
+
+
+/*  Don't redirect too far  */
+
+
+
 	if ($depth > 5) {
 	    $gallery->debug('Too many levels of HTTP redirection!');
 	    return array(false, null, null, null);
@@ -75,7 +87,13 @@ class WebHelper_simple {
 					     implode("\r\n", $headerLines),
 					     $postDataRaw));
 	if (!$ok) {
-	    /* Zero bytes written or false was returned */
+	    
+
+
+/*  Zero bytes written or false was returned  */
+
+
+
 	    $gallery->debug(
 		"fwrite call failed in fetchWebFile($url)" . ($ok === false ? ' - false' : ''));
 	    return array(false, null, null, null);
@@ -93,14 +111,26 @@ class WebHelper_simple {
 	    return array(false, null, null, null);
 	}
 
-	/* Read the headers. */
+	
+
+
+/*  Read the headers.  */
+
+
+
 	while (!$platform->feof($fd)) {
 	    $line = trim($platform->fgets($fd, 4096));
 	    if (empty($line)) {
 		break;
 	    }
 
-	    /* Normalize the line endings */
+	    
+
+
+/*  Normalize the line endings  */
+
+
+
 	    $line = str_replace("\r", '', $line);
 
 	    list ($key, $value) = explode(':', $line, 2);
@@ -117,7 +147,13 @@ class WebHelper_simple {
 	if (isset($headers['Location'])) {
 	    $redirectUrl = WebHelper_simple::_parseLocation($headers['Location'], $urlComponents);
 
-	    /* Returning output directly from fetchWebFile() confuses the CodeAudit */
+	    
+
+
+/*  Returning output directly from fetchWebFile() confuses the CodeAudit  */
+
+
+
 	    $result = WebHelper_simple::fetchWebFile($redirectUrl, $outputFile, $extraHeaders,
 		$postDataArray, $depth+1);
 	    return array($result[0], $result[1], $result[2], $result[3]);
@@ -126,7 +162,13 @@ class WebHelper_simple {
 	$success = false;
 	$ofd = $platform->fopen($outputFile, 'wb');
 	if ($ofd) {
-	    /* Read the body */
+	    
+
+
+/*  Read the body  */
+
+
+
 	    $failed = false;
 	    while (!$platform->feof($fd) && !$failed) {
 		$buf = $platform->fread($fd, 4096);
@@ -142,7 +184,13 @@ class WebHelper_simple {
 	}
 	$platform->fclose($fd);
 
-	/* if the HTTP response code did not begin with a 2 this request was not successful */
+	
+
+
+/*  if the HTTP response code did not begin with a 2 this request was not successful  */
+
+
+
 	if (!preg_match("/^HTTP\/\d+\.\d+\s2\d{2}/", $response)) {
 	    $success = false;
 	}
@@ -156,19 +204,43 @@ class WebHelper_simple {
     static function fetchWebPage($url, $extraHeaders=array(), $depth=0) {
 	global $gallery;
 
-	/* Don't redirect too far */
+	
+
+
+/*  Don't redirect too far  */
+
+
+
 	if ($depth > 5) {
 	    $gallery->debug('Too many levels of HTTP redirection!');
 	    return array(false, null, null, null, null);
 	}
 
-	/* Convert illegal characters */
+	
+
+
+/*  Convert illegal characters  */
+
+
+
 	$url = str_replace(' ', '%20', $url);
 
-	/* Unescape ampersands, since if the URL comes from form input it will be escaped */
+	
+
+
+/*  Unescape ampersands, since if the URL comes from form input it will be escaped  */
+
+
+
 	$url = str_replace('&amp;', '&', $url);
 
-	/* Read the web page into a buffer */
+	
+
+
+/*  Read the web page into a buffer  */
+
+
+
 	list ($responseStatus, $responseHeaders, $responseBody) =
 	    WebHelper_simple::requestWebPage($url, 'GET', $extraHeaders);
 
@@ -176,12 +248,24 @@ class WebHelper_simple {
 	    $redirectUrl =
 		WebHelper_simple::_parseLocation($responseHeaders['Location'], parse_url($url));
 
-	    /* Returning output directly from fetchWebPage confuses the CodeAudit */
+	    
+
+
+/*  Returning output directly from fetchWebPage confuses the CodeAudit  */
+
+
+
 	    $result = WebHelper_simple::fetchWebPage($redirectUrl, $extraHeaders, $depth + 1);
 	    return array($result[0], $result[1], $result[2], $result[3], $result[4]);
 	}
 
-	/* If the HTTP response code did not begin with 2 this request was not successful */
+	
+
+
+/*  If the HTTP response code did not begin with 2 this request was not successful  */
+
+
+
 	$success = preg_match("/^HTTP\/\d+\.\d+\s2\d{2}/", $responseStatus);
 
 	return array($success, $responseBody, $responseStatus, $responseHeaders, $url);
@@ -193,7 +277,13 @@ class WebHelper_simple {
     static function postToWebPage($url, $postDataArray, $extraHeaders=array()) {
 	$postDataRaw = WebHelper_simple::_encodePostData($postDataArray, $extraHeaders);
 
-	/* Read the web page into a buffer */
+	
+
+
+/*  Read the web page into a buffer  */
+
+
+
 	list ($responseStatus, $responseHeaders, $responseBody) =
 	    WebHelper_simple::requestWebPage($url, 'POST', $extraHeaders, $postDataRaw);
 
@@ -230,7 +320,13 @@ class WebHelper_simple {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* Convert illegal characters */
+	
+
+
+/*  Convert illegal characters  */
+
+
+
 	$url = str_replace(' ', '%20', $url);
 
 	$urlComponents = WebHelper_simple::_parseUrlForFsockopen($url);
@@ -252,7 +348,13 @@ class WebHelper_simple {
 						      implode("\r\n", $headerLines),
 						      $requestBody));
 	if (!$success) {
-	    /* Zero bytes written or false was returned */
+	    
+
+
+/*  Zero bytes written or false was returned  */
+
+
+
 	    $gallery->debug(
 		"fwrite failed in requestWebPage($url)" . ($success === false ? ' - false' : ''));
 	    return array(null, null, null);
@@ -269,7 +371,13 @@ class WebHelper_simple {
 	    return array(null, null, null);
 	}
 
-	/* Read the headers */
+	
+
+
+/*  Read the headers  */
+
+
+
 	$responseHeaders = array();
 	while (!$platform->feof($handle)) {
 	    $line = trim($platform->fgets($handle, 4096));
@@ -277,7 +385,13 @@ class WebHelper_simple {
 		break;
 	    }
 
-	    /* Normalize the line endings */
+	    
+
+
+/*  Normalize the line endings  */
+
+
+
 	    $line = str_replace("\r", '', $line);
 
 	    list ($key, $value) = explode(':', $line, 2);
@@ -291,7 +405,13 @@ class WebHelper_simple {
 	    }
 	}
 
-	/* Read the body */
+	
+
+
+/*  Read the body  */
+
+
+
 	$responseBody = '';
 	while (!$platform->feof($handle)) {
 	    $responseBody .= $platform->fread($handle, 4096);
@@ -324,7 +444,13 @@ class WebHelper_simple {
 	}
 	$uri = $urlComponents['path']
 	    . (empty($urlComponents['query']) ? '' : '?' . $urlComponents['query']);
-	/* Unescape ampersands, since if the url comes from form input it will be escaped */
+	
+
+
+/*  Unescape ampersands, since if the url comes from form input it will be escaped  */
+
+
+
 	$urlComponents['uri'] = str_replace('&amp;', '&', $uri);
 	return $urlComponents;
     }
@@ -337,11 +463,23 @@ class WebHelper_simple {
      */
     function _parseLocation($location, $fromComponents) {
 	if (is_array($location)) {
-	    /* If odd http response has multiple Location headers just pick the first */
+	    
+
+
+/*  If odd http response has multiple Location headers just pick the first  */
+
+
+
 	    $location = array_shift($location);
 	}
 
-	/* The redirect url is supposed to be absolute, but not everybody plays by the rules */
+	
+
+
+/*  The redirect url is supposed to be absolute, but not everybody plays by the rules  */
+
+
+
 	$components = parse_url($location);
 	foreach (array('scheme', 'host') as $key) {
 	    if (empty($components[$key])) {

@@ -37,12 +37,24 @@ class MailHelper_simple {
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 	$template = new GalleryTemplate(dirname(__FILE__) . '/../../../..', true, false);
 
-	/* Set the smarty variables from the data array */
+	
+
+
+/*  Set the smarty variables from the data array  */
+
+
+
 	foreach ($data as $key => $value) {
 	    $template->setVariable($key, $value);
 	}
 
-	/* Default translation domain if none given */
+	
+
+
+/*  Default translation domain if none given  */
+
+
+
 	if (!isset($data['l10Domain'])) {
 	    $template->setVariable('l10Domain', 'modules_core');
 	}
@@ -52,7 +64,13 @@ class MailHelper_simple {
 	    return $ret;
 	}
 
-	/* If no from address is given, try and get the SMTP from address */
+	
+
+
+/*  If no from address is given, try and get the SMTP from address  */
+
+
+
 	if (empty($from)) {
 	    list ($ret, $smtpFrom) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'smtp.from');
@@ -77,12 +95,24 @@ class MailHelper_simple {
 		$buf .= ($val > 127) ? '=' . dechex($val) : $subject{$i};
 	    }
 	    if ($buf != $subject) {
-		/* Encode subject for UTF-8 display if any extended characters are present */
+		
+
+
+/*  Encode subject for UTF-8 display if any extended characters are present  */
+
+
+
 		$subject = '=?utf-8?q?' . $buf . '?=';
 	    }
 	}
 
-	/* Add the date; not all mailers will do this for us */
+	
+
+
+/*  Add the date; not all mailers will do this for us  */
+
+
+
 	$headers = 'Date: ' . date('r') . "\r\n" . $headers;
 
 	$platform =& $gallery->getPlatform();

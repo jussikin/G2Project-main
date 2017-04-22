@@ -47,11 +47,23 @@ class ItemAddFromBrowser extends ItemAddPlugin {
 		return array($ret, null, null);
 	    }
 
-	    /* Upload any new files */
+	    
+
+
+/*  Upload any new files  */
+
+
+
 	    for ($i = 1; $i <= count($form['name']); $i++) {
 		$newItem = null;
 
-		/* Placeholder for later */
+		
+
+
+/*  Placeholder for later  */
+
+
+
 		if (!empty($form['tmp_name'][$i]) && !empty($form['size'][$i])) {
 		    $file = array('name' => $form['name'][$i],
 				  'type' => $form['type'][$i],
@@ -60,7 +72,13 @@ class ItemAddFromBrowser extends ItemAddPlugin {
 				  'caption' => $form['caption'][$i]);
 
 		    if ($markup == 'html') {
-			/* Strip malicious content if html markup allowed */
+			
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 			$file['caption'] = GalleryUtilities::htmlSafe($file['caption'], true);
 		    }
 
@@ -98,7 +116,13 @@ class ItemAddFromBrowser extends ItemAddPlugin {
 			$tmpFile, $filename, $title, $summary,
 			$description, $mimeType, $item->getId());
 
-		    /* Get rid of the tmp file if necessary */
+		    
+
+
+/*  Get rid of the tmp file if necessary  */
+
+
+
 		    if ($needToDeleteTmpFile) {
 			@$platform->unlink($tmpFile);
 		    }
@@ -212,7 +236,13 @@ class ItemAddFromBrowser extends ItemAddPlugin {
 		  'titleList' => $titleList,
 		  'status' => $status));
 
-	/* Set the ItemAdmin form's encoding type specially since we're uploading binary files */
+	
+
+
+/*  Set the ItemAdmin form's encoding type specially since we're uploading binary files  */
+
+
+
 	if ($template->hasVariable('ItemAdmin')) {
 	    $ItemAdmin =& $template->getVariableByReference('ItemAdmin');
 	    $ItemAdmin['enctype'] = 'multipart/form-data';

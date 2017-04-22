@@ -34,7 +34,13 @@ class ModRewriteUrlGenerator extends RewriteUrlGenerator {
      * @see GalleryUrlGenerator::init
      */
     function init($baseUri=null, $g2Uri=null, $embedSessionString=null) {
-	/* Verify that we're configured to work in this mode.  Else disable short-URLs. */
+	
+
+
+/*  Verify that we're configured to work in this mode.  Else disable short-URLs.  */
+
+
+
 	$location = GalleryUtilities::isEmbedded() ? 'embeddedLocation' : 'galleryLocation';
 	list ($ret, $configuredLocation) =
 	    GalleryCoreApi::getPluginParameter('module', 'rewrite', 'modrewrite.' . $location);
@@ -42,7 +48,13 @@ class ModRewriteUrlGenerator extends RewriteUrlGenerator {
 	    return $ret;
 	}
 	if (empty($configuredLocation)) {
-	    /* Disable short-URLs */
+	    
+
+
+/*  Disable short-URLs  */
+
+
+
 	    $this->_error = true;
 	}
 
@@ -76,11 +88,23 @@ class ModRewriteUrlGenerator extends RewriteUrlGenerator {
 	}
 
 	if (!isset($this->_currentUrl[$forceDirect])) {
-	    /* Let the provided path override the database stored value */
+	    
+
+
+/*  Let the provided path override the database stored value  */
+
+
+
 	    if (!empty($this->_path[$forceDirect])) {
 		$path = $this->_path[$forceDirect];
 	    } else {
-		/* Get the configured value, if set */
+		
+
+
+/*  Get the configured value, if set  */
+
+
+
 		$location = GalleryUtilities::isEmbedded() ? 'embeddedLocation' : 'galleryLocation';
 		list ($ret, $path) = GalleryCoreApi::getPluginParameter('module', 'rewrite',
 									'modrewrite.' . $location);

@@ -99,7 +99,13 @@ class CommentCallbackView extends GalleryView {
 	    return $ret;
 	}
 	if (empty($permissions['core.view'])) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	} else if (empty($permissions['comment.delete'])) {
 	    return GalleryCoreApi::error(ERROR_PERMISSION_DENIED);
@@ -139,7 +145,13 @@ class CommentCallbackView extends GalleryView {
 	}
 	if (empty($permissions['core.view'])) {
 	    GalleryCoreApi::releaseLocks($lockId);
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	} else if (empty($permissions['comment.edit'])) {
 	    GalleryCoreApi::releaseLocks($lockId);

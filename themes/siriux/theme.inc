@@ -67,7 +67,13 @@ class SiriuxTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Override some navigator settings */
+	
+
+
+/*  Override some navigator settings  */
+
+
+
 	$theme =& $template->getVariableByReference('theme');
 	if (isset($theme['navigator']['first'])) {
 	    unset($theme['navigator']['first']);
@@ -76,7 +82,13 @@ class SiriuxTheme extends GalleryTheme {
 	    unset($theme['navigator']['last']);
 	}
 
-	/* Find the thumbnail size for this album */
+	
+
+
+/*  Find the thumbnail size for this album  */
+
+
+
 	$theme['params']['thumbnailSize'] = 150;
 	list ($ret, $preferences) =
 	    GalleryCoreApi::fetchDerivativePreferencesForItem($item->getId());
@@ -105,7 +117,13 @@ class SiriuxTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Override some navigator settings */
+	
+
+
+/*  Override some navigator settings  */
+
+
+
 	$theme =& $template->getVariableByReference('theme');
 	if (isset($theme['navigator']['first'])) {
 	    unset($theme['navigator']['first']);
@@ -127,11 +145,23 @@ class SiriuxTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Add in our extra stuff */
+	
+
+
+/*  Add in our extra stuff  */
+
+
+
 	$theme =& $template->getVariableByReference('theme');
 	$theme['moduleTemplate'] = $templateFile;
 
-	/* Add our header and styles */
+	
+
+
+/*  Add our header and styles  */
+
+
+
 	return array(null, 'theme.tpl');
     }
 
@@ -145,7 +175,13 @@ class SiriuxTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Add in our extra stuff */
+	
+
+
+/*  Add in our extra stuff  */
+
+
+
 	$theme =& $template->getVariableByReference('theme');
 	$theme['adminTemplate'] = $templateFile;
 
@@ -181,7 +217,13 @@ class SiriuxTheme extends GalleryTheme {
 	    return array($ret, null, null);
 	}
 
-	/* Add in our custom settings */
+	
+
+
+/*  Add in our custom settings  */
+
+
+
 	$settings[] = array('key' => 'contentWidth',
 			    'name' => $this->translate('Width of page content in pixels'),
 			    'type' => 'text-field',

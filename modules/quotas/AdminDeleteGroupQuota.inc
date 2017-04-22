@@ -44,7 +44,13 @@ class AdminDeleteGroupQuotaController extends GalleryController {
 	}
 	if (isset($form['action']['cancel'])) {
 
-	    /* Go back to the AdminGroups view */
+	    
+
+
+/*  Go back to the AdminGroups view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'quotas.AdminQuotas';
 
@@ -65,7 +71,13 @@ class AdminDeleteGroupQuotaController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Request a redirect to the confirmation screen */
+		
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminQuotas';
 		$status['deletedGroup'] = $group->getGroupName();
@@ -112,7 +124,13 @@ class AdminDeleteGroupQuotaView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminDeleteGroupQuota') {
-	    /* First time around initialize our form */
+	    
+
+
+/*  First time around initialize our form  */
+
+
+
 	    $form['groupName'] = $group->getGroupName();
 	    $form['formName'] = 'AdminDeleteGroupQuota';
 	}

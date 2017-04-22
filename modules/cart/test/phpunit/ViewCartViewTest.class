@@ -38,7 +38,13 @@ class ViewCartViewTest extends GalleryViewTestCase {
 	   return $ret;
 	}
 
-	/* create an album to hold all of the test items */
+	
+
+
+/*  create an album to hold all of the test items  */
+
+
+
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -67,7 +73,13 @@ class ViewCartViewTest extends GalleryViewTestCase {
 	    return $ret;
 	}
 
-	/* Save the existing cart */
+	
+
+
+/*  Save the existing cart  */
+
+
+
 	list ($ret, $this->_saveCartItemCounts) = CartHelper::fetchCartItemCounts();
 	if ($ret) {
 	    return $ret;
@@ -85,7 +97,13 @@ class ViewCartViewTest extends GalleryViewTestCase {
     }
 
     function tearDown() {
-	/* Restore the existing cart */
+	
+
+
+/*  Restore the existing cart  */
+
+
+
 	$ret = CartHelper::setCartItemCounts($this->_saveCartItemCounts);
 	if ($ret) {
 	    return $ret;
@@ -168,7 +186,13 @@ class ViewCartViewTest extends GalleryViewTestCase {
 	$this->_registerFactoryImplementationForTest('CartPluginInterface_1_1',
 	    'ViewCartTestCartPlugin1_1', 'ViewCartTestCartPlugin1_1', __FILE__, 'cart');
 
-	/* Only photo items specified */
+	
+
+
+/*  Only photo items specified  */
+
+
+
 	$ret = CartHelper::setCartItemCounts(array($this->_photoItem->getId() => 3));
 	if ($ret) {
 	    return $ret;

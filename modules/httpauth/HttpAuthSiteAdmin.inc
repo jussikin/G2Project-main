@@ -127,7 +127,13 @@ class HttpAuthSiteAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load our default values if we didn't just come from this form */
+	
+
+
+/*  Load our default values if we didn't just come from this form  */
+
+
+
 	if ($form['formName'] != 'HttpAuthSiteAdmin') {
 	    $form['formName'] = 'HttpAuthSiteAdmin';
 	    foreach (array('httpAuthPlugin', 'useGlobally', 'serverAuthPlugin', 'regexAuthPlugin',
@@ -138,7 +144,13 @@ class HttpAuthSiteAdminView extends GalleryView {
 	    }
 	}
 
-	/* Render HTML body */
+	
+
+
+/*  Render HTML body  */
+
+
+
 	$template->setVariable('HttpAuthSiteAdmin', $HttpAuthSiteAdmin);
 	$template->setVariable('controller', 'httpauth.HttpAuthSiteAdmin');
 	$template->javascript('lib/javascript/BlockToggle.js');

@@ -43,7 +43,13 @@ class AdminRewriteControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Set up our environment */
+	
+
+
+/*  Set up our environment  */
+
+
+
 	foreach (array('parserId' => 'adminrewritemock',
 		       'shortUrls' => serialize(array()),
 		       'activeRules' => serialize(array()),
@@ -55,7 +61,13 @@ class AdminRewriteControllerTest extends GalleryControllerTestCase {
 	    }
 	}
 
-	/* Make sure we use the mock parser */
+	
+
+
+/*  Make sure we use the mock parser  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 	list ($ret, $parser) = RewriteHelper::getRewriteParser(true);
 	if ($ret) {
@@ -63,24 +75,48 @@ class AdminRewriteControllerTest extends GalleryControllerTestCase {
 	}
 	$this->assertEquals('adminrewritemock', $parser->getParserId(), 'parserId');
 
-	/* Set up our mock platform */
+	
+
+
+/*  Set up our mock platform  */
+
+
+
 	$this->_platform = new AdminRewriteMockPlatform();
 	$gallery->setPlatform($this->_platform);
 
-	/* Register a new module */
+	
+
+
+/*  Register a new module  */
+
+
+
 	GalleryDataCache::reset();
 	list ($ret, $this->_module) = GalleryCoreApi::loadPlugin('module', 'adminrewritemock');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Install it */
+	
+
+
+/*  Install it  */
+
+
+
 	$ret = $this->_module->installOrUpgrade();
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Activate the module */
+	
+
+
+/*  Activate the module  */
+
+
+
 	list ($ret, $redirect) = $this->_module->activate(false);
 	if ($ret) {
 	    return $ret;
@@ -333,7 +369,13 @@ class AdminRewriteControllerTest extends GalleryControllerTestCase {
     }
 
     function testSaveDupeMatch() {
-	/* It might be desirable to activate two rules for one Gallery view */
+	
+
+
+/*  It might be desirable to activate two rules for one Gallery view  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][rules]', 1);
 	GalleryUtilities::putRequestVariable('form[rules][adminrewritemock][0][active]', 1);
 	GalleryUtilities::putRequestVariable('form[rules][adminrewritemock][0][pattern]',
@@ -614,7 +656,13 @@ class AdminRewriteMockModule extends GalleryModule {
 			  'match' => array('view' => 'phpunit.Test'));
 	$rules[2] = array('pattern' => 'phpunit/invalid/');
 
-	/* Rule 3 and 4: Dupe conditions */
+	
+
+
+/*  Rule 3 and 4: Dupe conditions  */
+
+
+
 	$rules[3] = array('conditions' => array(array('test' => 'REQUEST_METHOD',
 						      'pattern' => 'FOO')));
 	$rules[4] = array('conditions' => array(array('test' => 'REQUEST_METHOD',

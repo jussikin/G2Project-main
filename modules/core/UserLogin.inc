@@ -88,7 +88,13 @@ class UserLoginController extends GalleryController {
 		GalleryUtilities::unsanitizeInputValues($form['password'], false);
 		$isCorrect = (isset($user) && $user->isCorrectPassword($form['password']));
 
-		/* Prepare for validation */
+		
+
+
+/*  Prepare for validation  */
+
+
+
 		$options = array('pass' => $isCorrect);
 		list ($ret, $options['level']) =
 		    GalleryCoreApi::getPluginParameter('module', 'core', 'validation.level');
@@ -119,7 +125,13 @@ class UserLoginController extends GalleryController {
 		    }
 		}
 
-		/* Let each plugin do its verification */
+		
+
+
+/*  Let each plugin do its verification  */
+
+
+
 		foreach ($pluginInstances as $plugin) {
 		    list ($ret, $pluginErrors, $continue) =
 			$plugin->performValidation($form, $options);
@@ -145,7 +157,13 @@ class UserLoginController extends GalleryController {
 			return array($ret, null);
 		    }
 
-		    /* Redirect if requested by event listener, otherwise return */
+		    
+
+
+/*  Redirect if requested by event listener, otherwise return  */
+
+
+
 		    if (!empty($redirect)) {
 			$results['redirect'] = array_shift($redirect);
 		    } else {
@@ -195,11 +213,23 @@ class UserLoginView extends GalleryView {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	/* Check if the default login view URL has been overridden and redirect appropriately */
+	
+
+
+/*  Check if the default login view URL has been overridden and redirect appropriately  */
+
+
+
 	$loginRedirect = $gallery->getConfig('loginRedirect');
 	if (!(isset($loginRedirect['subView']) && $loginRedirect['subView'] == 'core.UserLogin')
 		&& !empty($loginRedirect)) {
-	    /* Do not redirect if we are logged in already */
+	    
+
+
+/*  Do not redirect if we are logged in already  */
+
+
+
 	    list ($ret, $isGuest) = GalleryCoreApi::isAnonymousUser();
 	    if ($ret) {
 		return array($ret, null);

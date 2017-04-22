@@ -43,7 +43,13 @@ class ImageMagickToolkitHelper {
 	    return array($ret, null);
 	}
 
-	/* -------------------- Operations -------------------- */
+	
+
+
+/*  -------------------- Operations --------------------  */
+
+
+
 
 	/*
 	 * Provide some mime type conversions.  G2 will use convert-to-image/jpeg for
@@ -62,7 +68,13 @@ class ImageMagickToolkitHelper {
 	    }
 	}
 
-	/* Scale */
+	
+
+
+/*  Scale  */
+
+
+
 	$operations['scale'] = array(
 	    'params' => array(array('type' => 'int', 'description' =>
 		    $gallery->i18n(array('text' => 'target width (# pixels or #% of full size)',
@@ -73,10 +85,22 @@ class ImageMagickToolkitHelper {
 		$gallery->i18n('Scale the image to the target size, maintain aspect ratio'),
 	    'mimeTypes' => $mimeTypes);
 
-	/* Thumbnail is an alias for scale */
+	
+
+
+/*  Thumbnail is an alias for scale  */
+
+
+
 	$operations['thumbnail'] = $operations['scale'];
 
-	/* Resize */
+	
+
+
+/*  Resize  */
+
+
+
 	$operations['resize'] = array(
 	    'params' => array(array('type' => 'int', 'description' =>
 		    $gallery->i18n(array('text' => 'target width (# pixels or #% of full size)',
@@ -87,14 +111,26 @@ class ImageMagickToolkitHelper {
 	    'description' => $gallery->i18n('Resize the image to the target dimensions'),
 	    'mimeTypes' => $mimeTypes);
 
-	/* Rotate */
+	
+
+
+/*  Rotate  */
+
+
+
 	$operations['rotate'] = array(
 	    'params' => array(array('type' => 'int',
 				    'description' => $gallery->i18n('rotation degrees'))),
 	    'description' => $gallery->i18n('Rotate the image'),
 	    'mimeTypes' => $mimeTypes);
 
-	/* Crop */
+	
+
+
+/*  Crop  */
+
+
+
 	$operations['crop'] = array(
 	    'params' => array(array('type' => 'float',
 				    'description' => $gallery->i18n('left edge %')),
@@ -107,7 +143,13 @@ class ImageMagickToolkitHelper {
 	    'description' => $gallery->i18n('Crop the image'),
 	    'mimeTypes' => $mimeTypes);
 
-	/* Composite */
+	
+
+
+/*  Composite  */
+
+
+
 	$operations['composite'] = array(
 	    'params' => array(array('type' => 'string',
 				    'description' => $gallery->i18n('overlay path')),
@@ -126,7 +168,13 @@ class ImageMagickToolkitHelper {
 	    'description' => $gallery->i18n('Overlay source image with a second one'),
 	    'mimeTypes' => $mimeTypes);
 
-	/* Select Page */
+	
+
+
+/*  Select Page  */
+
+
+
 	$multiPageMimeTypes = array_intersect(
 		array('image/tiff', 'application/pdf',
 		      'application/postscript', 'application/photoshop'),
@@ -139,7 +187,13 @@ class ImageMagickToolkitHelper {
 		'mimeTypes' => $multiPageMimeTypes);
 	}
 
-	/* Compress */
+	
+
+
+/*  Compress  */
+
+
+
 	$qualityMimeTypes = array_intersect(array('image/jpeg', 'image/png'), $mimeTypes);
 	if (!empty($qualityMimeTypes)) {
 	    $operations['compress'] = array(
@@ -149,14 +203,32 @@ class ImageMagickToolkitHelper {
 		'mimeTypes' => $qualityMimeTypes);
 	}
 
-	/* -------------------- Properties -------------------- */
+	
 
-	/* Dimensions */
+
+/*  -------------------- Properties --------------------  */
+
+
+
+
+	
+
+
+/*  Dimensions  */
+
+
+
 	$properties['dimensions'] = array(
 	    'type' => 'int,int',
 	    'description' => $gallery->i18n('Get the width and height of the image'),
 	    'mimeTypes' => array_merge($mimeTypes, array('image/x-portable-pixmap',
-		    'application/x-shockwave-flash'))); /* Supported by php getimagesize */
+		    'application/x-shockwave-flash'))); 
+
+
+/*  Supported by php getimagesize  */
+
+
+
 
 	if (!empty($multiPageMimeTypes)) {
 	    $properties['page-count'] = array(
@@ -292,7 +364,13 @@ class ImageMagickToolkitHelper {
 
 	    $successCount += $success;
 	    if ($success || $test['file'] == 'truncated.pcd') {
-		/* Ignore error status for truncated.pcd.. it should still identify the file ok */
+		
+
+
+/*  Ignore error status for truncated.pcd.. it should still identify the file ok  */
+
+
+
 		foreach ($results as $resultLine) {
 		    if (preg_match($test['expected'], $resultLine)) {
 			foreach ($test['mime'] as $type) {
@@ -350,13 +428,25 @@ class ImageMagickToolkitHelper {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH), null);
 	}
 
-	/* We need to translate some strings */
+	
+
+
+/*  We need to translate some strings  */
+
+
+
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'imagemagick');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* What do we want to test */
+	
+
+
+/*  What do we want to test  */
+
+
+
 	$binaries = array('identify', 'convert', 'composite');
 
 	/*
@@ -366,7 +456,13 @@ class ImageMagickToolkitHelper {
 	$oldCwd = $platform->getcwd();
 	$platform->chdir($gallery->getConfig('data.gallery.tmp'));
 
-	/* Test each binary */
+	
+
+
+/*  Test each binary  */
+
+
+
 	$testArray = array();
 	foreach ($binaries as $binary) {
 	    switch ($binary) {
@@ -411,7 +507,13 @@ class ImageMagickToolkitHelper {
 		}
 		break;
 	    case 'convert':
-		/* We will try to scale a gif using the 'convert' binary */
+		
+
+
+/*  We will try to scale a gif using the 'convert' binary  */
+
+
+
 		list ($ret, $command) =
 		    ImageMagickToolkitHelper::getCommand('convert', $imageMagickPath);
 		if ($ret) {
@@ -420,7 +522,13 @@ class ImageMagickToolkitHelper {
 		$tmpDir = $gallery->getConfig('data.gallery.tmp');
 		$tmpFilename = $platform->tempnam($tmpDir, 'imgk_');
 		if (empty($tmpFilename)) {
-		    /* This can happen if the $tmpDir path is bad */
+		    
+
+
+/*  This can happen if the $tmpDir path is bad  */
+
+
+
 		    return array(GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
 						      "Could not create tmp file in '$tmpDir'"),
 				 null);
@@ -448,7 +556,13 @@ class ImageMagickToolkitHelper {
 				  array($module->translate('Problem executing binary:')),
 				  $results));
 		} else if (implode('', $results) != '') {
-		    /* 'convert' normally doesn't say anything; if it does it was an error */
+		    
+
+
+/*  'convert' normally doesn't say anything; if it does it was an error  */
+
+
+
 		    $testArray[] = array('name' => 'convert',
 					 'success' => false,
 					 'message' => array_merge(
@@ -474,7 +588,13 @@ class ImageMagickToolkitHelper {
 		$tmpDir = $gallery->getConfig('data.gallery.tmp');
 		$tmpFilename = $platform->tempnam($tmpDir, 'imgk_');
 		if (empty($tmpFilename)) {
-		    /* This can happen if the $tmpDir path is bad */
+		    
+
+
+/*  This can happen if the $tmpDir path is bad  */
+
+
+
 		    return array(GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
 						      "Could not create tmp file in '$tmpDir'"),
 				 null);
@@ -493,7 +613,13 @@ class ImageMagickToolkitHelper {
 					     array($module->translate('Problem executing binary:')),
 					     $results));
 		} else if (!empty($results)) {
-		    /* 'composite' normally doesn't say anything; if it does it was an error */
+		    
+
+
+/*  'composite' normally doesn't say anything; if it does it was an error  */
+
+
+
 		    $testArray[] = array('name' => $compositeCmd,
 					 'success' => false,
 					 'message' => array_merge(
@@ -611,7 +737,13 @@ class ImageMagickToolkitHelper {
 	    return array($ret, null);
 	}
 	if ($binary != '') {
-	    /* GraphicsMagick is always 'composite' */
+	    
+
+
+/*  GraphicsMagick is always 'composite'  */
+
+
+
 	    return array(null, 'composite');
 	}
 
@@ -662,7 +794,13 @@ class ImageMagickToolkitHelper {
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$tmpFilename = $platform->tempnam($tmpDir, 'imgk_');
 	if (empty($tmpFilename)) {
-	    /* This can happen if the $tmpDir path is bad */
+	    
+
+
+/*  This can happen if the $tmpDir path is bad  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
 					      "Could not create tmp file in '$tmpDir'"), null);
 	}
@@ -709,7 +847,13 @@ class ImageMagickToolkitHelper {
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$tmpFilename = $platform->tempnam($tmpDir, 'imgk_');
 	if (empty($tmpFilename)) {
-	    /* This can happen if the $tmpDir path is bad */
+	    
+
+
+/*  This can happen if the $tmpDir path is bad  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
 					      "Could not create tmp file in '$tmpDir'"), null);
 	}
@@ -725,7 +869,13 @@ class ImageMagickToolkitHelper {
 		list ($success, $results) = $platform->exec(array(
 		    array_merge($identifyCmd, array('-format', '%r', $tmpFilename))));
 		if ($success && count($results) && strpos($results[0], 'RGB') !== false) {
-		    /* We successfully identified a CMYK jpeg and converted it to RGB */
+		    
+
+
+/*  We successfully identified a CMYK jpeg and converted it to RGB  */
+
+
+
 		    $cmykSupport = true;
 		}
 	    }
@@ -741,7 +891,13 @@ class ImageMagickToolkitHelper {
      * @return GalleryStatus
      */
     static function savePlatformParameters($imageMagickPath=null) {
-	/* Find out if we are GraphicsMagick, using "gm" as a binary */
+	
+
+
+/*  Find out if we are GraphicsMagick, using "gm" as a binary  */
+
+
+
 	list ($ret, $binary) = ImageMagickToolkitHelper::discoverBinary($imageMagickPath);
 	if ($ret) {
 	    return $ret;
@@ -751,7 +907,13 @@ class ImageMagickToolkitHelper {
 	    return $ret;
 	}
 
-	/* Find out what composite cmd to use */
+	
+
+
+/*  Find out what composite cmd to use  */
+
+
+
 	list ($ret, $compositeCmd) =
 	    ImageMagickToolkitHelper::discoverCompositeCmd($imageMagickPath);
 	if ($ret) {
@@ -763,7 +925,13 @@ class ImageMagickToolkitHelper {
 	    return $ret;
 	}
 
-	/* Find out how to remove meta data from jpegs */
+	
+
+
+/*  Find out how to remove meta data from jpegs  */
+
+
+
 	list ($ret, $removeMetaDataSwitch) =
 	    ImageMagickToolkitHelper::discoverRemoveMetaDataSwitch($imageMagickPath);
 	if ($ret) {
@@ -775,9 +943,21 @@ class ImageMagickToolkitHelper {
 	    return $ret;
 	}
 
-	/* Find out what parameters to use for animated GIFs */
+	
+
+
+/*  Find out what parameters to use for animated GIFs  */
+
+
+
 	list ($ret, $version) = ImageMagickToolkitHelper::discoverVersion($imageMagickPath);
-	/* Ignore the error, fallback to old / compatible code */
+	
+
+
+/*  Ignore the error, fallback to old / compatible code  */
+
+
+
 	if (!empty($version) && $version[0] == 'ImageMagick'
 		&& version_compare($version[1], '6.2.6-3', '>')) {
 	    $useNewCoalesceOptions = 1;

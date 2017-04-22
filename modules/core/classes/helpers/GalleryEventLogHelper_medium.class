@@ -38,7 +38,13 @@ class GalleryEventLogHelper_medium {
 	$storage =& $gallery->getStorage();
 	$urlGenerator =& $gallery->getUrlGenerator();
 
-	/** @todo make the log size configurable */
+	
+
+
+/*  @todo make the log size configurable  */
+
+
+
 	$logSize = 1000;
 
 	/*

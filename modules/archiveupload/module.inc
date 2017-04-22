@@ -84,7 +84,13 @@ class ArchiveUploadModule extends GalleryModule {
      * @see GalleryModule::autoConfigure
      */
     function autoConfigure() {
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -116,7 +122,13 @@ class ArchiveUploadModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}

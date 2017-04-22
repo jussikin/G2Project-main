@@ -27,7 +27,13 @@
  * @version $Revision: 17657 $
  */
 
-/* Define G2_EMBED = 1 to remember to generate correct URLs and return the HTML, etc. */
+
+
+
+/*  Define G2_EMBED = 1 to remember to generate correct URLs and return the HTML, etc.  */
+
+
+
 require_once(dirname(__FILE__) . '/modules/core/classes/GalleryDataCache.class');
 GalleryDataCache::put('G2_EMBED', 1, true);
 require(dirname(__FILE__) . '/main.php');

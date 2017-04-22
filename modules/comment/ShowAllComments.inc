@@ -67,11 +67,23 @@ class ShowAllCommentsView extends GalleryView {
 
 	$commenters = $itemIds = $can = $itemData = array();
 	for ($i = 0; $i < count($comments); $i++) {
-	    /* Get the commenter ids */
+	    
+
+
+/*  Get the commenter ids  */
+
+
+
 	    $commenters[$comments[$i]->getCommenterId()] = 1;
 	    $itemIds[$comments[$i]->getParentId()] = 1;
 
-	    /* Extract the member data */
+	    
+
+
+/*  Extract the member data  */
+
+
+
 	    $comments[$i] = (array)$comments[$i];
 	    $comments[$i]['randomId'] = $comments[$i]['id'] . '-' . rand() ;
 	}
@@ -102,7 +114,13 @@ class ShowAllCommentsView extends GalleryView {
 		$items[$it->getId()] = (array)$it;
 	    }
 
-	    /* get peer thumbnails and resizes */
+	    
+
+
+/*  get peer thumbnails and resizes  */
+
+
+
 	    list ($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds($itemIds);
 	    if ($ret) {
 		return array($ret, null);
@@ -110,7 +128,13 @@ class ShowAllCommentsView extends GalleryView {
 	}
 
 	$cacheControl = false;
-	/* Pages shouldn't be cached if any of the comments is not accessible for anonymous */ 
+	
+
+
+/*  Pages shouldn't be cached if any of the comments is not accessible for anonymous  */
+
+
+ 
 	list ($ret, $anonymousUserId) = GalleryCoreApi::getAnonymousUserId();
 	if ($ret) {
 	    return array($ret, null);
@@ -125,9 +149,21 @@ class ShowAllCommentsView extends GalleryView {
 			   'markSpam' => 'comment.edit') as $canFlag => $permission) {
 		$can[$comment['id']][$canFlag] = isset($permissions[$permission]);
 	    }
-	    /* If we already set cache control, don't check any more */
+	    
+
+
+/*  If we already set cache control, don't check any more  */
+
+
+
 	    if (!$cacheControl) {
-		/* If !comment.view || !core.view */
+		
+
+
+/*  If !comment.view || !core.view  */
+
+
+
 		list ($ret, $anonymousViewable) = GalleryCoreApi::hasItemPermission(
 		    $comment['parentId'], 'comment.view', $anonymousUserId, false);
 		if ($ret) {

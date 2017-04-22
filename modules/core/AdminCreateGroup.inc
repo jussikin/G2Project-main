@@ -39,7 +39,13 @@ class AdminCreateGroupController extends GalleryController {
 	$results = $status = $error = array();
 	if (isset($form['action']['cancel'])) {
 
-	    /* Go back to the AdminGroups view */
+	    
+
+
+/*  Go back to the AdminGroups view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminGroups';
 
@@ -74,7 +80,13 @@ class AdminCreateGroupController extends GalleryController {
 			return array($ret, null);
 		    }
 
-		    /* Request a redirect to the confirmation screen */
+		    
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 		    $redirect['view'] = 'core.SiteAdmin';
 		    $redirect['subView'] = 'core.AdminGroups';
 		    $status['createdGroup'] = $group->getGroupName();

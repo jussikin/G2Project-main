@@ -145,7 +145,13 @@ class ItemEditTheme extends ItemEditPlugin {
 		return array($ret, null, null);
 	    }
 	} else if ($ret->getErrorCode() & (ERROR_BAD_PARAMETER | ERROR_PLUGIN_VERSION_MISMATCH)) {
-	    /* Ignore incompatible / missing themes.  Just show a warning. */
+	    
+
+
+/*  Ignore incompatible / missing themes.  Just show a warning.  */
+
+
+
 	} else {
 	    return array($ret, null, null);
 	}
@@ -160,7 +166,13 @@ class ItemEditTheme extends ItemEditPlugin {
 	    return array($ret, null, null);
 	}
 
-	/* Set up our theme selection list */
+	
+
+
+/*  Set up our theme selection list  */
+
+
+
 	list ($ret, $themeStatusList) = GalleryCoreApi::fetchPluginStatus('theme');
 	if ($ret) {
 	    return array($ret, null, null);
@@ -175,7 +187,13 @@ class ItemEditTheme extends ItemEditPlugin {
 	    if ($ret) {
 		
 		if ($ret->getErrorCode() & (ERROR_BAD_PARAMETER | ERROR_PLUGIN_VERSION_MISMATCH)) {
-		    /* Ignore incompatible themes (but don't list them either) */
+		    
+
+
+/*  Ignore incompatible themes (but don't list them either)  */
+
+
+
 		    continue;
 		}
 	    	return array($ret, null, null);

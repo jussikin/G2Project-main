@@ -41,7 +41,13 @@ class EventTest extends GalleryTestCase {
 	$gallery->setPlatform(new EventTestPlatform());
 	$this->_platform =& $gallery->getPlatform();
 
-	/* Register a new module */
+	
+
+
+/*  Register a new module  */
+
+
+
 	GalleryDataCache::reset();
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'EventTest');
 	if ($ret) {
@@ -50,7 +56,13 @@ class EventTest extends GalleryTestCase {
     }
 
     function tearDown() {
-	/* If a test fails it might not deactivate / uninstall the mock module */
+	
+
+
+/*  If a test fails it might not deactivate / uninstall the mock module  */
+
+
+
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'EventTest');
 	if ($ret) {
 	    return $ret;
@@ -121,7 +133,13 @@ class EventTest extends GalleryTestCase {
     }
 
     function testChangePermissions() {
-	/* Verify that a GalleryEntity::save event handler can modify permissions of a new item */
+	
+
+
+/*  Verify that a GalleryEntity::save event handler can modify permissions of a new item  */
+
+
+
 	global $gallery;
 
 	$listener = new EventTestEventListener($this);
@@ -176,12 +194,24 @@ class EventTest extends GalleryTestCase {
 	$entity = new GalleryEntity();
 	$event->setEntity($entity);
 
-	/* Embedded entity has the new value, even if we don't get it by reference */
+	
+
+
+/*  Embedded entity has the new value, even if we don't get it by reference  */
+
+
+
 	$entity->setId(1000);
 	$embeddedEntity = $event->getEntity();
 	$this->assertEquals(1000, $embeddedEntity->getId());
 
-	/* Get embedded entity by reference and change it, then see that it affects the original */
+	
+
+
+/*  Get embedded entity by reference and change it, then see that it affects the original  */
+
+
+
 	$embeddedEntity =& $event->getEntity();
 	$embeddedEntity->setId(2000);
 	$this->assertEquals(2000, $entity->getId());
@@ -193,7 +223,13 @@ class EventTest extends GalleryTestCase {
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class EventTestEventListener /* extends GalleryEventListener */ {
+class EventTestEventListener 
+
+
+/*  extends GalleryEventListener  */
+
+
+ {
     var $_event;
     var $_factory;
 
@@ -218,7 +254,13 @@ class EventTestEventListener /* extends GalleryEventListener */ {
 
 	    return array(null, $result);
 
-	/* @see EventTest::testFactoryRegistrationsBeforeActivateEvent */
+	
+
+
+/*  @see EventTest::testFactoryRegistrationsBeforeActivateEvent  */
+
+
+
 	case 'Gallery::ActivatePlugin':
 	    list ($ret, $this->_factory) = GalleryCoreApi::newFactoryInstance(
 		'MockFactory', 'EventTestFactory');

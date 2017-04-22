@@ -39,7 +39,13 @@ class Getid3Module extends GalleryModule {
 	$this->setId('getid3');
 	$this->setName($gallery->i18n('Getid3'));
 	$this->setDescription($gallery->i18n('A toolkit for getting id3 tag information'));
-	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
+	$this->setVersion('2.0.0'); 
+
+
+/*  Update upgrade() function below too  */
+
+
+
 	$this->_templateVersion = 1;
 	$this->setGroup('data', $gallery->i18n('Extra Data'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -54,7 +60,13 @@ class Getid3Module extends GalleryModule {
 	global $gallery;
 
 	if (!isset($currentVersion)) {
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Helper.class');
 	    $ret = Getid3Helper::setDefaultProperties(GETID3_SUMMARY);
 	    if ($ret) {
@@ -73,14 +85,32 @@ class Getid3Module extends GalleryModule {
 	    case '1.0.0':
 	    case '1.0.1':
 	    case '1.0.2':
-		/* .mo file migration */
+		
+
+
+/*  .mo file migration  */
+
+
+
 	    case '1.0.3':
 	    case '1.0.4':
-		/* Upgrade to GetID3 1.7.7 */
+		
+
+
+/*  Upgrade to GetID3 1.7.7  */
+
+
+
 	    case '1.0.5':
 	    case '1.0.6':
 	    case '1.0.7':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	    case 'end of upgrade path':
 		break;
@@ -98,7 +128,13 @@ class Getid3Module extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our graphics class with the factory */
+	
+
+
+/*  Register our graphics class with the factory  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'Getid3Interface_1_0', 'Getid3Extractor', 'Getid3',
 	    'modules/getid3/classes/Getid3Extractor.class', 'getid3', null);

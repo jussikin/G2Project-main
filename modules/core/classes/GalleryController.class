@@ -119,7 +119,13 @@ class GalleryController {
     static function loadController($controllerName) {
 	global $gallery;
 
-	/* Continue to support old style : separator for a while */
+	
+
+
+/*  Continue to support old style : separator for a while  */
+
+
+
 	if (preg_match('/^(\w+)[.:](\w+)$/', $controllerName, $regs) == 1) {
 	    $module = $regs[1];
 	    $class = $regs[2];
@@ -128,7 +134,13 @@ class GalleryController {
 					       "$controllerName can't be parsed"), null);
 	}
 
-	/* If the module is not active, only let site admins use the config controller */
+	
+
+
+/*  If the module is not active, only let site admins use the config controller  */
+
+
+
 	list ($ret, $plugin) = GalleryCoreApi::loadPlugin('module', $module);
 	if ($ret) {
 	    return array($ret, null);
@@ -232,7 +244,13 @@ class GalleryController {
 	if ($session->isCorrectAuthToken($authToken)) {
 	    return null;
 	} else {
-	    /* Omit check if we're in maintenance mode */
+	    
+
+
+/*  Omit check if we're in maintenance mode  */
+
+
+
 	    if ($gallery->getConfig('mode.maintenance')) {
 		return null;
 	    } else {
@@ -257,7 +275,13 @@ class GalleryController {
 	    return array(GalleryCoreApi::error(ERROR_MISSING_VALUE), null);
 	}
 
-	/* Load the item */
+	
+
+
+/*  Load the item  */
+
+
+
 	list ($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 	if ($ret) {
 	    return array($ret, null);
@@ -269,7 +293,13 @@ class GalleryController {
 		return array($ret, null);
 	    }
 	    if (!$hasPermission) {
-		/* Avoid information disclosure by treating this as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure by treating this as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	}

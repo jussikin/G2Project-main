@@ -102,7 +102,13 @@ class CustomFieldModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our item edit plugin */
+	
+
+
+/*  Register our item edit plugin  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'ItemEditPlugin', 'CustomFieldItemEdit', 'CustomFieldItemEdit',
 	    'modules/customfield/CustomFieldItemEdit.inc', 'customfield', null);
@@ -110,7 +116,13 @@ class CustomFieldModule extends GalleryModule {
 	    return $ret;
 	}
 
-	/* Register interface implementation */
+	
+
+
+/*  Register interface implementation  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'CustomFieldInterface_1_0', 'CustomFieldHelper', 'CustomField',
 	    'modules/customfield/classes/CustomFieldHelper.class', 'customfield', null);
@@ -118,7 +130,13 @@ class CustomFieldModule extends GalleryModule {
 	    return $ret;
 	}
 
-	/* Register search implementation */
+	
+
+
+/*  Register search implementation  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GallerySearchInterface_1_0', 'CustomFieldSearch', 'CustomField',
 	    'modules/customfield/classes/CustomFieldSearch.class', 'customfield', null);
@@ -126,7 +144,13 @@ class CustomFieldModule extends GalleryModule {
 	    return $ret;
 	}
 
-	/* Register event listeners */
+	
+
+
+/*  Register event listeners  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener',
 	    'CustomFieldHelper', 'CustomFieldHelper',
 	    'modules/customfield/classes/CustomFieldHelper.class', 'customfield',

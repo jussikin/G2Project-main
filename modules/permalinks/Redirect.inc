@@ -49,7 +49,13 @@ class RedirectController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	/* Avoid information disclosure, act as if the item didn't exist. */
+	
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	if (isset($itemId)) {
 	    list ($ret, $hasPermission) =
 		GalleryCoreApi::hasItemPermission($itemId, 'core.view');
@@ -61,7 +67,13 @@ class RedirectController extends GalleryController {
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
-	/* Delegate to the ShowItem view */
+	
+
+
+/*  Delegate to the ShowItem view  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $itemId);
 	GalleryUtilities::putRequestVariable('view', 'core.ShowItem');
 

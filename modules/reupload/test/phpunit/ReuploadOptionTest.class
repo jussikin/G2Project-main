@@ -46,7 +46,13 @@ class ReuploadOptionTest extends ItemEditOptionTestCase {
 
 	$this->_markForCleanup($this->_album);
 
-	/* Register a dummy toolkit */
+	
+
+
+/*  Register a dummy toolkit  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ReuploadOptionTestToolkit', 'ReuploadOptionTestToolkit',
 	    'modules/reupload/test/phpunit/ReuploadOptionTest.class', 'reuploadTest', null);
@@ -68,7 +74,13 @@ class ReuploadOptionTest extends ItemEditOptionTestCase {
 	}
 	$this->_itemSize = $this->_item->getSize();
 
-	/* create custom platform to return dummy filesize, imagesize, etc. */
+	
+
+
+/*  create custom platform to return dummy filesize, imagesize, etc.  */
+
+
+
 	$gallery->setPlatform(new ReuploadOptionTestPlatform($gallery->getPlatform()));
     }
 
@@ -77,7 +89,13 @@ class ReuploadOptionTest extends ItemEditOptionTestCase {
 	$form['size']['reupload'] = 800;
 	$form['serialNumber'] = $this->_item->getSerialNumber();
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	list ($errors, $warnings) = $this->_handleRequestAfterEdit($form, $this->_item);
 	$this->assertEquals(array(), $errors, 'Errors');
 	$this->assertEquals(array($this->_translate('Reuploaded file successfully.')),
@@ -96,25 +114,49 @@ class ReuploadOptionTest extends ItemEditOptionTestCase {
 	$form['size']['reupload'] = 0;
 	$form['serialNumber'] = $this->_item->getSerialNumber();
 
-	/* Perform the request and verify that we failed and filesize didn't change */
+	
+
+
+/*  Perform the request and verify that we failed and filesize didn't change  */
+
+
+
 	list ($errors, $warnings) = $this->_handleRequestAfterEdit($form, $this->_item);
 	$this->assertEquals(array('form[error][reupload][failure]'), $errors, 'Errors');
 	$this->assertEquals(array(), $warnings, 'Warnings');
 	$this->assertEquals($this->_itemSize, $this->_item->getSize(), 'Item size');
     }
 
-    /* This imitates the case when the new file has different mime type than the old one */
+    
+
+
+/*  This imitates the case when the new file has different mime type than the old one  */
+
+
+
     function testReuploadToolkitFailure() {
 	$form['tmp_name']['reupload'] = 'bogus.mpeg';
 	$form['size']['reupload'] = 1500;
 	$form['serialNumber'] = $this->_item->getSerialNumber();
 	GalleryUtilities::putRequestVariable('dimensions', 'bad_data');
 
-	/* Perform the request and verify that we failed and filesize didn't change */
+	
+
+
+/*  Perform the request and verify that we failed and filesize didn't change  */
+
+
+
 	list ($errors, $warnings) = $this->_handleRequestAfterEdit($form, $this->_item);
 	$this->assertEquals(array('form[error][reupload][toolkit]'), $errors, 'Errors');
 	$this->assertEquals(array(), $warnings, 'Warnings');
-	/* Size might been changed, but transaction was aborted */
+	
+
+
+/*  Size might been changed, but transaction was aborted  */
+
+
+
 	list ($ret, $item) = $this->_item->refresh();
 	if ($ret) {
 	    return $ret;
@@ -132,7 +174,13 @@ class ReuploadOptionTest extends ItemEditOptionTestCase {
 	$form['size']['reupload'] = 0;
 	$form['serialNumber'] = $this->_item->getSerialNumber();
 
-	/* Perform the request and verify that we failed and filesize didn't change */
+	
+
+
+/*  Perform the request and verify that we failed and filesize didn't change  */
+
+
+
 	list ($errors, $warnings) = $this->_handleRequestAfterEdit($form, $this->_item);
 	$this->assertEquals(array(), $errors, 'Errors');
 	$this->assertEquals(array(), $warnings, 'Warnings');
@@ -151,7 +199,13 @@ class ReuploadOptionTest extends ItemEditOptionTestCase {
 	$form['size']['reupload'] = 800;
 	$form['serialNumber'] = $this->_item->getSerialNumber();
 
-	/* Perform the request and verify that we failed */
+	
+
+
+/*  Perform the request and verify that we failed  */
+
+
+
 	$this->_handleRequestAfterEdit($form, $this->_item, ERROR_BAD_PARAMETER);
     }
 }

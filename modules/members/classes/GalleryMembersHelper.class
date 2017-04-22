@@ -139,13 +139,25 @@ class GalleryMembersHelper {
 	    return array($ret, null);
 	}
 
-	/* Get all of our item ids */
+	
+
+
+/*  Get all of our item ids  */
+
+
+
 	$itemIds = array();
 	while ($result = $searchResults->nextResult()) {
 	    $itemIds[] = (int)$result[0];
 	}
 
-	/* Convert them to entities */
+	
+
+
+/*  Convert them to entities  */
+
+
+
 	if (sizeof($itemIds) > 0) {
 	    list ($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 	    if ($ret) {
@@ -188,7 +200,13 @@ class GalleryMembersHelper {
      */
     static function canViewProfileEmail($userId) {
 	$result = false;
-	/* Can the user view email addresses in the member profile? */
+	
+
+
+/*  Can the user view email addresses in the member profile?  */
+
+
+
 	list ($ret, $resultOne) =
 	    GalleryCoreApi::getPluginParameter('module', 'members', 'canViewEmailAddress');
 	if ($ret) {
@@ -201,7 +219,13 @@ class GalleryMembersHelper {
 	    return array($ret, null);
 	}
 
-	/* Is the current user an admin? */
+	
+
+
+/*  Is the current user an admin?  */
+
+
+
 	list ($ret, $resultTwo) = GalleryCoreApi::isUserInGroup($userId, $groupId);
 	if ($ret) {
 	    return array($ret, null);

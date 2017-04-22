@@ -33,18 +33,54 @@
 define('NOKIAUPLOAD_ERR_NOERR', '0');
 define('NOKIAUPLOAD_ERR_UNKNOWN', '1');
 
-/* Login (section 5.2) */
+
+
+
+/*  Login (section 5.2)  */
+
+
+
 define('NOKIAUPLOAD_PROTOCOLVERSION', '1.00');
 define('NOKIAUPLOAD_ERR_AUTH', '2');
 
-/* New Directory (section 5.4) */
+
+
+
+/*  New Directory (section 5.4)  */
+
+
+
 define('NOKIAUPLOAD_ERR_DIRCREATE', '2');
 
-/* Upload (section 5.5) */
-define('NOKIAUPLOAD_ERR_NOSPACE', '2'); /* Not enough space left in server */
-define('NOKIAUPLOAD_ERR_TOOBIG', '3');  /* Too large image */
 
-/* Directory Listing (section 5.6) */
+
+
+/*  Upload (section 5.5)  */
+
+
+
+define('NOKIAUPLOAD_ERR_NOSPACE', '2'); 
+
+
+/*  Not enough space left in server  */
+
+
+
+define('NOKIAUPLOAD_ERR_TOOBIG', '3');  
+
+
+/*  Too large image  */
+
+
+
+
+
+
+
+/*  Directory Listing (section 5.6)  */
+
+
+
 define('NOKIAUPLOAD_ERR_DIRLIST', '2');
 
 /**
@@ -67,7 +103,13 @@ class ImageUploadHelper {
 	global $gallery;
 	$gallery->debug('### LoginHelper ###');
 
-	/* The default status */
+	
+
+
+/*  The default status  */
+
+
+
 	$status = array();
 	$status['success'] = NOKIAUPLOAD_ERR_UNKNOWN;
 
@@ -95,7 +137,13 @@ class ImageUploadHelper {
 	    $event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
 	    $event->setData(array('userName' => $username));
 	    list ($ret, $ignored) = GalleryCoreApi::postEvent($event);
-	    /* ignore errors, we're erroring out anyway */
+	    
+
+
+/*  ignore errors, we're erroring out anyway  */
+
+
+
 	    return $status;
 	} else {
 	    $gallery->debug('Username and password correct.');
@@ -110,7 +158,13 @@ class ImageUploadHelper {
 	    }
 	}
 
-	/* Add user to the mobile users' group if s/he isn't yet a member of it */
+	
+
+
+/*  Add user to the mobile users' group if s/he isn't yet a member of it  */
+
+
+
 	list ($ret, $groupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'nokiaupload', 'id.mobileGroup');
 	if ($ret) {
@@ -135,18 +189,42 @@ class ImageUploadHelper {
 	    $gallery->debug("User $username is already a member of mobile group.");
 	}
 
-	/* Generate URL for Remote Storage Capabilities query */
+	
+
+
+/*  Generate URL for Remote Storage Capabilities query  */
+
+
+
 	$generator =& $gallery->getUrlGenerator();
 	$rsurl = $generator->generateUrl(array('view' => 'nokiaupload.RemoteStorageCapabilities'),
 					 array('forceFullUrl' => true, 'htmlEntities' => false,
 					       'forceSessionId' => false));
-	$rsurl .= '&';  /* API specification requires URL to end with '&' (or '?'). */
+	$rsurl .= '&';  
 
-	/* Prepare our results */
+
+/*  API specification requires URL to end with '&' (or '?').  */
+
+
+
+
+	
+
+
+/*  Prepare our results  */
+
+
+
 	$status['success'] = NOKIAUPLOAD_ERR_NOERR;
 	$status['rsurl'] = $rsurl;
 
-	/* Send also RS Capabilites if available */
+	
+
+
+/*  Send also RS Capabilites if available  */
+
+
+
 	$capabilities = ImageUploadHelper::getRSCapabilities();
 	if (!empty($capabilities)) {
 	    $status['capabilities'] = $capabilities;
@@ -168,7 +246,13 @@ class ImageUploadHelper {
 	$gallery->debug('### RemoteStorageCapabilitiesHelper ###');
 	$gallery->debug('Active userId is ' . $gallery->getActiveUserId());
 
-	/* Generate URLs for all supported API calls.  Specification requires URLs to end in '&' */
+	
+
+
+/*  Generate URLs for all supported API calls.  Specification requires URLs to end in '&'  */
+
+
+
 	$urlGen =& $gallery->getUrlGenerator();
 
 	$createDirUrl = $urlGen->generateUrl(
@@ -203,14 +287,32 @@ class ImageUploadHelper {
 	global $gallery;
 	$gallery->debug('### NewDirectoryHelper ###');
 
-	/* Mandatory: DirName.  Optional: DirDesc, Pid. */
+	
+
+
+/*  Mandatory: DirName.  Optional: DirDesc, Pid.  */
+
+
+
 	list ($albumNameOriginal, $description, $parentId) =
 	    GalleryUtilities::getRequestVariablesNoPrefix('DirName', 'DirDesc', 'Pid');
 
-	/* Set the default return value.  This will be changed only if we succeed. */
+	
+
+
+/*  Set the default return value.  This will be changed only if we succeed.  */
+
+
+
 	$status['success'] = NOKIAUPLOAD_ERR_DIRCREATE;
 
-	/* If the client didn't give the parent id we need to use our own upload album */
+	
+
+
+/*  If the client didn't give the parent id we need to use our own upload album  */
+
+
+
 	if (empty($parentId)) {
 	    $gallery->debug("Parent album id not given by client. Trying our own upload album.");
 	    list ($ret, $parentId) =
@@ -229,7 +331,13 @@ class ImageUploadHelper {
 
 	$gallery->debug("Using parent id $parentId");
 
-	/* Make sure we have right permissions */
+	
+
+
+/*  Make sure we have right permissions  */
+
+
+
 	list ($ret, $hasPermission) = GalleryCoreApi::hasItemPermission($parentId, 'core.view');
 	if ($ret) {
 	    $gallery->debug('ERROR: Failed to query view permissions.');
@@ -251,7 +359,13 @@ class ImageUploadHelper {
 	    return $status;
 	}
 
-	/* Validate album name */
+	
+
+
+/*  Validate album name  */
+
+
+
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 	$albumName = $albumNameOriginal;
@@ -261,7 +375,13 @@ class ImageUploadHelper {
 	}
         $albumName = $platform->legalizePathComponent($albumName);
 
-	/* Get new album instance */
+	
+
+
+/*  Get new album instance  */
+
+
+
 	list ($ret, $instance) =
 	    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryAlbumItem');
 	if ($ret || !isset($instance)) {
@@ -307,7 +427,13 @@ class ImageUploadHelper {
 	    $gallery->debug('ERROR: GalleryCoreApi::releaseLocks failed, but album was created.');
 	}
 
-	/* Album has been created succesfully */
+	
+
+
+/*  Album has been created succesfully  */
+
+
+
 	$status['success'] = NOKIAUPLOAD_ERR_NOERR;
 	$status['id'] = $instance->getId();
 
@@ -329,7 +455,13 @@ class ImageUploadHelper {
 	global $gallery;
 	$gallery->debug('### UploadHelper ###');
 
-	/* Default status.  Changes only if everything works out. */
+	
+
+
+/*  Default status.  Changes only if everything works out.  */
+
+
+
 	$status = array('success' => NOKIAUPLOAD_ERR_UNKNOWN);
 
 	/*
@@ -339,11 +471,29 @@ class ImageUploadHelper {
 	 */
 	$status['spaceleft'] = 10000000;
 
-	/* Mandatory: ImageData */
+	
+
+
+/*  Mandatory: ImageData  */
+
+
+
 	$file = GalleryUtilities::getFile('ImageData', false);
 
-	/* Mandatory: Filename, MimeType, DirId.  Optional: Caption, Desc, Source, Keyword. */
-	/* TODO consider including Source, Keyword in the description */
+	
+
+
+/*  Mandatory: Filename, MimeType, DirId.  Optional: Caption, Desc, Source, Keyword.  */
+
+
+
+	
+
+
+/*  TODO consider including Source, Keyword in the description  */
+
+
+
 	list ($itemName, $mimeType, $albumId, $summary, $description) =
 	    GalleryUtilities::getRequestVariablesNoPrefix('Filename', 'MimeType', 'DirId',
 							  'Caption', 'Desc');
@@ -376,10 +526,22 @@ class ImageUploadHelper {
 	    return $status;
 	}
 
-	/* Do we have permission to add pictures to this album? */
+	
+
+
+/*  Do we have permission to add pictures to this album?  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($albumId, 'core.addDataItem');
 	if (!$ret) {
-	    /* Get lock to album */
+	    
+
+
+/*  Get lock to album  */
+
+
+
 	    list ($ret, $lockId) = GalleryCoreApi::acquireReadLock($albumId);
 	    if (!$ret) {
 		$title = GalleryUtilities::getFileBase($itemName);
@@ -398,7 +560,13 @@ class ImageUploadHelper {
 	    }
 	}
 
-	/* If there was an error at some point write that to log */
+	
+
+
+/*  If there was an error at some point write that to log  */
+
+
+
 	if ($ret) {
 	    $gallery->debug("ERROR: Something went wrong while trying to add new item.\n"
 	    		    . $ret->getAsText());
@@ -420,10 +588,22 @@ class ImageUploadHelper {
 	$gallery->debug('### DirectoryListingHelper ###');
 	$gallery->debug('Active userId is ' . $gallery->getActiveUserId());
 
-	/* Change the status to no error only if everything succeeds */
+	
+
+
+/*  Change the status to no error only if everything succeeds  */
+
+
+
 	$status['success'] = NOKIAUPLOAD_ERR_DIRLIST;
 
-	/* Get all album ids where we have addDataItem permission */
+	
+
+
+/*  Get all album ids where we have addDataItem permission  */
+
+
+
 	list ($ret, $albumIds) = GalleryCoreApi::fetchAllItemIds(
 	    'GalleryAlbumItem', array('core.addDataItem', 'core.view'));
 	if ($ret || count($albumIds) < 1) {
@@ -432,7 +612,13 @@ class ImageUploadHelper {
 	    return $status;
 	}
 
-	/* Load albums and get their names */
+	
+
+
+/*  Load albums and get their names  */
+
+
+
 	list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 	if ($ret) {
 	    $gallery->debug(
@@ -444,7 +630,13 @@ class ImageUploadHelper {
 	    $parentId = $album->getParentId();
 	    $name = $album->getTitle();
 	    if (empty($name)) {
-		/* If album doesn't have a name set use the file system name */
+		
+
+
+/*  If album doesn't have a name set use the file system name  */
+
+
+
 		$name = $album->getPathComponent();
 	    }
 	    GalleryUtilities::unsanitizeInputValues($name, false);
@@ -514,13 +706,25 @@ class ImageUploadHelper {
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
-	/* Lock the parent album */
+	
+
+
+/*  Lock the parent album  */
+
+
+
 	list ($ret, $lockId) = GalleryCoreApi::acquireReadLock($parentId);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Choose a name for the album. Hopefully it's unique */
+	
+
+
+/*  Choose a name for the album. Hopefully it's unique  */
+
+
+
 	$albumName = $module->translate('nokia-image-upload-album');
 	$ret = $album->create($parentId, $albumName);
 	if ($ret) {
@@ -528,7 +732,13 @@ class ImageUploadHelper {
 	    return array($ret, null);
 	}
 
-	/* Set the album info and save it */
+	
+
+
+/*  Set the album info and save it  */
+
+
+
 	$urlGen =& $gallery->getUrlGenerator();
 	$url = $urlGen->generateUrl(array('controller' => 'nokiaupload.Login'),
 				    array('forceFullUrl' => true, 'forceSessionId' => false,
@@ -576,7 +786,13 @@ class ImageUploadHelper {
      * @return GalleryStatus a status code
      */
    static function setAlbumPermissions($albumId, $groupId) {
-	/* Few ids that we will need */
+	
+
+
+/*  Few ids that we will need  */
+
+
+
 	list ($ret, $everybodyId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
 	if ($ret) {
@@ -588,19 +804,37 @@ class ImageUploadHelper {
 	    return $ret;
 	}
 
-	/* Reset album permissions */
+	
+
+
+/*  Reset album permissions  */
+
+
+
 	$ret = GalleryCoreApi::removeItemPermissions($albumId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Admin permissions */
+	
+
+
+/*  Admin permissions  */
+
+
+
 	$ret = GalleryCoreApi::addGroupPermission($albumId, $adminGroupId, 'core.all');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Mobile user group permissions */
+	
+
+
+/*  Mobile user group permissions  */
+
+
+
 	$ret = GalleryCoreApi::addGroupPermission($albumId, $groupId, 'core.addDataItem');
 	if ($ret) {
 	    return $ret;
@@ -610,7 +844,13 @@ class ImageUploadHelper {
 	    return $ret;
 	}
 
-	/* Everybody else can only view the items */
+	
+
+
+/*  Everybody else can only view the items  */
+
+
+
 	$ret = GalleryCoreApi::addGroupPermission($albumId, $everybodyId, 'core.viewAll');
 	if ($ret) {
 	    return $ret;

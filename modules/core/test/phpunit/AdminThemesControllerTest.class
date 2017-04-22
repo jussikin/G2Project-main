@@ -54,7 +54,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[key][columns]', '4');
 	GalleryUtilities::putRequestVariable('form[action][saveTheme]', 1);
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -75,7 +81,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[key][columns]', '4');
 	GalleryUtilities::putRequestVariable('form[action][undoTheme]', 1);
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -92,7 +104,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[key][columns]', '4');
 	GalleryUtilities::putRequestVariable('form[action][saveTheme]', 1);
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -113,7 +131,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][saveDefaults]', 1);
 	GalleryUtilities::putRequestVariable('themeId', 'currentThemeId');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminThemes',
@@ -149,11 +173,23 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we get an error */
+	
+
+
+/*  Perform the request and verify that we get an error  */
+
+
+
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	$this->assertEquals(null, $results);
 
-	/* Verify that the default theme has not changed */
+	
+
+
+/*  Verify that the default theme has not changed  */
+
+
+
 	list ($ret, $themeId) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'default.theme');
 	if ($ret) {
@@ -172,7 +208,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][saveDefaults]', 1);
 	GalleryUtilities::putRequestVariable('themeId', 'anything');
 
-	/* Prepare the observed value */
+	
+
+
+/*  Prepare the observed value  */
+
+
+
 	$originalOrderBy = 'albumsFirst|viewCount';
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core',
 						  'default.orderBy', $originalOrderBy);
@@ -180,11 +222,23 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we get an error */
+	
+
+
+/*  Perform the request and verify that we get an error  */
+
+
+
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	$this->assertEquals(null, $results);
 
-	/* Verify that the value has not changed */
+	
+
+
+/*  Verify that the value has not changed  */
+
+
+
 	list ($ret, $orderBy) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'default.orderBy');
 	if ($ret) {
@@ -203,7 +257,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][saveDefaults]', 1);
 	GalleryUtilities::putRequestVariable('themeId', 'anything');
 
-	/* Prepare the observed value */
+	
+
+
+/*  Prepare the observed value  */
+
+
+
 	$originalOrderBy = 'albumsFirst|viewCount';
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core',
 						  'default.orderBy', $originalOrderBy);
@@ -211,11 +271,23 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we get an error */
+	
+
+
+/*  Perform the request and verify that we get an error  */
+
+
+
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	$this->assertEquals(null, $results);
 
-	/* Verify that the value has not changed */
+	
+
+
+/*  Verify that the value has not changed  */
+
+
+
 	list ($ret, $orderBy) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'default.orderBy');
 	if ($ret) {
@@ -234,7 +306,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][saveDefaults]', 1);
 	GalleryUtilities::putRequestVariable('themeId', 'anything');
 
-	/* Prepare the observed value */
+	
+
+
+/*  Prepare the observed value  */
+
+
+
 	$originalOrderDirection = 'desc';
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'default.orderDirection',
 						  $originalOrderDirection);
@@ -242,11 +320,23 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we get an error */
+	
+
+
+/*  Perform the request and verify that we get an error  */
+
+
+
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	$this->assertEquals(null, $results);
 
-	/* Verify that the value has not changed */
+	
+
+
+/*  Verify that the value has not changed  */
+
+
+
 	list ($ret, $orderBy) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'default.orderDirection');
 	if ($ret) {
@@ -265,7 +355,13 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][saveDefaults]', 1);
 	GalleryUtilities::putRequestVariable('themeId', 'anything');
 
-	/* Prepare the observed value */
+	
+
+
+/*  Prepare the observed value  */
+
+
+
 	$originalNewAlbumDefaults = 'true';
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'default.newAlbumsUseDefaults',
 						  $originalNewAlbumDefaults);
@@ -273,11 +369,23 @@ class AdminThemesControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we get an error */
+	
+
+
+/*  Perform the request and verify that we get an error  */
+
+
+
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	$this->assertEquals(null, $results);
 
-	/* Verify that the value has not changed */
+	
+
+
+/*  Verify that the value has not changed  */
+
+
+
 	list ($ret, $newAlbumDefaults) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'default.newAlbumsUseDefaults');
 	if ($ret) {

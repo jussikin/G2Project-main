@@ -38,7 +38,13 @@ class EcardModule extends GalleryModule {
 	$this->setId('ecard');
 	$this->setName($gallery->i18n('eCard'));
 	$this->setDescription($gallery->i18n('Send photos as eCards'));
-	$this->setVersion('2.0.0'); /* Update upgrade() too */
+	$this->setVersion('2.0.0'); 
+
+
+/*  Update upgrade() too  */
+
+
+
 	$this->_templateVersion = 1;
 	$this->setGroup('commerce', $gallery->i18n('Commerce'));
 	$this->setCallbacks('getItemLinks|getSiteAdminViews');
@@ -55,7 +61,13 @@ class EcardModule extends GalleryModule {
 	    $currentVersion = '0';
 	}
 
-	/* Set default parameters */
+	
+
+
+/*  Set default parameters  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'ecard');
 	if ($ret) {
 	    return $ret;
@@ -89,13 +101,25 @@ class EcardModule extends GalleryModule {
 		return $ret;
 	    }
 
-	    /* Register our permissions */
+	    
+
+
+/*  Register our permissions  */
+
+
+
 	    $ret = GalleryCoreApi::registerPermission($this->getId(),
 		'ecard.send', $gallery->i18n('[ecard] Send eCards'), 0, array());
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* Give everybody permission by default */
+	    
+
+
+/*  Give everybody permission by default  */
+
+
+
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
@@ -112,12 +136,24 @@ class EcardModule extends GalleryModule {
 	case '0.9.0':
 	case '0.9.1':
 	case '1.0.0':
-	    /* .mo file migration */
+	    
+
+
+/*  .mo file migration  */
+
+
+
 	case '1.0.1':
 	case '1.0.2':
 	case '1.0.3':
 	case '1.0.4':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	case 'end of upgrade path':
 	    break;

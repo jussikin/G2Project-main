@@ -73,7 +73,13 @@ class RewriteSimpleHelper {
 	    return false;
 	}
 
-	/* We don't provide short URLs for the root album */
+	
+
+
+/*  We don't provide short URLs for the root album  */
+
+
+
 	if ($path == '/') {
 	    return false;
 	}
@@ -81,15 +87,33 @@ class RewriteSimpleHelper {
 	if (substr($url, -6) != '%path%') {
 	    $path = rtrim($path, '/');
 	} else if (!GalleryUtilities::isA($entity, 'GalleryAlbumItem')) {
-	    /* Append .html suffix on non-album paths if rule has no suffix */
+	    
+
+
+/*  Append .html suffix on non-album paths if rule has no suffix  */
+
+
+
 	    $path .= '.html';
 	}
 
-	/* urlencode except for path separators(/) */
+	
+
+
+/*  urlencode except for path separators(/)  */
+
+
+
 	$url = str_replace('%path%',
 	    str_replace('%2F', '/', urlencode(substr($path, 1))), $url);
 	unset($params['itemId']);
-	/* If the generated url is built by old request variables unset the old path */
+	
+
+
+/*  If the generated url is built by old request variables unset the old path  */
+
+
+
 	unset($params['path']);
 	return true;
     }

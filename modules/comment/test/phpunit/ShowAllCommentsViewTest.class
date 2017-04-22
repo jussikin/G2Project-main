@@ -79,7 +79,13 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase {
 	    return $ret;
 	}
 
-	/* Create 4 comments */
+	
+
+
+/*  Create 4 comments  */
+
+
+
 	for ($i = 0; $i < 4; $i++) {
 	    $itemId = $i < 2 ? $this->_item->getId() : $this->_item2->getId();
 

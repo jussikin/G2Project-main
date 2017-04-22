@@ -39,7 +39,13 @@ class RewriteModule extends GalleryModule {
 	$this->setName($gallery->i18n('URL Rewrite'));
 	$this->setDescription($gallery->i18n(
 	    'Enables short URLs using Apache mod_rewrite, ISAPI Rewrite, or PathInfo'));
-	$this->setVersion('2.0.0'); /* Update RewriteModuleExtras::upgrade too! */
+	$this->setVersion('2.0.0'); 
+
+
+/*  Update RewriteModuleExtras::upgrade too!  */
+
+
+
 	$this->_templateVersion = 1;
 	$this->setGroup('gallery', $gallery->i18n('Gallery'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -250,7 +256,13 @@ class RewriteModule extends GalleryModule {
     function getRewriteRules() {
 	$rules = array();
 
-	/* Rule 0: Show Item */
+	
+
+
+/*  Rule 0: Show Item  */
+
+
+
 	$rules[0] = array(
 	    'comment' => $this->translate('Show Item'),
 	    'match' => array('view' => 'core.ShowItem'),
@@ -271,7 +283,13 @@ class RewriteModule extends GalleryModule {
 	    'onLoad' => array('rewrite', 'RewriteSimpleHelper', 'loadItemIdFromPath'),
 	    'help' => $this->translate('The general URL for viewing items.'));
 
-	/* Rule 1: Download Item */
+	
+
+
+/*  Rule 1: Download Item  */
+
+
+
 	$rules[1] = array(
 	    'comment' => $this->translate('Download Item'),
 	    'match' => array('view' => 'core.DownloadItem'),
@@ -288,14 +306,26 @@ class RewriteModule extends GalleryModule {
 		    'function' => array('rewrite', 'RewriteSimpleHelper', 'parseFileName'))),
 	    'help' => $this->translate('The general URL for downloading items.'));
 
-	/* Rule 4: Site Admin */
+	
+
+
+/*  Rule 4: Site Admin  */
+
+
+
 	$rules[4] = array(
 	    'comment' => $this->translate('Site Admin'),
 	    'match' => array('view' => 'core.SiteAdmin'),
 	    'pattern' => 'admin/',
 	    'help' => $this->translate('Quick and easy way to access Site Admin.'));
 
-	/* Rule 2: File not found */
+	
+
+
+/*  Rule 2: File not found  */
+
+
+
 	$rules[2] = array(
 	    'comment' => $this->translate('404 File not found'),
 	    'keywords' => array(
@@ -306,14 +336,26 @@ class RewriteModule extends GalleryModule {
 	    'pattern' => '%path%',
 	    'locked' => true);
 
-	/* Rule 3: Block hotlinked items */
+	
+
+
+/*  Rule 3: Block hotlinked items  */
+
+
+
 	$rules[3] = array(
 	    'comment' => $this->translate('Block hotlinked items'),
 	    'flags' => array('F'),
 	    'restrict' => array('view' => 'core.DownloadItem'),
 	    'exemptReferer' => true);
 
-	/* Rule 5: Send HTML for hotlinked items */
+	
+
+
+/*  Rule 5: Send HTML for hotlinked items  */
+
+
+
 	$rules[5] = array(
 	    'comment' => $this->translate('Send HTML for hotlinked items'),
 	    'restrict' => array(

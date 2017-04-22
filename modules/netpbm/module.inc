@@ -70,7 +70,13 @@ class NetPbmModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our graphics class with the factory */
+	
+
+
+/*  Register our graphics class with the factory  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'NetPbmToolkit', 'NetPBM',
 	    'modules/netpbm/classes/NetPbmToolkit.class', 'netpbm', null);
@@ -87,7 +93,13 @@ class NetPbmModule extends GalleryModule {
     function autoConfigure() {
 	global $gallery;
 
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -100,7 +112,13 @@ class NetPbmModule extends GalleryModule {
 	    return array(null, true);
 	}
 
-	/* Try a bunch of likely seeming paths to see if any of them work. */
+	
+
+
+/*  Try a bunch of likely seeming paths to see if any of them work.  */
+
+
+
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
@@ -152,10 +170,22 @@ class NetPbmModule extends GalleryModule {
 	    return array(null, false);
 	}
 
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/netpbm/classes/NetPbmToolkitHelper.class');
 
-	/* Now try each path in turn to see which ones work */
+	
+
+
+/*  Now try each path in turn to see which ones work  */
+
+
+
 	$success = false;
 	foreach ($paths as $path) {
 	    if ($platform->isRestrictedByOpenBaseDir($path) || !$platform->file_exists($path)) {
@@ -167,7 +197,13 @@ class NetPbmModule extends GalleryModule {
 		return array($ret, false);
 	    }
 
-	    /* Take the first path found with at least jpeg support */
+	    
+
+
+/*  Take the first path found with at least jpeg support  */
+
+
+
 	    if (in_array('image/jpeg', $mimeTypes)) {
 		$ret = $this->setParameter('path', $path);
 		if ($ret) {
@@ -181,7 +217,13 @@ class NetPbmModule extends GalleryModule {
 		break;
 	    }
 	}
-	/* Now try each path in turn to see which ones work for jhead */
+	
+
+
+/*  Now try each path in turn to see which ones work for jhead  */
+
+
+
 	foreach ($paths as $path) {
 	    if (!$platform->isRestrictedByOpenBaseDir($path) && !$platform->file_exists($path)) {
 		continue;
@@ -208,10 +250,22 @@ class NetPbmModule extends GalleryModule {
      * @see GalleryModule::activate
      */
     function activate($postActivationEvent=true) {
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/netpbm/classes/NetPbmToolkitHelper.class');
 
-	/* Find out what operations and properties we have available to us */
+	
+
+
+/*  Find out what operations and properties we have available to us  */
+
+
+
 	list ($ret, $results) = NetPbmToolkitHelper::getOperationsAndProperties(true);
 	if ($ret) {
 	    return array($ret, null);
@@ -266,11 +320,23 @@ class NetPbmModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}
-	/* This module requires all fields to be filled out before it can be activated. */
+	
+
+
+/*  This module requires all fields to be filled out before it can be activated.  */
+
+
+
 	foreach (array('path', 'jpegQuality', 'pnmtojpeg', 'bmptopnm', 'pnmcomp') as $key) {
 	    list ($ret, $value) = $this->getParameter($key);
 	    if ($ret) {

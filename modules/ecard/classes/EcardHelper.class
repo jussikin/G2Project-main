@@ -42,7 +42,13 @@ class EcardHelper {
 	}
 
 	if (isset($permissions['core.viewResizes'])) {
-	    /* Try to get the smallest derivative */
+	    
+
+
+/*  Try to get the smallest derivative  */
+
+
+
 	    list ($ret, $resizes) = GalleryCoreApi::fetchResizesByItemIds(array($itemId));
 	    if ($ret) {
 		return array($ret, null);
@@ -50,7 +56,13 @@ class EcardHelper {
 	    if (!empty($resizes)) {
 		$currentDimensions = 0;
 		foreach ($resizes[$itemId] as $resize) {
-		    /* Rebuild the derivative if we don't have its dimensions */
+		    
+
+
+/*  Rebuild the derivative if we don't have its dimensions  */
+
+
+
 		    if ($resize->getWidth() == 0 || $resize->getHeight() == 0) {
 			list ($ret, $resize) =
 			    GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent($resize->getId());

@@ -46,7 +46,13 @@ class DatabaseSetupStep extends InstallStep {
 		$this->_config['columnPrefix'] = 'g_';
 		$firstConfig = true;
 	    }
-	    /* All keys but 'schema' exist in all versions of G2 */
+	    
+
+
+/*  All keys but 'schema' exist in all versions of G2  */
+
+
+
 	    if (!isset($this->_config['schema'])) {
 		$this->_config['schema'] = '';
 	    }
@@ -65,7 +71,13 @@ class DatabaseSetupStep extends InstallStep {
 	}
 
 	$dbPlatformType = null;
-	/* Autoselect mysqli instead of mysqlt if possible */
+	
+
+
+/*  Autoselect mysqli instead of mysqlt if possible  */
+
+
+
 	$mysqltType = 'mysqlt';
 	if ($this->_config['type'] == 'mysqlt' && function_exists('mysqli_real_connect')) {
 	    $this->_config['type'] = 'mysqli';
@@ -150,7 +162,13 @@ class DatabaseSetupStep extends InstallStep {
 	    }
 
 	    if (empty($templateData['errors']) && empty($templateData['error'])) {
-		/* Load up ADOdb */
+		
+
+
+/*  Load up ADOdb  */
+
+
+
 		require_once(dirname(__FILE__) . '/../../lib/adodb/adodb.inc.php');
 
 		$this->_captureStart();
@@ -209,16 +227,34 @@ class DatabaseSetupStep extends InstallStep {
 			}
 		    }
 
-		    /* Check the status and get the version of the Gallery database */
+		    
+
+
+/*  Check the status and get the version of the Gallery database  */
+
+
+
 		    $dbVersion = $this->_getDbVersion($result);
 
-		    /* Ensure that the user doesn't have to enter the password again */
+		    
+
+
+/*  Ensure that the user doesn't have to enter the password again  */
+
+
+
 		    $templateData['password'] = strlen($this->_config['password']) ? '******' : '';
 		}
 
 		$this->_captureEnd();
 
-		/* Check the status of the disk storage (g2data directory) */
+		
+
+
+/*  Check the status of the disk storage (g2data directory)  */
+
+
+
 		$versions = $this->_getVersions();
 		$datVersion = $versions['installed'];
 		$codebaseVersion = $versions['codebase'];
@@ -229,12 +265,36 @@ class DatabaseSetupStep extends InstallStep {
 
 	    if (empty($_POST['confirmReuseTables'])) {
 		if (empty($dbVersion) && empty($datVersion)) {
-		    /* Fresh, clean install. Good. */
-		    /* Advance to next step */
+		    
+
+
+/*  Fresh, clean install. Good.  */
+
+
+
+		    
+
+
+/*  Advance to next step  */
+
+
+
 		    $confirmRequired = 0;
 		} else if (!empty($dbVersion) && empty($datVersion)) {
-		    /* Database tables exist, but g2data seems to be not ok. */
-		    /* Explain and offer clean install. */
+		    
+
+
+/*  Database tables exist, but g2data seems to be not ok.  */
+
+
+
+		    
+
+
+/*  Explain and offer clean install.  */
+
+
+
 		    $confirmRequired = 1;
 		    $templateData['showConfirmCleanInstall'] = 1;
 		    $templateData['warnings'][] =
@@ -246,8 +306,20 @@ class DatabaseSetupStep extends InstallStep {
 			  'storage directory.');
 
 		} else if (empty($dbVersion) && !empty($datVersion)) {
-		    /* Database tables don't exist, but g2data has versions.dat */
-		    /* Explain and offer clean install.  */
+		    
+
+
+/*  Database tables don't exist, but g2data has versions.dat  */
+
+
+
+		    
+
+
+/*  Explain and offer clean install.   */
+
+
+
 		    $confirmRequired = 1;
 		    $templateData['showConfirmCleanInstall'] = 1;
 		    $templateData['warnings'][] =
@@ -257,8 +329,20 @@ class DatabaseSetupStep extends InstallStep {
 			  'next step.');
 
 		} else if ($dbVersion != $datVersion) {
-		    /* Installed version is not ok, mismatch between g2data and the database */
-		    /* Explain and offer Clean Install. */
+		    
+
+
+/*  Installed version is not ok, mismatch between g2data and the database  */
+
+
+
+		    
+
+
+/*  Explain and offer Clean Install.  */
+
+
+
 		    $confirmRequired = 1;
 		    $templateData['showConfirmCleanInstall'] = 1;
 		    $templateData['warnings'][] =
@@ -270,7 +354,13 @@ class DatabaseSetupStep extends InstallStep {
 			  ' and to advance to the next step.');
 
 		} else {
-		    /* Installed version is ok, offer Reuse Tables and Clean Install. */
+		    
+
+
+/*  Installed version is ok, offer Reuse Tables and Clean Install.  */
+
+
+
 		    $confirmRequired = 1;
 		    $templateData['showConfirmCleanInstall'] = 1;
 		    $templateData['showConfirmReuseTables'] = 1;
@@ -287,11 +377,23 @@ class DatabaseSetupStep extends InstallStep {
 		$this->setComplete(true);
 	    }
 	} elseif (!empty($_GET['action']) && $_GET['action'] == 'clean') {
-	    /* Do a clean install, erase the data, initiate the G2 API on db level */
+	    
+
+
+/*  Do a clean install, erase the data, initiate the G2 API on db level  */
+
+
+
 	    if ($this->_loadG2Api(3)) {
 		$storageCleaned = $dbCleaned = false;
 
-		/* Reset the storage directory */
+		
+
+
+/*  Reset the storage directory  */
+
+
+
 		if (!$this->_emptyGalleryStorageDirectory()) {
 		    $templateData['errors'][] =
 			_('Could not execute the required API to erase the storage directory. ' .
@@ -300,7 +402,13 @@ class DatabaseSetupStep extends InstallStep {
 		    $storageCleaned = true;
 		}
 
-		/* Drop all Gallery database tables listed in the schema table */
+		
+
+
+/*  Drop all Gallery database tables listed in the schema table  */
+
+
+
 		$this->_captureStart();
 		$ret = $this->_cleanDatabase();
 		if ($ret) {
@@ -334,11 +442,23 @@ class DatabaseSetupStep extends InstallStep {
 	if ($this->isComplete()) {
 	    $galleryStub->setConfig('storage.config', $this->_config);
 	    if (empty($_POST['confirmReuseTables'])) {
-		/* Remember that this is a fresh/clean install for later steps */
+		
+
+
+/*  Remember that this is a fresh/clean install for later steps  */
+
+
+
 		$galleryStub->setConfig('freshInstall', true);
 	    } else {
 		$galleryStub->setConfig('freshInstall', false);
-		/* Remember the installed version to compare it later to the codebase version */
+		
+
+
+/*  Remember the installed version to compare it later to the codebase version  */
+
+
+
 		$galleryStub->setConfig('installed.version', $datVersion);
 	    }
 	    $templateData['bodyFile'] = 'DatabaseSetupSuccess.html';
@@ -435,10 +555,22 @@ class DatabaseSetupStep extends InstallStep {
 			$tablePrefix));
 	}
 
-	/* Load the Test SQL code */
+	
+
+
+/*  Load the Test SQL code  */
+
+
+
 	require_once(dirname(__FILE__) .
 		     '/../../modules/core/classes/GalleryStorage/GalleryStorageExtras.class');
-	/* GalleryPlatform is not available at this point */
+	
+
+
+/*  GalleryPlatform is not available at this point  */
+
+
+
 	$schemaTpl = dirname(__FILE__) . '/../../modules/core/classes/GalleryStorage/schema.tpl';
 	if (!($sqlData = file($schemaTpl))) {
 	    return array(false, sprintf(_('Could not open schema file: "%s".'), $schemaTpl));
@@ -453,7 +585,13 @@ class DatabaseSetupStep extends InstallStep {
 	    }
 	}
 
-	/* Check CREATE and DROP SEQUENCE privileges */
+	
+
+
+/*  Check CREATE and DROP SEQUENCE privileges  */
+
+
+
 	$sequenceId = 'g2privtestseq';
 	$result = $this->_db->CreateSequence($tablePrefix . $sequenceId);
 	if (empty($result)) {
@@ -496,7 +634,13 @@ class DatabaseSetupStep extends InstallStep {
 	    if (!empty($query)) {
 		$query = str_replace('DB_TABLE_PREFIX', $tablePrefix, $query);
 		$query = str_replace('DB_COLUMN_PREFIX', $this->_config['columnPrefix'], $query);
-		/* For mysql, another replacement is required */
+		
+
+
+/*  For mysql, another replacement is required  */
+
+
+
 		$query = str_replace('DB_TABLE_TYPE', '', $query);
 
 		$result = $this->_db->Execute($query);
@@ -524,7 +668,13 @@ class DatabaseSetupStep extends InstallStep {
 
 	$versions['installed'] = $versions['codebase'] =  '';
 
-	/* Load platform level to use the CoreModule and read data from versions.dat */
+	
+
+
+/*  Load platform level to use the CoreModule and read data from versions.dat  */
+
+
+
 	$this->_loadG2Api(2);
 	require_once(dirname(__FILE__) . '/../../modules/core/module.inc');
 	$coreModule = new CoreModule();
@@ -534,7 +684,13 @@ class DatabaseSetupStep extends InstallStep {
 	    $versions['installed'] = $instVersions['core'];
 	}
 
-	/* Get the codebase version for the CreateConfigFileStep */
+	
+
+
+/*  Get the codebase version for the CreateConfigFileStep  */
+
+
+
 	$versions['codebase'] = $coreModule->getVersion();
 
 	$this->resetL10Domain();
@@ -558,7 +714,13 @@ class DatabaseSetupStep extends InstallStep {
 	    if ($this->in_array_cin($this->_config['tablePrefix'] . 'PluginParameterMap',
 				    $metaTables)) {
 
-		/* Initiate the G2 API to use its db abstraction layer */
+		
+
+
+/*  Initiate the G2 API to use its db abstraction layer  */
+
+
+
 		if ($this->_loadG2Api(3)) {
 		    list ($ret, $version) =
 			GalleryCoreApi::getPluginParameter('module', 'core', '_version');
@@ -599,7 +761,13 @@ class DatabaseSetupStep extends InstallStep {
 	if (!isset($initiated)) {
 	    $initiated = 1;
 
-	    /* Include basic G2 classes to use G2 API to get the core version etc. */
+	    
+
+
+/*  Include basic G2 classes to use G2 API to get the core version etc.  */
+
+
+
 	    require_once(dirname(__FILE__) . '/../../modules/core/classes/Gallery.class');
 	    require_once(dirname(__FILE__) .'/../../modules/core/classes/GalleryDataCache.class');
 	    $GLOBALS['gallery'] = new Gallery();
@@ -622,12 +790,24 @@ class DatabaseSetupStep extends InstallStep {
 	global $gallery;
 
 	if ($level == $platformLevel && $initiated < $platformLevel) {
-	    /* Platform level requested, platform level not already loaded */
+	    
+
+
+/*  Platform level requested, platform level not already loaded  */
+
+
+
 	    $initiated = $platformLevel;
 	    require_once(dirname(__FILE__) . '/../../modules/core/classes/GalleryCoreApi.class');
 	    require_once(dirname(__FILE__) . '/../../modules/core/classes/GalleryPlatform.class');
 	    $gallery->setPlatform(new GalleryPlatform());
-	    /* Configure G2 such that getInstalledVersions() can be called */
+	    
+
+
+/*  Configure G2 such that getInstalledVersions() can be called  */
+
+
+
 	    $gallery->initTranslator(true);
 	    require_once(dirname(__FILE__) . '/../../modules/core/classes/GalleryModule.class');
 	}
@@ -635,12 +815,24 @@ class DatabaseSetupStep extends InstallStep {
 	if ($level == $firstPassLevel && $initiated < $firstPassLevel) {
 	    $initiated = $firstPassLevel;
 
-	    /* Configure the G2 db abstraction layer */
+	    
+
+
+/*  Configure the G2 db abstraction layer  */
+
+
+
 	    $this->_config['usePersistentConnections'] = false;
 	    $gallery->setConfig('storage.config', $this->_config);
 	    $gallery->setDebug(false);
 	    $gallery->setProfile(false);
-	    /* Init paths etc., used for the clean DB function */
+	    
+
+
+/*  Init paths etc., used for the clean DB function  */
+
+
+
 	    require_once(dirname(__FILE__) . '/../../init.inc');
 	    if (!defined('GALLERY_FORM_VARIABLE_PREFIX')) {
 		define('GALLERY_FORM_VARIABLE_PREFIX', 'g2_');
@@ -653,7 +845,13 @@ class DatabaseSetupStep extends InstallStep {
 	}
 
 	if ($level >= $platformLevel) {
-	    /* Gallery init selects language from browser; reset to language currently in use */
+	    
+
+
+/*  Gallery init selects language from browser; reset to language currently in use  */
+
+
+
 	    $translator =& $gallery->getTranslator();
 	    $translator->init($_SESSION['language'], true);
 	}
@@ -670,7 +868,13 @@ class DatabaseSetupStep extends InstallStep {
     function _emptyGalleryStorageDirectory() {
 	global $gallery;
 
-	/* Make sure that all the required paths exist. */
+	
+
+
+/*  Make sure that all the required paths exist.  */
+
+
+
 	$baseDir = $gallery->getConfig('data.gallery.base');
 	$platform =& $gallery->getPlatform();
 
@@ -678,7 +882,13 @@ class DatabaseSetupStep extends InstallStep {
 	    $baseDir .= $platform->getDirectorySeparator();
 	}
 
-	/* Scrub the contents of the gallery data directory */
+	
+
+
+/*  Scrub the contents of the gallery data directory  */
+
+
+
 	$dir = $platform->opendir($baseDir);
 
 	while (($filename = $platform->readdir($dir)) !== false) {
@@ -699,7 +909,13 @@ class DatabaseSetupStep extends InstallStep {
 	}
 	$platform->closedir($dir);
 
-	/* Recreate the gallery data directory */
+	
+
+
+/*  Recreate the gallery data directory  */
+
+
+
 	return populateDataDirectory($baseDir);
     }
 

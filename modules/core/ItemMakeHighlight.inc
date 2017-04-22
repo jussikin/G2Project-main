@@ -51,23 +51,47 @@ class ItemMakeHighlightController extends GalleryController {
 		return array($ret, null);
 	    }
 	    if (!$canView) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 
-	    /* Make sure we have permission to edit this item */
+	    
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 	    $ret = GalleryCoreApi::assertHasItemPermission($parentId, 'core.edit');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* XXX: What should we do if this fails? */
+	    
+
+
+/*  XXX: What should we do if this fails?  */
+
+
+
 	    list ($ret, $success) =
 		GalleryCoreApi::setThumbnailFromItem($parentId, $itemId);
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	} /* else $form['action']['cancel'] */
+	} 
+
+
+/*  else $form['action']['cancel']  */
+
+
+
 
 	$results['return'] = true;
 	$results['status'] = $status;
@@ -93,7 +117,13 @@ class ItemMakeHighlightView extends GalleryView {
 	$itemId = $item->getId();
 	$parentId = $item->getParentId();
 
-	/* Make sure we have permission do edit the parent of this item */
+	
+
+
+/*  Make sure we have permission do edit the parent of this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($parentId, 'core.edit');
 	if ($ret) {
 	    return array($ret, null);

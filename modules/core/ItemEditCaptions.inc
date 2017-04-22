@@ -49,7 +49,13 @@ class ItemEditCaptionsController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* We'll check permissions one at a time below, but precache them now */
+	    
+
+
+/*  We'll check permissions one at a time below, but precache them now  */
+
+
+
 	    list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems($ids);
 	    if ($ret) {
 		return array($ret, null);
@@ -69,16 +75,34 @@ class ItemEditCaptionsController extends GalleryController {
 	    $status['successCount'] = 0;
 	    $status['errorCount'] = 0;
 	    foreach ($items as $item) {
-		/* Make sure we have permission to edit this item */
+		
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 		$id = $item->getId();
 		if (!isset($permissions[$id]['core.view'])) {
-		    /* Avoid information disclosure, act as if the item didn't exist. */
+		    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 		if (isset($permissions[$id]['core.edit'])) {
 		    if ($item->getSerialNumber() == $form['items'][$id]['serialNumber']) {
 			if ($markup == 'html') {
-			    /* Strip malicious content if html markup allowed */
+			    
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 			    $form['items'][$id]['title'] =
 				GalleryUtilities::htmlSafe($form['items'][$id]['title'], true);
 			    $form['items'][$id]['summary'] =
@@ -206,7 +230,13 @@ class ItemEditCaptionsView extends GalleryView {
 	    $numPages = 1;
 	    $numPages = ceil(sizeof($childIds) / $form['numPerPage']);
 	    if (empty($page) && !empty($selectedId)) {
-		/* No page given.  Determine which page we're on from the selectedId */
+		
+
+
+/*  No page given.  Determine which page we're on from the selectedId  */
+
+
+
 		for ($i = 0; $i < count($childIds); $i++) {
 		    if ($childIds[$i] == $selectedId) {
 			$page = ceil(($i + 1) / $form['numPerPage']);
@@ -214,7 +244,13 @@ class ItemEditCaptionsView extends GalleryView {
 		}
 	    }
 	    if (empty($page) && !empty($albumPage)) {
-		/* Still no page.  Determine which page we're on from albumPage */
+		
+
+
+/*  Still no page.  Determine which page we're on from albumPage  */
+
+
+
 		list ($ret, $theme) = $this->loadThemeForItem($item);
 		if ($ret) {
 		    return array($ret, null);
@@ -240,18 +276,36 @@ class ItemEditCaptionsView extends GalleryView {
 		return array($ret, null);
 	    }
 
-	    /* Get child thumbnails and resizes */
+	    
+
+
+/*  Get child thumbnails and resizes  */
+
+
+
 	    list ($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds($childIds);
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* build peers table */
+	    
+
+
+/*  build peers table  */
+
+
+
 	    foreach ($childItems as $child) {
 		$childId = $child->getId();
 		$form['items'][$childId] = (array)$child;
 
-		/* While we're at it, attach thumbnails and resizes */
+		
+
+
+/*  While we're at it, attach thumbnails and resizes  */
+
+
+
 		if (isset($derivatives[$childId])) {
 		    foreach ($derivatives[$childId] as $derivative) {
 			$type = $derivative->getDerivativeType();

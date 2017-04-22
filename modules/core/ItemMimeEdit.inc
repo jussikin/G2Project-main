@@ -147,7 +147,13 @@ class ItemMimeEditView extends GalleryView {
 		$form['viewable'] = false;
 	    }
 
-	    /* Prune empty extension boxes */
+	    
+
+
+/*  Prune empty extension boxes  */
+
+
+
 	    $tmp = array();
 	    foreach ($form['extensions'] as $extension) {
 		if (!empty($extension)) {

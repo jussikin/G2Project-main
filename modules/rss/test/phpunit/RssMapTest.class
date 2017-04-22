@@ -50,14 +50,26 @@ class RssMapTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* create an album */
+	
+
+
+/*  create an album  */
+
+
+
 	list ($ret, $this->_root) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($this->_root);
 
-	/* create a test feed */
+	
+
+
+/*  create a test feed  */
+
+
+
 	$this->_name = 'test'.rand();
 	$params = array('itemId' => $this->_root->getId());
 	$ret = RssMapHelper::createFeed($this->_name, $params);
@@ -87,7 +99,13 @@ class RssMapTest extends GalleryTestCase {
     function testCollision() {
 	$params = array('itemId' => $this->_root);
 	$ret = RssMapHelper::createFeed($this->_name, $params);
-	/* we expect an error */
+	
+
+
+/*  we expect an error  */
+
+
+
 	if (!$ret) {
 	    return $this->assert(false, 'Expected an error');
 	}
@@ -102,7 +120,13 @@ class RssMapTest extends GalleryTestCase {
 	}
 
 	list ($ret, $feed) = RssMapHelper::fetchFeed($this->_name);
-	/* we expect an error */
+	
+
+
+/*  we expect an error  */
+
+
+
 	if (!$ret) {
 	    return $this->assert(false, 'Expected an error');
 	}

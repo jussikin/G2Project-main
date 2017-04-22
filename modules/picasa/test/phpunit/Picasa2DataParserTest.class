@@ -37,7 +37,13 @@ class Picasa2DataParserTest extends GalleryControllerTestCase {
      * Test whether a wrong XML without a version gives the right error
      */
     function testGetBadXmlArray_noversion() {
-	/*No XML version*/
+	
+
+
+/* No XML version */
+
+
+
 	$testRawXml = '<?xml encoding="utf-8" ?>';
 	list ($ret, $picasaXmlArray) = Picasa2DataParser::getXmlArray($testRawXml);
 	/*if ($ret) {

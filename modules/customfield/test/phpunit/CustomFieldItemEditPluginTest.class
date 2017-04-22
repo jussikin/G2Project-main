@@ -105,12 +105,24 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
     }
 
     function testCustomFieldPlugin() {
-	/* Reset */
+	
+
+
+/*  Reset  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 	$results = $this->handleRequest($this->itemG, $this->_itemG);
 	$this->assertEquals(array(array(), null), $results, 'Reset');
 
-	/* Set field values (global settings) */
+	
+
+
+/*  Set field values (global settings)  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[fields][Catalog Id]', '123');
 	GalleryUtilities::putRequestVariable('form[fields][My Data]', '');
 	GalleryUtilities::putRequestVariable('form[fields][Location]', 'There');
@@ -144,7 +156,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 				  'Location' => 'There', 'Category' => 'B'),
 			    $data[$this->_itemG->getId()], 'All data');
 
-	/* Set field values (album-specific settings) */
+	
+
+
+/*  Set field values (album-specific settings)  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[fields][Category]', 'C');
 	GalleryUtilities::putRequestVariable('form[fields][Catalog Id]', '456');
@@ -177,16 +195,34 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array('Category' => 'C', 'Catalog Id' => '456', 'Year' => '2004'),
 			    $data[$this->_albumS->getId()], 'All data 2');
 
-	/* ==== Item Admin functions -- set album-specific settings ==== */
+	
 
-	/* Reset */
+
+/*  ==== Item Admin functions -- set album-specific settings ====  */
+
+
+
+
+	
+
+
+/*  Reset  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 	$results = $this->handleRequest($this->_albumS, $this->_albumS);
 	$this->assertEquals(array(array(), null), $results, 'Reset 2');
 
-	/* Add field */
+	
+
+
+/*  Add field  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[photo][newField]', 'Photo Fun');
@@ -195,7 +231,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('New field added successfully')),
 			    $results, 'Add Photo Field');
 
-	/* Add duplicate */
+	
+
+
+/*  Add duplicate  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[common][newField]', 'Photo Fun');
@@ -204,7 +246,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), '<div class="giError">' .
 	    $this->_translate('Field name already in use') . '</div>'), $results, 'Add Duplicate');
 
-	/* Add picklist */
+	
+
+
+/*  Add picklist  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[pickField]', 'Photo Fun');
@@ -214,7 +262,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('Picklist updated successfully')),
 			    $results, 'Set Picklist');
 
-	/* Update picklist */
+	
+
+
+/*  Update picklist  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[pickField]', 'Photo Fun');
@@ -224,7 +278,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('Picklist updated successfully')),
 			    $results, 'Update Picklist');
 
-	/* Check data so far */
+	
+
+
+/*  Check data so far  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'customfield',
 									$this->_albumS->getId());
 	if ($ret) {
@@ -236,7 +296,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 				  'photo' => 'Photographer`1`1|Photo Fun`0`1`Here`Test`One'),
 			    $params, 'Check Data 1');
 
-	/* Update display settings */
+	
+
+
+/*  Update display settings  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[common][index][0]', '0');
@@ -254,7 +320,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(),
 	    $this->_translate('Display settings saved successfully')), $results, 'Update Display');
 
-	/* Check data so far */
+	
+
+
+/*  Check data so far  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'customfield',
 									$this->_albumS->getId());
 	if ($ret) {
@@ -266,7 +338,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 				  'photo' => 'Photographer`1`1|Photo Fun`0`0`Here`Test`One'),
 			    $params, 'Check Data 2');
 
-	/* Move fields */
+	
+
+
+/*  Move fields  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[common][goField]', 'Category');
@@ -303,7 +381,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('Field moved successfully')),
 			    $results, 'Move Field to Photo');
 
-	/* Remove field */
+	
+
+
+/*  Remove field  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[album][goField]', 'Catalog Id');
@@ -313,7 +397,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('Field removed successfully')),
 			    $results, 'Remove Field');
 
-	/* Check data so far */
+	
+
+
+/*  Check data so far  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'customfield',
 									$this->_albumS->getId());
 	if ($ret) {
@@ -325,7 +415,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 				  'photo' => 'Photographer`1`1|Year`0`1'),
 			    $params, 'Check Data 3');
 
-	/* Remove picklist */
+	
+
+
+/*  Remove picklist  */
+
+
+
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[cfAdmin]', '1');
 	GalleryUtilities::putRequestVariable('form[pickField]', 'Photo Fun');
@@ -335,7 +431,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('Picklist updated successfully')),
 			    $results, 'Remove Picklist');
 
-	/* Check data so far */
+	
+
+
+/*  Check data so far  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'customfield',
 									$this->_albumS->getId());
 	if ($ret) {
@@ -347,7 +449,13 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
 				  'photo' => 'Photographer`1`1|Year`0`1'),
 			    $params, 'Check Data 4');
 
-	/* Check appropriate field values have been removed with settings changes */
+	
+
+
+/*  Check appropriate field values have been removed with settings changes  */
+
+
+
 	list ($ret, $data) = CustomFieldHelper::fetchFieldValues(array($this->_albumS));
 	if ($ret) {
 	    return $ret;

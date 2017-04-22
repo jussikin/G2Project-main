@@ -42,7 +42,13 @@ class AkismetApi {
 	    return array($ret, null);
 	}
 
-        /* Comment is not spam - just return */
+        
+
+
+/*  Comment is not spam - just return  */
+
+
+
         if (!preg_match('{^HTTP/1.\d 200 OK$}', $status) || $body == 'false') {
             return array(null, false);
         }
@@ -147,12 +153,24 @@ class AkismetApi {
             return array($ret, null, null, null);
         }
 
-        /* We can't operate without an API key */
+        
+
+
+/*  We can't operate without an API key  */
+
+
+
         if (empty($apiKey)) {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null, null, 'Missing API key');
         }
 
-        /* Generate the target URL based on the API Key and the request-type */
+        
+
+
+/*  Generate the target URL based on the API Key and the request-type  */
+
+
+
         $url = sprintf('http://%s.rest.akismet.com/1.1/%s', $apiKey, $type);
 
         $postDataArray['blog'] = $baseUrl;
@@ -175,7 +193,13 @@ class AkismetApi {
 	    }
 	}
 
-        /* Generate a permalink to the comment using the full URL, without HTML encoding */
+        
+
+
+/*  Generate a permalink to the comment using the full URL, without HTML encoding  */
+
+
+
         $urlGenerator =& $gallery->getUrlGenerator();
         $postDataArray['permalink'] = $urlGenerator->generateUrl(
 	    array('view' => 'core.ShowItem',
@@ -188,7 +212,13 @@ class AkismetApi {
 	    return array($ret, null, null, null);
 	}
 
-        /* Post the request to the Akismet server */
+        
+
+
+/*  Post the request to the Akismet server  */
+
+
+
         list ($body, $status, $headers) = GalleryCoreApi::postToWebPage(
 	    $url, $postDataArray, array('User-Agent' => $userAgent));
 

@@ -45,7 +45,13 @@ class AdminJpegtranController extends GalleryController {
 	    if (empty($form['path'])) {
 		$error[] = 'form[error][path][missing]';
 	    } else {
-		/* Verify the path */
+		
+
+
+/*  Verify the path  */
+
+
+
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
 		$form['path'] = trim($form['path']);
@@ -55,14 +61,26 @@ class AdminJpegtranController extends GalleryController {
 			    $form['path'] = rtrim($form['path'], $slash) . $slash;
 			}
 
-			/* Try adding on "jpegtran" */
+			
+
+
+/*  Try adding on "jpegtran"  */
+
+
+
 			$path = $form['path'] . 'jpegtran';
 			if (GalleryUtilities::isA($platform, 'WinNtPlatform')) {
 			    $path .= '.exe';
 			}
 
 			if ($platform->file_exists($path)) {
-			    /* Got a match */
+			    
+
+
+/*  Got a match  */
+
+
+
 			    $form['path'] = $path;
 			    GalleryUtilities::putRequestVariable('form[path]', $path);
 			}
@@ -96,7 +114,13 @@ class AdminJpegtranController extends GalleryController {
 	    } else {
 		$failCount = 0;
 		foreach ($testResults as $testResult) {
-		    /* Rotate must work, other operations are optional */
+		    
+
+
+/*  Rotate must work, other operations are optional  */
+
+
+
 		    if ($testResult['name'] == 'rotate' && !$testResult['success']) {
 			$failCount++;
 		    }
@@ -173,7 +197,13 @@ class AdminJpegtranView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load our default values if we didn't just come from this form. */
+	
+
+
+/*  Load our default values if we didn't just come from this form.  */
+
+
+
 	if ($form['formName'] != 'AdminJpegtran') {
 	    $form['formName'] = 'AdminJpegtran';
 

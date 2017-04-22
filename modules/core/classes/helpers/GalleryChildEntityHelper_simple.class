@@ -204,16 +204,34 @@ class GalleryChildEntityHelper_simple {
 	}
 
 	foreach ($idJoins as $table => $column) {
-	    /* Add joins to id column of these tables if not already joined */
+	    
+
+
+/*  Add joins to id column of these tables if not already joined  */
+
+
+
 	    $join['INNER JOIN [' . $table . '] ON [BASE::ID] = ['
 		  . $table . '::' . $column . ']'] = 1;
 	}
-	/* Don't self join */
+	
+
+
+/*  Don't self join  */
+
+
+
 	$baseId = '[' . $baseTable . '::' . $baseIdColumn . ']';
 	unset($join['INNER JOIN [' . $baseTable . '] ON [BASE::ID] = ' . $baseId]);
 	unset($join['LEFT JOIN [' . $baseTable . '] ON [BASE::ID] = ' . $baseId]);
 
-	/* Postgres requires the order by column to be in the select list */
+	
+
+
+/*  Postgres requires the order by column to be in the select list  */
+
+
+
 	$select = empty($select) ? '' : ', ' . implode(', ', $select);
 	$join = str_replace('[BASE::ID]', $baseId, implode(' ', array_keys($join)));
 	$where = empty($where) ? '' : ' AND ' . implode(' AND ', $where);
@@ -324,7 +342,13 @@ class GalleryChildEntityHelper_simple {
 	}
 
 	$data[] = $sequence;
-	/* Prepare the query */
+	
+
+
+/*  Prepare the query  */
+
+
+
 	if ($requiredPermission) {
 	    $query = '
 	    SELECT
@@ -446,7 +470,13 @@ class GalleryChildEntityHelper_simple {
 	    $column = null;
 	    switch ($orderType) {
 	    case 'id':
-		/* We always add a sort by id, see buildItemQuery */
+		
+
+
+/*  We always add a sort by id, see buildItemQuery  */
+
+
+
 		break;
 
 	    case 'title':
@@ -557,7 +587,13 @@ class GalleryChildEntityHelper_simple {
 		    }
 		    break;
 		} else {
-		    /* Sort order implementation is missing -- fall through to the default */
+		    
+
+
+/*  Sort order implementation is missing -- fall through to the default  */
+
+
+
 		    if ($usingDefaults) {
 			return GalleryChildEntityHelper_simple::_getOrderInfo(
 			    'orderWeight', ORDER_ASCENDING);

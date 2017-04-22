@@ -82,10 +82,22 @@ class ItemEditOptionTestCase extends GalleryTestCase {
 	} else if ($ret) {
 	    return $ret;
 	} else {
-	    /* Check to make sure we got back everything we want */
+	    
+
+
+/*  Check to make sure we got back everything we want  */
+
+
+
 	    $this->assert(isset($error) && is_array($error), 'option error results missing');
 
-	    /* Check to make sure we got back everything we want */
+	    
+
+
+/*  Check to make sure we got back everything we want  */
+
+
+
 	    $this->assert(isset($warning) && is_array($warning), 'option warning results missing');
 	}
 

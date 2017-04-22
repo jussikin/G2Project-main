@@ -59,7 +59,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	}
 	$this->_markForCleanup($this->_album);
 
-	/* Manual order: 1,2,3  Title order: 3,2,1  Summary order: 2,3,1 */
+	
+
+
+/*  Manual order: 1,2,3  Title order: 3,2,1  Summary order: 2,3,1  */
+
+
+
 	list ($ret, $this->_subalbum[1]) = $this->_createRandomAlbum($this->_album->getId(),
 	    array('title' => 'zzzz', 'summary' => 'zzzz'));
 	if ($ret) {
@@ -115,7 +121,13 @@ class AlbumSelectTest extends GalleryTestCase {
 			    $data['titlesForJs'][$this->_album->getId()], 'title for javascript');
 	$this->assert(!empty($data['params']), 'params');
 	$this->assert(!empty($data['tree']), 'tree');
-	/* Test album and its subalbums should be last 4 tree items: subalbums 1,2,3 */
+	
+
+
+/*  Test album and its subalbums should be last 4 tree items: subalbums 1,2,3  */
+
+
+
 	$albumNode = count($data['tree']) - 3;
 	$this->assertEquals(
 	    array(
@@ -154,10 +166,22 @@ class AlbumSelectTest extends GalleryTestCase {
 			    $data['titlesForJs'][$this->_album->getId()], 'title for javascript');
 	$this->assert(!empty($data['params']), 'params');
 	$this->assert(!empty($data['tree']), 'tree');
-	/* Test album and its subalbums should be last 4 tree items: subalbums 3,2,1 */
+	
+
+
+/*  Test album and its subalbums should be last 4 tree items: subalbums 3,2,1  */
+
+
+
 	$albumNode = count($data['tree']) - 3;
 
-	/* Filter out the albums that already existed before this test */
+	
+
+
+/*  Filter out the albums that already existed before this test  */
+
+
+
 	$nodeId = 1;
 	$exptectedNodeIds = array();
 	foreach ($data['tree'] as $idx => $node) {
@@ -212,7 +236,13 @@ class AlbumSelectTest extends GalleryTestCase {
 			    $data['titlesForJs'][$this->_album->getId()], 'title for javascript');
 	$this->assert(!empty($data['params']), 'params');
 	$this->assert(!empty($data['tree']), 'tree');
-	/* Find test album in tree; subalbum order is 2,3,1 */
+	
+
+
+/*  Find test album in tree; subalbum order is 2,3,1  */
+
+
+
 	$tree = $data['tree'];
 	for ($i = 0; $i < count($tree); $i++) {
 	    if ($tree[$i]['id'] == $this->_album->getId()) {
@@ -255,7 +285,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Preparation */
+	
+
+
+/*  Preparation  */
+
+
+
 	$userId = $gallery->getActiveUserId();
 	list ($ret, $locale) = $gallery->getActiveLocale();
 	if ($ret) {
@@ -272,14 +308,26 @@ class AlbumSelectTest extends GalleryTestCase {
 			       '_' . substr(md5(serialize(array($callbackParams,
 								$rootAlbumId))), 0, 5));
 
-	/* Call it a first time */
+	
+
+
+/*  Call it a first time  */
+
+
+
 	$ret = $callbacks->callback($callbackParams, $smarty, 'LoadAlbumData', $userId);
 	if ($ret) {
 	    return $ret;
 	}
 	$data = $smarty->getTemplateVars('block');
 	$data = $data['albumselect']['LoadAlbumData']['albumSelect'];
-	/* Make sure the value is correct and that it is cached */
+	
+
+
+/*  Make sure the value is correct and that it is cached  */
+
+
+
 	$this->assertEquals('zzz\\z&amp;zz&quot;zz', $data['titles'][$this->_album->getId()],
 			    'title');
 	$this->assertEquals('zzz\\\\z&amp;zz&quot;zz',
@@ -291,7 +339,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	$this->assertEquals('zzz\\\\z&amp;zz&quot;zz',
 		$titlesForJs[$this->_album->getId()], 'cached title for javascript');
 
-	/* Change the album title */
+	
+
+
+/*  Change the album title  */
+
+
+
 	$this->_album->setTitle('Changed Title');
 	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_album->getId());
 	if ($ret) {
@@ -307,7 +361,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Make sure the cache was invalidated */
+	
+
+
+/*  Make sure the cache was invalidated  */
+
+
+
 	list ($treeList, $titles) = GalleryDataCache::getFromDisk($cachePathInfo);
 	$this->assert(empty($titles), 'cache should be gone');
     }
@@ -321,7 +381,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* A first call to file-cache a result and to ensure the cache-key includes the rootId */
+	
+
+
+/*  A first call to file-cache a result and to ensure the cache-key includes the rootId  */
+
+
+
 	$smarty = new GallerySmarty();
 	$callbacks = new AlbumSelectCallbacks();
 	$ret = $callbacks->callback(
@@ -334,7 +400,13 @@ class AlbumSelectTest extends GalleryTestCase {
 
 	$this->assert(!empty($data['albumTreeName']), 'albumTreeName');
 
-	/* And now with an alternative root */
+	
+
+
+/*  And now with an alternative root  */
+
+
+
 	$gallery->setConfig('defaultAlbumId', $this->_album->getId());
 	$gallery->setConfig('breadcrumbRootId', $this->_album->getId());
 	$callbacks = new AlbumSelectCallbacks();
@@ -361,7 +433,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
 
-	/* Force the URL generator to believe that relative URLs are fine */
+	
+
+
+/*  Force the URL generator to believe that relative URLs are fine  */
+
+
+
 	$baseUrl = $urlGenerator->getCurrentUrlDir();
 	$serverUrl = $urlGenerator->makeUrl('/');
 	$_SERVER['REQUEST_URI'] = substr($baseUrl, strlen($serverUrl) - 1) . GALLERY_MAIN_PHP;
@@ -391,7 +469,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	$smarty = new GallerySmarty();
 	$callbacks = new AlbumSelectCallbacks();
 
-	/* Make subalbum only visible through session permission */
+	
+
+
+/*  Make subalbum only visible through session permission  */
+
+
+
 	$itemId = $this->_subalbum[2]->getId();
 	$ret = GalleryCoreApi::removeItemPermissions($itemId);
 	if ($ret) {
@@ -401,10 +485,22 @@ class AlbumSelectTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	/* Clear the permission cache */
+	
+
+
+/*  Clear the permission cache  */
+
+
+
 	GalleryDataCache::reset();
 
-	/* First populate the cache for a normal user */	
+	
+
+
+/*  First populate the cache for a normal user  */
+
+
+	
 	$ret = $callbacks->callback(
 	    array(), $smarty, 'LoadAlbumData', $gallery->getActiveUserId());
 	if ($ret) {
@@ -413,9 +509,21 @@ class AlbumSelectTest extends GalleryTestCase {
 	$this->_assertAlbumTreeData(
 	    $smarty, 'test albums in tree, without session permissions (1)', false);
 
-	/* Then test with session permission */
+	
+
+
+/*  Then test with session permission  */
+
+
+
 	$session->put(GALLERY_PERMISSION_SESSION_KEY, array($itemId));
-	/* Don't use GalleryDataCache::reset() this test is about caching */
+	
+
+
+/*  Don't use GalleryDataCache::reset() this test is about caching  */
+
+
+
 	GalleryDataCache::removeByPattern('[Aa]ccessList');
 	$ret = $callbacks->callback(
 	    array(), $smarty, 'LoadAlbumData', $gallery->getActiveUserId());
@@ -425,9 +533,21 @@ class AlbumSelectTest extends GalleryTestCase {
 	$this->_assertAlbumTreeData(
 	    $smarty, 'test albums in tree with session permissions', true);
 
-	/* Again without session permissions */
+	
+
+
+/*  Again without session permissions  */
+
+
+
 	$session->put(GALLERY_PERMISSION_SESSION_KEY, array());
-	/* Don't use GalleryDataCache::reset() this test is about caching */
+	
+
+
+/*  Don't use GalleryDataCache::reset() this test is about caching  */
+
+
+
 	GalleryDataCache::removeByPattern('[Aa]ccessList');
 	$ret = $callbacks->callback(
 	    array(), $smarty, 'LoadAlbumData', $gallery->getActiveUserId());
@@ -442,7 +562,13 @@ class AlbumSelectTest extends GalleryTestCase {
 	$data = $smarty->getTemplateVars('block');
 	$data = $data['albumselect']['LoadAlbumData']['albumSelect'];
 	$this->assert(!empty($data['tree']), 'tree');
-	/* Test album and its subalbums should be last 3 (2) tree items: subalbums 1,(2,)3 */
+	
+
+
+/*  Test album and its subalbums should be last 3 (2) tree items: subalbums 1,(2,)3  */
+
+
+
 	$albumNode = count($data['tree']) - ($withSubAlbum2 ? 3 : 2);
 	$expected = array();
 	$expected[] = array('id' => $this->_album->getId(), 'nodeId' => $albumNode,

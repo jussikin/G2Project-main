@@ -53,7 +53,13 @@ class UnixPlatform extends GalleryPlatform {
 	    $preamble = '';
 	}
 
-	/* Assemble the command array into a pipeline */
+	
+
+
+/*  Assemble the command array into a pipeline  */
+
+
+
 	$command = $preamble;
 	foreach ($cmdArray as $cmdAndArgs) {
 	    if (strlen($command) && $command != $preamble) {
@@ -69,7 +75,13 @@ class UnixPlatform extends GalleryPlatform {
 	    }
 	}
 
-	/* Redirect STDERR to a file */
+	
+
+
+/*  Redirect STDERR to a file  */
+
+
+
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$debugFile = tempnam($tmpDir, 'g2dbg');
 	$command = "($command) 2>\"$debugFile\"";
@@ -114,7 +126,13 @@ class UnixPlatform extends GalleryPlatform {
 	    $this->unlink($debugFile);
 	}
 
-	/* Dump any output we have */
+	
+
+
+/*  Dump any output we have  */
+
+
+
 	if ($gallery->getDebug()) {
 	    $gallery->debug("Regular Output:");
 	    foreach ($results as $line) {

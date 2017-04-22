@@ -48,7 +48,13 @@ function smarty_modifier_markup($text)
             list ($ret, $defaultMarkupType) =
             GalleryCoreApi::getPluginParameter('module', 'core', 'misc.markup');
             if ($ret) {
-            /* This code is used by the UI -- we can't return an error. Choose something safe */
+            
+
+
+/*  This code is used by the UI -- we can't return an error. Choose something safe  */
+
+
+
                 $defaultMarkupType = 'none';
             }
             GalleryDataCache::put($cacheKey, $defaultMarkupType);
@@ -111,7 +117,13 @@ class GalleryBbcodeMarkupParser
         $this->_bbcode = new StringParser_BBCode();
         $this->_bbcode->setGlobalCaseSensitive(false);
 
-    /* Convert line breaks everywhere */
+    
+
+
+/*  Convert line breaks everywhere  */
+
+
+
         $this->_bbcode->addParser(
             array('block', 'inline', 'link', 'listitem', 'list'),
             array($this, 'convertLineBreaks')
@@ -124,16 +136,40 @@ class GalleryBbcodeMarkupParser
 	 *			     array('block', 'inline', 'link', 'listitem'));
 	 */
 
-    /* Convert line endings */
+    
+
+
+/*  Convert line endings  */
+
+
+
         $this->_bbcode->addParser(array('block', 'inline', 'link', 'listitem'), 'nl2br');
 
-    /* Strip last line break in list items */
+    
+
+
+/*  Strip last line break in list items  */
+
+
+
         $this->_bbcode->addParser(array('listitem'), array($this, 'stripLastLineBreak'));
 
-    /* Strip contents in list elements */
+    
+
+
+/*  Strip contents in list elements  */
+
+
+
         $this->_bbcode->addParser(array('list'), array($this, 'stripContents'));
 
-    /* [b], [i] */
+    
+
+
+/*  [b], [i]  */
+
+
+
         $this->_bbcode->addCode(
             'b',
             'simple_replace',
@@ -154,7 +190,13 @@ class GalleryBbcodeMarkupParser
             array()
         );
 
-    /* [url]http://...[/url], [url=http://...]Text[/url] */
+    
+
+
+/*  [url]http://...[/url], [url=http://...]Text[/url]  */
+
+
+
         $this->_bbcode->addCode(
             'url',
             'usecontent?',
@@ -165,7 +207,13 @@ class GalleryBbcodeMarkupParser
             array('link')
         );
 
-    /* [color=...]Text[/color] */
+    
+
+
+/*  [color=...]Text[/color]  */
+
+
+
         $this->_bbcode->addCode(
             'color',
             'callback_replace',
@@ -176,7 +224,13 @@ class GalleryBbcodeMarkupParser
             array()
         );
 
-    /* [img]http://...[/img] */
+    
+
+
+/*  [img]http://...[/img]  */
+
+
+
         $this->_bbcode->addCode(
             'img',
             'usecontent',
@@ -187,7 +241,13 @@ class GalleryBbcodeMarkupParser
             array()
         );
 
-    /* [list] [*]Element [/list] */
+    
+
+
+/*  [list] [*]Element [/list]  */
+
+
+
         $this->_bbcode->addCode(
             'list',
             'simple_replace',
@@ -217,20 +277,50 @@ class GalleryBbcodeMarkupParser
     function url($action, $attributes, $content, $params, &$node_object)
     {
         if ($action == 'validate') {
-            /* The code is like [url]http://.../[/url] */
+            
+
+
+/*  The code is like [url]http://.../[/url]  */
+
+
+
             if (!isset($attributes['default'])) {
                 return preg_match('#^(https?|ftp|mailto):|^/#', $content);
             } else {
-                /* The code is like [url=http://.../]Text[/url] */
+                
+
+
+/*  The code is like [url=http://.../]Text[/url]  */
+
+
+
                 return preg_match('#^(https?|ftp|mailto):|^/#', $attributes['default']);
             }
         } else {
-            /* Output of HTML. */
-            /* The code is like [url]http://.../[/url] */
+            
+
+
+/*  Output of HTML.  */
+
+
+
+            
+
+
+/*  The code is like [url]http://.../[/url]  */
+
+
+
             if (!isset($attributes['default'])) {
                 return '<a href="' . $content . '" rel="nofollow">' . $content . '</a>';
             } else {
-                /* The code is like [url=http://.../]Text[/url] */
+                
+
+
+/*  The code is like [url=http://.../]Text[/url]  */
+
+
+
                 return '<a href="' . $attributes['default'] . '" rel="nofollow">'
                 . $content . '</a>';
             }
@@ -242,10 +332,22 @@ class GalleryBbcodeMarkupParser
         if ($action == 'validate') {
             return preg_match('#^(https?|ftp|mailto):|^/#', $content);
         } else {
-            /* Output of HTML. */
+            
+
+
+/*  Output of HTML.  */
+
+
+
             $size = (isset($attrs['width']) ? ' width="' . (int)$attrs['width'] . '"' : '')
             . (isset($attrs['height']) ? ' height="' . (int)$attrs['height'] . '"' : '');
-            /* Input should have entities already, so no htmlspecialchars here */
+            
+
+
+/*  Input should have entities already, so no htmlspecialchars here  */
+
+
+
             return sprintf('<img src="%s" alt=""%s/>', $content, $size);
         }
     }
@@ -255,7 +357,13 @@ class GalleryBbcodeMarkupParser
         if ($action == 'validate') {
             return !empty($attrs['default']);
         } else {
-            /* Output of HTML. */
+            
+
+
+/*  Output of HTML.  */
+
+
+
             $color = empty($attrs) ? 'bummer' : $attrs['default'];
             return sprintf('<font color="%s">%s</font>', $color, $content);
         }

@@ -131,7 +131,13 @@ class KeywordAlbumSiteAdminView extends GalleryView {
 		}
 	    }
 	} else {
-	    /* Reset theme selection on validation error for theme settings */
+	    
+
+
+/*  Reset theme selection on validation error for theme settings  */
+
+
+
 	    $form['themeId'] = $form['currentThemeId'];
 	}
 
@@ -146,7 +152,13 @@ class KeywordAlbumSiteAdminView extends GalleryView {
 		'key' => $module->translate('Keyword albums'),
 		'none' => $module->translate('None'));
 
-	/* Set up sort order selection list */
+	
+
+
+/*  Set up sort order selection list  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/core/classes/GallerySortInterface_1_2.class');
 	list ($ret, $orderByList, $presortList, $orderDirectionList) =
 	    GallerySortInterface_1_2::getAllSortOrders();
@@ -154,7 +166,13 @@ class KeywordAlbumSiteAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Set up theme selection list */
+	
+
+
+/*  Set up theme selection list  */
+
+
+
 	$themeList = array('' => $module->translate('&laquo; default theme &raquo;'));
 	list ($ret, $themeStatus) = GalleryCoreApi::fetchPluginStatus('theme');
 	if ($ret) {
@@ -177,7 +195,13 @@ class KeywordAlbumSiteAdminView extends GalleryView {
 		'orderDirectionList' => $orderDirectionList,
 		'themeList' => $themeList);
 
-	/* Set up theme settings */
+	
+
+
+/*  Set up theme settings  */
+
+
+
 	list ($ret, $themeSettingsId) =
 	    GalleryCoreApi::getPluginParameter('module', 'keyalbum', 'themeSettingsId');
 	if ($ret) {

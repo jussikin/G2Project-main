@@ -41,7 +41,13 @@ class AdminThemesController extends GalleryController {
 	$themeId = GalleryUtilities::getRequestVariables('themeId');
 
 	if (isset($form['action']['saveDefaults'])) {
-	    /* Do some basic input validation (by whitelisting) */
+	    
+
+
+/*  Do some basic input validation (by whitelisting)  */
+
+
+
 	    GalleryCoreApi::requireOnce('modules/core/classes/GallerySortInterface_1_2.class');
 	    list ($ret, $orderByList, $presortList, $orderDirectionList) =
 		GallerySortInterface_1_2::getAllSortOrders(false);
@@ -81,7 +87,13 @@ class AdminThemesController extends GalleryController {
 		return array($error, null);
 	    }
 
-	    /* Save the values */
+	    
+
+
+/*  Save the values  */
+
+
+
 	    foreach (array('default.orderBy',
 			   'default.orderDirection',
 			   'default.theme',
@@ -100,12 +112,24 @@ class AdminThemesController extends GalleryController {
 		}
 	    }
 
-	    /* Switch to display the theme settings for the default theme if it has changed */
+	    
+
+
+/*  Switch to display the theme settings for the default theme if it has changed  */
+
+
+
 	    if (!empty($form['default']['theme'])) {
 		$themeId = $form['default']['theme'];
 	    }
 
-	    /* Redirect upon success */
+	    
+
+
+/*  Redirect upon success  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminThemes';
 	    $redirect['themeId'] = $themeId;
@@ -132,16 +156,34 @@ class AdminThemesController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Get all the possible settings */
+		
+
+
+/*  Get all the possible settings  */
+
+
+
 		list ($ret, $settings) = $theme->getSettings(null);
 		if ($ret) {
 		    return array($ret, null);
 		}
 
-		/* Validate the settings */
+		
+
+
+/*  Validate the settings  */
+
+
+
 		$validationErrors = $theme->validateSettings($form['key']);
 		if (empty($validationErrors)) {
-		    /* Save any settings that have changed */
+		    
+
+
+/*  Save any settings that have changed  */
+
+
+
 		    foreach ($settings as $setting) {
 			if ($setting['type'] == 'checkbox') {
 			    $value = isset($form['key'][$setting['key']]) ? 1 : 0;
@@ -173,7 +215,13 @@ class AdminThemesController extends GalleryController {
 		    }
 
 		    if (empty($error)) {
-			/* Redirect upon success */
+			
+
+
+/*  Redirect upon success  */
+
+
+
 			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'core.AdminThemes';
 			$redirect['themeId'] = $themeId;
@@ -237,7 +285,13 @@ class AdminThemesView extends GalleryView {
 	    $themeId = $defaultThemeId;
 	}
 
-	/* Load the theme list */
+	
+
+
+/*  Load the theme list  */
+
+
+
 	list ($ret, $themes) = GalleryCoreApi::fetchPluginStatus('theme', true);
 	if ($ret) {
 	    return array($ret, null);
@@ -258,7 +312,13 @@ class AdminThemesView extends GalleryView {
 	    }
 	}
 
-	/* Reload the theme list, which may now be updated because of obsolete modules. */
+	
+
+
+/*  Reload the theme list, which may now be updated because of obsolete modules.  */
+
+
+
 	list ($ret, $themes) = GalleryCoreApi::fetchPluginStatus('theme', true);
 	if ($ret) {
 	    return array($ret, null);
@@ -273,7 +333,13 @@ class AdminThemesView extends GalleryView {
 	    $activeCount += !empty($themes[$id]['active']);
 	}
 
-	/* Transform it to include all the theme data that we want to display */
+	
+
+
+/*  Transform it to include all the theme data that we want to display  */
+
+
+
 	$themeList = array();
 	foreach ($themes as $id => $status) {
 
@@ -282,7 +348,13 @@ class AdminThemesView extends GalleryView {
 		return array($ret, null);
 	    }
 
-	    /* Detect and remove old themes which not even had a setId() in their constructor */
+	    
+
+
+/*  Detect and remove old themes which not even had a setId() in their constructor  */
+
+
+
 	    $getId = $theme->getId();
 	    if (empty($getId)) {
 		unset($themes[$id]);
@@ -371,7 +443,13 @@ class AdminThemesView extends GalleryView {
 	}
 
 	$AdminThemes = array();
-	/* Load up the stored defaults */
+	
+
+
+/*  Load up the stored defaults  */
+
+
+
 	foreach (array('default.orderBy',
 		       'default.orderDirection',
 		       'default.theme',
@@ -404,7 +482,13 @@ class AdminThemesView extends GalleryView {
 	    'true' => $module->translate('Use these settings')
 	    );
 
-	/* Set up our sort order selection list */
+	
+
+
+/*  Set up our sort order selection list  */
+
+
+
 	GalleryCoreApi::requireOnce(
 	    'modules/core/classes/GallerySortInterface_1_2.class');
 	list ($ret, $orderByList, $presortList, $orderDirectionList) =
@@ -419,12 +503,24 @@ class AdminThemesView extends GalleryView {
 	$AdminThemes['themeList'] = $themeList;
 	$AdminThemes['newAlbumsUseDefaultsList'] = $newAlbumsUseDefaultsList;
 
-	/* Load the config settings from the active theme */
+	
+
+
+/*  Load the config settings from the active theme  */
+
+
+
 	list ($ret, $theme) = GalleryCoreApi::loadPlugin('theme', $themeId, false, true);
 	if ($ret) {
 	    if ($ret->getErrorCode()
 		    & (ERROR_PLUGIN_VERSION_MISMATCH | ERROR_BAD_PARAMETER | ERROR_BAD_PLUGIN)) {
-		/* The default theme isn't available. Show a warning, don't load any settings. */
+		
+
+
+/*  The default theme isn't available. Show a warning, don't load any settings.  */
+
+
+
 		$theme = null;
 		$form['error']['themeUnavailable'] = true;
 	    } else {
@@ -474,7 +570,13 @@ class AdminThemesView extends GalleryView {
 	if ($theme && isset($AdminThemes['settings'])) {
 	     foreach ($AdminThemes['settings'] as $setting) {
 		if ($setting['type'] == 'block-list') {
-		    /* Query param is "version".. bump if data format in js changes */
+		    
+
+
+/*  Query param is "version".. bump if data format in js changes  */
+
+
+
 		    $template->javascript('lib/javascript/BlockSelectWidget.js?1');
 		    break;
 		}

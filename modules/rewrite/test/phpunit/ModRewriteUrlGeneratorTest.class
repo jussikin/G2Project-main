@@ -43,7 +43,13 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
 	   return $ret;
 	}
 
-	/* Set up our environment */
+	
+
+
+/*  Set up our environment  */
+
+
+
 	foreach (array('modrewrite.galleryLocation' => '/gallery2/',
 		       'modrewrite.embeddedLocation' => '/cms/') as $key => $value) {
 	    $ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', $key, $value);
@@ -64,7 +70,13 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
     }
 
     function testGenerateUrlOverrideBaseUri() {
-	/* Override the expected URLs, not server-relative, but with relative ones */
+	
+
+
+/*  Override the expected URLs, not server-relative, but with relative ones  */
+
+
+
 	$this->_expectedUrl[0] = 'index.php?page=photos&amp;g2_view=rand164.NonShort'
 	    . '&amp;g2_foo=bar';
 	$this->_expectedUrl[1] = sprintf('d/%d-%d/%s',
@@ -94,7 +106,13 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
 
     function testGetCurrentUrlEmbeddedQueryString() {
 	GalleryDataCache::put('G2_EMBED', 1, true);
-	/* ModRewrite constructs url from baseUri and QUERY_STRING */
+	
+
+
+/*  ModRewrite constructs url from baseUri and QUERY_STRING  */
+
+
+
 	$_SERVER['REQUEST_URI'] = '/not/used';
 	$expectedUrl = 'http://example.com/cms/index.php?mod=gallery2&foo=1&bar=2';
 	$this->_urlGenerator = new $this->_urlGeneratorName();

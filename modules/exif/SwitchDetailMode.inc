@@ -39,7 +39,13 @@ class SwitchDetailModeController extends GalleryController {
 	    $mode = 'summary';
 	}
 
-	/* Store the new mode in the session */
+	
+
+
+/*  Store the new mode in the session  */
+
+
+
 	$session =& $gallery->getSession();
 	$session->put('exif.module.LoadExifInfo.mode', $mode);
 
@@ -89,7 +95,13 @@ class SwitchDetailModeView extends GalleryView {
 	    $mode = 'summary';
 	}
 
-	/* Store the new mode in the session */
+	
+
+
+/*  Store the new mode in the session  */
+
+
+
 	$session->put('exif.module.LoadExifInfo.mode', $mode);
 
 	if (!headers_sent()) {

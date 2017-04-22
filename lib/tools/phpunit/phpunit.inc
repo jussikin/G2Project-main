@@ -97,7 +97,13 @@ if (phpversion() >= '4') {
 		array_shift($traceSource);
 	    }
 	    foreach ($traceSource as $traceEntry) {
-		/* Trace with call_user_func may miss file/line in an entry */
+		
+
+
+/*  Trace with call_user_func may miss file/line in an entry  */
+
+
+
 		$buf = ' <B>in</B> ' . (isset($traceEntry['file']) ? $traceEntry['file'] : '??');
 		if (isset($traceEntry['class']) && isset($traceEntry['function'])) {
 		    $buf .= " ($traceEntry[class]::$traceEntry[function]) ";
@@ -116,7 +122,13 @@ if (phpversion() >= '4') {
 }
 
 class PHPUnitException {
-    /* Emulate a Java exception, sort of... */
+    
+
+
+/*  Emulate a Java exception, sort of...  */
+
+
+
   var $message;
   var $type;
   function PHPUnitException($message, $type = 'FAILURE') {
@@ -244,7 +256,13 @@ class Assert {
   }
 }
 
-class TestCase extends Assert /* implements Test */ {
+class TestCase extends Assert 
+
+
+/*  implements Test  */
+
+
+ {
   /* Defines context for running tests.  Specific context -- such as
      instance variables, global variables, global state -- is defined
      by creating a subclass that specializes the setUp() and
@@ -345,13 +363,25 @@ class TestCase extends Assert /* implements Test */ {
       }
   }
 
-  function setUp() /* expect override */ {
+  function setUp() 
+
+
+/*  expect override  */
+
+
+ {
       //print("TestCase::setUp()<br>\n");
       $this->fLifeCycle['setUp'] = 1;
       return null;
   }
 
-  function tearDown() /* possible override */ {
+  function tearDown() 
+
+
+/*  possible override  */
+
+
+ {
       //print("TestCase::tearDown()<br>\n");
       $this->fLifeCycle['tearDown'] = 1;
       return null;
@@ -360,8 +390,20 @@ class TestCase extends Assert /* implements Test */ {
   ////////////////////////////////////////////////////////////////
 
 
-  function _createResult() /* protected */ {
-    /* override this to use specialized subclass of TestResult */
+  function _createResult() 
+
+
+/*  protected  */
+
+
+ {
+    
+
+
+/*  override this to use specialized subclass of TestResult  */
+
+
+
     return new TestResult;
   }
 
@@ -439,7 +481,13 @@ class TestCase extends Assert /* implements Test */ {
 }
 
 
-class TestSuite /* implements Test */ {
+class TestSuite 
+
+
+/*  implements Test  */
+
+
+ {
   /* Compose a set of Tests (instances of TestCase or TestSuite), and
      run them all. */
   var $fTests = array();
@@ -501,7 +549,13 @@ class TestSuite /* implements Test */ {
   }
 
   function addTest($test) {
-    /* Add TestCase or TestSuite to this TestSuite */
+    
+
+
+/*  Add TestCase or TestSuite to this TestSuite  */
+
+
+
     $this->fTests[] = $test;
   }
 
@@ -561,7 +615,13 @@ class TestFailure {
 
 
 class TestResult {
-  /* Collect the results of running a set of TestCases. */
+  
+
+
+/*  Collect the results of running a set of TestCases.  */
+
+
+
   var $fFailures = array();
   var $fErrors = array();
   var $fRunTests = 0;
@@ -570,7 +630,13 @@ class TestResult {
 
   function TestResult() { }
 
-  function _endTest(&$test) /* protected */ {
+  function _endTest(&$test) 
+
+
+/*  protected  */
+
+
+ {
       /* specialize this for end-of-test action, such as progress
 	 reports  */
   }
@@ -588,7 +654,13 @@ class TestResult {
   }
 
   function run(&$test, $ranges) {
-    /* Run a single TestCase in the context of this TestResult */
+    
+
+
+/*  Run a single TestCase in the context of this TestResult  */
+
+
+
     $count = ++$this->fRunTests;
     $skipFlag = true;
     foreach ($ranges as $tempRange) {
@@ -606,7 +678,13 @@ class TestResult {
 	$test->runBare();
     }
 
-    /* this is where JUnit would catch AssertionFailedError */
+    
+
+
+/*  this is where JUnit would catch AssertionFailedError  */
+
+
+
     $exceptions = $test->getExceptions();
     reset($exceptions);
     while (list($key, $exception) = each($exceptions)) {
@@ -628,12 +706,30 @@ class TestResult {
     return $this->fStop;
   }
 
-  function _startTest($test) /* protected */ {
-      /* specialize this for start-of-test actions */
+  function _startTest($test) 
+
+
+/*  protected  */
+
+
+ {
+      
+
+
+/*  specialize this for start-of-test actions  */
+
+
+
   }
 
   function stop() {
-    /* set indication that the test sequence should halt */
+    
+
+
+/*  set indication that the test sequence should halt  */
+
+
+
     $fStop = true;
   }
 
@@ -650,13 +746,25 @@ class TestResult {
 }
 
 class TextTestResult extends TestResult {
-  /* Specialize TestResult to produce text/html report */
+  
+
+
+/*  Specialize TestResult to produce text/html report  */
+
+
+
   function TextTestResult() {
     $this->TestResult();  // call superclass constructor
   }
 
   function report() {
-    /* report result of test run */
+    
+
+
+/*  report result of test run  */
+
+
+
     $nRun = $this->countTests();
     $nFailures = $this->failureCount();
     $nErrors = $this->errorCount();
@@ -725,7 +833,13 @@ class PrettyTestResult extends TestResult {
 
     var $_totalElapsed = 0;
 
-  /* Specialize TestResult to produce text/html report */
+  
+
+
+/*  Specialize TestResult to produce text/html report  */
+
+
+
   function PrettyTestResult() {
     $this->TestResult();  // call superclass constructor
 	echo "<h2>Test Results</h2>";
@@ -736,7 +850,13 @@ class PrettyTestResult extends TestResult {
 
   function report() {
 	echo "</TABLE>";
-    /* report result of test run */
+    
+
+
+/*  report result of test run  */
+
+
+
     $nRun = $this->countTests();
     $nFailures = $this->countFailures();
 	echo "<h2>Summary</h2>";
@@ -800,7 +920,13 @@ class PrettyTestResult extends TestResult {
 }
 
 class TestRunner {
-  /* Run a suite of tests and report results. */
+  
+
+
+/*  Run a suite of tests and report results.  */
+
+
+
   function run(&$suite, $ranges) {
       $result = new TextTestResult;
       $suite->run($result, $ranges);

@@ -54,7 +54,13 @@ class GalleryItemAttributesHelper_simple {
 		    return null;
 		}
 
-		/* Known search engines don't affect view counts */
+		
+
+
+/*  Known search engines don't affect view counts  */
+
+
+
 		if ($session->isSearchEngineSession()) {
 		    return null;
 		}
@@ -73,14 +79,26 @@ class GalleryItemAttributesHelper_simple {
 	    $lastViewed =& $session->get('core.lastViewed');
 	    if (isset($lastViewed[$itemId])) {
 		if ($elapsed - $lastViewed[$itemId] < 86400) {
-		    /* They viewed it within the last day, so this doesn't count */
+		    
+
+
+/*  They viewed it within the last day, so this doesn't count  */
+
+
+
 		    return null;
 		}
 	    }
 	    $lastViewed[$itemId] = $elapsed;
 	}
 
-	/* Ensure GallerySqlFragment class is loaded by initializing storage */
+	
+
+
+/*  Ensure GallerySqlFragment class is loaded by initializing storage  */
+
+
+
 	$gallery->getStorage();
 	$func = '= [GalleryItemAttributesMap::viewCount] + ?';
 	$ret = GalleryCoreApi::updateMapEntry(
@@ -154,7 +172,13 @@ class GalleryItemAttributesHelper_simple {
 	}
 
 	$result = $searchResults->nextResult();
-	/* DB2 doesn't trim when storing data in a varchar column */
+	
+
+
+/*  DB2 doesn't trim when storing data in a varchar column  */
+
+
+
 	$parentSequence = preg_split('/\//', trim($result[0]), -1, PREG_SPLIT_NO_EMPTY);
 	$result = is_array($parentSequence) ? $parentSequence : array();
 

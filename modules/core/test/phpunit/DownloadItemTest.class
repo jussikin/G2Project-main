@@ -84,7 +84,13 @@ class DownloadItemTest extends GalleryTestCase {
 	    $this->fail('expected error 1, got no error');
 	}
 
-	/* Now add the required permissions to see the item */
+	
+
+
+/*  Now add the required permissions to see the item  */
+
+
+
 	$ret = GalleryCoreApi::addUserPermission($this->_item->getId(), $this->_userId,
 						 'core.view');
 	if ($ret) {
@@ -108,7 +114,13 @@ class DownloadItemTest extends GalleryTestCase {
     }
 
     function testItemPermission() {
-	/* Item needs core.viewSource */
+	
+
+
+/*  Item needs core.viewSource  */
+
+
+
 	$ret = GalleryCoreApi::addUserPermission($this->_item->getId(), $this->_userId,
 						 'core.view');
 	if ($ret) {
@@ -135,7 +147,13 @@ class DownloadItemTest extends GalleryTestCase {
     }
 
     function testPreferredPermission() {
-	/* Preferred needs core.viewSource */
+	
+
+
+/*  Preferred needs core.viewSource  */
+
+
+
 	list ($ret, $derivative) = $this->_createDerivative($this->_item, $this->_item->getId(),
 							    DERIVATIVE_TYPE_IMAGE_PREFERRED);
 	if ($ret) {
@@ -167,7 +185,13 @@ class DownloadItemTest extends GalleryTestCase {
     }
 
     function testResizePermission() {
-	/* Resize needs core.viewResizes */
+	
+
+
+/*  Resize needs core.viewResizes  */
+
+
+
 	list ($ret, $derivative) = $this->_createDerivative($this->_item, $this->_item->getId(),
 							    DERIVATIVE_TYPE_IMAGE_RESIZE);
 	if ($ret) {
@@ -199,7 +223,13 @@ class DownloadItemTest extends GalleryTestCase {
     }
 
     function testThumbnailPermission() {
-	/* Thumbnail needs core.view */
+	
+
+
+/*  Thumbnail needs core.view  */
+
+
+
 	list ($ret, $derivative) = $this->_createDerivative($this->_item, $this->_item->getId(),
 							    DERIVATIVE_TYPE_IMAGE_THUMBNAIL);
 	if ($ret) {
@@ -231,12 +261,24 @@ class DownloadItemTest extends GalleryTestCase {
     }
 
     function testPrintService() {
-	/* Flag in session allows print service to bypass viewResizes/viewSource for set of ids */
+	
+
+
+/*  Flag in session allows print service to bypass viewResizes/viewSource for set of ids  */
+
+
+
 	global $gallery;
 	$session =& $gallery->getSession();
 	$session->put('core.isPrintService', array(2, $this->_item->getId()));
 
-	/* Still need core.view */
+	
+
+
+/*  Still need core.view  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	list ($ret, $output) = $this->_download();
 	$this->assert($ret && $ret->getErrorCode() & ERROR_MISSING_OBJECT, 'expected error 1');
@@ -257,7 +299,13 @@ class DownloadItemTest extends GalleryTestCase {
     }
 
     function testDownloadBogusEntityFailsWithErrorMissingObject() {
-    	/* GalleryUser doesn't implement the required interface (fetchPath, getMimeType) */
+    	
+
+
+/*  GalleryUser doesn't implement the required interface (fetchPath, getMimeType)  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_userId);
 
 	list ($ret, $output) = $this->_download();
@@ -293,7 +341,13 @@ class DownloadItemTest extends GalleryTestCase {
 
 	GalleryUtilities::putRequestVariable('itemId', $entity->getId());
 
-	/* Execute the test and verify that we fail */
+	
+
+
+/*  Execute the test and verify that we fail  */
+
+
+
 	list ($ret, $output) = $this->_download();
 	if ($ret) {
 	    /*
@@ -308,13 +362,25 @@ class DownloadItemTest extends GalleryTestCase {
 	    $this->fail('expected error, got none');
 	}
 
-	/* Now associate the entity directly with a permission */
+	
+
+
+/*  Now associate the entity directly with a permission  */
+
+
+
 	$ret = GalleryCoreApi::addUserPermission($entity->getId(), $this->_userId, 'core.all');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Execute the test and verify that we succeed */
+	
+
+
+/*  Execute the test and verify that we succeed  */
+
+
+
 	list ($ret, $output) = $this->_download();
 	if ($ret) {
 	    return $ret;
@@ -358,14 +424,26 @@ class DownloadItemTestEntity extends GalleryEntity {
 
 function DownloadItemTest_error_handler($errorNumber, $errorString, $file, $line, $context) {
     if ($errorNumber == 2048) {
-    	return; /* E_STRICT */
+    	return; 
+
+
+/*  E_STRICT  */
+
+
+
     }
 
     if (error_reporting() == 0 && strpos($errorString, 'apacheSetenvBroken') !== false) {
 	return;
     }
 
-    /* Else call our default error_handler */
+    
+
+
+/*  Else call our default error_handler  */
+
+
+
     return PHPUnit_error_handler($errorNumber, $errorString, $file, $line, $context);
 }
 ?>

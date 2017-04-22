@@ -140,7 +140,13 @@ class ExifHelperTest extends GalleryTestCase {
 	}
 	$this->assertEquals(2, $verifiedCount);
 
-	/* Make sure there are no duplicates in the list */
+	
+
+
+/*  Make sure there are no duplicates in the list  */
+
+
+
 	$seen = array();
 	for ($i = 0; $i < sizeof($exifData); $i++) {
 	    $title = $exifData[$i]['title'];
@@ -172,7 +178,13 @@ class ExifHelperTest extends GalleryTestCase {
      * Test getting all the EXIF keys
      */
     function testGetExifKeys() {
-	/* There are a bajillion keys.  Do a quick sanity check */
+	
+
+
+/*  There are a bajillion keys.  Do a quick sanity check  */
+
+
+
 	$exifKeys = ExifHelper::getExifKeys();
 	$this->assertEquals(199, sizeof($exifKeys));
 	$this->assert(isset($exifKeys['ImageType']));
@@ -203,7 +215,13 @@ class ExifHelperTest extends GalleryTestCase {
 	$this->assertEquals('Caption, Beschreibung', $data, 'IPTC/Caption mismatch');
 
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'CaptionWriter'));
-	/* Truncated in IPTC data, XMP data is 'CaptionWriter, Verfasser der Beschreibung' */
+	
+
+
+/*  Truncated in IPTC data, XMP data is 'CaptionWriter, Verfasser der Beschreibung'  */
+
+
+
 	$this->assertEquals('CaptionWriter, Verfasser der Bes', $data,
 		'IPTC/CaptionWriter mismatch');
 
@@ -263,7 +281,13 @@ class ExifHelperTest extends GalleryTestCase {
 	$this->assertEquals('CountryName, Land', $data, 'IPTC/CountryName mismatch');
 
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'OriginalTransmissionReference'));
-	/* shortened in IPTC, is 'OriginalTransmissionReference, Uebertragungsreferenz' in XMP */
+	
+
+
+/*  shortened in IPTC, is 'OriginalTransmissionReference, Uebertragungsreferenz' in XMP  */
+
+
+
 	$this->assertEquals('OriginalTransmissionReference, U', $data,
 		'IPTC/OriginalTransmissionReference mismatch');
 
@@ -302,7 +326,13 @@ class ExifHelperTest extends GalleryTestCase {
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'DateCreated'));
 	$this->assertEquals('20050421', $data, 'IPTC/DateCreated mismatch');
 
-	/* Exifer can set a TimeCreated, does the timezone thing wrong */
+	
+
+
+/*  Exifer can set a TimeCreated, does the timezone thing wrong  */
+
+
+
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'TimeCreated'));
 	$this->assertEquals('120000+0000', $data, 'IPTC/TimeCreated mismatch');
     }
@@ -332,7 +362,13 @@ class ExifHelperTest extends GalleryTestCase {
 	$this->assertEquals('Caption: IPTC/Caption', $data, 'IPTC/Caption mismatch');
 
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'CaptionWriter'));
-	/* SHOULD be truncated in IPTC data, IrfanView doesn't respect hat, can we read it? */
+	
+
+
+/*  SHOULD be truncated in IPTC data, IrfanView doesn't respect hat, can we read it?  */
+
+
+
 	$this->assertEquals('Caption writer: IPTC/CaptionWriter, much toooooo looong', $data,
 		'IPTC/CaptionWriter mismatch');
 
@@ -344,14 +380,26 @@ class ExifHelperTest extends GalleryTestCase {
 		'IPTC/SpecialInstructions mismatch');
 
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'Category'));
-	/* IPTC limits this to 3, PS to 2 chars. IrfanView doesn't respect that, can we read it? */
+	
+
+
+/*  IPTC limits this to 3, PS to 2 chars. IrfanView doesn't respect that, can we read it?  */
+
+
+
 	$this->assertEquals('Category: IPTC/Category, muuuch tooo loooooong', $data,
 		'IPTC/Category mismatch');
 
 	$data = ExifHelper::getIptcValue($iptcObj, array('IPTC', 'SupplementalCategories'));
 	$dataArray = explode('; ', $data);
 	$this->assertEquals(3, count($dataArray), 'SupplementalCategories count');
-	/* IPTC limits this to 3, PS to 2 chars. IrfanView doesn't respect that, can we read it? */
+	
+
+
+/*  IPTC limits this to 3, PS to 2 chars. IrfanView doesn't respect that, can we read it?  */
+
+
+
 	$this->assert(in_array('Supplemental categories', $dataArray),
 		'IPTC/SupplementalCategories 0 missing');
 	$this->assert(in_array('IPTC/SupplementalCategories 1', $dataArray),
@@ -424,17 +472,35 @@ class ExifHelperTest extends GalleryTestCase {
 	$this->assertEquals(
 	    'f/2.8', ExifHelper::postProcessValue('ApertureValue', 'f 2.8'));
 
-	/* Check for locale formatting of dates in different input formats. */
+	
+
+
+/*  Check for locale formatting of dates in different input formats.  */
+
+
+
 	$this->assertEquals(
 	    $platform->strftime('%x %X', mktime(14, 18,  7,  4, 11, 2005)),
 	    ExifHelper::postProcessValue('DateTime', '2005-04-11T14:18:07'),
 	    'Mismatch on date without a timezone');
-	/* Check negative and incomplete timezone. */
+	
+
+
+/*  Check negative and incomplete timezone.  */
+
+
+
 	$this->assertEquals(
 	    $platform->strftime('%x %X', mktime(13, 18,  7,  4, 11, 2005)),
 	    ExifHelper::postProcessValue('DateTime', '2005-04-11T14:18:07-01'),
 	    'Mismatch on date with timezone -01');
-	/* Check positive and complete timezone, turn around to next year (happy new year there). */
+	
+
+
+/*  Check positive and complete timezone, turn around to next year (happy new year there).  */
+
+
+
 	$this->assertEquals(
 	    $platform->strftime('%x %X', mktime( 0, 31,  7,  1,  1, 2006)),
 	    ExifHelper::postProcessValue('DateTime', '2005-12-31T22:01:07+02:30'),
@@ -479,7 +545,13 @@ class ExifHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Remove all IPTC values. */
+	
+
+
+/*  Remove all IPTC values.  */
+
+
+
 	array_splice($properties, array_search('IPTC/Caption', $properties), 1);
 	array_splice($properties, array_search('IPTC/CopyrightNotice', $properties), 1);
 	$ret = ExifHelper::setProperties(EXIF_SUMMARY, $properties);
@@ -491,11 +563,23 @@ class ExifHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Make sure they are gone. */
+	
+
+
+/*  Make sure they are gone.  */
+
+
+
 	$this->assert(!in_array('IPTC/Caption', $properties), 'Caption not gone');
 	$this->assert(!in_array('IPTC/CopyrightNotice', $properties), 'CopyrightNotice not gone');
 
-	/* Add them back with the function to test. */
+	
+
+
+/*  Add them back with the function to test.  */
+
+
+
 	$ret = ExifHelper::addDefaultIptcProperties(EXIF_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -506,7 +590,13 @@ class ExifHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Make sure they are back again. */
+	
+
+
+/*  Make sure they are back again.  */
+
+
+
 	$this->assert(in_array('IPTC/Caption', $properties), 'Caption not back');
 	$this->assert(in_array('IPTC/CopyrightNotice', $properties), 'CopyrightNotice not back');
     }
@@ -520,7 +610,13 @@ class ExifHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Remove all IPTC values. */
+	
+
+
+/*  Remove all IPTC values.  */
+
+
+
 	array_splice($properties, array_search('IPTC/Caption', $properties), 1);
 	array_splice($properties, array_search('IPTC/CopyrightNotice', $properties), 1);
 	array_splice($properties, array_search('IPTC/Keywords', $properties), 1);
@@ -534,12 +630,24 @@ class ExifHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Make sure they are gone. */
+	
+
+
+/*  Make sure they are gone.  */
+
+
+
 	$this->assert(!in_array('IPTC/Caption', $properties), 'Caption not gone');
 	$this->assert(!in_array('IPTC/CopyrightNotice', $properties), 'CopyrightNotice not gone');
 	$this->assert(!in_array('IPTC/Keywords', $properties), 'Keywords not gone');
 
-	/* Add them back with the function to test. */
+	
+
+
+/*  Add them back with the function to test.  */
+
+
+
 	$ret = ExifHelper::addDefaultIptcProperties(EXIF_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -550,7 +658,13 @@ class ExifHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Make sure they are back again. */
+	
+
+
+/*  Make sure they are back again.  */
+
+
+
 	$this->assert(in_array('IPTC/Caption', $properties), 'Caption not back');
 	$this->assert(in_array('IPTC/CopyrightNotice', $properties), 'CopyrightNotice not back');
 	$this->assert(in_array('IPTC/Keywords', $properties), 'Keywords not back');

@@ -71,10 +71,22 @@ class AjaxianTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Add in our extra stuff */
+	
+
+
+/*  Add in our extra stuff  */
+
+
+
 	$theme =& $template->getVariableByReference('theme');
 
-	/* From slider */
+	
+
+
+/*  From slider  */
+
+
+
 	list ($ret, $imageWidths, $imageHeights) =
 	    $this->_buildItemList($childIds, $theme['children']);
 	if ($ret) {
@@ -227,7 +239,13 @@ class AjaxianTheme extends GalleryTheme {
 	    }
 	    if (empty($images)) {
 		if (isset($permissions['core.viewSource'])) {
-		    /* Full size; check for preferred copy */
+		    
+
+
+/*  Full size; check for preferred copy  */
+
+
+
 		    if (isset($preferredFullImages[$childId])) {
 			$images[] = $preferredFullImages[$childId];
 		    } else if ($child->canBeViewedInline()) {
@@ -238,7 +256,13 @@ class AjaxianTheme extends GalleryTheme {
 
 	    if (!empty($images)) {
 		$image = $images[0];
-		/* Rebuild derivative if needed so width/height known */
+		
+
+
+/*  Rebuild derivative if needed so width/height known  */
+
+
+
 		if (GalleryUtilities::isA($image, 'GalleryDerivativeImage')
 			&& !($image->getWidth() && $image->getHeight())) {
 		    list ($ret, $image) = GalleryCoreApi::rebuildDerivativeCache($image->getId());

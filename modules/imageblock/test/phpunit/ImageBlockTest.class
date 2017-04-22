@@ -47,7 +47,13 @@ class ImageBlockTest extends GalleryTestCase {
 	}
 	global $gallery;
 
-	/* Register a dummy toolkit and operation */
+	
+
+
+/*  Register a dummy toolkit and operation  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ImageBlockToolkit', 'ImageBlockToolkit',
 	    'modules/imageblock/test/phpunit/ImageBlockTest.class', 'imageblock', null);
@@ -68,7 +74,13 @@ class ImageBlockTest extends GalleryTestCase {
 	$this->_registerEventListener('GalleryEntity::save', $listener);
 	$this->_registerEventListener('GalleryEntity::delete', $listener);
 
-	/* Create a new album and image, set thumbnail and highlight */
+	
+
+
+/*  Create a new album and image, set thumbnail and highlight  */
+
+
+
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -111,7 +123,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Add permission so album/item can appear in dailyImage, monthlyAlbum, etc. */
+	
+
+
+/*  Add permission so album/item can appear in dailyImage, monthlyAlbum, etc.  */
+
+
+
 	list ($ret, $this->_everybodyGroupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
 	if ($ret) {
@@ -165,7 +183,13 @@ class ImageBlockTest extends GalleryTestCase {
 	if ($ret) {
 	    return array($ret, null, null);
 	}
-	/* add thumbnail */
+	
+
+
+/*  add thumbnail  */
+
+
+
 	list ($ret, $thumb) = $this->_addDerivative($item, $item,
 						    DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 150);
 	if ($ret) {
@@ -191,7 +215,13 @@ class ImageBlockTest extends GalleryTestCase {
 	$derivative->setMimeType($src->getMimeType());
 	$derivative->setDerivativeOperations('testoperation|0');
 	if ($size) {
-	    /* Set scaled size: */
+	    
+
+
+/*  Set scaled size:  */
+
+
+
 	    $w = $src->getWidth();
 	    $h = $src->getHeight();
 	    if ($forceSize) {
@@ -209,7 +239,13 @@ class ImageBlockTest extends GalleryTestCase {
 		$derivative->setWidth((int)($size*$w/$h));
 	    }
 	} else {
-	    /* Set rotated size (swap wd/ht): */
+	    
+
+
+/*  Set rotated size (swap wd/ht):  */
+
+
+
 	    $derivative->setWidth($src->getHeight());
 	    $derivative->setHeight($src->getWidth());
 	}
@@ -304,7 +340,13 @@ class ImageBlockTest extends GalleryTestCase {
 	$this->assertBlock($data['ImageBlockData']['blocks'][0], 'A1', false);
 	$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 
-	/* Select more than one recentImage.. should be multiple recent items, not repeats */
+	
+
+
+/*  Select more than one recentImage.. should be multiple recent items, not repeats  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'recentImage|recentImage|recentImage');
 	GalleryUtilities::putRequestVariable('show', 'heading');
 
@@ -333,12 +375,24 @@ class ImageBlockTest extends GalleryTestCase {
 			    $data['ImageBlockData']['blocks'][0]['id'], 'Most recent id');
 	$this->assertEquals($this->_photo2->getId(),
 			    $data['ImageBlockData']['blocks'][1]['id'], '2nd most recent id');
-	/* Imageblock now uses all DataItems instead of just PhotoItems; expect movie not photo3 */
+	
+
+
+/*  Imageblock now uses all DataItems instead of just PhotoItems; expect movie not photo3  */
+
+
+
 	$this->assertEquals($this->_movie->getId(),
 			    $data['ImageBlockData']['blocks'][2]['id'], '3rd most recent=movie');
 	$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 
-	/* Select only from subtree.. */
+	
+
+
+/*  Select only from subtree..  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'recentImage|viewedAlbum');
 	GalleryUtilities::putRequestVariable('show', 'title');
 	GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
@@ -366,7 +420,13 @@ class ImageBlockTest extends GalleryTestCase {
 			    $data['ImageBlockData']['blocks'][0]['id'], 'Photo id');
 	$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 
-	/* Select specific item, scaled full size with link and link target.. */
+	
+
+
+/*  Select specific item, scaled full size with link and link target..  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('show', 'heading|title|views|fullSize');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo->getId());
@@ -410,7 +470,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Select specific item, with max size 250.. should match resize */
+	
+
+
+/*  Select specific item, with max size 250.. should match resize  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo3->getId());
 	GalleryUtilities::putRequestVariable('maxSize', '250');
@@ -431,7 +497,13 @@ class ImageBlockTest extends GalleryTestCase {
 		'Derivative did not match resized image');
 
 
-	/* Select specific item, with max size 300.. should match full size */
+	
+
+
+/*  Select specific item, with max size 300.. should match full size  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo3->getId());
 	GalleryUtilities::putRequestVariable('maxSize', '300');
@@ -451,7 +523,13 @@ class ImageBlockTest extends GalleryTestCase {
 		$data['ImageBlockData']['blocks'][0]['deriv']['id'],
 		'Derivative did not match full size image');
 
-	/* Select specific item, with max size 175.. should match thumb */
+	
+
+
+/*  Select specific item, with max size 175.. should match thumb  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo3->getId());
 	GalleryUtilities::putRequestVariable('maxSize', '175');
@@ -484,7 +562,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Match the resize because the thumbnail will be too small */
+	
+
+
+/*  Match the resize because the thumbnail will be too small  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo3->getId());
 	GalleryUtilities::putRequestVariable('exactSize', '175');
@@ -506,13 +590,25 @@ class ImageBlockTest extends GalleryTestCase {
     }
 
     function testExternalImageBlockExactSizeForAlbumItem() {
-	/* See bug 1730427 */
+	
+
+
+/*  See bug 1730427  */
+
+
+
 	list ($ret, $external) = GalleryView::loadView('imageblock.External');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Precondition: Check for the case where the album's thumb has a chain of source items */
+	
+
+
+/*  Precondition: Check for the case where the album's thumb has a chain of source items  */
+
+
+
 	$albumId = $this->_album->getId();
 	list ($ret, $thumbs) = GalleryCoreApi::fetchThumbnailsByItemIds(array($albumId));
 	if ($ret) {
@@ -573,7 +669,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Match the resize because the thumbnail will be too small */
+	
+
+
+/*  Match the resize because the thumbnail will be too small  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo3->getId());
 	GalleryUtilities::putRequestVariable('exactSize', '400');
@@ -612,7 +714,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Match the resize because the thumbnail will be too small */
+	
+
+
+/*  Match the resize because the thumbnail will be too small  */
+
+
+
 	GalleryUtilities::putRequestVariable('blocks', 'specificItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo3->getId());
 	GalleryUtilities::putRequestVariable('exactSize', '200');
@@ -634,7 +742,13 @@ class ImageBlockTest extends GalleryTestCase {
     }
 
     function testOverrideUserId() {
-	/* Test override userId (used to support guest-preview mode) */
+	
+
+
+/*  Test override userId (used to support guest-preview mode)  */
+
+
+
 	global $gallery;
 	$ret = GalleryCoreApi::removeItemPermissions($this->_photo->getId());
 	if ($ret) {
@@ -666,13 +780,25 @@ class ImageBlockTest extends GalleryTestCase {
 	$this->assertEquals(1, count($data['ImageBlockData']['blocks']), 'One block');
 	$itemId = $this->assertBlock($data['ImageBlockData']['blocks'][0], 1);
 
-	/* Next call should return same id */
+	
+
+
+/*  Next call should return same id  */
+
+
+
 	$data = $this->_doImageBlockCallback('dailyImage');
 	$this->assertEquals(1, count($data['ImageBlockData']['blocks']), 'One block');
 	$nextItemId = $this->assertBlock($data['ImageBlockData']['blocks'][0], 2);
 	$this->assertEquals($itemId, $nextItemId, 'keep same id');
 
-	/* Set invalid id in property to force picking new id */
+	
+
+
+/*  Set invalid id in property to force picking new id  */
+
+
+
 	$now = localtime();
 	$ret = $this->_module->setParameter('monthlyAlbum', '-1|' . $now[4]);
 	if ($ret) {
@@ -684,7 +810,13 @@ class ImageBlockTest extends GalleryTestCase {
 	$itemId = $this->assertBlock($data['ImageBlockData']['blocks'][0], 3);
 	$this->assert($itemId > 0, 'valid id');
 
-	/* Next call should return same id */
+	
+
+
+/*  Next call should return same id  */
+
+
+
 	$data = $this->_doImageBlockCallback('monthlyAlbum');
 	$this->assertEquals(1, count($data['ImageBlockData']['blocks']), 'One block');
 	$nextItemId = $this->assertBlock($data['ImageBlockData']['blocks'][0], 4);
@@ -698,7 +830,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Ensure block will repick if current value is found to no longer be accessible */
+	
+
+
+/*  Ensure block will repick if current value is found to no longer be accessible  */
+
+
+
 	list ($ret, $goodAlbum) = $this->_createRandomAlbum($this->_album->getId());
 	if ($ret) {
 	    return $ret;
@@ -747,7 +885,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    $data['ImageBlockData']['blocks'][0]['id'], 'Album id');
 	$this->assertEquals('modules_imageblock', $data['l10Domain']);
 
-	/* Ensure periodic blocks only pick from publically visible items */
+	
+
+
+/*  Ensure periodic blocks only pick from publically visible items  */
+
+
+
 	$ret = GalleryCoreApi::removeItemPermissions($this->_photo->getId());
 	if ($ret) {
 	    return $ret;
@@ -788,7 +932,13 @@ class ImageBlockTest extends GalleryTestCase {
     }
 
     function testAlbumFullsize() {
-	/* fullSize request for album item should trace back to preferred source of thumbnail */
+	
+
+
+/*  fullSize request for album item should trace back to preferred source of thumbnail  */
+
+
+
 	list ($ret, $external) = GalleryView::loadView('imageblock.External');
 	if ($ret) {
 	    return $ret;
@@ -815,13 +965,25 @@ class ImageBlockTest extends GalleryTestCase {
     }
 
     function testAlbumFullsizePreferred() {
-	/* fullSize request for album item should trace back to preferred source of thumbnail */
+	
+
+
+/*  fullSize request for album item should trace back to preferred source of thumbnail  */
+
+
+
 	list ($ret, $external) = GalleryView::loadView('imageblock.External');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Add preferred derivative for photo, update photo thumbnail source */
+	
+
+
+/*  Add preferred derivative for photo, update photo thumbnail source  */
+
+
+
 	list ($ret, $preferred) = $this->_addDerivative($this->_photo, $this->_photo,
 							DERIVATIVE_TYPE_IMAGE_PREFERRED, 0);
 	if ($ret) {
@@ -853,13 +1015,25 @@ class ImageBlockTest extends GalleryTestCase {
     }
 
     function testPhotoFullsizePreferred() {
-	/* verify we get preferred deriv for fullSize photo */
+	
+
+
+/*  verify we get preferred deriv for fullSize photo  */
+
+
+
 	list ($ret, $external) = GalleryView::loadView('imageblock.External');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Add preferred derivative for photo, update photo thumbnail source */
+	
+
+
+/*  Add preferred derivative for photo, update photo thumbnail source  */
+
+
+
 	list ($ret, $preferred) = $this->_addDerivative($this->_photo, $this->_photo,
 							DERIVATIVE_TYPE_IMAGE_PREFERRED, 0);
 	if ($ret) {
@@ -913,7 +1087,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Prepare the item view counts to make sure it would select the one from the root album */
+	
+
+
+/*  Prepare the item view counts to make sure it would select the one from the root album  */
+
+
+
 	$ret = GalleryCoreApi::setItemViewCount($this->_photo->getId(), 100);
 	if ($ret) {
 	    return $ret;
@@ -923,7 +1103,13 @@ class ImageBlockTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Finally the feature under test */
+	
+
+
+/*  Finally the feature under test  */
+
+
+
 	$gallery->setConfig('defaultAlbumId', $subAlbum->getId());
 	$gallery->setConfig('breadcrumbRootId', $subAlbum->getId());
 
@@ -945,7 +1131,13 @@ class ImageBlockTest extends GalleryTestCase {
 	$template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
 	$template->setVariable('l10Domain', 'modules_imageblock');
 
-	/* Default theme variables */	    
+	
+
+
+/*  Default theme variables  */
+
+
+	    
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
 	$ret = GalleryView::setStandardTemplateVariables($template);
 	if ($ret) {
@@ -965,11 +1157,23 @@ class ImageBlockTest extends GalleryTestCase {
 	    'ImageFrameInterface_1_1', 'ImageBlockTestFrame', 'ImageBlockTestFrame', 'ignored',
 	    'imageblock');
 
-	/* Temporarily allow php suppressed notices (smarty template rendering) */
+	
+
+
+/*  Temporarily allow php suppressed notices (smarty template rendering)  */
+
+
+
 	set_error_handler("ImageBlockTest_error_handler");
 	$_REQUEST['ImageBlockTestFrame'] = '';
 
-	/* Render the block */
+	
+
+
+/*  Render the block  */
+
+
+
 	list ($ret, $blockHtml) = $template->fetch("gallery:$blockTpl");
 	if ($ret) {
 	    return $ret;
@@ -1021,7 +1225,13 @@ class ImageBlockTest extends GalleryTestCase {
 class ImageBlockToolkit extends GalleryToolkit {
     function performOperation($mimeType, $operationName, $sourceFilename,
 			      $destFilename, $parameters, $context=array()) {
-	/* Just copy file and return dummy mime type */
+	
+
+
+/*  Just copy file and return dummy mime type  */
+
+
+
 	global $gallery;
 	if ($sourceFilename != $destFilename) {
 	    $platform =& $gallery->getPlatform();
@@ -1054,7 +1264,13 @@ class ImageBlockDummyGalleryTemplate extends UnitTestTemplate {
     function head() { }
 }
 
-class ImageBlockTestFrame /* extends ImageBlockInterface_1_1 */ {
+class ImageBlockTestFrame 
+
+
+/*  extends ImageBlockInterface_1_1  */
+
+
+ {
     function init(&$template, $frameIds) {
     	$_REQUEST['ImageBlockTestFrame'] = $frameIds;
     }
@@ -1062,13 +1278,25 @@ class ImageBlockTestFrame /* extends ImageBlockInterface_1_1 */ {
     function renderImageFrame($params, $content, $smarty) {}
 }
 
-/* Allow for suppressed php errors */
+
+
+
+/*  Allow for suppressed php errors  */
+
+
+
 function ImageBlockTest_error_handler($errno, $errstr, $errfile, $errline) {
     if (error_reporting() == 0) {
 	return;
     }
 
-    /* Else call our default error_handler */
+    
+
+
+/*  Else call our default error_handler  */
+
+
+
     return PHPUnit_error_handler($errno, $errstr, $errfile, $errline);
 }
 ?>

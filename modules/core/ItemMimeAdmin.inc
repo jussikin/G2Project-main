@@ -57,7 +57,13 @@ class ItemMimeAdminController extends GalleryController {
 		return array($ret, null);
 	    }
 	    $status['deleted'] = $mimeType;
-	} /* else $form['action']['reset'] */
+	} 
+
+
+/*  else $form['action']['reset']  */
+
+
+
 
 	$results = array(
 		'redirect' => array('view' => 'core.SiteAdmin', 'subView' => 'core.ItemMimeAdmin'),

@@ -53,7 +53,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 	    return array($ret, null, null);
 	}
 
-	/* Get dimensions */
+	
+
+
+/*  Get dimensions  */
+
+
+
 	if (isset($context['width'])) {
 	    $width = $context['width'];
 	    $height = $context['height'];
@@ -75,7 +81,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 	}
 	$subContext = array('width' => $width, 'height' => $height);
 
-	/* Try to crop/fit according to param, but fallback to other based on toolkit support */
+	
+
+
+/*  Try to crop/fit according to param, but fallback to other based on toolkit support  */
+
+
+
 	if ($width != $height) {
 	    for ($i = 0; $i < 2; $i++) {
 		$operation = ($square['mode'] == 'fit') ? 'composite' : 'crop';
@@ -92,7 +104,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 	}
 
 	if ($width != $height && $square['mode'] == 'crop') {
-	    /* Crop to square */
+	    
+
+
+/*  Crop to square  */
+
+
+
 	    if (!isset($toolkit)) {
 		return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__,
 						  "crop $mimeType"), null, null);
@@ -117,7 +135,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 	}
 
 	if ($subContext['width'] > $parameters[0] || $subContext['height'] > $parameters[0]) {
-	    /* Scale to thumb size */
+	    
+
+
+/*  Scale to thumb size  */
+
+
+
 	    list ($ret, $toolkit) = $this->_getThumbnailToolkit($mimeType);
 	    if ($ret) {
 		return array($ret, null, null);
@@ -133,10 +157,22 @@ class SquareThumbToolkit extends GalleryToolkit {
 	}
 
 	if ($subContext['width'] != $subContext['height'] && $square['mode'] == 'fit') {
-	    /* Fit to square */
+	    
+
+
+/*  Fit to square  */
+
+
+
 	    $size = max($subContext['width'], $subContext['height']);
 
-	    /* Write PPM file with background color and convert to jpeg */
+	    
+
+
+/*  Write PPM file with background color and convert to jpeg  */
+
+
+
 	    list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation('image/x-portable-pixmap',
 									  'convert-to-image/jpeg');
 	    if ($ret) {
@@ -161,7 +197,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 			     null, null);
 	    }
 	    $platform->fwrite($fh, "P6\n$size $size\n255\n");
-	    /* Convert RGB hex string to 3 binary bytes */
+	    
+
+
+/*  Convert RGB hex string to 3 binary bytes  */
+
+
+
 	    $row = str_repeat(chr(hexdec(substr($square['color'], 0, 2))) .
 			      chr(hexdec(substr($square['color'], 2, 2))) .
 			      chr(hexdec(substr($square['color'], 4, 2))), $size);
@@ -177,7 +219,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 		return array($ret, null, null);
 	    }
 
-	    /* Overlay thumbnail image on square background */
+	    
+
+
+/*  Overlay thumbnail image on square background  */
+
+
+
 	    list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($mimeType, 'composite');
 	    if ($ret) {
 		@$platform->unlink($tmpFilename);
@@ -202,7 +250,13 @@ class SquareThumbToolkit extends GalleryToolkit {
 	}
 
 	if ($sourceFilename != $destFilename) {
-	    /* If no work was done (small image, already square) then just copy original */
+	    
+
+
+/*  If no work was done (small image, already square) then just copy original  */
+
+
+
 	    if (!$platform->copy($sourceFilename, $destFilename)) {
 		return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE),
 			     null, null);

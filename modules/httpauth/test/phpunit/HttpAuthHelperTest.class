@@ -41,11 +41,23 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
 
-	/* Mock activate the rewrite module */
+	
+
+
+/*  Mock activate the rewrite module  */
+
+
+
 	$moduleStatus = array('rewrite' => array('active' => true));
 	GalleryDataCache::put('GalleryPluginHelper::fetchPluginList(module)', $moduleStatus);
 
-	/* Mock preGallery rewrite parser.  Mock activate HTTP auth rewrite rules. */
+	
+
+
+/*  Mock preGallery rewrite parser.  Mock activate HTTP auth rewrite rules.  */
+
+
+
 	$this->_parserType =& HttpAuthHelperTestRewriteApi::_getParserType();
 	$this->_parserType = 'preGallery';
 	$this->_activeRules =& HttpAuthHelperTestRewriteApi::_fetchActiveRulesForModule('httpauth');
@@ -55,7 +67,13 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	    'RewriteApi', 'HttpAuthHelperTestRewriteApi', 'HttpAuthHelperTestRewriteApi',
 	    'modules/httpauth/test/phpunit/HttpAuthHelperTest.class', 'test');
 
-	/* Define HTTP auth works request */
+	
+
+
+/*  Define HTTP auth works request  */
+
+
+
 	$this->_httpAuthWorksRequest = 'GET ' . $urlGenerator->generateUrl(
 		array('view' => 'httpauth.HttpAuthWorks'),
 		array('forceServerRelativeUrl' => true,
@@ -64,7 +82,13 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	    . 'Authorization: Basic ' . base64_encode('USERNAME:PASSWORD') . "\r\n"
 	    . "\r\n";
 
-	/* Define success and failure responses */
+	
+
+
+/*  Define success and failure responses  */
+
+
+
 	$this->_accessAuthorizationResponse = implode("\r\n", array(
 		'HTTP/1.1 200 OK',
 		'Date: Mon, 24 Nov 2003 05:40:03 GMT',
@@ -86,7 +110,13 @@ class HttpAuthHelperTest extends GalleryTestCase {
 		''))
 		. "\n\n\n\n";
 
-	/* Use HttpAuthHelperTestPlatform */
+	
+
+
+/*  Use HttpAuthHelperTestPlatform  */
+
+
+
 	$this->_platform = new HttpAuthHelperTestPlatform();
 	$this->_platform->_messages[$this->_httpAuthWorksRequest] =
 	    $this->_accessAuthorizationResponse;
@@ -97,7 +127,13 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Configure plugin */
+	
+
+
+/*  Configure plugin  */
+
+
+
 	foreach (array('httpAuthPlugin' => true, 'regexAuthPlugin' => true,
 		       'authtypePattern' => '//', 'usernameReplace' => '$2',
 		       'usernamePattern' => '/^(.+\\\\)?([^\\\\@]+)(@.+)?$/',
@@ -109,7 +145,13 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	    }
 	}
 
-	/* Create test user */
+	
+
+
+/*  Create test user  */
+
+
+
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -123,11 +165,23 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	}
 	$this->assert(isset($this->_authInterface), 'Could not instantiate auth interface.');
 
-	/* Use HttpAuthModuleTestPhpVm */
+	
+
+
+/*  Use HttpAuthModuleTestPhpVm  */
+
+
+
 	$this->_phpVm = new HttpAuthHelperTestPhpVm();
 	$gallery->_phpVm =& $this->_phpVm;
 
-	/* Clear response headers */
+	
+
+
+/*  Clear response headers  */
+
+
+
 	$this->_headers =& GalleryUtilities::_getResponseHeaders();
 	$this->_headers = array();
 
@@ -149,7 +203,13 @@ class HttpAuthHelperTest extends GalleryTestCase {
 	}
 
 	if (!empty($this->_resetFactory)) {    
-	    /* After the plugin parameters have been reset, reset the factory as well */
+	    
+
+
+/*  After the plugin parameters have been reset, reset the factory as well  */
+
+
+
 	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'httpauth');
 	    if ($ret) {
 		return $ret;
@@ -713,7 +773,13 @@ class HttpAuthHelperTestPlatform extends GalleryPlatform {
 
 class HttpAuthHelperTestPhpVm extends GalleryPhpVm {
     function header($header, $replace=null) {
-	/* Avoid modifying actual header information */
+	
+
+
+/*  Avoid modifying actual header information  */
+
+
+
     }
 }
 

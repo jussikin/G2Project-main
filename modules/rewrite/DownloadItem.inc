@@ -65,7 +65,13 @@ class DownloadItemView extends GalleryView {
 	}
 
     	if (!method_exists($image, 'fetchPath') || !method_exists($image, 'getMimeType')) {
-	    /* Avoid information disclosure for bogus entities by acting as if it didn't exist */
+	    
+
+
+/*  Avoid information disclosure for bogus entities by acting as if it didn't exist  */
+
+
+
 	    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	}
 
@@ -142,9 +148,21 @@ class DownloadItemView extends GalleryView {
 	    $itemIdForPermission = $item->getParentId();
 	}
 
-	/* Make sure we have permission */
+	
+
+
+/*  Make sure we have permission  */
+
+
+
 	if (($ids = $session->get('core.isPrintService')) && in_array($item->getId(), $ids)) {
-	    /* Print services only need core.view to get access to full size version of photos */
+	    
+
+
+/*  Print services only need core.view to get access to full size version of photos  */
+
+
+
 	    $permission = 'core.view';
 	} else {
 	    $permission = 'core.viewSource';
@@ -157,12 +175,24 @@ class DownloadItemView extends GalleryView {
 		$permission = 'core.viewResizes';
 		break;
 
-		/* DERIVATIVE_TYPE_IMAGE_PREFERRED uses core.viewSource */
+		
+
+
+/*  DERIVATIVE_TYPE_IMAGE_PREFERRED uses core.viewSource  */
+
+
+
 	    }
 	}
 	$ret = GalleryCoreApi::assertHasItemPermission($itemIdForPermission, $permission);
 	if ($ret) {
-	    /* Avoid information disclosure */
+	    
+
+
+/*  Avoid information disclosure  */
+
+
+
 	    if ($ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
 	    	if ($permission != 'core.view') {
 		    list ($ret2, $hasPermission) =

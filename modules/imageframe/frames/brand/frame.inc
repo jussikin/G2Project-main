@@ -1,15 +1,39 @@
-<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
-  /* Contributed by: floridave */
+<?php 
+
+
+/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
+
+
+
+  
+
+
+/*  Contributed by: floridave  */
+
+
+
 $frameData = array(
 
 'name' => $gallery->i18n('Branded Wood'),
 
-/* Top Left */
+
+
+
+/*  Top Left  */
+
+
+
 'imageTL' => 'TL.jpg',
 'widthTL' => 25,
 'heightTL' => 25,
 
-/* Top */
+
+
+
+/*  Top  */
+
+
+
 'imageTTL' => 'TTL.jpg',
 'widthTTL' => 35,
 
@@ -19,12 +43,24 @@ $frameData = array(
 'imageTTR' => 'TTR.jpg',
 'widthTTR' => 35,
 
-/* Top Right */
+
+
+
+/*  Top Right  */
+
+
+
 'imageTR' => 'TR.jpg',
 'widthTR' => 25,
 'heightTR' => 25,
 
-/* Left */
+
+
+
+/*  Left  */
+
+
+
 'imageLLT' => 'LLT.jpg',
 'heightLLT' => 35,
 
@@ -34,7 +70,13 @@ $frameData = array(
 'imageLLB' => 'LLB.jpg',
 'heightLLB' => 35,
 
-/* Right */
+
+
+
+/*  Right  */
+
+
+
 'imageRRT' => 'RRT.jpg',
 'heightRRT' => 35,
 
@@ -44,12 +86,24 @@ $frameData = array(
 'imageRRB' => 'RRB.jpg',
 'heightRRB' => 35,
 
-/* Bottom Left */
+
+
+
+/*  Bottom Left  */
+
+
+
 'imageBL' => 'BL.jpg',
 'widthBL' => 25,
 'heightBL' => 25,
 
-/* Bottom */
+
+
+
+/*  Bottom  */
+
+
+
 'imageBBL' => 'BBL.jpg',
 'widthBBL' => 35,
 
@@ -59,7 +113,13 @@ $frameData = array(
 'imageBBR' => 'BBR.jpg',
 'widthBBR' => 35,
 
-/* Bottom Right */
+
+
+
+/*  Bottom Right  */
+
+
+
 'imageBR' => 'BR.jpg',
 'widthBR' => 25,
 'heightBR' => 25

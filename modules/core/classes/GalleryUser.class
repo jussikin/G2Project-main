@@ -135,7 +135,13 @@ class GalleryUser extends GalleryEntity {
 	  [GalleryUser::userName] = ?
 	';
 
-	/* Check to see if we have a collision */
+	
+
+
+/*  Check to see if we have a collision  */
+
+
+
 	list ($ret, $results) =
 	    $gallery->search($query, array($userName),
 			     array('limit' => array('count' => 1)));
@@ -172,13 +178,25 @@ class GalleryUser extends GalleryEntity {
     function isCorrectPassword($password) {
 	$valid = $this->getHashedPassword();
 	$salt = substr($valid, 0, 4);
-	/* Support both old (G1 thru 1.4.0; G2 thru alpha-4) and new password schemes: */
+	
+
+
+/*  Support both old (G1 thru 1.4.0; G2 thru alpha-4) and new password schemes:  */
+
+
+
 	$guess = (strlen($valid) == 32) ? md5($password) : ($salt . md5($salt . $password));
 	if (!strcmp($guess, $valid)) {
 	    return true;
 	}
 
-	/* Passwords with <&"> created by G2 prior to 2.1 were hashed with entities */
+	
+
+
+/*  Passwords with <&"> created by G2 prior to 2.1 were hashed with entities  */
+
+
+
 	$sanitizedPassword = $password;
 	GalleryUtilities::sanitizeInputValues($sanitizedPassword, false);
 	$guess = (strlen($valid) == 32) ? md5($sanitizedPassword)
@@ -187,7 +205,13 @@ class GalleryUser extends GalleryEntity {
 	    return true;
 	}
 
-	/* Also support hashes generated using PHPASS, WHIRLPOOL. RIPEMD, TIGER and SHA for interoperability with other applications */
+	
+
+
+/*  Also support hashes generated using PHPASS, WHIRLPOOL. RIPEMD, TIGER and SHA for interoperability with other applications  */
+
+
+
 	if (strlen($valid) == 32) {
 		$guess = hash('ripemd128', $password);
 		if (!strcmp($guess, $valid)) {
@@ -296,7 +320,13 @@ class GalleryUser extends GalleryEntity {
 	}
 
 	if ($isNew) {
-	    /* Add her to the various groups */
+	    
+
+
+/*  Add her to the various groups  */
+
+
+
 	    foreach (array('id.allUserGroup', 'id.everybodyGroup') as $groupKey) {
 		list ($ret, $groupId) =
 		    GalleryCoreApi::getPluginParameter('module', 'core', $groupKey);
@@ -329,7 +359,13 @@ class GalleryUser extends GalleryEntity {
 					 'You cannot delete the active user!');
 	}
 
-	/* Don't allow deleting the guest user */
+	
+
+
+/*  Don't allow deleting the guest user  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -346,7 +382,13 @@ class GalleryUser extends GalleryEntity {
 	 * for 100% data integrity.  If remapOwner() has been called before, as it is the case with
 	 * the AdminDeleteUser controller, this 2nd call to remapOwner() does exactly nothing.
 	 */
-	/* Check if activeUser is Site Admin, if not, get any of the Site Admins */
+	
+
+
+/*  Check if activeUser is Site Admin, if not, get any of the Site Admins  */
+
+
+
 	list ($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
 	if ($ret) {
 	    return $ret;
@@ -368,32 +410,62 @@ class GalleryUser extends GalleryEntity {
 	    }
 	    $adminUsers = array_keys($adminUsers);
 	    if ($adminUsers[0] == $this->getId() && count($adminUsers) == 1) {
-		/* Block attempt to delete the only site admin */
+		
+
+
+/*  Block attempt to delete the only site admin  */
+
+
+
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	    }
 	    $newOwnerId = $adminUsers[0] != $this->getId() ? $adminUsers[0] : $adminUsers[1];
 	}
 
-	/* Now remap the owner of all of his items */
+	
+
+
+/*  Now remap the owner of all of his items  */
+
+
+
 	$ret = GalleryCoreApi::remapOwnerId($this->getId(), $newOwnerId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Delete all of his permissions from the permissions map table */
+	
+
+
+/*  Delete all of his permissions from the permissions map table  */
+
+
+
 	$ret = GalleryCoreApi::removeMapEntry(
 	    'GalleryAccessMap', array('userOrGroupId' => $this->getId()));
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* And remove him from all groups he was a member of */
+	
+
+
+/*  And remove him from all groups he was a member of  */
+
+
+
 	$ret = GalleryCoreApi::removeUserFromAllGroups($this->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* And finally delete the user from the database */
+	
+
+
+/*  And finally delete the user from the database  */
+
+
+
 	$ret = parent::delete();
 	if ($ret) {
 	    return $ret;

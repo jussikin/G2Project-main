@@ -31,7 +31,13 @@ class PathInfoHelper {
      * @see RewriteParser::saveActiveRules
      */
     static function saveActiveRules($parser, $activeRules=null, $upgradeModule=null) {
-	/* By default we use the rules we've already got */
+	
+
+
+/*  By default we use the rules we've already got  */
+
+
+
 	if (is_null($activeRules)) {
 	    list($ret, $activeRules) = GalleryCoreApi::getPluginParameter(
 		'module', 'rewrite', 'activeRules');
@@ -59,7 +65,13 @@ class PathInfoHelper {
 	    return array($ret, null, null);
 	}
 
-	/* Finally, save the new rules */
+	
+
+
+/*  Finally, save the new rules  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter(
 	    'module', 'rewrite', 'shortUrls', serialize($shortUrls));
 	if ($ret) {

@@ -42,7 +42,13 @@ class FinishLogoutView extends GalleryView {
 	}
 
 	if ($isAnonymous) {
-	    /* Use an absolute return URI to remove user:pass again after the logout */
+	    
+
+
+/*  Use an absolute return URI to remove user:pass again after the logout  */
+
+
+
 	    $url = $urlGenerator->generateUrl(array('view' => GALLERY_DEFAULT_VIEW),
 						    array('forceFullUrl' => true));
 

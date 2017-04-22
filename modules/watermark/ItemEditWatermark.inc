@@ -190,7 +190,13 @@ class ItemEditWatermark extends ItemEditPlugin {
 	    $ids[] = $derivative->getId();
 	}
 
-	/* Lock them all */
+	
+
+
+/*  Lock them all  */
+
+
+
 	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($ids);
 	if ($ret) {
 	    return $ret;
@@ -250,7 +256,13 @@ class ItemEditWatermark extends ItemEditPlugin {
      * @see ItemEditPlugin::loadTemplate
      */
     function loadTemplate(&$template, &$form, $item, $thumbnail) {
-	/* Load up all watermarks */
+	
+
+
+/*  Load up all watermarks  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 	list ($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 	if ($ret) {
@@ -260,7 +272,13 @@ class ItemEditWatermark extends ItemEditPlugin {
 	    $watermarks[$watermarkId] = (array)$watermarks[$watermarkId];
 	}
 
-	/* Grab the smallest derivative that's greater than 400px on a side */
+	
+
+
+/*  Grab the smallest derivative that's greater than 400px on a side  */
+
+
+
 	$itemId = $item->getId();
 	if (GalleryUtilities::isA($item, 'GalleryDataItem')) {
 	    $displayImage = $item;
@@ -280,11 +298,23 @@ class ItemEditWatermark extends ItemEditPlugin {
 	}
 
 	if ($form['formName'] != 'ItemEditWatermark') {
-	    /* First time around, reset the form */
+	    
+
+
+/*  First time around, reset the form  */
+
+
+
 	    $form['formName'] = 'ItemEditWatermark';
 
 	    if (!empty($watermarks) && GalleryUtilities::isA($item, 'GalleryDataItem')) {
-		/* Get the current watermark from any of the derivatives */
+		
+
+
+/*  Get the current watermark from any of the derivatives  */
+
+
+
 		foreach ($derivatives as $derivative) {
 		    $ops = $derivative->getPostFilterOperations();
 		    if (preg_match('{composite\|plugins_data/modules/watermark/([^;]*)}',
@@ -348,7 +378,13 @@ class ItemEditWatermark extends ItemEditPlugin {
 	    return false;
 	}
 	if ($params['forceDefaultWatermark'] && !empty($params['defaultWatermarkId'])) {
-	    /* Only Site Admins can edit when a single watermark is enforced */
+	    
+
+
+/*  Only Site Admins can edit when a single watermark is enforced  */
+
+
+
 	    list ($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
 	    if ($ret || !$isAdmin) {
 		return false;
@@ -356,7 +392,13 @@ class ItemEditWatermark extends ItemEditPlugin {
 	}
 
 	if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-	    $mimeType = 'image/jpeg'; /* Just check common type to show tab for albums */
+	    $mimeType = 'image/jpeg'; 
+
+
+/*  Just check common type to show tab for albums  */
+
+
+
 	} else if (GalleryUtilities::isA($item, 'GalleryDataItem')) {
 	    $mimeType = $item->getMimeType();
 	} else {
@@ -365,17 +407,35 @@ class ItemEditWatermark extends ItemEditPlugin {
 
 	list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($mimeType, 'composite');
 	if ($ret) {
-	    return false; /* Swallow the error for now */
+	    return false; 
+
+
+/*  Swallow the error for now  */
+
+
+
 	}
 	if (isset($toolkit)) {
 	    return true;
 	}
 
-	/* Ok we have no composite for the item .. but maybe we do for its preferred? */
+	
+
+
+/*  Ok we have no composite for the item .. but maybe we do for its preferred?  */
+
+
+
 	list ($ret, $preferredTable) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
 	if ($ret) {
-	    return false; /* Swallow the error for now */
+	    return false; 
+
+
+/*  Swallow the error for now  */
+
+
+
 	}
 
 	if (!empty($preferredTable[$item->getId()])) {
@@ -383,7 +443,13 @@ class ItemEditWatermark extends ItemEditPlugin {
 	    list ($ret, $toolkit) =
 		GalleryCoreApi::getToolkitByOperation($preferred->getMimeType(), 'composite');
 	    if ($ret) {
-		return false; /* Swallow the error for now */
+		return false; 
+
+
+/*  Swallow the error for now  */
+
+
+
 	    }
 	    if (isset($toolkit)) {
 		return true;

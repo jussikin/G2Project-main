@@ -42,7 +42,13 @@ class GalleryPersistent {
     }
 
     function GalleryPersistent() {
-	/* Initialize our persistent info tracker */
+	
+
+
+/*  Initialize our persistent info tracker  */
+
+
+
 	$this->_persistentStatus['flags'] = 0;
 	$this->_persistentStatus['originalValue'] = array();
     }

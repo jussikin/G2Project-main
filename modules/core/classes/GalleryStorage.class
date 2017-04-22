@@ -26,7 +26,13 @@
  * @version $Revision: 20886 $
  */
 
-/* Require the ADOdb libraries */
+
+
+
+/*  Require the ADOdb libraries  */
+
+
+
 GalleryCoreApi::requireOnce('lib/adodb/adodb.inc.php');
 
 /**
@@ -193,7 +199,13 @@ class GalleryStorage {
 	$this->_isEmptyAllowedForNotNullColumn = true;
 	$this->_entityInfoCache = array();
 
-	/* We use persistent connections if the value is left out, or if it's non empty. */
+	
+
+
+/*  We use persistent connections if the value is left out, or if it's non empty.  */
+
+
+
 	$this->_usePersistentConnections = !isset($config['usePersistentConnections'])
 	    || !empty($config['usePersistentConnections']);
 
@@ -221,12 +233,24 @@ class GalleryStorage {
 	    return array(GalleryCoreApi::error(ERROR_STORAGE_FAILURE), null);
 	}
 
-	/* Turn on debugging in the database connection if Gallery is in debug mode */
+	
+
+
+/*  Turn on debugging in the database connection if Gallery is in debug mode  */
+
+
+
 	if ($gallery->getDebug()) {
 	    $db->debug = true;
 	}
 
-	/* Configure transliteration for COM based DB drivers */
+	
+
+
+/*  Configure transliteration for COM based DB drivers  */
+
+
+
 	if (defined('CP_UTF8')) {
 	    $db->charPage = CP_UTF8;
 	}
@@ -479,7 +503,13 @@ class GalleryStorage {
 
 	$query = $this->_translateQuery($query);
 
-	/* Run it with the right limits and return the results */
+	
+
+
+/*  Run it with the right limits and return the results  */
+
+
+
 	if (!empty($optional['limit'])) {
 	    $count = empty($optional['limit']['count']) ? -1 : $optional['limit']['count'];
 	    $offset = empty($optional['limit']['offset']) ? -1 : $optional['limit']['offset'];
@@ -576,7 +606,13 @@ class GalleryStorage {
 	    }
 	}
 
-	/* Get Map information to check against */
+	
+
+
+/*  Get Map information to check against  */
+
+
+
 	list ($ret, $mapInfo) = $this->describeMap($mapName);
 	if ($ret) {
 	    return array($ret, null);
@@ -584,7 +620,13 @@ class GalleryStorage {
 	list ($tableName, $unused) = $this->_translateTableName($mapName);
 	$data = $selectColumns = $where = $wheredata = $orderBy = array();
 
-	/* SELECT */
+	
+
+
+/*  SELECT  */
+
+
+
 	foreach ($select as $columnName) {
 	    if (!array_key_exists($columnName, $mapInfo)) {
 		break;
@@ -592,7 +634,13 @@ class GalleryStorage {
 	    $selectColumns[] = $this->_translateColumnName($columnName);
 	}
 
-	/* WHERE */
+	
+
+
+/*  WHERE  */
+
+
+
 	foreach ($match as $columnName => $matchValue) {
 	    if (!array_key_exists($columnName, $mapInfo)) {
 		break;
@@ -601,7 +649,13 @@ class GalleryStorage {
 		    $where, $wheredata);
 	}
 
-	/* ORDER BY */
+	
+
+
+/*  ORDER BY  */
+
+
+
 	if (!empty($optional['orderBy'])) {
 	    foreach ($optional['orderBy'] as $columnName => $orderDirection) {
 		if (!array_key_exists($columnName, $mapInfo)) {
@@ -612,7 +666,13 @@ class GalleryStorage {
 	    }
 	}
 
-	/* Check if all parameters are correct */
+	
+
+
+/*  Check if all parameters are correct  */
+
+
+
 	if (empty($selectColumns) || count($selectColumns) != count($select)
 		|| count($where) != count($match)
 		|| (!empty($optional['orderBy'])
@@ -620,7 +680,13 @@ class GalleryStorage {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	/* Generate SQL query */
+	
+
+
+/*  Generate SQL query  */
+
+
+
 	$query = 'SELECT ' . implode(', ', $selectColumns) . ' FROM ' . $tableName;
 	if (!empty($where)) {
 	    $query .= ' WHERE '  . implode(' AND ', $where);
@@ -630,7 +696,13 @@ class GalleryStorage {
 	    $query .= ' ORDER BY ' . implode(', ', $orderBy);
 	}
 
-	/* Run it with the right limits and return the results */
+	
+
+
+/*  Run it with the right limits and return the results  */
+
+
+
 	if (!empty($optional['limit'])) {
 	    $count = empty($optional['limit']['count']) ? -1 : $optional['limit']['count'];
 	    $offset = empty($optional['limit']['offset']) ? -1 : $optional['limit']['offset'];
@@ -851,7 +923,13 @@ class GalleryStorage {
 	}
 
 	if ($this->_isTransactional) {
-	    /* Release any queued locks */
+	    
+
+
+/*  Release any queued locks  */
+
+
+
 	    global $gallery;
 	    $result =& $gallery->getLockSystem(false);
 	    $ret = $result[0];
@@ -906,7 +984,13 @@ class GalleryStorage {
 	}
 
 	if ($this->_isTransactional) {
-	    /* Release any queued locks */
+	    
+
+
+/*  Release any queued locks  */
+
+
+
 	    global $gallery;
 	    $result =& $gallery->getLockSystem(false);
 	    $ret = $result[0];
@@ -1125,7 +1209,13 @@ class GalleryStorage {
      * @access protected
      */
     function _translateQuery($query) {
-	/* Change '[Class::member]' to 'table.column' or 'alias.column' */
+	
+
+
+/*  Change '[Class::member]' to 'table.column' or 'alias.column'  */
+
+
+
 	while (preg_match('#\[([\w_=]*)::([\w_]*)\]#', $query, $regs)) {
 	    $class = $regs[1];
 	    $member = $regs[2];
@@ -1141,7 +1231,13 @@ class GalleryStorage {
 	    }
 	}
 
-	/* Change '[Class]' to 'table' */
+	
+
+
+/*  Change '[Class]' to 'table'  */
+
+
+
 	while (preg_match('#\[([\w_=]*)\]#', $query, $regs)) {
 	    $class = $regs[1];
 	    list ($table, $alias) = $this->_translateTableName($class);
@@ -1150,7 +1246,13 @@ class GalleryStorage {
 	    } else {
 		list ($ret, $as) = $this->getFunctionSql('AS', array());
 		if ($ret) {
-		    /* XXX TODO: propagate this back up as a GalleryStatus */
+		    
+
+
+/*  XXX TODO: propagate this back up as a GalleryStatus  */
+
+
+
 		    return 'QUERY ERROR';
 		}
 		$query = str_replace("[${class}]", "$table $as $alias", $query);
@@ -1195,7 +1297,13 @@ class GalleryStorage {
 	 */
 	$tableName = str_replace('Gallery', '', $tableName);
 
-	/* Other abbreviations to keep table names under Oracle's 30 character limit. */
+	
+
+
+/*  Other abbreviations to keep table names under Oracle's 30 character limit.  */
+
+
+
 	$tableName = str_replace('Preferences', 'Prefs', $tableName);
 	$tableName = str_replace('Toolkit', 'Tk', $tableName);
 	$tableName = str_replace('TkOperation', 'TkOperatn', $tableName);
@@ -1234,10 +1342,22 @@ class GalleryStorage {
     function describeMap($mapName, $tryAllModules=false) {
 	global $gallery;
 
-	/* Note: keep these cache keys in sync with _clearMapMemberCache() */
+	
+
+
+/*  Note: keep these cache keys in sync with _clearMapMemberCache()  */
+
+
+
 	$cacheKey = 'GalleryStorage::describeMap()';
 
-	/* We only cache the results for active modules */
+	
+
+
+/*  We only cache the results for active modules  */
+
+
+
 	if (!$tryAllModules && GalleryDataCache::containsKey($cacheKey)) {
 	    $mapInfo = GalleryDataCache::get($cacheKey);
 	}
@@ -1283,9 +1403,21 @@ class GalleryStorage {
 
 	$isInstallOrUpgrade = empty($session) ? false 
 		: $session->exists('isInstall') || $session->exists('isUpgrade');
-	/* @todo Remove the type constraint from selects and have describeXXX use the same map */
+	
+
+
+/*  @todo Remove the type constraint from selects and have describeXXX use the same map  */
+
+
+
 	$typeInfo = array();
-	/* If this is an install or upgrade force the use all plugins including non-active. */
+	
+
+
+/*  If this is an install or upgrade force the use all plugins including non-active.  */
+
+
+
 	if (!$tryAllModules && !$isInstallOrUpgrade) {
 	    $query = 'SELECT [Schema::info] FROM [GalleryPluginMap], [Schema]
 		       WHERE [GalleryPluginMap::pluginId] = [Schema::pluginId]
@@ -1389,10 +1521,22 @@ class GalleryStorage {
 
 	$type = $memberData['type'];
 	if ($type & STORAGE_TYPE_BOOLEAN) {
-	    /* Convert booleans to 1 : 0 */
+	    
+
+
+/*  Convert booleans to 1 : 0  */
+
+
+
 	    return (int)!empty($value);
 	} else if ($type & STORAGE_TYPE_TIMESTAMP) {
-	    /* Convert timestamps to the database representation */
+	    
+
+
+/*  Convert timestamps to the database representation  */
+
+
+
 	    return $this->_db->DBTimeStamp($value);
 	} else if ($type & STORAGE_TYPE_INTEGER) {
 	    return (int)$value;
@@ -1552,7 +1696,13 @@ class GallerySearchResults {
     function nextResult() {
 	$row = $this->_recordSet->FetchRow();
 	if (!empty($row) && !empty($this->_fieldNames) && !empty($this->_mapInfo)) {
-	    /* Normalize fetched values */
+	    
+
+
+/*  Normalize fetched values  */
+
+
+
 	    global $gallery;
 	    $storage =& $gallery->getStorage();
 	    for ($i = 0; $i < count($row) && $i < count($this->_fieldNames); $i++) {
@@ -1691,7 +1841,13 @@ class MySqlStorage extends GalleryStorage {
 
     function MySqlStorage($config) {
 	$this->GalleryStorage($config);
-	if ($this->_type != 'mysql' /* mysqlt and mysqli are transactional */) {
+	if ($this->_type != 'mysql' 
+
+
+/*  mysqlt and mysqli are transactional  */
+
+
+) {
 	    $this->_isTransactional = true;
 	}
     }
@@ -1708,7 +1864,13 @@ class MySqlStorage extends GalleryStorage {
      * @see GalleryStorage::_setConnectionSettings
      */
     function _setConnectionSettings(&$db) {
-	/* MySQL 4.1.0+ support UTF-8, for details, see: http://drupal.org/node/40515 */
+	
+
+
+/*  MySQL 4.1.0+ support UTF-8, for details, see: http://drupal.org/node/40515  */
+
+
+
 	$this->_serverInfo = ($this->_type == 'mysqli')
 	    ? mysqli_get_server_info($db->_connectionID) : mysql_get_server_info();
 	if ($this->_serverInfo && version_compare($this->_serverInfo, '4.1.0', '>=')) {
@@ -1728,11 +1890,23 @@ class MySqlStorage extends GalleryStorage {
      * @see GalleryStorage::_getSqlReplacements
      */
     function _getSqlReplacements() {
-	/* 3.23.0-4.0.17 used TYPE, 5.1+ only accepts ENGINE, between accepts either */
+	
+
+
+/*  3.23.0-4.0.17 used TYPE, 5.1+ only accepts ENGINE, between accepts either  */
+
+
+
 	$typeKeyword = ($this->_serverInfo && version_compare($this->_serverInfo, '4.0.18', '>='))
 		     ? 'ENGINE' : 'TYPE';
 
-	/* Use InnoDB for transactional tables */
+	
+
+
+/*  Use InnoDB for transactional tables  */
+
+
+
 	$tableType = $this->_isTransactional ? 'InnoDB' : 'MyISAM';
 
 	return array('DB_TABLE_TYPE' => $typeKeyword . '=' . $tableType);
@@ -1828,7 +2002,13 @@ class MySqlStorage extends GalleryStorage {
 	    list ($ret, $this->_db) = $this->_getConnection();
 	}
 	if ($this->_serverInfo && version_compare($this->_serverInfo, '4.1.0', '>=')) {
-	    /* See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html */
+	    
+
+
+/*  See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html  */
+
+
+
 	    $blob = addcslashes($blob, "\000..\037\047\134\177..\377");
 	}
 
@@ -1875,7 +2055,13 @@ class MySqlStorage extends GalleryStorage {
      * @see GalleryStorage::getUniqueId
      */
     function getUniqueId($sequence=DATABASE_SEQUENCE_ID) {
-	/* Make sure we're using a non-transactional connection to avoid duplicating sequence ids */
+	
+
+
+/*  Make sure we're using a non-transactional connection to avoid duplicating sequence ids  */
+
+
+
 	$extras =& $this->_getExtras();
 	list ($ret, $db) = $extras->_getNonTransactionalDatabaseConnection();
 	if ($ret) {

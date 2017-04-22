@@ -70,7 +70,13 @@ class DownloadRegistryFileTest extends GalleryTestCase {
     }
 
     function testGetCharsetFromRequestComparesToSiteDefaultLocale() {
-	/* Ensure it uses the plugin param and not getDefaultLocale() */
+	
+
+
+/*  Ensure it uses the plugin param and not getDefaultLocale()  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'language.useBrowserPref', '1');
 	if ($ret) {
 	    return $ret;

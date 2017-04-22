@@ -145,11 +145,23 @@ class ItemRotateView extends GalleryView {
 	function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	/* itemId is the album that we want to rotate items in */
+	
+
+
+/*  itemId is the album that we want to rotate items in  */
+
+
+
 	list ($itemId, $selectedId, $page) =
 		GalleryUtilities::getRequestVariables('itemId', 'selectedId', 'page');
 	if ($form['formName'] != 'ItemRotate') {
-		/* First time around, load the form with item data */
+		
+
+
+/*  First time around, load the form with item data  */
+
+
+
 		if ($selectedId) {
 		$form['selectedIds'][$selectedId] = true;
 		}
@@ -163,7 +175,13 @@ class ItemRotateView extends GalleryView {
 		return array($ret, null);
 	}
 
-	/* Get all peers that we can edit */
+	
+
+
+/*  Get all peers that we can edit  */
+
+
+
 	list ($ret, $peerIds) =
 		GalleryCoreApi::fetchChildItemIdsWithPermission($itemId, 'core.edit');
 	if ($ret) {
@@ -176,7 +194,13 @@ class ItemRotateView extends GalleryView {
 	if (!empty($peerIds)) {
 		$numPages = ceil(sizeof($peerIds) / $form['numPerPage']);
 		if (empty($page)) {
-		/* determine which page we're on */
+		
+
+
+/*  determine which page we're on  */
+
+
+
 		$page = 1;
 		for ($i = 0; $i < sizeof($peerIds); $i++) {
 			if ($peerIds[$i] == $selectedId) {
@@ -196,7 +220,13 @@ class ItemRotateView extends GalleryView {
 		}
 		}
 
-		/* Add any items with error messages that would otherwise not be shown */
+		
+
+
+/*  Add any items with error messages that would otherwise not be shown  */
+
+
+
 		if (!empty($form['error']['source'])) {
 		foreach ($form['error']['source'] as $id => $tmp) {
 			if (!in_array($id, $peerIds)) {
@@ -206,19 +236,37 @@ class ItemRotateView extends GalleryView {
 		}
 		}
 
-		/* Load all the peers */
+		
+
+
+/*  Load all the peers  */
+
+
+
 		list ($ret, $peerItems) = GalleryCoreApi::loadEntitiesById($peerIds);
 		if ($ret) {
 		return array($ret, null);
 		}
 
-		/* get peer thumbnails and resizes */
+		
+
+
+/*  get peer thumbnails and resizes  */
+
+
+
 		list ($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds($peerIds);
 		if ($ret) {
 		return array($ret, null);
 		}
 
-		/* Build our peers table */
+		
+
+
+/*  Build our peers table  */
+
+
+
 		$peers = array();
 		foreach ($peerItems as $peerItem) {
 		$peers[$peerItem->getId()] = (array)$peerItem;
@@ -230,7 +278,13 @@ class ItemRotateView extends GalleryView {
 		$peers[$peerItem->getId()]['selected'] =
 			isset($form['selectedIds'][$peerItem->getId()]);
 
-		/* While we're at it, attach thumbnails and resizes */
+		
+
+
+/*  While we're at it, attach thumbnails and resizes  */
+
+
+
 		if (isset($derivatives[$peerItem->getId()])) {
 			foreach ($derivatives[$peerItem->getId()] as $derivative) {
 			$type = $derivative->getDerivativeType();
@@ -244,7 +298,13 @@ class ItemRotateView extends GalleryView {
 		}
 		}
 
-		/* Get child counts */
+		
+
+
+/*  Get child counts  */
+
+
+
 		if (!empty($peerTypes['album'])) {
 		list ($ret, $peerDescendentCounts) =
 			GalleryCoreApi::fetchDescendentCounts(array_keys($peerTypes['album']));
@@ -253,25 +313,49 @@ class ItemRotateView extends GalleryView {
 		}
 		}
 
-		/* Get ids of all albums where we can add new data items */
+		
+
+
+/*  Get ids of all albums where we can add new data items  */
+
+
+
 		list ($ret, $albumIds['addDataItem']) =
 		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addDataItem');
 		if ($ret) {
 		return array($ret, null);
 		}
 
-		/* Get ids of all all albums where we can add new album items */
+		
+
+
+/*  Get ids of all all albums where we can add new album items  */
+
+
+
 		list ($ret, $albumIds['addAlbumItem']) =
 		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 		if ($ret) {
 		return array($ret, null);
 		}
 
-		/* Merge them together to get the master list of ids */
+		
+
+
+/*  Merge them together to get the master list of ids  */
+
+
+
 		$albumIds['allIds'] = array_unique(array_merge($albumIds['addDataItem'],
 							$albumIds['addAlbumItem']));
 
-		/* Load all the album entities */
+		
+
+
+/*  Load all the album entities  */
+
+
+
 		list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds['allIds']);
 		if ($ret) {
 		return array($ret, null);

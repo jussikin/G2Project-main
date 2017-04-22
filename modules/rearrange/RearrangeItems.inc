@@ -37,7 +37,13 @@ class RearrangeItemsController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	/* Check permissions */
+	
+
+
+/*  Check permissions  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -52,7 +58,13 @@ class RearrangeItemsController extends GalleryController {
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    /* Verify valid input */
+	    
+
+
+/*  Verify valid input  */
+
+
+
 	    if (count($list) != count($childIds)) {
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
@@ -82,7 +94,13 @@ class RearrangeItemsController extends GalleryController {
 	    }
 
 	    $status['saved'] = 1;
-	} /* else $form['action']['reset'] */
+	} 
+
+
+/*  else $form['action']['reset']  */
+
+
+
 
 	$results['redirect'] = array('view' => 'core.ItemAdmin',
 				     'subView' => 'rearrange.RearrangeItems',
@@ -109,7 +127,13 @@ class RearrangeItemsView extends GalleryView {
 	}
 	$itemId = $item->getId();
 
-	/* Check permissions */
+	
+
+
+/*  Check permissions  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -171,7 +195,13 @@ class RearrangeItemsView extends GalleryView {
 	    $RearrangeItems['maxWidth'] = $maxWidth + 5;
 	    $RearrangeItems['maxHeight'] = $maxHeight + 5;
 
-	    /* See if the album's theme has "rows" and/or "columns" */
+	    
+
+
+/*  See if the album's theme has "rows" and/or "columns"  */
+
+
+
 	    list ($ret, $themeId) = GalleryCoreApi::fetchThemeId($item);
 	    if ($ret) {
 		return array($ret, null);

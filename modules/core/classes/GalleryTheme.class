@@ -85,7 +85,13 @@ class GalleryTheme extends GalleryPlugin {
      * @return boolean true for advanced settings, false for simple
      */
     function isAdvancedSettings() {
-	return false;  /* Default to simple */
+	return false;
+
+
+/*  Default to simple  */
+
+
+
     }
 
     /**
@@ -224,7 +230,13 @@ class GalleryTheme extends GalleryPlugin {
 				'value' => $params['dynamicLinks']);
 	}
 
-	/* ImageFrame settings, if available */
+
+
+
+/*  ImageFrame settings, if available  */
+
+
+
 	list ($ret, $imageframe) = GalleryCoreApi::newFactoryInstance('ImageFrameInterface_1_1');
 	if ($ret) {
 	    return array($ret, null, null);
@@ -270,7 +282,13 @@ class GalleryTheme extends GalleryPlugin {
 	    }
 	}
 
-	/* ColorPack setting, if available */
+
+
+
+/*  ColorPack setting, if available  */
+
+
+
 	list ($ret, $colorpack) = GalleryCoreApi::newFactoryInstance('ColorPackInterface_1_0');
 	if ($ret) {
 	    return array($ret, null, null);
@@ -382,12 +400,24 @@ class GalleryTheme extends GalleryPlugin {
 	     */
 	    $results = array();
 	    if (empty($value) || $value == '[]') {
-		/* success */
+
+
+
+/*  success  */
+
+
+
 	    } else {
 		GalleryCoreApi::requireOnce('lib/JSON/JSON.php');
 		$json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 
-		/* The sanitizer will escape quotes, so unescape them */
+
+
+
+/*  The sanitizer will escape quotes, so unescape them  */
+
+
+
 		$value = str_replace('&quot;', '"', $value);
 
 		$results = $json->decode($value);
@@ -513,7 +543,13 @@ class GalleryTheme extends GalleryPlugin {
 	    return array(null, $redirect);
 	}
 
-	/* Set the default value for all settings that don't have values */
+
+
+
+/*  Set the default value for all settings that don't have values  */
+
+
+
 	list ($ret, $settings) = $this->getSettings();
 	if ($ret) {
 	    return array($ret, null);
@@ -604,7 +640,13 @@ class GalleryTheme extends GalleryPlugin {
 		}
 	    }
 
-	    /* Reactivate myself to perform any activate based tasks like adding new parameters */
+
+
+
+/*  Reactivate myself to perform any activate based tasks like adding new parameters  */
+
+
+
 	    if ($gallery->getDebug()) {
 		$gallery->debug(sprintf('Reactivate %s theme', $this->getId()));
 	    }
@@ -649,7 +691,13 @@ class GalleryTheme extends GalleryPlugin {
 	    $ids[] = $result[0];
 	}
 	if (!empty($ids)) {
-	    /* Reset albums to default theme */
+
+
+
+/*  Reset albums to default theme  */
+
+
+
 	    list ($ret, $defaultTheme) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'default.theme');
 	    if ($ret) {
@@ -678,7 +726,13 @@ class GalleryTheme extends GalleryPlugin {
 	    }
 	}
 
-	/* Remove this plugin */
+
+
+
+/*  Remove this plugin  */
+
+
+
 	$ret = parent::uninstall();
 	if ($ret) {
 	    return $ret;
@@ -700,7 +754,7 @@ class GalleryTheme extends GalleryPlugin {
 	    /*
 	     * Can't deactivate default theme.  UI doesn't offer this option, so we should only
 	     * reach this code if default theme needs to be upgraded.  loadPlugin will see that
-	     * 'upgrade' is returned and jump to the upgrader.  
+	     * 'upgrade' is returned and jump to the upgrader.
 	     * Allow this deactivate if $postDeactivationEvent is false (during
 	     * reactivate)
 	     */
@@ -747,7 +801,13 @@ class GalleryTheme extends GalleryPlugin {
 	$theme['params'] = $params;
 	$theme['useFullScreen'] = !empty($viewResults['useFullScreen']);
 
-	/* Unserialize our blocks and preload them if necessary */
+
+
+
+/*  Unserialize our blocks and preload them if necessary  */
+
+
+
 	$seen = array();
 	foreach ($theme['params'] as $key => $value) {
 	    if (substr($key, -6) != 'Blocks') {
@@ -769,7 +829,13 @@ class GalleryTheme extends GalleryPlugin {
 	}
 
 	if ($this->getId() == 'fallbackTheme') {
-	    /* If theme failed to load then we're done */
+
+
+
+/*  If theme failed to load then we're done  */
+
+
+
 	    $theme['isFallback'] = true;
 	    $theme['fallbackTemplate'] = $viewResults['body'];
 	    return array(null, array('body' => 'modules/core/templates/FallbackTheme.tpl'));
@@ -780,7 +846,13 @@ class GalleryTheme extends GalleryPlugin {
 	    $theme['params']['sidebarBlocks'] = array();
 	}
 
-	/* Load icon pack if available */
+
+
+
+/*  Load icon pack if available  */
+
+
+
 	list ($ret, $iconpack) = GalleryCoreApi::newFactoryInstance('IconsInterface_1_0');
 	if ($ret) {
 	    return array($ret, null);
@@ -792,7 +864,13 @@ class GalleryTheme extends GalleryPlugin {
 	    }
 	}
 
-	/* Load color pack if the theme supports them (and they're available) */
+
+
+
+/*  Load color pack if the theme supports them (and they're available)  */
+
+
+
 	if (!empty($params['colorpack'])) {
 	    list ($ret, $colorpack) = GalleryCoreApi::newFactoryInstance('ColorPackInterface_1_0');
 	    if ($ret) {
@@ -826,11 +904,23 @@ class GalleryTheme extends GalleryPlugin {
 	    $this->_cacheablePage = true;
 	    $session =& $gallery->getSession();
 
-	    /* Albums page or Photo page */
+
+
+
+/*  Albums page or Photo page  */
+
+
+
 	    if ($item->getCanContainChildren()) {
 		$theme['pageType'] = 'album';
 
-		/* If we care about pagination, then figure out the current page and total pages */
+
+
+
+/*  If we care about pagination, then figure out the current page and total pages  */
+
+
+
 		$perPage = $this->getPageSize($params);
 		$page = GalleryUtilities::getRequestVariables('page');
 		if ($perPage == 0) {
@@ -854,13 +944,25 @@ class GalleryTheme extends GalleryPlugin {
 			$page = 1;
 			for ($i = 0; $i < count($childIds); $i++) {
 			    if ($childIds[$i] == $highlightId) {
-				/* Found it */
+
+
+
+/*  Found it  */
+
+
+
 				$page = ceil(($i+1) / $perPage);
 				break;
 			    }
 			}
 
-			/* Redirect to the new page */
+
+
+
+/*  Redirect to the new page  */
+
+
+
 			$redirect = $theme['pageUrl'];
 			if ($page != 1) {
 			    $redirect['page'] = $page;
@@ -872,13 +974,25 @@ class GalleryTheme extends GalleryPlugin {
 		}
 
 		if (isset($theme['allChildIds'])) {
-		    /* Dynamic album has already loaded child ids */
+
+
+
+/*  Dynamic album has already loaded child ids  */
+
+
+
 		    $isDynamicAlbum = true;
 		    $this->_cacheablePage = false;
 		}
 
 		if (!empty($perPage)) {
-		    /* Use the pagination to calculate the child item ids to load */
+
+
+
+/*  Use the pagination to calculate the child item ids to load  */
+
+
+
 		    $start = $perPage * ($page - 1);
 		    if (isset($isDynamicAlbum)) {
 			$childIds = array_slice($theme['allChildIds'], $start, $perPage);
@@ -890,23 +1004,47 @@ class GalleryTheme extends GalleryPlugin {
 			    return array($ret, null);
 			}
 
-			/* Load up our child count so that we can figure out the max pages */
+
+
+
+/*  Load up our child count so that we can figure out the max pages  */
+
+
+
 			$itemId = $item->getId();
 			list ($ret, $childCount) = GalleryCoreApi::fetchChildCounts(
 				array($itemId), $theme['actingUserId']);
 			if ($ret) {
 			    return array($ret, null);
 			}
-			/* $childCount shouldn't be empty; check/fallback here anyway */
+
+
+
+/*  $childCount shouldn't be empty; check/fallback here anyway  */
+
+
+
 			$theme['childCount'] =
 			    isset($childCount[$itemId]) ? $childCount[$itemId] : count($childIds);
 
-			/* Store the total pages in the theme */
+
+
+
+/*  Store the total pages in the theme  */
+
+
+
 			$theme['totalPages'] = ceil($theme['childCount'] / $perPage);
 		    }
 		    $theme['currentPage'] = $page;
 
-		    /* If our page is over the max, redirect the user to the max page */
+
+
+
+/*  If our page is over the max, redirect the user to the max page  */
+
+
+
 		    if ($page > $theme['totalPages'] && $theme['totalPages'] > 0) {
 			$redirect = $theme['pageUrl'];
 			if ($theme['totalPages'] != 1) {
@@ -942,7 +1080,13 @@ class GalleryTheme extends GalleryPlugin {
 		}
 	    }
 
-	    /* Load image frames if the theme supports them (and they're available) */
+
+
+
+/*  Load image frames if the theme supports them (and they're available)  */
+
+
+
 	    if (!empty($params['albumFrame']) ||
 		!empty($params['itemFrame']) ||
 		!empty($params['photoFrame'])) {
@@ -971,7 +1115,13 @@ class GalleryTheme extends GalleryPlugin {
 			}
 		    }
 		} else {
-		    /* Not available; unset params so theme won't try to use imageframe */
+
+
+
+/*  Not available; unset params so theme won't try to use imageframe  */
+
+
+
 		    unset($theme['params']['albumFrame']);
 		    unset($theme['params']['itemFrame']);
 		    unset($theme['params']['photoFrame']);
@@ -980,7 +1130,13 @@ class GalleryTheme extends GalleryPlugin {
 	    break;
 
 	case VIEW_TYPE_PROGRESS_BAR:
-	    /* We only use this for progressbar views (for now) */
+
+
+
+/*  We only use this for progressbar views (for now)  */
+
+
+
 	    $theme['pageType'] = 'progressbar';
 	    list ($ret, $result) = $this->showProgressBarPage($template, $item, $params);
 	    if ($ret) {
@@ -998,7 +1154,13 @@ class GalleryTheme extends GalleryPlugin {
 	    break;
 
 
-	default: /* VIEW_TYPE_MODULE */
+	default:
+
+
+/*  VIEW_TYPE_MODULE  */
+
+
+
 	    $theme['pageType'] = 'module';
 	    $theme['moduleTemplate'] = $viewResults['body'];
 	    $theme['moduleL10Domain'] = $view->getL10Domain();
@@ -1018,7 +1180,13 @@ class GalleryTheme extends GalleryPlugin {
 	if (isset($extractedSidebarBlocks)) {
 	    $templateAdapter =& $gallery->getTemplateAdapter();
 
-	    /* Render the sidebar blocks and save them */
+
+
+
+/*  Render the sidebar blocks and save them  */
+
+
+
 	    foreach ($extractedSidebarBlocks as $block) {
 		$template->setVariable(
 		    'SidebarBlock', array('type' => $block[0], 'params' => $block[1]));
@@ -1460,7 +1628,7 @@ class GalleryTheme extends GalleryPlugin {
 		     * generateUrl(array('href'=>$path)); need full url to avoid any distortion.
 		     * (that later call will actually shorten the URL again if appropriate)
 		     */
-		    $url = $urlGenerator->generateUrl(array('view' => 'core.ItemDeleteJs', 
+		    $url = $urlGenerator->generateUrl(array('view' => 'core.ItemDeleteJs',
 			'lang' => $lang), array('forceDirect' => true, 'forceFullUrl' => true));
 		    $template->javascript($url);
 		    break;
@@ -1489,10 +1657,22 @@ class GalleryTheme extends GalleryPlugin {
 	    }
 
 	    if (empty($load['childItemLinksDetailed'])) {
-		/* We always want detailed links for the current item */
+
+
+
+/*  We always want detailed links for the current item  */
+
+
+
 		$wantsDetailedLinks = array($itemId => 1);
 	    } else {
-		/* We want detailed links for everybody */
+
+
+
+/*  We want detailed links for everybody  */
+
+
+
 		$wantsDetailedLinks = array_flip($allItemIds);
 	    }
 
@@ -1513,7 +1693,13 @@ class GalleryTheme extends GalleryPlugin {
 		}
 
 		if (!$required) {
-		    /* This module doesn't have anything we need.  Don't bother with it */
+
+
+
+/*  This module doesn't have anything we need.  Don't bother with it  */
+
+
+
 		    continue;
 		}
 
@@ -1526,12 +1712,24 @@ class GalleryTheme extends GalleryPlugin {
 		}
 
 		if (isset($load['systemLinks']) && isset($callbacks['getSystemLinks'])) {
-		    /* We don't use the acting user for system links -- it's too confusing */
+
+
+
+/*  We don't use the acting user for system links -- it's too confusing  */
+
+
+
 		    list ($ret, $links) = $module->getSystemLinks();
 		    if ($ret) {
 			return $ret;
 		    }
-		    /* Add URL/moduleId keys */
+
+
+
+/*  Add URL/moduleId keys  */
+
+
+
 		    foreach ($links as $key => $value) {
 			$theme['systemLinks'][$moduleId . '.' . $key] = $value;
 		    }
@@ -1544,7 +1742,13 @@ class GalleryTheme extends GalleryPlugin {
 			return $ret;
 		    }
 
-		    /* Add URL/moduleId keys */
+
+
+
+/*  Add URL/moduleId keys  */
+
+
+
 		    foreach ($links as $id => $list) {
 			foreach ($list as $link) {
 			    $link['moduleId'] = $moduleId;
@@ -1630,7 +1834,13 @@ class GalleryTheme extends GalleryPlugin {
 		$page = 1;
 	    }
 
-	    /* Set up the navigator */
+
+
+
+/*  Set up the navigator  */
+
+
+
 	    $navigator = array();
 	    if ($page > 1) {
 		$navigator['first']['urlParams'] = $navigator['back']['urlParams'] =
@@ -1721,9 +1931,21 @@ class GalleryTheme extends GalleryPlugin {
 		return $ret;
 	    }
 
-	    /* If the user can see resized versions, add those to the list */
+
+
+
+/*  If the user can see resized versions, add those to the list  */
+
+
+
 	    if (isset($permissions['core.viewResizes'])) {
-		/* Load the resizes */
+
+
+
+/*  Load the resizes  */
+
+
+
 		list ($ret, $resizes) = GalleryCoreApi::fetchResizesByItemIds(array($itemId));
 		if ($ret) {
 		    return $ret;
@@ -1731,7 +1953,13 @@ class GalleryTheme extends GalleryPlugin {
 
 		if (!empty($resizes)) {
 		    foreach ($resizes[$itemId] as $resize) {
-			/* Rebuild the derivative if we don't have its dimensions */
+
+
+
+/*  Rebuild the derivative if we don't have its dimensions  */
+
+
+
 			if ($resize->getWidth() == 0 || $resize->getHeight() == 0) {
 			    list ($ret, $resize) =
 				GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent(
@@ -1748,16 +1976,34 @@ class GalleryTheme extends GalleryPlugin {
 		}
 	    }
 
-	    /* If the user can see the full version, add it to the list */
+
+
+
+/*  If the user can see the full version, add it to the list  */
+
+
+
 	    $sourceImage = null;
 	    if (isset($permissions['core.viewSource'])) {
-		/* Add the full version */
+
+
+
+/*  Add the full version  */
+
+
+
 		list ($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array($itemId));
 		if ($ret) {
 		    return $ret;
 		}
 
-		/* Show the preferred item, if it's there */
+
+
+
+/*  Show the preferred item, if it's there  */
+
+
+
 		if (empty($preferred)) {
 		    $sourceImage = (array)$item;
 		    $sourceImage['viewInline'] = $item->canBeViewedInline();
@@ -1771,9 +2017,21 @@ class GalleryTheme extends GalleryPlugin {
 		$sourceImageViewIndex = sizeof($imageViews)-1;
 	    }
 
-	    /* If all else fails, just show the thumbnail */
+
+
+
+/*  If all else fails, just show the thumbnail  */
+
+
+
 	    if (empty($imageViews)) {
-		/* Load the thumbnail */
+
+
+
+/*  Load the thumbnail  */
+
+
+
 		list ($ret, $thumbnails) = GalleryCoreApi::fetchThumbnailsByItemIds(array($itemId));
 		if ($ret) {
 		    return $ret;
@@ -1799,7 +2057,13 @@ class GalleryTheme extends GalleryPlugin {
 			  'arg2' => $sourceImage['height']));
 	    }
 
-	    /* Don't let the index overflow the images array */
+
+
+
+/*  Don't let the index overflow the images array  */
+
+
+
 	    $imageViewsIndex = min($imageViewsIndex, count($imageViews) - 1);
 	    $imageViewsIndex = max(0, $imageViewsIndex);
 	    if (isset($sourceImageViewIndex)) {
@@ -1810,8 +2074,6 @@ class GalleryTheme extends GalleryPlugin {
 	    $theme['imageViewsIndex'] = $imageViewsIndex;
 	    $theme['fullSizeDimensions'] = $fullSizeDimensions;
 	}
-
-	/* -------------------------------------------------------------------------------------- */
 	if (isset($load['permissions']) && !isset($theme['permissions']) && $itemId) {
 	    list ($ret, $permissions) =
 		GalleryCoreApi::getPermissions($itemId, $theme['actingUserId']);
@@ -1991,7 +2253,13 @@ class GalleryTheme extends GalleryPlugin {
 	    $results = array('bodyHtml' => $mainHtml);
 	}
 
-	/* If we extracted the sidebar, it'll be in our extra html, so move that over */
+
+
+
+/*  If we extracted the sidebar, it'll be in our extra html, so move that over  */
+
+
+
 	if (isset($extraHtml['sidebarBlocksHtml'])) {
 	    $results['sidebarBlocksHtml'] = $extraHtml['sidebarBlocksHtml'];
 	}

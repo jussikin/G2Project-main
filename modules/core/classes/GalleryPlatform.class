@@ -571,7 +571,13 @@ class GalleryPlatform {
 	    }
 	    $octalPerms = $this->_dirPerms;
 	} else {
-	    /* Convert string permission representation to octal */
+	    
+
+
+/*  Convert string permission representation to octal  */
+
+
+
 	    $octalPerms = octdec($stringPerms);
 	}
 	if ($gallery->getDebug()) {
@@ -621,11 +627,23 @@ class GalleryPlatform {
 	global $gallery;
 	$legalChars = $this->getLegalPathCharacters();
 
-	/* Scrub out all the illegal characters */
+	
+
+
+/*  Scrub out all the illegal characters  */
+
+
+
 	$component = preg_replace("/[^$legalChars]/", '_', $component);
 
 	if (!$forDirectory) {
-	    /* Break it into filebase and extension */
+	    
+
+
+/*  Break it into filebase and extension  */
+
+
+
 	    list ($fileBase, $extension) = GalleryUtilities::getFileNameComponents($component);
 
 	    /*
@@ -662,7 +680,13 @@ class GalleryPlatform {
 		$extension = null;
 	    }
 
-	    /* Rebuild the baseName according to our transforms above */
+	    
+
+
+/*  Rebuild the baseName according to our transforms above  */
+
+
+
 	    if (!empty($extension)) {
 		$fileBase .= '.' . $extension;
 	    }
@@ -680,7 +704,13 @@ class GalleryPlatform {
      *               array error output from the command)
      */
     function exec($cmdArray) {
-	/* This must be implemented in a platform specific way */
+	
+
+
+/*  This must be implemented in a platform specific way  */
+
+
+
 	assert(false);
     }
 
@@ -724,7 +754,13 @@ class GalleryPlatform {
 	     * out .. and . and then check against the dir list.  Here we do an ok job of doing the
 	     * same, though it isn't perfect.
 	     */
-	    $s = '\\\/';  /* Do this by hand because preg_quote() isn't reliable */
+	    $s = '\\\/';  
+
+
+/*  Do this by hand because preg_quote() isn't reliable  */
+
+
+
 	    if (!preg_match("{^([a-zA-Z]+:)?[$s]}", $path)) {
 		$path = $this->getcwd() . $slash . $path;
 	    }
@@ -743,10 +779,22 @@ class GalleryPlatform {
 	    if (($baseDirMatch = $this->realpath($baseDir)) === false) {
 		$baseDirMatch = $baseDir;
 	    } else if (substr($baseDir, -1) == $slash && substr($baseDirMatch, -1) != $slash) {
-		/* Realpath will remove a trailing slash, add it back to avoid prefix match */
+		
+
+
+/*  Realpath will remove a trailing slash, add it back to avoid prefix match  */
+
+
+
 		$baseDirMatch .= $slash;
 	    }
-	    /* Add slash on path so /dir is accepted if /dir/ is a valid basedir */
+	    
+
+
+/*  Add slash on path so /dir is accepted if /dir/ is a valid basedir  */
+
+
+
 	    if (!$function($baseDirMatch, $realpath . $slash, strlen($baseDirMatch))) {
 		return false;
 	    }
@@ -1005,7 +1053,13 @@ class GalleryPlatform {
 	    return !$ret;
 	} else {
 	    $phpVm = $gallery->getPhpVm();
-	    /* Convert \r\n to the appropriate line ending style */
+	    
+
+
+/*  Convert \r\n to the appropriate line ending style  */
+
+
+
 	    if ($this->getLineEnding() == "\n") {
 		if (isset($headers)) {
 		    $headers = preg_replace("#\r\n#s", "\n", $headers);
@@ -1031,7 +1085,13 @@ class GalleryPlatform {
      * @return array (path elements) first item is "root" if path is absolute
      */
     function splitPath($path) {
-	/* This must be implemented in a platform specific way */
+	
+
+
+/*  This must be implemented in a platform specific way  */
+
+
+
 	assert(false);
     }
 
@@ -1042,7 +1102,13 @@ class GalleryPlatform {
      * @return boolean true if the platform supports symlinks
      */
     function isSymlinkSupported() {
-	/* This must be implemented in a platform specific way */
+	
+
+
+/*  This must be implemented in a platform specific way  */
+
+
+
 	assert(false);
     }
 
@@ -1051,7 +1117,13 @@ class GalleryPlatform {
      * @return string Line ending
      */
     function getLineEnding() {
-	/* This must be implemented in a platform specific way */
+	
+
+
+/*  This must be implemented in a platform specific way  */
+
+
+
 	assert(false);
     }
 
@@ -1092,7 +1164,13 @@ class GalleryPlatform {
 	if (GalleryDataCache::containsKey($cacheKey)) {
 	    list ($this->_filePerms, $this->_dirPerms) = GalleryDataCache::get($cacheKey);
 	} else {
-	    /* To avoid looping if getPluginParameter calls platform functions */
+	    
+
+
+/*  To avoid looping if getPluginParameter calls platform functions  */
+
+
+
 	    GalleryDataCache::put($cacheKey, array($this->_filePerms, $this->_dirPerms));
 
 	    list ($ret, $filePerms) =
@@ -1204,7 +1282,13 @@ class GalleryPlatform {
 	$i = 0;
 	$newFormat = '';
 	$textPieces = array();
-	/* Separate text and tokens so we can convert only token output to UTF-8 */
+	
+
+
+/*  Separate text and tokens so we can convert only token output to UTF-8  */
+
+
+
 	foreach (preg_split('{(%.)}', $format, -1, PREG_SPLIT_DELIM_CAPTURE) as $piece) {
 	    if (++$i % 2) {
 		$textPieces[] = $piece;
@@ -1213,7 +1297,13 @@ class GalleryPlatform {
 		$newFormat .= $piece;
 	    }
 	}
-	/* Call strftime and convert to UTF-8; escape % characters before sprintf */
+	
+
+
+/*  Call strftime and convert to UTF-8; escape % characters before sprintf  */
+
+
+
 	$newFormat = str_replace(array('%', '&%%&'), array('%%', '%'),
 	    GalleryCoreApi::convertToUtf8(
 		isset($timestamp) ? strftime($newFormat, $timestamp) : strftime($newFormat)));

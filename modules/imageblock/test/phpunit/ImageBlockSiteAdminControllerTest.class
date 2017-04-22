@@ -47,7 +47,13 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase {
     function testImageBlockSiteAdminControllerReset() {
 	GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						   'subView' => 'imageblock.ImageBlockSiteAdmin'),
@@ -59,7 +65,13 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase {
     function testImageBlockSiteAdminControllerSaveNone() {
 	GalleryUtilities::putRequestVariable('form[action][save]', '1');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						   'subView' => 'imageblock.ImageBlockSiteAdmin'),
@@ -72,7 +84,13 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][save]', '1');
 	GalleryUtilities::putRequestVariable('form[date]', '1');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						   'subView' => 'imageblock.ImageBlockSiteAdmin'),
@@ -93,7 +111,13 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[views]', '1');
 	GalleryUtilities::putRequestVariable('form[albumFrame]', 'solid');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						   'subView' => 'imageblock.ImageBlockSiteAdmin'),

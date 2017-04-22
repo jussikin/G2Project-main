@@ -45,7 +45,13 @@ class SetupRewriteControllerTest extends GalleryControllerTestCase {
 
 	$this->_controller->_parserIds = array('setuprewritemock');
 
-	/* Set up our mock parser */
+	
+
+
+/*  Set up our mock parser  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'parserId',
 	    'setuprewritemock');
 	if ($ret) {
@@ -53,7 +59,13 @@ class SetupRewriteControllerTest extends GalleryControllerTestCase {
 	}
 	GalleryUtilities::putRequestVariable('phpunit[config]', 1);
 
-	/* Make sure we use the mock parser */
+	
+
+
+/*  Make sure we use the mock parser  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 	list ($ret, $parser) = RewriteHelper::getRewriteParser(true);
 	if ($ret) {

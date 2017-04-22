@@ -45,7 +45,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddAlbum() {
-	/* Use valid inputs */
+	
+
+
+/*  Use valid inputs  */
+
+
+
 	$name = 'testalbum-' . rand();
 	GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
@@ -60,7 +66,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'core.ItemEdit',
@@ -73,13 +85,25 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddDuplicateAlbum() {
-	/* Create an album */
+	
+
+
+/*  Create an album  */
+
+
+
 	list ($ret, $subAlbum) = $this->_createRandomAlbum($this->_parentAlbum->getId());
 	if ($ret) {
 	    return ($ret);
 	}
 
-	/* Use valid inputs */
+	
+
+
+/*  Use valid inputs  */
+
+
+
 	$name = 'testalbum-' . rand();
 	GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
@@ -88,7 +112,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[keywords]', 'keywords');
 	GalleryUtilities::putRequestVariable('form[description]', 'description');
 
-	/* Then re-use the path component that we know will conflict */
+	
+
+
+/*  Then re-use the path component that we know will conflict  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[pathComponent]', $subAlbum->getPathComponent());
 
 	list ($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -96,7 +126,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'core.ItemEdit',
@@ -113,12 +149,24 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	    return ($ret);
 	}
 
-	/* Verify that the new album's path component is unique (it's got _001 as a suffix) */
+	
+
+
+/*  Verify that the new album's path component is unique (it's got _001 as a suffix)  */
+
+
+
 	$this->assertEquals($subAlbum->getPathComponent() . '_001', $newAlbum->getPathComponent());
     }
 
     function testAddAlbumMissingName() {
-	/* Use valid inputs */
+	
+
+
+/*  Use valid inputs  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[pathComponent]', '');
@@ -127,7 +175,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[keywords]', 'keywords');
 	GalleryUtilities::putRequestVariable('form[description]', 'description');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'core.ItemAddAlbum'),
@@ -137,7 +191,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddAlbumInvalidName() {
-	/* Use valid inputs */
+	
+
+
+/*  Use valid inputs  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[pathComponent]', 'Invalid!/\Chars');
@@ -146,7 +206,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[keywords]', 'keywords');
 	GalleryUtilities::putRequestVariable('form[description]', 'description');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'core.ItemAddAlbum'),
@@ -173,7 +239,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$id = $this->_getChildId();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
@@ -218,7 +290,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$id = $this->_getChildId();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
@@ -255,7 +333,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	list ($ret, $ids) = GalleryCoreApi::fetchChildItemIds($this->_parentAlbum);
 	$this->assertEquals(2, sizeof($ids));
 
-	/* We want the larger id, since it's the newer one */
+	
+
+
+/*  We want the larger id, since it's the newer one  */
+
+
+
 	return max($ids[0], $ids[1]);
     }
 
@@ -279,7 +363,13 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'core.ItemEdit',

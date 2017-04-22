@@ -70,7 +70,13 @@ class GalleryDerivativeHelper_medium {
 	    return array($ret, null);
 	}
 
-	/* Only one preferred per item, so simplify the results */
+	
+
+
+/*  Only one preferred per item, so simplify the results  */
+
+
+
 	foreach ($results as $id => $value) {
 	    $results[$id] = $value[0];
 	}

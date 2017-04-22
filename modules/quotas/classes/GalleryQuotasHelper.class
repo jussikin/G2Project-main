@@ -64,7 +64,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null);
 	}
 
-	/* Get our user's total disk usage */
+	
+
+
+/*  Get our user's total disk usage  */
+
+
+
 	$result = $searchResults->nextResult();
 	if (!empty($result[0])) {
 	    $userDiskUsage = (int)$result[0];
@@ -153,7 +159,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null, null);
 	}
 
-	/* Get our group's quota size and name */
+	
+
+
+/*  Get our group's quota size and name  */
+
+
+
 	$result = $searchResults->nextResult();
 	if (!empty($result)) {
 	    $groupQuotaExists = true;
@@ -224,7 +236,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null);
 	}
 
-	/* Get our groups' id, quota size, and name */
+	
+
+
+/*  Get our groups' id, quota size, and name  */
+
+
+
 	$groupQuotasList = array();
 	while ($result = $searchResults->nextResult()) {
 	    $groupQuotasList[(int)$result[0]] = array('quota' => (int)$result[1],
@@ -258,7 +276,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null);
 	}
 
-	/* Get the number of groups that have quotas assigned */
+	
+
+
+/*  Get the number of groups that have quotas assigned  */
+
+
+
 	$result = $searchResults->nextResult();
 	$groupCount = (int)$result[0];
 
@@ -295,7 +319,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null);
 	}
 
-	/* Get our users' id, quota size, and name */
+	
+
+
+/*  Get our users' id, quota size, and name  */
+
+
+
 	$userQuotasList = array();
 	while ($result = $searchResults->nextResult()) {
 	    $userQuotasList[(int)$result[0]] = array('quota' => (int)$result[1],
@@ -329,7 +359,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null);
 	}
 
-	/* Get the number of users that have quotas assigned */
+	
+
+
+/*  Get the number of users that have quotas assigned  */
+
+
+
 	$result = $searchResults->nextResult();
 	$userCount = (int)$result[0];
 
@@ -367,7 +403,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null, null);
 	}
 
-	/* Get our group's quota size and name */
+	
+
+
+/*  Get our group's quota size and name  */
+
+
+
 	$result = $searchResults->nextResult();
 	if (!empty($result)) {
 	    $quotaExists = true;
@@ -412,7 +454,13 @@ class GalleryQuotasHelper {
 	    return array($ret, null, null);
 	}
 
-	/* Get our users' quota size and name */
+	
+
+
+/*  Get our users' quota size and name  */
+
+
+
 	$result = $searchResults->nextResult();
 	if (!empty($result)) {
 	    $quotaExists = true;

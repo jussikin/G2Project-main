@@ -44,23 +44,47 @@ class ItemDeleteSingleController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	/* The framework shouldn't let us get this far if we don't have delete permission */
+	
+
+
+/*  The framework shouldn't let us get this far if we don't have delete permission  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.delete');
 	if ($ret) {
 	    return array($ret, null);
 	}
 	
-	/* Get the parent *before* we delete the item */	
+	
+
+
+/*  Get the parent *before* we delete the item  */
+
+
+	
 	$parentId = $item->getParentId();
 	
-	/* Get the root album id, so we don't try to delete it */
+	
+
+
+/*  Get the root album id, so we don't try to delete it  */
+
+
+
 	list ($ret, $rootId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* The view shouldn't let us try to delete the root album, either */
+	
+
+
+/*  The view shouldn't let us try to delete the root album, either  */
+
+
+
 	if ($itemId == $rootId) {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
 					 "Can't delete the root album"), null);

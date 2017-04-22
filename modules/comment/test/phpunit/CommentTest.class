@@ -60,7 +60,13 @@ class CommentTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Create 5 comments.  The 4th one is unpublished, the 5th is spam. */
+	
+
+
+/*  Create 5 comments.  The 4th one is unpublished, the 5th is spam.  */
+
+
+
 	for ($i = 0; $i < 5; $i++) {
 	    list ($ret, $this->_comment[$i]) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');
@@ -183,7 +189,13 @@ class CommentTest extends GalleryTestCase {
 	}
 	$this->assertEquals(array($this->_comment[0]), $comments, 'guest/offset');
 
-	/* This multiroot setting used to break query */
+	
+
+
+/*  This multiroot setting used to break query  */
+
+
+
 	$gallery->setConfig('breadcrumbRootId', $this->_album->getId());
 	list ($ret, $comments) = GalleryCommentHelper::fetchAllComments($this->_album->getId());
 	if ($ret) {
@@ -199,7 +211,13 @@ class CommentTest extends GalleryTestCase {
 	    return $ret;
 	}
 	$itemId = $this->_item->getId();
-	/* Verify we get a non empty item summary for the item */
+	
+
+
+/*  Verify we get a non empty item summary for the item  */
+
+
+
 	$permissions[$itemId]['comment.view'] = 1;
 	$permissions[$itemId]['core.view'] = 1;
 	$unused = null;
@@ -211,7 +229,13 @@ class CommentTest extends GalleryTestCase {
 	$this->assert(isset($content[$itemId]) && !empty($content[$itemId]),
 		      'did not get item summary');
 
-	/* Get the item summary again, but without having the permissions */
+	
+
+
+/*  Get the item summary again, but without having the permissions  */
+
+
+
 	unset($content);
 	list ($ret, $content) = $module->getItemSummaries(array($this->_item),
 							  array($itemId => array()), $unused);
@@ -224,7 +248,13 @@ class CommentTest extends GalleryTestCase {
     function testCreateModifyAndDeleteComment() {
 	global $gallery;
 
-	/* Create a comment */
+	
+
+
+/*  Create a comment  */
+
+
+
 	list ($ret, $comment) =
 	    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');
 	if ($ret) {
@@ -241,7 +271,13 @@ class CommentTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Modify it */
+	
+
+
+/*  Modify it  */
+
+
+
 	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($comment->getId());
 	if ($ret) {
 	    return $ret;
@@ -258,24 +294,48 @@ class CommentTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Delete it */
+	
+
+
+/*  Delete it  */
+
+
+
 	$ret = GalleryCoreApi::deleteEntityById($comment->getId(), 'GalleryComment');
 	if ($ret) {
 	    return $ret;
 	}
     }
 
-    /* Verify that the comments are deleted if the commenter is deleted */
+    
+
+
+/*  Verify that the comments are deleted if the commenter is deleted  */
+
+
+
     function testDeleteCommentsOnDeleteUserEvent() {
 	global $gallery;
 
-	/* Create a user that we can delete */
+	
+
+
+/*  Create a user that we can delete  */
+
+
+
 	list ($ret, $user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Create a few comments */
+	
+
+
+/*  Create a few comments  */
+
+
+
 	for ($i = 0; $i < 3; $i++) {
 	    list ($ret, $myComment[$i]) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');
@@ -295,7 +355,13 @@ class CommentTest extends GalleryTestCase {
 	    }
 	}
 
-	/* Assert that everything is as expected before executing the test */
+	
+
+
+/*  Assert that everything is as expected before executing the test  */
+
+
+
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments(
 	    $this->_item->getId(), null, ORDER_ASCENDING, null);
 	if ($ret) {
@@ -317,19 +383,37 @@ class CommentTest extends GalleryTestCase {
 				'commenterId (admin) wrong before the test');
 	}
 
-	/* The event listener is deactivated during unit tests, register it */
+	
+
+
+/*  The event listener is deactivated during unit tests, register it  */
+
+
+
 	$ret = $this->_registerEventListener('GalleryEntity::delete', 'GalleryCommentHelper');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Delete the user (execute the test) */
+	
+
+
+/*  Delete the user (execute the test)  */
+
+
+
 	$ret = GalleryCoreApi::deleteEntityById($user->getId(), 'GalleryUser');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Verify that all comments by this user are gone */
+	
+
+
+/*  Verify that all comments by this user are gone  */
+
+
+
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId());
 	if ($ret) {
 	    return $ret;

@@ -133,10 +133,22 @@ class RepositoryObject {
 	$platform =& $gallery->getPlatform();
 	if (!($platform->file_exists($outputFilePath) && !$overwriteFile)) {
 	    if ($this->_template->hasVariable('contents')) {
-		/* Skip template processing. */
+		
+
+
+/*  Skip template processing.  */
+
+
+
 		$contents = $this->_template->getVariable('contents');
 	    } else {
-		/* Process template with Smarty. */
+		
+
+
+/*  Process template with Smarty.  */
+
+
+
 		$templatePath = 'lib/tools/repository/templates/' . $this->_templateFile;
 
 		list($ret, $contents) = $this->_template->fetch('gallery:' . $templatePath);
@@ -145,7 +157,13 @@ class RepositoryObject {
 		}
 	    }
 
-	    /* Write contents to disk. */
+	    
+
+
+/*  Write contents to disk.  */
+
+
+
 	    if (false === $platform->file_put_contents($outputFilePath, $contents)) {
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
 					    "Error writing to $outputFilePath");

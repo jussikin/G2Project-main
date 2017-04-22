@@ -69,7 +69,13 @@ class AdminUserSetupStep extends InstallStep {
 	    }
 
 	    if ($templateData['freshInstall']) {
-		/* It's a fresh install, show the admin data fields and check their value */
+		
+
+
+/*  It's a fresh install, show the admin data fields and check their value  */
+
+
+
 		$this->_adminName = $templateData['adminName'] =
 		    $this->sanitize($_POST['adminName']);
 		$this->_email = $templateData['email'] = $this->sanitize($_POST['email']);
@@ -104,7 +110,13 @@ class AdminUserSetupStep extends InstallStep {
 	if ($this->isComplete()) {
 	    $galleryStub->setConfig('setup.password', $this->_password);
 	    if ($templateData['freshInstall']) {
-		/* Store admin name and data for later use in InstallCoreModule */
+		
+
+
+/*  Store admin name and data for later use in InstallCoreModule  */
+
+
+
 		$galleryStub->setConfig('setup.admin.userName', $this->_adminName);
 		$galleryStub->setConfig('setup.admin.email', $this->_email);
 		$galleryStub->setConfig('setup.admin.fullName', $this->_fullName);

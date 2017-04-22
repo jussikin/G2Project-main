@@ -46,7 +46,13 @@ class AdminImageMagickController extends GalleryController {
 	    if (empty($form['path'])) {
 		$error[] = 'form[error][path][missing]';
 	    } else {
-		/* Set the path.  Guarantee that it's got a trailing slash. */
+		
+
+
+/*  Set the path.  Guarantee that it's got a trailing slash.  */
+
+
+
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
 		$form['path'] = trim($form['path']);
@@ -66,7 +72,13 @@ class AdminImageMagickController extends GalleryController {
 		} else {
 		    $failCount = 0;
 		    foreach ($testResults as $testResult) {
-			/* All tests should work, else this path is not a valid one */
+			
+
+
+/*  All tests should work, else this path is not a valid one  */
+
+
+
 			if (!$testResult['success']) {
 			    $failCount++;
 			}
@@ -107,7 +119,13 @@ class AdminImageMagickController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Save some platform specific ImageMagick parameters */
+		
+
+
+/*  Save some platform specific ImageMagick parameters  */
+
+
+
 		$ret = ImageMagickToolkitHelper::savePlatformParameters();
 		if ($ret) {
 		    return array($ret, null);
@@ -193,7 +211,13 @@ class AdminImageMagickView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load our default values if we didn't just come from this form. */
+	
+
+
+/*  Load our default values if we didn't just come from this form.  */
+
+
+
 	if ($form['formName'] != 'AdminImageMagick') {
 	    foreach (array('path', 'jpegQuality', 'cmykSupport') as $key) {
 		list ($ret, $form[$key]) =
@@ -205,7 +229,13 @@ class AdminImageMagickView extends GalleryView {
 	    $form['formName'] = 'AdminImageMagick';
 	}
 
-	/* Guarantee that the path has a trailing slash. */
+	
+
+
+/*  Guarantee that the path has a trailing slash.  */
+
+
+
 	$slash = $platform->getDirectorySeparator();
 	$form['path'] = trim($form['path']);
 	if (!empty($form['path'])) {
@@ -214,7 +244,13 @@ class AdminImageMagickView extends GalleryView {
 	    }
 	}
 
-	/* Set up our jpeg quality selection list */
+	
+
+
+/*  Set up our jpeg quality selection list  */
+
+
+
 	for ($i = 100; $i >= 50; $i -= 5) {
 	    $jpegQualityList[] = $i;
 	}

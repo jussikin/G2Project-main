@@ -51,7 +51,13 @@ class RegisterModuleTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	/* None for non-guest */
+	
+
+
+/*  None for non-guest  */
+
+
+
 	$this->assertEquals(array(), $links, 'admin');
 
 	$gallery->setConfig('anonymousUserId', $gallery->getActiveUserId());

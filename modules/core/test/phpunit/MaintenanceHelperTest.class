@@ -75,8 +75,20 @@ class MaintenanceHelperTest extends GalleryTestCase {
     }
 
     function testAddAndFetchLastRun() {
-	/* Add a task entry */
-	$time = time() - 5;  /* Choose an arbitrary time */
+	
+
+
+/*  Add a task entry  */
+
+
+
+	$time = time() - 5;  
+
+
+/*  Choose an arbitrary time  */
+
+
+
 	$ret = MaintenanceHelper_simple::addRun(
 	    'MaintenanceHelperTestTask', $time, true, array('some details'));
 	if ($ret) {
@@ -90,8 +102,20 @@ class MaintenanceHelperTest extends GalleryTestCase {
 	$this->assertEquals(array('some details'), $info['details'], 'details 1');
 	$lastRunId = $info['runId'];
 
-	/* Add a second task entry */
-	$time = time() + 15;  /* Choose an arbitrary time */
+	
+
+
+/*  Add a second task entry  */
+
+
+
+	$time = time() + 15;  
+
+
+/*  Choose an arbitrary time  */
+
+
+
 	$ret = MaintenanceHelper_simple::addRun(
 	    'MaintenanceHelperTestTask', $time, false, array('different details'));
 	if ($ret) {

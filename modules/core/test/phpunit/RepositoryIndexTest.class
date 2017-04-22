@@ -42,12 +42,24 @@ class RepositoryIndexTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Set up mock storage. */
+	
+
+
+/*  Set up mock storage.  */
+
+
+
 	global $gallery;
 	$gallery->_storage = new RepositoryTestStorage();
 	$this->_testStorage =& $gallery->_storage;
 
-	/* Prepare test index. */
+	
+
+
+/*  Prepare test index.  */
+
+
+
 	include(dirname(__FILE__) . '/../../../../lib/tools/repository/test/data/SampleIndex.inc');
 	$this->_sampleIndex = $sampleIndex;
 
@@ -189,11 +201,23 @@ class RepositoryIndexTest extends GalleryTestCase {
     function testUpdate() {
 	global $gallery;
 
-	/* Clear the sample data from our test index. */
+	
+
+
+/*  Clear the sample data from our test index.  */
+
+
+
 	$this->_index->_index = '';
 	$this->_index->_isLoaded = false;
 
-	/* Prepare mock objects. */
+	
+
+
+/*  Prepare mock objects.  */
+
+
+
 	$serializedSampleIndex = serialize($this->_sampleIndex);
 	$utilities = new UnitTestRepositoryUtilities();
 	$this->_index->_utilities =& $utilities;
@@ -223,7 +247,13 @@ class RepositoryIndexTest extends GalleryTestCase {
 				  $serializedSampleIndex), true);
 	$gallery->setPlatform($platform);
 
-	/* Perform update and verify that the sample index has been loaded. */
+	
+
+
+/*  Perform update and verify that the sample index has been loaded.  */
+
+
+
 	$ret = $this->_index->update();
 	if ($ret) {
 	    return ($ret);
@@ -233,7 +263,13 @@ class RepositoryIndexTest extends GalleryTestCase {
 	$this->assertEquals($this->_sampleIndex, $this->_index->_index);
 	$this->assert($this->_index->_isLoaded, 'GalleryRepositoryIndex::isLoaded bit not set.');
 
-	/* Verify that the timestamp has been put into the database. */
+	
+
+
+/*  Verify that the timestamp has been put into the database.  */
+
+
+
 	$timestampWritten = false;
 	if (isset($this->_testStorage->_updatedMapData['GalleryPluginParameterMap'])) {
 	    $timestampWritten = true;
@@ -320,7 +356,13 @@ class RepositoryIndexTest extends GalleryTestCase {
 	$indexPath = $this->_index->getRepositoryCacheDir() . 'index.repository';
 	$platform = new UnitTestPlatform();
 	$platform->setReply('file_get_contents', array($indexPath),
-			    serialize(false) /* this will cause unserialize to return false */);
+			    serialize(false) 
+
+
+/*  this will cause unserialize to return false  */
+
+
+);
 	$platform->setReply('unlink', array($indexPath), true);
 	$gallery->setPlatform($platform);
 
@@ -352,7 +394,13 @@ class RepositoryIndexTest extends GalleryTestCase {
 	$this->_index->_index = '';
 	$this->_index->_isLoaded = false;
 
-	/* Cheat by serializing false, which is the value returned when unserialize fails */
+	
+
+
+/*  Cheat by serializing false, which is the value returned when unserialize fails  */
+
+
+
 	$ret = $this->_index->unserializeIndex($serializedIndex = serialize(false));
 	if (!$ret) {
 	    return $this->assert(false, 'Should have returned ERROR_BAD_PARAMETER');
@@ -382,15 +430,33 @@ class RepositoryIndexTest extends GalleryTestCase {
     }
 
     function testGetAvailableLanguagesInPlugin() {
-	/* Load the cache for testing */
+	
+
+
+/*  Load the cache for testing  */
+
+
+
 	$cacheKey = 'GalleryTranslator::SupportedLanguages';
 	$supportedLanguages = array();
 
-	/* English */
+	
+
+
+/*  English  */
+
+
+
 	$supportedLanguages['en']['US']['description'] = 'English (US)';
 	$supportedLanguages['en']['GB']['description'] = 'English (UK)';
 
-	/* Portuguese */
+	
+
+
+/*  Portuguese  */
+
+
+
 	$supportedLanguages['pt']['BR']['description'] = 'Portugu&#234;s Brasileiro';
 	$supportedLanguages['pt']['PT']['description'] = 'Portugu&#234;s';
 	GalleryDataCache::put($cacheKey, $supportedLanguages);
@@ -422,7 +488,13 @@ class RepositoryIndexTest extends GalleryTestCase {
     }
 
     function testGetAvailableLanguagesInPluginFiltered() {
-	/* Load the cache for testing */
+	
+
+
+/*  Load the cache for testing  */
+
+
+
 	$cacheKey = 'GalleryTranslator::SupportedLanguages';
 	GalleryDataCache::put($cacheKey, array('en' => array('US' => array('US English'))));
 
@@ -575,7 +647,13 @@ class RepositoryIndexTest extends GalleryTestCase {
     function testGetLanguagePackageFilesScalarInput() {
 	global $gallery;
 
-	/* Since we can't mock the core API, we'll use the cache to store our mock plugin. */
+	
+
+
+/*  Since we can't mock the core API, we'll use the cache to store our mock plugin.  */
+
+
+
 	GalleryDataCache::put('GalleryPluginHelper::loadPlugin(module, testModule)',
 			      new RepositoryIndexTestModule());
 	GalleryDataCache::put('GalleryPluginHelper::fetchPluginStatus(module)',
@@ -616,7 +694,13 @@ class RepositoryIndexTest extends GalleryTestCase {
     function testGetLanguagePackageFilesArrayInput() {
 	global $gallery;
 
-	/* Since we can't mock the core API, we'll use the cache to store our mock plugin. */
+	
+
+
+/*  Since we can't mock the core API, we'll use the cache to store our mock plugin.  */
+
+
+
 	GalleryDataCache::put('GalleryPluginHelper::loadPlugin(module, testModule)',
 			      new RepositoryIndexTestModule());
 	GalleryDataCache::put('GalleryPluginHelper::fetchPluginStatus(module)',
@@ -657,7 +741,13 @@ class RepositoryIndexTest extends GalleryTestCase {
     function testGetLanguagePackageFilesVersionMisMatch() {
 	global $gallery;
 
-	/* Since we can't mock the core API, we'll use the cache to store our mock plugin. */
+	
+
+
+/*  Since we can't mock the core API, we'll use the cache to store our mock plugin.  */
+
+
+
 	GalleryDataCache::put('GalleryPluginHelper::loadPlugin(module, testModule)',
 			      new RepositoryIndexTestModule());
 	GalleryDataCache::put('GalleryPluginHelper::fetchPluginStatus(module)',
@@ -698,7 +788,13 @@ class RepositoryIndexTest extends GalleryTestCase {
     function testGetLanguagePackageFilesVersionNotAvailable() {
 	global $gallery;
 
-	/* Since we can't mock the core API, we'll use the cache to store our mock plugin. */
+	
+
+
+/*  Since we can't mock the core API, we'll use the cache to store our mock plugin.  */
+
+
+
 	GalleryDataCache::put('GalleryPluginHelper::loadPlugin(module, testModule)',
 			      new RepositoryIndexTestModule());
 	GalleryDataCache::put('GalleryPluginHelper::fetchPluginStatus(module)',

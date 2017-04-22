@@ -89,7 +89,13 @@ class WebDavController extends GalleryController {
  	GalleryUtilities::putRequestVariable('originalPath', $path);
 	$pathComponent = basename($path);
 
-	/* Special case to suppress Mac '._' and '.DS_Store files.  Ignore but return success. */
+	
+
+
+/*  Special case to suppress Mac '._' and '.DS_Store files.  Ignore but return success.  */
+
+
+
 	if (!strncmp($pathComponent, '._', 2) || $pathComponent == '.DS_Store') {
 	    WebDavServer::setResponseStatus('200 OK');
 	    $handle = WebDavServer::openRequestBody();
@@ -99,7 +105,13 @@ class WebDavController extends GalleryController {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH), null);
 	}
 
-	/* Silently legalize path component */
+	
+
+
+/*  Silently legalize path component  */
+
+
+
 	$pathComponents = preg_split('/\//', $path, -1, PREG_SPLIT_NO_EMPTY);
 	foreach ($pathComponents as $key => $pathComponent) {
 	    GalleryUtilities::unsanitizeInputValues($pathComponent);
@@ -128,7 +140,13 @@ class WebDavController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* Until there's a better way to delegate to Show/DownloadItem */
+	    
+
+
+/*  Until there's a better way to delegate to Show/DownloadItem  */
+
+
+
 	    GalleryUtilities::putRequestVariable('itemId', $itemId);
 	    if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 		return array(null, array('delegate' => array('view' => 'core.ShowItem'),
@@ -154,10 +172,22 @@ class WebDavController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* Until there's a better way to delegate to ItemAdd */
+	    
+
+
+/*  Until there's a better way to delegate to ItemAdd  */
+
+
+
 	    GalleryUtilities::putRequestVariable('itemId', $parentId);
 	    GalleryUtilities::putRequestVariable('addPlugin', 'ItemAddWebDav');
-	    /* Let the ItemAddPlugin handle the replacement for the auth-token check */
+	    
+
+
+/*  Let the ItemAddPlugin handle the replacement for the auth-token check  */
+
+
+
 	    list ($ret, $data) = ItemAddController::handleRequest($form);
 	    if ($ret) {
 		return array($ret, null);
@@ -216,7 +246,13 @@ class WebDavView extends GalleryView {
      * @see GalleryView::isControllerLike
      */
     function isControllerLike() {
-	/* Although this view is controller-like, we return false since we can't add authTokens */
+	
+
+
+/*  Although this view is controller-like, we return false since we can't add authTokens  */
+
+
+
 	return false;
     }
 
@@ -229,7 +265,13 @@ class WebDavView extends GalleryView {
 	if (!in_array($requestMethod, array('options', 'propfind', 'proppatch', 'mkcol', 'delete',
 					    'move', 'lock', 'unlock'))) {
 
-	    /* If we just completed a PUT request and got delegated here, just silently return */
+	    
+
+
+/*  If we just completed a PUT request and got delegated here, just silently return  */
+
+
+
 	    if ($requestMethod == 'put') {
 		return null;
 	    }

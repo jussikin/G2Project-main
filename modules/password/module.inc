@@ -29,7 +29,13 @@
  * @author Jess Martin <jmartin@cs.unc.edu>
  * @version $Revision: 18172 $
  */
-class PasswordModule extends GalleryModule /* and GalleryEventListener */ {
+class PasswordModule extends GalleryModule 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     function __construct() {
 	$this->PasswordModule();
@@ -167,7 +173,13 @@ class PasswordModule extends GalleryModule /* and GalleryEventListener */ {
     function onLoad(&$item, $duringUpgrade) {
 	list ($view, $itemId) = GalleryUtilities::getRequestVariables('view', 'itemId');
 	if (empty($itemId)) {
-	    /* Root album may not specify itemId */
+	    
+
+
+/*  Root album may not specify itemId  */
+
+
+
 	    $itemId = $item->getId();
 	}
 	if ($view == 'core.ShowItem' && $itemId == $item->getId() && !$duringUpgrade) {
@@ -191,7 +203,13 @@ class PasswordModule extends GalleryModule /* and GalleryEventListener */ {
 		    }
 		}
 		if (isset($permissions['core.view']) || !empty($isHidden)) {
-		    /* Redirect to PasswordEntry if we have core.view or item is also hidden */
+		    
+
+
+/*  Redirect to PasswordEntry if we have core.view or item is also hidden  */
+
+
+
 		    global $gallery;
 		    $session =& $gallery->getSession();
 		    $ret = $session->start();

@@ -52,7 +52,13 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Force the date time format to something bogus, then load it so that it's in the cache */
+	
+
+
+/*  Force the date time format to something bogus, then load it so that it's in the cache  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'format.datetime', 'FAKE_FMT');
 	if ($ret) {
 	    return $ret;
@@ -67,7 +73,13 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Force translated text to English to make comparisons easier. */
+	
+
+
+/*  Force translated text to English to make comparisons easier.  */
+
+
+
 	$translator =& $gallery->getTranslator();
 	$this->_locale = $translator->_locale;
 	list ($ret, $locale) = $translator->init('en');
@@ -79,7 +91,13 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase {
 	$this->_storage =& $gallery->getStorage();
 	$this->_callback = new AdminEventLogViewerCallbackView();
 
-	/* This satisfies GalleryCoreApi::assertUserIsSiteAdministrator */
+	
+
+
+/*  This satisfies GalleryCoreApi::assertUserIsSiteAdministrator  */
+
+
+
 	$this->_storage->setReply(
 	    'getMapEntry',
 	    array('GalleryUserGroupMap',
@@ -167,7 +185,13 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase {
 		'EventLogMap',
 		array('id', 'timestamp', 'type', 'location', 'client', 'summary'),
 		array(),
-		array('limit' => array('count' => 10, /* <-- default value */
+		array('limit' => array('count' => 10, 
+
+
+/*  <-- default value  */
+
+
+
 				       'offset' => 0),
 		      'orderBy' => array('timestamp' => ORDER_DESCENDING))),
 	    array(null, new UnitTestStorageSearchResults(
@@ -230,7 +254,13 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase {
     }
 
     function testGetRecordDetailsBogusId() {
-	/* Use a non-numeric id */
+	
+
+
+/*  Use a non-numeric id  */
+
+
+
 	GalleryUtilities::putRequestVariable('command', 'getRecordDetails');
 	GalleryUtilities::putRequestVariable('id', 'bananas');
 
@@ -251,7 +281,13 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase {
     }
 
     function testGetRecordDetailsInvalidId() {
-	/* Use an id that doesn't exist */
+	
+
+
+/*  Use an id that doesn't exist  */
+
+
+
 	GalleryUtilities::putRequestVariable('command', 'getRecordDetails');
 	GalleryUtilities::putRequestVariable('id', 123456789);
 

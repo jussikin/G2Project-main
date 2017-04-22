@@ -95,7 +95,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 	    return $ret;
 	}
 
-	/* Set our path component */
+	
+
+
+/*  Set our path component  */
+
+
+
 	$this->setPathComponent($pathComponent);
 
 	return null;
@@ -113,7 +119,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 	    return $ret;
 	}
 
-	/* The root has no path component */
+	
+
+
+/*  The root has no path component  */
+
+
+
 	$this->setPathComponent(NULL);
 
 	return null;
@@ -134,7 +146,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 	    return $ret;
 	}
 
-	/* Set our path component */
+	
+
+
+/*  Set our path component  */
+
+
+
 	$this->setPathComponent($pathComponent);
 
 	return null;
@@ -151,7 +169,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	/* No need to do anything if renaming to same name */
+	
+
+
+/*  No need to do anything if renaming to same name  */
+
+
+
 	if ($newPathComponent == $this->getPathComponent()) {
 	    return null;
 	}
@@ -179,12 +203,24 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
     function move($newParentId) {
 	global $gallery;
 
-	/* No need to do anything if moving to same parent */
+	
+
+
+/*  No need to do anything if moving to same parent  */
+
+
+
 	if ($newParentId == $this->getParentId()) {
 	    return null;
 	}
 
-	/* Make sure the old parent and the new parent are read locked */
+	
+
+
+/*  Make sure the old parent and the new parent are read locked  */
+
+
+
 	if (!(GalleryCoreApi::isReadLocked($newParentId)
 		&& GalleryCoreApi::isReadLocked($this->getParentId()))) {
 	    return GalleryCoreApi::error(ERROR_LOCK_REQUIRED, __FILE__, __LINE__,
@@ -193,7 +229,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 						$this->getParentId()));
 	}
 
-	/* Get the new parent */
+	
+
+
+/*  Get the new parent  */
+
+
+
 	list ($ret, $newParent) =
 		GalleryCoreApi::loadEntitiesById($newParentId, 'GalleryFileSystemEntity');
 	if ($ret) {
@@ -220,7 +262,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 	    return $ret;
 	}
 
-	/* No collision -- proceed! */
+	
+
+
+/*  No collision -- proceed!  */
+
+
+
 	$ret = parent::move($newParentId);
 	if ($ret) {
 	    return $ret;
@@ -235,7 +283,13 @@ class GalleryFileSystemEntity extends GalleryChildEntity {
 	    }
 	}
 
-	/* Our path component may have changed when it got "legalized" */
+	
+
+
+/*  Our path component may have changed when it got "legalized"  */
+
+
+
 	$this->setPathComponent($newPathComponent);
 
 	return null;

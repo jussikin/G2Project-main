@@ -199,7 +199,13 @@ class DataItemTest extends GalleryTestCase {
 				   'text/plain',
 				   'valid_path.txt', true);
 	if ($ret) {
-	    /* On not supported platforms, this should return an ERROR_UNSUPPORTED_OPERATION */
+	    
+
+
+/*  On not supported platforms, this should return an ERROR_UNSUPPORTED_OPERATION  */
+
+
+
 	    if ($canSymlink || (!$canSymlink &&
 				!($ret->getErrorCode() & ERROR_UNSUPPORTED_OPERATION))) {
 		return $ret;
@@ -233,7 +239,13 @@ class DataItemTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* Create a data item with wrong "size" attribute, and a fast-download file */
+	
+
+
+/*  Create a data item with wrong "size" attribute, and a fast-download file  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem(
 		$this->_album->getId(), 'test/file', array('size' => 123), __FILE__);
 	if ($ret) {
@@ -252,17 +264,35 @@ class DataItemTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	/* Verify setup */
+	
+
+
+/*  Verify setup  */
+
+
+
 	$this->assertEquals(123, $item->getSize(), 'size');
 	$path = GalleryDataCache::getCachePath(
 		array('type' => 'fast-download', 'itemId' => $item->getId()));
 	$this->assert($platform->file_exists($path), 'fast-download file should exist');
-	/* Rescan */
+	
+
+
+/*  Rescan  */
+
+
+
 	$ret = $item->rescan();
 	if ($ret) {
 	    return $ret;
 	}
-	/* Verify results */
+	
+
+
+/*  Verify results  */
+
+
+
 	$this->assertEquals($platform->filesize(__FILE__), $item->getSize(), 'updated size');
 	$this->assert(!$platform->file_exists($path), 'fast-download file should be removed');
     }

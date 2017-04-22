@@ -38,7 +38,13 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 	global $gallery;
 	GalleryUtilities::putRequestVariable('mode', 'summary');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('return' => 1,
 				  'redirect' => array('view' => 'core.ShowItem'),
@@ -46,7 +52,13 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify that we're in the right mode now */
+	
+
+
+/*  Verify that we're in the right mode now  */
+
+
+
 	$session =& $gallery->getSession();
 	if (!$session->exists('exif.module.LoadExifInfo.mode')) {
 	    $this->fail('Missing session value');
@@ -58,7 +70,13 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 	global $gallery;
 	GalleryUtilities::putRequestVariable('mode', 'detailed');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('return' => 1,
 				  'redirect' => array('view' => 'core.ShowItem'),
@@ -66,7 +84,13 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify that we're in the right mode now */
+	
+
+
+/*  Verify that we're in the right mode now  */
+
+
+
 	$session =& $gallery->getSession();
 	if (!$session->exists('exif.module.LoadExifInfo.mode')) {
 	    $this->fail('Missing session value');
@@ -78,7 +102,13 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 	global $gallery;
 	GalleryUtilities::putRequestVariable('mode', 'BoGuS');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('return' => 1,
 				  'redirect' => array('view' => 'core.ShowItem'),
@@ -86,7 +116,13 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify that we're in the right mode now */
+	
+
+
+/*  Verify that we're in the right mode now  */
+
+
+
 	$session =& $gallery->getSession();
 	if (!$session->exists('exif.module.LoadExifInfo.mode')) {
 	    $this->fail('Missing session value');
@@ -94,12 +130,24 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals('summary', $session->get('exif.module.LoadExifInfo.mode'));
     }
 
-    /* Test the Callback function */
+    
+
+
+/*  Test the Callback function  */
+
+
+
     function testLoadExifInfoCallback() {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	/* Create a test photo with exif data */
+	
+
+
+/*  Create a test photo with exif data  */
+
+
+
 	list ($ret, $lockId) = GalleryCoreApi::acquireReadLock($this->_rootAlbumId);
 	if ($ret) {
 	    return $ret;
@@ -119,12 +167,24 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 	}
 
 	foreach (array(1 => 'detailed', 2 => 'summary') as $i => $mode) {
-	    /* Set the mode */
+	    
+
+
+/*  Set the mode  */
+
+
+
 	    $session->put('exif.module.LoadExifInfo.mode', $mode);
 	    $this->assertEquals($mode, $session->get('exif.module.LoadExifInfo.mode'),
 				"initial assertion for mode $mode failed");
 
-	    /* Get the expected result */
+	    
+
+
+/*  Get the expected result  */
+
+
+
 	    if ($mode == 'detailed') {
 		$filter = EXIF_DETAILED;
 	    } else {
@@ -152,14 +212,26 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
 
 	    $smarty = new GallerySmarty();
 
-	    /* Execute the method under test */
+	    
+
+
+/*  Execute the method under test  */
+
+
+
 	    $callback = new ExifCallbacks;
 	    $ret = $callback->callback(array('itemId' => $item->getId()), $smarty, 'LoadExifInfo');
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    /* Verify the results */
+	    
+
+
+/*  Verify the results  */
+
+
+
 	    $data = $smarty->getTemplateVars('block');
 	    $data = $data['exif']['LoadExifInfo'];
 	    $this->assertEquals($expModeSet, isset($data['mode']), "mode not set for mode $mode");

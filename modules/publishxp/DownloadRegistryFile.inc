@@ -46,11 +46,23 @@ class DownloadRegistryFileView extends GalleryView {
     function renderImmediate($status, $error) {
 	global $gallery;
 
-	/* Get the domain name */
+	
+
+
+/*  Get the domain name  */
+
+
+
 	$urlGenerator =& $gallery->getUrlGenerator();
 	$domain = $urlGenerator->getHostName();
 
-	/* Get the name of the gallery */
+	
+
+
+/*  Get the name of the gallery  */
+
+
+
 	list ($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 	if ($ret) {
 	    return $ret;
@@ -60,7 +72,13 @@ class DownloadRegistryFileView extends GalleryView {
 	    return $ret;
 	}
 	if (!$hasPermission) {
-	    /* Avoid information disclosure, use a default title */
+	    
+
+
+/*  Avoid information disclosure, use a default title  */
+
+
+
 	    $title = 'Gallery';
 	} else {
 	    list ($ret, $root) = GalleryCoreApi::loadEntitiesById($rootId, 'GalleryItem');
@@ -70,7 +88,13 @@ class DownloadRegistryFileView extends GalleryView {
 	    $title = $root->getTitle();
 	}
 
-	/* Setup the headers for the Registry file */
+	
+
+
+/*  Setup the headers for the Registry file  */
+
+
+
 	header("Cache-control: private");
 	header("Content-Type: application/octet-stream");
 	header("Content-Disposition: filename=install_registry.reg");
@@ -90,10 +114,22 @@ class DownloadRegistryFileView extends GalleryView {
 	    return $ret;
 	}
 
-	/* Make sure we use Windows line endings */
+	
+
+
+/*  Make sure we use Windows line endings  */
+
+
+
 	$registryFileContents = preg_replace("/(?<!\r)\n/", "\r\n", $registryFileContents);
 
-	/* Convert the text to the Windows character set corresponding to the requested locale */
+	
+
+
+/*  Convert the text to the Windows character set corresponding to the requested locale  */
+
+
+
 	$clientWindowsLocale = $this->_getCharsetFromRequest();
 	print GalleryCoreApi::convertFromUtf8($registryFileContents, $clientWindowsLocale);
 
@@ -147,66 +183,276 @@ class DownloadRegistryFileView extends GalleryView {
 	 * http://www.microsoft.com/globaldev/reference/oslocversion.mspx
 	 */
 	switch (trim(GalleryUtilities::strToLower((string)$language))) {
-	    case 'th': /* Thai */
+	    case 'th': 
+
+
+/*  Thai  */
+
+
+
 		$codePage = 874;
 		break;
-	    case 'ja': /* Japanese */
+	    case 'ja': 
+
+
+/*  Japanese  */
+
+
+
 		$codePage = 932;
 		break;
-	    case 'zh': /* Chinese */
+	    case 'zh': 
+
+
+/*  Chinese  */
+
+
+
 		$country = trim(GalleryUtilities::strToLower((string)$country));
 		if (in_array($country, array('hans', 'cn'))) {
-		    $codePage = 936; /* Chinese (Simplified) */
+		    $codePage = 936; 
+
+
+/*  Chinese (Simplified)  */
+
+
+
 		} else {
-		    $codePage = 950; /* Chinese (Traditional) */
+		    $codePage = 950; 
+
+
+/*  Chinese (Traditional)  */
+
+
+
 		}
 		break; 
-	    case 'ko': /* Korean */
+	    case 'ko': 
+
+
+/*  Korean  */
+
+
+
 		$codePage = 949;
 		break;
-	    case 'hr': /* Croatian */
-	    case 'cs': /* Czech */
-	    case 'hu': /* Hungarian */
-	    case 'po': /* Polish */
-	    case 'ro': /* Romanian */
-	    case 'sk': /* Slovak */
-	    case 'sl': /* Slovenian */
+	    case 'hr': 
+
+
+/*  Croatian  */
+
+
+
+	    case 'cs': 
+
+
+/*  Czech  */
+
+
+
+	    case 'hu': 
+
+
+/*  Hungarian  */
+
+
+
+	    case 'po': 
+
+
+/*  Polish  */
+
+
+
+	    case 'ro': 
+
+
+/*  Romanian  */
+
+
+
+	    case 'sk': 
+
+
+/*  Slovak  */
+
+
+
+	    case 'sl': 
+
+
+/*  Slovenian  */
+
+
+
 		$codePage = 1250;
 		break;
-	    case 'bg': /* Bulgarian */
-	    case 'ru': /* Russian */
+	    case 'bg': 
+
+
+/*  Bulgarian  */
+
+
+
+	    case 'ru': 
+
+
+/*  Russian  */
+
+
+
 		$codePage = 1251;
 		break;
-	    case 'ca': /* Catalan */
-	    case 'da': /* Danish */
-	    case 'nl': /* Dutch */
-	    case 'en': /* English */
-	    case 'fi': /* Finnish */
-	    case 'fr': /* French */
-	    case 'de': /* German */
-	    case 'it': /* Italian */
-	    case 'no': /* Norwegian */
-	    case 'pt': /* Portuguese */
-	    case 'es': /* Spanish */
-	    case 'sv': /* Swedish */
+	    case 'ca': 
+
+
+/*  Catalan  */
+
+
+
+	    case 'da': 
+
+
+/*  Danish  */
+
+
+
+	    case 'nl': 
+
+
+/*  Dutch  */
+
+
+
+	    case 'en': 
+
+
+/*  English  */
+
+
+
+	    case 'fi': 
+
+
+/*  Finnish  */
+
+
+
+	    case 'fr': 
+
+
+/*  French  */
+
+
+
+	    case 'de': 
+
+
+/*  German  */
+
+
+
+	    case 'it': 
+
+
+/*  Italian  */
+
+
+
+	    case 'no': 
+
+
+/*  Norwegian  */
+
+
+
+	    case 'pt': 
+
+
+/*  Portuguese  */
+
+
+
+	    case 'es': 
+
+
+/*  Spanish  */
+
+
+
+	    case 'sv': 
+
+
+/*  Swedish  */
+
+
+
 		$codePage = 1252;
 		break;
-	    case 'el': /* Greek */
+	    case 'el': 
+
+
+/*  Greek  */
+
+
+
 		$codePage = 1253;
 		break;
-	    case 'tr': /* Turkish */
+	    case 'tr': 
+
+
+/*  Turkish  */
+
+
+
 		$codePage = 1254;
 		break;
-	    case 'he': /* Hebrew */
-	    case 'iw': /* Hebrew (legacy) */
+	    case 'he': 
+
+
+/*  Hebrew  */
+
+
+
+	    case 'iw': 
+
+
+/*  Hebrew (legacy)  */
+
+
+
 		$codePage = 1255;
 		break;
-	    case 'ar': /* Arabic */
+	    case 'ar': 
+
+
+/*  Arabic  */
+
+
+
 		$codePage = 1256;
 		break;
-	    case 'et': /* Estonian */
-	    case 'lv': /* Latvian */
-	    case 'lt': /* Lithuanian */
+	    case 'et': 
+
+
+/*  Estonian  */
+
+
+
+	    case 'lv': 
+
+
+/*  Latvian  */
+
+
+
+	    case 'lt': 
+
+
+/*  Lithuanian  */
+
+
+
 		$codePage = 1257;
 		break;
 	    default: $codePage = 1252;

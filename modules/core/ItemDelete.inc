@@ -46,7 +46,13 @@ class ItemDeleteController extends GalleryController {
 	    if (!empty($form['selectedIds'])) {
 		$selectedIds = array_keys($form['selectedIds']);
 
-		/* get the rootId, so we don't try to delete it */
+		
+
+
+/*  get the rootId, so we don't try to delete it  */
+
+
+
 		list ($ret, $rootId) =
 		    GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 		if ($ret) {
@@ -60,24 +66,48 @@ class ItemDeleteController extends GalleryController {
 
 		foreach ($selectedIds as $selectedId) {
 		    if (!isset($permissions[$selectedId]['core.view'])) {
-			/* Avoid information disclosure, act as if the item didn't exist. */
+			
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		    }
-		    /* Make sure we have permission to delete this item */
+		    
+
+
+/*  Make sure we have permission to delete this item  */
+
+
+
 		    if (!isset($permissions[$selectedId]['core.delete'])) {
 			return array(
 			    GalleryCoreApi::error(ERROR_PERMISSION_DENIED, __FILE__, __LINE__,
 				"Don't have permission to delete this item"), null);
 		    }
 
-		    /* Make sure we're not deleting the root album */
+		    
+
+
+/*  Make sure we're not deleting the root album  */
+
+
+
 		    if ($selectedId == $rootId) {
 			return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
 							  "Can't delete the root album"), null);
 		    }
 		}
 
-		/* if we're still here then all are deletable */
+		
+
+
+/*  if we're still here then all are deletable  */
+
+
+
 		$storage =& $gallery->getStorage();
 		foreach ($selectedIds as $selectedId) {
 		    $ret = GalleryCoreApi::deleteEntityById($selectedId, 'GalleryItem');
@@ -97,7 +127,13 @@ class ItemDeleteController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* What do we do if we weren't successful?  No thumbnail, I guess */
+		
+
+
+/*  What do we do if we weren't successful?  No thumbnail, I guess  */
+
+
+
 	    }
 
 	    /*
@@ -186,7 +222,13 @@ class ItemDeleteView extends GalleryView {
 	if (!empty($peerIds)) {
 	    $numPages = ceil(sizeof($peerIds) / $form['numPerPage']);
 	    if (empty($page)) {
-		/* determine which page we're on */
+		
+
+
+/*  determine which page we're on  */
+
+
+
 		$page = 1;
 		for ($i = 0; $i < sizeof($peerIds); $i++) {
 		    if ($peerIds[$i] == $selectedId) {
@@ -206,19 +248,37 @@ class ItemDeleteView extends GalleryView {
 		}
 	    }
 
-	    /* load peers */
+	    
+
+
+/*  load peers  */
+
+
+
 	    list ($ret, $peerItems) = GalleryCoreApi::loadEntitiesById($peerIds, 'GalleryItem');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* get peer thumbnails and resizes */
+	    
+
+
+/*  get peer thumbnails and resizes  */
+
+
+
 	    list ($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds($peerIds);
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* build peers table */
+	    
+
+
+/*  build peers table  */
+
+
+
 	    foreach ($peerItems as $peerItem) {
 		$peers[$peerItem->getId()] = (array)$peerItem;
 		if (GalleryUtilities::isA($peerItem, 'GalleryAlbumItem')) {
@@ -229,7 +289,13 @@ class ItemDeleteView extends GalleryView {
 		$peers[$peerItem->getId()]['selected'] =
 		    isset($form['selectedIds'][$peerItem->getId()]);
 
-		/* While we're at it, attach thumbnails and resizes */
+		
+
+
+/*  While we're at it, attach thumbnails and resizes  */
+
+
+
 		if (isset($derivatives[$peerItem->getId()])) {
 		    foreach ($derivatives[$peerItem->getId()] as $derivative) {
 			$type = $derivative->getDerivativeType();
@@ -243,7 +309,13 @@ class ItemDeleteView extends GalleryView {
 		}
 	    }
 
-	    /* Get child counts */
+	    
+
+
+/*  Get child counts  */
+
+
+
 	    if (isset($peerTypes['album'])) {
 		list ($ret, $peerDescendentCounts) =
 		    GalleryCoreApi::fetchDescendentCounts(array_keys($peerTypes['album']));

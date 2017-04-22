@@ -65,7 +65,13 @@ class GalleryTestCase extends TestCase {
 	if (!is_array($events)) {
 	    $events = array($events);
 	}
-	/* We need to set the path to something as there is an if (empty) check. */
+	
+
+
+/*  We need to set the path to something as there is an if (empty) check.  */
+
+
+
 	$ret = $this->_registerFactoryImplementationForTest('GalleryEventListener', 
 	    $className, $className, 'bogus-path', 'phpunit', $events);
 	if ($ret) {
@@ -100,7 +106,13 @@ class GalleryTestCase extends TestCase {
 	    return $ret;
 	}
 
-	/* Save useful vars so that tests don't have to worry about overwriting them */
+	
+
+
+/*  Save useful vars so that tests don't have to worry about overwriting them  */
+
+
+
 	$this->_saveVars[] = $_GET;
 	$this->_saveVars[] = $_POST;
 	$this->_saveVars[] = $_REQUEST;
@@ -143,10 +155,22 @@ class GalleryTestCase extends TestCase {
 	 */
 	$gallery->guaranteeTimeLimit(30);
 
-	/* Start with a clean slate*/
+	
+
+
+/*  Start with a clean slate */
+
+
+
 	GalleryDataCache::reset();
 
-	/* Preload a few things to lighten the load on our dummy platforms */
+	
+
+
+/*  Preload a few things to lighten the load on our dummy platforms  */
+
+
+
 	GalleryCoreApi::fetchPluginStatus('module');
 	GalleryCoreApi::fetchPluginStatus('theme');
 
@@ -163,7 +187,13 @@ class GalleryTestCase extends TestCase {
     function tearDown() {
 	global $gallery;
 
-	/* Restore saved vars */
+	
+
+
+/*  Restore saved vars  */
+
+
+
 	$_GET = array_shift($this->_saveVars);
 	$_POST = array_shift($this->_saveVars);
 	$_REQUEST = array_shift($this->_saveVars);
@@ -181,12 +211,24 @@ class GalleryTestCase extends TestCase {
 	$gallery->_config = array_shift($this->_saveVars);
 	$gallery->_phpVm = array_shift($this->_saveVars);
 
-	/* Release any queued locks before restoring lockSystem */
+	
+
+
+/*  Release any queued locks before restoring lockSystem  */
+
+
+
 	if (isset($gallery->_lockSystem)) {
 	    $gallery->_lockSystem->releaseQueue();
 	}
 
-	/* Make sure we're not hanging onto any locks */
+	
+
+
+/*  Make sure we're not hanging onto any locks  */
+
+
+
 	$lockIds = GalleryCoreApi::getLockIds();
 	if (!empty($lockIds)) {
 	    GalleryCoreApi::releaseAllLocks();
@@ -197,36 +239,72 @@ class GalleryTestCase extends TestCase {
 	$gallery->_shutdownActions = null;
 	$gallery->_templateAdapter = null;
 
-	/* Do our cleanup */
+	
+
+
+/*  Do our cleanup  */
+
+
+
 	foreach ($this->_cleanup['pluginParameters'] as $cleanupPlugin) {
 	    $pluginType = array_shift($cleanupPlugin);
 	    $pluginId = array_shift($cleanupPlugin);
 	    $pluginParams = array_shift($cleanupPlugin);
 
-	    /* Retrieve the post-test plugin params */
+	    
+
+
+/*  Retrieve the post-test plugin params  */
+
+
+
 	    list($ret, $newPluginParams) =
 		GalleryCoreApi::fetchAllPluginParameters($pluginType, $pluginId);
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    /* Remove each new key from the DB */
+	    
+
+
+/*  Remove each new key from the DB  */
+
+
+
 	    foreach ($newPluginParams as $key => $newParam) {
 		if (!array_key_exists($key, $pluginParams)) {
 		    $ret = GalleryCoreApi::removePluginParameter($pluginType, $pluginId, $key);
 		    if ($ret) {
-			/* Print the error, but continue to remove the parameters */
+			
+
+
+/*  Print the error, but continue to remove the parameters  */
+
+
+
 			print $ret->getAsHtml();
 		    }
 		}
 	    }
 
-	    /* Restore each key from the saved list */
+	    
+
+
+/*  Restore each key from the saved list  */
+
+
+
 	    foreach ($pluginParams as $key => $pluginParam) {
 		$ret = GalleryCoreApi::setPluginParameter($pluginType, $pluginId,
 							  $key, $pluginParam);
 		if ($ret) {
-		    /* Print the error, but continue to set the variables */
+		    
+
+
+/*  Print the error, but continue to set the variables  */
+
+
+
 		    print $ret->getAsHtml();
 		}
 	    }
@@ -298,28 +376,58 @@ class GalleryTestCase extends TestCase {
 	$eventListeners =& GalleryEventHelper_simple::_getEventListeners();
 	$eventListeners = $this->_cleanup['eventListeners'];
 
-	/* Clean out any saved state in the platform */
+	
+
+
+/*  Clean out any saved state in the platform  */
+
+
+
 	$gallery->_platform->resetPlatform();
 
 	return null;
     }
 
-    /** @return int id */
+    
+
+
+/*  @return int id  */
+
+
+
     function _getRootId() {
 	return (int)$this->_rootAlbumId;
     }
 
-    /** @param GalleryEntity $entity to delete in tearDown */
+    
+
+
+/*  @param GalleryEntity $entity to delete in tearDown  */
+
+
+
     function _markForCleanup($entity) {
 	$this->_cleanup['entity'][] = $entity;
     }
 
-    /** @param string $moduleId to unregister from factory in tearDown */
+    
+
+
+/*  @param string $moduleId to unregister from factory in tearDown  */
+
+
+
     function _markFactoryModuleForCleanup($moduleId) {
 	$this->_cleanup['factoryModuleId'][] = $moduleId;
     }
 
-    /** @param string $toolkitId to unregister in tearDown */
+    
+
+
+/*  @param string $toolkitId to unregister in tearDown  */
+
+
+
     function _markToolkitForCleanup($toolkitId) {
 	$this->_cleanup['toolkitId'][] = $toolkitId;
     }
@@ -394,7 +502,13 @@ class GalleryTestCase extends TestCase {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 	$retries = 5;
-	/* Try to avoid duplicate album id's and ugly ERROR_COLLISON status during a test. */
+	
+
+
+/*  Try to avoid duplicate album id's and ugly ERROR_COLLISON status during a test.  */
+
+
+
 	do {
 	    list ($ret, $album) = GalleryCoreApi::createAlbum($parentId, 'albumtest' . mt_rand(),
 		'I am Jack\'s title', 'This is my summary', 'This is my description', null);
@@ -417,19 +531,37 @@ class GalleryTestCase extends TestCase {
 		return array($ret, null);
 	    }
 
-	    /* Change some settings */
+	    
+
+
+/*  Change some settings  */
+
+
+
 	    foreach ($fields as $field => $value) {
 		$func = "set$field";
 		$album->$func($value);
 	    }
 
-	    /* Save it */
+	    
+
+
+/*  Save it  */
+
+
+
 	    $ret = $album->save();
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* Leggo of our locks */
+	    
+
+
+/*  Leggo of our locks  */
+
+
+
 	    if (isset($lockIds)) {
 		$ret = GalleryCoreApi::releaseLocks($lockIds);
 		if ($ret) {
@@ -489,7 +621,13 @@ class GalleryTestCase extends TestCase {
 	    return array($ret, null);
 	}
 
-	/* Change some settings */
+	
+
+
+/*  Change some settings  */
+
+
+
 	$item->setTitle('I am Jack\'s title');
 	$item->setSummary('This is a summary');
 	$item->setKeywords('These are some keywords');
@@ -505,13 +643,25 @@ class GalleryTestCase extends TestCase {
 	    $item->$func($value);
 	}
 
-	/* Save it */
+	
+
+
+/*  Save it  */
+
+
+
 	$ret = $item->save();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Leggo of our locks */
+	
+
+
+/*  Leggo of our locks  */
+
+
+
 	if (isset($lockIds)) {
 	    $ret = GalleryCoreApi::releaseLocks($lockIds);
 	    if ($ret) {
@@ -551,13 +701,25 @@ class GalleryTestCase extends TestCase {
 	    return array($ret, null);
 	}
 
-	/* Save it */
+	
+
+
+/*  Save it  */
+
+
+
 	$ret = $linkedItem->save();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Leggo of our locks */
+	
+
+
+/*  Leggo of our locks  */
+
+
+
 	if (isset($lockIds)) {
 	    $ret = GalleryCoreApi::releaseLocks($lockIds);
 	    if ($ret) {
@@ -589,7 +751,13 @@ class GalleryTestCase extends TestCase {
 
 	if (!isset($userTag)) {
 	    $retries = 5;
-	    /* Try to avoid duplicate user id's and ugly ERROR_COLLISON status during a test. */
+	    
+
+
+/*  Try to avoid duplicate user id's and ugly ERROR_COLLISON status during a test.  */
+
+
+
 	    do {
 		$ret = $user->create('testuser-' . mt_rand());
 		if ($ret && !($ret->getErrorCode() & ERROR_COLLISION)) {
@@ -635,7 +803,13 @@ class GalleryTestCase extends TestCase {
 
 	if (!isset($groupTag)) {
 	    $retries = 5;
-	    /* Try to avoid duplicate group id's and ugly ERROR_COLLISON status during a test. */
+	    
+
+
+/*  Try to avoid duplicate group id's and ugly ERROR_COLLISON status during a test.  */
+
+
+
 	    do {
 		$ret = $group->create('Test Group ' . mt_rand());
 		if ($ret && !($ret->getErrorCode() & ERROR_COLLISION)) {
@@ -674,7 +848,13 @@ class GalleryTestCase extends TestCase {
 	    return array($ret, null);
 	}
 
-	/* Set bogus values */
+	
+
+
+/*  Set bogus values  */
+
+
+
 	$derivative->setMimeType($mimeType);
 	$derivative->setDerivativeSourceId($sourceId);
 	$derivative->setDerivativeOperations($operations);
@@ -724,7 +904,13 @@ class GalleryTestCase extends TestCase {
 		return $ret;
 	    }
 	} else {
-	    /* We failed to delete! */
+	    
+
+
+/*  We failed to delete!  */
+
+
+
 	    return GalleryCoreApi::error(ERROR_UNKNOWN);
 	}
 
@@ -736,13 +922,25 @@ class GalleryTestCase extends TestCase {
 
 	GalleryDataCache::reset();
 
-	/* Load it back from the storage */
+	
+
+
+/*  Load it back from the storage  */
+
+
+
 	list ($ret, $newEntity) = GalleryCoreApi::loadEntitiesById($entity->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Verify it */
+	
+
+
+/*  Verify it  */
+
+
+
 	$this->assertEquals($entity, $newEntity);
 
 	return null;
@@ -762,7 +960,13 @@ class GalleryTestCase extends TestCase {
 	}
 
 	$retries = 5;
-	/* Try to avoid duplicate user id's and ugly ERROR_COLLISON status during a test. */
+	
+
+
+/*  Try to avoid duplicate user id's and ugly ERROR_COLLISON status during a test.  */
+
+
+
 	do {
 	    $ret = $user->create('testuser-' . mt_rand());
 	    if ($ret && !($ret->getErrorCode() & ERROR_COLLISION)) {
@@ -943,7 +1147,13 @@ class GalleryTestCase extends TestCase {
     function _markFactoryForCleanup() {
 	GalleryCoreApi::requireOnce(
 	    'modules/core/classes/helpers/GalleryFactoryHelper_simple.class');
-	/* Don't use references here */
+	
+
+
+/*  Don't use references here  */
+
+
+
 	list ($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
 	$this->_cleanup['factoryRegistry'] = $registry;
     }
@@ -956,7 +1166,13 @@ class GalleryTestCase extends TestCase {
 	if (empty($listenersAreRegistered)) {
 	    GalleryCoreApi::requireOnce(
 			'modules/core/classes/helpers/GalleryEventHelper_simple.class');
-	    /* Trigger all modules to register their event listeners */
+	    
+
+
+/*  Trigger all modules to register their event listeners  */
+
+
+
 	    $event = GalleryCoreApi::newEvent('GalleryTest:PseudoEvent');
 	    list ($ret, $ignored) = GalleryCoreApi::postEvent($event);
 	    if ($ret) {
@@ -965,7 +1181,13 @@ class GalleryTestCase extends TestCase {
 	    $listenersAreRegistered = true;
 	}
 
-	/* Don't use references here */
+	
+
+
+/*  Don't use references here  */
+
+
+
 	$eventListeners = GalleryEventHelper_simple::_getEventListeners();
 	$this->_cleanup['eventListeners'] = $eventListeners;
 
@@ -976,7 +1198,13 @@ class GalleryTestCase extends TestCase {
      * Disable all but some core event listeners by default.
      */
     function _initEventListenersForTest() {
-	/* First unregister all event listeners that are registered through the deprecated API */
+	
+
+
+/*  First unregister all event listeners that are registered through the deprecated API  */
+
+
+
 	$ret = $this->_markEventListenersForCleanup();
 	if ($ret) {
 	    return $ret;
@@ -985,10 +1213,22 @@ class GalleryTestCase extends TestCase {
 	$eventListeners =& GalleryEventHelper_simple::_getEventListeners();
 	$eventListeners = array();
 
-	/* Unregister all event listeners (in-memory only) */
+	
+
+
+/*  Unregister all event listeners (in-memory only)  */
+
+
+
 	$this->_unregisterFactoryImplementationForTest('GalleryEventListener');
 
-	/* Register a few core event listeners by default */
+	
+
+
+/*  Register a few core event listeners by default  */
+
+
+
 	$this->_registerFactoryImplementationForTest('GalleryEventListener',
 	    'GalleryItemHelper_medium', 'GalleryItemHelper_medium',
 	    'modules/core/classes/helpers/GalleryItemHelper_medium.class', 'core',
@@ -1044,7 +1284,13 @@ class GalleryTestCase extends TestCase {
 	$registryData =& GalleryFactoryHelper_simple::_getFactoryData();
 	$registry =& $registryData[1];
 
-	/* Remove the implementation from all internal data structures */
+	
+
+
+/*  Remove the implementation from all internal data structures  */
+
+
+
 	if (isset($implId)) {
 	    unset($registry['ids'][$classType][$implId]);
 		if (empty($registry['ids'][$classType])) {
@@ -1151,7 +1397,13 @@ class GalleryTestCase extends TestCase {
  * Event listener that tracks how many entities were created and destroyed during the test.
  * We can use this to track to see if a test is leaking entities (ie, not doing proper cleanup).
  */
-class EntityCounterEventListener /* extends GalleryEventListener */ {
+class EntityCounterEventListener 
+
+
+/*  extends GalleryEventListener  */
+
+
+ {
 
     function EntityCounterEventListener() {
 	$this->_count = 0;
@@ -1195,7 +1447,13 @@ class EntityCounterEventListener /* extends GalleryEventListener */ {
  * @package Gallery
  * @subpackage PHPUnit
  */
-class NullEventListener /* implements GalleryEventListener */ {
+class NullEventListener 
+
+
+/*  implements GalleryEventListener  */
+
+
+ {
     /**
      * @see GalleryEventListener::handleEvent
      */

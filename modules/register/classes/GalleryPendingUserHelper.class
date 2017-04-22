@@ -165,7 +165,13 @@ class GalleryPendingUserHelper {
 	$generator =& $gallery->getUrlGenerator();
 	$confirmationUrl = $generator->generateUrl(
 	    array('controller' => 'register.ConfirmRegistration',
-		  /* Incoming url params will get sanitized, so decode here */
+		  
+
+
+/*  Incoming url params will get sanitized, so decode here  */
+
+
+
 		  'username' => $decodedUserName,
 		  'key' => $pendingUser->getRegistrationKey()),
 	    array('forceFullUrl' => true, 'forceSessionId' => false, 'htmlEntities' => false));
@@ -191,7 +197,13 @@ class GalleryPendingUserHelper {
 		'modules/register/templates/' . $tplFile,
 		array(
 		    'name' => $pendingUser->getFullName(),
-		    /* We send plain text email so decode entities in username */
+		    
+
+
+/*  We send plain text email so decode entities in username  */
+
+
+
 		    'username' => $decodedUserName,
 		    'confirmationUrl' => $confirmationUrl,
 		    'baseUrl' => $baseUrl,
@@ -268,7 +280,13 @@ class GalleryPendingUserHelper {
 	    $decodedUserName = $pendingUser->getUserName();
 	    GalleryUtilities::unsanitizeInputValues($decodedUserName, false);
 	    foreach ($toList as $index => $to) {
-		/* Reinitialize translator with the preferred language of admin where needed */
+		
+
+
+/*  Reinitialize translator with the preferred language of admin where needed  */
+
+
+
 		if ($currentLocale != $localeList[$index]) {
 		    list ($ret, $currentLocale) =
 			$translator->init($localeList[$index]);
@@ -285,7 +303,13 @@ class GalleryPendingUserHelper {
 		$ret = GalleryCoreApi::sendTemplatedEmail(
 			'modules/register/templates/AdminEmail.tpl',
 			array('name' => $pendingUser->getFullName(),
-			      /* We send plain text email so decode entities in username */
+			      
+
+
+/*  We send plain text email so decode entities in username  */
+
+
+
 			      'username' => $decodedUserName,
 			      'email' => $pendingUser->getEmail(),
 			      'l10Domain' => 'modules_register'),
@@ -335,7 +359,13 @@ class GalleryPendingUserHelper {
 	    return $ret;
 	}
 
-	/* Copy all values to the new "real" user */
+	
+
+
+/*  Copy all values to the new "real" user  */
+
+
+
 	$user->setEmail($pendingUser->getEmail());
 	$user->setFullName($pendingUser->getFullName());
 	$user->setLanguage($pendingUser->getLanguage());
@@ -346,7 +376,13 @@ class GalleryPendingUserHelper {
 	    return $ret;
 	}
 
-	/* Send welcome email if selected in module settings */
+	
+
+
+/*  Send welcome email if selected in module settings  */
+
+
+
 	list ($ret, $sendEmail) =
 	    GalleryCoreApi::getPluginParameter('module', 'register', 'emailusers');
 	if ($ret) {
@@ -360,7 +396,13 @@ class GalleryPendingUserHelper {
 	    }
 	}
 
-	/* Notify gallery event system */
+	
+
+
+/*  Notify gallery event system  */
+
+
+
 	$event = GalleryCoreApi::newEvent('GalleryPendingUser::createGalleryUser');
 	$event->setEntity($pendingUser);
 	list ($ret) = GalleryCoreApi::postEvent($event);

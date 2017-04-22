@@ -72,7 +72,13 @@ class AdminRepositoryController extends AdminRepositoryDownloadAndInstallControl
 		$form['repositories'] = array('released' => 1);
 	    }
 
-	    /* filter the form values through our list of valid keys to avoid exploits */
+	    
+
+
+/*  filter the form values through our list of valid keys to avoid exploits  */
+
+
+
 	    $data = array();
 	    foreach (array('released', 'experimental', 'community') as $key) {
 		if (isset($form['repositories'][$key])) {
@@ -85,7 +91,13 @@ class AdminRepositoryController extends AdminRepositoryDownloadAndInstallControl
 		return array($ret, null);
 	    }
 
-	    /* Remove the default repositories from the data cache */
+	    
+
+
+/*  Remove the default repositories from the data cache  */
+
+
+
 	    GalleryRepository::clearRepositoryCache();
 	    list ($ret, $repositories) = $this->_getRepositories();
 	    if ($ret) {
@@ -105,7 +117,13 @@ class AdminRepositoryController extends AdminRepositoryDownloadAndInstallControl
 		return array($ret, null);
 	    }
 
-	    /* Get list of upgradeable packages in repository */
+	    
+
+
+/*  Get list of upgradeable packages in repository  */
+
+
+
 	    foreach ($repositories as $source => $repository) {
 		list ($ret, $tmp) = $repository->getAllUpgradeablePackages();
 		if ($ret) {
@@ -120,7 +138,13 @@ class AdminRepositoryController extends AdminRepositoryDownloadAndInstallControl
 	    if (empty($packages)) {
 		$status['noUpgradeAvailable'] = 1;
 	    } else {
-		/* Start upgrade process and show progress bar. */
+		
+
+
+/*  Start upgrade process and show progress bar.  */
+
+
+
 		GalleryCoreApi::requireOnce('modules/core/AdminRepositoryDownload.inc');
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$templateAdapter->registerTrailerCallback(
@@ -168,7 +192,13 @@ class AdminRepositoryView extends GalleryView {
 
 	$AdminRepository = array();
 
-	/* Init repository. */
+	
+
+
+/*  Init repository.  */
+
+
+
 	list ($ret, $repositories, $repositoryInitErrorCount) =
 	    GalleryRepository::getRepositories();
 	if ($ret) {
@@ -176,7 +206,13 @@ class AdminRepositoryView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminRepository') {
-	    /* Set some defaults */
+	    
+
+
+/*  Set some defaults  */
+
+
+
 	    $form['formName'] = 'AdminRepository';
 	    list ($ret, $sources) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'core.repositories');
@@ -189,7 +225,13 @@ class AdminRepositoryView extends GalleryView {
 	    $form['repositories'] = array('released' => 1);
 	}
 
-	/* Check if incompatible plugins should be shown. */
+	
+
+
+/*  Check if incompatible plugins should be shown.  */
+
+
+
 	$coreApis = array();
 	$showIncompatible = GalleryUtilities::getRequestVariables('showIncompatible');
 	if ($showIncompatible == 'true') {
@@ -221,7 +263,13 @@ class AdminRepositoryView extends GalleryView {
 	     * @todo: separate themes into their own group, like we do elsewhere
 	     */
 	    foreach (array('module', 'theme') as $pluginType) {
-		/* Get list of plugins to show in the repository browser. */
+		
+
+
+/*  Get list of plugins to show in the repository browser.  */
+
+
+
 		list ($ret, $browseData[$pluginType]) = $repository->getRepositoryPluginList(
 		    $pluginType, $showIncompatible, $coreApis);
 		if ($ret) {
@@ -241,7 +289,13 @@ class AdminRepositoryView extends GalleryView {
 		}
 	    }
 
-	    /* Get local index meta data. */
+	    
+
+
+/*  Get local index meta data.  */
+
+
+
 	    list ($ret, $indexMetaData) = $repository->getIndexMetaData();
 	    if ($ret) {
 		return array($ret, null);
@@ -264,7 +318,13 @@ class AdminRepositoryView extends GalleryView {
 		$AdminRepository['upgradesAvailable'] = true;
 	    }
 
-	    /* Get core upgrade info. */
+	    
+
+
+/*  Get core upgrade info.  */
+
+
+
 	    if ($source == 'released') {
 		list ($ret, $AdminRepository['isCoreUpgradeAvailable'], $apiVersions) =
 		    $repository->isCoreUpgradeAvailable();
@@ -290,7 +350,13 @@ class AdminRepositoryView extends GalleryView {
 	    'themes' => $platform->is_writeable($AdminRepository['basePath'] .'/themes'));
 	$AdminRepository['authToken'] = $session->getAuthToken();
 
-	/* Render the HTML body */
+	
+
+
+/*  Render the HTML body  */
+
+
+
 	$template->setVariable('AdminRepository', $AdminRepository);
 	$template->setVariable('controller', 'core.AdminRepository');
 

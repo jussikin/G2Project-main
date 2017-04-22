@@ -119,7 +119,13 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 
 	$this->assertEquals($this->_parent->getId(), $entity->getParentId());
 	$this->assertEquals('test/file', $entity->getMimeType());
-	/** @todo: this is not optimal.. the path should be 'Foo_script_Bar_dat' */
+	
+
+
+/*  @todo: this is not optimal.. the path should be 'Foo_script_Bar_dat'  */
+
+
+
 	$this->assertEquals('Foo_lt_script_gt_Bar_dat', $entity->getPathComponent());
 	$this->assertEquals('Foo&lt;script&gt;Bar.dat', $entity->getTitle(), 'title');
 	$this->assertEquals('Foo&lt;script&gt;Bar.dat', $entity->getSummary(), 'summary');
@@ -229,7 +235,13 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Make sure our option was called */
+	
+
+
+/*  Make sure our option was called  */
+
+
+
 	$this->assertEquals(array($entity->getId(), 'myOptionValue'),
 			    UploadItemsControllerTestAddOption::getRequestData());
 

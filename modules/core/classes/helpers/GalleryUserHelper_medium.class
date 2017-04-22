@@ -26,7 +26,13 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryUserHelper_medium /* extends GalleryEventListener */ {
+class GalleryUserHelper_medium 
+
+
+/*  extends GalleryEventListener  */
+
+
+ {
 
     /**
      * @see GalleryCoreApi::fetchUsernames
@@ -183,7 +189,13 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 	$session =& $gallery->getSession();
 	$phpVm = $gallery->getPhpVm();
 
-	/* Make sure we have adequate permissions */
+	
+
+
+/*  Make sure we have adequate permissions  */
+
+
+
 	list ($ret, $inGroup) = GalleryCoreApi::isUserInSiteAdminGroup();
 	if ($ret) {
 	    return $ret;
@@ -221,13 +233,25 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 	    return $ret;
 	}
 
-	/* First check if the User is a valid gallery user! */
+	
+
+
+/*  First check if the User is a valid gallery user!  */
+
+
+
 	list ($ret, $user) = GalleryCoreApi::loadEntitiesById($userId, 'GalleryUser');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Get all items by the user */
+	
+
+
+/*  Get all items by the user  */
+
+
+
 	list ($ret, $itemIds) = GalleryCoreApi::fetchAllItemIdsByOwnerId($user->getId());
 	if ($ret) {
 	    return $ret;
@@ -247,7 +271,13 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 	    return $ret;
 	}
 
-	/* First sort out the items that we can delete (permissions) */
+	
+
+
+/*  First sort out the items that we can delete (permissions)  */
+
+
+
 	$itemIdsWithPermission = array();
 	foreach ($itemIds as $itemId) {
 	    if (!in_array('core.delete', array_keys($userItemPermissions[$itemId]))) {
@@ -261,7 +291,13 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 	    return null;
 	}
 
-	/* Load all items */
+	
+
+
+/*  Load all items  */
+
+
+
 	list ($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 	if ($ret) {
 	    return $ret;
@@ -269,15 +305,33 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 
 	$albums = array();
 	$albumIds = array();
-	/* First delete all non AlbumItem items */
+	
+
+
+/*  First delete all non AlbumItem items  */
+
+
+
 	foreach ($items as $item) {
-	    /* don't delete albums */
+	    
+
+
+/*  don't delete albums  */
+
+
+
 	    if ($item->getCanContainChildren()) {
 		$albums[$item->getId()] = $item;
 		$albumIds[] = $item->getId();
 		continue;
 	    }
-	    /* delete the item */
+	    
+
+
+/*  delete the item  */
+
+
+
 	    $ret = GalleryCoreApi::deleteEntityById($item->getId(), 'GalleryItem');
 	    if ($ret) {
 		return $ret;
@@ -303,7 +357,13 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* $descendentCounts has no entry for all albums with 0 descendents!! */
+	    
+
+
+/*  $descendentCounts has no entry for all albums with 0 descendents!!  */
+
+
+
 	    $newModifiedAlbumIds = array();
 	    foreach ($modifiedAlbumIds as $albumId) {
 		if (!isset($descendentCounts[$albumId]) || $descendentCounts[$albumId] == 0) {
@@ -314,7 +374,13 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 			 */
 			$newModifiedAlbumIds[$albums[$albumId]->getParentId()] = 1;
 		    }
-		    /* delete albumItem */
+		    
+
+
+/*  delete albumItem  */
+
+
+
 		    $ret = GalleryCoreApi::deleteEntityById($albumId, 'GalleryItem');
 		    if ($ret) {
 			return $ret;
@@ -327,7 +393,13 @@ class GalleryUserHelper_medium /* extends GalleryEventListener */ {
 	    $modifiedAlbumIds = array_keys($newModifiedAlbumIds);
 	}
 
-	/* Make a new thumbnail if possible, if it doesn't succeed, we can't change it */
+	
+
+
+/*  Make a new thumbnail if possible, if it doesn't succeed, we can't change it  */
+
+
+
 	foreach ($remainingAlbums as $albumId => $remaining) {
 	    if ($remaining) {
 		list ($ret, $trueOrFalse) = GalleryCoreApi::guaranteeAlbumHasThumbnail($albumId);

@@ -39,7 +39,13 @@ class KeyAlbumCallbacks {
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* Cache keyword list for one day */
+	    
+
+
+/*  Cache keyword list for one day  */
+
+
+
 	    if (time() - $lastUpdated > 3600 * 24) {
 		$ret = KeyAlbumCallbacks::_findAllKeywords($param, $onlyPublic, $sizeLimit,
 							   $params['maxCloudFontEnlargement'],
@@ -112,7 +118,13 @@ class KeyAlbumCallbacks {
 		return $ret;
 	    }
 	    if (empty($aclIds)) {
-		/* Force empty results */
+		
+
+
+/*  Force empty results  */
+
+
+
 		$query .= ' WHERE [GalleryItem::id] IS NULL';
 	    } else {
 		$query .= ' INNER JOIN [GalleryAccessSubscriberMap]
@@ -154,11 +166,23 @@ class KeyAlbumCallbacks {
 	}
 
 	if ($sizeLimit > 0 && count($keywords) > $sizeLimit) {
-	    /* Sort by frequency and drop least common */
+	    
+
+
+/*  Sort by frequency and drop least common  */
+
+
+
 	    uasort($keywords, create_function('$a,$b', '$c = $a[\'count\']; $d = $b[\'count\']; '
 						    . 'return $c > $d ? -1 : ($c == $d ? 0 : 1);'));
 
-	    /* Avoid renumbering of numeric keys from array_splice */
+	    
+
+
+/*  Avoid renumbering of numeric keys from array_splice  */
+
+
+
 	    for ($newKeywords = array(), reset($keywords), $i = 0; $i < $sizeLimit; $i++) {
 		$entry = each($keywords);
 		$newKeywords[$entry[0]] = $entry[1];
@@ -176,7 +200,13 @@ class KeyAlbumCallbacks {
 	 */
 	$adjustment = pow($maxWeight, (float)$minCount / $maxCount) - 1.0;
 	foreach ($keywords as $i => $keyword) {
-	    /* Scale the resulting weights to be floats between 1 and $maxWeight. */
+	    
+
+
+/*  Scale the resulting weights to be floats between 1 and $maxWeight.  */
+
+
+
 	    $keywords[$i]['weight'] = GalleryUtilities::roundToString(
 		    pow($maxWeight, (float)$keyword['count'] / $maxCount) - $adjustment, 2);
 	    unset($keywords[$i]['count']);

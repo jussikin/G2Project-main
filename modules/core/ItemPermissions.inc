@@ -39,7 +39,13 @@ class ItemPermissionsController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	/* Make sure we have permission to change permissions of this item */
+	
+
+
+/*  Make sure we have permission to change permissions of this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.changePermissions');
 	if ($ret) {
 	    return array($ret, null);
@@ -48,11 +54,23 @@ class ItemPermissionsController extends GalleryController {
 	$applyToChildren = isset($form['applyToSubItems']);
 	$status = $error = array();
 	if (isset($form['action']['deleteGroupPermission'])) {
-	    /* Figure out which one we're working with */
+	    
+
+
+/*  Figure out which one we're working with  */
+
+
+
 	    $deleteGroupPermission = array_keys($form['action']['deleteGroupPermission']);
 	    $index = array_pop($deleteGroupPermission);
 
-	    /* Handle delete group perm actions */
+	    
+
+
+/*  Handle delete group perm actions  */
+
+
+
 	    list ($groupId, $permissionId) = explode(',', $form['group']['delete'][$index]);
 	    $ret = GalleryCoreApi::removeGroupPermission($itemId, $groupId,
 							 $permissionId, $applyToChildren);
@@ -60,13 +78,25 @@ class ItemPermissionsController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* Figure out where to redirect upon success */
+	    
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	    $redirect['view'] = 'core.ItemAdmin';
 	    $redirect['subView'] = 'core.ItemPermissions';
 	    $redirect['itemId'] = $itemId;
 	    $status['deletedGroupPermission'] = 1;
 
-	    /* Stuff the values back into the form for easy re-adding */
+	    
+
+
+/*  Stuff the values back into the form for easy re-adding  */
+
+
+
 	    $redirect['form[group][permission]'] = $permissionId;
 	    list ($ret, $group) = GalleryCoreApi::loadEntitiesById($groupId, 'GalleryGroup');
 	    if (!$ret) {
@@ -74,11 +104,23 @@ class ItemPermissionsController extends GalleryController {
 	    }
 	    $verifySelfPermissions = true;
 	} else if (isset($form['action']['deleteUserPermission'])) {
-	    /* Figure out which one we're working with */
+	    
+
+
+/*  Figure out which one we're working with  */
+
+
+
 	    $deleteUserPermission = array_keys($form['action']['deleteUserPermission']);
 	    $index = array_pop($deleteUserPermission);
 
-	    /* Handle delete user perm actions */
+	    
+
+
+/*  Handle delete user perm actions  */
+
+
+
 	    list ($userId, $permissionId) = explode(',', $form['user']['delete'][$index]);
 	    $ret = GalleryCoreApi::removeUserPermission($itemId, $userId,
 							$permissionId, $applyToChildren);
@@ -86,13 +128,25 @@ class ItemPermissionsController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* Figure out where to redirect upon success */
+	    
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	    $redirect['view'] = 'core.ItemAdmin';
 	    $redirect['subView'] = 'core.ItemPermissions';
 	    $redirect['itemId'] = $itemId;
 	    $status['deletedUserPermission'] = 1;
 
-	    /* Stuff the values back into the form for easy re-adding */
+	    
+
+
+/*  Stuff the values back into the form for easy re-adding  */
+
+
+
 	    $redirect['form[user][permission]'] = $permissionId;
 	    list ($ret, $user) = GalleryCoreApi::loadEntitiesById($userId, 'GalleryUser');
 	    if (!$ret) {
@@ -103,11 +157,23 @@ class ItemPermissionsController extends GalleryController {
 	    }
 	} else if (isset($form['action']['addUserPermission'])) {
 
-	    /* Handle add user permission actions */
+	    
+
+
+/*  Handle add user permission actions  */
+
+
+
 	    if (empty($form['user']['userName'])) {
 		$error[] = 'form[error][user][missingUser]';
 	    } else {
-		/* Validate the user */
+		
+
+
+/*  Validate the user  */
+
+
+
 		list ($ret, $user) = GalleryCoreApi::fetchUserByUserName($form['user']['userName']);
 		if ($ret) {
 		    if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
@@ -118,7 +184,13 @@ class ItemPermissionsController extends GalleryController {
 		}
 	    }
 
-	    /* Validate the permission */
+	    
+
+
+/*  Validate the permission  */
+
+
+
 	    $permission = $form['user']['permission'];
 	    list ($ret, $allPermissions) = GalleryCoreApi::getPermissionIds();
 	    if ($ret) {
@@ -129,7 +201,13 @@ class ItemPermissionsController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		/* Don't add the permission if it already exists */
+		
+
+
+/*  Don't add the permission if it already exists  */
+
+
+
 		list ($ret, $hasIt) =
 		    GalleryCoreApi::hasPermission($itemId, $user->getId(), $permission);
 		if ($ret) {
@@ -147,7 +225,13 @@ class ItemPermissionsController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Figure out where to redirect upon success */
+		
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 		$redirect['view'] = 'core.ItemAdmin';
 		$redirect['subView'] = 'core.ItemPermissions';
 		$redirect['itemId'] = $itemId;
@@ -156,11 +240,23 @@ class ItemPermissionsController extends GalleryController {
 	    }
 	} else if (isset($form['action']['addGroupPermission'])) {
 
-	    /* Handle add group permission actions */
+	    
+
+
+/*  Handle add group permission actions  */
+
+
+
 	    if (empty($form['group']['groupName'])) {
 		$error[] = 'form[error][group][missingGroup]';
 	    } else {
-		/* Validate the group */
+		
+
+
+/*  Validate the group  */
+
+
+
 		list ($ret, $group) =
 		    GalleryCoreApi::fetchGroupByGroupName($form['group']['groupName']);
 		if ($ret) {
@@ -172,7 +268,13 @@ class ItemPermissionsController extends GalleryController {
 		}
 	    }
 
-	    /* Validate the permission */
+	    
+
+
+/*  Validate the permission  */
+
+
+
 	    $permission = $form['group']['permission'];
 	    list ($ret, $allPermissions) = GalleryCoreApi::getPermissionIds();
 	    if ($ret) {
@@ -183,7 +285,13 @@ class ItemPermissionsController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		/* Don't add the permission if it already exists */
+		
+
+
+/*  Don't add the permission if it already exists  */
+
+
+
 		list ($ret, $hasIt) =
 		    GalleryCoreApi::hasPermission($itemId, $group->getId(), $permission);
 		if ($ret) {
@@ -201,7 +309,13 @@ class ItemPermissionsController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Figure out where to redirect upon success */
+		
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 		$redirect['view'] = 'core.ItemAdmin';
 		$redirect['subView'] = 'core.ItemPermissions';
 		$redirect['itemId'] = $itemId;
@@ -217,7 +331,13 @@ class ItemPermissionsController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Validate the user */
+		
+
+
+/*  Validate the user  */
+
+
+
 		list ($ret, $user) =
 		    GalleryCoreApi::fetchUserByUserName($form['owner']['ownerName']);
 		if ($ret) {
@@ -269,7 +389,13 @@ class ItemPermissionsController extends GalleryController {
 		    }
 		}
 
-		/* change the owner recursively for the descendents */
+		
+
+
+/*  change the owner recursively for the descendents  */
+
+
+
 		if ($applyOwnerToChildren) {
 		    list ($ret, $descendentIds) =
 			GalleryCoreApi::fetchDescendentItemIds($item, null, null, 'core.all');
@@ -308,7 +434,13 @@ class ItemPermissionsController extends GalleryController {
 		    }
 		}
 
-		/* Figure out where to redirect upon success */
+		
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 		$redirect['view'] = 'core.ItemAdmin';
 		$redirect['subView'] = 'core.ItemPermissions';
 		$redirect['itemId'] = $itemId;
@@ -389,7 +521,13 @@ class ItemPermissionsView extends GalleryView {
 	}
 	$itemId = $item->getId();
 
-	/* Make sure we have permission to edit this item */
+	
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -403,7 +541,13 @@ class ItemPermissionsView extends GalleryView {
 	$form['serialNumber'] = $item->getSerialNumber();
 
 	if ($form['formName'] == 'ItemPermissions') {
-	    /* Complain if we have any invalid data */
+	    
+
+
+/*  Complain if we have any invalid data  */
+
+
+
 	} else {
 	    /*
 	     * First time around, load the form with item data.  Note that
@@ -430,21 +574,39 @@ class ItemPermissionsView extends GalleryView {
 	    $form['formName'] = 'ItemPermissions';
 	}
 
-	/* Get all available permissions */
+	
+
+
+/*  Get all available permissions  */
+
+
+
 	list ($ret, $allPermissions) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return array($ret, null);
 	}
 	ksort($allPermissions);
 
-	/* Get all permissions for the item. */
+	
+
+
+/*  Get all permissions for the item.  */
+
+
+
 	list ($ret, $permissions) =
 	    GalleryCoreApi::fetchAllPermissionsForItem($itemId, true);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Figure out all the unique user/group ids and load those */
+	
+
+
+/*  Figure out all the unique user/group ids and load those  */
+
+
+
 	$userAndGroupEntityIds = array();
 	foreach ($permissions as $permission) {
 	    if (!empty($permission['userId'])) {
@@ -461,12 +623,24 @@ class ItemPermissionsView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Convert them into a hash map by entity id */
+	
+
+
+/*  Convert them into a hash map by entity id  */
+
+
+
 	foreach ($userAndGroupEntities as $entity) {
 	    $userAndGroupEntityMap[$entity->getId()] = (array)$entity;
 	}
 
-	/* Figure out the admin group id */
+	
+
+
+/*  Figure out the admin group id  */
+
+
+
 	list ($ret, $adminGroupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 	if ($ret) {
@@ -514,7 +688,13 @@ class ItemPermissionsView extends GalleryView {
 	    }
 	}
 
-	/* Figure out the owner */
+	
+
+
+/*  Figure out the owner  */
+
+
+
 	list ($ret, $owner) = GalleryCoreApi::loadEntitiesById($item->getOwnerId(), 'GalleryUser');
 	if ($ret) {
 	    return array($ret, null);
@@ -525,7 +705,13 @@ class ItemPermissionsView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Figure out what we can display on the form */
+	
+
+
+/*  Figure out what we can display on the form  */
+
+
+
 	$can['changePermissions'] = $canChange;
 	$can['changeOwner'] = $isAdmin;
 	$can['applyToSubItems'] = $item->getCanContainChildren();

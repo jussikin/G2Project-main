@@ -54,7 +54,13 @@ class RepositoryPackageTest extends GalleryTestCase {
 	$this->_package->setTemplateFile('test.tpl');
 	$this->_package->_outputDir = 'someoutputdir/';
 
-	/* Prepare the data we expect from the methods tested for comparison. */
+	
+
+
+/*  Prepare the data we expect from the methods tested for comparison.  */
+
+
+
 	$this->_expectedPackageData['package1'] = array(
 	    0 => array('random' => 'random'),
 	    1 => array('directories' => array('dir1', 'dir2')),
@@ -96,18 +102,36 @@ class RepositoryPackageTest extends GalleryTestCase {
 	$platform->setReply('file_exists', array($expectedPackagePath), true);
 	$gallery->setPlatform($platform);
 
-	/* Send data to template. */
+	
+
+
+/*  Send data to template.  */
+
+
+
 	$this->_package->_descriptor = $testDescriptor;
 	$ret = $this->_package->writeSinglePackageToDisk('package1');
 	if ($ret) {
 	    return ($ret);
 	}
 
-	/* Get data from template. */
+	
+
+
+/*  Get data from template.  */
+
+
+
 	$templateVariables = $this->_package->_template->getVariables();
 	$this->assertEquals($this->_expectedPackageData['package1'], $templateVariables, '');
 
-	/* Verify that the package was named appropriately. */
+	
+
+
+/*  Verify that the package was named appropriately.  */
+
+
+
 	$packagePath = $this->_package->getOutputDir() . $this->_package->getOutputFile();
 	$this->assertEquals($expectedPackagePath, $packagePath, 'Package written to wrong path []');
 
@@ -138,7 +162,13 @@ class RepositoryPackageTest extends GalleryTestCase {
 	    array('someoutputdir/testplugin-1.0.0-19700411131300-package2.package', ''), true);
 	$gallery->setPlatform($platform);
 
-	/* Send data to template. */
+	
+
+
+/*  Send data to template.  */
+
+
+
 	list ($ret, $packagesWritten) = $this->_package->writeAllPackagesToDisk();
 	if ($ret) {
 	    return ($ret);
@@ -148,7 +178,13 @@ class RepositoryPackageTest extends GalleryTestCase {
 				  'packagesSkipped' => array()),
 			    $packagesWritten, 'Unexpected list of written packages.');
 
-	/* Get data from template. */
+	
+
+
+/*  Get data from template.  */
+
+
+
 	$templateVariables = $this->_package->_template->getVariables();
 
 	$this->assertEquals($this->_expectedPackageData['package1']

@@ -67,7 +67,13 @@ class GalleryLinkItem extends GalleryItem {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 	if (is_numeric($link)) {
-	    /* Link to an album */
+	    
+
+
+/*  Link to an album  */
+
+
+
 	    list ($ret, $linkedAlbum) = GalleryCoreApi::loadEntitiesById($link, 'GalleryAlbumItem');
 	    if ($ret) {
 		return $ret;
@@ -133,7 +139,13 @@ class GalleryLinkItem extends GalleryItem {
 	    return $ret;
 	}
 
-	/* Redirect if trying to show this item */
+	
+
+
+/*  Redirect if trying to show this item  */
+
+
+
 	list ($view, $itemId) = GalleryUtilities::getRequestVariables('view', 'itemId');
 	if ($view == 'core.ShowItem' && $itemId == $this->getId()) {
 	    global $gallery;
@@ -159,7 +171,13 @@ class GalleryLinkItem extends GalleryItem {
 	return null;
     }
 
-    /* Add functions to make this entity thumbnail-able */
+    
+
+
+/*  Add functions to make this entity thumbnail-able  */
+
+
+
     function fetchPath() {
 	return array(null, $this->getLink());
     }

@@ -42,14 +42,26 @@ class MainPageControllerAndView extends RepositoryControllerAndView
         $data = array();
         $urlGenerator =& $gallery->getUrlGenerator();
 
-    /* Make sure logged in user is an administrator. */
+    
+
+
+/*  Make sure logged in user is an administrator.  */
+
+
+
         list ($ret, $data['isSiteAdmin']) = GalleryCoreApi::isUserInSiteAdminGroup();
         if ($ret) {
             print $ret->getAsHtml();
             return;
         }
 
-    /* Create links for repository actions. */
+    
+
+
+/*  Create links for repository actions.  */
+
+
+
         $data['packagePluginLink'] = $urlGenerator->generateUrl(array(
         'controller' => 'PackagePlugin', 'action' => 'showAvailablePlugins'));
         $data['packageAllPlugins'] = $urlGenerator->generateUrl(array(

@@ -73,7 +73,13 @@ class HiddenEventHandlerTest extends GalleryTestCase {
 	}
 
 	if ($top) {
-	    /* Setup permissions */
+	    
+
+
+/*  Setup permissions  */
+
+
+
 	    $albumId = $album->getId();
 	    $ret = GalleryCoreApi::removeItemPermissions($albumId);
 	    if ($ret) {

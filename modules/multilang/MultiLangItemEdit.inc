@@ -53,7 +53,13 @@ class MultiLangItemEdit extends ItemEditPlugin {
 		    return array($ret, null, null, null);
 		}
 		if ($markup == 'html') {
-		    /* Strip malicious content if html markup allowed */
+		    
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 		    $form['title'] = GalleryUtilities::htmlSafe($form['title'], true);
 		    $form['summary'] = GalleryUtilities::htmlSafe($form['summary'], true);
 		    $form['description'] = GalleryUtilities::htmlSafe($form['description'], true);
@@ -123,7 +129,13 @@ class MultiLangItemEdit extends ItemEditPlugin {
 	$languages = empty($languages) ? array() : explode('|', $languages);
 	sort($languages);
 	foreach (array_keys($form['languageData']) as $language) {
-	    /* Show all languages for item, even if no longer in languages list */
+	    
+
+
+/*  Show all languages for item, even if no longer in languages list  */
+
+
+
 	    if (!in_array($language, $languages)) {
 		$languages[] = $language;
 	    }

@@ -60,7 +60,13 @@ class WebDavRewriteHelper {
 	} else {
 	    $params['path'] = ltrim($params['path'], '/');
 
-	    /* rawurlencode except for path separators */
+	    
+
+
+/*  rawurlencode except for path separators  */
+
+
+
 	    $params['path'] = str_replace('%2F', '/', rawurlencode($params['path']));
 	}
 

@@ -105,7 +105,13 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/invalidPath/zip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/invalidPath/zip'), false);
 	$this->_platform->setReply('is_executable', array('/invalidPath/zip'), false);
 
@@ -121,7 +127,13 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][test]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/invalidPath/zip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/invalidPath/zip'), false);
 	$this->_platform->setReply('is_executable', array('/invalidPath/zip'), false);
 
@@ -139,7 +151,13 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPath/zip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/validPath/zip'), false);
 	$this->_platform->setReply('is_executable', array('/validPath/zip'), true);
 	$this->_platform->setReply(
@@ -172,7 +190,13 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][test]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPath/zip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/validPath/zip'), false);
 	$this->_platform->setReply('is_executable', array('/validPath/zip'), true);
 	$this->_platform->setReply(
@@ -202,7 +226,13 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[action][test]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPath/zip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/validPath/zip'), true);
 
 	$results = $this->handleRequest();
@@ -216,11 +246,23 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
     function testTestWrongBinary() {
 	global $gallery;
 
-	/* Oops, user entered unzip instead of zip */
+	
+
+
+/*  Oops, user entered unzip instead of zip  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][test]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPath/unzip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/validPath/unzip'), false);
 	$this->_platform->setReply('is_executable', array('/validPath/unzip'), true);
 	$this->_platform->setReply(
@@ -246,11 +288,23 @@ class ZipCartAdminControllerTest extends GalleryControllerTestCase {
     function testTestWrongBinaryOutsideOfOpenBasedir() {
 	global $gallery;
 
-	/* Oops, user entered unzip instead of zip */
+	
+
+
+/*  Oops, user entered unzip instead of zip  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][test]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPath/unzip');
 
-	/* Set up our mock platform exactly as we expect the calls will come in */
+	
+
+
+/*  Set up our mock platform exactly as we expect the calls will come in  */
+
+
+
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/validPath/unzip'), true);
 
 	$results = $this->handleRequest();

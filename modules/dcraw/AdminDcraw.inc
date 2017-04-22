@@ -55,7 +55,13 @@ class AdminDcrawController extends GalleryController {
 		} else {
 		    $failCount = 0;
 		    foreach ($testResults as $testResult) {
-			/* All tests should work, else this path is not a valid one */
+			
+
+
+/*  All tests should work, else this path is not a valid one  */
+
+
+
 			if (!$testResult['success']) {
 			    $failCount++;
 			}
@@ -132,7 +138,13 @@ class AdminDcrawView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load our default values if we didn't just come from this form. */
+	
+
+
+/*  Load our default values if we didn't just come from this form.  */
+
+
+
 	if ($form['formName'] != 'AdminDcraw') {
 	    $form['formName'] = 'AdminDcraw';
 

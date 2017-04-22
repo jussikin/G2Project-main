@@ -43,7 +43,13 @@ class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Create random album to test assignment */
+	
+
+
+/*  Create random album to test assignment  */
+
+
+
 	list ($ret, $this->_parentAlbum) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -56,7 +62,13 @@ class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'useralbum.UserAlbumSiteAdmin'),
@@ -74,7 +86,13 @@ class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[targetLocation]', $this->_getRootId());
 	GalleryUtilities::putRequestVariable('form[homeLink]', 'on');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'useralbum.UserAlbumSiteAdmin'),
@@ -82,7 +100,13 @@ class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the information in the DB */
+	
+
+
+/*  Verify the information in the DB  */
+
+
+
 	list ($ret, $verifyParams) =
 	    GalleryCoreApi::fetchAllPluginParameters('module', 'useralbum');
 	foreach ($verifyParams as $key => $value) {

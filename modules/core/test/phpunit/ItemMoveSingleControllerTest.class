@@ -39,7 +39,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	/* Register a dummy toolkit */
+	
+
+
+/*  Register a dummy toolkit  */
+
+
+
 	$path = 'modules/core/test/phpunit/ItemMoveSingleControllerTest.class';
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ItemMoveSingleTestToolkit', 'ItemMoveSingleTestToolkit', $path,
@@ -49,7 +55,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 	}
 	$this->_markToolkitForCleanup('ItemMoveSingleTestToolkit');
 
-	/* Register operations that we can perform on our mock data items */
+	
+
+
+/*  Register operations that we can perform on our mock data items  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitOperation('ItemMoveSingleTestToolkit',
 		array('image/test'), 'thumbnail',
 		array(array('type' => 'int', 'description' => 'foo'),
@@ -92,7 +104,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 	$this->_markForCleanup($this->_destinationAlbum);
 	$this->_setDerivativePreferences($this->_destinationAlbum->getId(), 200, 400, 600, 800);
 
-	/* Create a data item */
+	
+
+
+/*  Create a data item  */
+
+
+
 	list ($ret, $this->_item) = $this->_createRandomDataItem(
 		$this->_rootAlbum->getId(), 'image/test', array('width' => 1000));
 	if ($ret) {
@@ -152,14 +170,26 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
      * Test moving an item
      */
     function testMoveItem() {
-	/* Create derivatives according to prefs of original album */
+	
+
+
+/*  Create derivatives according to prefs of original album  */
+
+
+
 	$ret = GalleryCoreApi::addExistingItemToAlbum(
 				$this->_item, $this->_rootAlbum->getId(), true);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Verify derivatives were created ok */
+	
+
+
+/*  Verify derivatives were created ok  */
+
+
+
 	$sizes = $this->_getDerivativeSizes($this->_item->getId());
 	$this->assertEquals(array(
 	    array('type' => DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'op' => 'thumbnail|150'),
@@ -180,7 +210,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify parent sequence */
+	
+
+
+/*  Verify parent sequence  */
+
+
+
 	list ($ret, $parentSequence) = GalleryCoreApi::fetchParentSequence($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -189,17 +225,35 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 				  $this->_destinationAlbum->getId()),
 			    $parentSequence, 'Parent sequence');
 
-	/* Verify derivatives were recreated with preferences of new parent album */
+	
+
+
+/*  Verify derivatives were recreated with preferences of new parent album  */
+
+
+
 	$sizes = $this->_getDerivativeSizes($this->_item->getId());
 	$this->assertEquals(array(
 	    array('type' => DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'op' => 'thumbnail|200'),
-	    /* Order differs because old 400 kept as-is, and old 300 is reused for 600. */
+	    
+
+
+/*  Order differs because old 400 kept as-is, and old 300 is reused for 600.  */
+
+
+
 	    array('type' => DERIVATIVE_TYPE_IMAGE_RESIZE, 'op' => 'scale|600'),
 	    array('type' => DERIVATIVE_TYPE_IMAGE_RESIZE, 'op' => 'scale|400'),
 	    array('type' => DERIVATIVE_TYPE_IMAGE_RESIZE, 'op' => 'scale|800')),
 	    $sizes, 'Derivative sizes after move');
 
-	/* Move back */
+	
+
+
+/*  Move back  */
+
+
+
 	clearstatcache();
 	GalleryUtilities::putRequestVariable('form[destination]', $this->_rootAlbum->getId());
 	$results = $this->handleRequest();
@@ -210,7 +264,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify parent sequence */
+	
+
+
+/*  Verify parent sequence  */
+
+
+
 	list ($ret, $parentSequence) = GalleryCoreApi::fetchParentSequence($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -219,7 +279,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 				  $this->_rootAlbum->getId()),
 			    $parentSequence, 'Parent sequence 2');
 
-	/* Verify derivatives were recreated with preferences of new parent album */
+	
+
+
+/*  Verify derivatives were recreated with preferences of new parent album  */
+
+
+
 	$sizes = $this->_getDerivativeSizes($this->_item->getId());
 	$this->assertEquals(array(
 	    array('type' => DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'op' => 'thumbnail|150'),
@@ -335,14 +401,26 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
      * Test moving an item with a cropped thumbnail; ensure crop operation is maintained
      */
     function testMoveItemWithCroppedThumbnail() {
-	/* Create derivatives according to prefs of original album */
+	
+
+
+/*  Create derivatives according to prefs of original album  */
+
+
+
 	$ret = GalleryCoreApi::addExistingItemToAlbum(
 				$this->_item, $this->_rootAlbum->getId(), true);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Add crop operation */
+	
+
+
+/*  Add crop operation  */
+
+
+
 	list ($ret, $thumbnails) =
 	    GalleryCoreApi::fetchThumbnailsByItemIds(array($this->_item->getId()));
 	if ($ret) {
@@ -363,7 +441,13 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Verify derivatives were created ok */
+	
+
+
+/*  Verify derivatives were created ok  */
+
+
+
 	$sizes = $this->_getDerivativeSizes($this->_item->getId());
 	$this->assertEquals(array(
 	    array('type' => DERIVATIVE_TYPE_IMAGE_THUMBNAIL,
@@ -385,12 +469,24 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify derivatives were recreated with preferences of new parent album */
+	
+
+
+/*  Verify derivatives were recreated with preferences of new parent album  */
+
+
+
 	$sizes = $this->_getDerivativeSizes($this->_item->getId());
 	$this->assertEquals(array(
 	    array('type' => DERIVATIVE_TYPE_IMAGE_THUMBNAIL,
 		  'op' => 'crop|0,0,50,50;thumbnail|200'),
-	    /* Order differs because old 400 kept as-is, and old 300 is reused for 600. */
+	    
+
+
+/*  Order differs because old 400 kept as-is, and old 300 is reused for 600.  */
+
+
+
 	    array('type' => DERIVATIVE_TYPE_IMAGE_RESIZE, 'op' => 'scale|600'),
 	    array('type' => DERIVATIVE_TYPE_IMAGE_RESIZE, 'op' => 'scale|400'),
 	    array('type' => DERIVATIVE_TYPE_IMAGE_RESIZE, 'op' => 'scale|800')),

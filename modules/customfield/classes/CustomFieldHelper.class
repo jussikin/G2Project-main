@@ -37,7 +37,13 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldInterface_1_
  * A helper class for the Custom Field module.
  * @static
  */
-class CustomFieldHelper extends CustomFieldInterface_1_0 /* and GalleryEventListener */ {
+class CustomFieldHelper extends CustomFieldInterface_1_0 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     /**
      * Load and decode module parameters
@@ -364,7 +370,13 @@ class CustomFieldHelper extends CustomFieldInterface_1_0 /* and GalleryEventList
 	    switch ($form[$set]['goAction']) {
 
 	    case 'common':
-		/* Remove from $set, add to common; no db change */
+		
+
+
+/*  Remove from $set, add to common; no db change  */
+
+
+
 		$param['common'][] = $param[$set][$idx];
 		unset($param[$set][$idx]);
 		$ret = CustomFieldHelper::saveParameters(
@@ -375,7 +387,13 @@ class CustomFieldHelper extends CustomFieldInterface_1_0 /* and GalleryEventList
 		break;
 
 	    case 'remove':
-		/* Remove from $set; delete from all items */
+		
+
+
+/*  Remove from $set; delete from all items  */
+
+
+
 		unset($param[$set][$idx]);
 		$ret = CustomFieldHelper::saveParameters(array($set => $param[$set]), $containerId);
 		if ($ret) {
@@ -390,9 +408,21 @@ class CustomFieldHelper extends CustomFieldInterface_1_0 /* and GalleryEventList
 		break;
 
 	    case 'album':
-		/* Remove from common, add to album; delete from non-album items */
+		
+
+
+/*  Remove from common, add to album; delete from non-album items  */
+
+
+
 	    case 'photo':
-		/* Remove from common, add to photo; delete from non-photo items */
+		
+
+
+/*  Remove from common, add to photo; delete from non-photo items  */
+
+
+
 		$newSet = $form[$set]['goAction'];
 		$param[$newSet][] = $param[$set][$idx];
 		unset($param[$set][$idx]);
@@ -438,7 +468,13 @@ class CustomFieldHelper extends CustomFieldInterface_1_0 /* and GalleryEventList
 		    break;
 		}
 	    }
-	} /* else $form['action']['reset'] */
+	} 
+
+
+/*  else $form['action']['reset']  */
+
+
+
 
 	return array(null, $status);
     }

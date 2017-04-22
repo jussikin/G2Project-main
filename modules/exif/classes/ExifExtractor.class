@@ -50,7 +50,13 @@ class ExifExtractor extends ExifInterface_1_0 {
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    /* Only look at JPEG/raw DataItems.. */
+	    
+
+
+/*  Only look at JPEG/raw DataItems..  */
+
+
+
 	    if (!GalleryUtilities::isA($item, 'GalleryDataItem') ||
 		    !preg_match('{^image/(p?jpeg(-cmyk)?|x-dcraw)$}', $item->getMimeType())) {
 		continue;

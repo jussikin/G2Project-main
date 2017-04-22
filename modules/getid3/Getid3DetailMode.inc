@@ -38,7 +38,13 @@ class Getid3DetailModeController extends GalleryController {
 	    $mode = 'summary';
 	}
 
-	/* Store the new mode in the session */
+	
+
+
+/*  Store the new mode in the session  */
+
+
+
 	$session =& $gallery->getSession();
 	$session->put('getid3.module.LoadGetid3Info.mode', $mode);
 

@@ -46,7 +46,13 @@ class GalleryEntityHelper_simple {
 	    $ids = array($ids);
 	}
 
-	/* Grab what we can from the cache and make up a list of what's missing */
+	
+
+
+/*  Grab what we can from the cache and make up a list of what's missing  */
+
+
+
 	$cached = $missing = $onLoad = array();
 	foreach ($ids as $id) {
 	    $cacheKey = "GalleryEntityHelper::loadEntitiesById($id)";
@@ -64,17 +70,35 @@ class GalleryEntityHelper_simple {
 	}
 
 	if (!empty($missing)) {
-	    /* Get our storage object */
+	    
+
+
+/*  Get our storage object  */
+
+
+
 	    $storage =& $gallery->getStorage();
 
-	    /* Load the entities from our persistent store */
+	    
+
+
+/*  Load the entities from our persistent store  */
+
+
+
 	    list ($ret, $missing) = $storage->loadEntities($missing);
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	}
 
-	/* Move the new entities into the cache */
+	
+
+
+/*  Move the new entities into the cache  */
+
+
+
 	foreach ($missing as $entity) {
 	    $id = $entity->getId();
 	    list ($ret, $classFile) = $entity->getClassFile();
@@ -86,7 +110,13 @@ class GalleryEntityHelper_simple {
 	    $cached[$id] = $entity;
 	}
 
-	/* Let each entity do its post-load procedure */
+	
+
+
+/*  Let each entity do its post-load procedure  */
+
+
+
 	foreach ($onLoad as $id) {
 	    $ret = $cached[$id]->onLoad();
 	    if ($ret) {
@@ -95,13 +125,25 @@ class GalleryEntityHelper_simple {
 	    GalleryDataCache::put("GalleryEntityHelper::loadEntitiesById($id)", $cached[$id]);
 	}
 
-	/* Build up the results from the cache */
+	
+
+
+/*  Build up the results from the cache  */
+
+
+
 	$results = array();
 	foreach ($ids as $id) {
 	    $results[] = $cached[$id];
 	}
 
-	/* Assert the entity-type if requested */
+	
+
+
+/*  Assert the entity-type if requested  */
+
+
+
 	if ($requiredEntityType && $requiredEntityType != 'GalleryEntity') {
 	    if (!is_array($requiredEntityType)) {
 		$requiredEntityType = array($requiredEntityType);

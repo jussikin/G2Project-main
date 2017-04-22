@@ -60,7 +60,13 @@ class EventLogHelperTest extends GalleryTestCase {
     function testAddEventLogEntryRowExists() {
 	global $gallery;
 
-	/* getUniqueId returns 3007, which mod 1000 == 7 */
+	
+
+
+/*  getUniqueId returns 3007, which mod 1000 == 7  */
+
+
+
 	$this->_storage->setReply(
 	    'getUniqueId', array(DATABASE_SEQUENCE_EVENT_LOG), array(null, 3007));
 	$this->_storage->setReply(
@@ -87,13 +93,25 @@ class EventLogHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* tearDown will assert that the test storage is complete, meaning everything worked */
+	
+
+
+/*  tearDown will assert that the test storage is complete, meaning everything worked  */
+
+
+
     }
 
     function testAddEventLogEntryNewRow() {
 	global $gallery;
 
-	/* getUniqueId returns 3007, which mod 1000 == 7 */
+	
+
+
+/*  getUniqueId returns 3007, which mod 1000 == 7  */
+
+
+
 	$this->_storage->setReply(
 	    'getUniqueId', array(DATABASE_SEQUENCE_EVENT_LOG), array(null, 3007));
 	$this->_storage->setReply(
@@ -134,7 +152,13 @@ class EventLogHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* tearDown will assert that the test storage is complete, meaning everything worked */
+	
+
+
+/*  tearDown will assert that the test storage is complete, meaning everything worked  */
+
+
+
     }
 }
 

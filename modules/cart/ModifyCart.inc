@@ -44,7 +44,13 @@ class ModifyCartController extends GalleryController {
 	if (!isset($form['action']) || isset($form['action']['modify'])) {
 	    switch ($form['pluginId']) {
 	    case 'updateCart':
-		/* Update counts */
+		
+
+
+/*  Update counts  */
+
+
+
 		if (isset($form['counts'])) {
 		    foreach ($form['counts'] as $itemId => $count) {
 			if ($count <= 0) {
@@ -55,14 +61,26 @@ class ModifyCartController extends GalleryController {
 		    }
 		}
 
-		/* Delete whatever needs deleting */
+		
+
+
+/*  Delete whatever needs deleting  */
+
+
+
 		if (isset($form['delete'])) {
 		    foreach ($form['delete'] as $itemId => $junk) {
 			unset($cartItemIds[$itemId]);
 		    }
 		}
 
-		/* Update the cart values */
+		
+
+
+/*  Update the cart values  */
+
+
+
 		$ret = CartHelper::setCartItemCounts($cartItemIds);
 		if ($ret) {
 		    return array($ret, null);
@@ -71,7 +89,13 @@ class ModifyCartController extends GalleryController {
 		break;
 
 	    case 'emptyCart':
-		/* Empty the cart */
+		
+
+
+/*  Empty the cart  */
+
+
+
 		$ret = CartHelper::setCartItemCounts(array());
 		if ($ret) {
 		    return array($ret, null);
@@ -80,7 +104,13 @@ class ModifyCartController extends GalleryController {
 		break;
 
 	    default:
-		/* Expect it to be one of our plugins */
+		
+
+
+/*  Expect it to be one of our plugins  */
+
+
+
 		foreach (array('CartPluginInterface_1_1', 'CartPluginInterface_1_0')
 			as $interface) {
 		    GalleryCoreApi::requireOnce("modules/cart/classes/$interface.class");
@@ -98,7 +128,13 @@ class ModifyCartController extends GalleryController {
 		    break;
 		}
 
-		/* Pass in only the types the plugin supports */
+		
+
+
+/*  Pass in only the types the plugin supports  */
+
+
+
 		list ($ret, $itemList) =
 		    GalleryCoreApi::loadEntitiesById(array_keys($cartItemIds), 'GalleryItem');
 		if ($ret) {
@@ -121,29 +157,59 @@ class ModifyCartController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Remove the fulfilled items */
+		
+
+
+/*  Remove the fulfilled items  */
+
+
+
 		foreach (array_keys($fulfillmentCart) as $id) {
 		    unset($cartItemIds[$id]);
 		}
 
-		/* Save the modified cart */
+		
+
+
+/*  Save the modified cart  */
+
+
+
 		$ret = CartHelper::setCartItemCounts($cartItemIds);
 		if ($ret) {
 		    return array($ret, null);
 		}
 
 		if (!isset($redirect['href'])) {
-		    /* If we're redirecting offsite, don't include the status */
+		    
+
+
+/*  If we're redirecting offsite, don't include the status  */
+
+
+
 		    $status['cartModified'] = 1;
 		}
 
-		/* Redirect according to the wishes of the cart plugin */
+		
+
+
+/*  Redirect according to the wishes of the cart plugin  */
+
+
+
 		$results['redirect'] = $redirect;
 		break;
 	    }
 	}
 
-	/* Prepare our results */
+	
+
+
+/*  Prepare our results  */
+
+
+
 	if (!isset($results['redirect'])) {
 	    $results['redirect']['view'] = 'cart.ViewCart';
 	    /*

@@ -41,13 +41,25 @@ class AdminDeleteGroupController extends GalleryController {
 
 	if (isset($form['action']['cancel'])) {
 
-	    /* Go back to the AdminGroups view */
+	    
+
+
+/*  Go back to the AdminGroups view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminGroups';
 
 	} else if (isset($form['action']['delete'])) {
 
-	    /* Only allow users to delete GROUP_NORMAL groups. */
+	    
+
+
+/*  Only allow users to delete GROUP_NORMAL groups.  */
+
+
+
 	    list ($ret, $group) = GalleryCoreApi::loadEntitiesById($groupId, 'GalleryGroup');
 	    if ($ret) {
 		return array($ret, null);
@@ -58,7 +70,13 @@ class AdminDeleteGroupController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* Request a redirect to the confirmation screen */
+	    
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminGroups';
 	    $status['deletedGroup'] = $group->getGroupName();
@@ -98,7 +116,13 @@ class AdminDeleteGroupView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminDeleteGroup') {
-	    /* First time around initialize our form */
+	    
+
+
+/*  First time around initialize our form  */
+
+
+
 	    $form['groupName'] = $group->getGroupName();
 	    $form['formName'] = 'AdminDeleteGroup';
 	}
@@ -106,7 +130,13 @@ class AdminDeleteGroupView extends GalleryView {
 	$AdminDeleteGroup = array();
 	$AdminDeleteGroup['group'] = (array)$group;
 
-	/* Render the HTML body */
+	
+
+
+/*  Render the HTML body  */
+
+
+
 	$template->setVariable('AdminDeleteGroup', $AdminDeleteGroup);
 	$template->setVariable('controller', 'core.AdminDeleteGroup');
 

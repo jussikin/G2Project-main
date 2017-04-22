@@ -39,7 +39,13 @@ class RewriteParserTestCase extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Set up our environment */
+	
+
+
+/*  Set up our environment  */
+
+
+
 	$activeRules['rewriteparsermock'][0] = array('pattern' => 'bogus');
 	foreach (array('activeRules' => serialize($activeRules),
 		       'allowEmptyReferer' => '0',
@@ -54,25 +60,49 @@ class RewriteParserTestCase extends GalleryTestCase {
 	$this->_parser = new $rewriteParserName();
 	GalleryUtilities::putRequestVariable('rewriteTest', 'pass');
 
-	/* Set up our mock platform */
+	
+
+
+/*  Set up our mock platform  */
+
+
+
 	$this->_platform = new RewriteParserMockPlatform();
 	$this->_platform->init($this);
 	unset($this->_fileContent);
 	unset($this->_embeddedFileContent);
 	$gallery->setPlatform($this->_platform);
 
-	/* Register a new module */
+	
+
+
+/*  Register a new module  */
+
+
+
 	GalleryDataCache::reset();
 	list ($ret, $this->_module) = GalleryCoreApi::loadPlugin('module', 'rewriteparsermock');
 	if ($ret) {
 	    return $ret;
 	}
-	/* Install it */
+	
+
+
+/*  Install it  */
+
+
+
 	$ret = $this->_module->installOrUpgrade();
 	if ($ret) {
 	    return $ret;
 	}
-	/* Activate the module */
+	
+
+
+/*  Activate the module  */
+
+
+
 	list ($ret, $redirect) = $this->_module->activate();
 	if ($ret) {
 	    return $ret;
@@ -153,7 +183,13 @@ class RewriteParserTestCase extends GalleryTestCase {
     }
 
     function testSaveDupeShortUrl() {
-	/* It might be desirable to activate two rules for one Gallery view */
+	
+
+
+/*  It might be desirable to activate two rules for one Gallery view  */
+
+
+
 	$testRules['rewriteparsermock'][0] = array('pattern' => 'bogus1');
 	$testRules['rewriteparsermock'][1] = array('pattern' => 'bogus2');
 	list ($ret, $code, $errno) = $this->_parser->saveActiveRules($testRules);
@@ -415,29 +451,65 @@ class RewriteParserMockModule extends GalleryModule {
 	$rules[0] = array('pattern' => 'bogus1',
 			  'match' => array('view' => 'php.Unit'));
 
-	/* Rule 1: Duplicate match */
+	
+
+
+/*  Rule 1: Duplicate match  */
+
+
+
 	$rules[1] = array('pattern' => 'bogus2',
 			  'match' => array('view' => 'php.Unit'));
 
-	/* Rule 2: Bad parser */
+	
+
+
+/*  Rule 2: Bad parser  */
+
+
+
 	$rules[2] = array('pattern' => 'bogus3',
 			  'parser' => 'bogus');
 
-	/* Rule 3: Conditions */
+	
+
+
+/*  Rule 3: Conditions  */
+
+
+
 	$rules[3] = array('conditions' => array(array('test' => 'REQUEST_METHOD',
 						      'pattern' => 'OPTIONS'),
 						array('test' => 'HTTP:Authorization',
 						      'pattern' => '%authorization')),
 			  'keywords' => array('authorization' => array('pattern' => '(.+)')));
 
-	/* Rule 4: Bad test condition */
+	
+
+
+/*  Rule 4: Bad test condition  */
+
+
+
 	$rules[4] = array('conditions' => array(array('test' => 'REQUEST_FILENAME',
 						      'pattern' => '/foo/bar')));
 
-	/* Rule 5: Restrict */
+	
+
+
+/*  Rule 5: Restrict  */
+
+
+
 	$rules[5] = array('restrict' => array('view' => 'php.Unit'));
 
-	/* Rule 6: Empty pattern */
+	
+
+
+/*  Rule 6: Empty pattern  */
+
+
+
 	$rules[6] = array('match' => array('view' => 'php.Unit'));
 
 	return $rules;
@@ -514,7 +586,13 @@ class RewriteParserMockPlatform extends GalleryPlatform {
     function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
-	/* The hostName can include the port part */
+	
+
+
+/*  The hostName can include the port part  */
+
+
+
 	list ($host) = explode(':', $urlGenerator->getHostName());
 	if ($target == $host) {
 	    return 'phpunit';

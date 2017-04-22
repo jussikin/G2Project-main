@@ -52,7 +52,13 @@ class EditFeedController extends GalleryController {
 	    return array($ret, null);
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
@@ -66,7 +72,13 @@ class EditFeedController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	/* Check which button was pressed */
+	
+
+
+/*  Check which button was pressed  */
+
+
+
 	if (isset($form['action']['create']) || isset($form['action']['update'])) {
 	    /*
 	     * Either new feed settings where created or existing where updated.
@@ -82,7 +94,13 @@ class EditFeedController extends GalleryController {
 		}
 	    }
 
-	    /* check strings may be '' or contain a value */
+	    
+
+
+/*  check strings may be '' or contain a value  */
+
+
+
 	    foreach (array('version',
 			   'category',
 			   'description',
@@ -98,7 +116,13 @@ class EditFeedController extends GalleryController {
 		}
 	    }
 
-	    /* Force podcast compatibility items */
+	    
+
+
+/*  Force podcast compatibility items  */
+
+
+
 	    if (isset($form['usePodcast'])) {
 		//FIXME Maybe we should inform the user that we are doing this.
 		$form['version'] = '2.0';
@@ -106,19 +130,37 @@ class EditFeedController extends GalleryController {
 		unset($form['useMedia']);
 	    }
 
-	    /* check the name */
+	    
+
+
+/*  check the name  */
+
+
+
 	    if (empty($form['feedName'])) {
 		$error[] = 'form[error][feedName]';
 	    }
 
-	    /* conditionally check the recursive limit */
+	    
+
+
+/*  conditionally check the recursive limit  */
+
+
+
 	    if ($form['feedType'] == 'photosRecursive' &&
 		    (!isset($form['photosRecursiveLimit']) ||
 			((int)$form['photosRecursiveLimit']) < 0)) {
 		$error[] = 'form[error][photosRecursiveLimit]';
 	    }
 
-	    /* If there are no form errors, create array to be saved to DB */
+	    
+
+
+/*  If there are no form errors, create array to be saved to DB  */
+
+
+
 	    if (empty($error)) {
 		$parameters = array('itemId' => $form['itemId'],
 		    'feedType' => $form['feedType'],
@@ -157,16 +199,34 @@ class EditFeedController extends GalleryController {
 			      'podcastOwnerEmail' => $form['podcastOwnerEmail']));
 		}
 
-		/* Check if we need to update a current feed, or create a new one */
+		
+
+
+/*  Check if we need to update a current feed, or create a new one  */
+
+
+
 		if (isset($form['action']['create'])) {
 		    $ret = RssMapHelper::createFeed($form['feedName'], $parameters);
 		} else {
 		    $ret = RssMapHelper::updateFeed($form['feedName'], $parameters);
 		}
 
-		/* Check to see if DB update was successful */
+		
+
+
+/*  Check to see if DB update was successful  */
+
+
+
 		if ($ret) {
-		    /* If we got anything other than a ERROR_COLLISION, exit */
+		    
+
+
+/*  If we got anything other than a ERROR_COLLISION, exit  */
+
+
+
 		    if (!($ret->getErrorCode() & ERROR_COLLISION)) {
 			return array($ret, null);
 		    }
@@ -177,7 +237,13 @@ class EditFeedController extends GalleryController {
 		     */
 		    $error[] = 'form[error][feedNameCollision]';
 		} else {
-		    /* Save was successful change status to refect this */
+		    
+
+
+/*  Save was successful change status to refect this  */
+
+
+
 		    $status['saved'] = 1;
 		    $mode = 'edit';
 		}
@@ -185,7 +251,13 @@ class EditFeedController extends GalleryController {
 		$mode = isset($form['action']['create'])?'new':'edit';
 	    }
 	} else if (isset($form['action']['cancel'])) {
-	    /* Cancel button was pressed, do nothing, return to feedlist */
+	    
+
+
+/*  Cancel button was pressed, do nothing, return to feedlist  */
+
+
+
 	    $mode = 'list';
 	} else if (isset($form['action']['delete'])) {
 	    /*
@@ -201,7 +273,13 @@ class EditFeedController extends GalleryController {
 	    $mode = 'list';
 	}
 
-	/* figure out the method we will use */
+	
+
+
+/*  figure out the method we will use  */
+
+
+
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results['status'] = $status;
 	$results['error'] = $error;
@@ -229,13 +307,25 @@ class EditFeedView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	/* Load the item */
+	
+
+
+/*  Load the item  */
+
+
+
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Fetch module parameters and save them in an array passed to the template engine */
+	
+
+
+/*  Fetch module parameters and save them in an array passed to the template engine  */
+
+
+
 	list ($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 	if ($ret) {
 	    return array($ret, null);
@@ -249,7 +339,13 @@ class EditFeedView extends GalleryView {
 	$EditFeed = array();
 	$EditFeed['itemId'] = $item->getId();
 
-	/* Fetch all feed definitions */
+	
+
+
+/*  Fetch all feed definitions  */
+
+
+
 	list ($ret, $feeds) = RssMapHelper::fetchFeedsForItem($EditFeed['itemId']);
 	if ($ret) {
 	    return array($ret, null);
@@ -257,21 +353,57 @@ class EditFeedView extends GalleryView {
 
 	$EditFeed['mode'] = GalleryUtilities::getRequestVariables('mode');
 	if (empty($EditFeed['mode'])) {
-	    /* Entering this module, pick the first page */
+	    
+
+
+/*  Entering this module, pick the first page  */
+
+
+
 	    if (empty($feeds)) {
-		/* No feeds defined yet: show new */
+		
+
+
+/*  No feeds defined yet: show new  */
+
+
+
 		$EditFeed['mode'] = 'new';
 	    } else {
-		/* Otherwise show the list */
+		
+
+
+/*  Otherwise show the list  */
+
+
+
 		$EditFeed['mode'] = 'list';
 	    }
 	}
 
-	/* Switching on which page to display */
+	
+
+
+/*  Switching on which page to display  */
+
+
+
 	if ($EditFeed['mode'] == 'new') {
-	    /* Create new feed */
+	    
+
+
+/*  Create new feed  */
+
+
+
 	    if (empty($form['error'])) {
-		/* no error: load default parameters */
+		
+
+
+/*  no error: load default parameters  */
+
+
+
 		$form['formName'] = 'EditFeed';
 
 		if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
@@ -316,7 +448,13 @@ class EditFeedView extends GalleryView {
 		}
 
 	    } else {
-		/* There was an error: just leave the form the same it was */
+		
+
+
+/*  There was an error: just leave the form the same it was  */
+
+
+
 		$EditFeed = array_merge($EditFeed, $form);
 	    }
 	} else if ($EditFeed['mode'] == 'edit') {
@@ -325,7 +463,13 @@ class EditFeedView extends GalleryView {
 	     * Load the feed parameters
 	     */
 	    if (empty($form['error'])) {
-		/* no error: load parameters from DB using the 'feedName' */
+		
+
+
+/*  no error: load parameters from DB using the 'feedName'  */
+
+
+
 		list ($ret, $feed) = RssMapHelper::fetchFeed($form['feedName']);
 		if ($ret) {
 		    return array($ret, null);
@@ -344,7 +488,13 @@ class EditFeedView extends GalleryView {
 		    array('view' => 'rss.Render', 'name' => $form['feedName']),
 			array('forceSessionId' => false, 'forceFullUrl' => true));
 	    } else {
-		/* There was an error: just leave the form the same it was */
+		
+
+
+/*  There was an error: just leave the form the same it was  */
+
+
+
 		$EditFeed = array_merge($EditFeed, $form);
 	    }
 	} else {

@@ -358,7 +358,13 @@ class CoreSearchTest extends GalleryTestCase {
 	    return;
 	}
 
-	/* Create a link and make sure it shows up in the search results */
+	
+
+
+/*  Create a link and make sure it shows up in the search results  */
+
+
+
 	list ($ret, $linkedItem) =
 	    $this->_createLinkedItem($this->_parentAlbum->getId(), $this->_item[1]);
 	if ($ret) {

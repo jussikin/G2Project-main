@@ -71,7 +71,13 @@ class PanoramaUpgradeHelper {
 
 	$storage =& $gallery->getStorage();
 
-	/* Switch PanoramaPhotoItems back to GalleryPhotoItems */
+	
+
+
+/*  Switch PanoramaPhotoItems back to GalleryPhotoItems  */
+
+
+
 	while ($photos) {
 	    $ids = array_splice($photos, 0, 500);
 	    $markers = GalleryUtilities::makeMarkers($ids);
@@ -90,7 +96,13 @@ class PanoramaUpgradeHelper {
 	    }
 	}
 
-	/* Switch PanoramaDerivativeImage back to GalleryDerivativeImage */
+	
+
+
+/*  Switch PanoramaDerivativeImage back to GalleryDerivativeImage  */
+
+
+
 	while ($derivatives) {
 	    $ids = array_splice($derivatives, 0, 500);
 	    $markers = GalleryUtilities::makeMarkers($ids);

@@ -35,7 +35,13 @@ class RandomHighlightModule extends GalleryModule {
 	$this->setId('randomhighlight');
 	$this->setName($gallery->i18n('Random Highlight'));
 	$this->setDescription($gallery->i18n('Periodically change the album highlight'));
-	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
+	$this->setVersion('2.0.0'); 
+
+
+/*  Update upgrade() function below too  */
+
+
+
 	$this->_templateVersion = 1;
 	$this->setGroup('display', $gallery->i18n('Display'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -54,7 +60,13 @@ class RandomHighlightModule extends GalleryModule {
 	if ($ret) {
 	    return $ret;
 	}
-	foreach (array('duration' => 7200 /* 2 hours */) as $key => $value) {
+	foreach (array('duration' => 7200 
+
+
+/*  2 hours  */
+
+
+) as $key => $value) {
 	    if (!isset($params[$key])) {
 		$ret = $this->setParameter($key, $value);
 		if ($ret) {
@@ -72,7 +84,13 @@ class RandomHighlightModule extends GalleryModule {
 	    case '0.8.4':
 	    case '0.8.5':
 	    case '0.8.6':
-		/* Changed from RandomHighlightDerivativeImage entity type to onLoadHandler */
+		
+
+
+/*  Changed from RandomHighlightDerivativeImage entity type to onLoadHandler  */
+
+
+
 		$storage =& $gallery->getStorage();
 		$query = 'UPDATE [GalleryEntity]
 		    SET [::entityType] = \'GalleryDerivativeImage\',
@@ -116,11 +134,23 @@ class RandomHighlightModule extends GalleryModule {
 	    case '1.0.5':
 	    case '1.0.6':
 	    case '1.0.6.1':
-		/* .mo file migration */
+		
+
+
+/*  .mo file migration  */
+
+
+
 	    case '1.0.7':
 	    case '1.0.8':
 	    case '1.0.9':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	    case 'end of upgrade path':
 		break;
@@ -187,11 +217,23 @@ class RandomHighlightModule extends GalleryModule {
 	$loop = GalleryDataCache::containsKey("randomhighlight:load-$id");
 	$count = GalleryDataCache::containsKey('randomhighlight:count')
 	    ? GalleryDataCache::get('randomhighlight:count') : 0;
-	/* Don't refresh the highlight during an upgrade; also limit # of reselects in 1 request */
+	
+
+
+/*  Don't refresh the highlight during an upgrade; also limit # of reselects in 1 request  */
+
+
+
 	if ($duringUpgrade || $loop || $count >= 3) {
 	    return null;
 	}
-	/* Acquire information whether we need to choose a new highlight */
+	
+
+
+/*  Acquire information whether we need to choose a new highlight  */
+
+
+
 	list ($ret, $duration) = $this->getParameter('duration');
 	if ($ret) {
 	    return $ret;
@@ -199,7 +241,13 @@ class RandomHighlightModule extends GalleryModule {
 	$isOld = (time() - $thumbnail->getModificationTimestamp() > $duration);
 	$canSee = true;
 	if (!$isOld && $thumbnail->hasOnLoadHandler('RandomHighlightPrivate')) {
-	    /* Highlight is currently a non-public item.. can current user view that item? */
+	    
+
+
+/*  Highlight is currently a non-public item.. can current user view that item?  */
+
+
+
 	    list ($ret, $highlight) = GalleryCoreApi::loadEntitiesById(
 		$thumbnail->getDerivativeSourceId(),
 		array('GalleryFileSystemEntity', 'GalleryDerivative'));
@@ -218,12 +266,24 @@ class RandomHighlightModule extends GalleryModule {
 	 * requests, unless we don't have the permission to see the current highlight
 	 */
 	if (($isOld && $viewName != 'core.DownloadItem') || !$canSee) {
-	    /* Lock and refresh to ensure another request didn't just update highlight */
+	    
+
+
+/*  Lock and refresh to ensure another request didn't just update highlight  */
+
+
+
 	    list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($id);
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* ->refresh() will call the onLoad handler again, thus use the GDC $loop variable */
+	    
+
+
+/*  ->refresh() will call the onLoad handler again, thus use the GDC $loop variable  */
+
+
+
 	    GalleryDataCache::put("randomhighlight:load-$id", true);
 	    list ($ret, $refresh) = $thumbnail->refresh();
 	    if ($ret) {
@@ -238,7 +298,13 @@ class RandomHighlightModule extends GalleryModule {
 	if ($picknew) {
 	    global $gallery;
 	    GalleryDataCache::put('randomhighlight:count', $count + 1);
-	    /* Query for child items */
+	    
+
+
+/*  Query for child items  */
+
+
+
 	    list ($ret, $query, $data) = GalleryCoreApi::buildItemQuery(
 		    'GalleryChildEntity', 'id', '[GalleryChildEntity::parentId] = ?', 'id', null,
 		    null, 'core.view', false, $gallery->getActiveUserId());
@@ -256,7 +322,13 @@ class RandomHighlightModule extends GalleryModule {
 	    while ($result = $searchResults->nextResult()) {
 		$itemIds[] = (int)$result[0];
 	    }
-	    /* Pick a new random highlight */
+	    
+
+
+/*  Pick a new random highlight  */
+
+
+
 	    $query = '
 	    SELECT [GalleryDerivative::id] FROM [GalleryDerivative]
 	    INNER JOIN [GalleryChildEntity]
@@ -270,7 +342,13 @@ class RandomHighlightModule extends GalleryModule {
 	      AND
 		[GalleryChildEntity::parentId] IN (';
 	    for ($n = 5; !empty($itemIds); $n += 10) {
-		/* Hopefully most items have a thumbnail; pick n ids at a time until we find one */
+		
+
+
+/*  Hopefully most items have a thumbnail; pick n ids at a time until we find one  */
+
+
+
 		$data = array(DERIVATIVE_TYPE_IMAGE_THUMBNAIL, $thumbnail->getDerivativeSourceId());
 		for ($i = 0; !empty($itemIds) && $i < $n; $i++) {
 		    $oneItemIdAsArray = array_splice($itemIds, rand(0, count($itemIds) - 1), 1);
@@ -298,7 +376,13 @@ class RandomHighlightModule extends GalleryModule {
 		return $ret;
 	    }
 
-	    /* Check if we have selected a public item for the highlight */
+	    
+
+
+/*  Check if we have selected a public item for the highlight  */
+
+
+
 	    list ($ret, $guestId) = GalleryCoreApi::getAnonymousUserId();
 	    if ($ret) {
 		GalleryCoreApi::releaseLocks($lockId);

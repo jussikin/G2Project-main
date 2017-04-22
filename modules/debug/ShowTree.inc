@@ -31,13 +31,25 @@ class ShowTreeView extends GalleryView {
      * @see GalleryView::loadTemplate
      */
     function loadTemplate(&$template, &$form) {
-	/* Make sure we have permission */
+	
+
+
+/*  Make sure we have permission  */
+
+
+
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Get the entity */
+	
+
+
+/*  Get the entity  */
+
+
+
 	$entityId = GalleryUtilities::getRequestVariables('entityId');
 	if (empty($entityId)) {
 	    list ($ret, $entity) = $this->getItem();
@@ -56,7 +68,13 @@ class ShowTreeView extends GalleryView {
 	if (GalleryUtilities::isA($entity, 'GalleryChildEntity')) {
 	    global $gallery;
 
-	    /* Get the parent ids leading up to this entity */
+	    
+
+
+/*  Get the parent ids leading up to this entity  */
+
+
+
 	    if (GalleryUtilities::isA($entity, 'GalleryItem')) {
 		list ($ret, $parentIds) = GalleryCoreApi::fetchParentSequence($entityId, true);
 		if ($ret) {
@@ -66,7 +84,13 @@ class ShowTreeView extends GalleryView {
 		$parentIds[] = $entity->getParentId();
 	    }
 
-	    /* Get all of this entity's children */
+	    
+
+
+/*  Get all of this entity's children  */
+
+
+
 	    list ($ret, $results) = $gallery->search('
 		SELECT [::id] FROM [GalleryChildEntity] WHERE [::parentId] = ?
 	    ', array($entityId));
@@ -79,7 +103,13 @@ class ShowTreeView extends GalleryView {
 	}
 
 	if (!empty($parentIds) || !empty($childIds)) {
-	    /* Load everything at once */
+	    
+
+
+/*  Load everything at once  */
+
+
+
 	    list ($ret, $entityObjects) = GalleryCoreApi::loadEntitiesById(
 		array_merge($parentIds, $childIds), 'GalleryEntity');
 	    if ($ret) {

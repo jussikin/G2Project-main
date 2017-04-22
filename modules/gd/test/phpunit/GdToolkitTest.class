@@ -58,7 +58,13 @@ class GdToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Reset to the defaults -- tearDown will undo this */
+	
+
+
+/*  Reset to the defaults -- tearDown will undo this  */
+
+
+
 	foreach (array('jpegQuality' => 75) as $key => $value) {
 	    $ret = GalleryCoreApi::setPluginParameter('module', 'gd', $key, $value);
 	    if ($ret) {
@@ -66,11 +72,23 @@ class GdToolkitTest extends GalleryTestCase {
 	    }
 	}
 
-	/* Watermarks are relative to data.gallery.base */
+	
+
+
+/*  Watermarks are relative to data.gallery.base  */
+
+
+
 	$this->_oldBase = $gallery->getConfig('data.gallery.base');
 	$gallery->setConfig('data.gallery.base', '/valid/');
 
-	/* Get a toolkit to work with */
+	
+
+
+/*  Get a toolkit to work with  */
+
+
+
 	$this->_toolkit = new GdToolkit();
 	$this->_gdFunctionality = new TestGdFunctionality();
     }
@@ -88,7 +106,13 @@ class GdToolkitTest extends GalleryTestCase {
 
     function testPerformOperations() {
 	foreach ($this->_gdEnvironments as $environment) {
-	    /* Test each PHP environment we know */
+	    
+
+
+/*  Test each PHP environment we know  */
+
+
+
 	    $this->_gdFunctionality->setEnvironment($environment);
 	    $this->_toolkit->setGdFunctionality($this->_gdFunctionality);
 	    $gd =& $this->_gdFunctionality;
@@ -210,7 +234,13 @@ class GdToolkitTest extends GalleryTestCase {
 
 		    $expected = array('x' => '400', 'y' => '400', 'mimeType' => 'image/jpeg');
 		    if (in_array($mimeType, array('image/png', 'image/gif'))) {
-			/* There's an additional copy to remove the transparencies */
+			
+
+
+/*  There's an additional copy to remove the transparencies  */
+
+
+
 			$expected['copy'] = array ('', 0, 0,  0, 0, 400, 400);
 		    }
 		    $this->assertEquals(
@@ -222,16 +252,64 @@ class GdToolkitTest extends GalleryTestCase {
 		}
 
 		if (GdToolkitHelper::isOperationSupported('composite', $gd)) {
-		    /* Test a basic composite operation (top right corner) */
+		    
+
+
+/*  Test a basic composite operation (top right corner)  */
+
+
+
 		    list ($ret, $resultMimeType) = $this->_toolkit->performOperation(
 			$mimeType, 'composite',
-			'300x300.ext', /* composite */
-			'/valid/composited.ext', /* composited */
-			array('50x50.ext', /* image */
-			      $mimeType, /* mimeType */
-			      50, 50, /* image width, height */
-			      'top-right', /* alignment type */
-			      0, 0)); /* image alignment x, y */
+			'300x300.ext', 
+
+
+/*  composite  */
+
+
+
+			'/valid/composited.ext', 
+
+
+/*  composited  */
+
+
+
+			array('50x50.ext', 
+
+
+/*  image  */
+
+
+
+			      $mimeType, 
+
+
+/*  mimeType  */
+
+
+
+			      50, 50, 
+
+
+/*  image width, height  */
+
+
+
+			      'top-right', 
+
+
+/*  alignment type  */
+
+
+
+			      0, 0)); 
+
+
+/*  image alignment x, y  */
+
+
+
 		    if ($ret) {
 			return $ret;
 		    }
@@ -257,13 +335,55 @@ class GdToolkitTest extends GalleryTestCase {
 		     */
 		    list ($ret, $resultMimeType) = $this->_toolkit->performOperation(
 			$mimeType, 'composite',
-			'300x300.png', /* composite */
-			'/valid/composited.ext', /* composited */
-			array('50x50.ext', /* image */
-			      $mimeType, /* mimeType */
-			      50, 50, /* image width, height */
-			      'manual', /* alignment type */
-			      99, 99)); /* image alignment x, y */
+			'300x300.png', 
+
+
+/*  composite  */
+
+
+
+			'/valid/composited.ext', 
+
+
+/*  composited  */
+
+
+
+			array('50x50.ext', 
+
+
+/*  image  */
+
+
+
+			      $mimeType, 
+
+
+/*  mimeType  */
+
+
+
+			      50, 50, 
+
+
+/*  image width, height  */
+
+
+
+			      'manual', 
+
+
+/*  alignment type  */
+
+
+
+			      99, 99)); 
+
+
+/*  image alignment x, y  */
+
+
+
 		    if ($ret) {
 			return $ret;
 		    }
@@ -291,7 +411,13 @@ class GdToolkitTest extends GalleryTestCase {
 	    }
 	}
 
-	/* Test a functionality that doesn't exist */
+	
+
+
+/*  Test a functionality that doesn't exist  */
+
+
+
 	list ($ret, $resultMimeType) =
 	    $this->_toolkit->performOperation('image/png', 'BOGUS',
 					      'BOGUS',
@@ -329,7 +455,13 @@ class GdToolkitTest extends GalleryTestCase {
 	    $this->assertEquals(0, $this->_gdFunctionality->_undestroyedResourceCounter,
 				'memory leak for image/gif / dimensions');
 
-	    /* Test a property that doesn't exist */
+	    
+
+
+/*  Test a property that doesn't exist  */
+
+
+
 	    list ($ret, $results) =
 		$this->_toolkit->getProperty('image/gif', 'BOGUS', 'BOGUS');
 	    $this->assert($ret->getErrorCode() & ERROR_UNIMPLEMENTED);
@@ -446,7 +578,13 @@ class GdToolkitTest extends GalleryTestCase {
 		return $ret;
 	    }
 	    if (!$isSupported) {
-		/* No support, so the function should return empty maps */
+		
+
+
+/*  No support, so the function should return empty maps  */
+
+
+
 		$this->assertEquals(
 		    array(), $results['operations'], 'Environment ' . $environment['name']);
 		$this->assertEquals(
@@ -590,7 +728,13 @@ class GdToolkitTest extends GalleryTestCase {
     }
 
     function testFlattenAlphaChannelForGifWithoutIndexForTransparentColor() {
-	/* We use the other case (has transparent color index) in other tests for simplicity */
+	
+
+
+/*  We use the other case (has transparent color index) in other tests for simplicity  */
+
+
+
     	$this->_gdFunctionality->setEnvironment(array_pop($this->_gdEnvironments));
 	$this->_toolkit->setGdFunctionality($this->_gdFunctionality);
 	$gd =& $this->_gdFunctionality;
@@ -603,12 +747,24 @@ class GdToolkitTest extends GalleryTestCase {
 	$hasTransparency = $this->_toolkit->_canHaveTransparency('image/gif', $res);
 	$this->assert($hasTransparency, 'has transparency');
 
-	/* After some operation, the resource has no transparent color index anymore... */
+	
+
+
+/*  After some operation, the resource has no transparent color index anymore...  */
+
+
+
 	$gd->imagecolortransparent($res, -1);
 	$hasTransparency = $this->_toolkit->_canHaveTransparency('image/gif', $res);
 	$this->assert(!$hasTransparency, 'has transparency 2');
 
-	/* Call the method under test through the save wrapper */
+	
+
+
+/*  Call the method under test through the save wrapper  */
+
+
+
 	$ret = $this->_toolkit->_saveImageResourceToFile(
 	    $res, '/valid/out.gif', 'image/gif', true);
 	if ($ret) {

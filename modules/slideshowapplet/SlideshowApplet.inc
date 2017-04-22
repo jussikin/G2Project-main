@@ -45,14 +45,26 @@ class SlideshowAppletView extends GalleryView {
 
 	$startId = null;
 
-	/* Build slideshow for an album.. */
+	
+
+
+/*  Build slideshow for an album..  */
+
+
+
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
 	if (!$item->getCanContainChildren()) {
-	    /* Photo: do slideshow of parent album, start at this photo */
+	    
+
+
+/*  Photo: do slideshow of parent album, start at this photo  */
+
+
+
 	    $startId = $item->getId();
 	    list ($ret, $item) =
 		GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
@@ -64,7 +76,13 @@ class SlideshowAppletView extends GalleryView {
 		return array($ret, null);
 	    }
 	    if (!$canView) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	}
@@ -107,7 +125,13 @@ class SlideshowAppletView extends GalleryView {
 	    $SlideshowApplet['locale'] = $locale;
 
 	    if (isset($startId)) {
-		/* format the start_from as album_picture, that's what GR expects */
+		
+
+
+/*  format the start_from as album_picture, that's what GR expects  */
+
+
+
 		$SlideshowApplet['extra']['gr_slideshow_start_from'] = $item->getId().'_'.$startId;
 	    }
 

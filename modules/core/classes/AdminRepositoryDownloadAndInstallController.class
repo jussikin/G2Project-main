@@ -65,7 +65,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 	$titleText = $module->translate('Updating Packages');
 	$templateAdapter->updateProgressBar($titleText, '', 0);
 
-	/* Create download file list. */
+	
+
+
+/*  Create download file list.  */
+
+
+
 	list ($ret, $sourcedFiles) = 
 	    $this->_createDownloadFileList($installPackages, $repositories);
 
@@ -73,7 +79,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 
 	$status = array('error' => array());
 
-	/* Download files. */
+	
+
+
+/*  Download files.  */
+
+
+
 	$currentAction = 0;
 
 	$callback = array('method' => array($templateAdapter, 'updateProgressBar'),
@@ -155,7 +167,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 				    return $ret;
 				}
 			    } else {
-				/* Themes don't need this step */
+				
+
+
+/*  Themes don't need this step  */
+
+
+
 				$autoConfigured = true;
 			    }
 
@@ -167,14 +185,26 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 				if ($ret) {
 				    return $ret;
 				}
-				/* Ignore the redirect */
+				
+
+
+/*  Ignore the redirect  */
+
+
+
 			    }
 
 			    $status['updated'][] = $pluginName;
 			}
 		    }
 
-		    /*********************************************************/
+		    
+
+
+/* ****************************************************** */
+
+
+
 		}
 	    }
 	}
@@ -184,7 +214,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 	    return $ret;
 	}
 
-	/* Update progress bar. */
+	
+
+
+/*  Update progress bar.  */
+
+
+
 	if (!empty($status['error'])) {
 	    $message = $module->translate('Update completed with errors.');
 	} else {
@@ -192,7 +228,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 	}
 	$templateAdapter->updateProgressBar($titleText, $message, 1);
 
-	/* Show link to return to the previously selected tab. */
+	
+
+
+/*  Show link to return to the previously selected tab.  */
+
+
+
 	$redirect['view'] = 'core.SiteAdmin';
 	$redirect['subView'] = 'core.AdminRepository';
 
@@ -210,7 +252,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
      * 		     array list of corresponding files for the specified packages
      */
     function _createDownloadFileList($installPackages, $repositories) {
-	/* Create download file list. */
+	
+
+
+/*  Create download file list.  */
+
+
+
 	$sourcedFiles = array();
 	foreach ($installPackages as $source => $packages) {
 	    if (!isset($repositories[$source])) {
@@ -244,7 +292,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 		     */
 		    $totalActions += 2 * count($pluginDownloadData['files']) - 1;
 
-		    /* 2 extra action for each plugin (language sync, cleanup) */
+		    
+
+
+/*  2 extra action for each plugin (language sync, cleanup)  */
+
+
+
 		    $totalActions += 2;
 		}
 	    }
@@ -323,13 +377,25 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 	$heading = $module->translate('Updating Repository Index');
 	$templateAdapter->updateProgressBar($heading, '', 0);
 
-	/* Erase all plugin data, so that a full scan drops old entries */
+	
+
+
+/*  Erase all plugin data, so that a full scan drops old entries  */
+
+
+
 	$ret = GalleryCoreApi::removeAllMapEntries('GalleryPluginPackageMap');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Update the index */
+	
+
+
+/*  Update the index  */
+
+
+
 	$currentProgress = 0;
 	$indexWeight = 5;
 	$increment = 1.0 / ($indexWeight * count($repositories) + count($pluginStatus['module']) +
@@ -344,7 +410,13 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController {
 	    $templateAdapter->updateProgressBar($heading, $message, $currentProgress);
 	    $ret = $repository->downloadIndex();
 	    if ($ret) {
-		/** @todo: Internationalize this error message */
+		
+
+
+/*  @todo: Internationalize this error message  */
+
+
+
 		$status['error']['download'][] = $ret->getErrorMessage();
 	    }
 	    $currentProgress += $indexWeight * $increment;

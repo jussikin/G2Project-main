@@ -28,7 +28,13 @@ include('../../support/security.inc');
 include('../../../bootstrap.inc');
 require_once('../../../init.inc');
 if (function_exists('date_default_timezone_set')) {
-    /* PHP 5.3 requires a default be set before using any date/time functions */
+    
+
+
+/*  PHP 5.3 requires a default be set before using any date/time functions  */
+
+
+
     @date_default_timezone_set(date_default_timezone_get());
 }
 
@@ -163,14 +169,26 @@ function PhpUnitGalleryMain(&$testSuite, $filter) {
 	return $ret;
     }
 
-    /* Set the appropriate charset in our HTTP header */
+    
+
+
+/*  Set the appropriate charset in our HTTP header  */
+
+
+
     if (!headers_sent()) {
 	header('Content-Type: text/html; charset=UTF-8');
     }
 
     global $gallery;
 
-    /* Configure our url Generator, find the correct base URL */
+    
+
+
+/*  Configure our url Generator, find the correct base URL  */
+
+
+
     $urlGenerator = new GalleryUrlGenerator();
     $ret = $urlGenerator->init('index.php');
     if ($ret) {
@@ -229,7 +247,13 @@ function PhpUnitGalleryMain(&$testSuite, $filter) {
 	    $suiteArray += loadTests($moduleId, $testDir, $filter);
 	}
 
-	/* Add repository tools tests. */
+	
+
+
+/*  Add repository tools tests.  */
+
+
+
 	$suiteArray += loadTests(
 	    'repositorytools', dirname(__FILE__) . '/../repository/test/phpunit', $filter);
 
@@ -262,7 +286,13 @@ function loadTests($moduleId, $testDir, $filter) {
 	while (($file = $platform->readdir($dir)) != false) {
 	    if (preg_match('/(.*Test).class$/', $file, $matches)) {
 		if (!strncmp($matches[1], '.#', 2)) {
-		    /* Ignore Emacs backup files */
+		    
+
+
+/*  Ignore Emacs backup files  */
+
+
+
 		    continue;
 		}
 		require_once($testDir . '/' . $file);
@@ -289,7 +319,13 @@ class GalleryTestResult extends TestResult {
     }
 
     function report() {
-	/* report result of test run */
+	
+
+
+/*  report result of test run  */
+
+
+
 	global $compactView;
 	$nRun = $this->countTests();
 	$nFailures = $this->failureCount();
@@ -345,7 +381,13 @@ class GalleryTestResult extends TestResult {
 	$notes = array();
 	foreach ($moduleStatusList as $moduleId => $moduleStatus) {
 	    if ($moduleId == 'multiroot') {
-		/* This module is never active */
+		
+
+
+/*  This module is never active  */
+
+
+
 		continue;
 	    }
 	    if (empty($moduleStatus['active'])) {
@@ -395,7 +437,13 @@ class GalleryTestResult extends TestResult {
 	    $elapsed = '0.0000';
 	    $cmd = "updateStats(0, 0, 1, $usedMemory)";
 	    if (!empty($test->fLifeCycle['setUp'])) {
-		/* Test was started, then test skipped itself */
+		
+
+
+/*  Test was started, then test skipped itself  */
+
+
+
 		$this->_testsRunThenSkipped++;
 	    }
 	} else {
@@ -524,9 +572,21 @@ if ($ret && ($ret->getErrorCode() & ERROR_PERMISSION_DENIED)) {
     $isSiteAdmin = true;
 }
 
-/* Check that our dev environment is correct */
+
+
+
+/*  Check that our dev environment is correct  */
+
+
+
 $incorrectDevEnv = array();
-$desiredErrorReporting = E_ALL & ~2048;  /* E_STRICT == 2048, but that constant isn't in PHP4 */
+$desiredErrorReporting = E_ALL & ~2048;  
+
+
+/*  E_STRICT == 2048, but that constant isn't in PHP4  */
+
+
+
 foreach (array('error_reporting' => array($desiredErrorReporting),
 	       'short_open_tag' => array('off', 0),
 	       'magic_quotes_gpc' => array('on', 1),
@@ -550,7 +610,13 @@ print "</pre>";
 
 include(dirname(__FILE__) . '/index.tpl');
 
-/* Compact any ACLs that were created during this test run */
+
+
+
+/*  Compact any ACLs that were created during this test run  */
+
+
+
 if ($testSuite->countTestCases() > 0) {
     $ret = GalleryCoreApi::compactAccessLists();
     if ($ret) {

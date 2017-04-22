@@ -18,7 +18,13 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/* Don't use GalleryCoreApi::requireOnce here; index.php uses this file without GalleryCoreApi */
+
+
+
+/*  Don't use GalleryCoreApi::requireOnce here; index.php uses this file without GalleryCoreApi  */
+
+
+
 require_once(dirname(__FILE__) . '/GalleryUtilities.class');
 
 if (!defined('GALLERY_MAIN_PHP')) {
@@ -149,7 +155,13 @@ class GalleryUrlGenerator {
 	    $path = GalleryDataCache::get($cacheKey);
 	} else {
 	    if ($path = GalleryUtilities::getServerVar('REQUEST_URI')) {
-		/* Sometimes, REQUEST_URI has a host part. Remove it. */
+		
+
+
+/*  Sometimes, REQUEST_URI has a host part. Remove it.  */
+
+
+
 		if ($path{0} != '/') {
 		    $components = parse_url($path);
 		    $path = $components['path'];
@@ -202,7 +214,13 @@ class GalleryUrlGenerator {
 	    $args[] = $key . '=' . $value;
 	}
 
-	/* Prefix appended params with ? if the URL doesn't already have a query string */
+	
+
+
+/*  Prefix appended params with ? if the URL doesn't already have a query string  */
+
+
+
 	$amp = $htmlEntities ? '&amp;' : '&';
 	return $url . ((strpos($url, '?') === false) ? '?' : $amp) . implode($amp, $args);
     }
@@ -269,13 +287,25 @@ class GalleryUrlGenerator {
 	$file = $uri;
 	$path = $host = $protocol = '';
 	if (strpos($file, '/') !== false) {
-	    /* Check if it's a URL including host and optional protocol part */
+	    
+
+
+/*  Check if it's a URL including host and optional protocol part  */
+
+
+
 	    if (preg_match('{^(?:(https?)://)?([^/]+)(.*)$}', $file, $matches)) {
 		$protocol = $matches[1];
 		$host = $matches[2];
 		$file = $matches[3];
 	    }
-	    /* $file = '/...', '/.../', '/.../...' or '...' '*/
+	    
+
+
+/*  $file = '/...', '/.../', '/.../...' or '...' ' */
+
+
+
 	    if (preg_match('{^(/(?:.*/)?)?([^/]*)$}', $file, $matches)) {
 		$path = $matches[1];
 		$file = $matches[2];
@@ -320,13 +350,31 @@ class GalleryUrlGenerator {
 	    $this->_protocol[0] = $this->_host[0] = null;
 	}
 
-	/* Set the forceDirect configuration parameters (only different if Gallery is embedded) */
+	
+
+
+/*  Set the forceDirect configuration parameters (only different if Gallery is embedded)  */
+
+
+
 	if (!empty($g2Uri)) {
 	    list ($this->_protocol[1], $this->_host[1], $this->_path[1], $this->_file[1]) =
 		$this->_parseUri($g2Uri);
-	    /* If file[1] is empty, we default to GALLERY_MAIN_PHP, unless it's intended */
+	    
+
+
+/*  If file[1] is empty, we default to GALLERY_MAIN_PHP, unless it's intended  */
+
+
+
 	    if ($this->_file[1] == '|') {
-		/* User actually intends to set the file to an empty string */
+		
+
+
+/*  User actually intends to set the file to an empty string  */
+
+
+
 		$this->_file[1] = '';
 	    } else if (empty($this->_file[1])) {
 		$this->_file[1] = GALLERY_MAIN_PHP;
@@ -338,7 +386,13 @@ class GalleryUrlGenerator {
 	    $this->_protocol[1] = $this->_protocol[0];
 	}
 
-	/* Set the default value for the host part, if necessary */
+	
+
+
+/*  Set the default value for the host part, if necessary  */
+
+
+
 	foreach (array(false, true) as $forceDirect) {
 	    if (empty($this->_host[$forceDirect])) {
 		if (!isset($defaultHost) &&
@@ -350,7 +404,13 @@ class GalleryUrlGenerator {
 	    }
 	}
 
-	/* Set the default value for the protocol part, if necessary */
+	
+
+
+/*  Set the default value for the protocol part, if necessary  */
+
+
+
 	foreach (array(false, true) as $forceDirect) {
 	    if (empty($this->_protocol[$forceDirect])) {
 		$this->_protocol[$forceDirect] =
@@ -358,14 +418,26 @@ class GalleryUrlGenerator {
 	    }
 	}
 
-	/* Set the base host (protocol + host name)  for makeUrl() (caching/performance) */
+	
+
+
+/*  Set the base host (protocol + host name)  for makeUrl() (caching/performance)  */
+
+
+
 	foreach (array(false, true) as $forceDirect) {
 	    $this->_currentBaseHost[$forceDirect] = sprintf('%s://%s',
 							    $this->_protocol[$forceDirect],
 							    $this->_host[$forceDirect]);
 	}
 
-	/* Check if the cookie path is configured */
+	
+
+
+/*  Check if the cookie path is configured  */
+
+
+
 	if (GalleryUtilities::isEmbedded()) {
 	    list ($ret, $path) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'cookie.path');
@@ -441,7 +513,13 @@ class GalleryUrlGenerator {
      */
     function getCurrentUrl($forceDirect=false) {
 	if (!isset($this->_currentUrl[$forceDirect])) {
-	    /* Allow overriding protocol / host part, but keep request string unchanged */
+	    
+
+
+/*  Allow overriding protocol / host part, but keep request string unchanged  */
+
+
+
 	    $this->_currentUrl[$forceDirect] =
 		$this->makeUrl(GalleryUrlGenerator::getCurrentRequestUri(), $forceDirect);
 	}
@@ -495,7 +573,13 @@ class GalleryUrlGenerator {
 	if (!isset($this->_currentUrlBaseDir[$forceDirect])) {
 
 	    if (!empty($this->_path[$forceDirect])) {
-		/* An override for the path was defined (most likely an embedded Gallery request) */
+		
+
+
+/*  An override for the path was defined (most likely an embedded Gallery request)  */
+
+
+
 		$url = $this->makeUrl($this->_path[$forceDirect], $forceDirect);
 	    } else {
 		/*
@@ -516,7 +600,13 @@ class GalleryUrlGenerator {
 		} else if (($i = strpos($url, $this->_file[0])) !== false) {
 		    $url = substr($url, 0, $i);
 		} else if (($i = strpos($url, '?')) !== false) {
-		    /* We couldn't find the file name, at least remove the query string */
+		    
+
+
+/*  We couldn't find the file name, at least remove the query string  */
+
+
+
 		    $url = substr($url, 0, $i);
 		}
 	    }
@@ -565,13 +655,25 @@ class GalleryUrlGenerator {
 	    $url = $options['baseUrl'];
 	    $appSession = true;
 	} else if (isset($params['href'])) {
-	     /* In case of multisites, get the codebase base URL */
+	     
+
+
+/*  In case of multisites, get the codebase base URL  */
+
+
+
 	    $url = $gallery->getConfig('galleryBaseUrl');
 	    if (empty($url) || !empty($options['forceDirect'])) {
 		$url = $this->getCurrentUrlDir(true);
 	    }
 
-	    /* Default to not including session id in href URLs */
+	    
+
+
+/*  Default to not including session id in href URLs  */
+
+
+
 	    if (!isset($options['forceSessionId'])) {
 		$options['forceSessionId'] = false;
 	    }
@@ -579,23 +681,53 @@ class GalleryUrlGenerator {
 	    $href = $params['href'];
 	    unset($params['href']);
 	    if (preg_match('/^[a-zA-Z0-9\+\.\-]+:\/\//', $href)) {
-		/* Absolute URL */
+		
+
+
+/*  Absolute URL  */
+
+
+
 		$url = $href;
 	    } else if (($pos = strpos($href, '/')) === 0) {
-		/* Absolute URL path (use $options['baseUrl'] if you need non forceDirect URLs) */
+		
+
+
+/*  Absolute URL path (use $options['baseUrl'] if you need non forceDirect URLs)  */
+
+
+
 		$url = $this->makeUrl($href, true);
 	    } else if ($pos > 0) {
-		/* Check for local override */
+		
+
+
+/*  Check for local override  */
+
+
+
 		$url .= $this->_getLocalPath($href);
 	    } else {
 		$url .= $href;
 	    }
 	} else if ((isset($params['view']) && $params['view'] == 'core.DownloadItem')
 		|| !empty($options['forceDirect'])) {
-	    /* DownloadItem requests go always directly to Gallery, even when embedded */
+	    
+
+
+/*  DownloadItem requests go always directly to Gallery, even when embedded  */
+
+
+
 	    $url = $this->getCurrentUrlDir(true) . $this->_file[true];
 
-	    /* Check if we are forced to append the session id in embedded Gallery */
+	    
+
+
+/*  Check if we are forced to append the session id in embedded Gallery  */
+
+
+
 	    if (!isset($options['forceSessionId']) && $this->embedForceSessionId($params)) {
 		$options['forceSessionId'] = true;
 	    }
@@ -604,9 +736,21 @@ class GalleryUrlGenerator {
 	    $appSession = true;
 	}
 
-	/* Swap in the actual URL for the 'return' placeholder */
+	
+
+
+/*  Swap in the actual URL for the 'return' placeholder  */
+
+
+
 	if (isset($params['return'])) {
-	    /* Cache the return URL */
+	    
+
+
+/*  Cache the return URL  */
+
+
+
 	    if (!isset($this->_returnUrlData[$currentView])) {
 		$this->_returnUrlData[$currentView]['return'] =
 			str_replace('&amp;', '&', $this->getNavigationReturnUrl());
@@ -614,14 +758,26 @@ class GalleryUrlGenerator {
 	    $params['return'] = $this->_returnUrlData[$currentView]['return'];
 	}
 
-	/* Replace any known tokens */
+	
+
+
+/*  Replace any known tokens  */
+
+
+
 	foreach (array_keys($params) as $key) {
 	    if ($params[$key] === '%CURRENT_URL%') {
 		$params[$key] = $this->getCurrentUrl();
 	    }
 	}
 
-	/* Shorten URLs by removing default values */
+	
+
+
+/*  Shorten URLs by removing default values  */
+
+
+
 	if (isset($params['view']) && $params['view'] == GALLERY_DEFAULT_VIEW) {
 	    unset($params['view']);
 
@@ -640,14 +796,26 @@ class GalleryUrlGenerator {
 	    $sessionId = $session->getId();
 	}
 
-	/* Add authToken to all controller URLs */
+	
+
+
+/*  Add authToken to all controller URLs  */
+
+
+
 	if (!empty($sessionId) && $session->isPersistent()
 		&& (!empty($options['useAuthToken'])
 		    || (!isset($options['useAuthToken']) && !empty($params['controller'])))) {
 	    $params['authToken'] = $session->getAuthToken();
 	}
 
-	/* Add session parameters to URL */
+	
+
+
+/*  Add session parameters to URL  */
+
+
+
 	if (!empty($options['forceSessionId']) || (!isset($options['forceSessionId'])
 		&& $session && !$session->isUsingCookies())) {
 	    if (!empty($this->_embedSessionString) && !empty($appSession)) {
@@ -659,18 +827,36 @@ class GalleryUrlGenerator {
 	    }
 	}
 
-	/* Add parameters to URL */
+	
+
+
+/*  Add parameters to URL  */
+
+
+
 	$url = GalleryUrlGenerator::appendParamsToUrl($url, $params, true,
 	    !empty($options['htmlEntities']) || !isset($options['htmlEntities']),
 	    !empty($options['urlEncode']) || !isset($options['urlEncode']));
 
-	/* Add embed session parameters to URL */
+	
+
+
+/*  Add embed session parameters to URL  */
+
+
+
 	if (!empty($embedSessionParams)) {
 	    $url = GalleryUrlGenerator::appendParamsToUrl($url, $embedSessionParams, false,
 		!empty($options['htmlEntities']) || !isset($options['htmlEntities']), false);
 	}
 
-	/* Replace protocol with $options['protocol'].  See RFC1738 section 2.1. */
+	
+
+
+/*  Replace protocol with $options['protocol'].  See RFC1738 section 2.1.  */
+
+
+
 	if (isset($options['protocol'])) {
 	    $url = preg_replace('/^[a-zA-Z0-9\+\.\-]+:/', $options['protocol'] . ':', $url);
 	}
@@ -704,7 +890,13 @@ class GalleryUrlGenerator {
     function makeRelativeUrl($url, $forceServerRelativeUrl=false) {
 	if (!isset($this->_hasRequestUriShortUrlPrefix)) {
 	    $requestUri = $this->getCurrentRequestUri();
-	    /* When embedded, file can be empty */
+	    
+
+
+/*  When embedded, file can be empty  */
+
+
+
 	    $this->_hasRequestUriShortUrlPrefix = empty($this->_file[0])
 		|| ($pos = strpos($requestUri, $this->_file[0])) === false
 		|| (($qPos = strpos($requestUri, '?')) !== false && $pos >= $qPos);
@@ -712,7 +904,13 @@ class GalleryUrlGenerator {
 
 	if ($forceServerRelativeUrl || $this->_hasRequestUriShortUrlPrefix
 		|| strpos($url, $this->getCurrentUrlDir()) !== 0) {
-	    /* Don't use forceDirect, keep the URL absolute if necessary */
+	    
+
+
+/*  Don't use forceDirect, keep the URL absolute if necessary  */
+
+
+
 	    $url = str_replace($this->makeUrl('/'), '/', $url);
 	} else {
 	    $url = str_replace($this->getCurrentUrlDir(), '', $url);
@@ -746,7 +944,13 @@ class GalleryUrlGenerator {
      */
     function getCookiePath($forceDirect=false) {
 	if (!isset($this->_cookiePath[$forceDirect])) {
-	    /* Return the configured path is it is set */
+	    
+
+
+/*  Return the configured path is it is set  */
+
+
+
 	    list ($ret, $path) = GalleryCoreApi::getPluginParameter('module', 'core',
 								    'cookie.path');
 	    if ($ret) {
@@ -797,7 +1001,13 @@ class GalleryUrlGenerator {
 	global $gallery;
 
 	if (!empty($url)) {
-	    /* Detect header injection attempts */
+	    
+
+
+/*  Detect header injection attempts  */
+
+
+
 	    if (!GalleryUtilities::isSafeHttpHeader($url)) {
 		$message = sprintf('Invalid return URL! The requested URL %s contains malicious ' .
 				   'characters.',

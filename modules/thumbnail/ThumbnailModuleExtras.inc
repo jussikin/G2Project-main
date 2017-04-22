@@ -45,7 +45,13 @@ class ThumbnailModuleExtras {
 
 	switch ($currentVersion) {
 	case '0':
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    list ($success) = GalleryUtilities::guaranteeDirExists($thumbnailDir);
 	    if (!$success) {
 		return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__,
@@ -60,7 +66,13 @@ class ThumbnailModuleExtras {
 
 	case '0.8.1':
 	case '0.8.2':
-	    /* Assign parent to existing ThumbnailImage entities */
+	    
+
+
+/*  Assign parent to existing ThumbnailImage entities  */
+
+
+
 	    list ($ret, $rootId) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 	    if ($ret) {
@@ -89,7 +101,13 @@ class ThumbnailModuleExtras {
 	case '0.8.7':
 	case '0.8.8':
 	case '0.9.1':
-	    /* Move thumbnail dir from g2data/ to g2data/plugins_data */
+	    
+
+
+/*  Move thumbnail dir from g2data/ to g2data/plugins_data  */
+
+
+
 	    $oldDir = $gallery->getConfig('data.gallery.base') . 'thumbnail' . $slash;
 	    if ($platform->is_dir($oldDir)) {
 		if (!$platform->rename($oldDir, $thumbnailDir)) {
@@ -106,7 +124,13 @@ class ThumbnailModuleExtras {
 
 	case '0.9.2':
 	case '0.9.3':
-	    /* Now allow thumbnail for root album; remove parent for mime type thumbnails */
+	    
+
+
+/*  Now allow thumbnail for root album; remove parent for mime type thumbnails  */
+
+
+
 	    /* NOTE:
 	     * Upgrade code merged into case '1.0.7' since it changes a superset of this case.
 	     */
@@ -124,7 +148,13 @@ class ThumbnailModuleExtras {
 	case '1.0.5':
 	case '1.0.6':
 	case '1.0.7':
-	    /* Use a new childEntity as the container for all custom thumbnails. */
+	    
+
+
+/*  Use a new childEntity as the container for all custom thumbnails.  */
+
+
+
 	    $gallery->guaranteeTimeLimit(60);
 	    $storage =& $gallery->getStorage();
 	    GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailImage.class');
@@ -145,7 +175,13 @@ class ThumbnailModuleExtras {
 		return $ret;
 	    }
 
-	    /* Before 0.9.3, mime-type thumbnails had a parentId of rootId. After 0.9.3 it was 0. */
+	    
+
+
+/*  Before 0.9.3, mime-type thumbnails had a parentId of rootId. After 0.9.3 it was 0.  */
+
+
+
 	    $query = '
 	    SELECT
 	      [ThumbnailImage::id], [ThumbnailImage::fileName]
@@ -190,14 +226,26 @@ class ThumbnailModuleExtras {
 
 		foreach ($ids as $id) {
 		    $gallery->guaranteeTimeLimit(30);
-		    /* Change the parent. */
+		    
+
+
+/*  Change the parent.  */
+
+
+
 		    $ret = $storage->execute($parentIdQuery, array($containerId, $id));
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
 			return $ret;
 		    }
 
-		    /* Add the necessary rows for a FileSystemEntity. */
+		    
+
+
+/*  Add the necessary rows for a FileSystemEntity.  */
+
+
+
 		    $ret = $storage->execute($fileSystemEntityQuery, array($id, $fileNames[$id]));
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
@@ -216,7 +264,13 @@ class ThumbnailModuleExtras {
 		}
 	    }
 
-	    /* Custom thumbnails are now stored hierarchically, not flat anymore. */
+	    
+
+
+/*  Custom thumbnails are now stored hierarchically, not flat anymore.  */
+
+
+
 	    $query = '
 	    SELECT
 	      [ThumbnailImage::id], [ThumbnailImage::fileName]
@@ -246,20 +300,38 @@ class ThumbnailModuleExtras {
 
 		foreach ($ids as $id) {
 		    $gallery->guaranteeTimeLimit(30);
-		    /* Add the necessary rows for a FileSystemEntity. */
+		    
+
+
+/*  Add the necessary rows for a FileSystemEntity.  */
+
+
+
 		    $ret = $storage->execute($fileSystemEntityQuery, array($id, $fileNames[$id]));
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
 			return $ret;
 		    }
 
-		    /* Move the custom thumbnail to its new home. */
+		    
+
+
+/*  Move the custom thumbnail to its new home.  */
+
+
+
 		    list ($ret, $thumb) = GalleryCoreApi::loadEntitiesById($id, 'ThumbnailImage');
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
 			return $ret;
 		    }
-		    /* The entity might be obsolete from the cache. */
+		    
+
+
+/*  The entity might be obsolete from the cache.  */
+
+
+
 		    list ($ret, $thumb) = $thumb->refresh();
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
@@ -290,7 +362,13 @@ class ThumbnailModuleExtras {
 					   'failed! File "%s" does not exist.', $thumb->getId(),
 					   $thumb->getparentId(), $oldPath);
 			if (!$platform->file_exists($path)) {
-			    /* Ignore failure */
+			    
+
+
+/*  Ignore failure  */
+
+
+
 			    $platform->copy(
 				dirname(dirname(__FILE__)) . '/core/data/broken-image.gif', $path);
 			    $gallery->debug($message . ' Using image placeholder instead.');
@@ -304,7 +382,13 @@ class ThumbnailModuleExtras {
 			return $ret;
 		    }
 
-		    /* Atomic transactions for each operation that involves moving of a file */
+		    
+
+
+/*  Atomic transactions for each operation that involves moving of a file  */
+
+
+
 		    $ret = $storage->checkPoint();
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
@@ -330,15 +414,39 @@ class ThumbnailModuleExtras {
 	case '1.0.8':
 	case '1.0.9':
 	case '1.0.9.1':
-	    /* .mo file migration */
+	    
+
+
+/*  .mo file migration  */
+
+
+
 	case '1.0.10':
 	case '1.0.11':
-	    /* Refactored to new event registration from core API 7.34 */
+	    
+
+
+/*  Refactored to new event registration from core API 7.34  */
+
+
+
 	case '1.0.12':
-	    /* Require minimum core API 7.45 */
+	    
+
+
+/*  Require minimum core API 7.45  */
+
+
+
 	case '1.0.13':
 	case '1.0.14':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	case 'end of upgrade path':
 	    /*
@@ -361,7 +469,13 @@ class ThumbnailModuleExtras {
     static function activate($postActivationEvent=true) {
 	GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 
-	/* Register toolkit operation for any mime type settings already in the database */
+	
+
+
+/*  Register toolkit operation for any mime type settings already in the database  */
+
+
+
 	list ($ret, $mimeTypeMap) = ThumbnailHelper::fetchMimeTypeMap();
 	if ($ret) {
 	    return array($ret, null);
@@ -373,7 +487,13 @@ class ThumbnailModuleExtras {
 	    }
 	}
 
-	/* Set some defaults if not already supported */
+	
+
+
+/*  Set some defaults if not already supported  */
+
+
+
 	list ($ret, $toolkitMime) = ThumbnailHelper::fetchToolkitSupport();
 	if ($ret) {
 	    return array($ret, null);

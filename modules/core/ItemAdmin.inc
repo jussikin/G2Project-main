@@ -33,14 +33,26 @@ class ItemAdminView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	/* Figure out the item we're referring to */
+	
+
+
+/*  Figure out the item we're referring to  */
+
+
+
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
 	}
 	$itemId = $item->getId();
 
-	/* Find its thumbnail */
+	
+
+
+/*  Find its thumbnail  */
+
+
+
 	list ($ret, $thumbnailTable) = GalleryCoreApi::fetchThumbnailsByItemIds(array($itemId));
 	if ($ret) {
 	    return array($ret, null);
@@ -52,20 +64,38 @@ class ItemAdminView extends GalleryView {
 	    $thumbnailData = (array)$thumbnail;
 	}
 
-	/* Load the module list */
+	
+
+
+/*  Load the module list  */
+
+
+
 	list ($ret, $moduleStatus) = GalleryCoreApi::fetchPluginStatus('module');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Get a list of all the admin views for each module */
+	
+
+
+/*  Get a list of all the admin views for each module  */
+
+
+
 	$subViewChoiceData = array();
 	foreach ($moduleStatus as $moduleId => $status) {
 	    if (empty($status['active'])) {
 		continue;
 	    }
 
-	    /* Get the selected module's admin view */
+	    
+
+
+/*  Get the selected module's admin view  */
+
+
+
 	    if (in_array('getItemAdminViews', explode('|', $status['callbacks']))) {
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId);
 		if ($ret) {
@@ -91,15 +121,33 @@ class ItemAdminView extends GalleryView {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	/* Turn sub view choices into url params */
+	
+
+
+/*  Turn sub view choices into url params  */
+
+
+
 	$subViewChoices = array();
 	foreach ($subViewChoiceData as $params) {
-	    /* Extract the view name */
+	    
+
+
+/*  Extract the view name  */
+
+
+
 	    $name = $params['name'];
 	    unset($params['name']);
 
 	    if (isset($params['view'])) {
-		/* Move the view -> subView and set ItemAdmin as the view */
+		
+
+
+/*  Move the view -> subView and set ItemAdmin as the view  */
+
+
+
 		$params['subView'] = $params['view'];
 		$params['view'] = 'core.ItemAdmin';
 		if ($subViewName == $params['subView']) {
@@ -107,7 +155,13 @@ class ItemAdminView extends GalleryView {
 		}
 	    }
 
-	    /* Set the item id if necessary */
+	    
+
+
+/*  Set the item id if necessary  */
+
+
+
 	    if (!isset($params['itemId'])) {
 		$params['itemId'] = $itemId;
 	    }
@@ -115,7 +169,13 @@ class ItemAdminView extends GalleryView {
 	    $subViewChoices[$name] = $params;
 	}
 
-	/* If we have a specific sub view, render it now */
+	
+
+
+/*  If we have a specific sub view, render it now  */
+
+
+
 	if (empty($subViewName) && !empty($subViewChoices)) {
 	    $subViewName = 'core.ItemEdit';
 	}
@@ -125,10 +185,22 @@ class ItemAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Get the type of the item */
+	
+
+
+/*  Get the type of the item  */
+
+
+
 	$itemType = $item->itemTypeName(true);
 
-	/* Load the item's parents */
+	
+
+
+/*  Load the item's parents  */
+
+
+
 	list ($ret, $parents) = GalleryCoreApi::fetchParents($item, 'core.view', true);
 	if ($ret) {
 	    return array($ret, null);
@@ -147,7 +219,13 @@ class ItemAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Our sub view may have set some hints, like the encoding type */
+	
+
+
+/*  Our sub view may have set some hints, like the encoding type  */
+
+
+
 	if ($template->hasVariable('ItemAdmin')) {
 	    $ItemAdmin =& $template->getVariableByReference('ItemAdmin');
 	} else {
@@ -188,7 +266,13 @@ class ItemAdminView extends GalleryView {
      * @see GalleryView::getViewDescription
      */
     function getViewDescription() {
-	/* Get the description from the current subView */
+	
+
+
+/*  Get the description from the current subView  */
+
+
+
 	$subViewName = GalleryUtilities::getRequestVariables('subView');
 	if (empty($subViewName)) {
 	    $subViewName = 'core.ItemEdit';

@@ -101,7 +101,13 @@ class SlideshowModule extends GalleryModule {
 	    if ($ret && $ret->getErrorCode() & ERROR_STORAGE_FAILURE) {
 		return array($ret, null);
 	    } else if ($ret) {
-		/* Should be safe to swallow this error */
+		
+
+
+/*  Should be safe to swallow this error  */
+
+
+
 		GalleryCoreApi::addEventLogEntry(
 		    'slideshow module', 'Unable to install PicLens',
 		    $ret->getAsText());
@@ -160,7 +166,13 @@ class SlideshowModule extends GalleryModule {
 			}
 		    }
 		} else {
-		    /** @todo Check with isA instead of entityType (thus matching subclasses). */
+		    
+
+
+/*  @todo Check with isA instead of entityType (thus matching subclasses).  */
+
+
+
 		    $showSlideshowLink = $item->getEntityType() === 'GalleryPhotoItem';
 		}
 

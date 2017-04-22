@@ -48,7 +48,13 @@ class AdminSlideshowController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	/* Allow our helper to be injected as a dependency for ease in testing */
+	
+
+
+/*  Allow our helper to be injected as a dependency for ease in testing  */
+
+
+
 	$picLensHelper = isset($this->_picLensHelper) ? $this->_picLensHelper : new PicLensHelper();
 	$error = $status = array();
 	if (isset($form['action']['install'])) {
@@ -57,7 +63,13 @@ class AdminSlideshowController extends GalleryController {
 		if ($ret->getErrorCode() & ERROR_STORAGE_FAILURE) {
 		    return array($ret, null);
 		}
-		/* It should be safe to swallow non storage failures. */
+		
+
+
+/*  It should be safe to swallow non storage failures.  */
+
+
+
 		$status['downloadFailed'] = 1;
 	    } else {
 		$status['installed'] = $version;
@@ -113,7 +125,13 @@ class AdminSlideshowView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load our default values if we didn't just come from this form. */
+	
+
+
+/*  Load our default values if we didn't just come from this form.  */
+
+
+
 	if ($form['formName'] != 'AdminSlideshow') {
 	    $form['formName'] = 'AdminSlideshow';
 	}

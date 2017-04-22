@@ -98,7 +98,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 
 	$gallery->setPlatform($savePlatform);
 
-	/* The newly registered user is a real user by now */
+	
+
+
+/*  The newly registered user is a real user by now  */
+
+
+
 	list ($ret, $user) = GalleryCoreApi::fetchUserByUserName($userName);
 	if ($ret) {
 	    return $ret;
@@ -106,7 +112,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 	$this->assert(GalleryUtilities::isA($user, 'GalleryUser'), 'type is GalleryUser');
 	$this->_markForCleanup($user);
 
-	/* Make sure welcome email was "sent" */
+	
+
+
+/*  Make sure welcome email was "sent"  */
+
+
+
 	$this->assert(!empty($this->_emailBody), 'test platform mail() should have been called');
 	$this->assertEquals('WelcomeEmail', $this->_emailSubject, 'email subject');
     }
@@ -143,21 +155,45 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 
 	$gallery->setPlatform($savePlatform);
 
-	/* Make sure the pending user exists */
+	
+
+
+/*  Make sure the pending user exists  */
+
+
+
 	list ($ret, $user) = GalleryPendingUserHelper::fetchPendingUserByUserName($userName);
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($user);
 
-	/* Make sure confirmation email was "sent" */
+	
+
+
+/*  Make sure confirmation email was "sent"  */
+
+
+
 	$this->assert(!empty($this->_emailBody), 'test platform mail() should have been called');
 	$this->assertEquals('ConfEmail', $this->_emailSubject, 'email subject');
     }
 
     function testEntities() {
-	/* Make sure emails sent out don't include text like &amp; */
-	/* Also verify password with <&"> characters is not entitized before being hashed */
+	
+
+
+/*  Make sure emails sent out don't include text like &amp;  */
+
+
+
+	
+
+
+/*  Also verify password with <&"> characters is not entitized before being hashed  */
+
+
+
 	global $gallery;
 	$ret = GalleryCoreApi::setPluginParameter('module', 'register', 'confirmation', 'email');
 	if ($ret) {
@@ -191,15 +227,33 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 
 	$gallery->setPlatform($savePlatform);
 
-	/* make sure the pending user exists */
+	
+
+
+/*  make sure the pending user exists  */
+
+
+
 	list ($ret, $user) = GalleryPendingUserHelper::fetchPendingUserByUserName($entitizedName);
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($user);
 
-	/* verify un-entitized username was used in email */
-	/* the confirm link should also use unentitized(but urlencoded) value; not verified here */
+	
+
+
+/*  verify un-entitized username was used in email  */
+
+
+
+	
+
+
+/*  the confirm link should also use unentitized(but urlencoded) value; not verified here  */
+
+
+
 	$this->assert(strpos($this->_emailBody, $userName) !== false,
 		      'Email body should have unentitized username: ' . $this->_emailBody);
 
@@ -249,7 +303,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
     function testPasswordMismatch() {
 	$userName = 'user-selfreg' . rand();
 
-	/* Create one user */
+	
+
+
+/*  Create one user  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[userName]', $userName);
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
@@ -276,7 +336,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Create one user */
+	
+
+
+/*  Create one user  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[userName]', $userName);
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
@@ -295,8 +361,20 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 	    $results,
 	    'Failed to create first pending user');
 
-	/* Create a second user with the same name */
-	/* fails because we have the existing pending user */
+	
+
+
+/*  Create a second user with the same name  */
+
+
+
+	
+
+
+/*  fails because we have the existing pending user  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.UserAdmin',
@@ -322,7 +400,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Create one user */
+	
+
+
+/*  Create one user  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[userName]', $userName);
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
@@ -345,8 +429,20 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 
 	$gallery->setPlatform($savePlatform);
 
-	/* Create a second user with the same name */
-	/* Fails because we have the existing  user */
+	
+
+
+/*  Create a second user with the same name  */
+
+
+
+	
+
+
+/*  Fails because we have the existing  user  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.UserAdmin',
@@ -355,7 +451,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 		  'error' => array('form[error][userName][exists]')),
 	    $results, 'Create duplicate');
 
-	/* Find userid */
+	
+
+
+/*  Find userid  */
+
+
+
 	list ($ret, $user) = GalleryCoreApi::fetchUserByUserName($userName);
 	if ($ret) {
 	    return $ret;
@@ -470,7 +572,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
 
 	$gallery->setPlatform($savePlatform);
 
-	/* find userid */
+	
+
+
+/*  find userid  */
+
+
+
 	list ($ret, $user) = GalleryCoreApi::fetchUserByUserName($userName);
 	if ($ret) {
 	    return $ret;
@@ -533,7 +641,13 @@ class RegisterDummyPlatform {
     }
 
     function mail($to, $subject, $body, $headers=null) {
-	/* Don't actually send email */
+	
+
+
+/*  Don't actually send email  */
+
+
+
 	$this->_test->_emailSubject .= $subject;
 	$this->_test->_emailBody = $body;
 	return true;

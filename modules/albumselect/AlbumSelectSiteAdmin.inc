@@ -49,7 +49,13 @@ class AlbumSelectSiteAdminController extends GalleryController {
 	    }
 	    $status['saved'] = 1;
 
-	    /* Flush our cache */
+	    
+
+
+/*  Flush our cache  */
+
+
+
 	    GalleryDataCache::removeFromDisk(
 		array('type' => 'module-data', 'module' => 'albumselect'));
 	}

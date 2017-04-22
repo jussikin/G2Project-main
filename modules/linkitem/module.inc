@@ -23,7 +23,13 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class LinkItemModule extends GalleryModule /* and GalleryEventListener */ {
+class LinkItemModule extends GalleryModule 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     function __construct() {
 	$this->LinkItemModule();

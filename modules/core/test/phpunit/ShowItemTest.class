@@ -94,7 +94,13 @@ class ShowItemTest extends GalleryTestCase {
     }
 
     function testAlbumSourcePermission() {
-	/* Verify viewing album contents requires ?? permission */
+	
+
+
+/*  Verify viewing album contents requires ?? permission  */
+
+
+
 	/*
 	 * We briefly put code in place to require core.viewSource to view album contents..
 	 * This allows setting permissions such that guests can see an album thumbnail but
@@ -126,12 +132,24 @@ class ShowItemTest extends GalleryTestCase {
 	    array('redirect' => array('view' => 'core.ShowItem', 'itemId' => $this->_getRootId())),
 	    $result);
 	*/
-	/* Current result: */
+	
+
+
+/*  Current result:  */
+
+
+
 	$this->assert(isset($result['body']));
     }
 
     function testItemSourcePermission() {
-	/* Verify data item does not require core.viewSource permission */
+	
+
+
+/*  Verify data item does not require core.viewSource permission  */
+
+
+
 	global $gallery;
 	$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 	if ($ret) {
@@ -166,13 +184,25 @@ class ShowItemTest extends GalleryTestCase {
 	$gallery->setConfig('defaultAlbumId', $album->getId());
 	GalleryUtilities::removeRequestVariable('itemId');
 	
-	/* Assign our test theme */
+	
+
+
+/*  Assign our test theme  */
+
+
+
 	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($album->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Use a dummy theme. */
+	
+
+
+/*  Use a dummy theme.  */
+
+
+
 	$album->setTheme('showItemTest');
 	$ret = $album->save();
 	if ($ret) {
@@ -184,7 +214,13 @@ class ShowItemTest extends GalleryTestCase {
 	    return $ret;
 	}
 	
-	/* Execute the test. */
+	
+
+
+/*  Execute the test.  */
+
+
+
 	list ($ret, $view) = GalleryView::loadView('core.ShowItem');
 	if ($ret) {
 	    return $ret;
@@ -194,7 +230,13 @@ class ShowItemTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Verify */
+	
+
+
+/*  Verify  */
+
+
+
 	$this->assertEquals($album->getId(), $item->getId(), 'itemId');
 	$this->assertEquals('showItemTest', $theme->getId(), 'theme');
     }

@@ -37,10 +37,22 @@ class ConfirmDeleteController extends GalleryController {
 	    return array($ret, null);
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
-	/* Make sure we have permission to edit this item */
+	
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($form['watermarkId'], 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -56,7 +68,13 @@ class ConfirmDeleteController extends GalleryController {
 	    }
 
 	    $status['delete'] = 1;
-	} /* else $form['action']['cancel'] */
+	} 
+
+
+/*  else $form['action']['cancel']  */
+
+
+
 
 	$results['redirect'] = isset($form['fromAdmin'])
 	    ? array('view' => 'core.SiteAdmin', 'subView' => 'watermark.WatermarkSiteAdmin')
@@ -95,11 +113,23 @@ class ConfirmDeleteView extends GalleryView {
 	    return array($ret, null);
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
-	/* Make sure we have permission to edit this item */
+	
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($form['watermarkId'], 'core.edit');
 	if ($ret) {
 	    return array($ret, null);

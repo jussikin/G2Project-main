@@ -42,7 +42,13 @@ class CaptchaSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Set our threshold to a known value */
+	
+
+
+/*  Set our threshold to a known value  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module', 'captcha', 'failedAttemptThreshold', 1);
 	if ($ret) {
 	    return $ret;
@@ -141,7 +147,13 @@ class CaptchaSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Unchanged */
+	
+
+
+/*  Unchanged  */
+
+
+
 	$this->assertEquals(1, (int)$threshold);
     }
 

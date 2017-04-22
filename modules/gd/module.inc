@@ -52,7 +52,13 @@ class GdModule extends GalleryModule {
      */
     function upgrade($currentVersion, $x1=null) {
 	if (!isset($currentVersion)) {
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    $ret = $this->setParameter('jpegQuality', '75');
 	    if ($ret) {
 		return $ret;
@@ -66,7 +72,13 @@ class GdModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our graphics class with the factory */
+	
+
+
+/*  Register our graphics class with the factory  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'GdToolkit', 'Gd',
 	    'modules/gd/classes/GdToolkit.class', 'gd', null);
@@ -81,10 +93,22 @@ class GdModule extends GalleryModule {
      * @see GalleryModule::activate
      */
     function activate($postActivationEvent=true) {
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/gd/classes/GdToolkitHelper.class');
 
-	/* Find out what operations and properties we have available to us */
+	
+
+
+/*  Find out what operations and properties we have available to us  */
+
+
+
 	list ($ret, $results) =
 	    GdToolkitHelper::getOperationsAndProperties();
 	if ($ret) {
@@ -140,7 +164,13 @@ class GdModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires all fields to be filled out before it can be activated. */
+	
+
+
+/*  This module requires all fields to be filled out before it can be activated.  */
+
+
+
 	list ($ret, $value) = $this->getParameter('jpegQuality');
 	if ($ret) {
 	    return array($ret, null);

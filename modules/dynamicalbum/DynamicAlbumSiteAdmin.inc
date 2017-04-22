@@ -118,7 +118,13 @@ class DynamicAlbumSiteAdminView extends GalleryView {
 		}
 	    }
 	} else {
-	    /* Reset theme selection on validation error for theme settings */
+	    
+
+
+/*  Reset theme selection on validation error for theme settings  */
+
+
+
 	    $form['themeId'] = $form['currentThemeId'];
 	}
 
@@ -131,7 +137,13 @@ class DynamicAlbumSiteAdminView extends GalleryView {
 		'all' => $module->translate('Show all items'),
 		'album' => $module->translate('Show albums only'));
 
-	/* Set up theme selection list */
+	
+
+
+/*  Set up theme selection list  */
+
+
+
 	$themeList = array('' => $module->translate('&laquo; default theme &raquo;'));
 	list ($ret, $themeStatus) = GalleryCoreApi::fetchPluginStatus('theme');
 	if ($ret) {
@@ -147,7 +159,13 @@ class DynamicAlbumSiteAdminView extends GalleryView {
 	    }
 	}
 
-	/* Set up theme settings */
+	
+
+
+/*  Set up theme settings  */
+
+
+
 	list ($ret, $themeSettingsId) =
 	    GalleryCoreApi::getPluginParameter('module', 'dynamicalbum', 'themeSettingsId');
 	if ($ret) {

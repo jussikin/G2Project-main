@@ -76,7 +76,13 @@ class FfmpegToolkit extends GalleryToolkit {
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$tmpFilename = $platform->tempnam($tmpDir, 'fmpg_');
 	if (empty($tmpFilename)) {
-	    /* This can happen if the $tmpDir path is bad */
+	    
+
+
+/*  This can happen if the $tmpDir path is bad  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH), null, null);
 	}
 
@@ -105,25 +111,55 @@ class FfmpegToolkit extends GalleryToolkit {
 	    break;
 
 	case 'convert-to-video/x-flv':
-	    /* overwrite output files */
+	    
+
+
+/*  overwrite output files  */
+
+
+
 	    $args = array('-y');
-	    /* TODO: no longer append .flv when a better work around is found */
+	    
+
+
+/*  TODO: no longer append .flv when a better work around is found  */
+
+
+
 	    $tmpFilename = $tmpFilename . '.flv';
-	    /* Add video dimensions (size) */
+	    
+
+
+/*  Add video dimensions (size)  */
+
+
+
 	    if (isset($context['width']) && isset($context['height'])) {
 		$args[] = '-s';
 		$args[] = $context['width'] . 'x' . $context['height'];
 		unset($context['width']);
 		unset($context['height']);
 	    }
-	    /* Add video frame rate */
+	    
+
+
+/*  Add video frame rate  */
+
+
+
 	    if (isset($context['frameRate'])) {
 		$args[] = '-r';
 		$args[] = $context['frameRate'];
 		unset($context['frameRate']);
 	    }
 	    $muted = false;
-	    /* Add audio channels, and remember args index */
+	    
+
+
+/*  Add audio channels, and remember args index  */
+
+
+
 	    $audioChannelIndex = -1;
 	    if (isset($context['audioChannels'])) {
 		if ($context['audioChannels'] > 0) {
@@ -136,7 +172,13 @@ class FfmpegToolkit extends GalleryToolkit {
 		}
 		unset($context['audioChannels']);
 	    }
-	    /* Add audio sample rate, and remember args index */
+	    
+
+
+/*  Add audio sample rate, and remember args index  */
+
+
+
 	    $audioRateIndex = -1;
 	    if (isset($context['sampleRate'])) {
 		if (!$muted) {
@@ -146,20 +188,56 @@ class FfmpegToolkit extends GalleryToolkit {
 		}
 		unset($context['sampleRate']);
 	    }
-	    /** @todo: Add $args[] = '-acodec'; $args[] = 'adpcm_swf' */
-	    /* However, -acodec and -vcodec were added in 0.4.1 */
+	    
 
-	    /* Use same video quality as source (implies VBR) */
+
+/*  @todo: Add $args[] = '-acodec'; $args[] = 'adpcm_swf'  */
+
+
+
+	    
+
+
+/*  However, -acodec and -vcodec were added in 0.4.1  */
+
+
+
+
+	    
+
+
+/*  Use same video quality as source (implies VBR)  */
+
+
+
 	    if (isset($context['ffmpeg.videosameq'])) {
 		$args[] = '-sameq';
 		unset($context['ffmpeg.videosameq']);
 	    }
-	    /* Final argument is filename */
+	    
+
+
+/*  Final argument is filename  */
+
+
+
 	    $args[] = $tmpFilename;
-	    /* Call ffmpeg */
+	    
+
+
+/*  Call ffmpeg  */
+
+
+
 	    list ($ret, $stdout, $stderr) = $this->_ffmpeg($sourceFilename, $args);
 	    if ($ret) {
-		/* Test for known audio conversion errors */
+		
+
+
+/*  Test for known audio conversion errors  */
+
+
+
 		$audioError = false;
 		foreach ($stderr as $resultLine) {
 		    if (preg_match('/Resampling with input channels greater than 2 unsupported./',
@@ -167,12 +245,24 @@ class FfmpegToolkit extends GalleryToolkit {
 			$audioError = true;
 		    }
 		}
-		/* Return if already muted or known error not found */
+		
+
+
+/*  Return if already muted or known error not found  */
+
+
+
 		if ($muted || !$audioError || $audioRateIndex == -1) {
 		    return array($ret, null, null);
 		}
 		$spliceWith = array('-an');
-		/* Try muting audio */
+		
+
+
+/*  Try muting audio  */
+
+
+
 		if ($audioRateIndex > -1) {
 		    array_splice($args, $audioRateIndex, 2, $spliceWith);
 		    $spliceWith = array();
@@ -180,14 +270,26 @@ class FfmpegToolkit extends GalleryToolkit {
 		if ($audioChannelIndex > -1) {
 		    array_splice($args, $audioChannelIndex, 2, $spliceWith);
 		}
-		/* Run ffmpeg again with new args */
+		
+
+
+/*  Run ffmpeg again with new args  */
+
+
+
 		list ($ret, $stdout, $stderr) = $this->_ffmpeg($sourceFilename, $args);
 		if ($ret) {
 		    return array($ret, null, null);
 		}
 	    }
 
-	    /** @todo: Refactor: Extract common code from both convert operations */
+	    
+
+
+/*  @todo: Refactor: Extract common code from both convert operations  */
+
+
+
 	    $success = $platform->rename($tmpFilename, $destFilename);
 	    if (!$success) {
 		@$platform->unlink($tmpFilename);
@@ -199,38 +301,74 @@ class FfmpegToolkit extends GalleryToolkit {
 	    break;
 
 	case 'set-audio-channels':
-	    /* Doesn't change file; just remembers audio setting for future operation */
+	    
+
+
+/*  Doesn't change file; just remembers audio setting for future operation  */
+
+
+
 	    $futureOp = true;
 	    $context['audioChannels'] = $parameters[0];
 	    break;
 
 	case 'set-audio-samplerate':
-	    /* Doesn't change file; just remembers audio setting for future operation */
+	    
+
+
+/*  Doesn't change file; just remembers audio setting for future operation  */
+
+
+
 	    $futureOp = true;
 	    $context['sampleRate'] = $parameters[0];
 	    break;
 
 	case 'set-video-dimensions':
-	    /* Doesn't change file; just remembers video settings for future operation */
+	    
+
+
+/*  Doesn't change file; just remembers video settings for future operation  */
+
+
+
 	    $futureOp = true;
 	    $context['width']  = $parameters[0];
 	    $context['height'] = $parameters[1];
 	    break;
 
 	case 'set-video-framerate':
-	    /* Doesn't change file; just remembers video setting for future operation */
+	    
+
+
+/*  Doesn't change file; just remembers video setting for future operation  */
+
+
+
 	    $futureOp = true;
 	    $context['frameRate'] = $parameters[0];
 	    break;
 
 	case 'set-video-sameq':
-	    /* Doesn't change file; just remembers video setting for future operation */
+	    
+
+
+/*  Doesn't change file; just remembers video setting for future operation  */
+
+
+
 	    $futureOp = true;
 	    $context['ffmpeg.videosameq'] = true;
 	    break;
 
 	case 'select-offset':
-	    /* Doesn't change file; just remembers offset for future operation */
+	    
+
+
+/*  Doesn't change file; just remembers offset for future operation  */
+
+
+
 	    $futureOp = true;
 	    $context['ffmpeg.offset'] = $parameters[0];
 	    break;
@@ -240,7 +378,13 @@ class FfmpegToolkit extends GalleryToolkit {
 					       "$operationName $mimeType"), null, null);
 	}
 
-	/* If operation just remembers something for the future operation */
+	
+
+
+/*  If operation just remembers something for the future operation  */
+
+
+
 	if ($futureOp) {
 	    if ($sourceFilename != $destFilename) {
 		if (!$platform->copy($sourceFilename, $destFilename)) {
@@ -345,12 +489,24 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'dscn3232.mov':
 	    return array($ret, null, null);
 	}
 
-	/* Get error output back, because ffmpeg 0.4.6 returns some useful info only to stderr! */
+	
+
+
+/*  Get error output back, because ffmpeg 0.4.6 returns some useful info only to stderr!  */
+
+
+
 	list ($success, $results, $error) =
 	    $platform->exec(array(array_merge(array($ffmpegPath, '-i', $sourceFilename), $args)));
 
 	if (!$success) {
-	    /* Return the output even if there's a failure */
+	    
+
+
+/*  Return the output even if there's a failure  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE), $results, $error);
 	}
 

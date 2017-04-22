@@ -71,7 +71,13 @@ class ClassicTheme extends GalleryTheme {
 	    return array($ret, null, null);
 	}
 
-	/* Add in our custom settings */
+	
+
+
+/*  Add in our custom settings  */
+
+
+
 	$settings[] = array('key' => 'showSubalbums',
 			    'name' => $this->translate('Show subalbum links'),
 			    'type' => 'checkbox',
@@ -115,7 +121,13 @@ class ClassicTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Add in our extra stuff */
+	
+
+
+/*  Add in our extra stuff  */
+
+
+
 	$theme =& $template->getVariableByReference('theme');
 	if ($params['showSubalbums']) {
 	    $theme['tree'] = $theme['treeItems'] = array();
@@ -129,7 +141,13 @@ class ClassicTheme extends GalleryTheme {
 	    }
 	}
 
-	/* Add our header and styles */
+	
+
+
+/*  Add our header and styles  */
+
+
+
 	return array(null, 'theme.tpl');
     }
 
@@ -212,7 +230,13 @@ class ClassicTheme extends GalleryTheme {
 		continue;
 	    }
 	    if ($subalbumSort) {
-		/* Apply sort preference of each album */
+		
+
+
+/*  Apply sort preference of each album  */
+
+
+
 		$ret = $this->_doBuildTree($item, $item->getId(), $treeList, $treeItems,
 					   $maxDepth, $userId, 1);
 		if ($ret) {

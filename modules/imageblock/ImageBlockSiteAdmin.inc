@@ -59,9 +59,21 @@ class ImageBlockSiteAdminController extends GalleryController {
 		}
 	    }
 	    $status['saved'] = 1;
-	} /* else $form['action']['reset'] */
+	} 
 
-	/* Figure out where to redirect upon success */
+
+/*  else $form['action']['reset']  */
+
+
+
+
+	
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	$results['redirect']['view'] = 'core.SiteAdmin';
 	$results['redirect']['subView'] = 'imageblock.ImageBlockSiteAdmin';
 	$results['status'] = $status;
@@ -103,7 +115,13 @@ class ImageBlockSiteAdminView extends GalleryView {
 	}
 	$ImageBlockSiteAdmin = array('prefix' => GALLERY_FORM_VARIABLE_PREFIX);
 
-	/* ImageFrame settings, if available */
+	
+
+
+/*  ImageFrame settings, if available  */
+
+
+
 	list ($ret, $imageframe) = GalleryCoreApi::newFactoryInstance('ImageFrameInterface_1_1');
 	if ($ret) {
 	    return array($ret, null);

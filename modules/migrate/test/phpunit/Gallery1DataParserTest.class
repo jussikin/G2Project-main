@@ -245,7 +245,13 @@ class Gallery1DataParserTest extends GalleryControllerTestCase {
     }
 
     function testGetUserFieldsByUsername() {
-	/* monkey is the target username */
+	
+
+
+/*  monkey is the target username  */
+
+
+
 	list ($ret, $fields) =
 	    Gallery1DataParser::getUserFieldsByUsername($this->_albumsDir, 'monkey');
 	if ($ret) {
@@ -270,7 +276,13 @@ class Gallery1DataParserTest extends GalleryControllerTestCase {
     }
 
     function testGetUserFieldsByUid() {
-	/* monkey is the target username */
+	
+
+
+/*  monkey is the target username  */
+
+
+
 	list ($ret, $fields) =
 	    Gallery1DataParser::getUserFieldsByUid($this->_albumsDir, '1057837115_2072132305');
 	if ($ret) {
@@ -294,7 +306,13 @@ class Gallery1DataParserTest extends GalleryControllerTestCase {
 			    $fields);
     }
     function testGetUserFieldsByMissingUid() {
-	/* monkey is the target username */
+	
+
+
+/*  monkey is the target username  */
+
+
+
 	list ($ret, $fields) =
 	    Gallery1DataParser::getUserFieldsByUid($this->_albumsDir, '1057837154_228147420');
 	if ($ret) {

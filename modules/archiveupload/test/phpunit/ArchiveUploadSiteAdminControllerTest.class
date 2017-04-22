@@ -59,7 +59,13 @@ class ArchiveUploadSiteAdminControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the settings went in properly */
+	
+
+
+/*  Verify the settings went in properly  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'archiveupload');
 	if ($ret) {
 	    return $ret;
@@ -81,7 +87,13 @@ class ArchiveUploadSiteAdminControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the settings went in properly */
+	
+
+
+/*  Verify the settings went in properly  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'archiveupload');
 	if ($ret) {
 	    return $ret;
@@ -225,7 +237,13 @@ class ArchiveUploadSiteAdminControllerTestPlatform {
     }
 
     function unlink($args) {
-	/* do nothing */
+	
+
+
+/*  do nothing  */
+
+
+
     }
 
     function isRestrictedByOpenBaseDir($path) {

@@ -39,7 +39,13 @@ class MembersTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Create a container album for any data items we create */
+	
+
+
+/*  Create a container album for any data items we create  */
+
+
+
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_rootAlbumId);
 	if ($ret) {
 	    return $ret;
@@ -47,7 +53,13 @@ class MembersTest extends GalleryTestCase {
 
 	$this->_markForCleanup($this->_album);
 
-	/* Create a dummy user */
+	
+
+
+/*  Create a dummy user  */
+
+
+
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -62,7 +74,13 @@ class MembersTest extends GalleryTestCase {
     }
 
     function testFetchUserItemCount() {
-	/* Initial check, should be zero */
+	
+
+
+/*  Initial check, should be zero  */
+
+
+
 	list ($ret, $itemCount) = GalleryMembersHelper::fetchUserItemCount($this->_user->getId());
 	if ($ret) {
 	    return $ret;
@@ -84,14 +102,26 @@ class MembersTest extends GalleryTestCase {
 	    }
 	}
 
-	/* Ask for the item count */
+	
+
+
+/*  Ask for the item count  */
+
+
+
 	list ($ret, $itemCount) =
 	    GalleryMembersHelper::fetchUserItemCount($this->_user->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* assert it equals our original number of items we created*/
+	
+
+
+/*  assert it equals our original number of items we created */
+
+
+
 	$this->assertEquals($numItems, $itemCount);
     }
 
@@ -109,7 +139,13 @@ class MembersTest extends GalleryTestCase {
 						   'ownerId' => $this->_user->getId()));
 	}
 
-	/* Ask for the middle two items in ascending order */
+	
+
+
+/*  Ask for the middle two items in ascending order  */
+
+
+
 	list ($ret, $items) =
 	    GalleryMembersHelper::fetchLastUserItems($this->_user->getId(), 1, 2, ORDER_ASCENDING);
 	if ($ret) {
@@ -156,7 +192,13 @@ class MembersTest extends GalleryTestCase {
     function testCanViewProfileEmail() {
 	global $gallery;
 
-	/* not admin, view emails off */
+	
+
+
+/*  not admin, view emails off  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module',
 						  'members',
 						  'canViewEmailAddress',
@@ -171,7 +213,13 @@ class MembersTest extends GalleryTestCase {
 	}
 	$this->assertEquals(false, $result);
 
-	/* not admin, view emails on*/
+	
+
+
+/*  not admin, view emails on */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module',
 						  'members',
 						  'canViewEmailAddress',
@@ -186,7 +234,13 @@ class MembersTest extends GalleryTestCase {
 	}
 	$this->assertEquals(true, $result);
 
-	/* admin, view emails off*/
+	
+
+
+/*  admin, view emails off */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module',
 						  'members',
 						  'canViewEmailAddress',
@@ -212,7 +266,13 @@ class MembersTest extends GalleryTestCase {
 	}
 	$this->assertEquals(true, $result);
 
-	/* admin, view emails on*/
+	
+
+
+/*  admin, view emails on */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module',
 						  'members',
 						  'canViewEmailAddress',

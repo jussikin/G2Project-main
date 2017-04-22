@@ -115,7 +115,13 @@ class PublishXpLoginView extends GalleryView {
 	}
 
 	if (!$isAnonymous) {
-	    /* No need to log in */
+	    
+
+
+/*  No need to log in  */
+
+
+
 	    return array(null, array('redirect' => array('view' => 'publishxp.SelectAlbum')));
 	}
 

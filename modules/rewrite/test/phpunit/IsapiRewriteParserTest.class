@@ -44,7 +44,13 @@ class IsapiRewriteParserTest extends RewriteParserTestCase {
 	   return $ret;
 	}
 
-	/* Set up our environment */
+	
+
+
+/*  Set up our environment  */
+
+
+
 	foreach (array('isapirewrite.forced' => '0',
 		       'isapirewrite.galleryLocation' => '/gallery2/',
 		       'isapirewrite.httpdini' => '/phpunit/gallery2',

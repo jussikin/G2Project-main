@@ -40,12 +40,24 @@ class InstallCoreModuleStep extends InstallStep {
 
 	$templateData = array();
 
-	/* GalleryInitFirstPass does this, but need it earlier to avoid warnings in code below */
+	
+
+
+/*  GalleryInitFirstPass does this, but need it earlier to avoid warnings in code below  */
+
+
+
 	if (function_exists('date_default_timezone_set')) {
 	    @date_default_timezone_set(date_default_timezone_get());
 	}
 
-	/* We want to log all debug output in our install log */
+	
+
+
+/*  We want to log all debug output in our install log  */
+
+
+
 	global $gallery;
 	$gallery->setDebug('logged');
 	$tag = substr(md5(microtime() . rand(1, 32767)), 0, 10);
@@ -68,7 +80,13 @@ class InstallCoreModuleStep extends InstallStep {
 
 	$this->_addSystemInformationToDebugLog();
 
-	/* We want to avoid using the cache */
+	
+
+
+/*  We want to avoid using the cache  */
+
+
+
 	GalleryDataCache::setFileCachingEnabled(false);
 
 	/*
@@ -125,7 +143,13 @@ class InstallCoreModuleStep extends InstallStep {
 	$freshInstall = $galleryStub->getConfig('freshInstall');
 	if ($freshInstall) {
 	    $gallery->debug('Hand over admin user parameters');
-	    /* It's a fresh install.  Hand over install config parameters. */
+	    
+
+
+/*  It's a fresh install.  Hand over install config parameters.  */
+
+
+
 	    $gallery->setConfig('setup.admin.userName',
 				$galleryStub->getConfig('setup.admin.userName'));
 	    $gallery->setConfig('setup.admin.email',
@@ -136,7 +160,13 @@ class InstallCoreModuleStep extends InstallStep {
 
 	if (empty($templateData['errors'])) {
 	    if (!$isInstalled) {
-		/* Ensure translations for active language are available */
+		
+
+
+/*  Ensure translations for active language are available  */
+
+
+
 		GalleryCoreApi::installTranslationsForLocale();
 
 		$gallery->debug('Install core module now!');
@@ -181,7 +211,13 @@ class InstallCoreModuleStep extends InstallStep {
 		}
 	    } else {
 		$gallery->debug('NOT installing, rollback!');
-		$storage->rollbackTransaction(); /* Ignore any errors from this */
+		$storage->rollbackTransaction(); 
+
+
+/*  Ignore any errors from this  */
+
+
+
 		/*
 		 * Don't allow this step to complete when only partially installed.  Verify that
 		 * versions.dat is up to date.
@@ -214,7 +250,13 @@ class InstallCoreModuleStep extends InstallStep {
 	return false;
     }
 
-    /* Adds a header to the debug log */
+    
+
+
+/*  Adds a header to the debug log  */
+
+
+
     function _createDebugLogHeader() {
 	global $gallery;
 
@@ -224,7 +266,13 @@ class InstallCoreModuleStep extends InstallStep {
 --------------------------------------------------------\n\n");
     }
 
-    /* Adds some system information to the log */
+    
+
+
+/*  Adds some system information to the log  */
+
+
+
     function _addSystemInformationToDebugLog() {
 	global $gallery;
 	global $galleryStub;

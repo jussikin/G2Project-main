@@ -62,7 +62,13 @@ class FlushTemplatesTask extends MaintenanceTask {
 	    $success = $platform->recursiveRmdir($dir);
 	}
 
-	/* Clear UrlGenerator's /local/ URL map, somewhat related to templates/theming */
+	
+
+
+/*  Clear UrlGenerator's /local/ URL map, somewhat related to templates/theming  */
+
+
+
 	GalleryDataCache::removeFromDisk(array('type' => 'local-url-map'));
 
 	$details = array();

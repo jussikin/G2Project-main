@@ -40,7 +40,13 @@ class ServerAuthPluginTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Create test user */
+	
+
+
+/*  Create test user  */
+
+
+
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;

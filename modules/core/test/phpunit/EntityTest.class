@@ -84,7 +84,13 @@ class EntityTest extends GalleryTestCase {
 	 * loaded from database or disk cache.. also called for refresh()
 	 */
 
-	/* Load the entity back and verify it */
+	
+
+
+/*  Load the entity back and verify it  */
+
+
+
 	GalleryDataCache::setFileCachingEnabled(true);
 	GalleryDataCache::reset();
 	GalleryDataCache::removeFromDisk(
@@ -99,7 +105,13 @@ class EntityTest extends GalleryTestCase {
 	$this->assert($newEntity->_wasOnLoadCalled(), 'onLoad for database load');
 
 	if (GalleryDataCache::isFileCachingEnabled()) {
-	    /* Load back from disk cache and verify it */
+	    
+
+
+/*  Load back from disk cache and verify it  */
+
+
+
 	    GalleryDataCache::reset();
 	    $data =& GalleryDataCache::getFromDisk(
 		array('type' => 'entity', 'itemId' => $this->_entity->getId()));
@@ -116,14 +128,26 @@ class EntityTest extends GalleryTestCase {
 	    $this->assert($newEntity->_wasOnLoadCalled(), 'onLoad for disk cache load');
 	}
 
-	/* Load back from memory cache */
+	
+
+
+/*  Load back from memory cache  */
+
+
+
 	list ($ret, $newEntity) = GalleryCoreApi::loadEntitiesById($this->_entity->getId());
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assert(!$newEntity->_wasOnLoadCalled(), 'onLoad for memory cache load');
 
-	/* Refresh from db */
+	
+
+
+/*  Refresh from db  */
+
+
+
 	list ($ret, $newEntity) = $this->_entity->refresh();
 	if ($ret) {
 	    return $ret;
@@ -178,7 +202,13 @@ class EntityTest extends GalleryTestCase {
 	$this->assertEquals('onLoadHandler was called', $newEntity->getLinkedEntity(),
 			    'handler not called');
 
-	/* During upgrades the session has 'isUpgrade' key */
+	
+
+
+/*  During upgrades the session has 'isUpgrade' key  */
+
+
+
 	GalleryDataCache::reset();
 	unset($newEntity);
 	$session->put('isUpgrade', true);
@@ -258,7 +288,13 @@ class EntityTest extends GalleryTestCase {
     }
 
     function testEmptyVsNull() {
-	/* Ensure we can save and reset empty string without triggering modified flag */
+	
+
+
+/*  Ensure we can save and reset empty string without triggering modified flag  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
 	$entity = new GalleryEntity();
 	$ret = $entity->create();
@@ -355,7 +391,13 @@ class EntityTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Now that we've reloaded photo2, it has linked values */
+	
+
+
+/*  Now that we've reloaded photo2, it has linked values  */
+
+
+
 	$this->assertEquals(100, $photo2->getWidth());
 	$this->assertEquals('application/unknown', $photo2->getMimeType());
     }
@@ -440,7 +482,13 @@ class EntityTest extends GalleryTestCase {
 	    GalleryCoreApi::loadEntitiesById($this->_getRootId(), 'GalleryDerivative');
 	if ($ret) {
 	    if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		/* Successfully detected entity-type mismatch */
+		
+
+
+/*  Successfully detected entity-type mismatch  */
+
+
+
 	    } else {
 		$this->fail('Unexpected error type');
 		return $ret;
@@ -483,7 +531,13 @@ class EntityTest extends GalleryTestCase {
 	    array($this->_getRootId(), $dataItem->getId()), 'GalleryAlbumItem');
 	if ($ret) {
 	    if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		/* Successfully detected entity-type mismatch */
+		
+
+
+/*  Successfully detected entity-type mismatch  */
+
+
+
 	    } else {
 		$this->fail('Unexpected error type');
 		return $ret;
@@ -496,7 +550,13 @@ class EntityTest extends GalleryTestCase {
     }
 
     function testLoadEntitiesByIdAssertsTheMultipleRequestedEntityTypes() {
-	/* Any of the entity-types has to match (boolean OR) */
+	
+
+
+/*  Any of the entity-types has to match (boolean OR)  */
+
+
+
 	list ($ret, $entity) = GalleryCoreApi::loadEntitiesById(
 	    $this->_getRootId(), array('GalleryDerivative', 'GalleryAlbumItem'));
 	if ($ret) {
@@ -528,7 +588,13 @@ class EntityTest extends GalleryTestCase {
 	$ret = GalleryCoreApi::deleteEntityById($album->getId(), 'GalleryDerivative');
 	if ($ret) {
 	    if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		/* Successfully detected entity-type mismatch */
+		
+
+
+/*  Successfully detected entity-type mismatch  */
+
+
+
 	    } else {
 		$this->fail('Unexpected error type');
 		return $ret;

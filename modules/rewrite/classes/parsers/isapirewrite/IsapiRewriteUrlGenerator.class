@@ -34,7 +34,13 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator {
      * @see GalleryUrlGenerator::init
      */
     function init($baseUri=null, $g2Uri=null, $embedSessionString=null) {
-	/* Verify that we're configured to work in this mode.  Else disable short-URLs. */
+	
+
+
+/*  Verify that we're configured to work in this mode.  Else disable short-URLs.  */
+
+
+
 	$location = GalleryUtilities::isEmbedded() ? 'embeddedLocation' : 'galleryLocation';
 	list ($ret, $configuredLocation) =
 	    GalleryCoreApi::getPluginParameter('module', 'rewrite', 'isapirewrite.' . $location);
@@ -42,7 +48,13 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator {
 	    return $ret;
 	}
 	if (empty($configuredLocation)) {
-	    /* Disable short-URLs */
+	    
+
+
+/*  Disable short-URLs  */
+
+
+
 	    $this->_error = true;
 	}
 
@@ -74,7 +86,13 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator {
 	    return parent::generateUrl($params, $options);
 	}
 
-	/* Make all URLs server relative (if relative at all) and not relative to the current dir */
+	
+
+
+/*  Make all URLs server relative (if relative at all) and not relative to the current dir  */
+
+
+
 	$options['forceServerRelativeUrl'] = true;
 	return parent::generateUrl($params, $options);
     }
@@ -95,7 +113,13 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator {
 	}
 
 	if (!isset($this->_currentUrlBaseDir[$forceDirect])) {
-	    /* Just check if the rewrite module has been configured already */
+	    
+
+
+/*  Just check if the rewrite module has been configured already  */
+
+
+
 	    $location = GalleryUtilities::isEmbedded() ? 'embeddedLocation' : 'galleryLocation';
 	    list ($ret, $path) = GalleryCoreApi::getPluginParameter('module', 'rewrite',
 								    'isapirewrite.' . $location);
@@ -108,7 +132,13 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator {
 		$this->_error = true;
 	    }
 
-	    /* Let the GalleryUrlGenerator::getCurrentUrlDir() handle the request anyway */
+	    
+
+
+/*  Let the GalleryUrlGenerator::getCurrentUrlDir() handle the request anyway  */
+
+
+
 	    return parent::getCurrentUrlDir($forceDirect);
 	}
 

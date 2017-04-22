@@ -175,10 +175,22 @@ class AdminExifController extends GalleryController {
 
 	    if (isset($form['summary'])) {
 
-		/* Iterate through each property that we want to shift */
+		
+
+
+/*  Iterate through each property that we want to shift  */
+
+
+
 		$count = 0;
 		foreach ($form['summary'] as $propertyToShift) {
-		    /* Find its spot in the array and swap it with the one ahead of it */
+		    
+
+
+/*  Find its spot in the array and swap it with the one ahead of it  */
+
+
+
 		    for ($i = 0; $i < sizeof($properties); $i++) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i > 0) {
@@ -210,10 +222,22 @@ class AdminExifController extends GalleryController {
 
 	    if (isset($form['summary'])) {
 
-		/* Iterate through each property that we want to shift */
+		
+
+
+/*  Iterate through each property that we want to shift  */
+
+
+
 		$count = 0;
 		foreach ($form['summary'] as $propertyToShift) {
-		    /* Find its spot in the array and swap it with the one ahead of it */
+		    
+
+
+/*  Find its spot in the array and swap it with the one ahead of it  */
+
+
+
 		    for ($i = sizeof($properties) - 1; $i >= 0; $i--) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i < sizeof($properties) - 1) {
@@ -245,10 +269,22 @@ class AdminExifController extends GalleryController {
 
 	    if (isset($form['detailed'])) {
 
-		/* Iterate through each property that we want to shift */
+		
+
+
+/*  Iterate through each property that we want to shift  */
+
+
+
 		$count = 0;
 		foreach ($form['detailed'] as $propertyToShift) {
-		    /* Find its spot in the array and swap it with the one ahead of it */
+		    
+
+
+/*  Find its spot in the array and swap it with the one ahead of it  */
+
+
+
 		    for ($i = 0; $i < sizeof($properties); $i++) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i > 0) {
@@ -280,10 +316,22 @@ class AdminExifController extends GalleryController {
 
 	    if (isset($form['detailed'])) {
 
-		/* Iterate through each property that we want to shift */
+		
+
+
+/*  Iterate through each property that we want to shift  */
+
+
+
 		$count = 0;
 		foreach ($form['detailed'] as $propertyToShift) {
-		    /* Find its spot in the array and swap it with the one ahead of it */
+		    
+
+
+/*  Find its spot in the array and swap it with the one ahead of it  */
+
+
+
 		    for ($i = sizeof($properties) - 1; $i >= 0; $i--) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i < sizeof($properties) - 1) {
@@ -359,7 +407,13 @@ class AdminExifView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminExif') {
-	    /* Load up our form data */
+	    
+
+
+/*  Load up our form data  */
+
+
+
 	    $form['formName'] = 'AdminExif';
 
 	    list ($ret, $addOption) = $module->getParameter('addOption');
@@ -377,7 +431,13 @@ class AdminExifView extends GalleryView {
 	$exifKeys = ExifHelper::getExifKeys();
 	$visibleKeys = array();
 
-	/* Prepare the summary list */
+	
+
+
+/*  Prepare the summary list  */
+
+
+
 	$summaryList = array();
 	list ($ret, $tmp) = ExifHelper::getProperties(EXIF_SUMMARY);
 	if ($ret) {
@@ -387,7 +447,13 @@ class AdminExifView extends GalleryView {
 	    $summaryList[$property] = $module->translate($exifKeys[$property][0]);
 	}
 
-	/* Prepare the detailed list */
+	
+
+
+/*  Prepare the detailed list  */
+
+
+
 	$detailedList = array();
 	list ($ret, $tmp) = ExifHelper::getProperties(EXIF_DETAILED);
 	if ($ret) {
@@ -397,7 +463,13 @@ class AdminExifView extends GalleryView {
 	    $detailedList[$property] = $module->translate($exifKeys[$property][0]);
 	}
 
-	/* Anything not summary and detailed is available */
+	
+
+
+/*  Anything not summary and detailed is available  */
+
+
+
 	$availableList = array();
 	foreach ($exifKeys as $key => $data) {
 	    if (isset($summaryList[$key]) && isset($detailedList[$key])) {
@@ -408,7 +480,13 @@ class AdminExifView extends GalleryView {
 	}
 	asort($availableList);
 
-	/* Check toolkit support for rotation */
+	
+
+
+/*  Check toolkit support for rotation  */
+
+
+
 	list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation('image/jpeg', 'rotate');
 	if ($ret) {
 	    return array($ret, null);

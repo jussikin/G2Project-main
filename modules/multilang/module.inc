@@ -25,7 +25,13 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class MultiLangModule extends GalleryModule /* and GalleryEventListener */ {
+class MultiLangModule extends GalleryModule 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     function __construct() {
 	$this->MultiLangModule();
@@ -105,7 +111,13 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */ {
      * @see GalleryModule::autoConfigure
      */
     function autoConfigure() {
-	/* This module requires gettext to be installed */
+	
+
+
+/*  This module requires gettext to be installed  */
+
+
+
 	list ($ret, $needsConfiguration) = $this->needsConfiguration();
 	if ($ret) {
 	    return array($ret, null);
@@ -117,7 +129,13 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */ {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires gettext to be installed */
+	
+
+
+/*  This module requires gettext to be installed  */
+
+
+
 	global $gallery;
 	$translator =& $gallery->getTranslator();
 	return array(null, !$translator->canTranslate());

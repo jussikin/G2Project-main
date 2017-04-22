@@ -66,7 +66,13 @@ class AdminModerateSpamControllerTest extends GalleryControllerTestCase {
     function testDeleteAllSpam() {
     	global $gallery;
 
-	/* Create a comment of each type */
+	
+
+
+/*  Create a comment of each type  */
+
+
+
 	foreach (array(COMMENT_PUBLISH_STATUS_PUBLISHED,
 		       COMMENT_PUBLISH_STATUS_UNPUBLISHED,
 		       COMMENT_PUBLISH_STATUS_SPAM) as $publishStatus) {
@@ -96,7 +102,13 @@ class AdminModerateSpamControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify that only the spam comment was deleted. */
+	
+
+
+/*  Verify that only the spam comment was deleted.  */
+
+
+
 	foreach ($comments as $publishStatus => $comment) {
 	    list ($ret, $comment) = $comment->refresh();
 	    switch($publishStatus) {

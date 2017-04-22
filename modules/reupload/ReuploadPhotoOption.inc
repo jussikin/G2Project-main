@@ -54,7 +54,13 @@ class ReuploadPhotoOption extends ItemEditOption {
 		return array($ret, null, null);
 	    }
 	    if ($hasLinkedEntity) {
-		/* UI does not allow this */
+		
+
+
+/*  UI does not allow this  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null, null);
 	    }
 
@@ -81,7 +87,13 @@ class ReuploadPhotoOption extends ItemEditOption {
 		return array($ret, null, null);
 	    }
 
-	    /* take backup first */
+	    
+
+
+/*  take backup first  */
+
+
+
 	    $tmpfname = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'tmp_');
 	    if (!$tmpfname) {
 		GalleryCoreApi::releaseLocks($lockIds);
@@ -138,7 +150,13 @@ class ReuploadPhotoOption extends ItemEditOption {
 	     * which leaves out those who wants to reupload larger files
 	     */
 	    if (!empty($form['name']['reupload'])) {
-		/* if we tried and failed to upload the file */
+		
+
+
+/*  if we tried and failed to upload the file  */
+
+
+
 		$error[] = 'form[error][reupload][failure]';
 	    }
 	}

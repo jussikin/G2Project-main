@@ -42,7 +42,13 @@ class MockTemplateAdapter {
 		$ret = $ret[0];
 	    }
 	    if ($ret) {
-		/* If progress bar is in use, report error via its interface */
+		
+
+
+/*  If progress bar is in use, report error via its interface  */
+
+
+
 		if ($this->_useProgressBar) {
 		    $this->errorProgressBar($ret);
 		}
@@ -66,7 +72,13 @@ class MockTemplateAdapter {
     }
 
     function updateProgressBar($title, $description, $percentComplete) {
-	/* Replace localized comma decimal separator with a dot */
+	
+
+
+/*  Replace localized comma decimal separator with a dot  */
+
+
+
 	$this->_progress[] = str_replace(',', '.', round($percentComplete, 2));
 	return null;
     }

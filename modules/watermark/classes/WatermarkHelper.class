@@ -86,13 +86,25 @@ class WatermarkHelper {
 	    return array($ret, null);
 	}
 
-	/* Get all ids */
+	
+
+
+/*  Get all ids  */
+
+
+
 	$ids = array();
 	while ($result = $searchResults->nextResult()) {
 	    $ids[] = (int)$result[0];
 	}
 
-	/* Convert them to entities */
+	
+
+
+/*  Convert them to entities  */
+
+
+
 	$watermarks = array();
 	if (!empty($ids)) {
 	    list ($ret, $entities) = GalleryCoreApi::loadEntitiesById($ids, 'WatermarkImage');
@@ -100,7 +112,13 @@ class WatermarkHelper {
 		return array($ret, null);
 	    }
 
-	    /* Build an id => watermark map */
+	    
+
+
+/*  Build an id => watermark map  */
+
+
+
 	    foreach ($entities as $entity) {
 		$watermarks[$entity->getId()] = $entity;
 	    }
@@ -197,11 +215,23 @@ class WatermarkHelper {
 	    return array($ret, null);
 	}
 	if (!($isAdmin || $item->getOwnerId() == $gallery->getActiveUserId())) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
-	/* Check if this watermark is used anywhere.. */
+	
+
+
+/*  Check if this watermark is used anywhere..  */
+
+
+
 	list ($ret, $watermarkedItemIds) = WatermarkHelper::fetchWatermarkedItemIds($item);
 	if ($ret) {
 	    return array($ret, null);
@@ -210,14 +240,26 @@ class WatermarkHelper {
 	    if (!$forceDelete) {
 		return array(null, false);
 	    }
-	    /* Remove watermark from those items.. */
+	    
+
+
+/*  Remove watermark from those items..  */
+
+
+
 	    list ($ret, $watermarkedItems) =
 		GalleryCoreApi::loadEntitiesById($watermarkedItemIds, 'GalleryItem');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	    foreach ($watermarkedItems as $watermarkedItem) {
-		/* Un-watermark this item.. */
+		
+
+
+/*  Un-watermark this item..  */
+
+
+
 		$ret = WatermarkHelper::watermarkItem($item, $watermarkedItem, 0, 0,
 					array(DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
 					      DERIVATIVE_TYPE_IMAGE_RESIZE => false,
@@ -241,7 +283,13 @@ class WatermarkHelper {
 		    return array($ret, null);
 		}
 
-		/* Make sure the watermark we are about to delete is not considered */
+		
+
+
+/*  Make sure the watermark we are about to delete is not considered  */
+
+
+
 		unset($watermarks[$itemId]);
 		if (!empty($watermarks)) {
 		    $watermarksIds = array_keys($watermarks);
@@ -286,7 +334,13 @@ class WatermarkHelper {
 	    return $ret;
 	}
 
-	/* Weed out derivatives that we don't want to modify */
+	
+
+
+/*  Weed out derivatives that we don't want to modify  */
+
+
+
 	$derivatives = array();
 	$add = array();
 	$remove = array();
@@ -305,7 +359,13 @@ class WatermarkHelper {
 	    }
 	}
 
-	/* If they want to modify the original, and we don't have one -- create a preferred */
+	
+
+
+/*  If they want to modify the original, and we don't have one -- create a preferred  */
+
+
+
 	if ($whichDerivatives[DERIVATIVE_TYPE_IMAGE_PREFERRED] && !$hasPreferred) {
 	    list ($ret, $preferred) = GalleryCoreApi::newFactoryInstanceByHint(
 		'GalleryDerivative', $item->getEntityType());
@@ -366,7 +426,13 @@ class WatermarkHelper {
 			number_format($xPercent, 3, '.', ''),
 			number_format($yPercent, 3, '.', ''));
 
-		    /* Replace existing watermark, or add a new one */
+		    
+
+
+/*  Replace existing watermark, or add a new one  */
+
+
+
 		    $postFilterOps = $derivative->getPostFilterOperations();
 		    if ($postFilterOps) {
 			$ops = explode(';', $postFilterOps);
@@ -437,7 +503,13 @@ class WatermarkHelper {
      * @deprecated After the next major API bump remove this module and call the core api directly
      */
     function determineMimeType(&$form) {
-	/* Get the mime type. */
+	
+
+
+/*  Get the mime type.  */
+
+
+
 	return GalleryCoreApi::getMimeType($form['tmp_name'][1], $form['type'][1]);
     }
 
@@ -475,7 +547,13 @@ class WatermarkHelper {
 	}
 	$itemId = $item->getId();
 
-	/* Give appropriate permissions */
+	
+
+
+/*  Give appropriate permissions  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
 	if ($ret) {
 	    return array($ret, null);
@@ -526,7 +604,13 @@ class WatermarkHelper {
 	    return array($ret, null);
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.edit');
@@ -570,7 +654,13 @@ class WatermarkHelper {
 	    }
 
 	    if (empty($error)) {
-		/* Clip our percentages */
+		
+
+
+/*  Clip our percentages  */
+
+
+
 		$form['xPercentage'] = empty($form['xPercentage']) ? 0 : $form['xPercentage'];
 		$form['yPercentage'] = empty($form['yPercentage']) ? 0 : $form['yPercentage'];
 		$form['xPercentage'] = max(0, $form['xPercentage']);
@@ -596,7 +686,13 @@ class WatermarkHelper {
 		$item->setYPercentage(number_format($form['yPercentage'], 3, '.', ''));
 
 		if (!empty($form['tmp_name'][1])) {
-		    /* Replace watermark image file */
+		    
+
+
+/*  Replace watermark image file  */
+
+
+
 		    list ($ret, $path) = $item->fetchPath();
 		    if ($ret) {
 			return array($ret, null);
@@ -610,7 +706,13 @@ class WatermarkHelper {
 		    if ($ret) {
 			return array($ret, null);
 		    }
-		    /* Expire derivatives using this watermark */
+		    
+
+
+/*  Expire derivatives using this watermark  */
+
+
+
 		    $query = '
 		    SELECT [GalleryDerivative::id]
 		    FROM [GalleryDerivative]
@@ -652,7 +754,13 @@ class WatermarkHelper {
 		$results['delegate']['view'] = $view;
 		$results['delegate']['subView'] = $subViewError;
 	    }
-	} else { /* $form['action']['cancel'] */
+	} else { 
+
+
+/*  $form['action']['cancel']  */
+
+
+
 	    $results['redirect']['view'] = $view;
 	    $results['redirect']['subView'] = $subViewSuccess;
 	}
@@ -680,7 +788,13 @@ class WatermarkHelper {
 	    return $ret;
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	}
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.edit');

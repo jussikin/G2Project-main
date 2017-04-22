@@ -42,7 +42,13 @@ class ModRewriteParserTest extends RewriteParserTestCase {
 	   return $ret;
 	}
 
-	/* Set up our environment */
+	
+
+
+/*  Set up our environment  */
+
+
+
 	foreach (array('modrewrite.status' => serialize(array('needOptions' => true)),
 		       'modrewrite.galleryLocation' => '/gallery2/',
 		       'modrewrite.embeddedHtaccess' => '/phpunit/embedded',

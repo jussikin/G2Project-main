@@ -77,7 +77,13 @@ class HiddenItemOptionTest extends ItemEditOptionTestCase {
 	}
 
 	if ($top) {
-	    /* Setup permissions */
+	    
+
+
+/*  Setup permissions  */
+
+
+
 	    $albumId = $album->getId();
 	    $ret = GalleryCoreApi::removeItemPermissions($albumId);
 	    if ($ret) {
@@ -207,7 +213,13 @@ class HiddenItemOptionTest extends ItemEditOptionTestCase {
 
 	$this->_becomeGuestUser();
 
-	/* Permissions ok for topItems[0] */
+	
+
+
+/*  Permissions ok for topItems[0]  */
+
+
+
 	$form['HiddenItemOption']['setHidden'] = 1;
 	$result = $this->_handleRequestAfterEdit($form, $this->_topItems[0]);
 	$this->assertEquals(array(array(), array()), $result);
@@ -217,7 +229,13 @@ class HiddenItemOptionTest extends ItemEditOptionTestCase {
 	    return $ret;
 	}
 
-	/* No core.changePermissions permission for topItems[1] */
+	
+
+
+/*  No core.changePermissions permission for topItems[1]  */
+
+
+
 	$result = $this->_handleRequestAfterEdit($form, $this->_topItems[1],
 						 ERROR_PERMISSION_DENIED);
 
@@ -830,7 +848,13 @@ class HiddenItemOptionTest extends ItemEditOptionTestCase {
 	GalleryUtilities::putRequestVariable('view', 'core.ShowItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_topItems[1]->getId());
 
-	/* No action if we already have core.view, like admin */
+	
+
+
+/*  No action if we already have core.view, like admin  */
+
+
+
 	$ret = $module->onLoad($this->_topItems[1], false);
 	if ($ret) {
 	    return ($ret);
@@ -841,7 +865,13 @@ class HiddenItemOptionTest extends ItemEditOptionTestCase {
 	GalleryDataCache::reset();
 	$session->put(GALLERY_PERMISSION_SESSION_KEY, array());
 
-	/* Session permission is granted if we have viewResizes or viewSource */
+	
+
+
+/*  Session permission is granted if we have viewResizes or viewSource  */
+
+
+
 	$ret = $module->onLoad($this->_topItems[1], false);
 	if ($ret) {
 	    return ($ret);

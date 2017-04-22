@@ -40,7 +40,13 @@ class SnapGalaxyHelper {
 	$session =& $gallery->getSession();
 	$itemIds = array_keys($cartItemIds);
 
-	/* Load the necessary item data */
+	
+
+
+/*  Load the necessary item data  */
+
+
+
 	list ($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryPhotoItem');
 	if ($ret) {
 	    return array($ret, null);
@@ -52,7 +58,13 @@ class SnapGalaxyHelper {
 	}
 	foreach ($itemIds as $id) {
 	    if (empty($permissions[$id]['core.view'])) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	}
@@ -72,7 +84,13 @@ class SnapGalaxyHelper {
 	    return array($ret, null);
 	}
 
-	/* We want to know which are viewable to guests */
+	
+
+
+/*  We want to know which are viewable to guests  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -86,20 +104,38 @@ class SnapGalaxyHelper {
 
 	$cartUrlFragment = $session->get('snapgalaxy.cartUrlFragment');
 
-	/* If we don't have a cart url that means we don't have a snapgalaxy session yet */
+	
+
+
+/*  If we don't have a cart url that means we don't have a snapgalaxy session yet  */
+
+
+
 	$snapgalaxyServer = 'www.snapgalaxy.com';
 	if (empty($cartUrlFragment)) {
 	    $cartUrlFragment = '/pt/ptcartpost';
 	}
 
-	/* Assemble all our data */
+	
+
+
+/*  Assemble all our data  */
+
+
+
 	$entries = $protectedIds = array();
 	foreach ($items as $item) {
 	    $itemId = $item->getId();
 	    $entry = array();
 
 	    if (!isset($permissions[$itemId]['snapgalaxy.print'])) {
-		/* Skip any cart items for which we don't have print permission */
+		
+
+
+/*  Skip any cart items for which we don't have print permission  */
+
+
+
 		continue;
 	    }
 
@@ -135,7 +171,13 @@ class SnapGalaxyHelper {
 	    $entry['imageHeight'] = $source->getHeight();
 
 	    if (!isset($thumbnails[$itemId]) || $thumbnails[$itemId]->getPostFilterOperations()) {
-		/* Use the source if the thumbnail has a postfilter (like a watermark) */
+		
+
+
+/*  Use the source if the thumbnail has a postfilter (like a watermark)  */
+
+
+
 		$thumbSource = $source;
 	    } else {
 		$thumbSource = $thumbnails[$itemId];
@@ -155,7 +197,13 @@ class SnapGalaxyHelper {
 	}
 
 	if (isset($pwSession)) {
-	    /* Mark this session so that it can be treated specially */
+	    
+
+
+/*  Mark this session so that it can be treated specially  */
+
+
+
 	    $pwSession->put('core.isPrintService', $protectedIds);
 
 	    /**

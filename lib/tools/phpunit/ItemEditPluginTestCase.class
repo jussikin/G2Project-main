@@ -53,7 +53,13 @@ class ItemEditPluginTestCase extends GalleryTestCase {
     }
 
     function handleRequest(&$item, &$preferred, $errorCode=null) {
-	/* Get our form variables */
+	
+
+
+/*  Get our form variables  */
+
+
+
 	$form = GalleryUtilities::getFormVariables('form');
 
 	list ($ret, $error, $status, $needsProgressBar) =
@@ -70,7 +76,13 @@ class ItemEditPluginTestCase extends GalleryTestCase {
 	} else if ($ret) {
 	    return ($ret);
 	} else {
-	    /* Check to make sure we got back everything we want */
+	    
+
+
+/*  Check to make sure we got back everything we want  */
+
+
+
 	    $this->assert(isset($error) && is_array($error), 'plugin error results missing');
 
 	    /*

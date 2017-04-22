@@ -76,7 +76,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	static $convertOps = array('thumbnail', 'scale', 'resize', 'rotate',
 				   'crop', 'convert-to-image/jpeg', 'select-page');
 
-	/* Check context for any operations that have been queued up */
+	
+
+
+/*  Check context for any operations that have been queued up  */
+
+
+
 	$outputMimeType = $mimeType;
 	if (isset($context['imagemagick.transform'])) {
 	    $transform = $context['imagemagick.transform'];
@@ -91,7 +97,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	    $height = $context['height'];
 	}
 
-	/* Use context look-ahead to see if we can queue up parameters to use later */
+	
+
+
+/*  Use context look-ahead to see if we can queue up parameters to use later  */
+
+
+
 	$queueIt = in_array($operationName, $convertOps) &&
 	    isset($context['next.toolkit']) && $context['next.toolkit'] == $this &&
 	    in_array($context['next.operation'], $convertOps);
@@ -120,7 +132,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	}
 
 	if ($usePercent) {
-	    /* Convert percentages to real image dimensions */
+	    
+
+
+/*  Convert percentages to real image dimensions  */
+
+
+
 	    if (substr($parameters[0], -1) == '%') {
 		$parameters[0] = (int)round($width * rtrim($parameters[0], '%') / 100);
 	    }
@@ -135,13 +153,25 @@ class ImageMagickToolkit extends GalleryToolkit {
 	} else switch($operationName) {
 	case 'thumbnail':
 	    $cmd = 'convert';
-	    /* Don't enlarge images for a thumbnail */
+	    
+
+
+/*  Don't enlarge images for a thumbnail  */
+
+
+
 	    if ($width > $parameters[0] || $height > $parameters[0]) {
 		$this->_addResizeParam($transform, $parameters[0]);
 		list ($width, $height) =
 		    GalleryUtilities::scaleDimensionsToFit($width, $height, $parameters[0]);
 	    }
-	    /* Strip metadata to make derivative files smaller.. */
+	    
+
+
+/*  Strip metadata to make derivative files smaller..  */
+
+
+
 	    list ($ret, $removeMetaDataSwitch) =
 		GalleryCoreApi::getPluginParameter('module', 'imagemagick', 'removeMetaDataSwitch');
 	    if ($ret) {
@@ -185,7 +215,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	    break;
 
 	case 'crop':
-	    /* source dimensions are required to convert from percentages to pixels  */
+	    
+
+
+/*  source dimensions are required to convert from percentages to pixels   */
+
+
+
 	    $pixelX = round($parameters[0] / 100 * $width);
 	    $pixelY = round($parameters[1] / 100 * $height);
 	    $width = round($parameters[2] / 100 * $width);
@@ -223,53 +259,119 @@ class ImageMagickToolkit extends GalleryToolkit {
 	    $compositeAlignY = $parameters[6];
 
 	    switch ($compositeAlignmentType) {
-	    case 'top-left': /* Top - Left */
+	    case 'top-left': 
+
+
+/*  Top - Left  */
+
+
+
 		$compositeAlignX = 0;
 		$compositeAlignY = 0;
 		break;
 
-	    case 'top': /* Top */
+	    case 'top': 
+
+
+/*  Top  */
+
+
+
 		$compositeAlignX = 50;
 		$compositeAlignY = 0;
 		break;
 
-	    case 'top-right': /* Top - Right */
+	    case 'top-right': 
+
+
+/*  Top - Right  */
+
+
+
 		$compositeAlignX = 100;
 		$compositeAlignY = 0;
 		break;
 
-	    case 'left': /* Left */
+	    case 'left': 
+
+
+/*  Left  */
+
+
+
 		$compositeAlignX = 0;
 		$compositeAlignY = 50;
 		break;
 
-	    case 'center': /* Center */
+	    case 'center': 
+
+
+/*  Center  */
+
+
+
 		$compositeAlignX = 50;
 		$compositeAlignY = 50;
 		break;
 
-	    case 'right': /* Right */
+	    case 'right': 
+
+
+/*  Right  */
+
+
+
 		$compositeAlignX = 100;
 		$compositeAlignY = 50;
 		break;
 
-	    case 'bottom-left': /* Bottom - Left */
+	    case 'bottom-left': 
+
+
+/*  Bottom - Left  */
+
+
+
 		$compositeAlignX = 0;
 		$compositeAlignY = 100;
 		break;
 
-	    case 'bottom': /* Bottom */
+	    case 'bottom': 
+
+
+/*  Bottom  */
+
+
+
 		$compositeAlignX = 50;
 		$compositeAlignY = 100;
 		break;
 
-	    case 'bottom-right': /* Bottom Right */
+	    case 'bottom-right': 
+
+
+/*  Bottom Right  */
+
+
+
 		$compositeAlignX = 100;
 		$compositeAlignY = 100;
 		break;
 
-	    case 'manual': /* Manual placement */
-		/* Use the alignments we received */
+	    case 'manual': 
+
+
+/*  Manual placement  */
+
+
+
+		
+
+
+/*  Use the alignments we received  */
+
+
+
 		break;
 
 	    default:
@@ -278,11 +380,23 @@ class ImageMagickToolkit extends GalleryToolkit {
 			     null, null);
 	    }
 
-	    /* Convert from percentages to pixels */
+	    
+
+
+/*  Convert from percentages to pixels  */
+
+
+
 	    $compositeAlignX = (int)($compositeAlignX / 100 * ($width - $compositeWidth));
 	    $compositeAlignY = (int)($compositeAlignY / 100 * ($height - $compositeHeight));
 
-	    /* Clip to our bounding box */
+	    
+
+
+/*  Clip to our bounding box  */
+
+
+
 	    $compositeAlignX = min($compositeAlignX, $width - $compositeWidth);
 	    $compositeAlignX = max(0, $compositeAlignX);
 	    $compositeAlignY = min($compositeAlignY, $height - $compositeHeight);
@@ -296,11 +410,23 @@ class ImageMagickToolkit extends GalleryToolkit {
 	case 'compress':
 	    $targetSize = $parameters[0];
 	    $platform =& $gallery->getPlatform();
-	    $fileSize = $platform->filesize($sourceFilename) >> 10; /* Size in KB */
+	    $fileSize = $platform->filesize($sourceFilename) >> 10; 
+
+
+/*  Size in KB  */
+
+
+
 	    if ($fileSize <= $targetSize) {
 		break;
 	    }
-	    /* Use module quality parameter as initial guess */
+	    
+
+
+/*  Use module quality parameter as initial guess  */
+
+
+
 	    list ($ret, $quality) =
 		GalleryCoreApi::getPluginParameter('module', 'imagemagick', 'jpegQuality');
 	    if ($ret) {
@@ -351,7 +477,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	}
 
 	if ($outputMimeType == $mimeType && empty($transform)) {
-	    /* Just copy the source to the destination */
+	    
+
+
+/*  Just copy the source to the destination  */
+
+
+
 	    if ($sourceFilename != $destFilename) {
 		$platform =& $gallery->getPlatform();
 		if (!$platform->copy($sourceFilename, $destFilename)) {
@@ -426,7 +558,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	$platform->chdir($gallery->getConfig('data.gallery.tmp'));
 
 	if ($mimeType == 'application/photoshop') {
-	    /* Identify only shows the number of photoshop layers in verbose output */
+	    
+
+
+/*  Identify only shows the number of photoshop layers in verbose output  */
+
+
+
 	    list ($success, $output) =
 		$platform->exec(array(array_merge($cmd, array('-verbose', $filename))));
 	} else {
@@ -501,12 +639,24 @@ class ImageMagickToolkit extends GalleryToolkit {
 			     $outputMimeType, $jpegQuality=null) {
 	global $gallery;
 
-	/* Get a temp file name and figure out our convert-from-pnm command */
+	
+
+
+/*  Get a temp file name and figure out our convert-from-pnm command  */
+
+
+
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$platform =& $gallery->getPlatform();
 	$tmpFilename = $platform->tempnam($tmpDir, 'imgk_');
 	if (empty($tmpFilename)) {
-	    /* This can happen if the $tmpDir path is bad */
+	    
+
+
+/*  This can happen if the $tmpDir path is bad  */
+
+
+
 	    return GalleryCoreApi::error(ERROR_BAD_PATH);
 	}
 
@@ -547,7 +697,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 
 	switch ($mimeType) {
 	case 'image/gif':
-	    /* In case it's an animated gif.. */
+	    
+
+
+/*  In case it's an animated gif..  */
+
+
+
 	    if ($cmd == 'convert') {
 		/**
 		 * Bug 1703410
@@ -560,11 +716,29 @@ class ImageMagickToolkit extends GalleryToolkit {
 		}
 		if ($useNewCoalesceOptions) {
 		    $command[] = '%s';
-		    $command[] = '-coalesce'; /* Needs to be _after_ the filename */
-		    $command[] = '-layers'; /* Better than -deconstruct */
+		    $command[] = '-coalesce'; 
+
+
+/*  Needs to be _after_ the filename  */
+
+
+
+		    $command[] = '-layers'; 
+
+
+/*  Better than -deconstruct  */
+
+
+
 		    $command[] = 'optimize';
 		} else {
-		    $command[] = '-coalesce'; /* Needs to be _before_ the filename */
+		    $command[] = '-coalesce'; 
+
+
+/*  Needs to be _before_ the filename  */
+
+
+
 		    $command[] = '%s';
 		    $args[] = '-deconstruct';
 		}
@@ -572,7 +746,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 	    if ($outputMimeType == 'image/gif') {
 		break;
 	    }
-	    /* If the output format isn't gif, pick a frame assuming it's an animated GIF. */
+	    
+
+
+/*  If the output format isn't gif, pick a frame assuming it's an animated GIF.  */
+
+
+
 	case 'image/tiff':
 	case 'application/pdf':
 	case 'application/postscript':
@@ -646,7 +826,13 @@ class ImageMagickToolkit extends GalleryToolkit {
 					 "Failed renaming $tmpFilename -> $destFilename");
 	}
 
-	/* ImageMagick tends to write output files with 600 permission */
+	
+
+
+/*  ImageMagick tends to write output files with 600 permission  */
+
+
+
 	$platform->chmod($destFilename);
 
 	return null;

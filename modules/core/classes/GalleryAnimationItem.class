@@ -70,7 +70,13 @@ class GalleryAnimationItem extends GalleryDataItem {
      * @see GalleryDataItem::canBeViewedInline
      */
     function canBeViewedInline() {
-	/* The mimeTypes listed here should provide a render() output */
+	
+
+
+/*  The mimeTypes listed here should provide a render() output  */
+
+
+
 	static $mimeList = array(
 		'application/x-shockwave-flash',
 		'application/x-director',
@@ -94,7 +100,13 @@ class GalleryAnimationItem extends GalleryDataItem {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* Validate the input filename */
+	
+
+
+/*  Validate the input filename  */
+
+
+
 	if (empty($animationFileName)) {
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
@@ -103,23 +115,53 @@ class GalleryAnimationItem extends GalleryDataItem {
 		return GalleryCoreApi::error(ERROR_BAD_PATH);
 	}
 
-	/* Create our data item */
+	
+
+
+/*  Create our data item  */
+
+
+
 	$ret = parent::create($parentId, $animationFileName, $mimeType, $targetName, $symlink);
 	if ($ret) {
 		return $ret;
 	}
 
-	/* Default to empty dimensions */
+	
+
+
+/*  Default to empty dimensions  */
+
+
+
 	$this->setWidth(0);
 	$this->setHeight(0);
 
-	/* We're linkable */
+	
+
+
+/*  We're linkable  */
+
+
+
 	$this->setIsLinkable(true);
 
-	/* Detect our dimensions, if possible */
+	
+
+
+/*  Detect our dimensions, if possible  */
+
+
+
 	$ret = $this->rescan();
 	if ($ret) {
-		/* Cleanup our datafile on failure */
+		
+
+
+/*  Cleanup our datafile on failure  */
+
+
+
 		list ($ret2, $path) = $this->fetchPath();
 		if (!$ret2) {
 		@$platform->unlink($path);
@@ -248,14 +290,26 @@ class GalleryAnimationItem extends GalleryDataItem {
 							//]]>
 						</script>',
 						
-						/* IE Object */
+						
+
+
+/*  IE Object  */
+
+
+
 						!empty($params['class']) ? 'class="' . $params['class'] . '"' : '',
 						$width,
 						$height,
 						$src,
 						$fallback,
 						
-						/* Mozilla Object */
+						
+
+
+/*  Mozilla Object  */
+
+
+
 						!empty($params['class']) ? 'class="' . $params['class'] . '"' : '',
 						$this->getMimeType(),
 						$src,
@@ -309,14 +363,26 @@ class GalleryAnimationItem extends GalleryDataItem {
 									//]]>
 								</script>',
 
-								/* IE Object */
+								
+
+
+/*  IE Object  */
+
+
+
 								!empty($params['class']) ? 'class="' . $params['class'] . '"' : '',
 								$width,
 								$height,
 								$src,
 								$fallback,
 								
-								/* Mozilla Object */
+								
+
+
+/*  Mozilla Object  */
+
+
+
 								!empty($params['class']) ? 'class="' . $params['class'] . '"' : '',
 								$this->getMimeType(),
 								$src,

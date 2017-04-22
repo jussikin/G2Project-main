@@ -89,7 +89,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure they're there */
+	
+
+
+/*  Make sure they're there  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -111,7 +117,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure they're gone */
+	
+
+
+/*  Make sure they're gone  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -144,7 +156,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the new positions */
+	
+
+
+/*  Verify the new positions  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -179,7 +197,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the new positions */
+	
+
+
+/*  Verify the new positions  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -203,7 +227,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
     }
 
     function testResetSummary() {
-	/* Remove all properties */
+	
+
+
+/*  Remove all properties  */
+
+
+
 	$ret = Getid3Helper::setProperties(GETID3_SUMMARY, array());
 	if ($ret) {
 	    return $ret;
@@ -217,7 +247,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure they're all back again */
+	
+
+
+/*  Make sure they're all back again  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -241,7 +277,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure they're there */
+	
+
+
+/*  Make sure they're there  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -263,7 +305,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure they're gone */
+	
+
+
+/*  Make sure they're gone  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -297,7 +345,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the new positions */
+	
+
+
+/*  Verify the new positions  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -332,7 +386,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the new positions */
+	
+
+
+/*  Verify the new positions  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -355,7 +415,13 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
     }
 
     function testResetDetailed() {
-	/* Remove all properties */
+	
+
+
+/*  Remove all properties  */
+
+
+
 	$ret = Getid3Helper::setProperties(GETID3_DETAILED, array());
 	if ($ret) {
 	    return $ret;
@@ -369,13 +435,25 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure they're all back again */
+	
+
+
+/*  Make sure they're all back again  */
+
+
+
 	list ($ret, $properties) = Getid3Helper::getProperties(GETID3_DETAILED);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Spot check */
+	
+
+
+/*  Spot check  */
+
+
+
 	$this->assertEquals(15, sizeof($properties));
 	$this->assertEquals('Artist', $properties[0]);
 	$this->assertEquals('Title', $properties[3]);

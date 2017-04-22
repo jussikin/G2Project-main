@@ -43,14 +43,26 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 	   return $ret;
 	}
 
-	/* Create a container album for any data items we create */
+	
+
+
+/*  Create a container album for any data items we create  */
+
+
+
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($this->_album);
 
-	/* Create a dummy user */
+	
+
+
+/*  Create a dummy user  */
+
+
+
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -59,7 +71,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 
 	$gallery->setActiveUser($this->_user);
 
-	/* Create dummy groups */
+	
+
+
+/*  Create dummy groups  */
+
+
+
 	list ($ret, $this->_group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;
@@ -81,7 +99,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 	    return $ret;
 	}
 
-	/* Save/clear quotas for All Users,Everybody groups so they won't interfere with tests */
+	
+
+
+/*  Save/clear quotas for All Users,Everybody groups so they won't interfere with tests  */
+
+
+
 	$this->_saveQuota = array();
 	foreach (array('allUserGroup', 'everybodyGroup') as $groupName) {
 	    list ($ret, $groupId) =
@@ -140,7 +164,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 	   return $ret;
 	}
 
-	/* Verify test quotas were deleted with users/groups */
+	
+
+
+/*  Verify test quotas were deleted with users/groups  */
+
+
+
 	list ($ret, $hasQuota) = GalleryQuotasHelper::fetchUserQuota($this->_user->getId());
 	if ($ret) {
 	    return $ret;
@@ -211,7 +241,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 
 	$gallery->performShutdownActions();
 
-	/* Verify item was deleted */
+	
+
+
+/*  Verify item was deleted  */
+
+
+
 	list ($ret, $tmp) = GalleryCoreApi::loadEntitiesById($item->getId(), 'GalleryDataItem');
 	$this->assert($ret && ($ret->getErrorCode() & ERROR_MISSING_OBJECT),
 		      'item should have been deleted');
@@ -248,7 +284,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 
 	$gallery->performShutdownActions();
 
-	/* Verify first item ok and second item was deleted */
+	
+
+
+/*  Verify first item ok and second item was deleted  */
+
+
+
 	list ($ret, $tmp) = GalleryCoreApi::loadEntitiesById($item->getId(), 'GalleryDataItem');
 	if ($ret) {
 	    return ($ret);
@@ -315,7 +357,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
     }
 
     function testGroupQuotas() {
-	/* Should use higher of assigned group quotas */
+	
+
+
+/*  Should use higher of assigned group quotas  */
+
+
+
 	$ret = GalleryCoreApi::addMapEntry(
 	    'QuotasMap',
 	    array('userOrGroupId' => $this->_group->getId(), 'quotaSize' => '5'));
@@ -345,7 +393,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
     function testUserAndGroupQuota() {
 	global $gallery;
 
-	/* Should always use user quota and ignore group quota(s) */
+	
+
+
+/*  Should always use user quota and ignore group quota(s)  */
+
+
+
 	$ret = GalleryCoreApi::addMapEntry(
 	    'QuotasMap',
 	    array('userOrGroupId' => $this->_user->getId(), 'quotaSize' => '6'));
@@ -377,7 +431,13 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase {
 
 	$gallery->performShutdownActions();
 
-	/* Verify item was deleted */
+	
+
+
+/*  Verify item was deleted  */
+
+
+
 	list ($ret, $tmp) = GalleryCoreApi::loadEntitiesById($item->getId(), 'GalleryDataItem');
 	$this->assert($ret && ($ret->getErrorCode() & ERROR_MISSING_OBJECT),
 		      'item should have been deleted');

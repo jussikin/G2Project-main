@@ -73,7 +73,13 @@ class NotificationEventHandlingTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Test Handler definition */
+	
+
+
+/*  Test Handler definition  */
+
+
+
 	$ret = $this->_registerFactoryImplementationForTest(
 	    'NotificationHandler_1_0', 'NotificationRouterTestHandler1', 'Test::EventHandler1',
 	    'modules/notification/test/phpunit/NotificationRouterTest.class',
@@ -393,7 +399,13 @@ class NotificationEventHandlingTest extends GalleryTestCase {
 
 	$ret = $handler->handleNotification($this->_userIds, $notification);
 
-	$gallery->setPlatform($savePlatform); /* reset the platform before doing anything else */
+	$gallery->setPlatform($savePlatform); 
+
+
+/*  reset the platform before doing anything else  */
+
+
+
 	if ($ret) {
 	    return $ret;
 	}
@@ -452,10 +464,22 @@ class NotificationEventHandlingTest extends GalleryTestCase {
 			  'itemId' => $itemId, 'notificationName' => 'Test::Event1',
 			  'handlerName' => 'Test:EventHandler'), null),
 	      null);
-	/* The album might use some presort */
+	
+
+
+/*  The album might use some presort  */
+
+
+
 	$storage->setReply('getFunctionSql', '*', array(null, ''), true);
 	$storage->setReply('getFunctionSql', '*', array(null, ''), true);
-	/* The fetchChildItemIds() query */
+	
+
+
+/*  The fetchChildItemIds() query  */
+
+
+
 	$storage->setReply('search', '*', array(null, new UnitTestStorageSearchResults(array())));
 	$storage->setReply('checkPoint', array(), null);
 
@@ -561,7 +585,13 @@ class NotificationEventHandlingPlatform {
     }
 
     function mail($to, $subject, $body, $headers=null) {
-	/* Don't actually send email */
+	
+
+
+/*  Don't actually send email  */
+
+
+
 	$this->_test->_emailSubject[] .= $subject;
 	$this->_test->_emailBody[] = trim($body);
 	$this->_test->_emailTo[] = $to;

@@ -55,7 +55,13 @@ class GallerySmarty extends Smarty {
 		   $_smarty_display = false) {
 	$this->_firstGalleryStatus = null;
 
-	/* This could change the value of _firstError: */
+	
+
+
+/*  This could change the value of _firstError:  */
+
+
+
 	$result = parent::fetch($_smarty_tpl_file,
 				$_smarty_cache_id,
 				$_smarty_compile_id,
@@ -71,7 +77,13 @@ class GallerySmarty extends Smarty {
      * @see Smarty::trigger_error
      */
     function trigger_error($error_msg, $error_type = E_USER_WARNING) {
-	/* Store this error for later usage */
+	
+
+
+/*  Store this error for later usage  */
+
+
+
 	if (!$this->_firstGalleryStatus) {
 	    $this->_firstGalleryStatus =
 		GalleryCoreApi::error(ERROR_BAD_PARAMETER, null, null,

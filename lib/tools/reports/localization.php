@@ -214,7 +214,13 @@ function parsePoFiles($poFiles)
                 }
             }
         }
-    /* Catch msgstr "" in last line */
+    
+
+
+/*  Catch msgstr "" in last line  */
+
+
+
         if (!empty($msgId) && $lastLineWasEmptyMsgStr) {
             $untranslated++;
         }
@@ -244,19 +250,37 @@ function parsePoFiles($poFiles)
             $summary[$locale][$key] += $poData[$locale]['plugins'][$plugin][$key];
         }
 
-    /* Keep track of the largest message count we've seen per plugin */
+    
+
+
+/*  Keep track of the largest message count we've seen per plugin  */
+
+
+
         if (empty($maxMessageCount[$plugin]) || $total > $maxMessageCount[$plugin]) {
             $maxMessageCount[$plugin] = $total;
         }
     }
 
-    /* Overall total message count */
+    
+
+
+/*  Overall total message count  */
+
+
+
     $overallTotal = array_sum(array_values($maxMessageCount));
 
     foreach (array_keys($poData) as $locale) {
         $pluginTotal = 0;
 
-    /* Fill in any missing locales */
+    
+
+
+/*  Fill in any missing locales  */
+
+
+
         foreach (array_keys($seenPlugins) as $plugin) {
             if (!isset($poData[$locale]['plugins'][$plugin])) {
                 $poData[$locale]['plugins'][$plugin]['missing'] = 1;
@@ -271,7 +295,13 @@ function parsePoFiles($poFiles)
         }
         uasort($poData[$locale]['plugins'], 'sortByPercentDone');
 
-    /* Figure out total percentage */
+    
+
+
+/*  Figure out total percentage  */
+
+
+
         if (empty($overallTotal)) {
             $poData[$locale]['percentDone'] = $poData[$locale]['exactPercentDone'] = 0;
         } else {
@@ -287,7 +317,13 @@ function parsePoFiles($poFiles)
         $poData[$locale]['summary']['total'] = $overallTotal;
     }
 
-    /* Sort locales by overall total */
+    
+
+
+/*  Sort locales by overall total  */
+
+
+
     uasort($poData, 'sortByPercentDone');
 
     return array($poData, $mostRecentPoDate, $totalTranslated);

@@ -47,16 +47,34 @@ class AdminCoreController extends GalleryController {
 	$canSave = !empty($form['action']) &&
 	    array_intersect(array_keys($form['action']), array('save', 'emailTest'));
 	if ($canSave) {
-	    /* Validate inputs */
+	    
+
+
+/*  Validate inputs  */
+
+
+
 	    if (!empty($form['smtp']['from']) &&
 		    !GalleryUtilities::isValidEmailString($form['smtp']['from'])) {
 		$error[] = 'form[error][smtp][invalidFrom]';
 	    }
 
-	    /* Verify cookie domain / path */
+	    
+
+
+/*  Verify cookie domain / path  */
+
+
+
 	    $urlGenerator =& $gallery->getUrlGenerator();
 	    if (isset($form['cookie']['path'])) {
-		/* It should either be empty or a substring of the request-URI */
+		
+
+
+/*  It should either be empty or a substring of the request-URI  */
+
+
+
 		if (!empty($form['cookie']['path'])) {
 		    $paths['cookie'] = $form['cookie']['path'];
 		    $urlComponents = parse_url($urlGenerator->getCurrentUrlDir(true));
@@ -83,7 +101,13 @@ class AdminCoreController extends GalleryController {
 		}
 	    }
 	    if (isset($form['cookie']['domain'])) {
-		/* It should either be empty or a substring of the request-host */
+		
+
+
+/*  It should either be empty or a substring of the request-host  */
+
+
+
 		if (!empty($form['cookie']['domain'])) {
 		    $cookieDomain = $form['cookie']['domain'];
 		    if ($cookieDomain{0} != '.') {
@@ -182,7 +206,13 @@ class AdminCoreController extends GalleryController {
 	    }
 	} else if (isset($form['action']['reset'])) {
 
-	    /* Redirect back to the same view to reset the form */
+	    
+
+
+/*  Redirect back to the same view to reset the form  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminCore';
 	}
@@ -218,7 +248,13 @@ class AdminCoreView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminCore') {
-	    /* Load up our form data */
+	    
+
+
+/*  Load up our form data  */
+
+
+
 	    foreach (array('permissions.directory',
 			   'permissions.file',
 			   'exec.beNice',
@@ -263,7 +299,13 @@ class AdminCoreView extends GalleryView {
 	$translator =& $gallery->getTranslator();
 	$AdminCore = $can = array();
 
-	/* Set up our session time lists */
+	
+
+
+/*  Set up our session time lists  */
+
+
+
 	$sessionTimeList = array();
 	foreach (array(15, 30, 45) as $minutes) {
 	    $sessionTimeList[$minutes * 60] =
@@ -298,7 +340,13 @@ class AdminCoreView extends GalleryView {
 	if (GalleryUtilities::isA($platform, 'UnixPlatform')) {
 	    $can['setPermissions'] = true;
 
-	    /* Set up our permission selection lists */
+	    
+
+
+/*  Set up our permission selection lists  */
+
+
+
 	    $AdminCore['permissionsDirectoryList'] =
 		array('700', '750', '755', '770', '775', '777');
 	    $AdminCore['permissionsFileList'] = array('600', '640', '644', '660', '664', '666');
@@ -309,7 +357,13 @@ class AdminCoreView extends GalleryView {
 		'1' => $module->translate('Low Priority (I want to share!)'));
 	}
 
-	/* Miscellaneous lists */
+	
+
+
+/*  Miscellaneous lists  */
+
+
+
 	$embeddedMarkupList = array('none' => $module->translate('No Markup'),
 				    'bbcode' => $module->translate('BBCode'),
 				    'html' => $module->translate('Raw HTML'));

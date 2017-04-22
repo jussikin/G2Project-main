@@ -27,12 +27,24 @@ class RedirectToInstallerStep extends UpgradeStep {
     function loadTemplateData(&$templateData) {
 	global $gallery, $stepNumber;;
 
-	/* Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl */
+	
+
+
+/*  Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl  */
+
+
+
 	$baseUrl = @$gallery->getConfig('galleryBaseUrl');
 	if (empty($baseUrl)) {
 	    $url = '../install/index.php';
 	} else {
-	    /* Multisite dir has no installer, point to the codebase */
+	    
+
+
+/*  Multisite dir has no installer, point to the codebase  */
+
+
+
 	    $url = $baseUrl . 'install/index.php';
 	}
 
@@ -41,7 +53,13 @@ class RedirectToInstallerStep extends UpgradeStep {
 	 * but accidentally lost config.php.
 	 */
 	$this->setComplete(false);
-	/* Fix progress bar / hack */
+	
+
+
+/*  Fix progress bar / hack  */
+
+
+
 	$stepNumber = 1;
 
 	$templateData['installerUrl'] = $url;

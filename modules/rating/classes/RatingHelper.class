@@ -63,7 +63,13 @@ class RatingHelper {
 	    }
 	}
 
-	/* Set defaults if a requested ID isn't found */
+	
+
+
+/*  Set defaults if a requested ID isn't found  */
+
+
+
 	foreach ($itemIds as $itemId) {
 	    if (!isset($data[$itemId])) {
 		$data[$itemId] = array('itemId' => $itemId, 'rating' => 0, 'votes' => 0,
@@ -71,7 +77,13 @@ class RatingHelper {
 	    }
 	}
 
-	/* Check for existing votes from this user! */
+	
+
+
+/*  Check for existing votes from this user!  */
+
+
+
 	$session =& $gallery->getSession();
 	/*
 	 * If the user doesn't have a persistent session yet, it's a guest user without a session
@@ -81,7 +93,13 @@ class RatingHelper {
 	if ($session->isPersistent()) {
 	    $searchParams = array('itemId' => $itemIds, 'userId' => (int)$userId);
 
-	    /* Handle extra checks for anonymous users */
+	    
+
+
+/*  Handle extra checks for anonymous users  */
+
+
+
 	    list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($userId);
 	    if ($ret) {
 		return array($ret, null);
@@ -126,19 +144,37 @@ class RatingHelper {
     static function rateItem($itemId, $rating, $userId) {
 	global $gallery;
 
-	/* Make sure the user isn't a search engine crawler */
+	
+
+
+/*  Make sure the user isn't a search engine crawler  */
+
+
+
 	$botId = GalleryUtilities::identifySearchEngine();
 	if (isset($botId)) {
 	    return array(null, null);
 	}
 
-	/* Make sure the item really exists */
+	
+
+
+/*  Make sure the item really exists  */
+
+
+
 	list ($ret, $entity) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Use this to get new IDs and check affected rows for updates */
+	
+
+
+/*  Use this to get new IDs and check affected rows for updates  */
+
+
+
 	$storage = $gallery->getStorage();
 
 	$session =& $gallery->getSession();
@@ -157,13 +193,25 @@ class RatingHelper {
 	$sessionId = $session->getId();
 	$remoteId = $session->getRemoteIdentifier();
 
-	/* Handle extra checks for anonymous users */
+	
+
+
+/*  Handle extra checks for anonymous users  */
+
+
+
 	list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($userId);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Update existing user vote for this item */
+	
+
+
+/*  Update existing user vote for this item  */
+
+
+
 	$matchParams = array(	'itemId' => (int)$itemId,
 				'userId' => (int)$userId);
 	if ($isAnonymous) {
@@ -176,7 +224,13 @@ class RatingHelper {
 	    return array($ret, null);
 	}
 
-	/* Insert record */
+	
+
+
+/*  Insert record  */
+
+
+
 	list ($ret, $ratingId) = $storage->getUniqueId();
 	if ($ret) {
 	    return array($ret, null);
@@ -193,7 +247,13 @@ class RatingHelper {
 	    return array($ret, null);
 	}
 
-	/* Compute average and update cache table */
+	
+
+
+/*  Compute average and update cache table  */
+
+
+
 	list ($ret, $avg) = $storage->getFunctionSql('AVG', array('[RatingMap::rating]'));
 	if ($ret) {
 	    return array($ret, null);
@@ -214,7 +274,13 @@ class RatingHelper {
 
 	$data = array();
 	if ($searchResults->resultCount() > 0) {
-	    /* Update cache */
+	    
+
+
+/*  Update cache  */
+
+
+
 	    $result = $searchResults->nextResult();
 	    $averageRating = round($result[0], 3)*1000;
 	    $voteCount = $result[1];

@@ -55,21 +55,45 @@ function smarty_modifier_entitytruncate($string, $length, $etc = '...', $breakWo
 
     $etcLength = strlen($etc);
     if ($etcLength < $length) {
-    /* Make room for the $etc string */
+    
+
+
+/*  Make room for the $etc string  */
+
+
+
         list ($tmp, $piece) = GalleryUtilities::entitySubstr($piece, 0, $length - $etcLength);
 
         $pieceLength = strlen($piece);
         if (!$breakWords && $string{$pieceLength-1} != ' ' && $string{$pieceLength} != ' ') {
-            /* We split a word, and we're not allowed to.  Try to back up to the last space */
+            
+
+
+/*  We split a word, and we're not allowed to.  Try to back up to the last space  */
+
+
+
             $splitIndex = strrpos($piece, ' ');
             if ($splitIndex > 0) {
-            /* Found a space, truncate there. */
+            
+
+
+/*  Found a space, truncate there.  */
+
+
+
                 $piece = substr($piece, 0, $splitIndex);
             }
         }
         $piece .= $etc;
     }
 
-    /* Unicode entities back to UTF-8; may convert entities in original string, but that's ok */
+    
+
+
+/*  Unicode entities back to UTF-8; may convert entities in original string, but that's ok  */
+
+
+
     return GalleryUtilities::unicodeEntitiesToUtf8($piece);
 }

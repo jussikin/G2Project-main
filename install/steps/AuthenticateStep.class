@@ -50,7 +50,13 @@ class AuthenticateStep extends InstallStep {
 	$authenticationDir = dirname(dirname(dirname(__FILE__)));
 
 	if (!$this->isComplete()) {
-	    /* Authenticate */
+	    
+
+
+/*  Authenticate  */
+
+
+
 	    $authenticated = false;
 	    $authFile = dirname(__FILE__) . '/../../login.txt';
 	    if (!file_exists($authFile)) {
@@ -68,7 +74,13 @@ class AuthenticateStep extends InstallStep {
 
 		$fileAuth = trim(join('', file($authFile)));
 		if ($fileAuth == $this->_uniqueKey) {
-		    /* Authenticate, but don'treset the login attempts because we have no db */
+		    
+
+
+/*  Authenticate, but don'treset the login attempts because we have no db  */
+
+
+
 		    GallerySetupUtilities::authenticateThisSession(false);
 		    $this->setComplete(true);
 		} else {

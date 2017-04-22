@@ -39,7 +39,13 @@ class ItemAddAlbumController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	/* Make sure we have permission do edit this item */
+	
+
+
+/*  Make sure we have permission do edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
@@ -52,7 +58,13 @@ class ItemAddAlbumController extends GalleryController {
 
 	$status = $error = array();
 	if (isset($form['action']['create'])) {
-	    /* Validate the input data */
+	    
+
+
+/*  Validate the input data  */
+
+
+
 	    $platform =& $gallery->getPlatform();
 
 	    if (empty($form['pathComponent'])) {
@@ -68,7 +80,13 @@ class ItemAddAlbumController extends GalleryController {
 		    return array($ret, null);
 		}
 		if ($markup == 'html') {
-		    /* Strip malicious content if html markup allowed */
+		    
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 		    $form['title'] = GalleryUtilities::htmlSafe($form['title'], true);
 		    $form['summary'] = GalleryUtilities::htmlSafe($form['summary'], true);
 		    $form['description'] = GalleryUtilities::htmlSafe($form['description'], true);
@@ -88,7 +106,13 @@ class ItemAddAlbumController extends GalleryController {
 		    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
-		/* Figure out where to redirect upon success */
+		
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 		$redirect['itemId'] = $instance->getId();
 		$ret = GalleryCoreApi::assertHasItemPermission($instance->getId(), 'core.edit');
 		if (empty($ret)) {
@@ -97,7 +121,13 @@ class ItemAddAlbumController extends GalleryController {
 		    $redirect['editPlugin'] = 'ItemEditAlbum';
 		}
 
-		/* Prepare our status message */
+		
+
+
+/*  Prepare our status message  */
+
+
+
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 		    GalleryCoreApi::releaseLocks($lockIds);
@@ -144,7 +174,13 @@ class ItemAddAlbumView extends GalleryView {
 	}
 	$itemId = $item->getId();
 
-	/* Make sure we have permission do edit this item */
+	
+
+
+/*  Make sure we have permission do edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
@@ -152,10 +188,22 @@ class ItemAddAlbumView extends GalleryView {
 
 	if ($form['formName'] == 'ItemAddAlbum') {
 
-	    /* Complain if we have any invalid data */
+	    
+
+
+/*  Complain if we have any invalid data  */
+
+
+
 
 	} else {
-	    /* First time around, load the form with item data */
+	    
+
+
+/*  First time around, load the form with item data  */
+
+
+
 	    $form['pathComponent'] = '';
 	    $form['title'] = '';
 	    $form['summary'] = '';

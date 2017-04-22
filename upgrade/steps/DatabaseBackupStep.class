@@ -56,7 +56,13 @@ class DatabaseBackupStep extends UpgradeStep {
 
 	$this->_template = new StatusTemplate();
 
-	/* If Gallery is not in maintenance mode, set it there now */
+	
+
+
+/*  If Gallery is not in maintenance mode, set it there now  */
+
+
+
 	$mode = $gallery->getConfig('mode.maintenance');
 	if (!$mode) {
 	    $ret = GalleryCoreApi::setMaintenanceMode(true);
@@ -70,7 +76,13 @@ class DatabaseBackupStep extends UpgradeStep {
 
 	$templateData['stackTrace'] = '';
 
-	/* Set up the progress bar. */
+	
+
+
+/*  Set up the progress bar.  */
+
+
+
 	$this->_template->renderHeader(true);
 	$this->_progressTitle = _('Backing up the Gallery database');
 	$this->_template->renderStatusMessage($this->_progressTitle, '', 0);
@@ -100,7 +112,13 @@ class DatabaseBackupStep extends UpgradeStep {
 	    $templateData['bodyFile'] = 'DatabaseBackupRequest.html';
 	}
 
-	/* If maintenance mode was not set by the this step, then don't unset it. */
+	
+
+
+/*  If maintenance mode was not set by the this step, then don't unset it.  */
+
+
+
 	if (!$mode) {
 	    $ret = GalleryCoreApi::setMaintenanceMode(false);
 	    if ($ret) {
@@ -127,7 +145,13 @@ class DatabaseBackupStep extends UpgradeStep {
 	$templateData['bodyFile'] = 'DatabaseBackupRequest.html';
 	$templateData['storeConfig'] = $gallery->getConfig('storage.config');
 
-	/* Load all table versions */
+	
+
+
+/*  Load all table versions  */
+
+
+
 	$storage =& $gallery->getStorage();
 	list ($ret, $tableVersions) = $storage->getTableVersions();
 	if ($ret) {
@@ -139,7 +163,13 @@ class DatabaseBackupStep extends UpgradeStep {
 	    $canDoBackup = version_compare("$major.$minor", '1.2', '>=');
 
 	    if ($canDoBackup) {
-		/* Verify that the type / info fields are populated */
+		
+
+
+/*  Verify that the type / info fields are populated  */
+
+
+
 		$query = 'SELECT [::name] FROM [GallerySchema]
 			   WHERE [::type] in (\'map\',  \'entity\')';
 		list ($ret, $results) =

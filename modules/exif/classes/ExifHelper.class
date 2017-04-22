@@ -85,7 +85,13 @@ class ExifHelper {
     static function setDefaultProperties($viewMode) {
 	switch ($viewMode) {
 	case EXIF_SUMMARY:
-	    /* This is an initial install; make sure that we have some reasonable defaults */
+	    
+
+
+/*  This is an initial install; make sure that we have some reasonable defaults  */
+
+
+
 	    $properties[] = 'Make';
 	    $properties[] = 'Model';
 	    $properties[] = 'ApertureValue';
@@ -231,7 +237,13 @@ class ExifHelper {
 	GalleryCoreApi::requireOnce('modules/exif/lib/JPEG/JPEG.inc');
 	$result = new JPEG($path);
 	if ($gallery->getDebug()) {
-	    /* Capture old-school print_r() to support older PHP */
+	    
+
+
+/*  Capture old-school print_r() to support older PHP  */
+
+
+
 	    ob_start();
 	    print_r($result->getRawInfo());
 	    $buf = ob_get_contents();
@@ -302,7 +314,13 @@ class ExifHelper {
 
 	switch ($property) {
 	case 'ApertureValue':
-	    /* Convert "f 2.8" to "f/2.8" */
+	    
+
+
+/*  Convert "f 2.8" to "f/2.8"  */
+
+
+
 	    $results = sscanf($value, 'f %s');
 	    if (count($results) == 1) {
 		$value = 'f/' . $results[0];
@@ -312,7 +330,13 @@ class ExifHelper {
 	case 'DateTime':
 	    $value = ExifHelper::_parseDate($value);
 	    if (isset($value)) {
-		/* Convert to localized string */
+		
+
+
+/*  Convert to localized string  */
+
+
+
 		list ($ret, $format) =
 		    GalleryCoreApi::getPluginParameter('module', 'core', 'format.datetime');
 		if ($ret || empty($format)) {
@@ -381,15 +405,33 @@ class ExifHelper {
      * @access private
      */
     function _parseDate($value) {
-	/* Ignore "blank" value */
+	
+
+
+/*  Ignore "blank" value  */
+
+
+
 	if ($value == '0000:00:00 00:00:00') {
 	    return null;
 	}
-	/* Standard EXIF format */
+	
+
+
+/*  Standard EXIF format  */
+
+
+
 	if (preg_match('#(\d+):(\d+):(\d+)\s+(\d+):(\d+):(\d+)#', $value, $m)) {
 	    $time = mktime((int)$m[4], (int)$m[5], (int)$m[6], (int)$m[2], (int)$m[3], (int)$m[1]);
 	}
-	/* This ISO 8601 pattern seems to be used by newer Adobe products */
+	
+
+
+/*  This ISO 8601 pattern seems to be used by newer Adobe products  */
+
+
+
 	else if (preg_match('#(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)(([-+])(\d+)(:(\d+))?)?#',
 		    $value, $m)) {
 	    $time = mktime((int)$m[4], (int)$m[5], (int)$m[6], (int)$m[2], (int)$m[3], (int)$m[1]);
@@ -503,7 +545,13 @@ class ExifHelper {
      */
     static function setProperties($viewMode, $properties) {
 
-	/* Remove all old map entries */
+	
+
+
+/*  Remove all old map entries  */
+
+
+
 	$ret = GalleryCoreApi::removeMapEntry(
 	    'ExifPropertiesMap', array('viewMode' => $viewMode));
 	if ($ret) {
@@ -552,7 +600,13 @@ class ExifHelper {
 	    return $data;
 	}
 
-	/* Must haves */
+	
+
+
+/*  Must haves  */
+
+
+
 	$data['ApertureValue'] =
 	    array($gallery->i18n('Aperture Value'), 'SubIFD.ApertureValue', 'SubIFD.FNumber');
 	$data['ShutterSpeedValue'] =
@@ -566,7 +620,13 @@ class ExifHelper {
 	    array($gallery->i18n('Focal Length'), 'SubIFD.FocalLength');
 	$data['Flash'] =
 	    array($gallery->i18n('Flash'), 'SubIFD.Flash', 'SubIFD.MakerNote.Settings 1.Flash');
-	/* Not sure */
+	
+
+
+/*  Not sure  */
+
+
+
 	$data['ACDComment'] =
 	    array($gallery->i18n('ACD Comment'), 'IFD0.ACDComment');
 	$data['AEWarning'] =
@@ -622,7 +682,13 @@ class ExifHelper {
 	    array($gallery->i18n('Custom Functions'), 'SubIFD.MakerNote.CustomFunctions');
 	$data['CustomerRender'] =
 	    array($gallery->i18n('Customer Render'), 'SubIFD.CustomerRender');
-	/* See comment inside getOriginationTimestamp() for changed order of physical props. */
+	
+
+
+/*  See comment inside getOriginationTimestamp() for changed order of physical props.  */
+
+
+
 	$data['DateTime'] =
 	    array($gallery->i18n('Date/Time'), 'SubIFD.DateTimeOriginal',
 		  'SubIFD.DateTimeDigitized', 'IFD0.DateTime');
@@ -884,7 +950,13 @@ class ExifHelper {
 	$data['ExifImageWidth'] =
 	    array($gallery->i18n('Exif Image Width'), 'SubIFD.ExifImageWidth');
 
-	/* EXIF GPS fields, see exifer/makers/gps.inc */
+	
+
+
+/*  EXIF GPS fields, see exifer/makers/gps.inc  */
+
+
+
 	$data['GPS/Version'] =
 	    array($gallery->i18n('GPS: Version'), 'GPS.Version');
 	$data['GPS/LatitudeReference'] =
@@ -948,7 +1020,13 @@ class ExifHelper {
 	$data['GPS/DifferentialCorrection'] =
 	    array($gallery->i18n('GPS: Differential Correction'), 'GPS.DifferentialCorrection');
 
-	/* IPTC fields, see http://www.iptc.org/IIM/, if you have time to waste. */
+	
+
+
+/*  IPTC fields, see http://www.iptc.org/IIM/, if you have time to waste.  */
+
+
+
 	$data['IPTC/SupplementalCategories'] =
 	    array($gallery->i18n('IPTC: Supplemental Categories'), 'IPTC.SupplementalCategories');
 	$data['IPTC/Keywords'] =

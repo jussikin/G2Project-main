@@ -118,7 +118,13 @@ class WebCamSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testWebCamSiteAdminControllerLocale() {
-	/* Verify the form can accept input in locales that use comma for the fraction separator */
+	
+
+
+/*  Verify the form can accept input in locales that use comma for the fraction separator  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[duration]', '123,4');
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'off');
 	GalleryUtilities::putRequestVariable('form[action][save]', '1');

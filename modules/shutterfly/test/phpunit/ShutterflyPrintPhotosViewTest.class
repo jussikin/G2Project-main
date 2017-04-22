@@ -78,7 +78,13 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase {
 	GalleryUtilities::putRequestVariable('itemId', $itemId);
 	GalleryUtilities::putRequestVariable('returnUrl', 'RETURN_URL');
 
-	/* We only have permission to print and view the thumbnail */
+	
+
+
+/*  We only have permission to print and view the thumbnail  */
+
+
+
 	$ret = GalleryCoreApi::removeItemPermissions($itemId);
 	if ($ret) {
 	    return $ret;
@@ -104,7 +110,13 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Grab session we provide for the raw image */
+	
+
+
+/*  Grab session we provide for the raw image  */
+
+
+
 	$session =& $gallery->getSession();
 	$sessionVar = GalleryUtilities::prefixFormVariable($session->getKey());
 	preg_match_all("/imraw-1.*?$sessionVar=([0-9a-f]*)/", $results, $matches);
@@ -122,7 +134,13 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase {
     }
 
     function testShutterflySessionPermissionsForSessionBasedPermissions() {
-	/* See bug 1706657 */
+	
+
+
+/*  See bug 1706657  */
+
+
+
 	global $gallery;
 	$session =& $gallery->getSession();
 
@@ -136,7 +154,13 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Give the active user view permissions through session-basd permissions */
+	
+
+
+/*  Give the active user view permissions through session-basd permissions  */
+
+
+
 	$sessionPermissionEntityId = $itemId;
 	$session->put(GALLERY_PERMISSION_SESSION_KEY, array($sessionPermissionEntityId));
 
@@ -165,7 +189,13 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Grab session we provide for the raw image */
+	
+
+
+/*  Grab session we provide for the raw image  */
+
+
+
 	$session =& $gallery->getSession();
 	$sessionVar = GalleryUtilities::prefixFormVariable($session->getKey());
 	$matched = preg_match_all("/imraw-1.*?$sessionVar=([0-9a-f]*)/", $results, $matches);

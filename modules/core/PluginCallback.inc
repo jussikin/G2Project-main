@@ -59,7 +59,13 @@ class PluginCallbackView extends GalleryView {
 	list ($ret, $beforeStates) = $this->getPluginStates();
 	if ($ret) {
 	    $result['status'] = 'error';
-	    $storage->rollbackTransaction();  /* ignore errors here */
+	    $storage->rollbackTransaction();  
+
+
+/*  ignore errors here  */
+
+
+
 	    $ret->putInSession();
 	}
 
@@ -67,10 +73,22 @@ class PluginCallbackView extends GalleryView {
 	    $ret = $this->handleCallback($command, $result);
 	    if ($ret) {
 		$result['status'] = 'error';
-		$storage->rollbackTransaction();  /* ignore errors here */
+		$storage->rollbackTransaction();  
+
+
+/*  ignore errors here  */
+
+
+
 		$ret->putInSession();
 	    } else {
-		/* Make sure this change is isolated from any potential failures we get below. */
+		
+
+
+/*  Make sure this change is isolated from any potential failures we get below.  */
+
+
+
 		$ret = $storage->checkPoint();
 		if ($ret) {
 		    $result['status'] = 'error';
@@ -90,7 +108,13 @@ class PluginCallbackView extends GalleryView {
 	    list ($ret, $afterStates) = $this->getPluginStates();
 	    if ($ret) {
 		$result['status'] = 'error';
-		$storage->rollbackTransaction();  /* ignore errors here */
+		$storage->rollbackTransaction();  
+
+
+/*  ignore errors here  */
+
+
+
 		$ret->putInSession();
 	    } else {
 		$result = array_merge(
@@ -167,12 +191,24 @@ class PluginCallbackView extends GalleryView {
 		    return $ret;
 		}
 	    } else {
-		/* Themes don't need configuration */
+		
+
+
+/*  Themes don't need configuration  */
+
+
+
 		$needsConfiguration = false;
 	    }
 
 	    if ($isActive || $needsConfiguration) {
-		/* UI shouldn't let us come here anyway */
+		
+
+
+/*  UI shouldn't let us come here anyway  */
+
+
+
 		$result['status'] = 'invalid';
 		return null;
 	    }
@@ -192,7 +228,13 @@ class PluginCallbackView extends GalleryView {
 
 	case 'deactivate':
 	    if (!$isActive) {
-		/* UI shouldn't let us come here anyway */
+		
+
+
+/*  UI shouldn't let us come here anyway  */
+
+
+
 		$result['status'] = 'invalid';
 		return null;
 	    }
@@ -205,7 +247,13 @@ class PluginCallbackView extends GalleryView {
 		}
 
 		if ($plugin->getId() == $defaultThemeId) {
-		    /* UI shouldn't let us come here anyway */
+		    
+
+
+/*  UI shouldn't let us come here anyway  */
+
+
+
 		    $result['status'] = 'invalid';
 		}
 	    }
@@ -232,7 +280,13 @@ class PluginCallbackView extends GalleryView {
 		    return $ret;
 		}
 	    } else {
-		/* Themes don't need this step */
+		
+
+
+/*  Themes don't need this step  */
+
+
+
 		$autoConfigured = true;
 	    }
 
@@ -365,7 +419,13 @@ class PluginCallbackView extends GalleryView {
 	$coreApiCompatible = GalleryUtilities::isCompatibleWithApi(
 	    $plugin->getRequiredCoreApi(), GalleryCoreApi::getApiVersion());
 
-	/* TODO: refactor this into type specific wrapper methods around getPluginState() */
+	
+
+
+/*  TODO: refactor this into type specific wrapper methods around getPluginState()  */
+
+
+
 	switch ($type) {
 	case 'module':
 	    $pluginApiCompatible = GalleryUtilities::isCompatibleWithApi(

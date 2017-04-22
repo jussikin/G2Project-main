@@ -101,7 +101,13 @@ class ReplicaModule extends GalleryModule {
 	    }
 	    if ($count > 0) {
 		if (false) {
-		    /* Specific translations: */
+		    
+
+
+/*  Specific translations:  */
+
+
+
 		    _('Replicate Album'); _('Replicate Photo'); _('Replicate Movie');
 		}
 		$itemTypeNames = array_merge($item->itemTypeName(), $item->itemTypeName(false));

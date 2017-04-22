@@ -28,7 +28,13 @@ include('../../../bootstrap.inc');
 require_once('../../../init.inc');
 define('GALLERY_MAIN_PHP', 'index.php');
 
-/* Simulate HTTP for command line clients */
+
+
+
+/*  Simulate HTTP for command line clients  */
+
+
+
 if (php_sapi_name() == 'cli') {
     $argv = GalleryUtilities::getServerVar('argv');
     for ($i = 1; $i < count($argv); $i++) {
@@ -64,7 +70,13 @@ function RepositoryToolsMain()
         'lib/tools/repository/classes/RepositoryControllerAndView.class'
     );
 
-    /* Set repository configuration data. Allow config.php to override. */
+    
+
+
+/*  Set repository configuration data. Allow config.php to override.  */
+
+
+
     $repositoryPath = @$gallery->getConfig('repository.path');
     if (empty($repositoryPath)) {
         $repositoryPath = $gallery->getConfig('data.gallery.base') . '/repository/';
@@ -73,7 +85,13 @@ function RepositoryToolsMain()
     $gallery->setConfig('repository.templates', 'lib/tools/repository/templates/');
 
     if ($isSiteAdmin) {
-    /* Verify our repository structure exists */
+    
+
+
+/*  Verify our repository structure exists  */
+
+
+
         $platform =& $gallery->getPlatform();
         foreach (array($repositoryPath . '/modules',
                $repositoryPath . '/themes') as $path) {
@@ -88,7 +106,13 @@ function RepositoryToolsMain()
             }
         }
 
-    /* Load controller. */
+    
+
+
+/*  Load controller.  */
+
+
+
         $controllerName = (string)GalleryUtilities::getRequestVariables('controller');
         if (!preg_match('/^[A-Za-z]*$/', $controllerName)) {
             return GalleryCoreApi::error(
@@ -102,7 +126,13 @@ function RepositoryToolsMain()
         $controllerPath = sprintf('%s/%s.inc', dirname(__FILE__), $controllerName);
     }
 
-    /* Configure our url Generator for repository mode. */
+    
+
+
+/*  Configure our url Generator for repository mode.  */
+
+
+
     $urlGenerator = new GalleryUrlGenerator();
     $ret = $urlGenerator->init();
     if ($ret) {
@@ -112,7 +142,13 @@ function RepositoryToolsMain()
 
     $platform =& $gallery->getPlatform();
     if (!$isSiteAdmin || !$platform->file_exists($controllerPath)) {
-    /* Set default controller. */
+    
+
+
+/*  Set default controller.  */
+
+
+
         $controllerName = 'MainPage';
         $controllerPath = sprintf('%s/%s.inc', dirname(__FILE__), $controllerName);
         $methodName = 'showAvailableActions';
@@ -123,7 +159,13 @@ function RepositoryToolsMain()
     $controller = new $controllerClassName();
     $controller->init();
 
-    /* Call a controller method. */
+    
+
+
+/*  Call a controller method.  */
+
+
+
     if (!method_exists($controller, $methodName)) {
         return GalleryCoreApi::error(
             ERROR_BAD_PARAMETER,

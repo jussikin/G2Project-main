@@ -110,10 +110,22 @@ class SearchScanView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	/* TODO: Parameterize this */
+	
+
+
+/*  TODO: Parameterize this  */
+
+
+
 	$scanSize = 3;
 
-	/* Find all the modules that support the Search interface */
+	
+
+
+/*  Find all the modules that support the Search interface  */
+
+
+
 	GalleryCoreApi::requireOnce(
 	    'modules/search/classes/GallerySearchInterface_1_0.class');
 	list ($ret, $ids) =
@@ -130,7 +142,13 @@ class SearchScanView extends GalleryView {
 	    }
 	}
 
-	/* Load the search info for each module */
+	
+
+
+/*  Load the search info for each module  */
+
+
+
 	foreach ($searchInstances as $id => $instance) {
 	    list ($ret, $modules[$id]) = $instance->getSearchModuleInfo();
 	    if ($ret) {
@@ -162,7 +180,13 @@ class SearchScanView extends GalleryView {
 		    }
 		}
 
-		/* Execute a "scan" search */
+		
+
+
+/*  Execute a "scan" search  */
+
+
+
 		foreach ($searchInstances as $id => $instance) {
 		    if (isset($form['options'][$id])) {
 			list ($ret, $searchResults[$id]) =
@@ -176,7 +200,13 @@ class SearchScanView extends GalleryView {
 		}
 	    }
 
-	    /* Pull out all the item ids and save them */
+	    
+
+
+/*  Pull out all the item ids and save them  */
+
+
+
 	    $itemIds = array();
 	    foreach ($searchResults as $id => $resultSet) {
 		foreach ($resultSet['results'] as $result) {
@@ -190,7 +220,13 @@ class SearchScanView extends GalleryView {
 	    $thumbnails = array();
 	    if (!empty($itemIds)) {
 
-		/* Fetch items */
+		
+
+
+/*  Fetch items  */
+
+
+
 		list ($ret, $itemList) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 		if ($ret) {
 		    return array($ret, null);
@@ -199,7 +235,13 @@ class SearchScanView extends GalleryView {
 		    $items[$item->getId()] = (array)$item;
 		}
 
-		/* Fetch thumbnails */
+		
+
+
+/*  Fetch thumbnails  */
+
+
+
 		list ($ret, $thumbnailList) =
 		    GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
 		if ($ret) {
@@ -223,7 +265,13 @@ class SearchScanView extends GalleryView {
 	}
 	$slideshowAvailable = !empty($ids);
 
-	/* Render the HTML body */
+	
+
+
+/*  Render the HTML body  */
+
+
+
 	$template->setVariable('SearchScan', array(
 	    'controller' => 'search.SearchScan',
 	    'modules' => $modules,

@@ -72,7 +72,13 @@ class ThumbnailToolkit extends GalleryToolkit {
 	$context['width'] = $thumbImage->getWidth();
 	$context['height'] = $thumbImage->getHeight();
 
-	/* Now get toolkit to resize image to thumbnail size */
+	
+
+
+/*  Now get toolkit to resize image to thumbnail size  */
+
+
+
 	list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($mimeType, 'thumbnail');
 	if ($ret) {
 	    return array($ret, null, null);

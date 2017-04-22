@@ -56,7 +56,13 @@ class WatermarkTest extends GalleryTestCase {
 	$this->_saveUser = $gallery->getActiveUser();
 	$gallery->setActiveUser($this->_user);
 
-	/* Create a watermark */
+	
+
+
+/*  Create a watermark  */
+
+
+
 	$watermark = new WatermarkImage();
 	$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
 	if ($ret) {
@@ -73,7 +79,13 @@ class WatermarkTest extends GalleryTestCase {
     }
 
     function testFetchWatermarks1() {
-	/* We never gave permission to our test watermark, so it shouldn't show up */
+	
+
+
+/*  We never gave permission to our test watermark, so it shouldn't show up  */
+
+
+
 	list ($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 	if ($ret) {
 	    return $ret;
@@ -86,7 +98,13 @@ class WatermarkTest extends GalleryTestCase {
     function testFetchWatermarks2() {
 	global $gallery;
 
-	/* Give permission for us to see the watermark */
+	
+
+
+/*  Give permission for us to see the watermark  */
+
+
+
 	$ret = GalleryCoreApi::addUserPermission(
 	    $this->_watermark->getId(), $gallery->getActiveUserId(), 'core.all');
 	if ($ret) {
@@ -116,7 +134,13 @@ class WatermarkTest extends GalleryTestCase {
     }
 
     function testFetchWatermarksByOwnerId2() {
-	/* Use a random/bogus user id */
+	
+
+
+/*  Use a random/bogus user id  */
+
+
+
 	list ($ret, $watermarkIds) = WatermarkHelper::fetchWatermarkIdsByOwnerId(1234567);
 	if ($ret) {
 	    return $ret;
@@ -127,13 +151,25 @@ class WatermarkTest extends GalleryTestCase {
     }
 
     function testWatermarkItem() {
-	/* Create an item to watermark */
+	
+
+
+/*  Create an item to watermark  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Give it some derivatives */
+	
+
+
+/*  Give it some derivatives  */
+
+
+
 	list ($ret, $preferred) = $this->_createDerivative(
 	    $item, $item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED, 'rotate|90');
 	if ($ret) {
@@ -153,7 +189,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Apply the watermark */
+	
+
+
+/*  Apply the watermark  */
+
+
+
 	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
 					      array(DERIVATIVE_TYPE_IMAGE_PREFERRED => true,
 						    DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
@@ -162,7 +204,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Verify that it went properly */
+	
+
+
+/*  Verify that it went properly  */
+
+
+
 	$filter =
 	    sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
 		    $this->_watermark->getFileName());
@@ -176,13 +224,25 @@ class WatermarkTest extends GalleryTestCase {
     }
 
     function testReplaceWatermark() {
-	/* Create an item to watermark */
+	
+
+
+/*  Create an item to watermark  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Give it a thumbnail with a watermark */
+	
+
+
+/*  Give it a thumbnail with a watermark  */
+
+
+
 	list ($ret, $thumbnail) = $this->_createDerivative(
 	    $item, $item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'rotate|90',
 	    'test/file', array('postFilterOperations' => 'composite|plugins_data/modules/' .
@@ -191,7 +251,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Apply a second watermark */
+	
+
+
+/*  Apply a second watermark  */
+
+
+
 	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
 					      array(DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
 						    DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
@@ -200,7 +266,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Verify that it went properly */
+	
+
+
+/*  Verify that it went properly  */
+
+
+
 	$filter =
 	    sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
 		    $this->_watermark->getFileName());
@@ -213,7 +285,13 @@ class WatermarkTest extends GalleryTestCase {
     }
 
     function testWatermarkItemCreatedPreferred() {
-	/* Create an item to watermark */
+	
+
+
+/*  Create an item to watermark  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 	if ($ret) {
 	    return $ret;
@@ -231,7 +309,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Apply the watermark */
+	
+
+
+/*  Apply the watermark  */
+
+
+
 	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
 					      array(DERIVATIVE_TYPE_IMAGE_PREFERRED => true,
 						    DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
@@ -240,7 +324,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Verify that we have a preferred now */
+	
+
+
+/*  Verify that we have a preferred now  */
+
+
+
 	$filter =
 	    sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
 		    $this->_watermark->getFileName());
@@ -253,7 +343,13 @@ class WatermarkTest extends GalleryTestCase {
 	    $preferred = $table[$item->getId()];
 	    $this->assertEquals($filter, $preferred->getPostFilterOperations());
 
-	    /* Verify that the thumb/resizes are remapped to the preferred */
+	    
+
+
+/*  Verify that the thumb/resizes are remapped to the preferred  */
+
+
+
 	    foreach (array($resize, $thumbnail) as $derivative) {
 		list ($ret, $derivative) = $derivative->refresh();
 		if ($ret) {
@@ -267,7 +363,13 @@ class WatermarkTest extends GalleryTestCase {
     }
 
     function testWatermarkItemDeletePreferred() {
-	/* Create an item to watermark */
+	
+
+
+/*  Create an item to watermark  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 	if ($ret) {
 	    return $ret;
@@ -292,7 +394,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Apply the watermark */
+	
+
+
+/*  Apply the watermark  */
+
+
+
 	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
 					      array(DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
 						    DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
@@ -301,7 +409,13 @@ class WatermarkTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Verify that we have a preferred now */
+	
+
+
+/*  Verify that we have a preferred now  */
+
+
+
 	$filter =
 	    sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
 		    $this->_watermark->getFileName());
@@ -312,7 +426,13 @@ class WatermarkTest extends GalleryTestCase {
 
 	$this->assert(empty($table[$item->getId()]), 'preferred is not gone!');
 
-	/* Verify that the thumb/resizes are remapped to the source id */
+	
+
+
+/*  Verify that the thumb/resizes are remapped to the source id  */
+
+
+
 	foreach (array($resize, $thumbnail) as $derivative) {
 	    list ($ret, $derivative) = $derivative->refresh();
 	    if ($ret) {

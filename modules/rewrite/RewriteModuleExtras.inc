@@ -38,7 +38,13 @@ class RewriteModuleExtras {
 
 	switch ($currentVersion) {
 	case null:
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    foreach (array('accessList' => serialize(array()),
 			   'allowEmptyReferer' => '1',
 			   'shortUrls' => serialize(array()),
@@ -83,7 +89,13 @@ class RewriteModuleExtras {
 	case '0.9.0':
 	case '0.9.1':
 	case '0.9.2':
-	    /* Reset Gallery location, needs to be reconfigured */
+	    
+
+
+/*  Reset Gallery location, needs to be reconfigured  */
+
+
+
 	    foreach (array('galleryLocation' => '',
 			   'embeddedLocation' => '',
 			   'embeddedHtaccess' => '')
@@ -94,7 +106,13 @@ class RewriteModuleExtras {
 		}
 	    }
 
-	    /* The module needs to be reconfigured */
+	    
+
+
+/*  The module needs to be reconfigured  */
+
+
+
 	    $ret = $module->deactivate();
 	    if ($ret) {
 		return $ret;
@@ -143,7 +161,13 @@ class RewriteModuleExtras {
 	case '1.0.2':
 	case '1.0.3':
 	case '1.0.4':
-	    /* Get the custom rules and save it to a plugin param (RewriteMap depricated) */
+	    
+
+
+/*  Get the custom rules and save it to a plugin param (RewriteMap depricated)  */
+
+
+
 	    $query = '
 		SELECT
 		    [RewriteMap::module], [RewriteMap::ruleId], [RewriteMap::pattern]
@@ -181,7 +205,13 @@ class RewriteModuleExtras {
 			    'isapirewrite.embeddedLocation' => '',
 			    'isapirewrite.httpdini' => '');
 
-	    /* Rename mod_rewrite specific parameters */
+	    
+
+
+/*  Rename mod_rewrite specific parameters  */
+
+
+
 	    foreach (array('galleryLocation',
 			   'status',
 			   'embeddedLocation',
@@ -201,13 +231,25 @@ class RewriteModuleExtras {
 	    }
 	    $params['accessList'] = $value;
 
-	    /* Cleanup: Remove all old params */
+	    
+
+
+/*  Cleanup: Remove all old params  */
+
+
+
 	    $ret = GalleryCoreApi::removeAllPluginParameters('module', $module->getId());
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    /* Set the new params */
+	    
+
+
+/*  Set the new params  */
+
+
+
 	    foreach ($params as $key => $value) {
 		$ret = $module->setParameter($key, $value);
 		if ($ret) {
@@ -216,9 +258,21 @@ class RewriteModuleExtras {
 	    }
 
 	case '1.1.0':
-	    /* Major GalleryUrlGenerator change */
+	    
+
+
+/*  Major GalleryUrlGenerator change  */
+
+
+
 	case '1.1.1':
-	    /* GalleryCoreApi 7.0 and GalleryModule 3.0 */
+	    
+
+
+/*  GalleryCoreApi 7.0 and GalleryModule 3.0  */
+
+
+
 	case '1.1.2':
 	case '1.1.3':
 	case '1.1.4':
@@ -230,10 +284,22 @@ class RewriteModuleExtras {
 	     */
 
 	case '1.1.6':
-	    /* Add activateRewriteRulesForModule to rewrite API */
+	    
+
+
+/*  Add activateRewriteRulesForModule to rewrite API  */
+
+
+
 
 	case '1.1.7':
-	    /* Support rewrite rules without 'pattern' */
+	    
+
+
+/*  Support rewrite rules without 'pattern'  */
+
+
+
 	    GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 	    list ($ret, $activeRules) = $module->getParameter('activeRules');
 	    if ($ret) {
@@ -338,15 +404,39 @@ class RewriteModuleExtras {
 	    }
 
 	case '1.1.8':
-	    /* Remove L from mandatory flags, remove pattern for restrict rules */
+	    
+
+
+/*  Remove L from mandatory flags, remove pattern for restrict rules  */
+
+
+
 	case '1.1.9':
-	    /* Update required module API version for getRewriteRules change from 1.1.8 */
+	    
+
+
+/*  Update required module API version for getRewriteRules change from 1.1.8  */
+
+
+
 
 	case '1.1.10':
-	    /* Update regex rules structure to reuse code from GalleryUrlGenerator */
+	    
+
+
+/*  Update regex rules structure to reuse code from GalleryUrlGenerator  */
+
+
+
 
 	case '1.1.11':
-	    /* Add generateUrl options and %{REQUEST_URI} handling to rewrite rule format */
+	    
+
+
+/*  Add generateUrl options and %{REQUEST_URI} handling to rewrite rule format  */
+
+
+
 
 	    /**
 	     * Clear the tpl cache since our .htaccess and isapi templates have changed and the file
@@ -363,19 +453,49 @@ class RewriteModuleExtras {
 	case '1.1.13':
 	case '1.1.13.1':
 	case '1.1.13.2':
-	    /* .mo file migration */
+	    
+
+
+/*  .mo file migration  */
+
+
+
 	case '1.1.13.3':
-	    /* Gallery 2.2.4 security release */
+	    
+
+
+/*  Gallery 2.2.4 security release  */
+
+
+
 	case '1.1.13.4':
-	    /* Gallery 2.2.5 security release */
+	    
+
+
+/*  Gallery 2.2.5 security release  */
+
+
+
 	case '1.1.14':
 	case '1.1.15':
-	    /* Refactored to new event registration from core API 7.34 */
+	    
+
+
+/*  Refactored to new event registration from core API 7.34  */
+
+
+
 	case '1.1.16':
 	case '1.1.17':
 	case '1.1.18':
 	case '1.1.19':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	case 'end of upgrade path':
 	    break;
@@ -398,21 +518,39 @@ class RewriteModuleExtras {
 	}
 	$activeRules = unserialize($activeRules);
 
-	/* Don't update the rules if not necissary */
+	
+
+
+/*  Don't update the rules if not necissary  */
+
+
+
 	if (isset($activeRules[$pluginId])) {
 	    list ($ret, $rewriteParser) = RewriteHelper::getRewriteParser();
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    /* Save the old patterns for later use if module gets reactivated */
+	    
+
+
+/*  Save the old patterns for later use if module gets reactivated  */
+
+
+
 	    $ret = RewriteHelper::setHistoryForModule($pluginId, $activeRules[$pluginId]);
 	    if ($ret) {
 		return $ret;
 	    }
 	    unset($activeRules[$pluginId]);
 
-	    /* Try to activate the new rules */
+	    
+
+
+/*  Try to activate the new rules  */
+
+
+
 	    list ($ret) = $rewriteParser->saveActiveRules($activeRules, $module);
 	    if ($ret) {
 		return $ret;
@@ -438,7 +576,13 @@ class RewriteModuleExtras {
      * @see GalleryModule::handleEvent
      */
     function handleActivatePlugin($module, $pluginId) {
-	/* Get saved patterns */
+	
+
+
+/*  Get saved patterns  */
+
+
+
 	list ($ret, $plugin) = GalleryCoreApi::loadPlugin('module', $pluginId);
 	if ($ret) {
 	    return $ret;
@@ -485,7 +629,13 @@ class RewriteModuleExtras {
 		}
 	    }
 
-	    /* Only update the active rules if we added something */
+	    
+
+
+/*  Only update the active rules if we added something  */
+
+
+
 	    if (count($activeRules) > $originalSize) {
 		list ($ret, $rewriteParser) = RewriteHelper::getRewriteParser();
 		if ($ret) {

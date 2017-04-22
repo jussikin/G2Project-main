@@ -39,11 +39,23 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	/* Use mock soap client */
+	
+
+
+/*  Use mock soap client  */
+
+
+
 	$this->_controller->soapclient = 'FotokastenTestSoapClient';
 	FotokastenTestSoapClient::setTest($this);
 
-	/* Create some random photo items that we can print */
+	
+
+
+/*  Create some random photo items that we can print  */
+
+
+
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -72,13 +84,25 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
 	    }
 	}
 
-	/* Print permission on all but one */
+	
+
+
+/*  Print permission on all but one  */
+
+
+
 	$ret = GalleryCoreApi::removeUserPermission(
 	    $this->_items[1]->getId(), $gallery->getActiveUserId(), 'fotokasten.print');
 	if ($ret) {
 	    return $ret;
 	}
-	/* Public view permission on one */
+	
+
+
+/*  Public view permission on one  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -90,7 +114,13 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Clear any existing fotokasten session */
+	
+
+
+/*  Clear any existing fotokasten session  */
+
+
+
 	$session =& $gallery->getSession();
 	$this->_saveEndpoint = $session->get('fotokasten.endpoint');
 	$this->_sessionKey = GalleryUtilities::prefixFormVariable($session->getKey());
@@ -100,7 +130,13 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
     function tearDown() {
 	global $gallery;
 
-	/* Restore session id */
+	
+
+
+/*  Restore session id  */
+
+
+
 	$session =& $gallery->getSession();
 	if (isset($this->_saveEndpoint)) {
 	    $session->put('fotokasten.endpoint', $this->_saveEndpoint);
@@ -108,7 +144,13 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
 	    $session->remove('fotokasten.endpoint');
 	}
 
-	/* Remove session created for print service, if any */
+	
+
+
+/*  Remove session created for print service, if any  */
+
+
+
 	if (isset($this->_printSID)) {
 	    $testSession = new GallerySession();
 	    $testSession->_sessionId = $this->_printSID;
@@ -147,7 +189,13 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
 	$itemId = $this->_items[2]->getId();
 	GalleryUtilities::putRequestVariable('itemId', $itemId);
 
-	/* We only have permission to print and view the thumbnail */
+	
+
+
+/*  We only have permission to print and view the thumbnail  */
+
+
+
 	$ret = GalleryCoreApi::removeItemPermissions($itemId);
 	if ($ret) {
 	    return ($ret);
@@ -181,7 +229,13 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase {
 	$this->assert(strpos($basket['item1']['photo_url'], 'itemId=' . $this->_items[2]->getId()),
 		      'item id');
 
-	/* Grab session we provide for the raw image */
+	
+
+
+/*  Grab session we provide for the raw image  */
+
+
+
 	$session =& $gallery->getSession();
 	$sessionVar = GalleryUtilities::prefixFormVariable($session->getKey());
 	preg_match_all("/$sessionVar=([0-9a-f]*)/", $basket['item1']['photo_url'], $matches);

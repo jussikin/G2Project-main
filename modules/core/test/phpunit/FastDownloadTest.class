@@ -68,7 +68,13 @@ class FastDownloadTest extends GalleryTestCase {
 	    return $ret;
 	}
 	$this->_markForCleanup($this->_album);
-	/* Set the thumbnail of the album */
+	
+
+
+/*  Set the thumbnail of the album  */
+
+
+
 	list ($ret, $this->_derivatives[3][]) =
 	    $this->_createDerivative($this->_album, $this->_item[0]->getId(),
 				     DERIVATIVE_TYPE_IMAGE_THUMBNAIL);
@@ -87,8 +93,20 @@ class FastDownloadTest extends GalleryTestCase {
 	global $gallery;
 	$bytesWritten = '';
 	$platform = new FastDownloadTestCreateFastDownloadPlatform($bytesWritten);
-	$platform->setStat(7, 50);	  /* content length */
-	$platform->setStat(9, 1);	  /* last mod date */
+	$platform->setStat(7, 50);	  
+
+
+/*  content length  */
+
+
+
+	$platform->setStat(9, 1);	  
+
+
+/*  last mod date  */
+
+
+
 	$gallery->setPlatform($platform);
 
 	list ($ret, $anonymousUserId) =
@@ -110,7 +128,13 @@ class FastDownloadTest extends GalleryTestCase {
 
 	$cachePath = GalleryDataCache::getCachePath(
 	    array('type' => 'derivative-relative', 'itemId' => $this->_derivatives[0][0]->getId()));
-	/* Use here another method to assemble the relative path to get a better test coverage */
+	
+
+
+/*  Use here another method to assemble the relative path to get a better test coverage  */
+
+
+
 	$relativePath = 'cache' . $platform->getDirectorySeparator() . $cachePath;
 
 	$this->assertEquals(
@@ -131,8 +155,20 @@ class FastDownloadTest extends GalleryTestCase {
 	global $gallery;
 	$bytesWritten = '';
 	$platform = new FastDownloadTestCreateFastDownloadPlatform($bytesWritten);
-	$platform->setStat(7, 50);	  /* content length */
-	$platform->setStat(9, 1);	  /* last mod date */
+	$platform->setStat(7, 50);	  
+
+
+/*  content length  */
+
+
+
+	$platform->setStat(9, 1);	  
+
+
+/*  last mod date  */
+
+
+
 	$gallery->setPlatform($platform);
 
 	list ($ret, $anonymousUserId) =
@@ -182,7 +218,13 @@ class FastDownloadTest extends GalleryTestCase {
 	$this->assert(!$ret, 'status');
     }
 
-    /* Fake event that removes permissions that don't affect the guest user */
+    
+
+
+/*  Fake event that removes permissions that don't affect the guest user  */
+
+
+
     function testRemoveIrrelevantPermission() {
 	global $gallery;
 
@@ -347,7 +389,13 @@ class FastDownloadTestCreateFastDownloadPlatform {
     }
 
     function file_exists($path) {
-	/* locking code calls this */
+	
+
+
+/*  locking code calls this  */
+
+
+
 	return file_exists($path);
     }
 

@@ -66,7 +66,13 @@ class TemplateTest extends GalleryTestCase {
 	$gallery->setPlatform($this->_mockPlatform);
     }
 
-    /* Test retrieving a template that falls outside the module or theme template pattern*/
+    
+
+
+/*  Test retrieving a template that falls outside the module or theme template pattern */
+
+
+
     function testResourceGetTemplateNonModule() {
 	$this->_mockPlatform->set('is_readable', '/legal/path/local/templateThatHasNoLocal.tpl',
 				 false);
@@ -79,7 +85,13 @@ class TemplateTest extends GalleryTestCase {
 			    'Non module template not retrieved');
     }
 
-    /* Test retrieving non-overridden template */
+    
+
+
+/*  Test retrieving non-overridden template  */
+
+
+
     function testResourceGetTemplateNonOverriden() {
 	$this->_mockPlatform->set('is_readable', $this->_baseDirOverride . '/local/template.tpl',
 				  false);
@@ -96,7 +108,13 @@ class TemplateTest extends GalleryTestCase {
 			    $templateSource, 'Failed to get the base template');
     }
 
-    /* Test retrieving local override template */
+    
+
+
+/*  Test retrieving local override template  */
+
+
+
     function testResourceGetTemplateLocalOverride() {
 	$this->_mockPlatform->set('is_readable', $this->_baseDirOverride . '/local/template.tpl',
 				  false);
@@ -113,7 +131,13 @@ class TemplateTest extends GalleryTestCase {
 			    $templateSource, 'Failed to retrieve the /local/ supplied template');
     }
 
-    /* Test retrieving an overridden template block */
+    
+
+
+/*  Test retrieving an overridden template block  */
+
+
+
     function testResourceGetTemplateThemeOverride() {
 	$this->_mockPlatform->set('is_readable',
 				  $this->_baseDirOverride . '/block/local/template.tpl', true);
@@ -131,7 +155,13 @@ class TemplateTest extends GalleryTestCase {
 			    'Failed to retrieve the them overriden template');
     }
 
-    /* Test retrieving non-overridden template */
+    
+
+
+/*  Test retrieving non-overridden template  */
+
+
+
     function testResourceGetTimestampNonOverridden() {
 	$this->_mockPlatform->set('is_readable', '/legal/path/local/templateThatHasNoLocal.tpl',
 				  false);
@@ -150,7 +180,13 @@ class TemplateTest extends GalleryTestCase {
 	}
     }
 
-    /* Test retrieving an overridden template */
+    
+
+
+/*  Test retrieving an overridden template  */
+
+
+
     function testResourceGetTimestampOverridden() {
 	$this->_mockPlatform->set('is_readable', $this->_baseDirOverride . '/local/template.tpl',
 				  false);
@@ -170,7 +206,13 @@ class TemplateTest extends GalleryTestCase {
     }
 
     function testResourceGetTimestampStaticCall() {
-	/* Ensure static call is ok */
+	
+
+
+/*  Ensure static call is ok  */
+
+
+
 	$this->_mockPlatform->set('is_readable', $this->_baseDirOverride . '/local/template.tpl',
 				  false);
 	$this->_mockPlatform->set('is_readable', $this->_baseDirOverride . '/template.tpl', false);
@@ -276,7 +318,13 @@ class TemplateTest extends GalleryTestCase {
 
 	GalleryUtilities::putRequestVariable('itemId', $album->getId());
 
-	/* Execute the function under test */
+	
+
+
+/*  Execute the function under test  */
+
+
+
 	$template = new GalleryTemplate('');
 	list ($ret, $themeId) = $template->_getThemeId();
 	if ($ret) {
@@ -419,7 +467,13 @@ class TemplateTestMockSmarty {
     }
 
     function _read_file($templateName) {
-	/* Return the name as if it were the contents */
+	
+
+
+/*  Return the name as if it were the contents  */
+
+
+
 	return $templateName;
     }
 
@@ -429,7 +483,13 @@ class TemplateTestMockSmarty {
 	} else if (isset($this->_tpl_vars[$name])) {
 	    return $this->_tpl_vars[$name];
 	} else {
-	    /* var non-existent, return valid reference */
+	    
+
+
+/*  var non-existent, return valid reference  */
+
+
+
 	    $_tmp = null;
 	    return $_tmp;
 	}

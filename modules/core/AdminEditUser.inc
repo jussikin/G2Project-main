@@ -44,7 +44,13 @@ class AdminEditUserController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	/* We treat anonymous users differently, so see if we're editing the anonymous user */
+	
+
+
+/*  We treat anonymous users differently, so see if we're editing the anonymous user  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -54,21 +60,45 @@ class AdminEditUserController extends GalleryController {
 
 	if (isset($form['action']['cancel'])) {
 
-	    /* Redirect back to the AdminUsers view */
+	    
+
+
+/*  Redirect back to the AdminUsers view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminUsers';
 
 	} else if (isset($form['action']['undo'])) {
 
-	    /* Redirect back to the same view to reset the form */
+	    
+
+
+/*  Redirect back to the same view to reset the form  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminEditUser';
 	    $redirect['userId'] = $userId;
 
 	} else if (isset($form['action']['save'])) {
-	    /* Validate our data before we continue. */
+	    
 
-	    /* username is required and might conflict */
+
+/*  Validate our data before we continue.  */
+
+
+
+
+	    
+
+
+/*  username is required and might conflict  */
+
+
+
 	    if (empty($form['userName'])) {
 		$error[] = 'form[error][userName][missing]';
 	    }
@@ -84,11 +114,29 @@ class AdminEditUserController extends GalleryController {
 		}
 	    }
 
-	    /* full name is optional for everybody */
+	    
 
-	    /* language is optional for everybody */
 
-	    /* email is suggested, but optional for administrator edits */
+/*  full name is optional for everybody  */
+
+
+
+
+	    
+
+
+/*  language is optional for everybody  */
+
+
+
+
+	    
+
+
+/*  email is suggested, but optional for administrator edits  */
+
+
+
 	    if (!empty($form['email'])) {
 		$form['email'] = trim($form['email']);
 		if (!GalleryUtilities::isValidEmailString($form['email'])) {
@@ -110,7 +158,13 @@ class AdminEditUserController extends GalleryController {
 		}
 	    }
 
-	    /* If all the right fields are in place then go ahead and modify the user. */
+	    
+
+
+/*  If all the right fields are in place then go ahead and modify the user.  */
+
+
+
 	    if (empty($error)) {
 		list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($user->getId());
 		if ($ret) {
@@ -144,7 +198,13 @@ class AdminEditUserController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Request a redirect to the confirmation screen */
+		
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'core.AdminUsers';
 		$status['modifiedUser'] = $user->getUserName();
@@ -191,7 +251,13 @@ class AdminEditUserView extends GalleryView {
             return array($ret, null);
         }
 
-	/* Load the form with user data the first time around. */
+	
+
+
+/*  Load the form with user data the first time around.  */
+
+
+
 	if ($form['formName'] != 'AdminEditUser') {
 	    $form['userName'] = $user->getUserName();
 	    $form['fullName'] = $user->getFullName();
@@ -201,7 +267,13 @@ class AdminEditUserView extends GalleryView {
             $form['locked'] = $user->isLocked();
 	}
 
-	/* Email is not required for the anonymous user */
+	
+
+
+/*  Email is not required for the anonymous user  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -212,11 +284,23 @@ class AdminEditUserView extends GalleryView {
 	$show['language'] = ($userId != $anonymousUserId);
 	$show['password'] = ($userId != $anonymousUserId);
 
-        /* Only show the lock option if the user being edited is not an admin */
+        
+
+
+/*  Only show the lock option if the user being edited is not an admin  */
+
+
+
         $show['locked'] = !$isAdmin;
 
 	if ($show['language']) {
-	    /* Set up our language selection list */
+	    
+
+
+/*  Set up our language selection list  */
+
+
+
 	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 	    if ($ret) {
 		return array($ret, null);

@@ -104,7 +104,13 @@ class GalleryPluginHelper_simple {
 	    }
 
 	    $plugin = new $pluginClass();
-	    /* Store it in our table */
+	    
+
+
+/*  Store it in our table  */
+
+
+
 	    GalleryDataCache::put($cacheKey, $plugin, true);
 	} else {
 	    $plugin = GalleryDataCache::get($cacheKey);
@@ -119,7 +125,13 @@ class GalleryPluginHelper_simple {
 		$gallery->debug(sprintf('Check the version of the %s plugin', $pluginId));
 	    }
 
-	    /* Verify that the versions match */
+	    
+
+
+/*  Verify that the versions match  */
+
+
+
 	    list ($ret, $status) = GalleryPluginHelper_simple::fetchPluginStatus($pluginType);
 	    if ($ret) {
 		return array($ret, null);
@@ -134,7 +146,13 @@ class GalleryPluginHelper_simple {
 		    ($s['version'] != $plugin->getVersion() ||
 		     !GalleryPluginHelper_simple::isPluginCompatibleWithApis($plugin))) {
 
-		    /* Try to deactivate the plugin */
+		    
+
+
+/*  Try to deactivate the plugin  */
+
+
+
 		    $ret = $plugin->deactivate();
 		    if ($ret && !$errorOnVersionMismatch) {
 			/*
@@ -153,7 +171,13 @@ class GalleryPluginHelper_simple {
 			exit;
 		    }
 
-		    /*  Return a handleable error */
+		    
+
+
+/*   Return a handleable error  */
+
+
+
 		    return array(GalleryCoreApi::error(ERROR_PLUGIN_VERSION_MISMATCH,
 						      __FILE__, __LINE__,
 				     sprintf('[%s] db: (v: %s core api: %s, %s api: %s) '.
@@ -209,7 +233,13 @@ class GalleryPluginHelper_simple {
 	    $gallery->debug(sprintf('getParameter %s for %s plugin', $parameterName, $pluginId));
 	}
 
-	/* Convert null to 0, just in case */
+	
+
+
+/*  Convert null to 0, just in case  */
+
+
+
 	if ($itemId == null) {
 	    $itemId = 0;
 	}
@@ -220,7 +250,13 @@ class GalleryPluginHelper_simple {
 	    return array($ret, null);
 	}
 
-	/* Return the value, or null if the param doesn't exist */
+	
+
+
+/*  Return the value, or null if the param doesn't exist  */
+
+
+
 	if (!isset($params[$itemId][$parameterName])) {
 	    return array(null, null);
 	} else {
@@ -232,7 +268,13 @@ class GalleryPluginHelper_simple {
      * @see GalleryCoreApi::fetchAllPluginParameters
      */
     static function fetchAllParameters($pluginType, $pluginId, $itemId=0, $ignoreDiskCache=false) {
-	/* Convert null to 0, just in case */
+	
+
+
+/*  Convert null to 0, just in case  */
+
+
+
 	if ($itemId == null) {
 	    $itemId = 0;
 	}
@@ -263,12 +305,24 @@ class GalleryPluginHelper_simple {
 						       $pluginType, $pluginId)), null);
 	}
 
-	/* Convert null to 0, just in case */
+	
+
+
+/*  Convert null to 0, just in case  */
+
+
+
 	if ($itemId == null) {
 	    $itemId = 0;
 	}
 
-	/* Check cache */
+	
+
+
+/*  Check cache  */
+
+
+
 	$data = $queryIds = array();
 	$itemIds = is_array($itemId) ? $itemId : array($itemId);
 	$cacheBase = "GalleryPluginHelper::fetchAllParameters($pluginType, $pluginId, ";
@@ -358,7 +412,13 @@ class GalleryPluginHelper_simple {
 		$pluginBaseIndexFile = sprintf(
 		    '%sindex.%ss', $gallery->getConfig('data.gallery.plugins'), $pluginType);
 
-		/* Scan modules directory for installed modules */
+		
+
+
+/*  Scan modules directory for installed modules  */
+
+
+
 		switch ($pluginType) {
 		case 'module':
 		    $pluginsDir = 'modules/';
@@ -403,7 +463,13 @@ class GalleryPluginHelper_simple {
 				    return array($ret, null);
 				}
 
-				/* Separate out the major/minor version. */
+				
+
+
+/*  Separate out the major/minor version.  */
+
+
+
 				if (!strncmp($paramName, 'required', 8)) {
 				    $tmp = explode(',', $plugins[$pluginId][$paramName]);
 				    $plugins[$pluginId][$paramName] = (count($tmp) < 2)
@@ -416,12 +482,24 @@ class GalleryPluginHelper_simple {
 		}
 
 		if ($pluginType == 'module') {
-		    /* Force the core module's status */
+		    
+
+
+/*  Force the core module's status  */
+
+
+
 		    $plugins['core']['active'] = 1;
 		    $plugins['core']['available'] = 1;
 		}
 
-		/* Find and remove plugins that are installed, but not available */
+		
+
+
+/*  Find and remove plugins that are installed, but not available  */
+
+
+
 		foreach ($plugins as $pluginId => $pluginStatus) {
 		    if (empty($pluginStatus['available'])) {
 			if ($gallery->getDebug()) {
@@ -459,7 +537,13 @@ class GalleryPluginHelper_simple {
 
 	$cacheKey = "GalleryPluginHelper::fetchPluginList($pluginType)";
 	if (!GalleryDataCache::containsKey($cacheKey)) {
-	    /* Avoid a dependency on describeMap() (possible cyclic dependency) */
+	    
+
+
+/*  Avoid a dependency on describeMap() (possible cyclic dependency)  */
+
+
+
 	    $query = '
 	    SELECT
 	      [GalleryPluginMap::pluginId],

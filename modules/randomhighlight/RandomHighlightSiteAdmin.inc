@@ -39,7 +39,13 @@ class RandomHighlightSiteAdminController extends GalleryController {
 	$status = $error = array();
 	if (isset($form['action']['save'])) {
 	    if (isset($form['duration'])) {
-		/* Accept input for locales that use comma as fraction separator */
+		
+
+
+/*  Accept input for locales that use comma as fraction separator  */
+
+
+
 		$form['duration'] = str_replace(',', '.', $form['duration']);
 	    }
 	    if (!isset($form['duration']) || !is_numeric($form['duration'])) {
@@ -54,7 +60,13 @@ class RandomHighlightSiteAdminController extends GalleryController {
 	    }
 	}
 
-	/* Figure out where to redirect upon success */
+	
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results[$method]['view'] = 'core.SiteAdmin';
 	$results[$method]['subView'] = 'randomhighlight.RandomHighlightSiteAdmin';
@@ -86,7 +98,13 @@ class RandomHighlightSiteAdminView extends GalleryView {
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    /* String conversion here may use comma as fraction separator, based on locale */
+	    
+
+
+/*  String conversion here may use comma as fraction separator, based on locale  */
+
+
+
 	    $form['duration'] = (string)round($duration / 60, 2);
 	}
 

@@ -41,19 +41,37 @@ class ItemAddWebDav extends ItemAddPlugin {
 
 	$path = GalleryUtilities::getRequestVariables('path');
 
-	/* Check resource is not locked */
+	
+
+
+/*  Check resource is not locked  */
+
+
+
 	$ret = WebDavHelper::checkLocks($path);
 	if ($ret) {
 	    return array($ret, null, null);
 	}
 
-	/* Prepare data-structure from PUT request */
+	
+
+
+/*  Prepare data-structure from PUT request  */
+
+
+
 	list ($ret, $webDavOptions, $stream, $mimeType) = WebDavHelper::putRequestHelper();
 	if ($ret) {
 	    return array($ret, null, null);
 	}
 
-	/* Get the mime type. */
+	
+
+
+/*  Get the mime type.  */
+
+
+
 	list ($ret, $mimeType) = GalleryCoreApi::getMimeType(basename($path), $mimeType);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -62,7 +80,13 @@ class ItemAddWebDav extends ItemAddPlugin {
 	list ($ret, $itemId) = GalleryCoreApi::fetchItemIdByPath($path);
 	if ($ret) {
 	    if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		/* Item doesn't already exist at this path.  Create it. */
+		
+
+
+/*  Item doesn't already exist at this path.  Create it.  */
+
+
+
 		list ($ret, $error, $status) = $this->_addItem(
 		    $item, $webDavOptions, $stream, $mimeType, $path);
 		if ($ret) {
@@ -103,7 +127,13 @@ class ItemAddWebDav extends ItemAddPlugin {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* Following pattern from ItemAddWebCam */
+	
+
+
+/*  Following pattern from ItemAddWebCam  */
+
+
+
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$tmpFile = $platform->tempnam($tmpDir, 'webdav');
 
@@ -159,7 +189,13 @@ class ItemAddWebDav extends ItemAddPlugin {
 	    return array($ret, null, null);
 	}
 
-	/* Write lock the item we're replacing */
+	
+
+
+/*  Write lock the item we're replacing  */
+
+
+
 	list ($ret, $lockIds[]) = GalleryCoreApi::acquireWriteLock($itemId);
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
@@ -178,7 +214,13 @@ class ItemAddWebDav extends ItemAddPlugin {
 	    return array($ret ? $ret : GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null, null);
 	}
 
-	/* Replace the file content */
+	
+
+
+/*  Replace the file content  */
+
+
+
 	list ($ret, $filePath) = $item->fetchPath();
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
@@ -190,14 +232,26 @@ class ItemAddWebDav extends ItemAddPlugin {
 	    return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null, null);
 	}
 
-	/* Format PUT response */
+	
+
+
+/*  Format PUT response  */
+
+
+
 	$ret = WebDavHelper::putResponseHelper($webDavOptions, $handle);
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
 	    return array($ret, null, null);
 	}
 
-	/* Get a new item by mime type */
+	
+
+
+/*  Get a new item by mime type  */
+
+
+
 	list ($ret, $newItem) = GalleryCoreApi::newItemByMimeType($mimeType);
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
@@ -215,14 +269,26 @@ class ItemAddWebDav extends ItemAddPlugin {
 	    return array($ret, null, null);
 	}
 
-	/* Make the new item as close a copy of the original item as possible */
+	
+
+
+/*  Make the new item as close a copy of the original item as possible  */
+
+
+
 	list ($ret, $newItem) = WebDavHelper::mirrorEntity($item, $newItem);
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
 	    return array($ret, null, null);
 	}
 
-	/* Fall back on an unknown item if the new class doesn't support the file content */
+	
+
+
+/*  Fall back on an unknown item if the new class doesn't support the file content  */
+
+
+
 	$ret = $newItem->rescan();
 	if ($ret) {
 	    if (!($ret->getErrorCode() & ERROR_BAD_DATA_TYPE)) {
@@ -251,7 +317,13 @@ class ItemAddWebDav extends ItemAddPlugin {
 		return array($ret, null, null);
 	    }
 
-	    /* Make the new item as close a copy of the original item as possible */
+	    
+
+
+/*  Make the new item as close a copy of the original item as possible  */
+
+
+
 	    list ($ret, $newItem) = WebDavHelper::mirrorEntity($item, $newItem);
 	    if ($ret) {
 		GalleryCoreApi::releaseLocks($lockIds);
@@ -265,11 +337,23 @@ class ItemAddWebDav extends ItemAddPlugin {
 	    }
 	}
 
-	/* Follow pattern from ItemAddWebCam */
+	
+
+
+/*  Follow pattern from ItemAddWebCam  */
+
+
+
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$tmpFile = $platform->tempnam($tmpDir, 'webdav');
 
-	/* Backup the file content */
+	
+
+
+/*  Backup the file content  */
+
+
+
 	if (!$platform->copy($filePath, $tmpFile)) {
 	    GalleryCoreApi::releaseLocks($lockIds);
 	    return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null, null);

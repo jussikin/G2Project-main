@@ -37,7 +37,13 @@ class GalleryEntityHelper_medium {
 	}
 	$lockIds = array();
 
-	/* Don't write lock it if it's already locked somewhere else */
+	
+
+
+/*  Don't write lock it if it's already locked somewhere else  */
+
+
+
 	if (!GalleryCoreApi::isWriteLocked($id)) {
 	    list ($ret, $lockIds[]) = GalleryCoreApi::acquireWriteLock($id);
 	    if ($ret) {
@@ -60,7 +66,13 @@ class GalleryEntityHelper_medium {
 	    }
 	}
 
-	/* If this item has links to it, make one of those links the master */
+	
+
+
+/*  If this item has links to it, make one of those links the master  */
+
+
+
 	list ($ret, $linkedIds) = GalleryEntityHelper_medium::fetchEntitiesLinkedTo($id);
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
@@ -68,14 +80,26 @@ class GalleryEntityHelper_medium {
 	}
 
 	if (!empty($linkedIds)) {
-	    /* Lock all of the linked items */
+	    
+
+
+/*  Lock all of the linked items  */
+
+
+
 	    list ($ret, $lockIds[]) = GalleryCoreApi::acquireWriteLock($linkedIds);
 	    if ($ret) {
 		GalleryCoreApi::releaseLocks($lockIds);
 		return $ret;
 	    }
 
-	    /* Make the first link the master, and point the rest at it */
+	    
+
+
+/*  Make the first link the master, and point the rest at it  */
+
+
+
 	    list ($ret, $linkedEntities) =
 			GalleryEntityHelper_simple::loadEntitiesById($linkedIds, 'GalleryEntity');
 	    if ($ret) {
@@ -104,7 +128,13 @@ class GalleryEntityHelper_medium {
 		}
 	    }
 
-	    /* Remap any derivatives sourced from old-master to new-master */
+	    
+
+
+/*  Remap any derivatives sourced from old-master to new-master  */
+
+
+
 	    $ret = GalleryCoreApi::remapSourceIds($id, $linkedEntities[0]->getId());
 	    if ($ret) {
 		GalleryCoreApi::releaseLocks($lockIds);
@@ -247,12 +277,24 @@ class GalleryEntityHelper_medium {
     static function createFastDownloadFile($entity, $runEvenInUnitTest=false) {
 	global $gallery;
 
-	/* Disable this for unit tests, for now */
+	
+
+
+/*  Disable this for unit tests, for now  */
+
+
+
 	if (!$runEvenInUnitTest && class_exists('GalleryTestCase')) {
 	    return null;
 	}
 
-	/* Make sure this derivative is publicly viewable */
+	
+
+
+/*  Make sure this derivative is publicly viewable  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -291,7 +333,13 @@ class GalleryEntityHelper_medium {
 	}
 
 	if ($hasPermission) {
-	    /* Write the fast download file */
+	    
+
+
+/*  Write the fast download file  */
+
+
+
 	    list ($ret, $pseudoFileName) = GalleryUtilities::getPseudoFileName($entity);
 	    if ($ret) {
 		return $ret;

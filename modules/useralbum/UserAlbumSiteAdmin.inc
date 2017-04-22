@@ -52,9 +52,21 @@ class UserAlbumSiteAdminController extends GalleryController {
 		}
 	    }
 	    $status['saved'] = 1;
-	} /* else $form['action']['reset'] */
+	} 
 
-	/* Figure out where to redirect upon success */
+
+/*  else $form['action']['reset']  */
+
+
+
+
+	
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	$results['redirect']['view'] = 'core.SiteAdmin';
 	$results['redirect']['subView'] = 'useralbum.UserAlbumSiteAdmin';
 	$results['status'] = $status;
@@ -93,14 +105,26 @@ class UserAlbumSiteAdminView extends GalleryView {
 	if ($ret) {
 	    return array($ret, null);
 	}
-	/* Get ids of all all albums where we can add new album items */
+	
+
+
+/*  Get ids of all all albums where we can add new album items  */
+
+
+
 	list ($ret, $albumIds) =
 	    GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Load all the album entities */
+	
+
+
+/*  Load all the album entities  */
+
+
+
 	list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);

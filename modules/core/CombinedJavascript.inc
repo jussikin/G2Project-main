@@ -54,7 +54,13 @@ class CombinedJavascriptView extends GalleryView {
 
 	$key = GalleryUtilities::getRequestVariables('key');
 	if (preg_match('/[^0-9a-f]/', $key)) {
-	    /* The key can't contain non-hex, so just terminate early */
+	    
+
+
+/*  The key can't contain non-hex, so just terminate early  */
+
+
+
 	    return null;
 	}
 

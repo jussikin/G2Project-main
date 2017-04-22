@@ -45,7 +45,13 @@ class PermalinksSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testPermalinksSiteAdminController() {
-	/* test toggling autoPermalink */
+	
+
+
+/*  test toggling autoPermalink  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter('module', 'permalinks', 'autoPermalink', 1);
 	if ($ret) {
 	    return $ret;
@@ -66,7 +72,13 @@ class PermalinksSiteAdminControllerTest extends GalleryControllerTestCase {
 	    $this->assertEquals($expectedValue, $value, $key);
 	}
 
-	/* test toggle back */
+	
+
+
+/*  test toggle back  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[PermalinksSiteAdmin][autoPermalink]', 'on');
 
 	$results = $this->handleRequest();

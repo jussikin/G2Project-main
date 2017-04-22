@@ -41,13 +41,25 @@ class ItemEditController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	/* Make sure we have permission to edit this item */
+	
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($item->getId(), 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Check to see if we have a preferred source */
+	
+
+
+/*  Check to see if we have a preferred source  */
+
+
+
 	list ($ret, $preferredTable) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
 	if ($ret) {
@@ -55,21 +67,39 @@ class ItemEditController extends GalleryController {
 	}
 	$preferred = empty($preferredTable) ? null : array_shift($preferredTable);
 
-	/* Load the thumbnail */
+	
+
+
+/*  Load the thumbnail  */
+
+
+
 	list ($ret, $thumbnails) = GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 	if ($ret) {
 	    return array($ret, null);
 	}
 	$thumbnail = empty($thumbnails) ? null : array_shift($thumbnails);
 
-	/* Get all the edit options */
+	
+
+
+/*  Get all the edit options  */
+
+
+
 	list ($ret, $optionInstances) =
 	    ItemEditOption::getAllOptions($editPlugin, $item, $thumbnail);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Load the correct edit plugin */
+	
+
+
+/*  Load the correct edit plugin  */
+
+
+
 	list ($ret, $plugin) =
 	    GalleryCoreApi::newFactoryInstanceById('ItemEditPlugin', $editPlugin);
 	if ($ret) {
@@ -89,7 +119,13 @@ class ItemEditController extends GalleryController {
 	    $results['delegate']['view'] = 'core.ProgressBar';
 	}
 
-	/* Now let each option process its data */
+	
+
+
+/*  Now let each option process its data  */
+
+
+
 	if (!isset($status['warning'])) {
 	    $status['warning'] = array();
 	}
@@ -120,7 +156,13 @@ class ItemEditController extends GalleryController {
 	}
 
 	if (empty($results['delegate'])) {
-	    /* It's not a progress bar view */
+	    
+
+
+/*  It's not a progress bar view  */
+
+
+
 	    if (empty($error)) {
 		$results['redirect'] = array('view' => 'core.ItemAdmin',
 					     'subView' => 'core.ItemEdit',
@@ -216,13 +258,25 @@ class ItemEditView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Make sure we have permission to edit this item */
+	
+
+
+/*  Make sure we have permission to edit this item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($item->getId(), 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Load the thumbnail */
+	
+
+
+/*  Load the thumbnail  */
+
+
+
 	list ($ret, $thumbnails) = GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 	if ($ret) {
 	    return array($ret, null);
@@ -231,13 +285,25 @@ class ItemEditView extends GalleryView {
 	    list ($ret, $thumbnail) = GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent(
 						      $thumbnails[$item->getId()]->getId());
 	    if ($ret) {
-		/* Ignore thumbnail errors so we can edit items with broken thumbnail */
+		
+
+
+/*  Ignore thumbnail errors so we can edit items with broken thumbnail  */
+
+
+
 	    }
 	} else {
 	    $thumbnail = null;
 	}
 
-	/* Get the edit plugins that support this item type */
+	
+
+
+/*  Get the edit plugins that support this item type  */
+
+
+
 	list ($ret, $allPluginIds) =
 	    GalleryCoreApi::getAllFactoryImplementationIds('ItemEditPlugin');
 	if ($ret) {
@@ -257,7 +323,13 @@ class ItemEditView extends GalleryView {
 	    }
 	}
 	
-	/* Define the first edit plugin as the default in case we need to fall back. */
+	
+
+
+/*  Define the first edit plugin as the default in case we need to fall back.  */
+
+
+
 	$editPluginIds = array_keys($pluginInstances);
 	$defaultEditPlugin = $editPluginIds[0];
 
@@ -273,13 +345,25 @@ class ItemEditView extends GalleryView {
 		$editPlugin = $defaultEditPlugin;
 	    }
 	}
-	/* Input validation of the given editPlugin id. */
+	
+
+
+/*  Input validation of the given editPlugin id.  */
+
+
+
 	if (!isset($pluginInstances[$editPlugin])) {
 	    $editPlugin = $defaultEditPlugin;
 	}
 	$session->put($editPluginSessionKey, $editPlugin);
 
-	/* Get display data for all plugins */
+	
+
+
+/*  Get display data for all plugins  */
+
+
+
 	$plugins = array();
 	foreach ($pluginInstances as $pluginId => $plugin) {
 	    list ($ret, $title) =  $plugin->getTitle();
@@ -291,7 +375,13 @@ class ItemEditView extends GalleryView {
 			       'isSelected' => ($pluginId == $editPlugin));
 	}
 
-	/* Record our item serial number in the form so that all plugins can use it */
+	
+
+
+/*  Record our item serial number in the form so that all plugins can use it  */
+
+
+
 	$form['serialNumber'] = $item->getSerialNumber();
 
 	$ItemEdit = array();
@@ -305,21 +395,39 @@ class ItemEditView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Let the plugin load its template data */
+	
+
+
+/*  Let the plugin load its template data  */
+
+
+
 	list ($ret, $ItemEdit['pluginFile'], $ItemEdit['pluginL10Domain']) =
 	    $pluginInstances[$editPlugin]->loadTemplate($template, $form, $item, $thumbnail);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Get all the edit options */
+	
+
+
+/*  Get all the edit options  */
+
+
+
 	list ($ret, $optionInstances) =
 	    ItemEditOption::getAllOptions($editPlugin, $item, $thumbnail);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Now let all options load their template data */
+	
+
+
+/*  Now let all options load their template data  */
+
+
+
 	$ItemEdit['options'] = array();
 	foreach ($optionInstances as $option) {
 	    list ($ret, $entry['file'], $entry['l10Domain']) =

@@ -63,12 +63,24 @@ class UserRecoverPasswordController extends GalleryController {
 		$error[] = 'form[error][userName][missing]';
 	    }
 
-	    /* If no errors have been detected, let the validation plugins do their work */
+	    
+
+
+/*  If no errors have been detected, let the validation plugins do their work  */
+
+
+
 	    if (empty($error)) {
 		if (isset($this->_pluginInstances)) {
 		    $pluginInstances = $this->_pluginInstances;
 		} else {
-		    /* Get all the validation plugins */
+		    
+
+
+/*  Get all the validation plugins  */
+
+
+
 		    list ($ret, $pluginInstances) =
 			GalleryCoreApi::getAllFactoryImplementationIds('GalleryValidationPlugin');
 		    if ($ret) {
@@ -85,7 +97,13 @@ class UserRecoverPasswordController extends GalleryController {
 		    }
 		}
 
-		/* Let each plugin do its verification */
+		
+
+
+/*  Let each plugin do its verification  */
+
+
+
 		foreach ($pluginInstances as $plugin) {
 		    list ($ret, $pluginErrors, $continue) = $plugin->performValidation($form);
 		    if ($ret) {
@@ -111,10 +129,22 @@ class UserRecoverPasswordController extends GalleryController {
 		}
 
 		if (isset($user) && $user->getEmail() != '') {
-		    /* Generate a unique auth string based on userName, time of request and IP */
+		    
+
+
+/*  Generate a unique auth string based on userName, time of request and IP  */
+
+
+
 		    $authString = $this->_generateAuthString();
 
-		    /* Generate the request expiration: Now + 7 Days */
+		    
+
+
+/*  Generate the request expiration: Now + 7 Days  */
+
+
+
 		    $requestExpires = mktime(date('G'), date('i'), date('s'),
 					     date('m'), date('d')+7, date('Y'));
 
@@ -160,7 +190,13 @@ class UserRecoverPasswordController extends GalleryController {
 		    }
 
 		    if (empty($error) && $shouldSendEmail) {
-			/* Generate baseUrl and recoverUrl for the email template */
+			
+
+
+/*  Generate baseUrl and recoverUrl for the email template  */
+
+
+
 			$generator =& $gallery->getUrlGenerator();
 			$baseUrl = $generator->generateUrl(array(),
 					array('forceFullUrl' => true, 'htmlEntities' => false,
@@ -173,7 +209,13 @@ class UserRecoverPasswordController extends GalleryController {
 					array('forceFullUrl' => true, 'htmlEntities' => false,
 					      'forceSessionId' => false));
 
-			/* email template data */
+			
+
+
+/*  email template data  */
+
+
+
 			$tplData = array('name' => $user->getfullName(),
 					 'baseUrl' => $baseUrl,
 					 'ip' => GalleryUtilities::getRemoteHostAddress(),
@@ -182,13 +224,25 @@ class UserRecoverPasswordController extends GalleryController {
 					 'recoverUrl' => $recoverUrl,
 					 );
 
-			/* Load core for translation */
+			
+
+
+/*  Load core for translation  */
+
+
+
 			list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 			if ($ret) {
 			    return array($ret, null);
 			}
 
-			/* Send the user email based on our confirmation template */
+			
+
+
+/*  Send the user email based on our confirmation template  */
+
+
+
 			$ret = GalleryCoreApi::sendTemplatedEmail(
 			    'modules/core/templates/UserRecoverPasswordEmail.tpl',
 			    $tplData, '', $user->getEmail(),
@@ -198,11 +252,29 @@ class UserRecoverPasswordController extends GalleryController {
 			}
 		    }
 
-		    /* Set the recovered info flag */
+		    
+
+
+/*  Set the recovered info flag  */
+
+
+
 		    $status['requestSent'] = 1;
 		} else {
-		    /* Silently succeed; we don't reward phishing attempts */
-		    /* Set the recovered info flag */
+		    
+
+
+/*  Silently succeed; we don't reward phishing attempts  */
+
+
+
+		    
+
+
+/*  Set the recovered info flag  */
+
+
+
 		    $status['requestSent'] = 1;
 		}
 	    }
@@ -261,14 +333,26 @@ class UserRecoverPasswordView extends GalleryView {
 
 	$UserRecoverPassword = array();
 
-	/* Get all the login plugins */
+	
+
+
+/*  Get all the login plugins  */
+
+
+
 	list ($ret, $allPluginIds) =
 	    GalleryCoreApi::getAllFactoryImplementationIds('GalleryValidationPlugin');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Let each plugin load its template data */
+	
+
+
+/*  Let each plugin load its template data  */
+
+
+
 	$UserRecoverPassword['plugins'] = array();
 	foreach (array_keys($allPluginIds) as $pluginId) {
 	    list ($ret, $plugin) =

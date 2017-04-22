@@ -42,7 +42,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	/* Create a new user */
+	
+
+
+/*  Create a new user  */
+
+
+
 	list ($ret, $this->_user) = $this->_createRandomUser(null, 'password');
 	if ($ret) {
 	    return $ret;
@@ -52,7 +58,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	$this->_saveSession = $gallery->_session;
 
-	/* Set up a mock session so that we don't accidentally log out the PHPUnit session */
+	
+
+
+/*  Set up a mock session so that we don't accidentally log out the PHPUnit session  */
+
+
+
 	$this->_mockSession = new UserLoginControllerTestSession();
 	$gallery->_session =& $this->_mockSession;
 
@@ -69,7 +81,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Disable all plugins by default */
+	
+
+
+/*  Disable all plugins by default  */
+
+
+
 	$this->_controller->setPluginInstances(array());
 
 	$this->_originalLoginRedirect = $gallery->getConfig('loginRedirect');
@@ -105,7 +123,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	}
 
 	$results = $this->handleRequest();
-	/* May get a redirect url (like from useralbum module) or return */
+	
+
+
+/*  May get a redirect url (like from useralbum module) or return  */
+
+
+
 	$this->assert(isset($results['return']) || isset($results['redirect']), 'result');
 	$this->assertEquals(array(), $results['status'], 'status');
 	$this->assertEquals(array(), $results['error'], 'error');
@@ -114,7 +138,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	$this->assert($this->_mockSession->regenerateWasCalled(),
 		      '$session->regenerate() was not called');
 
-	/* Verify our event got posted */
+	
+
+
+/*  Verify our event got posted  */
+
+
+
 	$this->assertEventFired('Gallery::Login', $this->_user);
     }
 
@@ -142,7 +172,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][username][disabled]')),
 			    $results);
 
-	/* Verify our event got posted */
+	
+
+
+/*  Verify our event got posted  */
+
+
+
 	$this->assertEventFired('Gallery::FailedLogin', null, 
 	    array('userName' => $this->_user->getUserName()));
     }
@@ -160,7 +196,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[password]', 'pass&word');
 
 	$results = $this->handleRequest();
-	/* May get a redirect url (like from useralbum module) or return */
+	
+
+
+/*  May get a redirect url (like from useralbum module) or return  */
+
+
+
 	$this->assert(isset($results['return']) || isset($results['redirect']), 'result');
 	$this->assertEquals(array(), $results['status'], 'status');
 	$this->assertEquals(array(), $results['error'], 'error');
@@ -173,7 +215,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
     function testLoginInvalidUser() {
 	GalleryUtilities::putRequestVariable('form[action][login]', 1);
 	GalleryUtilities::putRequestVariable('form[username]', 'some-bogus-user');
-	/* From _createRandomUser */
+	
+
+
+/*  From _createRandomUser  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[password]', 'password');
 
 	$ret = $this->_registerEventListener('Gallery::FailedLogin');
@@ -188,7 +236,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][invalidPassword]')),
 			    $results);
 
-	/* Verify our event got posted */
+	
+
+
+/*  Verify our event got posted  */
+
+
+
 	$this->assertEventFired('Gallery::FailedLogin', null,
 	    array('userName' => 'some-bogus-user'));
     }
@@ -313,7 +367,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
     function testPlugins4() {
 	GalleryUtilities::putRequestVariable('form[action][login]', 1);
 	GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
-	/* from _createRandomUser: */
+	
+
+
+/*  from _createRandomUser:  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[password]', 'password');
 
 	$plugin = new UserLoginControllerTestPlugin();
@@ -337,7 +397,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('form[action][login]', 1);
 	GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
-	/* from _createRandomUser: */
+	
+
+
+/*  from _createRandomUser:  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[password]', 'password');
 
 	$plugin = new UserLoginControllerTestPlugin();
@@ -346,7 +412,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	$this->_controller->setPluginInstances(array($plugin));
 
 	$results = $this->handleRequest();
-	/* May get a redirect url (like from useralbum module) or return */
+	
+
+
+/*  May get a redirect url (like from useralbum module) or return  */
+
+
+
 	$this->assert(isset($results['return']) || isset($results['redirect']), 'result');
 	$this->assertEquals(array(), $results['status'], 'status');
 	$this->assertEquals(array(), $results['error'], 'error');
@@ -365,7 +437,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('form[action][login]', 1);
 	GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
-	/* from _createRandomUser: */
+	
+
+
+/*  from _createRandomUser:  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[password]', 'password');
 
 	$plugin = new UserLoginControllerTestPlugin();
@@ -374,7 +452,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	$this->_controller->setPluginInstances(array($plugin));
 
 	$results = $this->handleRequest();
-	/* May get a redirect url (like from useralbum module) or return */
+	
+
+
+/*  May get a redirect url (like from useralbum module) or return  */
+
+
+
 	$this->assert(isset($results['return']) || isset($results['redirect']), 'result');
 	$this->assertEquals(array(), $results['status'], 'status');
 	$this->assertEquals(array(), $results['error'], 'error');
@@ -394,7 +478,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	$this->_loadTemplate();
 
-	/* Verify that header and exit has been called */
+	
+
+
+/*  Verify that header and exit has been called  */
+
+
+
 	$this->assertEquals("Location: $expectedUrl", $this->_headers[0],
 			    'location header');
 	$this->assertEquals(1, $this->_exitCalls, 'exit call');
@@ -410,7 +500,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	$this->_loadTemplate();
 
-	/* Verify that header and exit has been called */
+	
+
+
+/*  Verify that header and exit has been called  */
+
+
+
 	$this->assertEquals("Location: " . $urlGenerator->makeUrl('/'), $this->_headers[0],
 			    'location header');
 	$this->assertEquals(1, $this->_exitCalls, 'exit call');
@@ -425,7 +521,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	list ($ret, $results) = $this->_loadTemplate();
 
-	/* Verify that we render the normal user login view */
+	
+
+
+/*  Verify that we render the normal user login view  */
+
+
+
 	$this->assertEquals(0, $this->_exitCalls, 'exit called');
 	$this->assertEquals(array('body' => 'modules/core/templates/UserLogin.tpl'), $results,
 			    'loadTemplate results');
@@ -442,7 +544,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Verify that we render the normal user login view */
+	
+
+
+/*  Verify that we render the normal user login view  */
+
+
+
 	$this->assertEquals(0, $this->_exitCalls, 'exit called');
 	$this->assertEquals(array('body' => 'modules/core/templates/UserLogin.tpl'), $results,
 			    'loadTemplate results');
@@ -460,7 +568,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Verify that we render the normal user login view */
+	
+
+
+/*  Verify that we render the normal user login view  */
+
+
+
 	$this->assertEquals(0, $this->_exitCalls, 'exit called');
 	$this->assertEquals(array('body' => 'modules/core/templates/UserLogin.tpl'), $results,
 			    'loadTemplate results');
@@ -478,7 +592,13 @@ class UserLoginControllerTest extends GalleryControllerTestCase {
 
 	$this->_loadTemplate();
 
-	/* Verify that header and exit has been called */
+	
+
+
+/*  Verify that header and exit has been called  */
+
+
+
 	$this->assertEquals('Location: http://test.com/test.php?'
 		. GalleryUtilities::prefixFormVariable('view') . '=core.UserAdmin&'
 		. GalleryUtilities::prefixFormVariable('subView') . '=test.AltLogin',

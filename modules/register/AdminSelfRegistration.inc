@@ -93,7 +93,13 @@ class AdminSelfRegistrationController extends GalleryController {
 		}
 		$status['deleted'] = $userName;
 	    }
-	} /* else $form['action']['cancel'] */
+	} 
+
+
+/*  else $form['action']['cancel']  */
+
+
+
 
 	if (empty($error)) {
 	    $results['redirect'] = array('view' => 'core.SiteAdmin',
@@ -130,7 +136,13 @@ class AdminSelfRegistrationView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load our default values if we didn't just come from this form. */
+	
+
+
+/*  Load our default values if we didn't just come from this form.  */
+
+
+
 	if ($form['formName'] != 'AdminSelfRegistration') {
 	    foreach (array('confirmation', 'emailadmins', 'adminsubject', 'subject', 'from',
 			   'emailusers', 'usersubject') as $key) {

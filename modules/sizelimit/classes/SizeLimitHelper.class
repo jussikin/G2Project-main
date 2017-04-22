@@ -39,13 +39,25 @@ class SizeLimitHelper {
      */
     static function applyLimits(&$item, $operation, $args) {
 
-	/* Get the path of the source */
+	
+
+
+/*  Get the path of the source  */
+
+
+
 	list ($ret, $sourcePath) = $item->fetchPath();
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Get the appropriate toolkit */
+	
+
+
+/*  Get the appropriate toolkit  */
+
+
+
 	list ($ret, $toolkit) =
 	    GalleryCoreApi::getToolkitByOperation($item->getMimeType(), $operation);
 	if ($ret) {
@@ -67,7 +79,13 @@ class SizeLimitHelper {
 	    return $ret;
 	}
 
-	/* Perform the operation */
+	
+
+
+/*  Perform the operation  */
+
+
+
 	list ($ret, $outputMimeType) = $toolkit->performOperation(
 		$item->getMimeType(), $operation, $sourcePath, $sourcePath, $args);
 	if ($ret) {
@@ -76,14 +94,26 @@ class SizeLimitHelper {
 	}
 	$item->setMimeType($outputMimeType);
 
-	/* Get the item to rescan its data object */
+	
+
+
+/*  Get the item to rescan its data object  */
+
+
+
 	$ret = $item->rescan();
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockId);
 	    return $ret;
 	}
 
-	/* Save the item */
+	
+
+
+/*  Save the item  */
+
+
+
 	$ret = $item->save();
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockId);
@@ -116,13 +146,25 @@ class SizeLimitHelper {
      *               array (errors), array (warnings)
      */
     static function buildDerivativeWithLimits($item, $operation, $args) {
-	/* Check to see if we have a preferred source */
+	
+
+
+/*  Check to see if we have a preferred source  */
+
+
+
 	list ($ret, $preferred) = GalleryCoreApi::fetchPreferredSource($item);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Make sure we support the given operation */
+	
+
+
+/*  Make sure we support the given operation  */
+
+
+
 	list ($ret, $toolkit) =
 	    GalleryCoreApi::getToolkitByOperation($item->getMimeType(), $operation);
 	if ($ret) {
@@ -207,7 +249,13 @@ class SizeLimitHelper {
      * @return GalleryStatus a status code
      */
     function _updateResizes($itemId, $imageWidth, $imageHeight) {
-	/* Remove larger or equal sized resizes if necessary */
+	
+
+
+/*  Remove larger or equal sized resizes if necessary  */
+
+
+
 	list ($ret, $resizes) = GalleryCoreApi::fetchResizesByItemIds(array($itemId));
 	if ($ret) {
 	    return $ret;
@@ -219,7 +267,13 @@ class SizeLimitHelper {
 		    $width = $matches[1];
 		    $height = empty($matches[2]) ? $width : $matches[2];
 		    if ($imageWidth <= $width && $imageHeight <= $height) {
-			/* The resize is larger or has the same size as the fullsize */
+			
+
+
+/*  The resize is larger or has the same size as the fullsize  */
+
+
+
 			$ret = GalleryCoreApi::deleteEntityById($derivative->getId(),
 								'GalleryDerivative');
 			if ($ret) {

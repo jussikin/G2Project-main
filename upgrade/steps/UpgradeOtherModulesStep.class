@@ -34,7 +34,13 @@ class UpgradeOtherModulesStep extends UpgradeStep {
 	    return true;
 	}
 
-	/* We want to log all debug output in our upgrade log */
+	
+
+
+/*  We want to log all debug output in our upgrade log  */
+
+
+
 	$this->_startDebugLog('Upgrade Plugins');
 	$gallery->startRecordingDebugSnippet();
 
@@ -317,7 +323,13 @@ class UpgradeOtherModulesStep extends UpgradeStep {
 	    $templateData['bodyFile'] = 'UpgradeOtherModulesRequest.html';
 	}
 
-	/* Deactivate any plugins that need it */
+	
+
+
+/*  Deactivate any plugins that need it  */
+
+
+
 	eval('
 	    class MockTheme extends GalleryTheme {
 		function __construct($pluginId) {

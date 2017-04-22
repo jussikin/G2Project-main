@@ -111,7 +111,13 @@ class MovieTest extends GalleryTestCase {
 	    $this->assert(false, 'Expected a storage failure');
 	}
 
-	/* Nothing was changed */
+	
+
+
+/*  Nothing was changed  */
+
+
+
 	$this->assertEquals(1, $this->_movie->getWidth(), 'width');
 	$this->assertEquals(2, $this->_movie->getHeight(), 'height');
 	$this->assertEquals(3, $this->_movie->getDuration(), 'duration');

@@ -49,7 +49,13 @@ class MembersProfileView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'MembersProfile') {
-	    /* Set some defaults */
+	    
+
+
+/*  Set some defaults  */
+
+
+
 	    $form['formName'] = 'MembersProfile';
 	}
 

@@ -149,10 +149,22 @@ class RssEditFeedTest extends GalleryControllerTestCase {
 		    ), $values))),
 	    $results);
 
-	/* remember to delete this new feed */
+	
+
+
+/*  remember to delete this new feed  */
+
+
+
 	$this->_feedsToDelete[] = $name;
 
-	/* check the feed values */
+	
+
+
+/*  check the feed values  */
+
+
+
 	list ($ret, $feed) = RssMapHelper::fetchFeed($name);
 	if ($ret) {
 	    return $ret;
@@ -162,14 +174,26 @@ class RssEditFeedTest extends GalleryControllerTestCase {
     function testRssUpdateFeed() {
 	$name = 'feed' .rand();
 
-	/* create feed we're going to edit */
+	
+
+
+/*  create feed we're going to edit  */
+
+
+
 	$params = array('itemId' => $this->_getRootId());
 	$ret = RssMapHelper::createFeed($name, $params);
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* remember to delete this new feed */
+	
+
+
+/*  remember to delete this new feed  */
+
+
+
 	$this->_feedsToDelete[] = $name;
 
 	GalleryUtilities::putRequestVariable('form[action][update]', '1');
@@ -223,7 +247,13 @@ class RssEditFeedTest extends GalleryControllerTestCase {
 		    ), $values))),
 	    $results);
 
-	/* check the feed values */
+	
+
+
+/*  check the feed values  */
+
+
+
 	list ($ret, $feed) = RssMapHelper::fetchFeed($name);
 	if ($ret) {
 	    return $ret;
@@ -288,13 +318,25 @@ class RssEditFeedTest extends GalleryControllerTestCase {
     function testDeleteFeed() {
 	$name = 'feed' .rand();
 
-	/* Create feed that we're going to delete */
+	
+
+
+/*  Create feed that we're going to delete  */
+
+
+
 	$params = array('itemId' => $this->_getRootId());
 	$ret = RssMapHelper::createFeed($name, $params);
 	if ($ret) {
 	    return $ret;
 	}
-	/* Cleanup if things go wrong */
+	
+
+
+/*  Cleanup if things go wrong  */
+
+
+
 	$this->_feedsToDelete[] = $name;
 	
 	GalleryUtilities::putRequestVariable('form[action][delete]', $name);

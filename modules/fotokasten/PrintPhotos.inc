@@ -28,18 +28,36 @@ GalleryCoreApi::requireOnce('modules/fotokasten/lib/nusoap.inc');
  */
 class PrintPhotosController extends GalleryController {
 
-    /* Server URL configuration */
+    
+
+
+/*  Server URL configuration  */
+
+
+
     var $nserver = '.partner.fotokasten.de';
     var $ftk_soap_path = '/affiliateapi/transfer_basket.php';
     var $server;
 
-    /* Affiliate Configuration */
+    
+
+
+/*  Affiliate Configuration  */
+
+
+
     var $affiliate_id;
     var $affiliate_id_pass;
     var $method_session = 'registerSession';
     var $method_basket = 'transferBasket';
 
-    /* For testability */
+    
+
+
+/*  For testability  */
+
+
+
     var $soapclient = 'nusoapclient';
 
     /**
@@ -61,7 +79,13 @@ class PrintPhotosController extends GalleryController {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	/* Load the necessary item data */
+	
+
+
+/*  Load the necessary item data  */
+
+
+
 	$itemIds = array_keys($cartItemIds);
 	list ($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryPhotoItem');
 	if ($ret) {
@@ -74,7 +98,13 @@ class PrintPhotosController extends GalleryController {
 	}
 	foreach ($itemIds as $id) {
 	    if (empty($permissions[$id]['core.view'])) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	}
@@ -94,7 +124,13 @@ class PrintPhotosController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	/* We want to know which are viewable to guests */
+	
+
+
+/*  We want to know which are viewable to guests  */
+
+
+
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -105,14 +141,26 @@ class PrintPhotosController extends GalleryController {
 	if ($ret) {
 	    return array($ret, null);
 	}
-	/* Assemble all our data */
+	
+
+
+/*  Assemble all our data  */
+
+
+
 	$i = 0;
 	$entries = $protectedIds = array();
 	foreach ($items as $item) {
 	    $itemId = $item->getId();
 
 	    if (!isset($permissions[$itemId]['fotokasten.print'])) {
-		/* Skip any cart items for which we don't have print permission */
+		
+
+
+/*  Skip any cart items for which we don't have print permission  */
+
+
+
 		continue;
 	    }
 
@@ -139,7 +187,13 @@ class PrintPhotosController extends GalleryController {
 		$sessionParam = array();
 	    }
 
-	    /* attributes of the photo: url, thumbnail_url, height and width */
+	    
+
+
+/*  attributes of the photo: url, thumbnail_url, height and width  */
+
+
+
 	    $basket_item = array(
 		'photo_url' => $urlGenerator->generateUrl(
 		    array_merge(array('view' => 'core.DownloadItem', 'itemId' => $source->getId()),
@@ -151,7 +205,13 @@ class PrintPhotosController extends GalleryController {
 	    );
 
 	    if (!isset($thumbnails[$itemId]) || $thumbnails[$itemId]->getPostFilterOperations()) {
-		/* Use the source if the thumbnail has a postfilter (like a watermark) */
+		
+
+
+/*  Use the source if the thumbnail has a postfilter (like a watermark)  */
+
+
+
 		$thumbSource = $source;
 	    } else {
 		$thumbSource = $thumbnails[$itemId];
@@ -170,7 +230,13 @@ class PrintPhotosController extends GalleryController {
 	    $basket['item' . ++$i] = $basket_item;
 	}
 	if (isset($foSession)) {
-	    /* Mark this session so that it can be treated specially */
+	    
+
+
+/*  Mark this session so that it can be treated specially  */
+
+
+
 	    $foSession->put('core.isPrintService', $protectedIds);
 
 	    /*
@@ -185,7 +251,13 @@ class PrintPhotosController extends GalleryController {
 	    }
 	}
 
-	/* prepare for connection */
+	
+
+
+/*  prepare for connection  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'fotokasten');
 	if ($ret) {
 	    return array($ret, null);
@@ -200,19 +272,37 @@ class PrintPhotosController extends GalleryController {
 		  'name'            => $this->affiliate_id . $this->nserver
 	    );
 
-	/* get fotokasten session */
+	
+
+
+/*  get fotokasten session  */
+
+
+
 	$ret = $this->getFotokastenSession();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* transfer cart to fotokasten */
+	
+
+
+/*  transfer cart to fotokasten  */
+
+
+
 	list ($ret, $referer) = $this->sendFotokastenCart($basket);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* add language parameter */
+	
+
+
+/*  add language parameter  */
+
+
+
 	if (strpos($referer, '?') && !strpos($referer, 'language=')) {
 	    list ($ret, $language) = $gallery->getActiveLocale();
 	    if (!$ret && !empty($language)) {
@@ -221,7 +311,13 @@ class PrintPhotosController extends GalleryController {
 	}
 
 	return array(null, array(
-		     'redirect' => array('href' => $referer), /* redirect to shopping basket */
+		     'redirect' => array('href' => $referer), 
+
+
+/*  redirect to shopping basket  */
+
+
+
 		     'status' => array(),
 		     'error' => array()));
     }
@@ -239,10 +335,22 @@ class PrintPhotosController extends GalleryController {
 	    return null;
 	}
 
-	/* initialize soap server */
+	
+
+
+/*  initialize soap server  */
+
+
+
 	$soap = new $this->soapclient($this->server['endpoint']);
 
-	/* register session for customer */
+	
+
+
+/*  register session for customer  */
+
+
+
 	$method_params['query'] = array('affiliate_id_pass' => $this->affiliate_id_pass,
 					'checkout'          => 'selectProduct');
 
@@ -257,7 +365,13 @@ class PrintPhotosController extends GalleryController {
 		return GalleryCoreApi::error(ERROR_UNKNOWN, __FILE__, __LINE__,
 					    $return['error_code']);
 	    }
-	    /* this endpoint has to be used for all further requests */
+	    
+
+
+/*  this endpoint has to be used for all further requests  */
+
+
+
 	    $session->put('fotokasten.endpoint',
 			  $this->server['endpoint']  = $return['endpoint']);
 	} else {
@@ -279,10 +393,22 @@ class PrintPhotosController extends GalleryController {
     function sendFotokastenCart($basket) {
 	global $gallery;
 
-	/* create new client with new endpoint */
+	
+
+
+/*  create new client with new endpoint  */
+
+
+
 	$soap = new $this->soapclient($this->server['endpoint']);
 
-	/* transfer basket */
+	
+
+
+/*  transfer basket  */
+
+
+
 	$method_params['request'] = array('affiliate_id_pass' => $this->affiliate_id_pass,
 					  'basket'            => $basket);
 
@@ -297,7 +423,13 @@ class PrintPhotosController extends GalleryController {
 		return array(GalleryCoreApi::error(ERROR_UNKNOWN, __FILE__, __LINE__,
 						  $return['error_code']), null);
 	    }
-	    /* Link for user Browser to show shopping basket */
+	    
+
+
+/*  Link for user Browser to show shopping basket  */
+
+
+
 	    $referer = $return['browserlink'];
 	} else {
 	    $gallery->debug_r($soap->debug_str);

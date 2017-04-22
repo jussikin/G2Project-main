@@ -103,7 +103,13 @@ class SimpleCallbackView extends GalleryView {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* $path is UTF-8, we need it in the system charset for filesystem interactions */
+	
+
+
+/*  $path is UTF-8, we need it in the system charset for filesystem interactions  */
+
+
+
 	$path = GalleryCoreApi::convertFromUtf8($path);
 
 	if ($platform->is_dir($path)) {
@@ -131,7 +137,13 @@ class SimpleCallbackView extends GalleryView {
 		$file = $path . $file;
 
 		if ($platform->is_dir($file)) {
-		    /* Filesystem charset -> UTF-8 conversion required */
+		    
+
+
+/*  Filesystem charset -> UTF-8 conversion required  */
+
+
+
 		    $dirList[] = GalleryCoreApi::convertToUtf8($file);
 		} else if ($getFiles && $platform->is_file($file)) {
 		    $fileList[] = GalleryCoreApi::convertToUtf8($file);

@@ -48,14 +48,26 @@ class NewAlbumController extends GalleryController {
 		return array($ret, null);
 	    }
 	    if (empty($permissions['core.view'])) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	    if (empty($permissions['core.addAlbumItem'])) {
 		return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
 	    }
 
-	    /* Now check the value of name and title */
+	    
+
+
+/*  Now check the value of name and title  */
+
+
+
 	    if (empty($form['pathComponent'])) {
 		$error[] = 'form[error][pathComponent][missing]';
 	    } else if (!$platform->isLegalPathComponent($form['pathComponent'])) {
@@ -122,7 +134,13 @@ class NewAlbumView extends GalleryView {
 	    return array($ret, null);
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
@@ -137,7 +155,13 @@ class NewAlbumView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load the item's parents */
+	
+
+
+/*  Load the item's parents  */
+
+
+
 	list ($ret, $parents) = GalleryCoreApi::fetchParents($parent, 'core.view', true);
 	if ($ret) {
 	    return array($ret, null);

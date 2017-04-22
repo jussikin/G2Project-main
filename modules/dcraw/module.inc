@@ -52,7 +52,13 @@ class DcrawModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our graphics class with the factory */
+	
+
+
+/*  Register our graphics class with the factory  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'DcrawToolkit', 'Dcraw',
 	    'modules/dcraw/classes/DcrawToolkit.class', 'dcraw', null);
@@ -75,7 +81,13 @@ class DcrawModule extends GalleryModule {
 	    return array($ret, null);
 	}
 
-	/* Detect the version of the binary (it may have changed since last activation) */
+	
+
+
+/*  Detect the version of the binary (it may have changed since last activation)  */
+
+
+
 	list ($ret, $testResults, $version) = DcrawToolkitHelper::testBinary($path);
 	if ($ret) {
 	    return array($ret, null);
@@ -101,7 +113,13 @@ class DcrawModule extends GalleryModule {
 
 	$mimeTypes = array('image/x-dcraw');
 	if (version_compare($version, '7', '>=')) {
-	    /* dcraw supports Adobe Digital Negative starting in v7.0 */
+	    
+
+
+/*  dcraw supports Adobe Digital Negative starting in v7.0  */
+
+
+
 	    $mimeTypes[] = 'image/x-adobe-dng';
 	}
 
@@ -119,7 +137,13 @@ class DcrawModule extends GalleryModule {
 	    return array($ret, null);
 	}
 
-	/* Assign all extensions we handle to our image mime type */
+	
+
+
+/*  Assign all extensions we handle to our image mime type  */
+
+
+
 	foreach (array('bay', 'bmq', 'cr2', 'crw', 'cs1', 'dc2', 'dcr',
 		       'fff', 'k25', 'kdc', 'mos', 'mrw', 'nef', 'orf',
 		       'pef', 'raf', 'rdc', 'srf', 'x3f', 'dng') as $extension) {
@@ -144,7 +168,13 @@ class DcrawModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}
@@ -166,7 +196,13 @@ class DcrawModule extends GalleryModule {
     function autoConfigure() {
 	global $gallery;
 
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -179,7 +215,13 @@ class DcrawModule extends GalleryModule {
 	    return array(null, true);
 	}
 
-	/* Try a bunch of likely seeming paths to see if any of them work. */
+	
+
+
+/*  Try a bunch of likely seeming paths to see if any of them work.  */
+
+
+
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
@@ -227,27 +269,57 @@ class DcrawModule extends GalleryModule {
 	    return array(null, false);
 	}
 
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/dcraw/classes/DcrawToolkitHelper.class');
 
-	/* Now try each path in turn to see which ones work */
+	
+
+
+/*  Now try each path in turn to see which ones work  */
+
+
+
 	foreach ($paths as $path) {
 	    list ($ret, $testResults, $version) = DcrawToolkitHelper::testBinary($path);
 	    if ($ret) {
-		/* This path failed.  Continue with the next one */
+		
+
+
+/*  This path failed.  Continue with the next one  */
+
+
+
 		continue;
 	    }
 
 	    $failCount = 0;
 	    foreach ($testResults as $testResult) {
-		/* All tests should work, else this path is not a valid one */
+		
+
+
+/*  All tests should work, else this path is not a valid one  */
+
+
+
 		if (!$testResult['success']) {
 		    $failCount++;
 		}
 	    }
 
 	    if ($failCount == 0) {
-		/* We have a winner */
+		
+
+
+/*  We have a winner  */
+
+
+
 		$ret = GalleryCoreApi::setPluginParameter('module', 'dcraw', 'path', $path);
 		if ($ret) {
 		    return array($ret, false);

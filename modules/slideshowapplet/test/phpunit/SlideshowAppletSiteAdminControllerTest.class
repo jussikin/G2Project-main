@@ -72,7 +72,13 @@ class SlideshowAppletSiteAdminControllerTest extends GalleryControllerTestCase {
 	    $this->assertEquals($expectedValue, $value, $key);
 	}
 
-	/* now test replacing */
+	
+
+
+/*  now test replacing  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[default][value]', 'value1');
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
@@ -149,7 +155,13 @@ class SlideshowAppletSiteAdminControllerTest extends GalleryControllerTestCase {
 	    $this->assertEquals($expectedValue, $value, $key);
 	}
 
-	/* now test deleting */
+	
+
+
+/*  now test deleting  */
+
+
+
 	GalleryUtilities::removeRequestVariable('form[action][add]');
 	GalleryUtilities::removeRequestVariable('form[default][name]');
 	GalleryUtilities::removeRequestVariable('form[default][value]');

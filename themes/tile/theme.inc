@@ -70,7 +70,13 @@ class TileTheme extends GalleryTheme {
 	$theme =& $template->getVariableByReference('theme');
 
 	if (!empty($params['backgroundId'])) {
-	    /* XXX: Use an interface for images instead of 'GalleryEntity' */
+	    
+
+
+/*  XXX: Use an interface for images instead of 'GalleryEntity'  */
+
+
+
 	    list ($ret, $bgImage) =
 		GalleryCoreApi::loadEntitiesById($params['backgroundId'], 'GalleryEntity');
 	    if ($ret) {
@@ -126,14 +132,26 @@ class TileTheme extends GalleryTheme {
     function showPhotoPage(&$template, $item, $params) {
 	$renderId = GalleryUtilities::getRequestVariables('renderId');
 	if (!empty($renderId)) {
-	    /* Render this item */
+	    
+
+
+/*  Render this item  */
+
+
+
 	    list ($ret, $image) = GalleryCoreApi::loadEntitiesById(
 		    $renderId, array('GalleryDataItem', 'GalleryDerivative'));
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	    if ($renderId != ($itemId = $item->getId()) && $image->getParentId() != $itemId) {
-		/* Malicious URL.. renderId not for this item */
+		
+
+
+/*  Malicious URL.. renderId not for this item  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	    $template->setVariable('theme', array('item' => (array)$item,
@@ -141,7 +159,13 @@ class TileTheme extends GalleryTheme {
 	    return array(null, 'render.tpl');
 	}
 
-	/* Otherwise, load the parent with initial view of this item  */
+	
+
+
+/*  Otherwise, load the parent with initial view of this item   */
+
+
+
 	list ($ret, $parent) =
 	    GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
 	if ($ret) {
@@ -161,7 +185,13 @@ class TileTheme extends GalleryTheme {
 	    if ($tmp['id'] == $item->getId()) {
 		if (isset($tmp['imageIndex'])) {
 		    $theme['viewIndex'] = $tmp['imageIndex'];
-		    /* Set cookie to popup image just once */
+		    
+
+
+/*  Set cookie to popup image just once  */
+
+
+
 		    setcookie('G2_tile_view', '1');
 		}
 		break;
@@ -267,7 +297,13 @@ class TileTheme extends GalleryTheme {
 
 	    $images = array();
 	    if (isset($permissions['core.viewSource'])) {
-		/* Full size; check for preferred copy */
+		
+
+
+/*  Full size; check for preferred copy  */
+
+
+
 		if (isset($preferredFullImages[$childId])) {
 		    $images[] = $preferredFullImages[$childId];
 		} else {
@@ -286,7 +322,13 @@ class TileTheme extends GalleryTheme {
 	    if (!empty($images)) {
 		$image = $images[0];
 
-		/* Rebuild derivative if needed so width/height known */
+		
+
+
+/*  Rebuild derivative if needed so width/height known  */
+
+
+
 		if (GalleryUtilities::isA($image, 'GalleryDerivativeImage')
 			&& !($image->getWidth() && $image->getHeight())) {
 		    list ($ret, $image) = GalleryCoreApi::rebuildDerivativeCache($image->getId());
@@ -299,11 +341,23 @@ class TileTheme extends GalleryTheme {
 		$children[$i]['imageIndex'] = count($imageWidths);
 		if (GalleryUtilities::isExactlyA($child, 'GalleryPhotoItem') &&
 			$image['width'] > 0 && $image['height'] > 0) {
-		    /* Display in <img> */
+		    
+
+
+/*  Display in <img>  */
+
+
+
 		    $imageWidths[] = $image['width'];
 		    $imageHeights[] = $image['height'];
 		} else {
-		    /* Item must render itself */
+		    
+
+
+/*  Item must render itself  */
+
+
+
 		    $children[$i]['renderItem'] = 1;
 		    $imageWidths[] = $imageHeights[] = -1;
 		}
@@ -316,7 +370,13 @@ class TileTheme extends GalleryTheme {
      * @see GalleryTheme::getPageSize
      */
     function getPageSize($params) {
-	/* This theme may not be configured yet... */
+	
+
+
+/*  This theme may not be configured yet...  */
+
+
+
 	if (isset($params['rows']) && isset($params['cols'])) {
 	    return $params['rows'] * $params['cols'];
 	}
@@ -337,7 +397,13 @@ class TileTheme extends GalleryTheme {
     function loadSettingsTemplate(&$template, &$form, $itemId=null) {
 	global $gallery;
 	if (!isset($itemId)) {
-	    /* Site admin settings -- we have none. */
+	    
+
+
+/*  Site admin settings -- we have none.  */
+
+
+
 	    return array(null, null);
 	}
 
@@ -350,7 +416,13 @@ class TileTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 	if (!GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-	    /* Can't configure for dynamic album */
+	    
+
+
+/*  Can't configure for dynamic album  */
+
+
+
 	    return array(null, null);
 	}
 	list ($ret, $params) = $this->fetchParameters($itemId);
@@ -381,7 +453,13 @@ class TileTheme extends GalleryTheme {
      */
     function handleSettingsRequest($form, $itemId=null) {
 	if (!isset($itemId)) {
-	    /* No site admin settings */
+	    
+
+
+/*  No site admin settings  */
+
+
+
 	    return array(null, array(), '');
 	}
 	list ($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
@@ -417,7 +495,13 @@ class TileTheme extends GalleryTheme {
 		return array($ret, null, null);
 	    }
 	    $status = $this->translate('Successfully saved theme settings');
-	} /* else $form['action']['undo'] */
+	} 
+
+
+/*  else $form['action']['undo']  */
+
+
+
 
 	return array(null, $error, $status);
     }

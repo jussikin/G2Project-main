@@ -39,7 +39,13 @@ class IsapiRewriteHelper {
 	    return array(null, $code, null);
 	}
 
-	/* By default we use the rules we've already got */
+	
+
+
+/*  By default we use the rules we've already got  */
+
+
+
 	if (is_null($activeRules)) {
 	    list($ret, $activeRules) = GalleryCoreApi::getPluginParameter(
 		'module', 'rewrite', 'activeRules');
@@ -71,7 +77,13 @@ class IsapiRewriteHelper {
 	    return array(null, $code, null);
 	}
 
-	/* Finally, save the new rules */
+	
+
+
+/*  Finally, save the new rules  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter(
 	    'module', 'rewrite', 'shortUrls', serialize($shortUrls));
 	if ($ret) {
@@ -111,7 +123,13 @@ class IsapiRewriteHelper {
 	    return array($ret, null);
 	}
 
-	/* Save the new httpd.ini */
+	
+
+
+/*  Save the new httpd.ini  */
+
+
+
 	list ($ret, $code) = $this->saveActiveRules();
 	if ($ret) {
 	    return array($ret, null);
@@ -210,13 +228,25 @@ class IsapiRewriteHelper {
 	    $Httpdini['rewriteBase'] = $Httpdini['directory'];
 	}
 
-	/* Substitute with what the Gallery URL generator would generate */
+	
+
+
+/*  Substitute with what the Gallery URL generator would generate  */
+
+
+
 	$galleryUrlGenerator = new GalleryUrlGenerator();
 	$galleryUrlGenerator->init($Httpdini['directory'] . $Httpdini['baseFile'],
 				   $Httpdini['galleryDirectory'] . GALLERY_MAIN_PHP);
 
 	foreach ($regexRules as $ruleId => $regexRule) {
-	    /* Conditions */
+	    
+
+
+/*  Conditions  */
+
+
+
 	    if (!empty($regexRule['conditions'])) {
 		foreach ($regexRule['conditions'] as $conditionId => $condition) {
 		    /*
@@ -243,13 +273,25 @@ class IsapiRewriteHelper {
 		     */
 		    $isNegative = false;
 
-		    /* Condition pattern starts with '!' */
+		    
+
+
+/*  Condition pattern starts with '!'  */
+
+
+
 		    if (substr($condition['pattern'], 0, 1) == '!') {
 			$condition['pattern'] = substr($condition['pattern'], 1);
 			$isNegative = true;
 		    }
 
-		    /* Condition pattern starts with '^' */
+		    
+
+
+/*  Condition pattern starts with '^'  */
+
+
+
 		    if (substr($condition['pattern'], 0, 1) == '^') {
 			$condition['pattern'] = substr($condition['pattern'], 1);
 		    } else {
@@ -286,7 +328,13 @@ class IsapiRewriteHelper {
 			}
 		    }
 
-		    /* Condition pattern ends with unescaped '$' */
+		    
+
+
+/*  Condition pattern ends with unescaped '$'  */
+
+
+
 		    if (substr($condition['pattern'], -1) == '$'
 			    && substr($condition['pattern'], -2) != '\\$') {
 			$condition['pattern'] = substr($condition['pattern'], 0, -1);
@@ -294,7 +342,13 @@ class IsapiRewriteHelper {
 			    $condition['pattern'] = '(?!' . $condition['pattern'] . ')';
 			}
 			if ($condition['pattern'] == '(?!)') {
-			    /* Avoid pattern (?!) (isapi_rewrite logs a parse error). */
+			    
+
+
+/*  Avoid pattern (?!) (isapi_rewrite logs a parse error).  */
+
+
+
 			    $condition['pattern'] = '(?!.{0})';
 			}
 		    } else {
@@ -321,14 +375,26 @@ class IsapiRewriteHelper {
 		'test' => 'Host:',
 		'pattern' => $Httpdini['host']);
 
-	    /* Pattern */
+	    
+
+
+/*  Pattern  */
+
+
+
 	    if (!empty($regexRule['pattern'])) {
 		$regexRule['conditions'][] = array(
 		    'test' => 'URL',
 		    'pattern' => $Httpdini['rewriteBase'] . $regexRule['pattern'] . '(?:\\?.*)?');
 	    }
 
-	    /* Substitution */
+	    
+
+
+/*  Substitution  */
+
+
+
 	    $params = $regexRule['queryString'];
 	    foreach ($regexRule['keywords'] as $reference => $name) {
 		if (empty($name)) {
@@ -341,7 +407,13 @@ class IsapiRewriteHelper {
 	    $regexRule['substitution'] = $galleryUrlGenerator->generateUrl(
 		$params, $regexRule['options']);
 
-	    /* Convert references from mod_rewrite style to isapi_rewrite style */
+	    
+
+
+/*  Convert references from mod_rewrite style to isapi_rewrite style  */
+
+
+
 	    $regexRule['substitution'] =
 		    preg_replace('/%(\d+)/', '$\1', $regexRule['substitution']);
 
@@ -356,7 +428,13 @@ class IsapiRewriteHelper {
 	    $regexRule['substitution'] = str_replace('%{QUERY_STRING}',
 		'$' . (count($regexRule['keywords']) + 1), $regexRule['substitution']);
 
-	    /* Flags */
+	    
+
+
+/*  Flags  */
+
+
+
 	    if (!empty($regexRule['flags'])) {
 		/*
 		 * ISAPI_Rewrite doesn't support the 'QSA' flag but we can append the query string
@@ -379,7 +457,13 @@ class IsapiRewriteHelper {
 	}
 	$Httpdini['rules'] = $regexRules;
 
-	/* Render template */
+	
+
+
+/*  Render template  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 	$template = new GalleryTemplate(dirname(__FILE__) . '/../../../templates', true, false);
 	$template->setVariable('Httpdini', $Httpdini);
@@ -530,7 +614,13 @@ class IsapiRewriteHelper {
 	    $newHtaccess = "[ISAPI_Rewrite]\r\n" . $htaccess . "\r\n";
 	}
 
-	/* Write the new file */
+	
+
+
+/*  Write the new file  */
+
+
+
 	if ($fd = @$platform->fopen($file, 'w')) {
 	    $platform->fwrite($fd, $newHtaccess);
 	    $platform->fclose($fd);

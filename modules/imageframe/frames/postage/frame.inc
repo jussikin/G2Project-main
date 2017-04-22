@@ -1,15 +1,39 @@
-<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
-  /* Contributed by: demonhood */
+<?php 
+
+
+/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
+
+
+
+  
+
+
+/*  Contributed by: demonhood  */
+
+
+
 $frameData = array(
 
 'name' => $gallery->i18n('Postage'),
 
-/* Top Left */
+
+
+
+/*  Top Left  */
+
+
+
 'imageTL' => 'TL5.gif',
 'widthTL' => 10,
 'heightTL' => 10,
 
-/* Top */
+
+
+
+/*  Top  */
+
+
+
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -19,12 +43,24 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-/* Top Right */
+
+
+
+/*  Top Right  */
+
+
+
 'imageTR' => 'TR5.gif',
 'widthTR' => 10,
 'heightTR' => 10,
 
-/* Left */
+
+
+
+/*  Left  */
+
+
+
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -34,7 +70,13 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-/* Right */
+
+
+
+/*  Right  */
+
+
+
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -44,12 +86,24 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-/* Bottom Left */
+
+
+
+/*  Bottom Left  */
+
+
+
 'imageBL' => 'BL5.gif',
 'heightBL' => 10,
 'widthBL' => 10,
 
-/* Bottom */
+
+
+
+/*  Bottom  */
+
+
+
 'imageBBL' => '',
 'widthBBL' => 0,
 
@@ -59,7 +113,13 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-/* Bottom Right */
+
+
+
+/*  Bottom Right  */
+
+
+
 'imageBR' => 'BR5.gif',
 'widthBR' => 10,
 'heightBR' => 10,

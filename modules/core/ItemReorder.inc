@@ -39,7 +39,13 @@ class ItemReorderController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	/* Check permissions */
+	
+
+
+/*  Check permissions  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -48,7 +54,13 @@ class ItemReorderController extends GalleryController {
 	$status = $error = array();
 	if (isset($form['action']['reorder'])) {
 
-	    /* Verify that we've got what we need */
+	    
+
+
+/*  Verify that we've got what we need  */
+
+
+
 	    if (empty($form['selectedId'])) {
 		$error[] = 'form[error][selectedId][missing]';
 	    }
@@ -81,7 +93,13 @@ class ItemReorderController extends GalleryController {
 		}
 		if (!isset($permissions[$selectedId]['core.view'])
 			|| !isset($permissions[$selectedId]['core.view'])) {
-		    /* Avoid information disclosure, act as if the items didn't exist. */
+		    
+
+
+/*  Avoid information disclosure, act as if the items didn't exist.  */
+
+
+
 		    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
@@ -111,7 +129,13 @@ class ItemReorderController extends GalleryController {
 		    }
 
 		    if (isset($next)) {
-			/* Floor rounds down, so separate the sign and the magnitude */
+			
+
+
+/*  Floor rounds down, so separate the sign and the magnitude  */
+
+
+
 			$delta = (int)(($next - $orderWeights[$targetId]) / 2);
 		    } else {
 			/*
@@ -132,7 +156,13 @@ class ItemReorderController extends GalleryController {
 			return array(GalleryCoreApi::error(ERROR_UNKNOWN), null);
 		    }
 
-		    /* A delta of 0 means that we don't have room, so rebalance */
+		    
+
+
+/*  A delta of 0 means that we don't have room, so rebalance  */
+
+
+
 		    $ret = GalleryCoreApi::rebalanceChildOrderWeights($itemId);
 		    if ($ret) {
 			return array($ret, null);
@@ -152,7 +182,13 @@ class ItemReorderController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Redirect back to the same page so that we can do more reordering */
+		
+
+
+/*  Redirect back to the same page so that we can do more reordering  */
+
+
+
 		$redirect['view'] = 'core.ItemAdmin';
 		$redirect['subView'] = 'core.ItemReorder';
 		$redirect['itemId'] = $itemId;
@@ -186,7 +222,13 @@ class ItemReorderView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	/* itemId is the album where we want to move items from */
+	
+
+
+/*  itemId is the album where we want to move items from  */
+
+
+
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
@@ -194,9 +236,21 @@ class ItemReorderView extends GalleryView {
 	$itemId = $item->getId();
 
 	if ($form['formName'] == 'ItemReorder') {
-	    /* No validation at the moment */
+	    
+
+
+/*  No validation at the moment  */
+
+
+
 	} else {
-	    /* First time around, load the form with item data */
+	    
+
+
+/*  First time around, load the form with item data  */
+
+
+
 	    $form['formName'] = 'ItemReorder';
 	}
 
@@ -214,19 +268,37 @@ class ItemReorderView extends GalleryView {
 	    $show['automaticOrderMessage'] = 1;
 	} else {
 
-	    /* Get all peers that we can see */
+	    
+
+
+/*  Get all peers that we can see  */
+
+
+
 	    list ($ret, $peerIds) = GalleryCoreApi::fetchChildItemIds($item);
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* Load all the peers */
+	    
+
+
+/*  Load all the peers  */
+
+
+
 	    list ($ret, $peerItems) = GalleryCoreApi::loadEntitiesById($peerIds, 'GalleryItem');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* Build our peers table */
+	    
+
+
+/*  Build our peers table  */
+
+
+
 	    $peers = array();
 	    foreach ($peerItems as $peerItem) {
 		$peers[$peerItem->getId()] = (array)$peerItem;

@@ -43,13 +43,25 @@ class SiteAdminView extends GalleryView {
 	    return array($ret[0], $ret[1]);
 	}
 
-	/* Load the module list */
+	
+
+
+/*  Load the module list  */
+
+
+
 	list ($ret, $moduleStatus) = GalleryCoreApi::fetchPluginStatus('module');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Get a list of all the admin views for each module */
+	
+
+
+/*  Get a list of all the admin views for each module  */
+
+
+
 	$subViewChoices = array();
 	ksort($moduleStatus);
 
@@ -60,7 +72,13 @@ class SiteAdminView extends GalleryView {
 	$subView = GalleryUtilities::getRequestVariables('subView');
 	$showAllSiteAdminViews = ($subView == 'core.AdminPlugins');
 	if ($showAllSiteAdminViews) {
-	    /* Ensure translations available even for uninstalled plugins */
+	    
+
+
+/*  Ensure translations available even for uninstalled plugins  */
+
+
+
 	    GalleryCoreApi::installTranslationsForLocale();
 	}
 
@@ -69,7 +87,13 @@ class SiteAdminView extends GalleryView {
 		continue;
 	    }
 
-	    /* Get the selected module's admin view */
+	    
+
+
+/*  Get the selected module's admin view  */
+
+
+
 	    if (in_array('getSiteAdminViews', explode('|', $status['callbacks'])) ||
 		$showAllSiteAdminViews) {
 		if ($showAllSiteAdminViews) {
@@ -77,7 +101,13 @@ class SiteAdminView extends GalleryView {
 			GalleryCoreApi::loadPlugin('module', $moduleId, true, false);
 		    if ($ret) {
 			if ($ret->getErrorCode() & ERROR_BAD_PARAMETER) {
-			    /* Module is missing or malformed, so ignore it */
+			    
+
+
+/*  Module is missing or malformed, so ignore it  */
+
+
+
 			    continue;
 			}
 			return array($ret, null);
@@ -132,7 +162,13 @@ class SiteAdminView extends GalleryView {
 		    $outer['view'] = $inner;
 
 		    if ($inner['subView'] == $currentSubView) {
-			/* This is probably our selected view */
+			
+
+
+/*  This is probably our selected view  */
+
+
+
 			$selected = true;
 			foreach ($inner as $key => $value) {
 			    if ($key == 'view') {
@@ -152,7 +188,13 @@ class SiteAdminView extends GalleryView {
 	    }
 	}
 
-	/* Sort and group */
+	
+
+
+/*  Sort and group  */
+
+
+
 	$subViewGroups = $groupLabels = array();
 	foreach ($subViewChoices as $adminView) {
 	    $group = $adminView['group'];
@@ -168,7 +210,13 @@ class SiteAdminView extends GalleryView {
 	    }
 	}
 
-	/* Set labels */
+	
+
+
+/*  Set labels  */
+
+
+
 	foreach (array_keys($subViewGroups) as $group) {
 	    $data =& $subViewGroups[$group];
 	    usort($data, array($this, 'nameSort'));
@@ -186,7 +234,13 @@ class SiteAdminView extends GalleryView {
 	}
 	usort($subViewGroups, array($this, 'groupSort'));
 
-	/* If we have a specific sub view, render it now */
+	
+
+
+/*  If we have a specific sub view, render it now  */
+
+
+
 	$subViewName = GalleryUtilities::getRequestVariables('subView');
 	if ($subViewName == 'core.SiteAdmin') {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
@@ -211,7 +265,13 @@ class SiteAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Our sub view may have set some hints, like the encoding type */
+	
+
+
+/*  Our sub view may have set some hints, like the encoding type  */
+
+
+
 	if ($template->hasVariable('SiteAdmin')) {
 	    $SiteAdmin =& $template->getVariableByReference('SiteAdmin');
 	} else {
@@ -223,7 +283,13 @@ class SiteAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Set up my view parameters */
+	
+
+
+/*  Set up my view parameters  */
+
+
+
 	$SiteAdmin['subViewGroups'] = $subViewGroups;
 	$SiteAdmin['subViewName'] = $subViewName;
 	$SiteAdmin['viewBodyFile'] = $results['body'];
@@ -238,7 +304,13 @@ class SiteAdminView extends GalleryView {
      * @see GalleryView::getViewDescription
      */
     function getViewDescription() {
-	/* Get the description from the current subView */
+	
+
+
+/*  Get the description from the current subView  */
+
+
+
 	$subViewName = GalleryUtilities::getRequestVariables('subView');
 	if (empty($subViewName)) {
 	    $subViewName = 'core.AdminCore';
@@ -257,7 +329,13 @@ class SiteAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Fallback if subView doesn't have a name */
+	
+
+
+/*  Fallback if subView doesn't have a name  */
+
+
+
 	return array(null, $core->translate('site admin'));
     }
 
@@ -271,7 +349,13 @@ class SiteAdminView extends GalleryView {
     function groupSort($a, $b) {
 	static $groupOrder;
 	if (!isset($groupOrder)) {
-	    /* gallery first, toolkits second, other last */
+	    
+
+
+/*  gallery first, toolkits second, other last  */
+
+
+
 	    $groupOrder = array('gallery' => 1, 'toolkits' => 2, '' => 3, 'other' => 4);
 	}
 	$ag = $a[0]['group'];

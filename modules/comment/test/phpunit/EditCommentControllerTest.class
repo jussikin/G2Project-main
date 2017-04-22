@@ -38,7 +38,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	/* Create two random items */
+	
+
+
+/*  Create two random items  */
+
+
+
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $this->_item[$i]) = $this->_createRandomDataItem($this->_getRootId());
 	    if ($ret) {
@@ -47,7 +53,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 
 	    $this->_markForCleanup($this->_item[$i]);
 
-	    /* Create a comment in it that we can delete */
+	    
+
+
+/*  Create a comment in it that we can delete  */
+
+
+
 	    list ($ret, $this->_comment[$i]) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');
 	    if ($ret) {
@@ -124,7 +136,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Grab the comment and verify it */
+	
+
+
+/*  Grab the comment and verify it  */
+
+
+
 	list ($ret, $comment) = $this->_comment[0]->refresh();
 	if ($ret) {
 	    return $ret;
@@ -140,7 +158,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
     function testPreviewComment() {
 	global $gallery;
 
-	/* Use valid inputs */
+	
+
+
+/*  Use valid inputs  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 	GalleryUtilities::putRequestVariable('form[action][preview]', 1);
 	GalleryUtilities::putRequestVariable('form[host]', 'hosty.host.host');
@@ -150,7 +174,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[commenterName]',
 					     $this->_anonymousUser->getUserName());
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'comment.EditComment'),
 				  'status' => array(),
@@ -216,7 +246,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
     function testPreviewEmptyComment() {
 	global $gallery;
 
-	/* Use valid inputs */
+	
+
+
+/*  Use valid inputs  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 	GalleryUtilities::putRequestVariable('form[action][preview]', 1);
 	GalleryUtilities::putRequestVariable('form[host]', '');
@@ -226,7 +262,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable(
 	    'form[publishStatus]', COMMENT_PUBLISH_STATUS_PUBLISHED);
 
-	/* Perform the request and verify that we failed */
+	
+
+
+/*  Perform the request and verify that we failed  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'comment.EditComment'),
 				  'status' => array(),
@@ -288,7 +330,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Grab the comment and verify it */
+	
+
+
+/*  Grab the comment and verify it  */
+
+
+
 	list ($ret, $comment) = $this->_comment[0]->refresh();
 	if ($ret) {
 	    return $ret;
@@ -321,7 +369,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
     }
 
     function testPublishComment() {
-	/* comment[1] starts off unpublished */
+	
+
+
+/*  comment[1] starts off unpublished  */
+
+
+
 	GalleryUtilities::putRequestVariable('commentId', $this->_comment[1]->getId());
 	GalleryUtilities::putRequestVariable('itemId', $this->_item[1]->getId());
 	GalleryUtilities::putRequestVariable('form[host]', 'hosty.host.host');
@@ -339,7 +393,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Grab the comment and verify it */
+	
+
+
+/*  Grab the comment and verify it  */
+
+
+
 	list ($ret, $comment) = $this->_comment[1]->refresh();
 	if ($ret) {
 	    return $ret;
@@ -349,7 +409,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
     }
 
     function testUnpublishComment() {
-	/* comment[0] starts off published */
+	
+
+
+/*  comment[0] starts off published  */
+
+
+
 	GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 	GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 	GalleryUtilities::putRequestVariable('form[host]', 'hosty.host.host');
@@ -367,7 +433,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Grab the comment and verify it */
+	
+
+
+/*  Grab the comment and verify it  */
+
+
+
 	list ($ret, $comment) = $this->_comment[0]->refresh();
 	if ($ret) {
 	    return $ret;
@@ -377,7 +449,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
     }
 
     function testSpamifyComment() {
-	/* comment[0] starts off published */
+	
+
+
+/*  comment[0] starts off published  */
+
+
+
 	GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 	GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 	GalleryUtilities::putRequestVariable('form[host]', 'hosty.host.host');
@@ -395,7 +473,13 @@ class EditCommentControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Grab the comment and verify it */
+	
+
+
+/*  Grab the comment and verify it  */
+
+
+
 	list ($ret, $comment) = $this->_comment[0]->refresh();
 	if ($ret) {
 	    return $ret;

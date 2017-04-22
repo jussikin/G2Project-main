@@ -53,7 +53,13 @@ class UserRecoverPasswordConfirmController extends GalleryController {
 		$error[] = 'form[error][password][mismatch]';
 	    }
 
-	    /* No errors?  Check the DB for the request and then update the user's password */
+	    
+
+
+/*  No errors?  Check the DB for the request and then update the user's password  */
+
+
+
 	    if (empty($error)) {
 		list ($ret, $user) = GalleryCoreApi::fetchUserByUsername($form['userName']);
 		if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
@@ -116,7 +122,13 @@ class UserRecoverPasswordConfirmController extends GalleryController {
 			return array($ret, null);
 		    }
 		} else {
-		    /* There is no matching request for this userName and authString combo */
+		    
+
+
+/*  There is no matching request for this userName and authString combo  */
+
+
+
 		     $error[] = 'form[error][request][missing]';
 		}
 	    }

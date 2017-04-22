@@ -56,7 +56,13 @@ class RewriteUrlGenerator extends GalleryUrlGenerator {
 		}
 	    }
 
-	    /* $shortUrl['match'] is subset of $params */
+	    
+
+
+/*  $shortUrl['match'] is subset of $params  */
+
+
+
 	    return $shortUrl;
 	}
     }
@@ -90,7 +96,13 @@ class RewriteUrlGenerator extends GalleryUrlGenerator {
     function _onLoad() {
 	$variables = GalleryUtilities::getAllRequestVariables();
 
-	/* Make sure the onLoad function is called even if the default view is omitted */
+	
+
+
+/*  Make sure the onLoad function is called even if the default view is omitted  */
+
+
+
 	if (empty($variables['controller']) && empty($variables['view'])) {
 	    $variables['view'] = GALLERY_DEFAULT_VIEW;
 	}
@@ -117,26 +129,50 @@ class RewriteUrlGenerator extends GalleryUrlGenerator {
 	    return parent::generateUrl($params, $options);
 	}
 
-	/* Build the short style URL */
+	
+
+
+/*  Build the short style URL  */
+
+
+
 	$shortUrl = $this->_getShortUrl($params);
 
 	if (empty($shortUrl)) {
 	    return parent::generateUrl($params, $options);
 	}
 
-	/* Check if we are forced to append the session id in embedded */
+	
+
+
+/*  Check if we are forced to append the session id in embedded  */
+
+
+
 	if (!isset($options['forceSessionId']) && $this->embedForceSessionId($params)) {
 	    $options['forceSessionId'] = true;
 	}
 
-	/* Check if we are forced to append the auth token */
+	
+
+
+/*  Check if we are forced to append the auth token  */
+
+
+
 	if (!isset($options['useAuthToken']) && !empty($params['controller'])) {
 	    $options['useAuthToken'] = true;
 	}
 
 	$trueParams = $params;
 
-	/* Parse and replace all keywords */
+	
+
+
+/*  Parse and replace all keywords  */
+
+
+
 	$url = $shortUrl['pattern'];
 	$functions = array();
 	if (isset($shortUrl['functions'])) {
@@ -190,7 +226,13 @@ class RewriteUrlGenerator extends GalleryUrlGenerator {
 
 		$url = str_replace('%' . $arg . '%', $value, $url);
 
-		/* We can't unset the itemId until we have replaced all keywords */
+		
+
+
+/*  We can't unset the itemId until we have replaced all keywords  */
+
+
+
 		if ($arg != 'itemId') {
 		    unset($params[$arg]);
 		} else {
@@ -214,7 +256,13 @@ class RewriteUrlGenerator extends GalleryUrlGenerator {
      * @return GalleryEntity or null on failure
      */
     function loadEntity(&$itemId) {
-	/* Assume rootAlbum if itemId not specified */
+	
+
+
+/*  Assume rootAlbum if itemId not specified  */
+
+
+
 	if (empty($itemId)) {
 	    list ($ret, $itemId) = GalleryCoreApi::getDefaultAlbumId();
 	    if ($ret) {

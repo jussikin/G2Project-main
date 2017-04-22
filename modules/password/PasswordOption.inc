@@ -90,7 +90,13 @@ class PasswordOption extends ItemEditOption {
 		    return array($ret, null, null);
 		}
 	    } else {
-		/* Throw an error because both passwords do not match */
+		
+
+
+/*  Throw an error because both passwords do not match  */
+
+
+
 		$error[] = 'form[error][PasswordOption][mismatch]';
 	    }
 	}
@@ -102,7 +108,13 @@ class PasswordOption extends ItemEditOption {
      * @see ItemEditOption::requiresProgressBar
      */
     function requiresProgressBar($form) {
-	/* Progress bar if adding new password or removing password from an album */
+	
+
+
+/*  Progress bar if adding new password or removing password from an album  */
+
+
+
 	return isset($form['PasswordOption']['progressBar']) && (
 		($form['PasswordOption']['progressBar'] == 'add'
 		 && !empty($form['PasswordOption']['password1'])

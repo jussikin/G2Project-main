@@ -18,7 +18,13 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/** MediaRSS paging items per page */
+
+
+
+/*  MediaRSS paging items per page  */
+
+
+
 define('SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE', 25);
 
 GalleryCoreApi::requireOnce('modules/slideshow/classes/SlideshowInterface_1_0.class');
@@ -55,12 +61,24 @@ class SlideshowHelper {
 	    return array($ret, null, null, null, null);
 	}
 	if (!$canView) {
-	    /* Avoid information disclosure, act as if the item didn't exist. */
+	    
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null, null, null, null);
 	}
 
 	if (!$item->getCanContainChildren()) {
-	    /* Photo: do slideshow of parent album, start at this photo */
+	    
+
+
+/*  Photo: do slideshow of parent album, start at this photo  */
+
+
+
 	    $startId = $item->getId();
 	    list ($ret, $item) =
 		GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
@@ -72,12 +90,24 @@ class SlideshowHelper {
 		return array($ret, null, null, null, null);
 	    }
 	    if (!$canView) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null, null, null, null);
 	    }
 	}
 
-	/** @todo Make sure startId is in the first page we serve */
+	
+
+
+/*  @todo Make sure startId is in the first page we serve  */
+
+
+
 	list ($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($item, $offset,
 	    SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE);
 	if ($ret) {
@@ -176,7 +206,13 @@ class SlideshowHelper {
 	    if (GalleryUtilities::isA($child, 'GalleryPhotoItem')) {
 		$image = null;
 		if (isset($permissions[$childId]['core.viewSource'])) {
-		    /* Full size; check for preferred copy */
+		    
+
+
+/*  Full size; check for preferred copy  */
+
+
+
 		    if (isset($preferredFullImages[$childId])) {
 			$image = $preferredFullImages[$childId];
 		    } else if ($child->canBeViewedInline()) {
@@ -186,7 +222,13 @@ class SlideshowHelper {
 			   isset($resizedImages[$childId])) {
 		    $maxSize = 0;
 		    foreach ($resizedImages[$childId] as $resize) {
-			/* Pick the largest resize */
+			
+
+
+/*  Pick the largest resize  */
+
+
+
 			$tmp = $resize->getWidth() * $resize->getHeight();
 			if ($tmp > $maxSize) {
 			    $image = $resize;

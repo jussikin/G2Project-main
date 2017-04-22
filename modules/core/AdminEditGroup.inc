@@ -45,13 +45,25 @@ class AdminEditGroupController extends GalleryController {
 
 	if (isset($form['action']['cancel'])) {
 
-	    /* Redirect back to the AdminGroups view */
+	    
+
+
+/*  Redirect back to the AdminGroups view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminGroups';
 
 	} else if (isset($form['action']['undo'])) {
 
-	    /* Redirect back to the same view to reset the form */
+	    
+
+
+/*  Redirect back to the same view to reset the form  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminEditGroup';
 	    $redirect['groupId'] = $groupId;
@@ -72,19 +84,37 @@ class AdminEditGroupController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		/* Save our changes */
+		
+
+
+/*  Save our changes  */
+
+
+
 		list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($groupId);
 		if ($ret) {
 		    return array($ret, null);
 		}
 
-		/* Refresh our object, now that it's locked */
+		
+
+
+/*  Refresh our object, now that it's locked  */
+
+
+
 		list ($ret, $group) = $group->refresh();
 		if ($ret) {
 		    return array($ret, null);
 		}
 
-		/* Enact the change */
+		
+
+
+/*  Enact the change  */
+
+
+
 		$group->setGroupName($form['groupName']);
 		$ret = $group->save();
 		if ($ret) {
@@ -96,7 +126,13 @@ class AdminEditGroupController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Request a redirect to the confirmation screen */
+		
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'core.AdminGroups';
 		$status['modifiedGroup'] = $group->getGroupName();
@@ -137,7 +173,13 @@ class AdminEditGroupView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminEditGroup') {
-	    /* First time around initialize our form */
+	    
+
+
+/*  First time around initialize our form  */
+
+
+
 	    $form['groupName'] = $group->getGroupName();
 	    $form['formName'] = 'AdminEditGroup';
 	}

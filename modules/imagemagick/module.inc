@@ -82,7 +82,13 @@ class ImageMagickModule extends GalleryModule {
 		    return $ret;
 		}
 		if ($isActive) {
-		    /* Force upgrade from site admin to see vulnerable-version warning */
+		    
+
+
+/*  Force upgrade from site admin to see vulnerable-version warning  */
+
+
+
 		    return GalleryCoreApi::error(ERROR_CONFIGURATION_REQUIRED);
 		}
 	    }
@@ -95,7 +101,13 @@ class ImageMagickModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our graphics class with the factory */
+	
+
+
+/*  Register our graphics class with the factory  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ImageMagickToolkit', 'ImageMagick',
 	    'modules/imagemagick/classes/ImageMagickToolkit.class', 'imagemagick', null);
@@ -110,11 +122,23 @@ class ImageMagickModule extends GalleryModule {
      * @see GalleryModule::activate
      */
     function activate($postActivationEvent=true) {
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce(
 	    'modules/imagemagick/classes/ImageMagickToolkitHelper.class');
 
-	/* Find out what operations and properties we have available to us */
+	
+
+
+/*  Find out what operations and properties we have available to us  */
+
+
+
 	list ($ret, $results) =
 	    ImageMagickToolkitHelper::getOperationsAndProperties();
 	if ($ret) {
@@ -147,7 +171,13 @@ class ImageMagickModule extends GalleryModule {
 	    }
 	}
 
-	/* Check CMYK colorspace support */
+	
+
+
+/*  Check CMYK colorspace support  */
+
+
+
 	list ($ret, $cmykSupport) = $this->getParameter('cmykSupport');
 	if ($ret) {
 	    return array($ret, null);
@@ -166,7 +196,13 @@ class ImageMagickModule extends GalleryModule {
 
 	foreach ($results['properties'] as $property => $info) {
 	    if ($property == 'colorspace' && $cmykSupport != 'on') {
-		/* Skip colorspace if this feature isn't turned on */
+		
+
+
+/*  Skip colorspace if this feature isn't turned on  */
+
+
+
 		continue;
 	    }
 	    $ret = GalleryCoreApi::registerToolkitProperty('ImageMagick',
@@ -179,7 +215,13 @@ class ImageMagickModule extends GalleryModule {
 	    }
 	}
 
-	/* Save some platform specific ImageMagick parameters */
+	
+
+
+/*  Save some platform specific ImageMagick parameters  */
+
+
+
 	$ret = ImageMagickToolkitHelper::savePlatformParameters();
 	if ($ret) {
 	    return array($ret, null);
@@ -197,11 +239,23 @@ class ImageMagickModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}
-	/* This module requires all fields to be filled out before it can be activated. */
+	
+
+
+/*  This module requires all fields to be filled out before it can be activated.  */
+
+
+
 	foreach (array('path', 'jpegQuality', 'cmykSupport', 'versionOk') as $key) {
 	    list ($ret, $value) = $this->getParameter($key);
 	    if ($ret) {
@@ -221,7 +275,13 @@ class ImageMagickModule extends GalleryModule {
     function autoConfigure() {
 	global $gallery;
 
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -234,7 +294,13 @@ class ImageMagickModule extends GalleryModule {
 	    return array(null, true);
 	}
 
-	/* Try a bunch of likely seeming paths to see if any of them work. */
+	
+
+
+/*  Try a bunch of likely seeming paths to see if any of them work.  */
+
+
+
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
@@ -284,34 +350,70 @@ class ImageMagickModule extends GalleryModule {
 	    return array(null, false);
 	}
 
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce(
 	    'modules/imagemagick/classes/ImageMagickToolkitHelper.class');
 
-	/* Now try each path in turn to see which ones work */
+	
+
+
+/*  Now try each path in turn to see which ones work  */
+
+
+
 	foreach ($paths as $path) {
 	    list ($ret, $testResults) = ImageMagickToolkitHelper::testBinaries($path);
 	    if ($ret) {
-		/* This path failed.  Continue with the next one */
+		
+
+
+/*  This path failed.  Continue with the next one  */
+
+
+
 		continue;
 	    }
 
 	    $failCount = 0;
 	    foreach ($testResults as $testResult) {
-		/* All tests should work, else this path is not a valid one */
+		
+
+
+/*  All tests should work, else this path is not a valid one  */
+
+
+
 		if (!$testResult['success']) {
 		    $failCount++;
 		}
 	    }
 
 	    if ($failCount == 0) {
-		/* We have a winner */
+		
+
+
+/*  We have a winner  */
+
+
+
 		$ret = GalleryCoreApi::setPluginParameter('module', 'imagemagick', 'path', $path);
 		if ($ret) {
 		    return array($ret, false);
 		}
 
-		/* Force admin to visit site admin to view warning for vulnerable version */
+		
+
+
+/*  Force admin to visit site admin to view warning for vulnerable version  */
+
+
+
 		list ($ret, $version, $vulnerable) =
 		    ImageMagickToolkitHelper::discoverVersion($path);
 		if (!$ret && !$vulnerable) {

@@ -48,10 +48,22 @@ class UploadAppletSiteAdminController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* modify it */
+		
+
+
+/*  modify it  */
+
+
+
 		$variables[$form[$type]['name']] = $form[$type]['value'];
 
-		/* serialize it again */
+		
+
+
+/*  serialize it again  */
+
+
+
 		$ret = $this->setVariables($type, $variables);
 		if ($ret) {
 		    return array($ret, null);
@@ -71,10 +83,22 @@ class UploadAppletSiteAdminController extends GalleryController {
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
 
-	    /* delete it */
+	    
+
+
+/*  delete it  */
+
+
+
 	    unset($variables[$form['delete']['variable']]);
 
-	    /* serialize it again */
+	    
+
+
+/*  serialize it again  */
+
+
+
 	    $ret = $this->setVariables($type, $variables);
 	    if ($ret) {
 		return array($ret, null);
@@ -82,7 +106,13 @@ class UploadAppletSiteAdminController extends GalleryController {
 	}
 
 
-	/* Figure out where to redirect upon success */
+	
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results[$method]['view'] = 'core.SiteAdmin';
 	$results[$method]['subView'] = 'uploadapplet.UploadAppletSiteAdmin';
@@ -110,7 +140,13 @@ class UploadAppletSiteAdminController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	/* unserialize the plugin parameter */
+	
+
+
+/*  unserialize the plugin parameter  */
+
+
+
 	if (!empty($variables)) {
 	    $variables1 = explode('|', $variables);
 	    foreach ($variables1 as $variable) {

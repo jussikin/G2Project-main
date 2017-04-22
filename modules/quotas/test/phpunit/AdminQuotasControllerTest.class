@@ -72,7 +72,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
     }
 
     function testEditGroupQuotaFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;
@@ -93,7 +99,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteUserOrGroupQuota($group->getId());
 
-	/* Missing group name */
+	
+
+
+/*  Missing group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][group][editFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][groupName]', null);
 
@@ -104,7 +116,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noGroupSpecified]')),
 			    $results);
 
-	/* Invalid group name */
+	
+
+
+/*  Invalid group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][group][editFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][groupName]',
 					     'some-invalid-group-name-'.rand());
@@ -118,7 +136,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
     }
 
     function testEditUserQuotaFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -139,7 +163,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteUserOrGroupQuota($user->getId());
 
-	/* Missing user name */
+	
+
+
+/*  Missing user name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][user][editFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][userName]', null);
 
@@ -150,7 +180,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noUserSpecified]')),
 			    $results);
 
-	/* Invalid user name */
+	
+
+
+/*  Invalid user name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][user][editFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][userName]',
 					     'some-invalid-user-name-'.rand());
@@ -164,7 +200,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteGroupFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;
@@ -185,7 +227,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteUserOrGroupQuota($group->getId());
 
-	/* Missing group name */
+	
+
+
+/*  Missing group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][group][deleteFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][groupName]');
 
@@ -196,7 +244,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noGroupSpecified]')),
 			    $results);
 
-	/* Invalid group name */
+	
+
+
+/*  Invalid group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][group][deleteFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][groupName]',
 					     'some-invalid-group-name-'.rand());
@@ -210,7 +264,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteUserFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -231,7 +291,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteUserOrGroupQuota($user->getId());
 
-	/* Missing user name */
+	
+
+
+/*  Missing user name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][user][deleteFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][userName]');
 
@@ -242,7 +308,13 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noUserSpecified]')),
 			    $results);
 
-	/* Invalid user name */
+	
+
+
+/*  Invalid user name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][user][deleteFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][userName]',
 					     'some-invalid-user-name-'.rand());

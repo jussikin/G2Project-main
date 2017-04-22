@@ -48,7 +48,13 @@ class MockObject {
 
     function isComplete() {
 	foreach ($_GET[$this->_className]['replies'] as $reply) {
-	    if (!$reply[3]) { /* ignore optional replies */
+	    if (!$reply[3]) { 
+
+
+/*  ignore optional replies  */
+
+
+
 		$incomplete = true;
 		break;
 	    }
@@ -69,7 +75,13 @@ class MockObject {
 		return $expected[2];
 	    }
 	    if (!$expected[3]) {
-		break; /* Not optional -- error */
+		break; 
+
+
+/*  Not optional -- error  */
+
+
+
 	    }
 	}
 

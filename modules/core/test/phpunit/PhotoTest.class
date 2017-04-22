@@ -39,7 +39,13 @@ class PhotoTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Register a dummy toolkit */
+	
+
+
+/*  Register a dummy toolkit  */
+
+
+
 	$path = 'modules/core/test/phpunit/PhotoTest.class';
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'PhotoTestToolkit', 'PhotoTestToolkit',
@@ -112,7 +118,13 @@ class PhotoTest extends GalleryTestCase {
     }
 
     function testCMYKPhoto() {
-	/* Test that mime type gets -cmyk appended if toolkit says it uses CMYK colorspace */
+	
+
+
+/*  Test that mime type gets -cmyk appended if toolkit says it uses CMYK colorspace  */
+
+
+
 	list ($ret, $photo) = GalleryCoreApi::newItemByMimeType('image/test');
 	if ($ret) {
 	    return $ret;
@@ -143,7 +155,13 @@ class PhotoTest extends GalleryTestCase {
     }
 
     function testRGBPhoto() {
-	/* Test that mime type is not affected if toolkit says it uses RGB colorspace */
+	
+
+
+/*  Test that mime type is not affected if toolkit says it uses RGB colorspace  */
+
+
+
 	list ($ret, $photo) = GalleryCoreApi::newItemByMimeType('image/test');
 	if ($ret) {
 	    return $ret;
@@ -183,7 +201,13 @@ class PhotoTest extends GalleryTestCase {
  */
 class PhotoTestToolkit extends GalleryToolkit {
     function getProperty($mimeType, $propertyName, $sourceFilename) {
-	/* This will be called by GalleryPhotoItem::create */
+	
+
+
+/*  This will be called by GalleryPhotoItem::create  */
+
+
+
 	if ($propertyName == 'colorspace' && $mimeType == 'image/test') {
 	    $colorspace = (basename($sourceFilename) == basename(__FILE__)) ? 'CMYK' : 'RGB';
 	    return array(null, array($colorspace));

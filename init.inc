@@ -33,15 +33,33 @@ function GalleryInitFirstPass($params = array())
     ini_set('magic_quotes_runtime', 0);
     ini_set('magic_quotes_sybase', 0);
     if (function_exists('date_default_timezone_set')) {
-    /* PHP 5.3 requires a default be set before using any date/time functions */
+    
+
+
+/*  PHP 5.3 requires a default be set before using any date/time functions  */
+
+
+
         @date_default_timezone_set(date_default_timezone_get());
     }
 
-    /* Specify that when an assertion fails, we terminate right away */
+    
+
+
+/*  Specify that when an assertion fails, we terminate right away  */
+
+
+
     assert_options(ASSERT_WARNING, 1);
     assert_options(ASSERT_BAIL, 1);
 
-    /* Load all the core Gallery classes */
+    
+
+
+/*  Load all the core Gallery classes  */
+
+
+
     $galleryBase = dirname(__FILE__) . '/';
 
     /*
@@ -79,21 +97,39 @@ function GalleryInitFirstPass($params = array())
         $gallery->setDebug($params['debug']);
     }
 
-    /* Sanitize the data path */
+    
+
+
+/*  Sanitize the data path  */
+
+
+
     $dataBase = $gallery->getConfig('data.gallery.base');
     if ($dataBase{strlen($dataBase) - 1} != $slash) {
         $dataBase .= $slash;
         $gallery->setConfig('data.gallery.base', $dataBase);
     }
 
-    /* Init for downloadable plugins. Allow config.php to override. */
+    
+
+
+/*  Init for downloadable plugins. Allow config.php to override.  */
+
+
+
     $repositoryUrl = @$gallery->getConfig('repository.url');
     if (empty($repositoryUrl)) {
         $gallery->setConfig('repository.url', 'http://gallery.menalto.com/repository/');
     }
     $gallery->setConfig('repository.cache', $dataBase . 'cache' . $slash . 'repository' . $slash);
 
-    /* Set our various data paths */
+    
+
+
+/*  Set our various data paths  */
+
+
+
     $gallery->setConfig('data.gallery.cache', $dataBase . 'cache' . $slash);
     $gallery->setConfig('data.gallery.albums', $dataBase . 'albums' . $slash);
     $gallery->setConfig('data.gallery.locks', $dataBase . 'locks'. $slash);
@@ -109,14 +145,26 @@ function GalleryInitFirstPass($params = array())
     $gallery->setConfig('data.gallery.backup', $dataBase . 'backups' . $slash);
     $gallery->setConfig('data.gallery.locale', $dataBase . 'locale' . $slash);
 
-    /* Configure our url generator */
+    
+
+
+/*  Configure our url generator  */
+
+
+
     if (!isset($params['noDatabase'])) {
     /*
 	 * Swallow error to prevent GalleryFactoryHelper_loadRegistry cache from breaking upgrade to
 	 * core 1.0.6
 	 */
         list ($ret, $urlGenerator) = @GalleryCoreApi::newFactoryInstance('GalleryUrlGenerator');
-    /* Swallow ERROR_STORAGE_FAILURE, or automatic upgrading fails */
+    
+
+
+/*  Swallow ERROR_STORAGE_FAILURE, or automatic upgrading fails  */
+
+
+
         if ($ret && !($ret->getErrorCode() & ERROR_STORAGE_FAILURE)) {
             return $ret;
         }
@@ -125,7 +173,13 @@ function GalleryInitFirstPass($params = array())
         GalleryCoreApi::requireOnce('modules/core/classes/GalleryUrlGenerator.class');
         $urlGenerator = new GalleryUrlGenerator();
     }
-    /* Allow for overrides from GalleryEmbed ($param) or from config.php */
+    
+
+
+/*  Allow for overrides from GalleryEmbed ($param) or from config.php  */
+
+
+
     $configBaseUri = @$gallery->getConfig('baseUri');
     $ret = $urlGenerator->init(
         isset($params['baseUri']) ? $params['baseUri']
@@ -138,7 +192,13 @@ function GalleryInitFirstPass($params = array())
     }
     $gallery->setUrlGenerator($urlGenerator);
 
-    /* Initialize our session */
+    
+
+
+/*  Initialize our session  */
+
+
+
     if (!isset($params['noDatabase'])) {
         if (isset($params['gallerySessionId'])) {
             GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
@@ -152,7 +212,13 @@ function GalleryInitFirstPass($params = array())
         $gallery->initEmptySession();
     }
 
-    /* Initialize our translator */
+    
+
+
+/*  Initialize our translator  */
+
+
+
     $language = GalleryUtilities::getRequestVariables('language');
     if (isset($params['activeLanguage']) || !empty($language)) {
         GalleryCoreApi::requireOnce('modules/core/classes/GalleryTranslator.class');
@@ -207,7 +273,13 @@ function GalleryInitSecondPass()
     }
 
     if (!isset($user)) {
-    /* Missing user, be anonymous */
+    
+
+
+/*  Missing user, be anonymous  */
+
+
+
         list ($ret, $userId) = GalleryCoreApi::getAnonymousUserId();
         if ($ret) {
             return $ret;
@@ -240,7 +312,13 @@ function GalleryInitSecondPass()
 function GalleryPhpErrorHandler($errorNumber, $errorString, $file, $line, $context)
 {
     if (error_reporting() == 0) {
-    /* The @ error suppression operator was used, so don't log this error. */
+    
+
+
+/*  The @ error suppression operator was used, so don't log this error.  */
+
+
+
         return false;
     }
 
@@ -250,8 +328,20 @@ function GalleryPhpErrorHandler($errorNumber, $errorString, $file, $line, $conte
     E_COMPILE_ERROR => 'Compile Error', E_COMPILE_WARNING => 'Compile Warning',
     E_USER_ERROR => 'User Error', E_USER_WARNING => 'User Warning',
     E_USER_NOTICE => 'User Notice',
-    /* PHP5+: E_STRICT => 'Runtime Notice' */
-    /* PHP5.2+: E_RECOVERABLE_ERROR => 'Catchable Fatal Error' */
+    
+
+
+/*  PHP5+: E_STRICT => 'Runtime Notice'  */
+
+
+
+    
+
+
+/*  PHP5.2+: E_RECOVERABLE_ERROR => 'Catchable Fatal Error'  */
+
+
+
     );
 
     GalleryCoreApi::addEventLogEntry(
@@ -266,6 +356,12 @@ function GalleryPhpErrorHandler($errorNumber, $errorString, $file, $line, $conte
         $errorString
     );
 
-    /* Fall back to the internal error handler */
+    
+
+
+/*  Fall back to the internal error handler  */
+
+
+
     return false;
 }

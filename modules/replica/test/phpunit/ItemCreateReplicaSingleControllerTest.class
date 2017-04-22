@@ -51,7 +51,13 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase {
 
 	$this->_markForCleanup($this->_destinationAlbum);
 
-	/* Create a data item */
+	
+
+
+/*  Create a data item  */
+
+
+
 	list ($ret, $this->_item) = $this->_createRandomDataItem($this->_rootAlbum->getId());
 	if ($ret) {
 	    return $ret;
@@ -144,7 +150,13 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* The UI never displays targets that we can't add to */
+	
+
+
+/*  The UI never displays targets that we can't add to  */
+
+
+
 	$results = $this->handleRequest(ERROR_PERMISSION_DENIED);
     }
 }

@@ -1,15 +1,39 @@
-<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
-  /* Contributed by: KnightScene */
+<?php 
+
+
+/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
+
+
+
+  
+
+
+/*  Contributed by: KnightScene  */
+
+
+
 $frameData = array(
 
 'name' => $gallery->i18n('Film Edges'),
 
-/* Top Left */
+
+
+
+/*  Top Left  */
+
+
+
 'imageTL' => 'TL.gif',
 'widthTL' => 6,
 'heightTL' => 18,
 
-/* Top */
+
+
+
+/*  Top  */
+
+
+
 'imageTTL' => 'TTL.gif',
 'widthTTL' => 88,
 
@@ -19,12 +43,24 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-/* Top Right */
+
+
+
+/*  Top Right  */
+
+
+
 'imageTR' => 'TR.gif',
 'widthTR' => 8,
 'heightTR' => 18,
 
-/* Left */
+
+
+
+/*  Left  */
+
+
+
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -34,7 +70,13 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-/* Right */
+
+
+
+/*  Right  */
+
+
+
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -44,12 +86,24 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-/* Bottom Left */
+
+
+
+/*  Bottom Left  */
+
+
+
 'imageBL' => 'BL.gif',
 'widthBL' => 6,
 'heightBL' => 18,
 
-/* Bottom */
+
+
+
+/*  Bottom  */
+
+
+
 'imageBBL' => 'BBL.gif',
 'widthBBL' => 88,
 
@@ -59,7 +113,13 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-/* Bottom Right */
+
+
+
+/*  Bottom Right  */
+
+
+
 'imageBR' => 'BR.gif',
 'widthBR' => 8,
 'heightBR' => 18

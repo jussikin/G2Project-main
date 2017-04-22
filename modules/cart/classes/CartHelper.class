@@ -133,7 +133,13 @@ class CartHelper {
 	    list ($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 	    if ($ret) {
 		if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		    /* Item deleted from the gallery; remove it from the cart */
+		    
+
+
+/*  Item deleted from the gallery; remove it from the cart  */
+
+
+
 		    unset($cartItemIds[$itemId]);
 		    $changed = true;
 		    continue;

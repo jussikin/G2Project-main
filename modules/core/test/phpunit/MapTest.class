@@ -32,7 +32,13 @@ class MapTest extends GalleryTestCase {
     }
 
     function testAddNull() {
-	/* Ensure addMapEntry() method will accept null input values.. */
+	
+
+
+/*  Ensure addMapEntry() method will accept null input values..  */
+
+
+
 
 	$name = 'test-' . rand();
 	$ret = GalleryCoreApi::addMapEntry(
@@ -59,7 +65,13 @@ class MapTest extends GalleryTestCase {
     }
 
     function testUpdateNull() {
-	/* Ensure updateMapEntry() method will accept null input values.. */
+	
+
+
+/*  Ensure updateMapEntry() method will accept null input values..  */
+
+
+
 	$name = 'test-' . rand();
 	$ret = GalleryCoreApi::addMapEntry(
 	    'GalleryToolkitOperationMap',

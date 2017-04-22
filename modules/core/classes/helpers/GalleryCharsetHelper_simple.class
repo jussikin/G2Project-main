@@ -42,13 +42,31 @@ class GalleryCharsetHelper_simple {
 	$phpVm = $gallery->getPhpVm();
 	$sourceEncoding = $gallery->getConfig('systemCharset');
 
-	/* Determine character set of current locale */
+	
+
+
+/*  Determine character set of current locale  */
+
+
+
 	if (empty($sourceEncoding) && $phpVm->function_exists('nl_langinfo')
 		&& defined('CODESET')) {
-	    /* @suppress windows warning: "nl_langinfo() is not supported in this PHP build" */
+	    
+
+
+/*  @suppress windows warning: "nl_langinfo() is not supported in this PHP build"  */
+
+
+
 	    $sourceEncoding = @$phpVm->nl_langinfo(CODESET);
 
-	    /* OpenBSD may improperly return D_T_FMT value */
+	    
+
+
+/*  OpenBSD may improperly return D_T_FMT value  */
+
+
+
 	    if (isset($sourceEncoding) && strpos($sourceEncoding, '%') !== false
 		    && defined('D_T_FMT') && $sourceEncoding == $phpVm->nl_langinfo(D_T_FMT)) {
 		$sourceEncoding = null;
@@ -79,7 +97,13 @@ class GalleryCharsetHelper_simple {
 	    }
 
 	    if (empty($sourceEncoding)) {
-		/* Unable to determine source encoding - no conversion possible */
+		
+
+
+/*  Unable to determine source encoding - no conversion possible  */
+
+
+
 		return $sourceEncoding;
 	    }
 	}
@@ -89,7 +113,13 @@ class GalleryCharsetHelper_simple {
 	 * See http://cvsweb.xfree86.org/cvsweb/xc/nls/locale.alias?rev=1.44
 	 */
 	switch($sourceEncoding) {
-	case '646':   /* Solaris iconv returns "646" for ASCII */
+	case '646':   
+
+
+/*  Solaris iconv returns "646" for ASCII  */
+
+
+
 	    $sourceEncoding = 'ASCII';
 	    break;
 	default:
@@ -107,9 +137,21 @@ class GalleryCharsetHelper_simple {
 		}
 	    }
 	}
-	/* FreeBSD may return charset with missing hyphen from nl_langinfo */
+	
+
+
+/*  FreeBSD may return charset with missing hyphen from nl_langinfo  */
+
+
+
 	$sourceEncoding = str_replace('ISO8859', 'ISO-8859', $sourceEncoding);
-	/* Gentoo may return ANSI_X3.4-1968 */
+	
+
+
+/*  Gentoo may return ANSI_X3.4-1968  */
+
+
+
 	if (preg_match('{^ANSI[_-]}', $sourceEncoding)) {
 	    $sourceEncoding = 'ASCII';
 	}
@@ -132,7 +174,13 @@ class GalleryCharsetHelper_simple {
 	    return $string;
 	}
 
-	/* Iconv can return false, so try it first.  If it fails, continue */
+	
+
+
+/*  Iconv can return false, so try it first.  If it fails, continue  */
+
+
+
 	if ($phpVm->function_exists('iconv')) {
 	    if (($result = $phpVm->iconv($sourceEncoding, 'UTF-8', $string)) !== false) {
 		return $result;
@@ -177,7 +225,13 @@ class GalleryCharsetHelper_simple {
 	    return $string;
 	}
 
-	/* Iconv can return false, so try it first.  If it fails, continue */
+	
+
+
+/*  Iconv can return false, so try it first.  If it fails, continue  */
+
+
+
 	if ($phpVm->function_exists('iconv')) {
 	    if (($result =
 		     $phpVm->iconv('UTF-8', $targetEncoding . '//IGNORE', $string)) !== false) {
@@ -203,7 +257,13 @@ class GalleryCharsetHelper_simple {
 		    if (empty($value)) {
 			continue;
 		    }
-		    /* Convert decimal value 128-255 to character */
+		    
+
+
+/*  Convert decimal value 128-255 to character  */
+
+
+
 		    $search[] = $value;
 		    $replace[] = chr($key);
 		}
@@ -229,7 +289,13 @@ class GalleryCharsetHelper_simple {
 	    ? (string)mb_substr($string, $start, $length, 'UTF-8')
 	    : GalleryCharsetHelper_medium::phpUtf8Substring($string, $start, $length);
 
-	/* Truncate partial HTML entity at end of result */
+	
+
+
+/*  Truncate partial HTML entity at end of result  */
+
+
+
 	return preg_replace('/&[^;]{0,6}$/', '', $result);
     }
 
@@ -249,7 +315,13 @@ class GalleryCharsetHelper_simple {
 	    ? (string)mb_strcut($string, $start, $length, 'UTF-8')
 	    : GalleryCharsetHelper_medium::phpUtf8Strcut($string, $start, $length);
 
-	/* Truncate partial HTML entity at end of result */
+	
+
+
+/*  Truncate partial HTML entity at end of result  */
+
+
+
 	return preg_replace('/&[^;]{0,6}$/', '', $result);
     }
 }

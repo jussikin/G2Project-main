@@ -1,14 +1,32 @@
-<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
+<?php 
+
+
+/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
+
+
+
 $frameData = array(
 
 'name' => $gallery->i18n('Polaroid'),
 
-/* Top Left */
+
+
+
+/*  Top Left  */
+
+
+
 'imageTL' => 'TL.gif',
 'widthTL' => 10,
 'heightTL' => 10,
 
-/* Top */
+
+
+
+/*  Top  */
+
+
+
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -18,12 +36,24 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-/* Top Right */
+
+
+
+/*  Top Right  */
+
+
+
 'imageTR' => 'TR.gif',
 'widthTR' => 10,
 'heightTR' => 10,
 
-/* Left */
+
+
+
+/*  Left  */
+
+
+
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -33,7 +63,13 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-/* Right */
+
+
+
+/*  Right  */
+
+
+
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -43,12 +79,24 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-/* Bottom Left */
+
+
+
+/*  Bottom Left  */
+
+
+
 'imageBL' => 'BL.gif',
 'widthBL' => 10,
 'heightBL' => 29,
 
-/* Bottom */
+
+
+
+/*  Bottom  */
+
+
+
 'imageBBL' => '',
 'widthBBL' => 0,
 
@@ -58,7 +106,13 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-/* Bottom Right */
+
+
+
+/*  Bottom Right  */
+
+
+
 'imageBR' => 'BR.gif',
 'widthBR' => 10,
 'heightBR' => 29

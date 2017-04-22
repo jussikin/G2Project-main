@@ -34,7 +34,13 @@ class NewDirectoryController extends GalleryController {
     function handleRequest($form) {
 	ImageUploadHelper::logRequest('CreateAlbumController');
 
-	/* Request forgery protection */
+	
+
+
+/*  Request forgery protection  */
+
+
+
 	$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 	if (strstr($httpUserAgent, 'Nokia') === false) {
 	    return array(GalleryCoreApi::error(ERROR_REQUEST_FORGED), null);

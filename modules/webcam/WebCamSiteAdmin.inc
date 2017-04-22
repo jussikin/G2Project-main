@@ -44,7 +44,13 @@ class WebCamSiteAdminController extends GalleryController {
 	    }
 
 	    if (isset($form['duration'])) {
-		/* Accept input for locales that use comma as fraction separator */
+		
+
+
+/*  Accept input for locales that use comma as fraction separator  */
+
+
+
 		$form['duration'] = str_replace(',', '.', $form['duration']);
 	    }
 	    if (!isset($form['duration']) || !is_numeric($form['duration'])) {
@@ -101,7 +107,13 @@ class WebCamSiteAdminView extends GalleryView {
 		    return array($ret, null);
 		}
 	    }
-	    /* String conversion here may use comma as fraction separator, based on locale */
+	    
+
+
+/*  String conversion here may use comma as fraction separator, based on locale  */
+
+
+
 	    $form['duration'] = (string)round($form['duration'] / 60, 2);
 	}
 

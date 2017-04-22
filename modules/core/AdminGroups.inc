@@ -51,12 +51,24 @@ class AdminGroupsController extends GalleryController {
 
 	if (isset($form['action']['filterClear'])) {
 
-	    /* Clear the filter */
+	    
+
+
+/*  Clear the filter  */
+
+
+
 	    GalleryUtilities::putRequestVariable('form[list][filter]', null);
 
 	} else if (isset($form['action']['create'])) {
 
-	    /* Show the "create group" view */
+	    
+
+
+/*  Show the "create group" view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminCreateGroup';
 
@@ -67,7 +79,13 @@ class AdminGroupsController extends GalleryController {
 	    } else if ($group == null) {
 		$error[] = 'form[error][text][noSuchGroup]';
 	    } else {
-		/* Show the "edit group" view */
+		
+
+
+/*  Show the "edit group" view  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'core.AdminEditGroup';
 		$redirect['groupId'] = $group->getId();
@@ -90,7 +108,13 @@ class AdminGroupsController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		/* Show the "delete group" view */
+		
+
+
+/*  Show the "delete group" view  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'core.AdminDeleteGroup';
 		$redirect['groupId'] = $group->getId();
@@ -114,7 +138,13 @@ class AdminGroupsController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		/* Show the "edit group's users" view */
+		
+
+
+/*  Show the "edit group's users" view  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'core.AdminEditGroupUsers';
 		$redirect['groupId'] = $group->getId();
@@ -150,13 +180,25 @@ class AdminGroupsView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Load some standard form parameters */
+	
+
+
+/*  Load some standard form parameters  */
+
+
+
 	if ($form['formName'] != 'AdminGroups') {
 	    $form['text']['groupName'] = '';
 	    $form['formName'] = 'AdminGroups';
 	}
 
-	/* Set some defaults, if necessary */
+	
+
+
+/*  Set some defaults, if necessary  */
+
+
+
 	if (!isset($form['list']['filter'])) {
 	    $form['list']['filter'] = '';
 	}
@@ -173,7 +215,13 @@ class AdminGroupsView extends GalleryView {
 	$form['list']['count'] = $totalGroupCount;
 	$form['list']['pageSize'] = $totalGroupCount > 10 ? 10 : $totalGroupCount + 2;
 
-	/* If we have a filter, find out how many groups match it */
+	
+
+
+/*  If we have a filter, find out how many groups match it  */
+
+
+
 	if (!empty($form['list']['filter'])) {
 	    list ($ret, $form['list']['count']) =
 		GalleryCoreApi::fetchGroupCount($form['list']['filter']);
@@ -182,13 +230,25 @@ class AdminGroupsView extends GalleryView {
 	    }
 	}
 
-	/* Figure out our max pages, make sure our current page fits in it */
+	
+
+
+/*  Figure out our max pages, make sure our current page fits in it  */
+
+
+
 	$form['list']['maxPages'] = ceil($form['list']['count'] / $form['list']['pageSize']);
 	if ($form['list']['page'] > $form['list']['maxPages']) {
 	    $form['list']['page'] = $form['list']['maxPages'];
 	}
 
-	/* Calculate the next/back pages */
+	
+
+
+/*  Calculate the next/back pages  */
+
+
+
 	$form['list']['nextPage'] = min($form['list']['page']+1, $form['list']['maxPages']);
 	$form['list']['backPage'] = max(1, $form['list']['page']-1);
 

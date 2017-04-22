@@ -38,7 +38,13 @@
  * @version $Revision: 17962 $
  * @static
  */
-class GalleryEmbed /* implements GalleryEventListener */ {
+class GalleryEmbed 
+
+
+/*  implements GalleryEventListener  */
+
+
+ {
 
     /**
      * Return the major and minor version of the Embedding API.
@@ -86,11 +92,23 @@ class GalleryEmbed /* implements GalleryEventListener */ {
      * @return GalleryStatus a status object
      */
     static function init($initParams=array()) {
-	/* GDC as static var replacement for better testability */
+	
+
+
+/*  GDC as static var replacement for better testability  */
+
+
+
 	static $firstCacheKey = 'GalleryEmbed::initFirstPass';
 	static $secondCacheKey = 'GalleryEmbed::initSecondPass';
 
-	/* Only InitFirstPass if not already done so in a prior call */
+	
+
+
+/*  Only InitFirstPass if not already done so in a prior call  */
+
+
+
 	if (!GalleryDataCache::containsKey($firstCacheKey)) {
 	    if (isset($initParams['embedUri'])) {
 		$initParams['baseUri'] = $initParams['embedUri'];
@@ -124,7 +142,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	}
 
 	if (empty($initParams) || (isset($initParams['fullInit']) && $initParams['fullInit'])) {
-	    /* Only InitSecondPass if not already done so in a prior call */
+	    
+
+
+/*  Only InitSecondPass if not already done so in a prior call  */
+
+
+
 	    if (!GalleryDataCache::containsKey($secondCacheKey)) {
 		$ret = GalleryInitSecondPass();
 		if ($ret) {
@@ -223,7 +247,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 		if ($ret) {
 		    return $ret;
 		}
-		/** @todo Figure out a way to enable site admin session timeouts when embedded */
+		
+
+
+/*  @todo Figure out a way to enable site admin session timeouts when embedded  */
+
+
+
 		if ($isSiteAdmin) {
 		    $session->put('session.siteAdminActivityTimestamp', $phpVm->time());
 		}
@@ -237,13 +267,25 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 
 	$language = $session->get('core.language');
 
-	/* Logout the existing user from Gallery */
+	
+
+
+/*  Logout the existing user from Gallery  */
+
+
+
 	if (!empty($idInSession)) {
 	    list ($ret, $anonymousUserId) = GalleryCoreApi::getAnonymousUserId();
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* Can't use getActiveUser() since it might not be set at this point */
+	    
+
+
+/*  Can't use getActiveUser() since it might not be set at this point  */
+
+
+
 	    $activeGalleryUserId = $gallery->getActiveUserId();
 	    if ($anonymousUserId != $activeGalleryUserId) {
 	    	list ($ret, $activeUser) =
@@ -265,7 +307,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	    $session->put('embed.id.externalUser', $activeUserId);
 	}
 
-	/* Set G2 active user */
+	
+
+
+/*  Set G2 active user  */
+
+
+
 	if (!empty($activeUserId)) {
 	    $ret = GalleryEmbed::login($activeUserId);
 	    if ($ret) {
@@ -273,7 +321,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	    }
 	}
 
-	/* The session language has precedence over the user default language */
+	
+
+
+/*  The session language has precedence over the user default language  */
+
+
+
 	if (!empty($language)) {
 	    $session->put('core.language', $language);
 	}
@@ -354,7 +408,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 		return $ret;
 	    }
 
-	    /* Commit the transaction */
+	    
+
+
+/*  Commit the transaction  */
+
+
+
 	    $ret = GalleryEmbed::done();
 	    if ($ret) {
 		return $ret;
@@ -478,7 +538,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	    }
 	    $user->setHashedPassword($args['hashedpassword']);
 	} else if ($create) {
-	    /* Create a random password */
+	    
+
+
+/*  Create a random password  */
+
+
+
 	    $user->changePassword('G' . rand(100000,999999) . '2');
 	}
 
@@ -633,12 +699,24 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	if ($ret) {
 	    return $ret;
 	}
-	/* First check if the user is not already a member of the group */
+	
+
+
+/*  First check if the user is not already a member of the group  */
+
+
+
 	list ($ret, $membership) = GalleryCoreApi::fetchGroupsForUser($user->getId());
 	if ($ret) {
 	    return $ret;
 	}
-	/* Only add user to group if not already done so */
+	
+
+
+/*  Only add user to group if not already done so  */
+
+
+
 	if (!isset($membership[$group->getId()])) {
 	    $ret = GalleryCoreApi::addUserToGroup($user->getId(), $group->getId());
 	    if ($ret) {
@@ -794,12 +872,24 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	$title = '';
 	$css = $javascript = $meta = array();
 
-	/* Only one title allowed */
+	
+
+
+/*  Only one title allowed  */
+
+
+
 	if (preg_match("|<title(?:\s[^>]*)?>(.*)</title>|Usi", $headhtml, $regs)) {
 	    $title = $regs[1];
 	}
 
-	/* More than one script section allowed */
+	
+
+
+/*  More than one script section allowed  */
+
+
+
 	if (preg_match_all(
 		"|<script(?:\s[^>]*)?(?:\ssrc=[\"\'].+[\"\'])?(?:\s[^>]*)?>.*</script>|Usi",
 		$headhtml, $regs, PREG_PATTERN_ORDER)) {
@@ -808,7 +898,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	    }
 	}
 
-	/* More than one style allowed */
+	
+
+
+/*  More than one style allowed  */
+
+
+
 	if (preg_match_all("/<link .*\/>|<style(?:\s[^>]*)?>.*<\/style>/Usi",
 			   $headhtml, $regs, PREG_PATTERN_ORDER)) {
 	    foreach ($regs[0] as $style) {
@@ -816,7 +912,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	    }
 	}
 
-	/* More than one meta tag allowed */
+	
+
+
+/*  More than one meta tag allowed  */
+
+
+
 	if (preg_match_all('/<meta .*\/>/Usi', $headhtml, $regs, PREG_PATTERN_ORDER)) {
 	    foreach ($regs[0] as $metaTag) {
 		$meta[] = $metaTag;
@@ -884,7 +986,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
      *                                                  entityId => int, entityType => string))
      */
     function getExternalIdMap($key) {
-	/* Input validation */
+	
+
+
+/*  Input validation  */
+
+
+
 	if ($key != 'externalId' && $key != 'entityId') {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
@@ -990,7 +1098,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	}
 	$session->doNotUseTempId();
 
-	/* Load the module list */
+	
+
+
+/*  Load the module list  */
+
+
+
 	list ($ret, $moduleStatus) = GalleryCoreApi::fetchPluginStatus('module');
 	if ($ret) {
 	    return array($ret, null, null);
@@ -1002,12 +1116,24 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	} else if (!isset($moduleStatus[$moduleId]) || empty($moduleStatus[$moduleId]['active'])) {
 	    return array(GalleryCoreApi::error(ERROR_CONFIGURATION_REQUIRED), null, null);
 	} else {
-	    /* Load the G2 templating engine */
+	    
+
+
+/*  Load the G2 templating engine  */
+
+
+
 	    GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 	    $template = new GalleryTemplate(dirname(__FILE__) . '/../../..');
 	    $template->setVariable('l10Domain', 'modules_' . $moduleId);
 
-	    /* Invoke the preload, if available */
+	    
+
+
+/*  Invoke the preload, if available  */
+
+
+
 	    $blockId = $moduleId . '.' . $blockName;
 	    GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
 	    $theme = new GalleryTheme();
@@ -1016,27 +1142,51 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 		return array($ret, null, null);
 	    }
 
-	    /* Default theme variables */	    
+	    
+
+
+/*  Default theme variables  */
+
+
+	    
 	    GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
 	    $ret = GalleryView::setStandardTemplateVariables($template);
 	    if ($ret) {
 		return array($ret, null, null);
 	    }
 
-	    /* Assign template variables */
+	    
+
+
+/*  Assign template variables  */
+
+
+
 	    $domClass = empty($params['class']) ? '' : ' ' . $params['class'];
 	    $params['class'] = "block-$moduleId-$blockName$domClass";
 	    foreach ($params as $key => $value) {
 		$template->setVariable($key, $value);
 	    }
 
-	    /* Render the block */
+	    
+
+
+/*  Render the block  */
+
+
+
 	    list ($ret, $blockHtml) = $template->fetch("gallery:$blockTpl");
 	    if ($ret) {
 		return array($ret, null, null);
 	    }
 
-	    /* Check for any required CSS / JavaScript */
+	    
+
+
+/*  Check for any required CSS / JavaScript  */
+
+
+
 	    if ($template->hasVariable('head')) {
 		$head = $template->getVariable('head');
 		if (!empty($head['tpl'])) {
@@ -1097,7 +1247,13 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 	     */
 	    $remotehost = GalleryUtilities::getServerVar('REMOTE_ADDR');
 	    $remotehost = !empty($remotehost) ? $phpVm->gethostbyname($remotehost) : '';
-	    /* Try SERVER_ADDR first, back up is config::baseUri */
+	    
+
+
+/*  Try SERVER_ADDR first, back up is config::baseUri  */
+
+
+
 	    $localhost = GalleryUtilities::getServerVar('SERVER_ADDR');
 	    if (empty($localhost)) {
 		$baseUri = $gallery->getConfig('baseUri');
@@ -1109,10 +1265,22 @@ class GalleryEmbed /* implements GalleryEventListener */ {
 
 	    if (!empty($remotehost) && !empty($localhost) && $remotehost === $localhost) {
 		if ($phpVm->defined('GALLERY_CONFIG_DIR')) {
-		    /* GALLERY_CONFIG_DIR is multisite-aware */
+		    
+
+
+/*  GALLERY_CONFIG_DIR is multisite-aware  */
+
+
+
 		    $phpVm->header('X-G2-EMBED-PATH: ' . GALLERY_CONFIG_DIR . '/embed.php');
 		} else {
-		    /* Fallback if G2 isn't installed yet */
+		    
+
+
+/*  Fallback if G2 isn't installed yet  */
+
+
+
 		    $phpVm->header('X-G2-EMBED-PATH: ' 
 					. GalleryCoreApi::getCodeBasePath('embed.php'));
 		}

@@ -41,7 +41,13 @@ class EditCommentController extends GalleryController {
 
 	$commentId = (int)GalleryUtilities::getRequestVariables('commentId');
 
-	/* Make sure we have permission to edit a comment */
+	
+
+
+/*  Make sure we have permission to edit a comment  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'comment.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -50,18 +56,36 @@ class EditCommentController extends GalleryController {
 	$status = array();
 	$error = array();
 	if (isset($form['action']['save'])) {
-	    /* Edit the comment */
+	    
+
+
+/*  Edit the comment  */
+
+
+
 	    list ($ret, $comment) = GalleryCoreApi::loadEntitiesById($commentId, 'GalleryComment');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    /* Make sure that the comment<->parent relationship is right */
+	    
+
+
+/*  Make sure that the comment<->parent relationship is right  */
+
+
+
 	    if ($comment->getParentId() != $itemId) {
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
 
-	    /* Verify the input parameters */
+	    
+
+
+/*  Verify the input parameters  */
+
+
+
 	    if (empty($form['commenterName'])) {
 		$error[] = 'form[error][commenterName][missing]';
 	    } else {
@@ -94,7 +118,13 @@ class EditCommentController extends GalleryController {
 			  array(COMMENT_PUBLISH_STATUS_PUBLISHED,
 				COMMENT_PUBLISH_STATUS_UNPUBLISHED,
 				COMMENT_PUBLISH_STATUS_SPAM))) {
-		/* UI doesn't allow this so don't bother with a clean error */
+		
+
+
+/*  UI doesn't allow this so don't bother with a clean error  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
 
@@ -116,7 +146,13 @@ class EditCommentController extends GalleryController {
 		}
 
 		if ($markup == 'html') {
-		    /* Strip malicious content if html markup allowed */
+		    
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 		    $form['subject'] = GalleryUtilities::htmlSafe($form['subject'], true);
 		    $form['comment'] = GalleryUtilities::htmlSafe($form['comment'], true);
 		}
@@ -142,7 +178,13 @@ class EditCommentController extends GalleryController {
 		$redirect['itemId'] = (int)$itemId;
 	    }
 	} else if (isset($form['action']['preview'])) {
-	    /* Verify the input parameters */
+	    
+
+
+/*  Verify the input parameters  */
+
+
+
 	    if (empty($form['commenterName'])) {
 		$error[] = 'form[error][commenterName][missing]';
 	    } else {
@@ -165,18 +207,42 @@ class EditCommentController extends GalleryController {
 		$error[] = 'form[error][comment][missing]';
 	    }
 
-	    /* Fall through back to the current view */
+	    
+
+
+/*  Fall through back to the current view  */
+
+
+
 	} else if (isset($form['action']['cancel'])) {
-	    /* Where to go on a cancel?  View the item.*/
+	    
+
+
+/*  Where to go on a cancel?  View the item. */
+
+
+
 	    $redirect['view'] = 'core.ShowItem';
 	    $redirect['itemId'] = (int)$itemId;
 	}
 
 	if (!empty($redirect)) {
-	    /* Redirect back to the confirmation page by default */
+	    
+
+
+/*  Redirect back to the confirmation page by default  */
+
+
+
 	    $results['redirect'] = $redirect;
 	} else {
-	    /* Stay on the same page */
+	    
+
+
+/*  Stay on the same page  */
+
+
+
 	    $results['delegate']['view'] = 'comment.EditComment';
 	}
 	$results['status'] = $status;
@@ -198,13 +264,25 @@ class EditCommentView extends GalleryView {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* Load our item */
+	
+
+
+/*  Load our item  */
+
+
+
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Make sure we have permission to edit a comment */
+	
+
+
+/*  Make sure we have permission to edit a comment  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($item->getId(), 'comment.edit');
 	if ($ret) {
 	    return array($ret, null);
@@ -212,18 +290,36 @@ class EditCommentView extends GalleryView {
 
 	$commentId = (int) GalleryUtilities::getRequestVariables('commentId');
 
-	/* Load the specific comment */
+	
+
+
+/*  Load the specific comment  */
+
+
+
 	list ($ret, $comment) = GalleryCoreApi::loadEntitiesById($commentId, 'GalleryComment');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Make sure the comment is associated with the item */
+	
+
+
+/*  Make sure the comment is associated with the item  */
+
+
+
 	if ($comment->getParentId() != $item->getId()) {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	/* Associate the commenter's info */
+	
+
+
+/*  Associate the commenter's info  */
+
+
+
 	$commenterId = $comment->getCommenterId();
 	list ($ret, $commenter) = GalleryCoreApi::loadEntitiesById($commenterId, 'GalleryUser');
 	if ($ret) {

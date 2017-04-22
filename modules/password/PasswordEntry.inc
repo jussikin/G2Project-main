@@ -48,7 +48,13 @@ class PasswordEntryController extends GalleryController {
 		return array($ret, null);
 	    }
 	    if (!$canSee) {
-		/* Allow access without core.view if this item is also hidden */
+		
+
+
+/*  Allow access without core.view if this item is also hidden  */
+
+
+
 		list ($ret, $hiddenInterface) =
 		    GalleryCoreApi::newFactoryInstance('HiddenInterface_1_0');
 		if ($ret) {
@@ -65,7 +71,13 @@ class PasswordEntryController extends GalleryController {
 		}
 	    }
 
-	    /* Check the password entered against the actual password */
+	    
+
+
+/*  Check the password entered against the actual password  */
+
+
+
 	    list ($ret, $hashedPassword) = GalleryCoreApi::getPluginParameter(
 		    'module', 'password', 'password', $itemId);
 	    if ($ret) {
@@ -75,7 +87,13 @@ class PasswordEntryController extends GalleryController {
 	    $isCorrect = $canSee && $hashedPassword
 		&& GalleryUtilities::isCorrectPassword($form['password'], $hashedPassword);
 
-	    /* Prepare for validation */
+	    
+
+
+/*  Prepare for validation  */
+
+
+
 	    $options = array('pass' => $isCorrect);
 	    list ($ret, $options['level']) =
 		GalleryCoreApi::getPluginParameter('module', 'password', 'validation.level');
@@ -104,7 +122,13 @@ class PasswordEntryController extends GalleryController {
 		}
 	    }
 
-	    /* Let each plugin do its verification */
+	    
+
+
+/*  Let each plugin do its verification  */
+
+
+
 	    foreach ($plugins as $plugin) {
 		list ($ret, $pluginErrors, $continue) =
 		    $plugin->performValidation($form, $options);

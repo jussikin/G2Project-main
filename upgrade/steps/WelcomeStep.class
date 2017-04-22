@@ -43,7 +43,13 @@ class WelcomeStep extends UpgradeStep {
 	global $translator;
 
 	if (@$gallery->getConfig('multisite')) {
-	    /* Prevent upgrade if old style multisite config.php is found */
+	    
+
+
+/*  Prevent upgrade if old style multisite config.php is found  */
+
+
+
 	    $templateData['bodyFile'] = 'InvalidConfig.html';
 	    return;
 	}

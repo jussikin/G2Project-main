@@ -83,16 +83,40 @@ class RatingCallbackViewTest extends GalleryTestCase {
 	$results = explode("\n", ob_get_contents());
 	ob_end_clean();
 
-	/* Item id */
+	
+
+
+/*  Item id  */
+
+
+
 	$this->assertEquals($this->_item->getId(), (int)$results[0]);
 
-	/* New average rating */
+	
+
+
+/*  New average rating  */
+
+
+
 	$this->assertEquals($rating, (int)$results[1]);
 
-	/* User rating */
+	
+
+
+/*  User rating  */
+
+
+
 	$this->assertEquals($rating, (int)$results[3]);
 
-	/* Vote count */
+	
+
+
+/*  Vote count  */
+
+
+
 	$votesString = $this->_module->translate(array('one' => '%d vote',
 						       'many' => '%d votes',
 						       'count' => 1,
@@ -116,23 +140,53 @@ class RatingCallbackViewTest extends GalleryTestCase {
 	$results = explode("\n", ob_get_contents());
 	ob_end_clean();
 
-	/* Item id */
+	
+
+
+/*  Item id  */
+
+
+
 	$this->assertEquals($this->_item->getId(), (int)$results[0]);
 
-	/* New average rating */
+	
+
+
+/*  New average rating  */
+
+
+
 	$this->assertEquals($rating, (int)$results[1], 'Seed average rating is incorrect.');
 
-	/* User rating */
+	
+
+
+/*  User rating  */
+
+
+
 	$this->assertEquals($rating, (int)$results[3], 'Seed user rating is incorrect.');
 
-	/* Vote count */
+	
+
+
+/*  Vote count  */
+
+
+
 	$votesString = $this->_module->translate(array('one' => '%d vote',
 						       'many' => '%d votes',
 						       'count' => 1,
 						       'arg1' => 1));
 	$this->assertEquals($votesString, $results[2], 'Seed vote count is incorrect.'); 
 
-	/* Remove all permissions */
+	
+
+
+/*  Remove all permissions  */
+
+
+
 	$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -163,10 +217,22 @@ class RatingCallbackViewTest extends GalleryTestCase {
 	$results = explode("\n", ob_get_contents());
 	ob_end_clean();
 
-	/* Should be empty */
+	
+
+
+/*  Should be empty  */
+
+
+
 	$this->assert(empty($results[0]), 'Results not empty.'); 
 
-	/* Nothing should be returned past first line */
+	
+
+
+/*  Nothing should be returned past first line  */
+
+
+
 	$this->assert(!isset($results[1]));
     }
 
@@ -186,23 +252,53 @@ class RatingCallbackViewTest extends GalleryTestCase {
 	$results = explode("\n", ob_get_contents());
 	ob_end_clean();
 
-	/* Item id */
+	
+
+
+/*  Item id  */
+
+
+
 	$this->assertEquals($this->_item->getId(), (int)$results[0]);
 
-	/* New average rating */
+	
+
+
+/*  New average rating  */
+
+
+
 	$this->assertEquals($rating, (int)$results[1], 'Seed average rating is incorrect.');
 
-	/* User rating */
+	
+
+
+/*  User rating  */
+
+
+
 	$this->assertEquals($rating, (int)$results[3], 'Seed user rating is incorrect.');
 
-	/* Vote count */
+	
+
+
+/*  Vote count  */
+
+
+
 	$votesString = $this->_module->translate(array('one' => '%d vote',
 						       'many' => '%d votes',
 						       'count' => 1,
 						       'arg1' => 1));
 	$this->assertEquals($votesString, $results[2], 'Seed vote count is incorrect.');
 
-	/* Remove all permissions */
+	
+
+
+/*  Remove all permissions  */
+
+
+
 	$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -238,16 +334,40 @@ class RatingCallbackViewTest extends GalleryTestCase {
 	$results = explode("\n", ob_get_contents());
 	ob_end_clean();
 
-	/* Item id */
+	
+
+
+/*  Item id  */
+
+
+
 	$this->assertEquals($this->_item->getId(), (int)$results[0]);
 
-	/* New average rating */
+	
+
+
+/*  New average rating  */
+
+
+
 	$this->assertEquals($newRating, (int)$results[1], 'Average rating is incorrect.');
 
-	/* User rating */
+	
+
+
+/*  User rating  */
+
+
+
 	$this->assertEquals($newRating, (int)$results[3], 'User rating is incorrect.');
 
-	/* Vote count (should be same since duplicate user votes ignored) */
+	
+
+
+/*  Vote count (should be same since duplicate user votes ignored)  */
+
+
+
 	$votesString = $this->_module->translate(array('one' => '%d vote',
 						       'many' => '%d votes',
 						       'count' => 1,

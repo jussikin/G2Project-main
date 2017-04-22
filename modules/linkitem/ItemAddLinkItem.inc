@@ -77,7 +77,13 @@ class ItemAddLinkItem extends ItemAddPlugin {
 			return array($ret, null, null);
 		    }
 
-		    /* set order weight -- add to end of parent album */
+		    
+
+
+/*  set order weight -- add to end of parent album  */
+
+
+
 		    list ($ret, $maxWeight) =
 			GalleryCoreApi::fetchExtremeChildWeight($item->getId(), HIGHER_WEIGHT);
 		    if ($ret) {
@@ -90,7 +96,13 @@ class ItemAddLinkItem extends ItemAddPlugin {
 			return array($ret, null, null);
 		    }
 
-		    /* add thumbnail */
+		    
+
+
+/*  add thumbnail  */
+
+
+
 		    $source = $newItem;
 		    if ($form['linkType'] == 'album') {
 			list ($ret, $thumbnailTable) =
@@ -181,7 +193,13 @@ class ItemAddLinkItem extends ItemAddPlugin {
 			    return array($ret, null, null);
 			}
 
-			/* Set as album highlight if no highlight yet */
+			
+
+
+/*  Set as album highlight if no highlight yet  */
+
+
+
 			list ($ret, $thumbnailTable) =
 			    GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 			if ($ret) {

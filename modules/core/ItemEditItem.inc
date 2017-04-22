@@ -49,7 +49,13 @@ class ItemEditItem extends ItemEditPlugin {
 
 	    $isRootAlbum = $item->getId() == $rootAlbumId;
 
-	    /* Validate the input data. */
+	    
+
+
+/*  Validate the input data.  */
+
+
+
 	    $platform =& $gallery->getPlatform();
 
 	    foreach (array('title', 'summary', 'keywords', 'description') as $key) {
@@ -92,7 +98,13 @@ class ItemEditItem extends ItemEditPlugin {
 	    }
 
 	    if (empty($error) && isset($form['thumbnail']['size'])) {
-		/* Load the thumbnail */
+		
+
+
+/*  Load the thumbnail  */
+
+
+
 		list ($ret, $thumbnail) =
 		    GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 		if ($ret) {
@@ -102,7 +114,13 @@ class ItemEditItem extends ItemEditPlugin {
 
 		if (!isset($thumbnail) && $form['thumbnail']['size'] > 0) {
 		    if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-			/* Create album highlight (with default thumbnail size) */
+			
+
+
+/*  Create album highlight (with default thumbnail size)  */
+
+
+
 			list ($ret) = GalleryCoreApi::guaranteeAlbumHasThumbnail($item->getId());
 			if ($ret) {
 			    return array($ret, null, null, null);
@@ -119,7 +137,13 @@ class ItemEditItem extends ItemEditPlugin {
 			    $thumbnail = $thumbnail[$item->getId()];
 			}
 		    } else {
-			/* Prepare new thumbnail source and toolkit operations */
+			
+
+
+/*  Prepare new thumbnail source and toolkit operations  */
+
+
+
 			list ($ret, $source) = GalleryCoreApi::fetchPreferredSource($item);
 			if ($ret) {
 			    return array($ret, null, null, null);
@@ -140,7 +164,13 @@ class ItemEditItem extends ItemEditPlugin {
 		}
 
 		if (isset($thumbnail) && $form['thumbnail']['size'] > 0) {
-		    /* Change the thumbnail */
+		    
+
+
+/*  Change the thumbnail  */
+
+
+
 		    $thumbnail->setDerivativeOperations(
 			preg_replace('/((^|;)thumbnail)\|\d+/', '$1|' .
 				     $form['thumbnail']['size'],
@@ -162,14 +192,26 @@ class ItemEditItem extends ItemEditPlugin {
 			}
 		    }
 		} else if (isset($thumbnail) && empty($form['thumbnail']['size'])) {
-		    /* Delete the thumbnail */
+		    
+
+
+/*  Delete the thumbnail  */
+
+
+
 		    $ret = GalleryCoreApi::deleteEntityById($thumbnail->getId(),
 							    'GalleryDerivative');
 		    if ($ret) {
 			return array($ret, null, null, null);
 		    }
 		} else if ($form['thumbnail']['size'] > 0 && empty($error)) {
-		    /* Create the thumbnail */
+		    
+
+
+/*  Create the thumbnail  */
+
+
+
 		    list ($ret, $thumbnail) =
 			GalleryCoreApi::newFactoryInstanceByHint('GalleryDerivative',
 								 $source->getEntityType());
@@ -232,7 +274,13 @@ class ItemEditItem extends ItemEditPlugin {
 			return array($ret, null, null, null);
 		    }
 		    if ($markup == 'html') {
-			/* Strip malicious content if html markup allowed */
+			
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 			$form['title'] = GalleryUtilities::htmlSafe($form['title'], true);
 			$form['summary'] = GalleryUtilities::htmlSafe($form['summary'], true);
 			$form['description'] =
@@ -245,7 +293,13 @@ class ItemEditItem extends ItemEditPlugin {
 		    $item->setDescription($form['description']);
 		    $item->setSerialNumber($form['serialNumber']);
 
-		    /* Change the originationTimestamp */
+		    
+
+
+/*  Change the originationTimestamp  */
+
+
+
 		    if (!empty($newOriginationTimestamp)) {
 			$item->setOriginationTimestamp($newOriginationTimestamp);
 		    }
@@ -265,7 +319,13 @@ class ItemEditItem extends ItemEditPlugin {
 			return array($ret, null, null, null);
 		    }
 
-		    /* Prepare our status message */
+		    
+
+
+/*  Prepare our status message  */
+
+
+
 		    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		    if ($ret) {
 			return array($ret, null, null, null);
@@ -292,7 +352,13 @@ class ItemEditItem extends ItemEditPlugin {
 	$platform =& $gallery->getPlatform();
 
 	if ($form['formName'] != 'ItemEditItem') {
-	    /* First time around, load the form with item data */
+	    
+
+
+/*  First time around, load the form with item data  */
+
+
+
 	    $form['formName'] = 'ItemEditItem';
 
 	    $form['title'] = $item->getTitle();
@@ -360,7 +426,13 @@ class ItemEditItem extends ItemEditPlugin {
 	$ItemEditItem = array('can' => $can,
 		'typeName' => array_merge($item->itemTypeName(), $item->itemTypeName(false)));
 
-	/* The originateTimestamp that we can get from our toolkits */
+	
+
+
+/*  The originateTimestamp that we can get from our toolkits  */
+
+
+
 	list ($ret, $originationTimestamp) = GalleryCoreApi::fetchOriginationTimestamp($item);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -377,14 +449,26 @@ class ItemEditItem extends ItemEditPlugin {
 	    );
 	}
 
-	/* The template needs to differentiate some important itemTypes */
+	
+
+
+/*  The template needs to differentiate some important itemTypes  */
+
+
+
 	if (GalleryUtilities::isA($item, 'GalleryPhotoItem')) {
 	    $ItemEditItem['isItemPhoto'] = true;
 	} else if (GalleryUtilities::isA($item, 'GalleryUnknownItem')) {
 	    $ItemEditItem['isItemUnknown'] = true;
 	}
 
-	/* Render the HTML body */
+	
+
+
+/*  Render the HTML body  */
+
+
+
 	$template->setVariable('ItemEditItem', $ItemEditItem);
 	$template->setVariable('controller', 'core.ItemEditItem');
 

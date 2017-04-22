@@ -33,7 +33,13 @@ class MembersCallbacks {
 
 	switch($callback) {
 	case 'LoadMembers':
-	    /* The "Members List" link */
+	    
+
+
+/*  The "Members List" link  */
+
+
+
 	    GalleryCoreApi::requireOnce(
 		'modules/members/classes/GalleryMembersHelper.class');
 	    list ($ret, $block['members']['LoadMembers']['canViewList']) =
@@ -42,7 +48,13 @@ class MembersCallbacks {
 		return $ret;
 	    }
 
-	    /* The members count */
+	    
+
+
+/*  The members count  */
+
+
+
 	    list ($ret, $block['members']['LoadMembers']['count']) =
 		GalleryMembersHelper::getMembersCount();
 	    if ($ret) {

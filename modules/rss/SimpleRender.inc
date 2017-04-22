@@ -40,7 +40,13 @@ class SimpleRenderView extends RenderView {
     function renderImmediate($status, $error) {
 	global $gallery;
 
-	/* get all parameters */
+	
+
+
+/*  get all parameters  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 	if ($ret) {
 	    return $ret;
@@ -58,7 +64,13 @@ class SimpleRenderView extends RenderView {
 
 	$params['itemId'] = $item->getId();
 
-	/* set feed type */
+	
+
+
+/*  set feed type  */
+
+
+
 	if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 	    $params['feedType'] = $params['sfAlbumType'];
 	} else if (GalleryUtilities::isA($item, 'GalleryDataItem')) {
@@ -67,7 +79,13 @@ class SimpleRenderView extends RenderView {
 
 	$params['feedDate'] = $params['sfDate'];
 
-	/* apply defaults */
+	
+
+
+/*  apply defaults  */
+
+
+
 	foreach (array('copyright' => 'defaultCopyright',
 		      'version' => 'defaultVersion',
 		      'count' => 'defaultCount',

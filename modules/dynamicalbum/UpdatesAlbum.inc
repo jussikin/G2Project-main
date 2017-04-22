@@ -76,7 +76,13 @@ class UpdatesAlbumView extends GalleryView {
 
 	$itemId = GalleryUtilities::getRequestVariables('itemId');
 	if (!empty($itemId)) {
-	    /* Viewing an item in this dynamic album */
+	    
+
+
+/*  Viewing an item in this dynamic album  */
+
+
+
 	    list ($ret, $viewItem) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 	    if ($ret) {
 		return array($ret, null, null, null);
@@ -86,11 +92,23 @@ class UpdatesAlbumView extends GalleryView {
 		return array($ret, null, null, null);
 	    }
 	    if (!$hasPermission) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null, null, null);
 	    }
 
-	    /* Provide parent, parent URL and get-children function to Theme API */
+	    
+
+
+/*  Provide parent, parent URL and get-children function to Theme API  */
+
+
+
 	    $item->urlParams = array('view' => $this->_view, 'highlightId' => $itemId);
 	    $item->getChildrenFunction = array(get_class($this), 'getChildIds');
 	    $viewItem->parent = $item;
@@ -100,13 +118,25 @@ class UpdatesAlbumView extends GalleryView {
 	if (empty($moduleParams['themeId'])) {
 	    list ($ret, $theme) = $this->loadThemeForItem();
 	    if ($ret || !isset($theme)) {
-		/* Ignore errors here so fallback theme can be used */
+		
+
+
+/*  Ignore errors here so fallback theme can be used  */
+
+
+
 		return array(null, null, array(), $item);
 	    }
 	} else {
 	    list ($ret, $theme) = GalleryView::_loadTheme($moduleParams['themeId']);
 	    if ($ret || !isset($theme)) {
-		/* Ignore errors here so fallback theme can be used */
+		
+
+
+/*  Ignore errors here so fallback theme can be used  */
+
+
+
 		return array(null, null, array(), $item);
 	    }
 	}
@@ -135,13 +165,25 @@ class UpdatesAlbumView extends GalleryView {
 	}
 
 	if (empty($itemId)) {
-	    /* Perform query for this dynamic album */
+	    
+
+
+/*  Perform query for this dynamic album  */
+
+
+
 	    list ($ret, $theme['allChildIds']) = $this->getChildIds($theme['actingUserId']);
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	} else {
-	    /* Item in dynamic album; use core.ShowItem to check permission, increment view count */
+	    
+
+
+/*  Item in dynamic album; use core.ShowItem to check permission, increment view count  */
+
+
+
 	    list ($ret, $showItem) = GalleryView::loadView('core.ShowItem');
 	    if ($ret) {
 		return array($ret, null);
@@ -208,7 +250,13 @@ class UpdatesAlbumView extends GalleryView {
 		return array($ret, null);
 	    }
 	    if (!$hasPermission) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 

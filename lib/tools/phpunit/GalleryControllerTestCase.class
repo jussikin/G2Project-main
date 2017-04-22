@@ -54,7 +54,13 @@ class GalleryControllerTestCase extends GalleryTestCase {
     }
 
     function handleRequest($errorCode=null) {
-	/* Get our form variables */
+	
+
+
+/*  Get our form variables  */
+
+
+
 	$form = GalleryUtilities::getFormVariables('form');
 
 	list ($ret, $results) = $this->_controller->handleRequest($form);
@@ -75,7 +81,13 @@ class GalleryControllerTestCase extends GalleryTestCase {
 	    $this->fail($ret->getAsHtml());
 	    return array();
 	} else {
-	    /* Check to make sure we got back everything we want */
+	    
+
+
+/*  Check to make sure we got back everything we want  */
+
+
+
 	    $this->assert(isset($results['status']), 'controller results missing status');
 	    $this->assert(isset($results['error']), 'controller results missing error');
 	    $this->assert(isset($results['redirect']) || isset($results['delegate']) ||

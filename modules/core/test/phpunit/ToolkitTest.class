@@ -39,7 +39,13 @@ class ToolkitTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Register a dummy toolkit */
+	
+
+
+/*  Register a dummy toolkit  */
+
+
+
 	$path = 'modules/core/test/phpunit/ToolkitTest.class';
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'TestToolkit', 'TestToolkit',
@@ -74,7 +80,13 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the operation */
+	
+
+
+/*  Get the operation  */
+
+
+
 	list ($ret, $operations) = GalleryCoreApi::getToolkitOperations('test/type');
 	if ($ret) {
 	    return $ret;
@@ -86,7 +98,13 @@ class ToolkitTest extends GalleryTestCase {
 	$this->assertEquals('test-description', $operations[0]['description']);
 	$this->assertEquals($params, $operations[0]['parameters']);
 
-	/* Get the toolkit */
+	
+
+
+/*  Get the toolkit  */
+
+
+
 	list ($ret, $toolkit, $outputMimeType) =
 	    GalleryCoreApi::getToolkitByOperation('test/type', 'test-operation');
 	if ($ret) {
@@ -96,7 +114,13 @@ class ToolkitTest extends GalleryTestCase {
 	$this->assertEquals(new TestToolkit(), $toolkit);
 	$this->assertEquals('test/outputType', $outputMimeType);
 
-	/* Register another toolkit with same operation/mimetype, higher priority */
+	
+
+
+/*  Register another toolkit with same operation/mimetype, higher priority  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitOperation('TestToolkit2',
 						       array('test/type'),
 						       'test-operation',
@@ -107,7 +131,13 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the toolkit */
+	
+
+
+/*  Get the toolkit  */
+
+
+
 	list ($ret, $toolkit, $outputMimeType) =
 	    GalleryCoreApi::getToolkitByOperation('test/type', 'test-operation');
 	if ($ret) {
@@ -117,7 +147,13 @@ class ToolkitTest extends GalleryTestCase {
 	$this->assertEquals(new TestToolkit2(), $toolkit);
 	$this->assertEquals('test/outputType', $outputMimeType);
 
-	/* Unregister */
+	
+
+
+/*  Unregister  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkit('TestToolkit');
 	if ($ret) {
 	    return $ret;
@@ -127,7 +163,13 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the toolkit */
+	
+
+
+/*  Get the toolkit  */
+
+
+
 	list ($ret, $toolkit, $outputMimeType) =
 	    GalleryCoreApi::getToolkitByOperation('test/type', 'test-operation');
 	if ($ret) {
@@ -147,7 +189,13 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the property */
+	
+
+
+/*  Get the property  */
+
+
+
 	list ($ret, $properties) = GalleryCoreApi::getToolkitProperties('test/type');
 	if ($ret) {
 	    return $ret;
@@ -158,7 +206,13 @@ class ToolkitTest extends GalleryTestCase {
 	$this->assertEquals('int', $properties[0]['type']);
 	$this->assertEquals('test-description', $properties[0]['description']);
 
-	/* Get the toolkit */
+	
+
+
+/*  Get the toolkit  */
+
+
+
 	list ($ret, $toolkit) =
 	    GalleryCoreApi::getToolkitByProperty('test/type', 'test-property');
 	if ($ret) {
@@ -167,13 +221,25 @@ class ToolkitTest extends GalleryTestCase {
 
 	$this->assertEquals(new TestToolkit(), $toolkit);
 
-	/* Unregister */
+	
+
+
+/*  Unregister  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkit('TestToolkit');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Get the toolkit */
+	
+
+
+/*  Get the toolkit  */
+
+
+
 	list ($ret, $toolkit) =
 	    GalleryCoreApi::getToolkitByProperty('test/type', 'test-property');
 	if ($ret) {
@@ -201,21 +267,39 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the toolkits */
+	
+
+
+/*  Get the toolkits  */
+
+
+
 	list ($ret, $toolkits) =
 	    GalleryCoreApi::getToolkitsByProperty('test/type', 'test-property');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Order is non-deterministic (varies by db) */
+	
+
+
+/*  Order is non-deterministic (varies by db)  */
+
+
+
 	$this->assert((GalleryUtilities::isA($toolkits[0], 'TestToolkit') &&
 		       GalleryUtilities::isA($toolkits[1], 'TestToolkit2')) ||
 		      (GalleryUtilities::isA($toolkits[0], 'TestToolkit2') &&
 		       GalleryUtilities::isA($toolkits[1], 'TestToolkit')),
 		      'toolkit mismatch');
 
-	/* Unregister */
+	
+
+
+/*  Unregister  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkit('TestToolkit2');
 	if ($ret) {
 	    return $ret;
@@ -225,7 +309,13 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the toolkits */
+	
+
+
+/*  Get the toolkits  */
+
+
+
 	list ($ret, $toolkitIds) =
 	    GalleryCoreApi::getToolkitByProperty('test/type', 'test-property');
 	if ($ret) {
@@ -271,7 +361,13 @@ class ToolkitTest extends GalleryTestCase {
 	$this->assert($isSupported, '1-1');
 	$this->assertEquals('test/type3', $outputMimeType, '1-2');
 
-	/* Unregister operation for single mime-type */
+	
+
+
+/*  Unregister operation for single mime-type  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkitOperation('TestToolkit', 'test-operation1',
 					 array('test/unused', 'test/nonexist'));
 	if ($ret) {
@@ -288,7 +384,13 @@ class ToolkitTest extends GalleryTestCase {
 	$this->assert($isSupported, '2-1');
 	$this->assertEquals('test/type3', $outputMimeType, '2-2');
 
-	/* Unregister single operation */
+	
+
+
+/*  Unregister single operation  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkitOperation('TestToolkit', 'test-operation2');
 	if ($ret) {
 	    return $ret;
@@ -303,7 +405,13 @@ class ToolkitTest extends GalleryTestCase {
 
 	$this->assert(!$isSupported, '3-1');
 
-	/* Unregister toolkit */
+	
+
+
+/*  Unregister toolkit  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkit('TestToolkit');
 	if ($ret) {
 	    return $ret;
@@ -499,23 +607,47 @@ class ToolkitTest extends GalleryTestCase {
     function testApplyTransform() {
 	$toolkit = new GalleryToolkit();
 
-	/* Rotate transform of cropped operation results in rotated coordinates*/
+	
+
+
+/*  Rotate transform of cropped operation results in rotated coordinates */
+
+
+
 	list ($success, $result) =
 	    $toolkit->applyTransform('rotate|90', 'rotate|90;crop|15,15,40,50');
 	$this->assert($success);
 	$this->assertEquals('rotate|90;crop|35,15,50,40', $result, 'test 1');
 
-	/* Rotate transform of nothing returns nothing */
+	
+
+
+/*  Rotate transform of nothing returns nothing  */
+
+
+
 	list ($success, $result) = $toolkit->applyTransform('rotate|90', '');
 	$this->assert($success);
 	$this->assertEquals('', $result, 'test 2');
 
-	/* Empty transform of cropped opreation returns original values */
+	
+
+
+/*  Empty transform of cropped opreation returns original values  */
+
+
+
 	list ($success, $result) = $toolkit->applyTransform('', 'rotate|90;crop|15,15,40,50');
 	$this->assert($success);
 	$this->assertEquals('rotate|90;crop|15,15,40,50', $result, 'test 3');
 
-	/* Reverse rotate transform of cropped operation results in rotated coordinates*/
+	
+
+
+/*  Reverse rotate transform of cropped operation results in rotated coordinates */
+
+
+
 	list ($success, $result) =
 	    $toolkit->applyTransform('rotate|90', 'rotate|90;crop|15,15,40,50', true);
 	$this->assert($success);
@@ -539,7 +671,13 @@ class ToolkitTest extends GalleryTestCase {
 
 	$toolkit = new GalleryToolkit();
 
-	/* Rotate transform of cropped operation results in rotated coordinates */
+	
+
+
+/*  Rotate transform of cropped operation results in rotated coordinates  */
+
+
+
 	list ($success, $result) =
 	    $toolkit->applyTransform('rotate|90', 'rotate|90;crop|15,20.5,40.62,50');
 	$this->assert($success);
@@ -597,14 +735,26 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Validate that toolkit priority is returned correctly */
+	
+
+
+/*  Validate that toolkit priority is returned correctly  */
+
+
+
 	list ($ret, $priority) = GalleryCoreApi::getToolkitPriorityById('TestToolkit');
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assertEquals(30, $priority, 'Toolkit Priority Doesn\'t Match');
 
-	/* Test return for an undefined toolkit */
+	
+
+
+/*  Test return for an undefined toolkit  */
+
+
+
 	list ($ret, $priority) = GalleryCoreApi::getToolkitPriorityById('TestToolkit2');
 	if ($ret) {
 	    return $ret;
@@ -677,7 +827,13 @@ class ToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Get the operation */
+	
+
+
+/*  Get the operation  */
+
+
+
 	list ($ret, $operations) = GalleryCoreApi::getToolkitOperations('test/type');
 	if ($ret) {
 	    return $ret;

@@ -53,7 +53,13 @@ class MembersItemsView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'MembersItems') {
-	    /* Set some defaults */
+	    
+
+
+/*  Set some defaults  */
+
+
+
 	    $form['formName'] = 'MembersItems';
 	}
 
@@ -76,13 +82,25 @@ class MembersItemsView extends GalleryView {
 
 	$form['list']['pageSize'] = $form['list']['count'] > 25 ? 25 : $form['list']['count'];
 
-	/* Figure out our max pages, make sure our current page fits in it */
+	
+
+
+/*  Figure out our max pages, make sure our current page fits in it  */
+
+
+
 	$form['list']['maxPages'] = ceil($form['list']['count'] / $form['list']['pageSize']);
 	if ($form['list']['page'] > $form['list']['maxPages']) {
 	    $form['list']['page'] = $form['list']['maxPages'];
 	}
 
-	/* Calculate the next/back pages */
+	
+
+
+/*  Calculate the next/back pages  */
+
+
+
 	$form['list']['nextPage'] = min($form['list']['page']+1, $form['list']['maxPages']);
 	$form['list']['backPage'] = max(1, $form['list']['page']-1);
 	$form['list']['startingItem'] = ($form['list']['page'] - 1) * $form['list']['pageSize'];

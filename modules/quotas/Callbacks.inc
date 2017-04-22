@@ -46,7 +46,13 @@ class QuotasCallbacks {
 	case 'LoadQuotas':
 
 	    GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
-	    /* The user's quota, if any */
+	    
+
+
+/*  The user's quota, if any  */
+
+
+
 	    list ($ret, $block['quotaExists'], $block['quotaValue']) =
 		GalleryQuotasHelper::getUserDiskQuota($userId);
 	    if ($ret) {
@@ -61,7 +67,13 @@ class QuotasCallbacks {
 		return $ret;
 	    }
 
-	    /* The user's current usage */
+	    
+
+
+/*  The user's current usage  */
+
+
+
 	    list ($ret, $block['currentUsage']) = GalleryQuotasHelper::getUserDiskUsage($userId);
 	    if ($ret) {
 		return $ret;

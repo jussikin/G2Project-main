@@ -49,19 +49,43 @@ class SystemChecksStep extends InstallStep {
     }
 
     function processRequest() {
-	/* Zend test */
+	
+
+
+/*  Zend test  */
+
+
+
 	if (!empty($_GET['zendtest'])) {
 	    header("Content-Type: text/plain");
 	    header("Content-Length: 8");
 	    $x = array(new stdclass());
-	    /* v-- This may cause PHP to crash! */
+	    
+
+
+/*  v-- This may cause PHP to crash!  */
+
+
+
 	    $x = $x[0];
 	    print "SUCCESS\n";
 	    return false;
 	}
-	/* Normal request */
+	
 
-	/* Create GalleryStub to store information for the install core step / install log */
+
+/*  Normal request  */
+
+
+
+
+	
+
+
+/*  Create GalleryStub to store information for the install core step / install log  */
+
+
+
 	global $galleryStub;
 	$galleryStub = new GalleryStub();
 	$failCount = 0;
@@ -72,7 +96,13 @@ class SystemChecksStep extends InstallStep {
 	$template->renderHeader(true);
 	$template->renderStatusMessage(_('Performing system checks'), '', 0);
 
-	/* assert compatible version of PHP, we accept 5.6.0+ but prefer 7.1.0+ */
+	
+
+
+/*  assert compatible version of PHP, we accept 5.6.0+ but prefer 7.1.0+  */
+
+
+
 	if (version_compare(PHP_VERSION, '5.6.0', '<')) {
 	    $templateData['check'][] =
 		array('title' => _('PHP version &gt;= v5.6.0'),
@@ -98,7 +128,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => _('PHP version &gt;= v7.1.0'), 'success' => true);
 	}
 
-	/* assert that __FILE__ works correctly */
+	
+
+
+/*  assert that __FILE__ works correctly  */
+
+
+
 	if (!SystemChecksStep::CheckFileDirective()) {
 	    $templateData['check'][] =
 		array('title' => _('FILE directive supported'),
@@ -112,7 +148,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => _('FILE Directive'), 'success' => true);
 	}
 
-	/* Make sure that safe mode is not enabled */
+	
+
+
+/*  Make sure that safe mode is not enabled  */
+
+
+
 	if (GalleryUtilities::getPhpIniBool('safe_mode')) {
 	    $templateData['check'][] =
 		array('title' => _('Safe mode disabled'),
@@ -125,7 +167,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => _('Safe Mode'), 'success' => true);
 	}
 
-	/* Make sure we have PCRE support */
+	
+
+
+/*  Make sure we have PCRE support  */
+
+
+
 	if (!function_exists('preg_match') || !function_exists('preg_replace')) {
 	    $templateData['check'][] =
 		array('title' => _('Regular expressions'),
@@ -135,9 +183,21 @@ class SystemChecksStep extends InstallStep {
 			    'Regular Expressions%s. You must enable these functions before ' .
 			    'Gallery will run.'), '<a href="http://php.net/pcre">', '</a>'));
 	    $failCount++;
-	} /* skip showing 'success' for this one */
+	} 
 
-	/* Warning when exec() is disabled */
+
+/*  skip showing 'success' for this one  */
+
+
+
+
+	
+
+
+/*  Warning when exec() is disabled  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    $templateData['check'][] =
 		array('title' => _('exec() allowed'),
@@ -154,7 +214,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => _('exec() allowed'), 'success' => true);
 	}
 
-	/* Warning when set_time_limit() is disabled */
+	
+
+
+/*  Warning when set_time_limit() is disabled  */
+
+
+
 	if (in_array('set_time_limit', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    $timeLimit = ini_get('max_execution_time');
 	    $templateData['check'][] =
@@ -172,14 +238,26 @@ class SystemChecksStep extends InstallStep {
 	    $templateData['check'][] =
 		array('title' => _('set_time_limit() allowed'), 'success' => true);
 
-	    /* Set the time limit large enough for the remaining checks (slow systems) */
+	    
+
+
+/*  Set the time limit large enough for the remaining checks (slow systems)  */
+
+
+
 	    set_time_limit(180);
 	    $setTimeLimitAvailable = true;
 	}
 
 	$template->renderStatusMessage(_('Performing system checks'), '', 0.02);
 
-	/* Make sure filesystem operations are allowed */
+	
+
+
+/*  Make sure filesystem operations are allowed  */
+
+
+
 	$missingFilesystemFunctions = array();
 	foreach (array('fopen', 'fclose', 'fread', 'fwrite', 'file', 'copy', 'rename', 'readfile',
 		'file_get_contents', 'copy', 'move_uploaded_file', 'file_exists', 'tempnam', 'glob',
@@ -200,9 +278,21 @@ class SystemChecksStep extends InstallStep {
 			    'missing: %s.'),
 			  implode(', ', $missingFilesystemFunctions)));
 	    $failCount++;
-	} /* skip showing 'success' for this one */
+	} 
 
-	/* Warning if memory_limit is set and is too low */
+
+/*  skip showing 'success' for this one  */
+
+
+
+
+	
+
+
+/*  Warning if memory_limit is set and is too low  */
+
+
+
 	$memoryLimit = ini_get('memory_limit');
 	$title = sprintf('%s (%s)', _('Memory limit'),
 			 ($memoryLimit == '' ? _('no limit') : $memoryLimit . 'b'));
@@ -224,7 +314,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => $title, 'success' => true);
 	}
 
-	/* Warning if file_uploads are not allowed */
+	
+
+
+/*  Warning if file_uploads are not allowed  */
+
+
+
 	if (! GalleryUtilities::getPhpIniBool('file_uploads')) {
 	    $templateData['check'][] =
 		array('title' => _('File uploads allowed'),
@@ -240,7 +336,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => _('File uploads allowed'), 'success' => true);
 	}
 
-	/* Warning if upload_max_filesize is less than 2M */
+	
+
+
+/*  Warning if upload_max_filesize is less than 2M  */
+
+
+
 	$title = sprintf('%s (%sb)', _('Maximum upload size'), ini_get('upload_max_filesize'));
 	$minimumUploadsize = 2;
 	$uploadSize = $this->_getBytes(ini_get('upload_max_filesize')) / (1024 * 1024);
@@ -260,7 +362,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => $title, 'success' => true);
 	}
 
-	/* Warning if post_max_size is less than 2M */
+	
+
+
+/*  Warning if post_max_size is less than 2M  */
+
+
+
 	$title = sprintf('%s (%sb)', _('Maximum POST size'), ini_get('post_max_size'));
 	$minimumPostsize = 2;
 	$postSize = $this->_getBytes(ini_get('post_max_size')) / (1024 * 1024);
@@ -280,7 +388,13 @@ class SystemChecksStep extends InstallStep {
 		array('title' => $title, 'success' => true);
 	}
 
-	/* Check for gettext support */
+	
+
+
+/*  Check for gettext support  */
+
+
+
 	$title = _('Translation support');
 	if (!function_exists('dgettext')) {
 	    $templateData['check'][] =
@@ -312,7 +426,13 @@ class SystemChecksStep extends InstallStep {
 	    $templateData['check'][] = array('title' => $title, 'success' => true);
 	}
 
-	/* $x=$x[0] <--(an object) can crash PHP with zend.ze1_compatibility_mode ON */
+	
+
+
+/*  $x=$x[0] <--(an object) can crash PHP with zend.ze1_compatibility_mode ON  */
+
+
+
 	if (GalleryUtilities::getPhpIniBool('zend.ze1_compatibility_mode')) {
 	    $templateData['check'][] =
 		array('title' => _('Zend compatibility mode'),
@@ -327,9 +447,21 @@ class SystemChecksStep extends InstallStep {
 				  INDEX_PHP . '?step=' . $this->_stepNumber . '&amp;zendtest=1'),
 			  '</a>'),
 		);
-	} /* skip showing 'success' for this one */
+	} 
 
-	/* Warning if putenv is disabled */
+
+/*  skip showing 'success' for this one  */
+
+
+
+
+	
+
+
+/*  Warning if putenv is disabled  */
+
+
+
 	if (in_array('putenv', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    $templateData['check'][] =
 		array('title' => _('putenv() allowed'),
@@ -340,9 +472,21 @@ class SystemChecksStep extends InstallStep {
 			'this setting, but on some rare systems Gallery will be unable to run in ' .
 			'other languages than the system language and English.'),
 		);
-	} /* skip showing 'success' for this one */
+	} 
 
-	/* Warning if output_buffering / handlers are enabled */
+
+/*  skip showing 'success' for this one  */
+
+
+
+
+	
+
+
+/*  Warning if output_buffering / handlers are enabled  */
+
+
+
 	$outputBuffers = array();
 	foreach (array('output_buffering', 'zlib.output_compression') as $outputFunction) {
 	    if (GalleryUtilities::getPhpIniBool($outputFunction) ||
@@ -368,11 +512,23 @@ class SystemChecksStep extends InstallStep {
 			    ' if output buffering is enabled unless ini_set() is allowed.'),
 			  implode(', ', $outputBuffers)),
 		);
-	} /* skip showing 'success' for this one */
+	} 
+
+
+/*  skip showing 'success' for this one  */
+
+
+
 
 	$template->renderStatusMessage(_('Performing system checks'), '', 0.06);
 
-	/* Check all files against MANIFEST */
+	
+
+
+/*  Check all files against MANIFEST  */
+
+
+
 	$title = _('Gallery file integrity');
 	if (!SystemChecksStep::CheckFileDirective() || !empty($missingFilesystemFunctions)) {
 	    $templateData['check'][] =
@@ -380,7 +536,13 @@ class SystemChecksStep extends InstallStep {
 		      'warning' => true,
 		      'notice' => _('Test skipped due to other errors.'));
 	} else {
-	    /* Error if no themes are available */
+	    
+
+
+/*  Error if no themes are available  */
+
+
+
 	    if (!SystemChecksStep::AssertThemeIsAvailable()) {
 		$templateData['check'][] =
 		    array('title' => _('Theme available'),
@@ -391,9 +553,21 @@ class SystemChecksStep extends InstallStep {
 					. DIRECTORY_SEPARATOR . 'themes')
 			);
 		$failCount++;
-	    } /* skip showing 'success' for this one */
+	    } 
 
-	    /* Now check the MANIFEST files */
+
+/*  skip showing 'success' for this one  */
+
+
+
+
+	    
+
+
+/*  Now check the MANIFEST files  */
+
+
+
 	    $isSvnInstall = file_exists(dirname(__FILE__) . '/.svn');
 	    $manifest = SystemChecksStep::CheckManifest($template, $setTimeLimitAvailable);
 	    if (!isset($manifest)) {
@@ -452,7 +626,13 @@ class SystemChecksStep extends InstallStep {
 	}
     }
 
-    /** Verify that there is at least one themes/.../theme.inc file. */
+    
+
+
+/*  Verify that there is at least one themes/.../theme.inc file.  */
+
+
+
     function AssertThemeIsAvailable() {
 	$themesFolder = dirname(dirname(dirname(__FILE__))) . '/themes/' ;
 	if (!file_exists($themesFolder)) {
@@ -522,7 +702,13 @@ class SystemChecksStep extends InstallStep {
 		 */
 		$actualSize = filesize($path);
 		if ($actualSize != $info['size'] && $actualSize != $info['size_crlf']) {
-		    /* This can be useful debug info */
+		    
+
+
+/*  This can be useful debug info  */
+
+
+
 		    if (false) {
 			printf("%s (expected: %s/%s, actual: %s)<br/>", $file,
 			       $info['size'], $info['size_crlf'], $actualSize);

@@ -142,7 +142,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	/* Validate the input file */
+	
+
+
+/*  Validate the input file  */
+
+
+
 	if (empty($inputFileName)) {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
@@ -169,7 +175,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	$parentLockId = null;
 	if (!GalleryCoreApi::isReadLocked($parentId)) {
 	    if ($parentId == $thumbnailContainerId) {
-		/* For mime-type thumbs, we need a write-lock to prevent collisions. */
+		
+
+
+/*  For mime-type thumbs, we need a write-lock to prevent collisions.  */
+
+
+
 		list ($ret, $parentLockId) = GalleryCoreApi::acquireWriteLock($parentId);
 	    } else {
 		list ($ret, $parentLockId) = GalleryCoreApi::acquireReadLock($parentId);
@@ -253,7 +265,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    return $ret;
 	}
 
-	/* Lock our parent to ensure that we can fetch our path. */
+	
+
+
+/*  Lock our parent to ensure that we can fetch our path.  */
+
+
+
 	$parentLockId = null;
 	if (!GalleryCoreApi::isReadLocked($this->getParentId())) {
 	    list ($ret, $parentLockId) = GalleryCoreApi::acquireReadLock($this->getParentId());
@@ -262,7 +280,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    }
 	}
 
-	/* Delete myself */
+	
+
+
+/*  Delete myself  */
+
+
+
 	$ret = parent::delete();
 	if ($ret) {
 	    if ($parentLockId) {
@@ -271,7 +295,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    return $ret;
 	}
 
-	/* Delete our source file */
+	
+
+
+/*  Delete our source file  */
+
+
+
 	$platform =& $gallery->getPlatform();
 	if (!$platform->unlink($path)) {
 	    if ($parentLockId) {
@@ -288,7 +318,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    }
 	}
 
-	/* Restore thumbnails of affected items. */
+	
+
+
+/*  Restore thumbnails of affected items.  */
+
+
+
 	list ($ret, $thumbnailContainerId) =
 		GalleryCoreApi::getPluginParameter('module', 'thumbnail', 'id.container');
 	if ($ret) {
@@ -328,7 +364,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    }
 	    $derivative = array_shift($derivatives);
 
-	    /* Don't loop in thumbnail delete event. */
+	    
+
+
+/*  Don't loop in thumbnail delete event.  */
+
+
+
 	    $key = 'ThumbnailImage::delete';
 	    if (GalleryDataCache::containsKey($key)
 		    && GalleryDataCache::get($key) == $derivative->getId()) {
@@ -348,7 +390,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 		continue;
 	    }
 
-	    /* Make sure operations contains only thumbnail and composite */
+	    
+
+
+/*  Make sure operations contains only thumbnail and composite  */
+
+
+
 	    $operations = rtrim(preg_replace('/(^|;)((?!thumbnail\||composite\|).*?(;|$))+/', '$1',
 					 $derivative->getDerivativeOperations()), ';');
 
@@ -365,7 +413,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    }
 
 	    if (empty($operations)) {
-		/* Operations not supported.. remove the thumbnail */
+		
+
+
+/*  Operations not supported.. remove the thumbnail  */
+
+
+
 		$ret = GalleryCoreApi::deleteEntityById($derivative->getId(), 'GalleryDerivative');
 		if ($ret) {
 		    return $ret;
@@ -429,11 +483,23 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    return array($ret, null);
 	}
 	if ($this->getParentId() != $thumbnailContainerId) {
-	    /* Custom thumbnails are stored in a decimal tree, e.g. 7/75.jpg. */
+	    
+
+
+/*  Custom thumbnails are stored in a decimal tree, e.g. 7/75.jpg.  */
+
+
+
 	    $id = (string)$this->getId();
 	    $path = $id{0} . '/' . $id . '.jpg';
 	} else {
-	    /* Mime-type thumbnails are right under the plugin_data/modules/thumbnail/ folder. */
+	    
+
+
+/*  Mime-type thumbnails are right under the plugin_data/modules/thumbnail/ folder.  */
+
+
+
 	    $path = $this->getPathComponent();
 	}
 
@@ -454,7 +520,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 	    'modules' . $slash . 'thumbnail' . $slash;
     }
 
-    /** @see GalleryFileSystemEntity::move */
+    
+
+
+/*  @see GalleryFileSystemEntity::move  */
+
+
+
     function move($newParentId) {
 	return GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION);
     }
@@ -480,7 +552,13 @@ class ThumbnailImage extends GalleryFileSystemEntity {
 		
 		list ($width, $height) = array($this->getWidth(), $this->getHeight());
 		
-		/* Shrink our dimensions if necessary */
+		
+
+
+/*  Shrink our dimensions if necessary  */
+
+
+
 		if (isset($params['maxSize'])) {
 			list ($width, $height) = GalleryUtilities::shrinkDimensionsToFit(
 					$width, $height, $params['maxSize']

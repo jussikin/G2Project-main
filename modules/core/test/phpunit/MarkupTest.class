@@ -109,7 +109,13 @@ class MarkupTest extends GalleryTestCase {
     }
 
     function testImageEntity() {
-	/* Our input should be properly escaped, so bbcode doesn't need to entitize things */
+	
+
+
+/*  Our input should be properly escaped, so bbcode doesn't need to entitize things  */
+
+
+
 	$results = $this->_bbcode->parse('[img]http://image.com/get?id=123&amp;size=small[/img]');
 	$this->assertEquals('<img src="http://image.com/get?id=123&amp;size=small" alt=""/>',
 			    $results);
@@ -139,7 +145,13 @@ class MarkupTest extends GalleryTestCase {
     }
 
     function testUrl3() {
-	/* Seems kind of silly that we add rel="nofollow" to mailto: urls, but it doesn't hurt */
+	
+
+
+/*  Seems kind of silly that we add rel="nofollow" to mailto: urls, but it doesn't hurt  */
+
+
+
 	$results = $this->_bbcode->parse('[url=mailto:monkey@fruit.com]content[/url]');
 	$this->assertEquals('<a href="mailto:monkey@fruit.com" rel="nofollow">content</a>',
 			    $results);
@@ -229,7 +241,13 @@ class MarkupTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Bbcode processor adds closing </i> tag too */
+	
+
+
+/*  Bbcode processor adds closing </i> tag too  */
+
+
+
 	$this->assertEquals('&lt;b&gt; <i> &amp;oacute;</i>',
 			    smarty_modifier_markup('&lt;b&gt; [i] &amp;oacute;'));
 	$this->assertEquals('&lt;b&gt;  &amp;oacute;',
@@ -242,7 +260,13 @@ class MarkupTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* GalleryUtilities::htmlSafe fixes the missing </b> */
+	
+
+
+/*  GalleryUtilities::htmlSafe fixes the missing </b>  */
+
+
+
 	$this->assertEquals('<b> [i] &oacute;</b>',
 			    smarty_modifier_markup('&lt;b&gt; [i] &amp;oacute;'));
 	$this->assertEquals(' [i] &oacute;',
@@ -259,7 +283,13 @@ class MarkupTest extends GalleryTestCase {
     }
 
     function testMarkupHtmlEmptyData() {
-	/* Guard against http://bugs.php.net/bug.php?id=22014 */
+	
+
+
+/*  Guard against http://bugs.php.net/bug.php?id=22014  */
+
+
+
 	$this->assertEquals(null, $this->_html->parse(null));
 	$this->assertEquals('', $this->_html->parse(''));
     }

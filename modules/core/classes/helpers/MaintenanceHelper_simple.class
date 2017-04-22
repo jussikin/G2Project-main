@@ -34,7 +34,13 @@ class MaintenanceHelper_simple {
      *               array(taskId => MaintenanceTask, ...)
      */
     static function fetchTasks() {
-	/* Get all the option plugins */
+	
+
+
+/*  Get all the option plugins  */
+
+
+
 	list ($ret, $allTaskIds) =
 	    GalleryCoreApi::getAllFactoryImplementationIds('MaintenanceTask');
 	if ($ret) {
@@ -124,7 +130,13 @@ class MaintenanceHelper_simple {
 
 	$currentMode = $gallery->getConfig('mode.maintenance');
 
-	/* If already in the requested mode, don't have to do anything. */
+	
+
+
+/*  If already in the requested mode, don't have to do anything.  */
+
+
+
 	if ($currentMode !== $mode) {
 	    $platform =& $gallery->getPlatform();
 	    $versionFile = $gallery->getConfig('data.gallery.version');
@@ -139,7 +151,13 @@ class MaintenanceHelper_simple {
 	    if (!empty($mode)) {
 		$modeText = 'maintenance-mode';
 
-		/* If $mode is a string then treat as a url of the custom maintenance page. */
+		
+
+
+/*  If $mode is a string then treat as a url of the custom maintenance page.  */
+
+
+
 		if (is_string($mode)) {
 		    $modeText .= ":$mode";
 		}

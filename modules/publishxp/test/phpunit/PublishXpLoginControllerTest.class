@@ -61,7 +61,13 @@ class PublishXpLoginControllerTest extends GalleryControllerTestCase {
 		  'redirect' => array('view' => 'publishxp.SelectAlbum')),
 	    $result);
 
-	/* Verify our event got posted */
+	
+
+
+/*  Verify our event got posted  */
+
+
+
 	$this->assertEventFired('Gallery::Login', $this->_user);
     }
 
@@ -87,7 +93,13 @@ class PublishXpLoginControllerTest extends GalleryControllerTestCase {
 		  'delegate' => array('view' => 'publishxp.PublishXpLogin')),
 	    $result);
 
-	/* Verify our event got posted */
+	
+
+
+/*  Verify our event got posted  */
+
+
+
 	$this->assertEventFired('Gallery::FailedLogin', null,
 	    array('userName' => $this->_user->getUserName()));
     }

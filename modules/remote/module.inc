@@ -66,7 +66,13 @@ class RemoteModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our item add plugins */
+	
+
+
+/*  Register our item add plugins  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'ItemAddPlugin', 'ItemAddGalleryRemote', 'ItemAddGalleryRemote',
 	    'modules/remote/ItemAddGalleryRemote.inc', 'remote', null);

@@ -62,7 +62,13 @@ class ItemDeleteJsView extends GalleryView {
 	    }
 	    if (isset($headers['If-Modified-Since']) &&
 		    ($when = strtotime($headers['If-Modified-Since'])) > 0) {
-		/* Check date on language files to determine if we should resend the strings. */
+		
+
+
+/*  Check date on language files to determine if we should resend the strings.  */
+
+
+
 		/** 
 		 * TODO: Create an API to check whether the translation file has changed
 		 *       and refactor the hardcoded .mo file locations.

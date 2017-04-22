@@ -38,7 +38,13 @@ class RssSiteAdminController extends GalleryController {
     function handleRequest($form) {
 	global $gallery;
 
-	/* Make sure the user has permission to do this operation */
+	
+
+
+/*  Make sure the user has permission to do this operation  */
+
+
+
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
@@ -49,7 +55,13 @@ class RssSiteAdminController extends GalleryController {
 
 	if (isset($form['action']['save'])) {
 	    if ($mode == 'settings') {
-		/* error checking */
+		
+
+
+/*  error checking  */
+
+
+
 	       if (!isset($form['defaultVersion']) ||
 			!($form['defaultVersion'] == '0.91' ||
 			$form['defaultVersion'] == '2.0')) {
@@ -65,7 +77,13 @@ class RssSiteAdminController extends GalleryController {
 	       } else if (!isset($form['defaultCopyright'])) {
 		    $error[] = 'form[error][defaultCopyright]';
 	       } else {
-		    /* save parameters */
+		    
+
+
+/*  save parameters  */
+
+
+
 		    foreach (array('defaultVersion',
 				   'defaultCount',
 				   'maxCount',
@@ -99,12 +117,24 @@ class RssSiteAdminController extends GalleryController {
 		    $status['saved'] = 1;
 		}
 	    } else if ($mode == 'simplefeedsettings') {
-		/* error checking */
+		
+
+
+/*  error checking  */
+
+
+
 		if (!isset($form['sfPhotosRecursiveLimit'])
 			|| ((int)$form['sfPhotosRecursiveLimit']) < 0) {
 		    $error[] = 'form[error][sfPhotosRecursiveLimit]';
 		} else {
-		    /* save parameters */
+		    
+
+
+/*  save parameters  */
+
+
+
 		    foreach (array('sfAlbumType',
 				   'sfPhotosRecursiveLimit',
 				   'sfDate') as $setting) {
@@ -119,7 +149,13 @@ class RssSiteAdminController extends GalleryController {
 		}
 	    }
 	} else if (isset($form['action']['reset'])) {
-	    /* do nothing */
+	    
+
+
+/*  do nothing  */
+
+
+
 	} else if (isset($form['action']['delete'])) {
 	    $ret = RssMapHelper::deleteFeed($form['action']['delete']);
 	    if ($ret) {
@@ -131,7 +167,13 @@ class RssSiteAdminController extends GalleryController {
 	    $error[] = 'form[error][unknownAction]';
 	}
 
-	/* figure out the method we will use */
+	
+
+
+/*  figure out the method we will use  */
+
+
+
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results['status'] = $status;
 	$results['error'] = $error;
@@ -166,7 +208,13 @@ class RssSiteAdminView extends GalleryView {
 	    $RssSiteAdmin['mode'] = 'settings';
 	}
 
-	/* fetch module parameters and save them in form variable */
+	
+
+
+/*  fetch module parameters and save them in form variable  */
+
+
+
 	list ($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 	if ($ret) {
 	    return array($ret, null);
@@ -176,7 +224,13 @@ class RssSiteAdminView extends GalleryView {
 	}
 
 	if ($RssSiteAdmin['mode'] == 'list') {
-	    /* fetch all feed definitions */
+	    
+
+
+/*  fetch all feed definitions  */
+
+
+
 	    list ($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
 	    if ($ret) {
 		return array($ret, null);
@@ -188,7 +242,13 @@ class RssSiteAdminView extends GalleryView {
 	    }
 
 	    if (!empty($feeds)) {
-		/* replace item Ids with actual items */
+		
+
+
+/*  replace item Ids with actual items  */
+
+
+
 		$itemIds = array();
 		foreach ($feeds as $feed) {
 		    $itemIds[] = $feed['itemId'];

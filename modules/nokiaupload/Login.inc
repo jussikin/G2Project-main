@@ -34,7 +34,13 @@ class LoginController extends GalleryController {
     function handleRequest($form) {
 	ImageUploadHelper::logRequest('LoginController');
 
-	/* Request forgery protection */
+	
+
+
+/*  Request forgery protection  */
+
+
+
 	$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 	if (strstr($httpUserAgent, 'Nokia') === false) {
 	    return array(GalleryCoreApi::error(ERROR_REQUEST_FORGED), null);
@@ -86,7 +92,13 @@ class LoginView extends GalleryView {
 		'=' . $session->getId() . "\r\n";
 	    $reply[] = 'RSURL=' . $status['rsurl'] . "\r\n";
 
-	    /* Send RS Capabilities as well if we have them. */
+	    
+
+
+/*  Send RS Capabilities as well if we have them.  */
+
+
+
 	    if (isset($status['capabilities'])) {
 		foreach ($status['capabilities'] as $capability) {
 		    $reply[] = $capability;

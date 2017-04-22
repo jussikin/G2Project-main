@@ -49,7 +49,13 @@ class ThumbnailToolkitTest extends GalleryTestCase {
 	    return ($ret);
 	}
 
-	/* Register high priority thumbnail operation for image/jpeg */
+	
+
+
+/*  Register high priority thumbnail operation for image/jpeg  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ThumbnailTestToolkit', 'ThumbnailTestToolkit',
 	    'modules/thumbnail/test/phpunit/ThumbnailToolkitTest.class', 'thumbnailTest', null);
@@ -147,7 +153,13 @@ class ThumbnailToolkitTest extends GalleryTestCase {
     function testRecursiveToolkitOperationIsBlocked() {
 	global $gallery;
 
-	/* First ensure ThumbnailToolkit is also the primary toolkit for jpg thumbnail operations */
+	
+
+
+/*  First ensure ThumbnailToolkit is also the primary toolkit for jpg thumbnail operations  */
+
+
+
 	$ret = GalleryCoreApi::unregisterToolkitOperation('ThumbnailTestToolkit', 'thumbnail');
 	if ($ret) {
 	    return $ret;
@@ -173,7 +185,13 @@ class ThumbnailToolkitTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Verify precondition */
+	
+
+
+/*  Verify precondition  */
+
+
+
 	list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation('image/jpeg', 'thumbnail');
 	if ($ret) {
 	    return $ret;
@@ -194,7 +212,13 @@ class ThumbnailToolkitTest extends GalleryTestCase {
 	    dirname(__FILE__) . '/x', $gallery->getConfig('data.gallery.base') . '/unittest.jpg',
 	    array(150));
 	if ($ret && $ret->getErrorCode() & ERROR_UNSUPPORTED_OPERATION) {
-	    /* Error expected for bad operation */
+	    
+
+
+/*  Error expected for bad operation  */
+
+
+
 	} else if ($ret) {
 	    return ($ret);
 	} else {
@@ -208,7 +232,13 @@ class ThumbnailToolkitTest extends GalleryTestCase {
  */
 class ThumbnailToolkitTestDummyPlatform {
     function copy($source, $dest) {
-	/* Simulate copy failure */
+	
+
+
+/*  Simulate copy failure  */
+
+
+
 	return false;
     }
     function getDirectorySeparator() {
@@ -222,7 +252,13 @@ class ThumbnailToolkitTestDummyPlatform {
 class ThumbnailTestToolkit {
     function performOperation($mimeType, $operationName, $sourceFilename,
 			      $destFilename, $parameters, $context=array()) {
-	/* Do nothing */
+	
+
+
+/*  Do nothing  */
+
+
+
 	return array(null, $mimeType, $context);
     }
 }

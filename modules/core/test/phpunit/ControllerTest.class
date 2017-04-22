@@ -74,7 +74,13 @@ class ControllerTest extends GalleryTestCase {
 	list ($ret, $controller) =
 	    GalleryController::loadController('controllertest.SomeRandomController');
 	if ($ret && $ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
-	    /* this is what we expect */
+	    
+
+
+/*  this is what we expect  */
+
+
+
 	} else {
 	    $this->assert(false, 'The controller of a deactivated module should not load.');
 	}
@@ -95,7 +101,13 @@ class ControllerTest extends GalleryTestCase {
     function testAssertIsGenuineRequestDefaultsToFalse() {
 	$ret = GalleryController::assertIsGenuineRequest();
 	if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
-	    /* this is what we expect */
+	    
+
+
+/*  this is what we expect  */
+
+
+
 	} else if ($ret) {
 	    return $ret;
 	} else {
@@ -107,7 +119,13 @@ class ControllerTest extends GalleryTestCase {
 	GalleryUtilities::putRequestVariable('authToken', '');
 	$ret = GalleryController::assertIsGenuineRequest();
 	if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
-	    /* this is what we expect */
+	    
+
+
+/*  this is what we expect  */
+
+
+
 	} else if ($ret) {
 	    return $ret;
 	} else {
@@ -138,7 +156,13 @@ class ControllerTest extends GalleryTestCase {
 	GalleryUtilities::putRequestVariable('authToken', '098765432109');
 	$ret = GalleryController::assertIsGenuineRequest();
 	if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
-	    /* this is what we expect */
+	    
+
+
+/*  this is what we expect  */
+
+
+
 	} else if ($ret) {
 	    return $ret;
 	} else {
@@ -227,14 +251,26 @@ class ControllerTest extends GalleryTestCase {
 	    $this->fail('Expected ERROR_MISSING_OBJECT, no error returned');
 	}
 
-	/* No permission check */
+	
+
+
+/*  No permission check  */
+
+
+
 	list ($ret, $item) = $controller->getItem(false);
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assertEquals($album->getId(), $item->getId(), 'no permission check, itemId');
 
-	/* Prepare test with permission */
+	
+
+
+/*  Prepare test with permission  */
+
+
+
 	$ret = GalleryCoreApi::addUserPermission(
 	    $album->getId(), $gallery->getActiveUserId(), 'core.view');
 	if ($ret) {

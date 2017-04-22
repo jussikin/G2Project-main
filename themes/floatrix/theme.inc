@@ -90,7 +90,13 @@ class FloatrixTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Check for JavaScript warning flag */
+	
+
+
+/*  Check for JavaScript warning flag  */
+
+
+
 	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
 	    $template->setVariable('jsWarning', true);
 	}
@@ -117,7 +123,13 @@ class FloatrixTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Check for JavaScript warning flag */
+	
+
+
+/*  Check for JavaScript warning flag  */
+
+
+
 	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
 	    $template->setVariable('jsWarning', true);
 	}
@@ -158,7 +170,13 @@ class FloatrixTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	/* Check for JavaScript warning flag */
+	
+
+
+/*  Check for JavaScript warning flag  */
+
+
+
 	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
 	    $template->setVariable('jsWarning', true);
 	}

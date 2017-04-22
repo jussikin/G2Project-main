@@ -44,7 +44,13 @@ class AdminDeleteUserQuotaController extends GalleryController {
 	}
 	if (isset($form['action']['cancel'])) {
 
-	    /* Go back to the AdminQuotas view */
+	    
+
+
+/*  Go back to the AdminQuotas view  */
+
+
+
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'quotas.AdminQuotas';
 
@@ -65,7 +71,13 @@ class AdminDeleteUserQuotaController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Request a redirect to the confirmation screen */
+		
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminQuotas';
 		$status['deletedUser'] = $user->getUserName();
@@ -112,7 +124,13 @@ class AdminDeleteUserQuotaView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminDeleteUserQuota') {
-	    /* First time around initialize our form */
+	    
+
+
+/*  First time around initialize our form  */
+
+
+
 	    $form['userName'] = $user->getUserName();
 	    $form['formName'] = 'AdminDeleteUserQuota';
 	}

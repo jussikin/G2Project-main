@@ -94,7 +94,13 @@ class LinkItemTest extends GalleryTestCase {
     }
 
     function testMoveLink() {
-	/* We don't really have anything on the filesystem; make sure move() works ok */
+	
+
+
+/*  We don't really have anything on the filesystem; make sure move() works ok  */
+
+
+
 	$this->_markForCleanup($this->_targetAlbum);
 
 	$ret = $this->_link->move($this->_targetAlbum->getId());
@@ -112,7 +118,13 @@ class LinkItemTest extends GalleryTestCase {
     }
 
     function testDeleteAlbum() {
-	/* Verify delete of an album also deletes links that point to it */
+	
+
+
+/*  Verify delete of an album also deletes links that point to it  */
+
+
+
 	list ($ret, $link) =
 	    $this->_createLinkItem($this->_album->getId(), $this->_targetAlbum->getId());
 	if ($ret) {
@@ -140,7 +152,13 @@ class LinkItemTest extends GalleryTestCase {
     }
 
     function testDeleteSubalbum() {
-	/* Verify delete of an album also deletes links that point to its subalbums */
+	
+
+
+/*  Verify delete of an album also deletes links that point to its subalbums  */
+
+
+
 	list ($ret, $subalbum) = $this->_createRandomAlbum($this->_targetAlbum->getId());
 	if ($ret) {
 	    return $ret;
@@ -174,7 +192,13 @@ class LinkItemTest extends GalleryTestCase {
     function testShowLinkItemNoPersistentSession() {
 	global $gallery;
 	$backup = $gallery->_session;
-	/* Make sure the redirect has no sessionId in it */
+	
+
+
+/*  Make sure the redirect has no sessionId in it  */
+
+
+
 	GalleryUtilities::removeRequestVariable(SESSION_ID_PARAMETER);
 	unset($_COOKIE[SESSION_ID_PARAMETER]);
 	unset($_SERVER['HTTP_COOKIE']);
@@ -203,12 +227,30 @@ class LinkItemTest extends GalleryTestCase {
 	    return $ret;
 	}
 	$gallery->_session = $session;
-	/* Make sure it passes the onLoad conditions */
+	
+
+
+/*  Make sure it passes the onLoad conditions  */
+
+
+
 	GalleryUtilities::putRequestVariable('view', 'core.ShowItem');
 	GalleryUtilities::putRequestVariable('itemId', $this->_link->getId());
-	/* Make sure onLoad is called */
+	
+
+
+/*  Make sure onLoad is called  */
+
+
+
 	GalleryDataCache::setMemoryCachingEnabled(false);
-	/* Execute the test */
+	
+
+
+/*  Execute the test  */
+
+
+
 	list ($ret, $link) =
 	    GalleryCoreApi::loadEntitiesById($this->_link->getId(), 'GalleryLinkItem');
 	if ($ret) {
@@ -216,7 +258,13 @@ class LinkItemTest extends GalleryTestCase {
 	    return $ret;
 	}
 	GalleryDataCache::setMemoryCachingEnabled(true);
-	/* Verify results */
+	
+
+
+/*  Verify results  */
+
+
+
 	$this->assertEquals(1, $_REQUEST['phpVmExitCalls'], 'nr of exit calls');
 	$urlGenerator =& $gallery->getUrlGenerator();
 	$baseUrl = $urlGenerator->getCurrentUrlDir();

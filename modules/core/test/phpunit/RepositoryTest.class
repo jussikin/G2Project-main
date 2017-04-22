@@ -42,12 +42,24 @@ class RepositoryTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Set up mock storage. */
+	
+
+
+/*  Set up mock storage.  */
+
+
+
 	global $gallery;
 	$gallery->_storage = new RepositoryTestStorage();
 	$this->_testStorage =& $gallery->_storage;
 
-	/* Prepare test index. */
+	
+
+
+/*  Prepare test index.  */
+
+
+
 	include(dirname(__FILE__) . '/../../../../lib/tools/repository/test/data/SampleIndex.inc');
 	$this->_sampleIndex = $sampleIndex;
 	$this->_index = new GalleryRepositoryIndex('test');
@@ -89,7 +101,13 @@ class RepositoryTest extends GalleryTestCase {
     function _getUpgradeTestCase($testCase) {
 	switch ($testCase) {
 	case 0:
-	    $case = array( /* case 1 */
+	    $case = array( 
+
+
+/*  case 1  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -142,7 +160,13 @@ class RepositoryTest extends GalleryTestCase {
 		'expectedPackages' => array());
 	    break;
 	case 1:
-	    $case = array( /* case 2 */
+	    $case = array( 
+
+
+/*  case 2  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -195,7 +219,13 @@ class RepositoryTest extends GalleryTestCase {
 		'expectedPackages' => array());
 	    break;
 	case 2:
-	    $case = array( /* case 3 */
+	    $case = array( 
+
+
+/*  case 3  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -250,7 +280,13 @@ class RepositoryTest extends GalleryTestCase {
 		    'theme' => array('testTheme' => array('base' => 1))));
 	    break;
 	case 3:
-	    $case = array( /* case 4 */
+	    $case = array( 
+
+
+/*  case 4  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -319,7 +355,13 @@ class RepositoryTest extends GalleryTestCase {
 		'expectedPackages' => array());
 	    break;
 	case 4:
-	    $case = array( /* case 5 */
+	    $case = array( 
+
+
+/*  case 5  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -372,7 +414,13 @@ class RepositoryTest extends GalleryTestCase {
 		'expectedPackages' => array());
 	    break;
 	case 5:
-	    $case = array( /* case 6 */
+	    $case = array( 
+
+
+/*  case 6  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -439,7 +487,13 @@ class RepositoryTest extends GalleryTestCase {
 		    'theme' => array('testTheme' => array('lang-en_US' => 1))));
 	    break;
 	case 6:
-	    $case = array( /* case 7 */
+	    $case = array( 
+
+
+/*  case 7  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -507,10 +561,22 @@ class RepositoryTest extends GalleryTestCase {
 			'pt_BR' => array('name' => 'pt_BR', 'currentBuild' => NULL,
 				     'newBuild' => '33333', 'relation' => 'older', 'locked' => 0)),
 		    'complete' => 0),
-		'expectedPackages' => array(/* no upgrades; the base package is locked */));
+		'expectedPackages' => array(
+
+
+/*  no upgrades; the base package is locked  */
+
+
+));
 	    break;
 	case 7:
-	    $case = array( /* case 8 */
+	    $case = array( 
+
+
+/*  case 8  */
+
+
+
 		'installed' => array(
 		    'testModule' => array(
 			'packages' => array(
@@ -572,8 +638,20 @@ class RepositoryTest extends GalleryTestCase {
 				     'newBuild' => '33333', 'relation' => 'equal', 'locked' => 0),
 			'pt_BR' => array('name' => 'pt_BR', 'currentBuild' => NULL,
 				     'newBuild' => '33333', 'relation' => 'older', 'locked' => 0))),
-		'requiredModuleApi' => array(9999, 9999),  /* This better be incompatible! */
-		'expectedPackages' => array(/* the module is incompatible, but the theme is ok */
+		'requiredModuleApi' => array(9999, 9999),  
+
+
+/*  This better be incompatible!  */
+
+
+
+		'expectedPackages' => array(
+
+
+/*  the module is incompatible, but the theme is ok  */
+
+
+
 		    'theme' => array('testTheme' => array('lang-en_US' => 1))));
 	    break;
 	}
@@ -589,11 +667,23 @@ class RepositoryTest extends GalleryTestCase {
 	$cacheKey = 'GalleryTranslator::SupportedLanguages';
 	$supportedLanguages = array();
 
-	/* English */
+	
+
+
+/*  English  */
+
+
+
 	$supportedLanguages['en']['US']['description'] = 'English (US)';
 	$supportedLanguages['en']['GB']['description'] = 'English (UK)';
 
-	/* Portuguese */
+	
+
+
+/*  Portuguese  */
+
+
+
 	$supportedLanguages['pt']['BR']['description'] = 'Portugu&#234;s Brasileiro';
 	$supportedLanguages['pt']['PT']['description'] = 'Portugu&#234;s';
 	GalleryDataCache::put($cacheKey, $supportedLanguages);
@@ -683,14 +773,26 @@ class RepositoryTest extends GalleryTestCase {
     }
 
     function testIsCoreUpgradeAvailable() {
-	/* Get installed core version. */
+	
+
+
+/*  Get installed core version.  */
+
+
+
 	list ($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 	if ($ret) {
 	    return $ret;
 	}
 	$installedCoreVersion = $core->getVersion();
 
-	/* Assign arbitrary repository API versions. */
+	
+
+
+/*  Assign arbitrary repository API versions.  */
+
+
+
 	$repositoryModuleApiVersion = '1.2';
 	$repositoryThemeApiVersion = '3.4';
 	$repositoryCoreApiVersion = '5.6';
@@ -702,7 +804,13 @@ class RepositoryTest extends GalleryTestCase {
 	    explode('.', $repositoryCoreApiVersion);
 
 	$testCases = array(array(
-	    /* Simulate a newer repository core version than the one currently installed. */
+	    
+
+
+/*  Simulate a newer repository core version than the one currently installed.  */
+
+
+
 	    'repositoryCoreVersion' => $this->calculateVersion($installedCoreVersion, '0.1.0', '+'),
 	    'expectedRelation' => 'newer',
 	    'expectedApiVersions' => array(
@@ -710,12 +818,24 @@ class RepositoryTest extends GalleryTestCase {
 		'module' => $repositoryModuleApiVersion,
 		'theme' => $repositoryThemeApiVersion)), array(
 
-	    /* Simulate an older repository core version than the one currently installed. */
+	    
+
+
+/*  Simulate an older repository core version than the one currently installed.  */
+
+
+
 	    'repositoryCoreVersion' => $this->calculateVersion($installedCoreVersion, '0.1.0', '-'),
 	    'expectedRelation' => 'older',
 	    'expectedApiVersions' => array()), array(
 
-	    /* Simulate an identical repository core version as the one currently installed. */
+	    
+
+
+/*  Simulate an identical repository core version as the one currently installed.  */
+
+
+
 	    'repositoryCoreVersion' => $installedCoreVersion,
 	    'expectedRelation' => 'equal',
 	    'expectedApiVersions' => array()));
@@ -803,7 +923,13 @@ class RepositoryTest extends GalleryTestCase {
 
 	switch ($testCase) {
 	case 0:
-	    $case = array(/* Compatible, locally available, upgradeable. */
+	    $case = array(
+
+
+/*  Compatible, locally available, upgradeable.  */
+
+
+
 		'pluginData' => array(
 		    'showAll' => 'showAll', 'pluginType' => 'module', 'coreApis' => array(
 			'core' => $coreApi, 'module' => $moduleApi, 'theme' => $themeApi),
@@ -830,7 +956,13 @@ class RepositoryTest extends GalleryTestCase {
 			'isUpgradeable' => true)));
 	    break;
 	case 1:
-	    $case = array(/* Compatible, locally available, upgradeable but also locked */
+	    $case = array(
+
+
+/*  Compatible, locally available, upgradeable but also locked  */
+
+
+
 		'pluginData' => array(
 		    'showAll' => 'showAll', 'pluginType' => 'module', 'coreApis' => array(
 			'core' => $coreApi, 'module' => $moduleApi, 'theme' => $themeApi),
@@ -857,7 +989,13 @@ class RepositoryTest extends GalleryTestCase {
 			'isUpgradeable' => true)));
 	    break;
 	case 2:
-	    $case = array(/* Incompatible, locally unavailable, no action. */
+	    $case = array(
+
+
+/*  Incompatible, locally unavailable, no action.  */
+
+
+
 		'pluginData' => array(
 		    'showAll' => 'showAll', 'pluginType' => 'module', 'coreApis' => array(
 			'core' => $coreApi, 'module' => $moduleApi, 'theme' => $themeApi),
@@ -883,7 +1021,13 @@ class RepositoryTest extends GalleryTestCase {
 			'isUpgradeable' => false)));
 	    break;
 	case 3:
-	    $case = array(/* Compatible, locally available, no action (all packages up-to-date). */
+	    $case = array(
+
+
+/*  Compatible, locally available, no action (all packages up-to-date).  */
+
+
+
 		'pluginData' => array(
 		    'showAll' => 'showAll', 'pluginType' => 'module', 'coreApis' => array(
 			'core' => $coreApi, 'module' => $moduleApi, 'theme' => $themeApi),
@@ -1048,7 +1192,13 @@ class RepositoryTest extends GalleryTestCase {
 	$repositoryCachePath = '/cache/';
 	$gallery->setConfig('repository.cache', $repositoryCachePath);
 
-	/* Test when all of the directories are set up properly. */
+	
+
+
+/*  Test when all of the directories are set up properly.  */
+
+
+
 	$platform = new UnitTestPlatform();
 	$platform->setReply('file_exists', array('/cache/'), true);
 	$platform->setReply('is_dir', array('/cache/'), true);
@@ -1058,15 +1208,33 @@ class RepositoryTest extends GalleryTestCase {
 	list ($isSetUp, $message) = $repository->createPluginsDirectory();
 	$this->assert($isSetUp, $message);
 
-	/* guaranteeDirExists($dir) depends on the cache. */
+	
+
+
+/*  guaranteeDirExists($dir) depends on the cache.  */
+
+
+
 	GalleryDataCache::setMemoryCachingEnabled(true);
 	GalleryDataCache::remove('GalleryUtilities::guaranteeDirExists');
 	GalleryDataCache::setFileCachingEnabled(false);
 
-	/* Test recursive repository cache directory creation. */
+	
+
+
+/*  Test recursive repository cache directory creation.  */
+
+
+
 	$platform->setReply('file_exists', array('/cache/'), false);
 	$platform->setReply('file_exists', array('/cache/'), false);
-	/* dirname('/cache/') returns \ on Windows. */
+	
+
+
+/*  dirname('/cache/') returns \ on Windows.  */
+
+
+
 	$platform->setReply('file_exists', array($slash), true);
 	$platform->setReply('is_dir', array($slash), true);
 	$platform->setReply('mkdir', array('/cache/', 'fuzzy' => '{\d+}'), true);
@@ -1119,13 +1287,25 @@ class RepositoryTest extends GalleryTestCase {
 
 	$platform = new UnitTestPlatform();
 
-	/* Package download. */
+	
+
+
+/*  Package download.  */
+
+
+
 	$modules = GalleryCoreApi::getCodeBasePath('modules');
 	$platform->setReply('file_exists', array("$modules/testModule/"), true);
 	$platform->setReply('file_put_contents',
 	    array($testPackagePath, serialize(array($testPackageUrl))), true);
 
-	/* Descriptor download. */
+	
+
+
+/*  Descriptor download.  */
+
+
+
 	$platform->setReply('file_exists', array("$modules/testModule/"), true);
 	$platform->setReply('file_put_contents',
 	    array($testDescriptorPath, serialize(array($testDescriptorUrl))), true);
@@ -1145,7 +1325,13 @@ class RepositoryTest extends GalleryTestCase {
 	    array('repositoryUrl/test/RepositoryTest.descriptor', null),
 	    array(true, serialize(array('repositoryUrl/test/RepositoryTest.descriptor'))));
 
-	/* Test downloading a package. */
+	
+
+
+/*  Test downloading a package.  */
+
+
+
 	list ($ret, $descriptor) = $repository->downloadAndUnpack(
 	    'module', 'testModule', 'testPackage', 'RepositoryTest.package');
 	if ($ret) {
@@ -1153,7 +1339,13 @@ class RepositoryTest extends GalleryTestCase {
 	}
 	$this->assert(empty($descriptor), 'Descriptor should be empty after package download.');
 
-	/* Test downloading a descriptor. */
+	
+
+
+/*  Test downloading a descriptor.  */
+
+
+
 	list ($ret, $descriptor) = $repository->downloadAndUnpack(
 	    'module', 'testModule', 'testPackage', 'RepositoryTest.descriptor');
 	if ($ret) {
@@ -1351,7 +1543,13 @@ class RepositoryTest extends GalleryTestCase {
 	global $gallery;
 
 	$repository = new GalleryRepository();
-	$repository->_utilities = null;  /* this should fail without needing utilities */
+	$repository->_utilities = null;  
+
+
+/*  this should fail without needing utilities  */
+
+
+
 	$modules = GalleryCoreApi::getCodeBasePath('modules');
 
 	$platform = new UnitTestPlatform();
@@ -1387,7 +1585,13 @@ class RepositoryTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* 'broken' returns an error, 'works' is valid */
+	
+
+
+/*  'broken' returns an error, 'works' is valid  */
+
+
+
 	$this->assertEquals(array('works' => new RepositoryTest_GalleryRepository()), $repositories,
 	    'Returned repositories didn\'t match');
 	$this->assertEquals(1, $repositoryErrors, 'Returned error count didn\'t match');
@@ -1433,11 +1637,23 @@ class RepositoryTest extends GalleryTestCase {
 	$cacheKey = 'GalleryTranslator::SupportedLanguages';
 	$supportedLanguages = array();
 
-	/* English */
+	
+
+
+/*  English  */
+
+
+
 	$supportedLanguages['en']['US']['description'] = 'English (US)';
 	$supportedLanguages['en']['GB']['description'] = 'English (UK)';
 
-	/* Portuguese */
+	
+
+
+/*  Portuguese  */
+
+
+
 	$supportedLanguages['pt']['BR']['description'] = 'Portugu&#234;s Brasileiro';
 	$supportedLanguages['pt']['PT']['description'] = 'Portugu&#234;s';
 	GalleryDataCache::put($cacheKey, $supportedLanguages);
@@ -1538,7 +1754,13 @@ class RepositoryTest extends GalleryTestCase {
 	$utilities->setReply('splitAggregatePackage', array('test', 'tempFile', $callback),
 	    array(null, $packages));
 
-	/* Responses for _preverifyAggregatePackages */
+	
+
+
+/*  Responses for _preverifyAggregatePackages  */
+
+
+
 	foreach ($testData as $pluginType => $pluginFiles) {
 	    foreach ($pluginFiles as $pluginId => $testFiles) {
 		$outputDir = GalleryCoreApi::getCodeBasePath("{$pluginType}s/$pluginId/");
@@ -1590,7 +1812,13 @@ class RepositoryTest extends GalleryTestCase {
     }
 
     function _buildDescriptor($pluginData) {
-	/* Leave the files empty so we don't have to generate a lot of platform calls */
+	
+
+
+/*  Leave the files empty so we don't have to generate a lot of platform calls  */
+
+
+
 	return array (
 	    'header' => array (
 		'id' => $pluginData['id'],

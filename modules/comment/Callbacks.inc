@@ -42,19 +42,37 @@ class CommentCallbacks {
 		return $ret;
 	    }
 	    if (empty($permissions['core.view'])) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	    } else if (empty($permissions['comment.view'])) { 
 		return null;
 	    }
 
-	    /* Pages shouldn't be cached if comments are not accessible for anonymous */ 
+	    
+
+
+/*  Pages shouldn't be cached if comments are not accessible for anonymous  */
+
+
+ 
 	    if (!$phpVm->headers_sent()) {
 		list ($ret, $anonymousUserId) = GalleryCoreApi::getAnonymousUserId();
 		if ($ret) {
 		    return $ret;
 		}
-		/* If !comment.view || !core.view */
+		
+
+
+/*  If !comment.view || !core.view  */
+
+
+
 		list ($ret, $anonymousViewable) = GalleryCoreApi::hasItemPermission(
 		    $itemId, 'comment.view', $anonymousUserId, false);
 		if ($ret) {
@@ -95,15 +113,33 @@ class CommentCallbacks {
 		$totalComments = $counts[$item->getId()];
 
 		for ($i = 0; $i < sizeof($comments); $i++) {
-		    /* Get the commenter ids */
+		    
+
+
+/*  Get the commenter ids  */
+
+
+
 		    $commenters[$comments[$i]->getCommenterId()] = 1;
 
-		    /* Extract the member data */
+		    
+
+
+/*  Extract the member data  */
+
+
+
 		    $comments[$i] = (array)$comments[$i];
 		    $comments[$i]['randomId'] = $comments[$i]['id'] . '-' . rand() ;
 		}
 
-		/* Load all the commenters */
+		
+
+
+/*  Load all the commenters  */
+
+
+
 		if (sizeof($commenters) > 0) {
 		    list ($ret, $commentersList) =
 			GalleryCoreApi::loadEntitiesById(array_keys($commenters), 'GalleryUser');
@@ -141,7 +177,13 @@ class CommentCallbacks {
 	    return null;
 
 	case 'AddComment':
-	    /* Load our item */
+	    
+
+
+/*  Load our item  */
+
+
+
 	    list ($ret, $item) = GalleryCoreApi::loadEntitiesById($params['itemId'], 'GalleryItem');
 	    if ($ret) {
 		return $ret;

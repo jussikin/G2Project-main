@@ -26,7 +26,13 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17988 $
  */
-class GalleryStorageExtras /* the other half of GalleryStorage */ {
+class GalleryStorageExtras 
+
+
+/*  the other half of GalleryStorage  */
+
+
+ {
     /**
      * @param GalleryStorage $galleryStorage the database storage instance
      */
@@ -98,13 +104,25 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $ids[$idx] = (int)$id;
 	}
 
-	/* Identify all the ids at once */
+	
+
+
+/*  Identify all the ids at once  */
+
+
+
 	list ($ret, $types) = $this->_identifyEntities($ids);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Separate the ids by type */
+	
+
+
+/*  Separate the ids by type  */
+
+
+
 	$classNames = array();
 	$gallery->guaranteeTimeLimit(5);
 	for ($i = 0; $i < count($ids); $i++) {
@@ -115,14 +133,32 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $classNames[$types[$i]][$ids[$i]] = 1;
 	}
 
-	/* Load them in groups */
+	
+
+
+/*  Load them in groups  */
+
+
+
 	foreach ($classNames as $className => $targetIdHash) {
 	    $gallery->guaranteeTimeLimit(5);
 
-	    /* Get unique target ids */
+	    
+
+
+/*  Get unique target ids  */
+
+
+
 	    $targetIds = array_keys($targetIdHash);
 
-	    /* Get our member info for this class */
+	    
+
+
+/*  Get our member info for this class  */
+
+
+
 	    list ($ret, $memberInfo) = $this->describeEntity($className);
 	    if ($ret) {
 		return array($ret, null);
@@ -130,7 +166,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 
 	    $idCol = $this->_gs->_translateColumnName('id');
 
-	    /* Build up our query */
+	    
+
+
+/*  Build up our query  */
+
+
+
 	    $columns = $tables = $where = $memberData = $callbacks = array();
 	    $markers = GalleryUtilities::makeMarkers(count($targetIds));
 	    $target = $className;
@@ -162,7 +204,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $query .= ' WHERE ';
 	    $query .= implode(' AND ', $where);
 
-	    /* Execute the query */
+	    
+
+
+/*  Execute the query  */
+
+
+
 	    $this->_gs->_traceStart();
 	    $recordSet = $this->_gs->_db->Execute($query, $targetIds);
 	    $this->_gs->_traceStop();
@@ -172,7 +220,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 				 null);
 		}
 
-		/* Process all the results */
+		
+
+
+/*  Process all the results  */
+
+
+
 		$j = 0;
 		while ($row = $recordSet->FetchRow()) {
 		    if (++$j % 20 == 0) {
@@ -193,7 +247,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		    for ($i = 0; $i < count($callbacks); $i++) {
 			$value = $this->_gs->_normalizeValue($row[$i], $memberData[$i], true);
 
-			/* Store the value in the object */
+			
+
+
+/*  Store the value in the object  */
+
+
+
 			$entity->{$callbacks[$i]} = $value;
 			$entity->_persistentStatus['originalValue'][$callbacks[$i]] = $value;
 		    }
@@ -208,7 +268,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	}
 
-	/* Assemble the entities in the right order and return them */
+	
+
+
+/*  Assemble the entities in the right order and return them  */
+
+
+
 	$result = array();
 	foreach ($ids as $id) {
 	    $result[] = $entities[$id];
@@ -226,10 +292,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return $ret;
 	}
 
-	/* Update the serial number, but remember the original one */
+	
+
+
+/*  Update the serial number, but remember the original one  */
+
+
+
 	$originalSerialNumber = (int)$entity->serialNumber++;
 
-	/* Get our member info for this class */
+	
+
+
+/*  Get our member info for this class  */
+
+
+
 	list ($ret, $memberInfo) = $this->describeEntity($entity->entityType);
 	if ($ret) {
 	    return $ret;
@@ -249,7 +327,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		$type = $memberData['type'];
 		list ($tableName, $unused) = $this->_gs->_translateTableName($target);
 
-		/* If the member is modified, record the new value in our table */
+		
+
+
+/*  If the member is modified, record the new value in our table  */
+
+
+
 		if ($entity->isModified($memberName)) {
 		    $value = $entity->$memberName;
 
@@ -287,7 +371,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	     */
 	    foreach ($dataTable as $tableName => $columnChanges) {
 
-		/* Make sure that the id column is set for each table */
+		
+
+
+/*  Make sure that the id column is set for each table  */
+
+
+
 		if (empty($columnChanges[$id['column']])) {
 		    $columnChanges[$id['column']] = $id['value'];
 		}
@@ -365,7 +455,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 			return GalleryCoreApi::error(ERROR_OBSOLETE_DATA, __FILE__, __LINE__,
 						    "$query (" . implode('|', $data) . ')');
 		    } else if ($affectedRows > 1) {
-			/* We just updated more than one row!  What do we do now? */
+			
+
+
+/*  We just updated more than one row!  What do we do now?  */
+
+
+
 			return GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__,
 					      "$query (" . implode('|', $data) . ") $affectedRows");
 		    }
@@ -392,14 +488,26 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return $ret;
 	}
 
-	/* If this object has not yet been saved in the database, don't bother saving it. */
+	
+
+
+/*  If this object has not yet been saved in the database, don't bother saving it.  */
+
+
+
 	if ($entity->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
 	    $entity->clearPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
 	    $entity->setPersistentFlag(STORAGE_FLAG_DELETED);
 	    return null;
 	}
 
-	/* Get our persistent and member info for this class */
+	
+
+
+/*  Get our persistent and member info for this class  */
+
+
+
 	list ($ret, $memberInfo) = $this->describeEntity($entity->entityType);
 	if ($ret) {
 	    return $ret;
@@ -484,12 +592,24 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
      * @see GalleryStorage::getUniqueId
      */
     function _getUniqueIdWithConnection($dbConn, $sequence) {
-	/* In case we're embedded in an app that sets adodb hasGenID to false (xaraya/postnuke) */
+	
+
+
+/*  In case we're embedded in an app that sets adodb hasGenID to false (xaraya/postnuke)  */
+
+
+
 	if (isset($dbConn->hasGenID) && !$dbConn->hasGenID) {
 	    $dbConn->hasGenID = $setGenID = true;
 	}
 
-	/* Get the id of the next object from our sequence */
+	
+
+
+/*  Get the id of the next object from our sequence  */
+
+
+
 	$this->_gs->_traceStart();
 	$id = (int)$dbConn->GenId($this->_gs->_tablePrefix . $sequence);
 	$this->_gs->_traceStop();
@@ -526,7 +646,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return array($ret, null);
 	}
 
-	/* Let entity do its post-load procedure */
+	
+
+
+/*  Let entity do its post-load procedure  */
+
+
+
 	$ret = $freshEntity->onLoad();
 	if ($ret) {
 	    return array($ret, null);
@@ -539,7 +665,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
      * @see GalleryStorage::acquireReadLock
      */
     function acquireReadLock($entityIds, $timeout) {
-	/* It's ok to pass in a single id */
+	
+
+
+/*  It's ok to pass in a single id  */
+
+
+
 	if (!is_array($entityIds)) {
 	    $entityIds = array($entityIds);
 	}
@@ -548,16 +680,34 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $entityIds[$idx] = (int)$id;
 	}
 
-	/* Acquire a non-transactional connection to use for this request */
+	
+
+
+/*  Acquire a non-transactional connection to use for this request  */
+
+
+
 	list ($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Know when to call it quits */
+	
+
+
+/*  Know when to call it quits  */
+
+
+
 	$cutoffTime = time() + $timeout;
 
-	/* Get the true name of the lock table */
+	
+
+
+/*  Get the true name of the lock table  */
+
+
+
 	list ($lockTable, $unused) = $this->_gs->_translateTableName('Lock');
 
 	/*
@@ -573,7 +723,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		return array($ret, null);
 	    }
 
-	    /* Check to see if any of the ids that we care about are write locked */
+	    
+
+
+/*  Check to see if any of the ids that we care about are write locked  */
+
+
+
 	    $writeEntityIdCol = $this->_gs->_translateColumnName('writeEntityId');
 	    $markers = GalleryUtilities::makeMarkers(count($entityIds));
 	    $query = 'SELECT COUNT(*) FROM ' . $lockTable
@@ -590,10 +746,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 
 	    $row = $recordSet->FetchRow();
 	    if ($row[0] == 0 ) {
-		/* Success */
+		
+
+
+/*  Success  */
+
+
+
 		break;
 	    } else {
-		/* An entity that we want is write locked */
+		
+
+
+/*  An entity that we want is write locked  */
+
+
+
 		$this->releaseLocks($lockId);
 
 		if (time() > $cutoffTime) {
@@ -601,10 +769,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 				 null);
 		}
 
-		/* Wait a second and try again */
+		
+
+
+/*  Wait a second and try again  */
+
+
+
 		sleep(1);
 
-		/* Expire any bogus locks */
+		
+
+
+/*  Expire any bogus locks  */
+
+
+
 		$ret = $this->_expireLocks();
 		if ($ret) {
 		    return array($ret, null);
@@ -612,7 +792,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	}
 
-	/* Put in a read lock for every entity id */
+	
+
+
+/*  Put in a read lock for every entity id  */
+
+
+
 	$lockIdCol = $this->_gs->_translateColumnName('lockId');
 	$readEntityIdCol = $this->_gs->_translateColumnName('readEntityId');
 	$freshUntilCol = $this->_gs->_translateColumnName('freshUntil');
@@ -633,7 +819,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $lockInfo[$entityId] = true;
 	}
 
-	/* Drop the lock request, now that we've got the read locks */
+	
+
+
+/*  Drop the lock request, now that we've got the read locks  */
+
+
+
 	$requestCol = $this->_gs->_translateColumnName('request');
 	$query = 'DELETE FROM ' . $lockTable
 	       . ' WHERE ' . $lockIdCol . '=? AND ' . $requestCol . '=1';
@@ -655,7 +847,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
      * @see GalleryStorage::acquireWriteLock
      */
     function acquireWriteLock($entityIds, $timeout) {
-	/* It's ok to pass in a single id */
+	
+
+
+/*  It's ok to pass in a single id  */
+
+
+
 	if (!is_array($entityIds)) {
 	    $entityIds = array($entityIds);
 	}
@@ -664,16 +862,34 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $entityIds[$idx] = (int)$id;
 	}
 
-	/* Acquire a non-transactional connection to use for this request */
+	
+
+
+/*  Acquire a non-transactional connection to use for this request  */
+
+
+
 	list ($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Know when to call it quits */
+	
+
+
+/*  Know when to call it quits  */
+
+
+
 	$cutoffTime = time() + $timeout;
 
-	/* Get the true name of the lock table */
+	
+
+
+/*  Get the true name of the lock table  */
+
+
+
 	list ($lockTable, $unused) = $this->_gs->_translateTableName('Lock');
 
 	/*
@@ -690,7 +906,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	    $lockId = (int)$lockId;
 
-	    /* Check to see if any of the ids that we care about are locked */
+	    
+
+
+/*  Check to see if any of the ids that we care about are locked  */
+
+
+
 	    $readEntityIdCol = $this->_gs->_translateColumnName('readEntityId');
 	    $writeEntityIdCol = $this->_gs->_translateColumnName('writeEntityId');
 	    $markers = GalleryUtilities::makeMarkers(count($entityIds));
@@ -710,10 +932,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 
 	    $row = $recordSet->FetchRow();
 	    if ($row[0] == 0 ) {
-		/* Success */
+		
+
+
+/*  Success  */
+
+
+
 		break;
 	    } else {
-		/* An entity that we want is still locked */
+		
+
+
+/*  An entity that we want is still locked  */
+
+
+
 		$this->releaseLocks($lockId);
 
 		if (time() > $cutoffTime) {
@@ -721,10 +955,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 				 null);
 		}
 
-		/* Wait a second and try again */
+		
+
+
+/*  Wait a second and try again  */
+
+
+
 		sleep(1);
 
-		/* Expire any bogus locks */
+		
+
+
+/*  Expire any bogus locks  */
+
+
+
 		$ret = $this->_expireLocks();
 		if ($ret) {
 		    return array($ret, null);
@@ -732,7 +978,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	}
 
-	/* We are approved to acquire our write locks */
+	
+
+
+/*  We are approved to acquire our write locks  */
+
+
+
 	$lockIdCol = $this->_gs->_translateColumnName('lockId');
 	$writeEntityIdCol = $this->_gs->_translateColumnName('writeEntityId');
 	$freshUntilCol = $this->_gs->_translateColumnName('freshUntil');
@@ -753,7 +1005,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $lockInfo[$entityId] = true;
 	}
 
-	/* Drop the lock request, now that we've got the write locks */
+	
+
+
+/*  Drop the lock request, now that we've got the write locks  */
+
+
+
 	$requestCol = $this->_gs->_translateColumnName('request');
 	$query = 'DELETE FROM ' . $lockTable
 	       . ' WHERE ' . $lockIdCol . '=? AND ' . $requestCol . '=1';
@@ -780,7 +1038,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		$lockIds[$idx] = (int)$id;
 	    }
 
-	    /* Acquire a non-transactional connection to use for this request */
+	    
+
+
+/*  Acquire a non-transactional connection to use for this request  */
+
+
+
 	    list ($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 	    if ($ret) {
 		return $ret;
@@ -812,7 +1076,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
      * @access private
      */
     function _expireLocks() {
-	/* Acquire a non-transactional connection to use for this request */
+	
+
+
+/*  Acquire a non-transactional connection to use for this request  */
+
+
+
 	list ($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 	if ($ret) {
 	    return $ret;
@@ -845,13 +1115,25 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $lockIds[$idx] = (int)$id;
 	}
 
-	/* Acquire a non-transactional connection to use for this request */
+	
+
+
+/*  Acquire a non-transactional connection to use for this request  */
+
+
+
 	list ($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Get the true name of the lock table */
+	
+
+
+/*  Get the true name of the lock table  */
+
+
+
 	list ($lockTable, $unused) = $this->_gs->_translateTableName('Lock');
 
 	$lockIdCol = $this->_gs->_translateColumnName('lockId');
@@ -956,7 +1238,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	$recordSet = $this->_gs->_db->Execute($statement, $data);
 	$this->_gs->_traceStop();
 
-	/* Direct SQL commands can undermine our memory cache, so reset it */
+	
+
+
+/*  Direct SQL commands can undermine our memory cache, so reset it  */
+
+
+
 	GalleryDataCache::reset();
 
 	return $recordSet ? null
@@ -1034,7 +1322,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    $columns[$memberName] = $this->_gs->_translateColumnName($memberName);
 	}
 
-	/* Now we transpose the entry matrix */
+	
+
+
+/*  Now we transpose the entry matrix  */
+
+
+
 	$rows = count($entry[$memberName]);
 	$data = array();
 	for ($ind = 0; $ind < $rows; $ind++) {
@@ -1140,7 +1434,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 
 	list ($tableName, $unused) = $this->_gs->_translateTableName($mapName);
 	if ($useTruncate && (!$this->_gs->isTransactional() || $useNonTransactionalConnection)) {
-	    /* TRUNCATE is only safe outside of a transaction in most databases. */
+	    
+
+
+/*  TRUNCATE is only safe outside of a transaction in most databases.  */
+
+
+
 	    $query = 'TRUNCATE TABLE ' . $tableName;
 	} else {
 	    $query = 'DELETE FROM ' . $tableName;
@@ -1256,7 +1556,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return $ret;
 	}
 
-	/* Do the schema table first */
+	
+
+
+/*  Do the schema table first  */
+
+
+
 	list ($schemaTableName, $unused, $unused2) = $this->_gs->_translateTableName('Schema');
 	if (!in_array(GalleryUtilities::strToLower($schemaTableName), $metatables)) {
 	    $ret = $this->_executeSql($moduleSql['table']['Schema']);
@@ -1271,7 +1577,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	    unset($moduleSql['table']['Schema']);
 
-	    /* Create our sequences now */
+	    
+
+
+/*  Create our sequences now  */
+
+
+
 	    foreach (array(DATABASE_SEQUENCE_LOCK, DATABASE_SEQUENCE_ID,
 			   DATABASE_SEQUENCE_EVENT_LOG) as $sequenceId) {
 		$ret = $this->createSequence($sequenceId);
@@ -1281,7 +1593,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	}
 
-	/* Load all table versions */
+	
+
+
+/*  Load all table versions  */
+
+
+
 	list ($ret, $tableVersions) = $this->_loadTableVersions();
 	if ($ret) {
 	    return $ret;
@@ -1292,7 +1610,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	$canStoreTableInfo = version_compare("$major.$minor", '1.2', '>=');
 
 	if (!$canStoreTableInfo && $moduleId == 'core' && !in_array('Schema:1.1', $upgradeInfo)) {
-	    /* Ensure that the table info can be stored after the first configureStore() call */
+	    
+
+
+/*  Ensure that the table info can be stored after the first configureStore() call  */
+
+
+
 	    if (!in_array('Schema:1.0', $upgradeInfo)) {
 		$upgradeInfo[] = 'Schema:1.0';
 	    }
@@ -1346,7 +1670,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		}
 	    } else {
 		while (1) {
-		    /* The table exists -- see if we have an upgrade for it */
+		    
+
+
+/*  The table exists -- see if we have an upgrade for it  */
+
+
+
 		    if (empty($tableVersions[$tableNameInSchema])) {
 			/*
 			 * We've found a SQL file that matches a table in the
@@ -1359,7 +1689,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 			break;
 		    }
 
-		    /* If we locate an appropriate upgrade, apply it. */
+		    
+
+
+/*  If we locate an appropriate upgrade, apply it.  */
+
+
+
 		    list ($major, $minor) = $tableVersions[$tableNameInSchema];
 		    if (!empty($moduleSql['alter'][$rawTableName][$major][$minor]) &&
 			    in_array("$rawTableName:$major.$minor", $upgradeInfo)) {
@@ -1383,7 +1719,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 				return $ret;
 			    }
 			}
-			/* Remember altered tables for post-upgrade optimizations */
+			
+
+
+/*  Remember altered tables for post-upgrade optimizations  */
+
+
+
 			$altered = array($rawTableName);
 			$cacheKey = 'GalleryStorage::configureStore::alter';
 			if (GalleryDataCache::containsKey($cacheKey)) {
@@ -1391,20 +1733,38 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 			}
 			GalleryDataCache::put($cacheKey, $altered, true);
 
-			/* Reload all table versions, cause one has now changed */
+			
+
+
+/*  Reload all table versions, cause one has now changed  */
+
+
+
 			list ($ret, $tableVersions) = $this->_loadTableVersions(true);
 			if ($ret) {
 			    return $ret;
 			}
 		    } else {
-			/* No upgrade available */
+			
+
+
+/*  No upgrade available  */
+
+
+
 			break;
 		    }
 		}
 	    }
 	}
 
-	/* Commit changes */
+	
+
+
+/*  Commit changes  */
+
+
+
 	return $this->_gs->checkPoint();
     }
 
@@ -1512,7 +1872,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		$data[] = serialize(array($tableName => $entityInfo[$tableName]));
 		$data[] = 'entity';
 	    } else {
-	    	/* Some tables don't have a map description (i.e. Lock). */
+	    	
+
+
+/*  Some tables don't have a map description (i.e. Lock).  */
+
+
+
 	    	if (!in_array($nameInSchema, array('Schema', 'Lock'))) {
 		    return GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__,
 				    "No map or entity description for: $nameInSchema");
@@ -1548,13 +1914,25 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return $ret;
 	}
 
-	/* Load all table versions */
+	
+
+
+/*  Load all table versions  */
+
+
+
 	list ($ret, $tableVersions) = $this->_loadTableVersions();
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Now locate any existing tables that should be removed and drop them. */
+	
+
+
+/*  Now locate any existing tables that should be removed and drop them.  */
+
+
+
 	foreach (array_keys($moduleSql['remove']) as $rawTableName) {
 	    if ($rawTableName == 'Schema') {
 		continue;
@@ -1563,7 +1941,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    list ($tableName, $unused, $tableNameInSchema) =
 		$this->_gs->_translateTableName($rawTableName);
 	    if (in_array(GalleryUtilities::strToLower($tableName), $metatables)) {
-		/* The table exists -- see if we should delete it */
+		
+
+
+/*  The table exists -- see if we should delete it  */
+
+
+
 		if (empty($tableVersions[$tableNameInSchema])) {
 		    /*
 		     * We've found a SQL file that matches a table in the
@@ -1618,7 +2002,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	list ($schemaTableName, $unused) = $this->_gs->_translateTableName('Schema');
 	$schemaColumnName = $this->_gs->_translateColumnName('name');
 	foreach ($moduleSql['table'] as $rawTableName => $ignored) {
-	    /* Don't drop the schema table, it's part of the core. */
+	    
+
+
+/*  Don't drop the schema table, it's part of the core.  */
+
+
+
 	    if ($rawTableName == 'Schema') {
 		continue;
 	    }
@@ -1627,7 +2017,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    list ($tableName, $unused, $tableNameInSchema) =
 		$this->_gs->_translateTableName($rawTableName);
 	    if (in_array(GalleryUtilities::strToLower($tableName), $metatables)) {
-		/* Drop the table and yank it from the schema table */
+		
+
+
+/*  Drop the table and yank it from the schema table  */
+
+
+
 		$dropQuery = sprintf('DROP TABLE %s', $tableName);
 		$recordSet = $this->_gs->_db->Execute($dropQuery);
 		if (empty($recordSet)) {
@@ -1653,7 +2049,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
     function _loadTableVersions($ignoreCache=true) {
 	$cacheKey = 'GalleryStorageExtras::_loadTableVersions()';
 
-	/* If reset requested then ignore the cache and retrieve it again */
+	
+
+
+/*  If reset requested then ignore the cache and retrieve it again  */
+
+
+
 	if (!$ignoreCache && GalleryDataCache::containsKey($cacheKey)) {
 	    return array(null, GalleryDataCache::get($cacheKey));
 	}
@@ -1700,7 +2102,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		$query = str_replace('DB_TABLE_PREFIX', $this->_gs->_tablePrefix, $query);
 		$query = str_replace('DB_COLUMN_PREFIX', $this->_gs->_columnPrefix, $query);
 
-		/* Perform database specific replacements */
+		
+
+
+/*  Perform database specific replacements  */
+
+
+
 		$query = strtr($query, $this->_gs->_getSqlReplacements());
 
 		$this->_gs->_traceStart();
@@ -1763,10 +2171,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return $ret;
 	}
 
-	/* If the schema table exists then delete all the tables it lists */
+	
+
+
+/*  If the schema table exists then delete all the tables it lists  */
+
+
+
 	list ($schemaTableName, $unused) = $this->_gs->_translateTableName('Schema');
 	if (in_array(GalleryUtilities::strToLower($schemaTableName), $metatables)) {
-	    /* Load all table versions */
+	    
+
+
+/*  Load all table versions  */
+
+
+
 	    list ($ret, $tableVersions) = $this->_loadTableVersions();
 	    if ($ret) {
 		return $ret;
@@ -1784,7 +2204,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		}
 	    }
 
-	    /* Get rid of our sequences */
+	    
+
+
+/*  Get rid of our sequences  */
+
+
+
 	    foreach (array(DATABASE_SEQUENCE_LOCK, DATABASE_SEQUENCE_ID,
 			   DATABASE_SEQUENCE_EVENT_LOG) as $sequenceId) {
 		$ret = $this->dropSequence($sequenceId);
@@ -1843,13 +2269,25 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return $ret;
 	}
 
-	/* Load all table versions */
+	
+
+
+/*  Load all table versions  */
+
+
+
 	list ($ret, $tableVersions) = $this->_loadTableVersions();
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Filter the list of tables if requested */
+	
+
+
+/*  Filter the list of tables if requested  */
+
+
+
 	$tables = array_keys($tableVersions);
 	if (is_array($tableNames)) {
 	    $tables = array();
@@ -1915,16 +2353,34 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
      * @return GalleryStatus a status code
      */
     function _getLockClearance($cutoffTime) {
-	/* Get the true name of the lock table */
+	
+
+
+/*  Get the true name of the lock table  */
+
+
+
 	list ($lockTable, $unused) = $this->_gs->_translateTableName('Lock');
 
-	/* Acquire a non-transactional connection to use for this request */
+	
+
+
+/*  Acquire a non-transactional connection to use for this request  */
+
+
+
 	list ($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Get a new lock id */
+	
+
+
+/*  Get a new lock id  */
+
+
+
 	$this->_gs->_traceStart();
 	$lockId = $db->GenId($this->_gs->_tablePrefix . DATABASE_SEQUENCE_LOCK);
 	$this->_gs->_traceStop();
@@ -1935,7 +2391,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	}
 	$lockId = (int)$lockId;
 
-	/* Put in a lock request */
+	
+
+
+/*  Put in a lock request  */
+
+
+
 	$lockIdCol = $this->_gs->_translateColumnName('lockId');
 	$requestCol = $this->_gs->_translateColumnName('request');
 	$freshUntilCol = $this->_gs->_translateColumnName('freshUntil');
@@ -1951,7 +2413,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    return array(GalleryCoreApi::error(ERROR_STORAGE_FAILURE), null);
 	}
 
-	/* Wait till it's our turn */
+	
+
+
+/*  Wait till it's our turn  */
+
+
+
 	while (true) {
 	    $query = 'SELECT ' . $lockIdCol . ' FROM ' . $lockTable
 		   . ' WHERE ' . $requestCol . '=1 ORDER BY ' . $lockIdCol . ' ASC';
@@ -1970,10 +2438,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 		break;
 	    }
 
-	    /* Wait a second and try again */
+	    
+
+
+/*  Wait a second and try again  */
+
+
+
 	    sleep(1);
 
-	    /* Expire any bogus locks */
+	    
+
+
+/*  Expire any bogus locks  */
+
+
+
 	    $ret = $this->_expireLocks();
 	    if ($ret) {
 		return array($ret, null);
@@ -2077,10 +2557,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
     function describeEntity($entityName, $tryAllModules=false) {
 	global $gallery;
 
-	/* Note: keep this cache key in sync with GalleryStorageExtras::_clearEntityAndMapCache() */
+	
+
+
+/*  Note: keep this cache key in sync with GalleryStorageExtras::_clearEntityAndMapCache()  */
+
+
+
 	$cacheKey = 'GalleryStorageExtras::describeEntity()';
 
-	/* We only cache the results for active modules */
+	
+
+
+/*  We only cache the results for active modules  */
+
+
+
 	if (!$tryAllModules && GalleryDataCache::containsKey($cacheKey)) {
 	    $entityInfo = GalleryDataCache::get($cacheKey);
 	}
@@ -2096,7 +2588,13 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
 	    }
 	}
 
-	/* Fall back to all available modules */
+	
+
+
+/*  Fall back to all available modules  */
+
+
+
 	if (!$tryAllModules && !isset($entityInfo[$entityName])) {
 	    list ($ret, $entityInfo) = $this->describeEntity($entityName, true);
 	    if ($ret) {
@@ -2136,10 +2634,22 @@ class GalleryStorageExtras /* the other half of GalleryStorage */ {
      * Clear out the entity and map caches, which we should do any time we add or remove a table.
      */
     function _clearEntityAndMapCache() {
-	/* Note: keep this cache key in sync with GalleryStorage::describeMap() */
+	
+
+
+/*  Note: keep this cache key in sync with GalleryStorage::describeMap()  */
+
+
+
 	GalleryDataCache::remove('GalleryStorage::describeMap()');
 
-	/* Note: keep this cache key in sync with GalleryStorageExtras::describeEntity() */
+	
+
+
+/*  Note: keep this cache key in sync with GalleryStorageExtras::describeEntity()  */
+
+
+
 	GalleryDataCache::remove('GalleryStorageExtras::describeEntity()');
     }
 

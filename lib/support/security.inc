@@ -19,7 +19,13 @@
  */
 
 if (php_sapi_name() == 'cli') {
-    /* We don't apply this security check to command-line PHP */
+    
+
+
+/*  We don't apply this security check to command-line PHP  */
+
+
+
     return;
 }
 
@@ -32,7 +38,13 @@ require_once(dirname(__FILE__) . '/GallerySetupUtilities.class');
 
 GallerySetupUtilities::startSession();
 
-/* The $baseUrl global is used by other scripts to figure out where to find our CSS */
+
+
+
+/*  The $baseUrl global is used by other scripts to figure out where to find our CSS  */
+
+
+
 $config = GallerySetupUtilities::getGalleryConfig();
 if (!empty($config) && $config['galleryBaseUrl'] != '') {
     $baseUrl = $config['galleryBaseUrl'] . 'lib/support/';
@@ -98,7 +110,13 @@ if (empty($config)) {
             if ($options['error'] || $options['attempts'] >= G2_SUPPORT_MAX_LOGIN_ATTEMPTS) {
                 if ($options['attempts'] >= G2_SUPPORT_MAX_LOGIN_ATTEMPTS) {
                     $ret = GallerySetupUtilities::notifySiteAdministrator();
-                    /* swallow return code; we can't do anything with it */
+                    
+
+
+/*  swallow return code; we can't do anything with it  */
+
+
+
                 }
                 render('loginTxtForm', $options);
             } else {
@@ -115,11 +133,23 @@ if (empty($config)) {
 }
 
 if (GallerySetupUtilities::isSessionAuthenticated()) {
-    /* This is the only safe way out of this include.  Everything else aborts now */
+    
+
+
+/*  This is the only safe way out of this include.  Everything else aborts now  */
+
+
+
     return;
 }
 
-/* Unless we're properly authenticated, this is the end of the line */
+
+
+
+/*  Unless we're properly authenticated, this is the end of the line  */
+
+
+
 exit;
 
 function startForm($action = '', $name = null)

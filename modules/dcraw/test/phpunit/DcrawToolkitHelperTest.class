@@ -38,7 +38,13 @@ class DcrawToolkitHelperTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* Make sure translate calls during test won't generate any platform calls */
+	
+
+
+/*  Make sure translate calls during test won't generate any platform calls  */
+
+
+
 	list ($ret, $this->_module) = GalleryCoreApi::loadPlugin('module', 'dcraw');
 	if ($ret) {
 	    return $ret;
@@ -120,7 +126,13 @@ class DcrawToolkitHelperTest extends GalleryTestCase {
     function testBinaryV853() {
 	$this->_platform->setReply('isRestrictedByOpenBaseDir', array('/path/to/dcraw'), 0);
 	$this->_platform->setReply('is_file', array('/path/to/dcraw'), 1);
-	/* Newer versions of dcraw return the help screen to stdout and not in title case. */
+	
+
+
+/*  Newer versions of dcraw return the help screen to stdout and not in title case.  */
+
+
+
 	$this->_platform->setReply('exec', array(array(array('/path/to/dcraw'))),
 				   array(0, array('Raw photo decoder "dcraw" v8.53'), array()));
 

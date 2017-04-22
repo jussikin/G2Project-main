@@ -44,7 +44,13 @@ class BuildDerivativesTaskTest extends GalleryTestCase {
     }
 
     function tearDown() {
-	/* Task turns off warnings for MSSQL database; turn back on to restore original state */
+	
+
+
+/*  Task turns off warnings for MSSQL database; turn back on to restore original state  */
+
+
+
 	global $gallery;
 	$storage =& $gallery->getStorage();
 	if (GalleryUtilities::isA($storage, 'MSSqlStorage')) {
@@ -79,7 +85,13 @@ class BuildDerivativesTaskTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Mock storage returns no ids, so this just tests the queries run ok */
+	
+
+
+/*  Mock storage returns no ids, so this just tests the queries run ok  */
+
+
+
 	$gallery->_storage = new BuildDerivativesTaskTestStorage($gallery->getStorage());
 	$mockStorage =& $gallery->_storage;
 	$gallery->_templateAdapter = new MockTemplateAdapter();
@@ -117,7 +129,13 @@ class BuildDerivativesTaskTestStorage {
 	    return array($ret, null);
 	}
 	$this->_searches[] = $results->resultCount();
-	/* Return no results so task doesn't actually act on any derivatives */
+	
+
+
+/*  Return no results so task doesn't actually act on any derivatives  */
+
+
+
 	$rs = new ADORecordSet(0);
 	$rs->Init();
 	return array(null, new GallerySearchResults($rs));

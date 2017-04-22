@@ -140,12 +140,24 @@ function process($renderType, $args = array())
                     $bodyMain = $err;
                 }
             } elseif ($renderType == 'resChk') {
-                /* Get Ids of all missing derivatives under the album tree */
+                
+
+
+/*  Get Ids of all missing derivatives under the album tree  */
+
+
+
                 list ($err, $DerivativeIds) = getMissingDerivatives($gID);
                 if ($err) {
                     $bodyMain = $err;
                 } else {
-                    /* Break this up into batches */
+                    
+
+
+/*  Break this up into batches  */
+
+
+
                     $batch = (isset($_REQUEST['batchSize'])  && $_REQUEST['batchSize'] != '') ? $_REQUEST['batchSize'] : 500;
                     $total = count($DerivativeIds);
                     $passes = ($total / $batch > 1) ? ceil($total / $batch) : 0;
@@ -163,7 +175,13 @@ function process($renderType, $args = array())
                         }
                     }
                     
-                    /* Delete database references to missing derivatives in this batch */
+                    
+
+
+/*  Delete database references to missing derivatives in this batch  */
+
+
+
                     $tables = array('ChildEntity'=>'id','Derivative'=>'id','DerivativeImage'=>'id','Entity'=>'id');
                     $display .= (count($missingIds)) ? "<p>Total Missing Derivatives: <strong>" . count($missingIds) . "</strong></p>" : "";
                     $status = ($pass) ? "Working on derivatives " . $end ." to " . $start : "";
@@ -178,7 +196,13 @@ function process($renderType, $args = array())
                         }
                     }
                     
-                    /* Handle page display and looping */
+                    
+
+
+/*  Handle page display and looping  */
+
+
+
                     if (($display != '' || $status != '') && $pass > 0) {
                         $bodyMain .= ($display != '') ? statusMsg($display) : '';
                         $pass--;
@@ -196,7 +220,13 @@ function process($renderType, $args = array())
             }
         }
     }
-    /* Build form to show on page */
+    
+
+
+/*  Build form to show on page  */
+
+
+
     $bodyForm = "\n" . '<fieldset><br>' . "\n";
     if (!$err) {
         list ($err, $albumList) = getAlbumSelector($gID);
@@ -241,14 +271,32 @@ function process($renderType, $args = array())
 function getAlbumIdsRecursive($id)
 {
     $err = $albumIds = null;
-    /* Get ids of all albums from starting point $id. */
+    
+
+
+/*  Get ids of all albums from starting point $id.  */
+
+
+
     list ($ret, $tree) = GalleryCoreApi::fetchAlbumTree($id, null, null, true);
     if ($ret) {
         $err = '<div class="error center"><h2>Could not load tree.</h2></div><div class="error left">' . $ret->getAsHtml() . '</div>';
     } else {
-        /* Load all the albumIds */
+        
+
+
+/*  Load all the albumIds  */
+
+
+
         $albumIds = GalleryUtilities::arrayKeysRecursive($tree);
-        /* Add our starting point */
+        
+
+
+/*  Add our starting point  */
+
+
+
         array_push($albumIds, $id);
     }
     return array($err, $albumIds);

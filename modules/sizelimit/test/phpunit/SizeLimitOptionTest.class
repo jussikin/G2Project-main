@@ -41,7 +41,13 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase {
 	   return $ret;
 	}
 
-	/* create custom platform to return dummy filesize, imagesize, etc. */
+	
+
+
+/*  create custom platform to return dummy filesize, imagesize, etc.  */
+
+
+
 	$gallery->setPlatform(new SizeLimitOptionTestPlatform($gallery->getPlatform()));
 
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
@@ -245,7 +251,13 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase {
 	}
 	$this->_markToolkitForCleanup('SizeLimitOptionTestToolkit');
 
-	/* applying size limits uses 'compress' */
+	
+
+
+/*  applying size limits uses 'compress'  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitOperation('SizeLimitOptionTestToolkit',
 	    array('image/known'), 'compress',
 	    array(array('type' => 'int', 'description' => 'size')), 'desc');
@@ -253,7 +265,13 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase {
 	    return $ret;
 	}
 
-	/* applying dimension limits uses 'scale' */
+	
+
+
+/*  applying dimension limits uses 'scale'  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitOperation('SizeLimitOptionTestToolkit',
 	    array('image/known'), 'scale',
 	    array(array('type' => 'int', 'description' => 'width'),
@@ -262,7 +280,13 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase {
 	    return $ret;
 	}
 
-	/* we will return dimensions to whoever asks */
+	
+
+
+/*  we will return dimensions to whoever asks  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitProperty('SizeLimitOptionTestToolkit',
 	    array('image/known'), 'dimensions', 'int,int', 'desc');
 	if ($ret) {
@@ -305,7 +329,13 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform {
     function getimagesize($file) {
 	$imagesize = GalleryUtilities::getRequestVariables('imagesize_' . basename($file));
 	if ($imagesize) {
-	    /* doing it this way keeps CodeAudit happy */
+	    
+
+
+/*  doing it this way keeps CodeAudit happy  */
+
+
+
 	    return array($imagesize[0], $imagesize[1]);
 	}
 	return array(1728, 2304);
@@ -315,7 +345,13 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform {
 	$compressPerformed = GalleryUtilities::getRequestVariables('compressPerformed');
 	$resizePerformed = GalleryUtilities::getRequestVariables('resizePerformed');
 
-	/* if we created a derivative make-believe that the file exists */
+	
+
+
+/*  if we created a derivative make-believe that the file exists  */
+
+
+
 	if ($resizePerformed || $compressPerformed) {
 	    return true;
 	} else {
@@ -324,7 +360,13 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform {
     }
 
     function unlink($filename) {
-	/* if it is a derivative - we didn't really create it */
+	
+
+
+/*  if it is a derivative - we didn't really create it  */
+
+
+
 	if ($this->_savedPlatform->file_exists($filename)) {
 	    return $this->_savedPlatform->unlink($filename);
 	} else {
@@ -342,7 +384,13 @@ class SizeLimitOptionTestToolkit extends GalleryToolkit {
      */
     function performOperation($mimeType, $operationName, $sourceFilename,
 			      $destFilename, $parameters, $context=array()) {
-	/* Here we are pretending that conversion happened by setting the flag */
+	
+
+
+/*  Here we are pretending that conversion happened by setting the flag  */
+
+
+
 	switch($operationName) {
 	case 'compress':
 	    GalleryUtilities::putRequestVariable('compressPerformed', true);
@@ -377,7 +425,13 @@ class SizeLimitOptionTestToolkit extends GalleryToolkit {
     function getProperty($mimeType, $propertyName, $file) {
 	global $gallery;
 
-	/* Our 'mime type' has to support dimensions */
+	
+
+
+/*  Our 'mime type' has to support dimensions  */
+
+
+
 	switch($propertyName) {
 	case 'dimensions':
 	    $platform =& $gallery->getPlatform();

@@ -280,7 +280,13 @@ class GalleryDataCache {
 	$cacheFile = GalleryDataCache::getCachePath($pathInfo);
 	if ($platform->file_exists($cacheFile) &&
 		$buf = $platform->file_get_contents($cacheFile)) {
-	    /* Parse the cache file */
+	    
+
+
+/*  Parse the cache file  */
+
+
+
 	    $marker = strcspn($buf, '|');
 	    foreach (explode(',', substr($buf, 0, $marker)) as $classFile) {
 		if ($classFile) {
@@ -352,7 +358,13 @@ class GalleryDataCache {
 	$platform =& $gallery->getPlatform();
 	GalleryUtilities::guaranteeDirExists(dirname($cacheFile));
 
-	/* This will either succeed, or leave no trace of its attempt. */
+	
+
+
+/*  This will either succeed, or leave no trace of its attempt.  */
+
+
+
 	$platform->atomicWrite(
 	    $cacheFile, implode(',', $requiredClasses) . "|" . serialize($data));
     }
@@ -452,7 +464,13 @@ class GalleryDataCache {
 	    if (isset($pathInfo['itemId'])) {
 		list ($first, $second) = GalleryDataCache::getCacheTuple($pathInfo['itemId']);
 
-		/* $itemId is overloaded here; sanitize it so that it only accepts [0-9A-Za-z_]+ */
+		
+
+
+/*  $itemId is overloaded here; sanitize it so that it only accepts [0-9A-Za-z_]+  */
+
+
+
 		$itemId = preg_replace('/[^0-9A-Za-z_]/', '_', $pathInfo['itemId']);
 		$cacheFile = sprintf('%s%s/%s/%s/%s/%s.dat',
 				     $base, 'module', $pathInfo['module'],
@@ -479,7 +497,13 @@ class GalleryDataCache {
 	global $gallery;
 	$session =& $gallery->getSession();
 	if (!isset($session)) {
-	    /* No session means we've got no cache */
+	    
+
+
+/*  No session means we've got no cache  */
+
+
+
 	    return;
 	}
 
@@ -502,7 +526,13 @@ class GalleryDataCache {
 	    }
 
 	    array_unshift($permissions, array());
-	    /* Trim down the cache */
+	    
+
+
+/*  Trim down the cache  */
+
+
+
 	    $max = 6;
 	    if (sizeof($permissions) > $max) {
 		array_splice($permissions, -1, sizeof($permissions) - $max);
@@ -518,9 +548,21 @@ class GalleryDataCache {
 	    $newEntries = 0;
 	}
 
-	/* Make sure the session permission cache is not too large */
+	
+
+
+/*  Make sure the session permission cache is not too large  */
+
+
+
 	$maxEntries = 40;
-	/* Add our new data to the head of the list */
+	
+
+
+/*  Add our new data to the head of the list  */
+
+
+
 	while (($id = array_shift($ids)) && $maxEntries > $newEntries++) {
 	    $permissions[0][$permission][$id] = 1;
 	}
@@ -712,7 +754,13 @@ class GalleryDataCache {
 	    break;
 	}
 
-	/* Clear expired data only 5% of the time. */
+	
+
+
+/*  Clear expired data only 5% of the time.  */
+
+
+
 	$dieRoll = $phpVm->genRandInt(1, 100);
 	if ($dieRoll <= 5){
 	    $ret = GalleryDataCache::_cleanPageDataCache();
@@ -798,7 +846,13 @@ class GalleryDataCache {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	/* Add session specific flags & values to the cache key */
+	
+
+
+/*  Add session specific flags & values to the cache key  */
+
+
+
 	list ($ret, $locale) = $gallery->getActiveLocale();
 	if ($ret) {
 	    return array($ret, null);
@@ -844,7 +898,13 @@ class GalleryDataCache {
 	$phpVm = $gallery->getPhpVm();
 	$cutoff = $phpVm->time() - $expiration;
 
-	/* Use UPDATE instead of DELETE since UPDATE is faster and we reuse the rows. */
+	
+
+
+/*  Use UPDATE instead of DELETE since UPDATE is faster and we reuse the rows.  */
+
+
+
 	$storage =& $gallery->getStorage();
 
 	if ($isAnonymous) {

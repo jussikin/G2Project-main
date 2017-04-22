@@ -108,13 +108,25 @@ class ShowItemView extends GalleryView {
 	    return array($ret, null, null);
 	}
 	if (!isset($originalSpecified)) {
-	    /* Save value for first call; $wasSpecified always true later as itemId is set below */
+	    
+
+
+/*  Save value for first call; $wasSpecified always true later as itemId is set below  */
+
+
+
 	    $originalSpecified = $wasSpecified;
 	}
 	if (!$wasSpecified) {
 	    GalleryUtilities::putRequestVariable('itemId', $item->getId());
 	}
-	/* Default wasSpecified=true so without itemId we still use root album theme/params */
+	
+
+
+/*  Default wasSpecified=true so without itemId we still use root album theme/params  */
+
+
+
 	return array(null, $item, $getOriginalSpecified ? $originalSpecified : true);
     }
 

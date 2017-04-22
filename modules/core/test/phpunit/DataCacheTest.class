@@ -90,7 +90,13 @@ class DataCacheTest extends GalleryTestCase {
 	$value = 'test-value';
 	GalleryDataCache::put($key, $value);
 	$this->assert(GalleryDataCache::containsKey($key), 'Could not put a var to GDC');
-	/* Add a protected var */
+	
+
+
+/*  Add a protected var  */
+
+
+
 	$pKey = 'prot-test-key';
 	$pValue = 'prot-test-value';
 	GalleryDataCache::put($pKey, $pValue, true);
@@ -140,7 +146,13 @@ class DataCacheTest extends GalleryTestCase {
 	$cases['/data/cache/module/0/0/0/1.inc'] =
 	    array('type' => 'module', 'id' => '../EVIL', 'itemId' => 1);
 
-	/* We use itemId to store keys like 'GalleryFactoryHelper_loadRegistry' */
+	
+
+
+/*  We use itemId to store keys like 'GalleryFactoryHelper_loadRegistry'  */
+
+
+
 	$cases['/data/cache/module/core/0/0/Legal_key.inc'] =
 	    array('type' => 'module', 'id' => 'core', 'itemId' => 'Legal_key');
 
@@ -302,7 +314,13 @@ class DataCacheTest extends GalleryTestCase {
     function testPutAndGetFromDisk() {
 	GalleryDataCache::setFileCachingEnabled(true);
 
-	/* Put some content containing | and , and make sure it parses back ok */
+	
+
+
+/*  Put some content containing | and , and make sure it parses back ok  */
+
+
+
 	$cacheParams = array('type' => 'module',
 			     'itemId' => 'phpunit_DataCacheTest_testData',
 			     'id' => '_all');
@@ -312,7 +330,13 @@ class DataCacheTest extends GalleryTestCase {
 	$this->assertEquals($data, $readBack, 'no classes');
 	GalleryDataCache::removeFromDisk($cacheParams);
 
-	/* Put content with multiple required classes and make sure all are read */
+	
+
+
+/*  Put content with multiple required classes and make sure all are read  */
+
+
+
 	$data = array('one' => array('2|two' => 3), 4.5 => 'six,7');
 	GalleryDataCache::putToDisk($cacheParams, $data,
 				    array('modules/core/test/data/DataCacheTest_1.class',
@@ -485,7 +509,13 @@ class DataCacheTest extends GalleryTestCase {
     function testShouldCacheReadUserNotOk() {
 	global $gallery;
 
-	/* Make myself the anon user temporarily */
+	
+
+
+/*  Make myself the anon user temporarily  */
+
+
+
 	$ret = GalleryCoreApi::setPluginParameter(
 	    'module', 'core', 'id.anonymousUser', $gallery->getActiveUserId());
 	if ($ret) {
@@ -518,7 +548,13 @@ class DataCacheTest extends GalleryTestCase {
 	    return ($ret);
 	}
 
-	/* Use mock VM to enforce valid headers, so that the active browser doesn't interfere */
+	
+
+
+/*  Use mock VM to enforce valid headers, so that the active browser doesn't interfere  */
+
+
+
 	$gallery->_phpVm = new DataCacheTestMockVm();
 
 	list ($ret, $shouldCache) = GalleryDataCache::shouldCache('read', 'partial');
@@ -533,18 +569,36 @@ class DataCacheTest extends GalleryTestCase {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	/* Backup values */
+	
+
+
+/*  Backup values  */
+
+
+
 	$isUsingCookies = $session->isUsingCookies();
 	$modeExif = $session->get('exif.module.LoadExifInfo.mode');
 
-	/* Set test environment */
+	
+
+
+/*  Set test environment  */
+
+
+
 	$ret = $gallery->setActiveLocale('en');
 	if ($ret) {
 	    return ($ret);
 	}
 	$session->_isUsingCookies = false;
 
-	/* Exif module */
+	
+
+
+/*  Exif module  */
+
+
+
 	$session->remove('exif.module.LoadExifInfo.mode');
 
 	GalleryDataCache::put('G2_EMBED', 1);
@@ -555,7 +609,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals('0-en-1', $extraKey, 'embedded, cookieless, English, exif summary');
 
-	/* Clean up */
+	
+
+
+/*  Clean up  */
+
+
+
 	$session->_isUsingCookies = $isUsingCookies;
 	$session->put('exif.module.LoadExifInfo.mode', $modeExif);
     }
@@ -564,18 +624,36 @@ class DataCacheTest extends GalleryTestCase {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	/* Backup values */
+	
+
+
+/*  Backup values  */
+
+
+
 	$isUsingCookies = $session->isUsingCookies();
 	$modeExif = $session->get('exif.module.LoadExifInfo.mode');
 
-	/* Set test environment */
+	
+
+
+/*  Set test environment  */
+
+
+
 	$ret = $gallery->setActiveLocale('fr');
 	if ($ret) {
 	    return ($ret);
 	}
 	$session->_isUsingCookies = true;
 
-	/* Exif module */
+	
+
+
+/*  Exif module  */
+
+
+
 	$session->put('exif.module.LoadExifInfo.mode', 'detailed');
 
 	list ($ret, $extraKey) = GalleryDataCache::_getExtraPageCacheKey();
@@ -585,12 +663,24 @@ class DataCacheTest extends GalleryTestCase {
 	$this->assertEquals('1-fr-0-exifdetailed', $extraKey,
 			    'standalone, using cookies, French, exif detail');
 
-	/* Clean up */
+	
+
+
+/*  Clean up  */
+
+
+
 	$session->_isUsingCookies = $isUsingCookies;
 	$session->put('exif.module.LoadExifInfo.mode', $modeExif);
     }
 
-    /* Same test as userOk, but in guest preview mode */
+    
+
+
+/*  Same test as userOk, but in guest preview mode  */
+
+
+
     function testShouldNotCacheGuestPreviewPages() {
 	global $gallery;
 	$session =& $gallery->getSession();
@@ -617,7 +707,13 @@ class DataCacheTest extends GalleryTestCase {
     function testCleanPageDataCache(){
 	global $gallery;
 	$gallery->_phpVm = new DataCacheTestMockVm();
-	/* We don't care about rand. */
+	
+
+
+/*  We don't care about rand.  */
+
+
+
 	$gallery->_phpVm->setRand(1);
 	$activeUser = $gallery->getActiveUser();
 
@@ -639,17 +735,35 @@ class DataCacheTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	/* Initialize to language of active user, so we don't get a different cache key later. */
+	
+
+
+/*  Initialize to language of active user, so we don't get a different cache key later.  */
+
+
+
 	$gallery->setActiveUser($anonymousUser);
 	$gallery->setActiveUser($activeUser);
 
-	/* Clear the cache. */
+	
+
+
+/*  Clear the cache.  */
+
+
+
 	$ret = GalleryCoreApi::removeAllMapEntries('GalleryCacheMap');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Setup some cache entries. */
+	
+
+
+/*  Setup some cache entries.  */
+
+
+
 	$gallery->_phpVm->setTime(100);
 	$ret = GalleryDataCache::putPageData('first', 1, array('key'), 'test');
 	if ($ret) {
@@ -662,7 +776,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals('test', $result, 'first');
 
-	/* Clean on, 25 seconds after start, no rows should be cleaned. */
+	
+
+
+/*  Clean on, 25 seconds after start, no rows should be cleaned.  */
+
+
+
 	$gallery->_phpVm->setTime(125);
 
 	$ret = GalleryDataCache::putPageData('second', 2, array('key'), 'test');
@@ -676,7 +796,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals('test', $result, 'We cleaned to early.');
 
-	/* Guest user cache, clean on, 35 seconds after start, no rows should be cleaned. */
+	
+
+
+/*  Guest user cache, clean on, 35 seconds after start, no rows should be cleaned.  */
+
+
+
 	$gallery->setActiveUser($anonymousUser);
 	$gallery->_phpVm->setTime(135);
 
@@ -685,7 +811,13 @@ class DataCacheTest extends GalleryTestCase {
 	    return ($ret);
 	}
 
-	/* Switch back to user and back in time check first entry. */
+	
+
+
+/*  Switch back to user and back in time check first entry.  */
+
+
+
 	$gallery->setActiveUser($activeUser);
 	$gallery->_phpVm->setTime(125);
 	list ($ret, $result) = GalleryDataCache::getPageData('first', array('key'));
@@ -694,7 +826,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals('test', $result, 'Guest cleaned user row!');
 
-	/* Check if dice is set to 6 we don't clean. */
+	
+
+
+/*  Check if dice is set to 6 we don't clean.  */
+
+
+
 	$gallery->_phpVm->setRand(6);
 	$gallery->_phpVm->setTime(135);
 	$ret = GalleryDataCache::putPageData('third', 3, array('key'), 'test');
@@ -709,7 +847,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals('test', $result, 'We cleaned first row while rand() returned 6.');
 
-	/* Expire all user rows with this last call, guest untouched and this one. */
+	
+
+
+/*  Expire all user rows with this last call, guest untouched and this one.  */
+
+
+
 	$gallery->_phpVm->setTime(200);
 	$gallery->_phpVm->setRand(1);
 	$ret = GalleryDataCache::putPageData('fourth', 4, array('key'), 'test');
@@ -717,7 +861,13 @@ class DataCacheTest extends GalleryTestCase {
 	    return ($ret);
 	}
 
-	/* Move treshold, making all rows valid again. */
+	
+
+
+/*  Move treshold, making all rows valid again.  */
+
+
+
 	$acceleration = array('user' => array('type' => 'full', 'expiration' => 200),
 			      'guest' => array('type' => 'full', 'expiration' => 200));
 	$ret = GalleryCoreApi::setPluginParameter(
@@ -732,7 +882,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals(null, $result, 'Cache entry should be obsolete.');
 
-	/* Verify the number of rows that we should have in the DB. */
+	
+
+
+/*  Verify the number of rows that we should have in the DB.  */
+
+
+
 	$query = 'SELECT * FROM [GalleryCacheMap]';
 	list ($ret, $results) = $gallery->search($query);
 	if ($ret) {
@@ -740,7 +896,13 @@ class DataCacheTest extends GalleryTestCase {
 	}
 	$this->assertEquals(5, (int)$results->resultCount(), 'Total cache entries.');
 
-	/* Verify the number of rows that should be valid. */
+	
+
+
+/*  Verify the number of rows that should be valid.  */
+
+
+
 	$query = '
 	SELECT
 	  *
@@ -756,7 +918,13 @@ class DataCacheTest extends GalleryTestCase {
 	$this->assertEquals(2, (int)$results->resultCount(), 'remaining valid cache entries');
     }
 
-    /* Test persisting the template path map to disk and removing it */
+    
+
+
+/*  Test persisting the template path map to disk and removing it  */
+
+
+
     function testSaveAndRemoveLocalUrlMap() {
 	global $gallery;
 	GalleryDataCache::setFileCachingEnabled(true);
@@ -872,7 +1040,13 @@ class DataCacheTestPlatform {
     }
 
     function flock($handle, $type) {
-	/* Ignore for now */
+	
+
+
+/*  Ignore for now  */
+
+
+
     }
 
     function unlink($filename) {

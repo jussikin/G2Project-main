@@ -103,7 +103,13 @@ class Gallery1DataParser {
 	    return array($ret, null);
 	}
 
-	/* TODO: check that there is an $albumOrder */
+	
+
+
+/*  TODO: check that there is an $albumOrder  */
+
+
+
 	foreach ($albumOrder as $albumName) {
 	    list ($ret, $albumFields) =
 		Gallery1DataParser::loadAlbumFields($path . $albumName . $slash);
@@ -408,7 +414,13 @@ class Gallery1DataParser {
 }
 
 
-/* Define these classes so that unserialize can use them */
+
+
+
+/*  Define these classes so that unserialize can use them  */
+
+
+
 /**
  * A stub class into which various G1 objects can be unserialized.
  */

@@ -55,7 +55,13 @@ class ZipCartAdminController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		/* Try zipping something */
+		
+
+
+/*  Try zipping something  */
+
+
+
 		$zipBase = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'zip_');
 		$zipFile = $zipBase . '.zip';
 		$gallery->guaranteeTimeLimit(30);

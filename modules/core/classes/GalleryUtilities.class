@@ -47,14 +47,26 @@ class GalleryUtilities {
 
 	$pos = strrpos($filename, '.');
 
-	/* No dot == it's all base, no extension */
+	
+
+
+/*  No dot == it's all base, no extension  */
+
+
+
 	if ($pos === false) {
 	    return array($filename, '');
 	}
 
 	$pos++;
 
-	/* If it's the last char in the name, just return the base */
+	
+
+
+/*  If it's the last char in the name, just return the base  */
+
+
+
 	if ($pos >= strlen($filename)) {
 	    return array(substr($filename, 0, $pos - 1), '');
 	}
@@ -108,7 +120,13 @@ class GalleryUtilities {
 		$file['tmp_name'] = addslashes($file['tmp_name']);
 	    }
 
-	    /* Perform any necessary transformations on our values */
+	    
+
+
+/*  Perform any necessary transformations on our values  */
+
+
+
 	    GalleryUtilities::sanitizeInputValues($file);
 	}
 
@@ -149,7 +167,13 @@ class GalleryUtilities {
 	    $form = GalleryUtilities::array_merge_replace($form, $_GET[$key]);
 	}
 
-	/* Perform any necessary transformations on our values */
+	
+
+
+/*  Perform any necessary transformations on our values  */
+
+
+
 	GalleryUtilities::sanitizeInputValues($form);
 
 	return $form;
@@ -220,7 +244,13 @@ class GalleryUtilities {
      * @param boolean $prefix (optional) false to omit Gallery variable prefix (not recommended)
      */
     function removeFormVariables($key, $prefix=true) {
-	/* Remove all matching GET and POST variables */
+	
+
+
+/*  Remove all matching GET and POST variables  */
+
+
+
 	if ($prefix) {
 	    $key = GALLERY_FORM_VARIABLE_PREFIX . $key;
 	}
@@ -242,7 +272,13 @@ class GalleryUtilities {
 		GALLERY_FORM_VARIABLE_PREFIX . $argName);
 	}
 
-	/* Sanitize the input */
+	
+
+
+/*  Sanitize the input  */
+
+
+
 	GalleryUtilities::sanitizeInputValues($values);
 
 	if (func_num_args() == 1) {
@@ -270,7 +306,13 @@ class GalleryUtilities {
 	    }
 	}
 
-	/* Sanitize the input */
+	
+
+
+/*  Sanitize the input  */
+
+
+
 	GalleryUtilities::sanitizeInputValues($values);
 
 	return $values;
@@ -289,7 +331,13 @@ class GalleryUtilities {
 	    $values[] = GalleryUtilities::_getRequestVariable($argName);
 	}
 
-	/* Sanitize the input */
+	
+
+
+/*  Sanitize the input  */
+
+
+
 	GalleryUtilities::sanitizeInputValues($values);
 
 	if (func_num_args() == 1) {
@@ -309,7 +357,13 @@ class GalleryUtilities {
 	    $key = GALLERY_FORM_VARIABLE_PREFIX . $key;
 	}
 
-	/* Simulate the damage caused by magic_quotes */
+	
+
+
+/*  Simulate the damage caused by magic_quotes  */
+
+
+
 	GalleryUtilities::unsanitizeInputValues($key);
 	GalleryUtilities::unsanitizeInputValues($value);
 
@@ -443,7 +497,13 @@ class GalleryUtilities {
 	}
 	$relativePath = str_replace($dirbase, '', $path);
 
-	/* Prepend the Gallery base URL */
+	
+
+
+/*  Prepend the Gallery base URL  */
+
+
+
 	$urlGenerator =& $gallery->getUrlGenerator();
 	return $urlGenerator->generateUrl(array('href' => $relativePath), $options);
     }
@@ -572,11 +632,23 @@ class GalleryUtilities {
 	    $charArray = $reg[0];
 	    $charArrayLength = count($charArray);
 
-	    /* if $length < 0, then it's really the end index */
+	    
+
+
+/*  if $length < 0, then it's really the end index  */
+
+
+
 	    $cookedStart = ($start < 0) ? $charArrayLength + $start : $start;
 	    $cookedLength = ($length < 0) ? $charArrayLength - $cookedStart + $length : $length;
 
-	    /* We now have the proper begin/end indices, so grab that slice */
+	    
+
+
+/*  We now have the proper begin/end indices, so grab that slice  */
+
+
+
 	    if ($countEntitiesAsOne) {
 		$slice = array_slice($charArray, $cookedStart, $cookedLength);
 		return array(count($slice), join('', $slice));
@@ -591,7 +663,13 @@ class GalleryUtilities {
 		    }
 
 		    if ($actualLength + $size > $cookedLength) {
-			/* We're done */
+			
+
+
+/*  We're done  */
+
+
+
 			break;
 		    }
 		    $cookedText .= $charArray[$i];
@@ -600,7 +678,13 @@ class GalleryUtilities {
 		return array($actualLength, $cookedText);
 	    }
 	} else {
-	    /* How could we get here?  Our regex should match everything */
+	    
+
+
+/*  How could we get here?  Our regex should match everything  */
+
+
+
 	    $newString = substr($string, $start, $length);
 	    return array(strlen($newString), $newString);
 	}
@@ -628,7 +712,13 @@ class GalleryUtilities {
 	$decrement[2] = 192;
 	$decrement[1] = 0;
 
-	/* Number of bits to shift each charNum by */
+	
+
+
+/*  Number of bits to shift each charNum by  */
+
+
+
 	$shift[1][0] = 0;
 	$shift[2][0] = 6;
 	$shift[2][1] = 0;
@@ -646,27 +736,57 @@ class GalleryUtilities {
 	while ($pos < $len) {
 	    $asciiPos = ord(substr($source, $pos, 1));
 	    if (($asciiPos >= 240) && ($asciiPos <= 255)) {
-		/* 4 chars representing one unicode character */
+		
+
+
+/*  4 chars representing one unicode character  */
+
+
+
 		$thisLetter = substr($source, $pos, 4);
 		$pos += 4;
 	    }
 	    else if (($asciiPos >= 224) && ($asciiPos <= 239)) {
-		/* 3 chars representing one unicode character */
+		
+
+
+/*  3 chars representing one unicode character  */
+
+
+
 		$thisLetter = substr($source, $pos, 3);
 		$pos += 3;
 	    }
 	    else if (($asciiPos >= 192) && ($asciiPos <= 223)) {
-		/* 2 chars representing one unicode character */
+		
+
+
+/*  2 chars representing one unicode character  */
+
+
+
 		$thisLetter = substr($source, $pos, 2);
 		$pos += 2;
 	    }
 	    else {
-		/* 1 char (lower ASCII) */
+		
+
+
+/*  1 char (lower ASCII)  */
+
+
+
 		$thisLetter = substr($source, $pos, 1);
 		$pos += 1;
 	    }
 
-	    /* Process the string representing the letter to a unicode entity */
+	    
+
+
+/*  Process the string representing the letter to a unicode entity  */
+
+
+
 	    $thisLen = strlen ($thisLetter);
 	    $thisPos = 0;
 	    $decimalCode = 0;
@@ -724,7 +844,13 @@ class GalleryUtilities {
 				 array('&amp;', '&quot;', '&lt;', '&gt;'),
 				 $value);
 
-	    /* Undo the damage caused by magic_quotes */
+	    
+
+
+/*  Undo the damage caused by magic_quotes  */
+
+
+
 	    if ($adaptForMagicQuotes) {
 		if (get_magic_quotes_gpc()) {
 		    $value = stripslashes($value);
@@ -745,11 +871,29 @@ class GalleryUtilities {
 		GalleryUtilities::unsanitizeInputValues($value[$key], $adaptForMagicQuotes);
 	    }
 	} else {
-	    /* Unsanitize dangerous html entities */
-	    /* bugs.php.net/bug.php?id=22014 - TODO: remove empty check when min php is 4.3.2+ */
+	    
+
+
+/*  Unsanitize dangerous html entities  */
+
+
+
+	    
+
+
+/*  bugs.php.net/bug.php?id=22014 - TODO: remove empty check when min php is 4.3.2+  */
+
+
+
 	    $value = empty($value) ? $value : html_entity_decode($value);
 
-	    /* Redo the damage caused by magic_quotes */
+	    
+
+
+/*  Redo the damage caused by magic_quotes  */
+
+
+
 	    if ($adaptForMagicQuotes) {
 		if (get_magic_quotes_gpc()) {
 		    $value = addslashes($value);
@@ -782,7 +926,13 @@ class GalleryUtilities {
      */
     function unicodeValueToUtf8Value($num) {
 	if ($num[0] == 'x') {
-	    /* Convert hex to decimal */
+	    
+
+
+/*  Convert hex to decimal  */
+
+
+
 	    $num = hexdec(substr($num, 1));
 	}
 
@@ -892,19 +1042,37 @@ class GalleryUtilities {
      *     if it would otherwise replace and existing header.
      */
     function setResponseHeader($header, $replace=true) {
-	/* Use our PHP VM for testability */
+	
+
+
+/*  Use our PHP VM for testability  */
+
+
+
 	global $gallery;
 	$phpVm = $gallery->getPhpVm();
 
 	$responseHeaders =& GalleryUtilities::_getResponseHeaders();
 
-	/* Special case for HTTP status codes.  See http://php.net/header */
+	
+
+
+/*  Special case for HTTP status codes.  See http://php.net/header  */
+
+
+
 	$key = 'status';
 	if (strncasecmp($header, 'HTTP/', 5)) {
 	    $key = GalleryUtilities::strToLower(substr($header, 0, strpos($header, ':')));
 	}
 
-	/* Avoid setting HTTP response header if it would replace an existing header */
+	
+
+
+/*  Avoid setting HTTP response header if it would replace an existing header  */
+
+
+
 	if (!$replace && (!empty($responseHeaders[$key])
 		|| ($key == 'location' && !empty($responseHeaders['status'])
 		    && !preg_match('/^HTTP\/[0-9]\.[0-9] 3/', $responseHeaders['status'])))) {
@@ -1016,11 +1184,23 @@ class GalleryUtilities {
 	if (GalleryDataCache::containsKey($cacheKey)) {
 	    $dirPerms = GalleryDataCache::get($cacheKey);
 	} else {
-	    /* To avoid looping if getPluginParameter calls guaranteeDirExists */
+	    
+
+
+/*  To avoid looping if getPluginParameter calls guaranteeDirExists  */
+
+
+
 	    GalleryDataCache::put($cacheKey, 0);
 	    list ($ret, $dirPerms) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'permissions.directory');
-	    /* Ignore error here, then recheck $dir in case it was created in nested call */
+	    
+
+
+/*  Ignore error here, then recheck $dir in case it was created in nested call  */
+
+
+
 	    GalleryDataCache::put($cacheKey, $dirPerms);
 	    if ($platform->file_exists($dir)) {
 		return array($platform->is_dir($dir), array());
@@ -1050,10 +1230,22 @@ class GalleryUtilities {
      */
     function createAlbumTree($albums) {
 	if (empty($albums)) {
-	    $tree = array(); return $tree;  /* Help CodeAudit match up returns */
+	    $tree = array(); return $tree;  
+
+
+/*  Help CodeAudit match up returns  */
+
+
+
 	}
 
-	/* Index the albums by id */
+	
+
+
+/*  Index the albums by id  */
+
+
+
 	$map = array();
 	foreach ($albums as $album) {
 	    $albumId = $album->getId();
@@ -1075,14 +1267,26 @@ class GalleryUtilities {
 	    }
 	}
 
-	/* Find root albums */
+	
+
+
+/*  Find root albums  */
+
+
+
 	foreach ($map as $id => $info) {
 	    if (!isset($info['parent']) || !isset($map[$info['parent']])) {
 		$roots[] = $id;
 	    }
 	}
 
-	/* Walk the root albums */
+	
+
+
+/*  Walk the root albums  */
+
+
+
 	$tree = array();
 	foreach ($roots as $id) {
 	    $tree = array_merge($tree, GalleryUtilities::_createDepthTree($map, $id));
@@ -1144,11 +1348,23 @@ class GalleryUtilities {
 		    }
 		    if (!empty($extensions)) {
 			if (method_exists($parentEntity, 'getMimeType')) {
-			    /* Change extension for mime type of this derivative */
+			    
+
+
+/*  Change extension for mime type of this derivative  */
+
+
+
 			    $pseudoFileName =
 				preg_replace('{\.[^.]+$}', '.' . $extensions[0], $pseudoFileName);
 			} else {
-			    /* Non-item parent, like an album.  Add extension for this mime type. */
+			    
+
+
+/*  Non-item parent, like an album.  Add extension for this mime type.  */
+
+
+
 			    $pseudoFileName .= '.' . $extensions[0];
 			}
 		    }
@@ -1210,7 +1426,13 @@ class GalleryUtilities {
     function readIndividualManifest($filePath, &$manifest) {
 	global $gallery;
 
-	/* If the method getPlatform exists, then we are not installing and it is safe to use. */
+	
+
+
+/*  If the method getPlatform exists, then we are not installing and it is safe to use.  */
+
+
+
 	if (method_exists($gallery, "getPlatform")) {
 	    $platform =& $gallery->getPlatform();
 	    $lines = $platform->file($filePath);
@@ -1343,7 +1565,13 @@ class GalleryUtilities {
 	    return false;
 	}
 
-	/* Catchall */
+	
+
+
+/*  Catchall  */
+
+
+
 	return false;
     }
 
@@ -1400,7 +1628,13 @@ class GalleryUtilities {
 	    return null;
 	}
 
-	/* Fix PHP HTTP_COOKIE header bug http://bugs.php.net/bug.php?id=32802 */
+	
+
+
+/*  Fix PHP HTTP_COOKIE header bug http://bugs.php.net/bug.php?id=32802  */
+
+
+
 	GalleryUtilities::fixCookieVars();
 
 	$value = $_COOKIE[$key];
@@ -1461,7 +1695,13 @@ class GalleryUtilities {
 		 * don't assign values to cookies that were already fixed/set before
 		 */
 		$fixedCookies = array();
-		/* Check if the Cookie header contains quoted-strings */
+		
+
+
+/*  Check if the Cookie header contains quoted-strings  */
+
+
+
 		if (strstr($_SERVER['HTTP_COOKIE'], '"') === false) {
 		    /*
 		     * Use fast method, no quoted-strings in the header.  Get rid of less specific
@@ -1486,30 +1726,66 @@ class GalleryUtilities {
 		    $lastPos = 0;
 		    while ($i < $len) {
 			switch ($string{$i}) {
-			    /* Two attr-pair separators */
+			    
+
+
+/*  Two attr-pair separators  */
+
+
+
 			case ',':
 			case ';':
 			    if ($quotedStringOpen) {
-				/* Ignore separators within quoted-strings */
+				
+
+
+/*  Ignore separators within quoted-strings  */
+
+
+
 			    } else {
-				/* An attr[=value] pair */
+				
+
+
+/*  An attr[=value] pair  */
+
+
+
 				GalleryUtilities::_registerCookieAttr(substr($string, $lastPos,
 									     $i - $lastPos),
 								      $fixedCookies);
-				$lastPos = $i + 1; /* Next attr starts at next char */
+				$lastPos = $i + 1; 
+
+
+/*  Next attr starts at next char  */
+
+
+
 			    }
 			    break;
 			case '"':
 			    $quotedStringOpen = !$quotedStringOpen;
 			    break;
 			case '\\':
-			    /* Escape the next character = jump over it */
+			    
+
+
+/*  Escape the next character = jump over it  */
+
+
+
 			    $i++;
 			    break;
 			}
 			$i++;
 		    }
-		    /* Register last attr in header, but only if the syntax is correct */
+		    
+
+
+/*  Register last attr in header, but only if the syntax is correct  */
+
+
+
 		    if (!$quotedStringOpen) {
 			GalleryUtilities::_registerCookieAttr(substr($string, $lastPos),
 							      $fixedCookies);
@@ -1546,26 +1822,62 @@ class GalleryUtilities {
      */
     function _registerCookieAttr($attr, &$fixedCookies) {
 	global $gallery;
-	/* Split NAME [=VALUE], value is optional for all attributes but the cookie name */
+	
+
+
+/*  Split NAME [=VALUE], value is optional for all attributes but the cookie name  */
+
+
+
 	if (($pos = strpos($attr, '=')) !== false) {
 	    $val = substr($attr, $pos + 1);
 	    $key = substr($attr, 0, $pos);
 	} else {
-	    /* No cookie name=value attr, we can ignore it */
+	    
+
+
+/*  No cookie name=value attr, we can ignore it  */
+
+
+
 	    return null;
 	}
-	/* Urldecode header data (php-style of name = attr handling) */
+	
+
+
+/*  Urldecode header data (php-style of name = attr handling)  */
+
+
+
 	$key = trim(urldecode($key));
-	/* Don't accept zero length key */
+	
+
+
+/*  Don't accept zero length key  */
+
+
+
 	if (($len = strlen($key)) == 0) {
 	    return null;
 	}
-	/* Don't fix cookies with '[', ']' or any array-cookies (for simplicity) */
+	
+
+
+/*  Don't fix cookies with '[', ']' or any array-cookies (for simplicity)  */
+
+
+
 	$pos = strchr($key, '[');
 	if (strchr($key, '[') !== false || strchr($key, ']') !== false) {
 	    return null;
 	}
-	/* Make it a binary safe variable name */
+	
+
+
+/*  Make it a binary safe variable name  */
+
+
+
 	for ($i = 0; $i < $len; $i++) {
 	    if ($key{$i} == ' ' || $key{$i} == '.') {
 		$key{$i} = '_';
@@ -1578,9 +1890,21 @@ class GalleryUtilities {
 	if (strpos($key, '$') === 0) {
 	    return null;
 	}
-	/* Urldecode value */
+	
+
+
+/*  Urldecode value  */
+
+
+
 	$val = trim(urldecode($val));
-	/* Add slashes if magic_quotes_gpc is on */
+	
+
+
+/*  Add slashes if magic_quotes_gpc is on  */
+
+
+
 	$phpVm = $gallery->getPhpVm();
 	if ($phpVm->get_magic_quotes_gpc()) {
 	    $key = addslashes($key);
@@ -1625,12 +1949,24 @@ class GalleryUtilities {
 	    return false;
 	}
 
-	/* Don't allow plain occurrences of CR or LF */
+	
+
+
+/*  Don't allow plain occurrences of CR or LF  */
+
+
+
 	if (strpos($header, chr(13)) !== false || strpos($header, chr(10)) !== false) {
 	    return false;
 	}
 
-	/* Don't allow (x times) url encoded versions of CR or LF */
+	
+
+
+/*  Don't allow (x times) url encoded versions of CR or LF  */
+
+
+
 	if (preg_match('/%(25)*(0a|0d)/i', $header)) {
 	    return false;
 	}

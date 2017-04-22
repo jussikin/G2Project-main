@@ -53,7 +53,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
     }
 
     function testEditFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $group) = $this->_createGroup();
 	if ($ret) {
 	    return $ret;
@@ -71,7 +77,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteGroup($group);
 
-	/* Missing group name */
+	
+
+
+/*  Missing group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][groupName]');
 
@@ -82,7 +94,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noGroupSpecified]')),
 			    $results);
 
-	/* Invalid group name */
+	
+
+
+/*  Invalid group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][groupName]',
 					     'some-invalid-group-name-'.rand());
@@ -96,7 +114,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $group) = $this->_createGroup();
 	if ($ret) {
 	    return $ret;
@@ -114,7 +138,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteGroup($group);
 
-	/* Missing group name */
+	
+
+
+/*  Missing group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][groupName]');
 
@@ -125,7 +155,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noGroupSpecified]')),
 			    $results);
 
-	/* Invalid group name */
+	
+
+
+/*  Invalid group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][groupName]',
 					     'some-invalid-group-name-'.rand());
@@ -232,7 +268,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
     }
 
     function testEditUsersFromText() {
-	/* Normal */
+	
+
+
+/*  Normal  */
+
+
+
 	list ($ret, $group) = $this->_createGroup();
 	if ($ret) {
 	    return $ret;
@@ -250,7 +292,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
 			    $results);
 	$this->_deleteGroup($group);
 
-	/* Missing group name */
+	
+
+
+/*  Missing group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][addRemoveUsersFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][groupName]');
 
@@ -261,7 +309,13 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noGroupSpecified]')),
 			    $results);
 
-	/* Invalid group name */
+	
+
+
+/*  Invalid group name  */
+
+
+
 	GalleryUtilities::putRequestVariable('form[action][addRemoveUsersFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][groupName]',
 					     'some-invalid-group-name-'.rand());

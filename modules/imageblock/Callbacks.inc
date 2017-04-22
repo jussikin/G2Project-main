@@ -30,7 +30,13 @@ class ImageBlockCallbacks {
 
 	switch($callback) {
 	case 'LoadImageBlock':
-	    /* Pick up our overrides */
+	    
+
+
+/*  Pick up our overrides  */
+
+
+
 	    if (!$params['useDefaults']) {
 		/*
 		 * If we're overriding the defaults, then overlay our changes on top of the
@@ -42,9 +48,21 @@ class ImageBlockCallbacks {
 		    return $ret;
 		}
 
-		/* GalleryEmbed::getBlocks() sets 'show' as a pipe delimited list */
+		
+
+
+/*  GalleryEmbed::getBlocks() sets 'show' as a pipe delimited list  */
+
+
+
 		if (!isset($params['show'])) {
-		    /* As a theme block the 'show' elements are set as separate properties */
+		    
+
+
+/*  As a theme block the 'show' elements are set as separate properties  */
+
+
+
 		    $showMap = array_flip(explode('|', $moduleParams['show']));
 		    foreach (array('showHeading' => 'heading',
 				   'showTitle' => 'title', 'showViews' => 'views',
@@ -62,7 +80,13 @@ class ImageBlockCallbacks {
 	    }
 
 	    if (isset($userId)) {
-		/* Support guest-preview mode */
+		
+
+
+/*  Support guest-preview mode  */
+
+
+
 		$params['userId'] = $userId;
 	    }
 
@@ -73,7 +97,13 @@ class ImageBlockCallbacks {
 	    $template = new GalleryTemplate(dirname(__FILE__), false);
 	    $template->_smarty = $smarty;
 
-	    /* Remove null parameters */
+	    
+
+
+/*  Remove null parameters  */
+
+
+
 	    foreach (array_keys($params) as $key) {
 		if (!isset($params[$key])) {
 		    unset($params[$key]);

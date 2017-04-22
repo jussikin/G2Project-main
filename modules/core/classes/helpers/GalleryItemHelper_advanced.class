@@ -126,7 +126,13 @@ class GalleryItemHelper_advanced {
 	$success = false;
 	$highlightHasLeftTheAlbum = false;
 	if (!empty($thumbnails)) {
-	    /* Make sure that the thumbnail's source item is still inside the album */
+	    
+
+
+/*  Make sure that the thumbnail's source item is still inside the album  */
+
+
+
 	    $thumbnail = $thumbnails[$albumId];
 
 	    list ($ret, $thumbnailSource) = GalleryCoreApi::loadEntitiesById(
@@ -134,7 +140,13 @@ class GalleryItemHelper_advanced {
 		array('GalleryFileSystemEntity', 'GalleryDerivative'));
 	    if ($ret) {
 		if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		    /* Derivative source is missing.. pick a new one */
+		    
+
+
+/*  Derivative source is missing.. pick a new one  */
+
+
+
 		    $highlightHasLeftTheAlbum = true;
 		} else {
 		    return array($ret, null);
@@ -148,7 +160,13 @@ class GalleryItemHelper_advanced {
 
 		if ($highlightItem->getParentId() != $albumId
 			&& $highlightItem->getId() != $albumId) {
-		    /* The highlight is no longer in this album */
+		    
+
+
+/*  The highlight is no longer in this album  */
+
+
+
 		    $gallery->debug('Thumbnail is no longer in the album');
 		    $highlightHasLeftTheAlbum = true;
 		}
@@ -162,7 +180,13 @@ class GalleryItemHelper_advanced {
 		return array($ret, null);
 	    }
 
-	    /* Grab the first few items and try them on for size */
+	    
+
+
+/*  Grab the first few items and try them on for size  */
+
+
+
 	    list($ret, $childIds) =  GalleryCoreApi::fetchChildItemIds($album, 0, 5);
 	    $gallery->debug('Found childIds');
 	    $gallery->debug_r($childIds);
@@ -177,12 +201,24 @@ class GalleryItemHelper_advanced {
 		}
 	    }
 	} else {
-	    /* We didn't have to do anything, but the guarantee is met */
+	    
+
+
+/*  We didn't have to do anything, but the guarantee is met  */
+
+
+
 	    $success = true;
 	}
 
 	if (!$success && $highlightHasLeftTheAlbum) {
-	    /* We couldn't find a new thumbnail, but the existing one isn't good anymore */
+	    
+
+
+/*  We couldn't find a new thumbnail, but the existing one isn't good anymore  */
+
+
+
 	    $ret = GalleryCoreApi::deleteEntityById($thumbnail->getId(), 'GalleryDerivative');
 	    if ($ret) {
 		return array($ret, null);
@@ -198,12 +234,24 @@ class GalleryItemHelper_advanced {
     static function createAlbum($parentAlbumId, $name, $title, $summary, $description, $keywords) {
 	global $gallery;
 
-	/* Can't work without a name and a parentAlbum */
+	
+
+
+/*  Can't work without a name and a parentAlbum  */
+
+
+
 	if (empty($parentAlbumId) || empty($name)) {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	/* Make sure the parent album is indeed an album */
+	
+
+
+/*  Make sure the parent album is indeed an album  */
+
+
+
 	list ($ret, $parentAlbum) =
 	    GalleryCoreApi::loadEntitiesById($parentAlbumId, 'GalleryAlbumItem');
 	if ($ret) {
@@ -214,7 +262,13 @@ class GalleryItemHelper_advanced {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	/* create the album object */
+	
+
+
+/*  create the album object  */
+
+
+
 	list ($ret, $album) =
 	    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryAlbumItem');
 	if ($ret) {
@@ -225,7 +279,13 @@ class GalleryItemHelper_advanced {
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 
-	/* acquire lock to reference the parent in our new object */
+	
+
+
+/*  acquire lock to reference the parent in our new object  */
+
+
+
 	list ($ret, $lockIds[]) = GalleryCoreApi::acquireReadLock($parentAlbumId);
 	if ($ret) {
 	    return array($ret, null);
@@ -237,20 +297,38 @@ class GalleryItemHelper_advanced {
 	    return array($ret, null);
 	}
 
-	/* Change album settings */
+	
+
+
+/*  Change album settings  */
+
+
+
 	$album->setTitle($title);
 	$album->setDescription($description);
 	$album->setSummary($summary);
 	$album->setKeywords($keywords);
 
-	/* Save it */
+	
+
+
+/*  Save it  */
+
+
+
 	$ret = $album->save();
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
 	    return array($ret, null);
 	}
 
-	/* set order weight -- add to end of parent album */
+	
+
+
+/*  set order weight -- add to end of parent album  */
+
+
+
 	list ($ret, $maxWeight) =
 	    GalleryCoreApi::fetchExtremeChildWeight($parentAlbumId, HIGHER_WEIGHT);
 	if ($ret) {
@@ -261,7 +339,13 @@ class GalleryItemHelper_advanced {
 	    return array($ret, null);
 	}
 
-	/* Leggo of our locks */
+	
+
+
+/*  Leggo of our locks  */
+
+
+
 	$ret = GalleryCoreApi::releaseLocks($lockIds);
 	if ($ret) {
 	    return array($ret, null);
@@ -281,23 +365,47 @@ class GalleryItemHelper_advanced {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	/* First check if new User is a valid gallery user! */
+	
+
+
+/*  First check if new User is a valid gallery user!  */
+
+
+
 	list ($ret, $newOwner) = GalleryCoreApi::loadEntitiesById($newUserId, 'GalleryUser');
 	if ($ret) {
 	    return $ret;
 	}
 
-	if ($newUserId == $oldUserId) { /* Well, why not :) */
+	if ($newUserId == $oldUserId) { 
+
+
+/*  Well, why not :)  */
+
+
+
 	    return null;
 	}
 
-	/* We need the user object later on anyway */
+	
+
+
+/*  We need the user object later on anyway  */
+
+
+
 	list ($ret, $oldOwner) = GalleryCoreApi::loadEntitiesById($oldUserId, 'GalleryUser');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Get all items by oldUser */
+	
+
+
+/*  Get all items by oldUser  */
+
+
+
 	list ($ret, $itemIds) = GalleryCoreApi::fetchAllItemIdsByOwnerId($oldUserId);
 	if ($ret) {
 	    return $ret;
@@ -307,27 +415,57 @@ class GalleryItemHelper_advanced {
 	    return null;
 	}
 
-	/* got to remapOwnerId for some items */
-	/* acquire write lock for all items */
+	
+
+
+/*  got to remapOwnerId for some items  */
+
+
+
+	
+
+
+/*  acquire write lock for all items  */
+
+
+
 	list ($ret, $lockIds) = GalleryCoreApi::acquireWriteLock($itemIds);
 	if ($ret) {
 	    return $ret;
 	}
-	/* load all items */
+	
+
+
+/*  load all items  */
+
+
+
 	list ($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
 	    return $ret;
 	}
 
-	/* Get all permissions newOwner has on the items directly or indirectly */
+	
+
+
+/*  Get all permissions newOwner has on the items directly or indirectly  */
+
+
+
 	list ($ret, $newUserPermissions) =
 	    GalleryCoreApi::fetchPermissionsForItems($itemIds, $newOwner->getId());
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockIds);
 	    return $ret;
 	}
-	/* Get all permissions oldOwner has directly or indirectly on the item */
+	
+
+
+/*  Get all permissions oldOwner has directly or indirectly on the item  */
+
+
+
 	list ($ret, $oldUserPermissions) =
 	    GalleryCoreApi::fetchPermissionsForItems($itemIds, $oldOwner->getId());
 	if ($ret) {
@@ -342,7 +480,13 @@ class GalleryItemHelper_advanced {
 	 *   3 $item->save
 	 */
 	foreach ($items as $item) {
-	    /* find all permissions we have to add */
+	    
+
+
+/*  find all permissions we have to add  */
+
+
+
 	    $newPermissions = array();
 	    if (!empty($oldUserPermissions)) {
 		foreach (array_keys($oldUserPermissions[$item->getId()]) as $permission) {
@@ -367,7 +511,13 @@ class GalleryItemHelper_advanced {
 		    return $ret;
 		}
 	    }
-	    /* Update the ownerId of the item and save it (1 db query) */
+	    
+
+
+/*  Update the ownerId of the item and save it (1 db query)  */
+
+
+
 	    $item->setownerId($newOwner->getid());
 	    $ret = $item->save();
 	    if ($ret) {
@@ -376,7 +526,13 @@ class GalleryItemHelper_advanced {
 	    }
 	}
 
-	/* Release all locks at once */
+	
+
+
+/*  Release all locks at once  */
+
+
+
 	$ret = GalleryCoreApi::releaseLocks($lockIds);
 	if ($ret) {
 	    return $ret;

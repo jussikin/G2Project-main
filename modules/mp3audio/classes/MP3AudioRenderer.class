@@ -80,7 +80,13 @@ class MP3AudioRenderer extends GalleryRenderer {
 		$title = smarty_modifier_markup($item->getTitle(), 'strip');
 		$flashVars .= '&title=' . urlencode($title);
 		
-		/* Uncomment the next line to allow download button. Default: false */
+		
+
+
+/*  Uncomment the next line to allow download button. Default: false  */
+
+
+
 		//$flashVars .= '&allowDownload=true';
 		
 		/**

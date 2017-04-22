@@ -54,9 +54,21 @@ class CustomFieldItemAdminController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    /* Activate album-specific settings: */
+	    
+
+
+/*  Activate album-specific settings:  */
+
+
+
 	    if ($adminMode == 2) {
-		/* Copy in global settings */
+		
+
+
+/*  Copy in global settings  */
+
+
+
 		list ($ret, $globalParam) = CustomFieldHelper::loadParameters();
 		if ($ret) {
 		    return array($ret, null);
@@ -65,7 +77,13 @@ class CustomFieldItemAdminController extends GalleryController {
 		if ($ret) {
 		    return array($ret, null);
 		}
-		/* Mark setId on existing field values */
+		
+
+
+/*  Mark setId on existing field values  */
+
+
+
 		list ($ret, $searchResults) = $gallery->search(
 		    'SELECT [ChildEntity::id] FROM [ChildEntity] WHERE [ChildEntity::parentId]=?',
 		    array($itemId));
@@ -85,14 +103,32 @@ class CustomFieldItemAdminController extends GalleryController {
 		}
 	    }
 
-	    /* Revert to global settings: */
+	    
+
+
+/*  Revert to global settings:  */
+
+
+
 	    if ($adminMode == -2) {
-		/* Remove album-specific settings */
+		
+
+
+/*  Remove album-specific settings  */
+
+
+
 		foreach (array('common', 'album', 'photo') as $set) {
 		    $ret = GalleryCoreApi::removePluginParameter(
 					   'module', 'customfield', $set, $itemId);
 		}
-		/* Clear setId for existing field values that can be retained */
+		
+
+
+/*  Clear setId for existing field values that can be retained  */
+
+
+
 		list ($ret, $globalParam) = CustomFieldHelper::loadParameters();
 		if ($ret) {
 		    return array($ret, null);
@@ -115,7 +151,13 @@ class CustomFieldItemAdminController extends GalleryController {
 			return array($ret, null);
 		    }
 		}
-		/* Remove remaining field values */
+		
+
+
+/*  Remove remaining field values  */
+
+
+
 		$ret = GalleryCoreApi::removeMapEntry(
 		    'CustomFieldMap', array('setId' => $itemId));
 		if ($ret) {
@@ -123,7 +165,13 @@ class CustomFieldItemAdminController extends GalleryController {
 		}
 	    }
 
-	    /* Set admin mode in session */
+	    
+
+
+/*  Set admin mode in session  */
+
+
+
 	    if ($adminMode > 0) {
 		$session->put(CUSTOM_FIELD_SESSION_KEY, $itemId);
 	    } else {

@@ -42,10 +42,22 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	/* create custom platform to return dummy filesize, imagesize, etc. */
+	
+
+
+/*  create custom platform to return dummy filesize, imagesize, etc.  */
+
+
+
 	$gallery->setPlatform(new SizeLimitHelperTestPlatform($gallery->getPlatform()));
 
-	/* Register dummy toolkit and operations */
+	
+
+
+/*  Register dummy toolkit and operations  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'SizeLimitHelperTestToolkit', 'SizeLimitHelperTestToolkit',
 	    'modules/sizelimit/test/phpunit/SizeLimitHelperTest.class', 'sizelimitTest', null);
@@ -54,7 +66,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	}
 	$this->_markToolkitForCleanup('SizeLimitHelperTestToolkit');
 
-	/* applying size limits uses 'compress' */
+	
+
+
+/*  applying size limits uses 'compress'  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitOperation('SizeLimitHelperTestToolkit',
 	    array('image/known'), 'test',
 	    array(array('type' => 'int', 'description' => 'size')), 'desc');
@@ -62,7 +80,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* we will return dimensions to whoever asks */
+	
+
+
+/*  we will return dimensions to whoever asks  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitProperty('SizeLimitHelperTestToolkit',
 	    array('image/known'), 'dimensions', 'int,int', 'desc');
 	if ($ret) {
@@ -75,7 +99,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	}
 	$this->_markForCleanup($this->_album);
 
-	/* Sample photo image file that can be resized/compressed */
+	
+
+
+/*  Sample photo image file that can be resized/compressed  */
+
+
+
 	list ($ret, $this->_item) = $this->_createRandomDataItem(
 	    $this->_album->getId(), 'image/known',
 	    array('summary' => 'original summary', 'description' => 'original description'));
@@ -83,7 +113,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Not all file types can be resized/compressed. Here is an example of such item */
+	
+
+
+/*  Not all file types can be resized/compressed. Here is an example of such item  */
+
+
+
 	list ($ret, $this->_itemUnknown) = $this->_createRandomDataItem($this->_album->getId(),
 	    'image/unknown',
 	    array('summary' => 'plagiarized summary', 'description' => 'plagiarized description'));
@@ -92,7 +128,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	}
     }
 
-    /* change dimensions, keep original */
+    
+
+
+/*  change dimensions, keep original  */
+
+
+
     function testKeepOriginal() {
 	foreach (array('width' => 768, 'height' => 1024)
 	    as $key => $value) {
@@ -107,7 +149,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	/* Check to see if we have a preferred source */
+	
+
+
+/*  Check to see if we have a preferred source  */
+
+
+
 	list ($ret, $resized) = GalleryCoreApi::fetchPreferredSource($this->_item);
 	if ($ret) {
 	    return $ret;
@@ -131,7 +179,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	$this->assert($ret->getErrorCode() & ERROR_UNSUPPORTED_FILE_TYPE);
     }
 
-    /* change size, replace original */
+    
+
+
+/*  change size, replace original  */
+
+
+
     function testNoOriginal() {
 	$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
 	    'size', 1000, $this->_album->getId());
@@ -149,7 +203,13 @@ class SizeLimitHelperTest extends GalleryTestCase {
 	$this->assertEquals(1000, $this->_item->getSize(), 'Size');
     }
 
-    /* try to change size and dimensions for unsupported file format */
+    
+
+
+/*  try to change size and dimensions for unsupported file format  */
+
+
+
     function testUnknownFormat() {
 	foreach (array('width' => 768, 'height' => 1024, 'size' => 1000)
 	    as $key => $value) {
@@ -199,7 +259,13 @@ class SizeLimitHelperTestPlatform extends GalleryPlatform {
 	$compressPerformed = GalleryUtilities::getRequestVariables('compressPerformed');
 	$resizePerformed = GalleryUtilities::getRequestVariables('resizePerformed');
 
-	/* if we created a derivative make-believe that the file exists */
+	
+
+
+/*  if we created a derivative make-believe that the file exists  */
+
+
+
 	if ($resizePerformed || $compressPerformed) {
 	    return true;
 	} else {
@@ -208,7 +274,13 @@ class SizeLimitHelperTestPlatform extends GalleryPlatform {
     }
 
     function unlink($filename) {
-	/* if it is a derivative - we didn't really create it */
+	
+
+
+/*  if it is a derivative - we didn't really create it  */
+
+
+
 	if ($this->_savedPlatform->file_exists($filename)) {
 	    return $this->_savedPlatform->unlink($filename);
 	} else {
@@ -226,7 +298,13 @@ class SizeLimitHelperTestToolkit extends GalleryToolkit {
      */
     function performOperation($mimeType, $operationName, $sourceFilename,
 		  $destFilename, $parameters, $context=array()) {
-	/* Here we are pretending that conversion happened by setting the flag */
+	
+
+
+/*  Here we are pretending that conversion happened by setting the flag  */
+
+
+
 	switch ($operationName) {
 	case 'test':
 	    GalleryUtilities::putRequestVariable('compressPerformed', true);
@@ -248,7 +326,13 @@ class SizeLimitHelperTestToolkit extends GalleryToolkit {
     function getProperty($mimeType, $propertyName, $file) {
 	global $gallery;
 
-	/* Our 'mime type' has to support dimensions */
+	
+
+
+/*  Our 'mime type' has to support dimensions  */
+
+
+
 	switch ($propertyName) {
 	case 'dimensions':
 	    $platform =& $gallery->getPlatform();

@@ -44,7 +44,13 @@ $smarty->debugging = true;
 $smarty->use_sub_dirs = false;
 $smarty->template_dir = dirname(__FILE__);
 
-/* Grab all G2 XML from entity class files */
+
+
+
+/*  Grab all G2 XML from entity class files  */
+
+
+
 
 $xml = "<!DOCTYPE classes SYSTEM \"" .
     "../../../../lib/tools/dtd/GalleryClass2.1.dtd\">\n";
@@ -71,7 +77,13 @@ foreach ($files as $file) {
 }
 
 if (empty($classXml)) {
-    /* Nothing to do */
+    
+
+
+/*  Nothing to do  */
+
+
+
     cleanExit(0);
 }
 
@@ -181,12 +193,24 @@ $fd = fopen('Entities.inc', 'w');
 fwrite($fd, $new);
 fclose($fd);
 
-/* Done */
+
+
+
+/*  Done  */
+
+
+
 cleanExit(0);
 
 function cleanExit($status = 0)
 {
-    /* Clean up the cheap and easy way */
+    
+
+
+/*  Clean up the cheap and easy way  */
+
+
+
     global $tmpdir;
     if (file_exists($tmpdir)) {
         system("rm -rf $tmpdir");
@@ -210,7 +234,13 @@ function getXml($filename)
                 if (preg_match('{<class-name>(.*)</class-name>}', $line, $matches)) {
                     $schemaName = $matches[1];
                     $schemaName = preg_replace('/^Gallery/', '', $schemaName);
-                    /* Shorten some table names to fit Oracle's 30 char name limit.. */
+                    
+
+
+/*  Shorten some table names to fit Oracle's 30 char name limit..  */
+
+
+
                     $schemaName = preg_replace('/Preferences/', 'Prefs', $schemaName);
                     $schemaName = preg_replace('/Toolkit/', 'Tk', $schemaName);
                     $schemaName = preg_replace('/TkOperation/', 'TkOperatn', $schemaName);

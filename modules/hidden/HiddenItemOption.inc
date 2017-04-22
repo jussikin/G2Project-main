@@ -53,7 +53,13 @@ class HiddenItemOption extends ItemEditOption {
 	}
 
 	if (false) {
-	    /* Specific translations: */ _('Hide Album'); _('Hide Photo'); _('Hide Movie');
+	    
+
+
+/*  Specific translations:  */
+
+
+ _('Hide Album'); _('Hide Photo'); _('Hide Movie');
 	}
 	$itemTypeNames = array_merge($item->itemTypeName(), $item->itemTypeName(false));
 	$form['HiddenItemOption']['heading'] = $module->_translate(
@@ -93,7 +99,13 @@ class HiddenItemOption extends ItemEditOption {
      * @see ItemEditOption::requiresProgressBar
      */
     function requiresProgressBar($form) {
-	/* Progress bar if changing hidden status for an album */
+	
+
+
+/*  Progress bar if changing hidden status for an album  */
+
+
+
 	return isset($form['HiddenItemOption']['progressBar'])
 	    && ($form['HiddenItemOption']['progressBar'] == 'hide')
 	       == !empty($form['HiddenItemOption']['setHidden']);

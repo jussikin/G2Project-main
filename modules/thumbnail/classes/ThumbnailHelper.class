@@ -180,7 +180,13 @@ class ThumbnailHelper {
 	    $mimeTypes = array($mimeTypes);
 	}
 
-	/* Returns image/jpeg, but register as null mimeType to avoid operation CRC mismatch */
+	
+
+
+/*  Returns image/jpeg, but register as null mimeType to avoid operation CRC mismatch  */
+
+
+
 	$ret = GalleryCoreApi::registerToolkitOperation(
 		'Thumbnail', $mimeTypes, 'thumbnail',
 		array(array('type' => 'int', 'description' =>
@@ -213,7 +219,13 @@ class ThumbnailHelper {
      */
     static function addItem($mimeType, $parentId,
 		     $filename, $tmpfile, $fileMimeType, $knownSize=array(), $item=null) {
-	/* Get the mime type. */
+	
+
+
+/*  Get the mime type.  */
+
+
+
 	list ($ret, $fileMimeType) = GalleryCoreApi::getMimeType($filename, $fileMimeType);
 	if ($ret) {
 	    return array($ret, null);
@@ -346,7 +358,13 @@ class ThumbnailHelper {
 	    if ($ret) {
 		return $ret;
 	    }
-	    /* Make sure operations contains only thumbnail and composite */
+	    
+
+
+/*  Make sure operations contains only thumbnail and composite  */
+
+
+
 	    $derivative->setDerivativeOperations(
 		rtrim(preg_replace('/(^|;)((?!thumbnail\||composite\|).*?(;|$))+/', '$1',
 				   $derivative->getDerivativeOperations()), ';'));

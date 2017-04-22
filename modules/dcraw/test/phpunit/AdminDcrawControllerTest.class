@@ -198,7 +198,13 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase {
 	$this->_platform->setReply('realpath',
 	    array(dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'core' .
 			DIRECTORY_SEPARATOR . 'classes/../../..'),
-	    realpath(dirname(dirname(dirname(dirname(dirname(__FILE__)))))), true /*optional*/);
+	    realpath(dirname(dirname(dirname(dirname(dirname(__FILE__)))))), true 
+
+
+/* optional */
+
+
+);
 
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array(

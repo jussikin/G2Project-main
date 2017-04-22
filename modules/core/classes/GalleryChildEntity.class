@@ -71,7 +71,13 @@ class GalleryChildEntity extends GalleryEntity {
 	    return $ret;
 	}
 
-	/* Set the parent id */
+	
+
+
+/*  Set the parent id  */
+
+
+
 	$this->setParentId($parentId);
 
 	return null;
@@ -88,7 +94,13 @@ class GalleryChildEntity extends GalleryEntity {
 	    return $ret;
 	}
 
-	/* Set the parent id */
+	
+
+
+/*  Set the parent id  */
+
+
+
 	$this->setParentId($parentId);
 
 	return null;
@@ -107,7 +119,13 @@ class GalleryChildEntity extends GalleryEntity {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	/* Set the new parent id */
+	
+
+
+/*  Set the new parent id  */
+
+
+
 	$this->setParentId($newParentId);
 
 	return null;
@@ -124,7 +142,13 @@ class GalleryChildEntity extends GalleryEntity {
 	    return $ret;
 	}
 
-	/* No parent for root */
+	
+
+
+/*  No parent for root  */
+
+
+
 	$this->setParentId(0);
 
 	return null;

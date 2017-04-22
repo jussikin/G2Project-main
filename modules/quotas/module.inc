@@ -59,7 +59,13 @@ class QuotasModule extends GalleryModule {
 	    }
 	}
 	if (!empty($currentVersion) && version_compare($currentVersion, '1.0.7', '<')) {
-	    /* Cleanup any factory data from way back in v0.9.3 that had wrong module id */
+	    
+
+
+/*  Cleanup any factory data from way back in v0.9.3 that had wrong module id  */
+
+
+
 	    $ret = GalleryCoreApi::unregisterFactoryImplementationsByModuleId('diskquota');
 	    if ($ret) {
 		return $ret;
@@ -115,14 +121,26 @@ class QuotasModule extends GalleryModule {
 		GalleryCoreApi::requireOnce(
 		    'modules/quotas/classes/GalleryQuotasHelper.class');
 
-		/* If its a group, find if a group quota exists, if so delete it */
+		
+
+
+/*  If its a group, find if a group quota exists, if so delete it  */
+
+
+
 		if (GalleryUtilities::isA($entity, 'GalleryGroup')) {
 		    list ($ret, $quotaExists, $groupQuota) =
 			GalleryQuotasHelper::fetchGroupQuota($entity->getId());
 		    if ($ret) {
 			return array($ret, null);
 		    }
-		/* If its a user, find if a user quota exists, if so delete it */
+		
+
+
+/*  If its a user, find if a user quota exists, if so delete it  */
+
+
+
 		} else if (GalleryUtilities::isA($entity, 'GalleryUser')) {
 		    list ($ret, $quotaExists, $userQuota) =
 			GalleryQuotasHelper::fetchUserQuota($entity->getId());

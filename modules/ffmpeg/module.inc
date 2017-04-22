@@ -90,7 +90,13 @@ class FfmpegModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	/* Register our graphics class with the factory */
+	
+
+
+/*  Register our graphics class with the factory  */
+
+
+
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'FfmpegToolkit', 'Ffmpeg',
 	    'modules/ffmpeg/classes/FfmpegToolkit.class', 'ffmpeg', null);
@@ -114,7 +120,13 @@ class FfmpegModule extends GalleryModule {
     function autoConfigure() {
 	global $gallery;
 
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -127,7 +139,13 @@ class FfmpegModule extends GalleryModule {
 	    return array(null, true);
 	}
 
-	/* Try a bunch of likely seeming paths to see if any of them work. */
+	
+
+
+/*  Try a bunch of likely seeming paths to see if any of them work.  */
+
+
+
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
@@ -170,27 +188,57 @@ class FfmpegModule extends GalleryModule {
 	    return array(null, false);
 	}
 
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/ffmpeg/classes/FfmpegToolkitHelper.class');
 
-	/* Now try each path in turn to see which ones work */
+	
+
+
+/*  Now try each path in turn to see which ones work  */
+
+
+
 	foreach ($paths as $path) {
 	    list ($ret, $testResults) = FfmpegToolkitHelper::testBinary($path);
 	    if ($ret) {
-		/* Something went wrong with this path -- try the next path */
+		
+
+
+/*  Something went wrong with this path -- try the next path  */
+
+
+
 		continue;
 	    }
 
 	    $failCount = 0;
 	    foreach ($testResults as $testResult) {
-		/* At least one test should work, else this path is not a valid one */
+		
+
+
+/*  At least one test should work, else this path is not a valid one  */
+
+
+
 		if (!$testResult['success']) {
 		    $failCount++;
 		}
 	    }
 
 	    if ($failCount == 0) {
-		/* We have a winner */
+		
+
+
+/*  We have a winner  */
+
+
+
 		$ret = GalleryCoreApi::setPluginParameter('module', 'ffmpeg', 'path', $path);
 		if ($ret) {
 		    return array($ret, false);
@@ -207,10 +255,22 @@ class FfmpegModule extends GalleryModule {
      * @see GalleryModule::activate
      */
     function activate($postActivationEvent=true) {
-	/* Load any classes we require */
+	
+
+
+/*  Load any classes we require  */
+
+
+
 	GalleryCoreApi::requireOnce('modules/ffmpeg/classes/FfmpegToolkitHelper.class');
 
-	/* Find out what operations and properties we have available to us */
+	
+
+
+/*  Find out what operations and properties we have available to us  */
+
+
+
 	list ($ret, $results) =
 	    FfmpegToolkitHelper::getOperationsAndProperties();
 	if ($ret) {
@@ -265,11 +325,23 @@ class FfmpegModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	/* This module requires exec() */
+	
+
+
+/*  This module requires exec()  */
+
+
+
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}
-	/* This module requires all fields to be filled out before it can be activated. */
+	
+
+
+/*  This module requires all fields to be filled out before it can be activated.  */
+
+
+
 	foreach (array('path') as $key) {
 	    list ($ret, $value) = $this->getParameter($key);
 	    if ($ret) {

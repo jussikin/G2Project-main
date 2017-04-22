@@ -39,7 +39,13 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Create an album to hold all of the test items */
+	
+
+
+/*  Create an album to hold all of the test items  */
+
+
+
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -54,17 +60,35 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
     function testDeleteItem() {
 	global $gallery;
 
-	/* Create a random item */
+	
+
+
+/*  Create a random item  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Use valid inputs - we are deleting a photo in an album view */
+	
+
+
+/*  Use valid inputs - we are deleting a photo in an album view  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $item->getId());
 	GalleryUtilities::putRequestVariable('pageId', $this->_album->getId());
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ShowItem',
 						      'itemId' => $this->_album->getId()),
@@ -72,7 +96,13 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure the item is actually gone */
+	
+
+
+/*  Make sure the item is actually gone  */
+
+
+
 	$ret = $this->_verifyMissing($item->getId());
 	if ($ret) {
 	    return $ret;
@@ -83,17 +113,35 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
      * Create a random item and verify that we can delete it and move to the parent page
      */
     function testDeletePageItem() {
-	/* Create a random item */
+	
+
+
+/*  Create a random item  */
+
+
+
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Use valid inputs - we are deleting an item that owns the page */
+	
+
+
+/*  Use valid inputs - we are deleting an item that owns the page  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $item->getId());
 	GalleryUtilities::putRequestVariable('pageId', $item->getId());
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ShowItem',
 						      'itemId' => $this->_album->getId()),
@@ -101,7 +149,13 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure the item is actually gone */
+	
+
+
+/*  Make sure the item is actually gone  */
+
+
+
 	$ret = $this->_verifyMissing($item->getId());
 	if ($ret) {
 	    return $ret;
@@ -114,17 +168,35 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
     function testDeleteAlbum() {
 	global $gallery;
 
-	/* Create a random sub album */
+	
+
+
+/*  Create a random sub album  */
+
+
+
 	list ($ret, $album) = $this->_createRandomAlbum($this->_album->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Use valid inputs - we are deleting an album that owns the page */
+	
+
+
+/*  Use valid inputs - we are deleting an album that owns the page  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $album->getId());
 	GalleryUtilities::putRequestVariable('pageId', $album->getId());
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ShowItem',
 						      'itemId' => $this->_album->getId()),
@@ -132,7 +204,13 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Make sure the album is actually gone */
+	
+
+
+/*  Make sure the album is actually gone  */
+
+
+
 	$ret = $this->_verifyMissing($album->getId());
 	if ($ret) {
 	    return $ret;
@@ -162,10 +240,22 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('itemId', $item->getId());
 
-	/* Perform the request and verify that we failed */
+	
+
+
+/*  Perform the request and verify that we failed  */
+
+
+
 	$results = $this->handleRequest(ERROR_PERMISSION_DENIED | GALLERY_ERROR);
 
-	/* make sure it's still there */
+	
+
+
+/*  make sure it's still there  */
+
+
+
 	list ($ret, $item) = $item->refresh();
 	if ($ret) {
 	    return $ret;
@@ -178,10 +268,22 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
     function testDeleteRootAlbum() {
 	global $gallery;
 
-	/* Use invalid inputs */
+	
+
+
+/*  Use invalid inputs  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', $this->_getRootId());
 
-	/* Perform the request and verify that we failed */
+	
+
+
+/*  Perform the request and verify that we failed  */
+
+
+
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER | GALLERY_ERROR);
     }
 
@@ -191,10 +293,22 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
      * verify that it's a valid item to prevent information leakage)
      */
     function testDeleteBogusItem() {
-	/* Use invalid inputs */
+	
+
+
+/*  Use invalid inputs  */
+
+
+
 	GalleryUtilities::putRequestVariable('itemId', 1234567890);
 
-	/* Perform the request and verify that we failed */
+	
+
+
+/*  Perform the request and verify that we failed  */
+
+
+
 	$results = $this->handleRequest(ERROR_MISSING_OBJECT);
     }
 }

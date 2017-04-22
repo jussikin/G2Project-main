@@ -77,7 +77,13 @@ class CustomFieldItemEdit extends ItemEditPlugin {
 		return array($ret, null, null, null);
 	    }
 	    if ($markup == 'html') {
-		/* Strip malicious content if html markup allowed */
+		
+
+
+/*  Strip malicious content if html markup allowed  */
+
+
+
 		foreach ($form['fields'] as $key => $value) {
 		    $form['fields'][$key] = GalleryUtilities::htmlSafe($value, true);
 		}

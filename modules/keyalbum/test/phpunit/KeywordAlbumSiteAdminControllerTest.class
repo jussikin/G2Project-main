@@ -67,7 +67,13 @@ class KeywordAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
     function testKeywordAlbumSiteAdminControllerReset() {
 	GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' =>
 		array('view' => 'core.SiteAdmin', 'subView' => 'keyalbum.KeywordAlbumSiteAdmin'),
@@ -93,7 +99,13 @@ class KeywordAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	/* Perform the request and verify that we succeeded */
+	
+
+
+/*  Perform the request and verify that we succeeded  */
+
+
+
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' =>
 		array('view' => 'core.SiteAdmin', 'subView' => 'keyalbum.KeywordAlbumSiteAdmin'),
@@ -102,7 +114,13 @@ class KeywordAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	/* Verify the information in the DB */
+	
+
+
+/*  Verify the information in the DB  */
+
+
+
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'keyalbum');
 	if ($ret) {
 	    return $ret;

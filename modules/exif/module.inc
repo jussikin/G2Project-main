@@ -41,7 +41,13 @@ class ExifModule extends GalleryModule {
 	$this->setId('exif');
 	$this->setName($gallery->i18n('EXIF/IPTC'));
 	$this->setDescription($gallery->i18n('Extract EXIF/IPTC data from JPEG photos'));
-	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
+	$this->setVersion('2.0.0'); 
+
+
+/*  Update upgrade() function below too  */
+
+
+
 	$this->_templateVersion = 1;
 	$this->setGroup('data', $gallery->i18n('Extra Data'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -56,7 +62,13 @@ class ExifModule extends GalleryModule {
 	global $gallery;
 
 	if (!isset($currentVersion)) {
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');
 	    $ret = ExifHelper::setDefaultProperties(EXIF_SUMMARY);
 	    if ($ret) {
@@ -68,7 +80,13 @@ class ExifModule extends GalleryModule {
 		return $ret;
 	    }
 
-	    /* Import IPTC keywords into item keywords, see comment below for reason. */
+	    
+
+
+/*  Import IPTC keywords into item keywords, see comment below for reason.  */
+
+
+
 	    $ret = $this->setParameter('addOption', IPTC_ITEM_KEYWORDS);
 	    if ($ret) {
 		return $ret;
@@ -125,29 +143,65 @@ class ExifModule extends GalleryModule {
 	    case '0.9.8':
 	    case '1.0.0':
 	    case '1.0.1':
-		/* Added EXIF GPS tags */
+		
+
+
+/*  Added EXIF GPS tags  */
+
+
+
 	    case '1.0.2':
-		/* Upgrade to Exifixer 1.5 and add support for image/x-dcraw */
+		
+
+
+/*  Upgrade to Exifixer 1.5 and add support for image/x-dcraw  */
+
+
+
 	    case '1.0.3':
 	    case '1.0.4':
 	    case '1.0.5':
 	    case '1.0.6':
-		/* Rotate images based on exifdata */
+		
+
+
+/*  Rotate images based on exifdata  */
+
+
+
 	    case '1.0.7':
 	    case '1.0.8':
 	    case '1.0.9':
 	    case '1.1.0':
 	    case '1.1.0.1':
 	    case '1.2.0':
-		/* .mo file migration */
+		
+
+
+/*  .mo file migration  */
+
+
+
 	    case '1.2.1':
 	    case '1.2.2':
-		/* Combined YUI libraries into a single file */ 
+		
+
+
+/*  Combined YUI libraries into a single file  */
+
+
+ 
 	    case '1.2.3':
 	    case '1.2.4':
 	    case '1.2.5':
 	    case '1.2.6':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	    case 'end of upgrade path':
 		/*

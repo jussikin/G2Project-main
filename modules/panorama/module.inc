@@ -20,12 +20,12 @@
 
 /**
  * View wide images in a java applet viewer.
- * Metamorphose applet Copyright (C) 2000 Rüdiger Appel
+ * Metamorphose applet Copyright (C) 2000 Rï¿½diger Appel
  * @see http://www.3quarks.com/Applets/Metamorphose/
  *
  * @package Panorama
  * @author Alan Harder <alan.harder@sun.com>
- * @author Java applet: Rüdiger Appel
+ * @author Java applet: Rï¿½diger Appel
  * @version $Revision: 18172 $
  */
 class PanoramaModule extends GalleryModule {
@@ -52,7 +52,13 @@ class PanoramaModule extends GalleryModule {
      */
     function upgrade($currentVersion, $x1=null) {
 	if (!isset($currentVersion)) {
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    foreach (array('itemType' => 1,
 			   'itemLink' => 1,
 			   'width' => 800) as $key => $value) {
@@ -134,7 +140,13 @@ class PanoramaModule extends GalleryModule {
 		$image = $images[$itemId];
 		$mimeType = $item->getMimeType();
 		$width = $image->getWidth();
-		/* Applet supports jpeg and gif images */
+		
+
+
+/*  Applet supports jpeg and gif images  */
+
+
+
 		if (GalleryUtilities::isA($item, 'GalleryPhotoItem') &&
 		    $item->getRenderer() != 'PanoramaRenderer' &&
 		    preg_match(':^image/(gif|p?jpeg)$:', $mimeType) &&

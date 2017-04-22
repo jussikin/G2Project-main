@@ -55,7 +55,13 @@ class GallerySetupUtilities {
      * @static
      */
     static function regenerateSession() {
-	/* 1. Generate a new session id */
+	
+
+
+/*  1. Generate a new session id  */
+
+
+
 	$newSessionId = md5(uniqid(substr(rand() . serialize($_REQUEST), 0, 114)));
 	$sessionData = array();
 	if (!empty($_SESSION) && is_array($_SESSION)) {
@@ -63,13 +69,31 @@ class GallerySetupUtilities {
 		$sessionData[$key] = $value;
 	    }
 	}
-	/* 2. Delete the old session */
+	
+
+
+/*  2. Delete the old session  */
+
+
+
 	session_unset();
 	session_destroy();
-	/* Create the new session with the old data, send cookie */
+	
+
+
+/*  Create the new session with the old data, send cookie  */
+
+
+
 	session_id($newSessionId);
 	$sessionName = session_name();
-	/* Make sure we don't use invalid data at a later point */
+	
+
+
+/*  Make sure we don't use invalid data at a later point  */
+
+
+
 	foreach (array($_GET, $_POST, $_REQUEST, $_COOKIE) as $superGlobal) {
 	    unset($superGlobal[$sessionName]);
 	}
@@ -87,7 +111,13 @@ class GallerySetupUtilities {
     static function areCookiesSupported() {
 	static $areCookiesSupported;
 
-	/* Remember the state since we might unset $_COOKIE */
+	
+
+
+/*  Remember the state since we might unset $_COOKIE  */
+
+
+
 	if (!isset($areCookiesSupported)) {
 	    $areCookiesSupported = !empty($_COOKIE[session_name()]);
 	}
@@ -102,7 +132,13 @@ class GallerySetupUtilities {
      * @static
      */
     static function getLoginAttempts() {
-	/* Init if needed (like from lib/support; upgrader already init'ed) */
+	
+
+
+/*  Init if needed (like from lib/support; upgrader already init'ed)  */
+
+
+
 	global $gallery;
 	if (!isset($gallery)) {
 	    /*
@@ -140,7 +176,13 @@ class GallerySetupUtilities {
      * @static
      */
     static function setLoginAttempts($attempts) {
-	/* Init if needed (like from lib/support; upgrader already init'ed) */
+	
+
+
+/*  Init if needed (like from lib/support; upgrader already init'ed)  */
+
+
+
 	global $gallery;
 	if (!isset($gallery)) {
 	    /*
@@ -240,7 +282,13 @@ class GallerySetupUtilities {
     static function getGalleryConfig() {
 	$gallery = new GallerySetupUtilitiesStub();
 
-	/* Load config.php */
+	
+
+
+/*  Load config.php  */
+
+
+
 	$dir = GallerySetupUtilities::getConfigDir();
 	if (file_exists($dir . '/config.php')) {
 	    include($dir . '/config.php');
@@ -309,7 +357,13 @@ class GallerySetupUtilities {
      * @static
      */
     static function startSession() {
-	/* Set our own session name */
+	
+
+
+/*  Set our own session name  */
+
+
+
 	if (@ini_get('session.auto_start')) {
 	    session_unset();
 	    session_destroy();
@@ -322,13 +376,31 @@ class GallerySetupUtilities {
 	    $sessionId = !empty($_COOKIE[$sessionName]) ? $_COOKIE[$sessionName] : '';
 	}
 
-	/* Remember whether cookies are supported */
+	
+
+
+/*  Remember whether cookies are supported  */
+
+
+
 	GallerySetupUtilities::areCookiesSupported();
 
-	/* Sanitize the sessionId */
+	
+
+
+/*  Sanitize the sessionId  */
+
+
+
 	if (!empty($sessionId)) {
 		$sessionId = preg_replace('/[^a-zA-Z0-9]/', '', $sessionId);
-	    /* Make sure we don't use invalid data at a later point */
+	    
+
+
+/*  Make sure we don't use invalid data at a later point  */
+
+
+
 	    foreach (array($_GET, $_POST, $_REQUEST, $_COOKIE) as $superGlobal) {
 		unset($superGlobal[$sessionName]);
 	    }
@@ -375,7 +447,13 @@ class GallerySetupUtilities {
 	    $sessionId = null;
 	}
 	if (empty($sessionId)) {
-	    /* Add session details for brand new or just-regenerated session */
+	    
+
+
+/*  Add session details for brand new or just-regenerated session  */
+
+
+
 	    $_SESSION['_path'] = $configDir;
 	    $_SESSION['_remoteId'] = $remoteId;
 	    $_SESSION['_startTime'] = time();
@@ -423,7 +501,13 @@ class GallerySetupUtilities {
 	    }
 	}
 
-	/* Note: we don't have localization for lib support yet, so this is not internationalized */
+	
+
+
+/*  Note: we don't have localization for lib support yet, so this is not internationalized  */
+
+
+
 	if (!empty($toList)) {
 	    $ret = GalleryCoreApi::sendTemplatedEmail(
 		    'lib/support/templates/FailedPasswordEmail.tpl',

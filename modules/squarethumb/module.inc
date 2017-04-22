@@ -28,7 +28,13 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class SquareThumbModule extends GalleryModule /* and GalleryEventListener */ {
+class SquareThumbModule extends GalleryModule 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     function __construct() {
 	$this->SquareThumbModule();
@@ -115,7 +121,13 @@ class SquareThumbModule extends GalleryModule /* and GalleryEventListener */ {
 	    return array($ret, null);
 	}
 
-	/* Register toolkit operation using high priority */
+	
+
+
+/*  Register toolkit operation using high priority  */
+
+
+
 	if (!empty($mimeTypes)) {
 	    $ret = GalleryCoreApi::registerToolkitOperation('SquareThumb', $mimeTypes, 'thumbnail',
 		array(array('type' => 'int', 'description' => $gallery->i18n('target size')),
@@ -125,14 +137,26 @@ class SquareThumbModule extends GalleryModule /* and GalleryEventListener */ {
 		return array($ret, null);
 	    }
 	} else {
-	    /* Can't activate unless there's a toolkit to leech off of */
+	    
+
+
+/*  Can't activate unless there's a toolkit to leech off of  */
+
+
+
 	    return array(null,
 			 array('view' => 'core.SiteAdmin',
 			       'subView' => 'squarethumb.CantActivate'));
 	}
 
 	if (!isset($toolkit)) {
-	    /* Make sure we're in crop mode, if toolkit support for fit mode gets deactivated */
+	    
+
+
+/*  Make sure we're in crop mode, if toolkit support for fit mode gets deactivated  */
+
+
+
 	    $ret = $this->setParameter('mode', 'crop');
 	    if ($ret) {
 		return array($ret, null);
@@ -214,7 +238,13 @@ class SquareThumbModule extends GalleryModule /* and GalleryEventListener */ {
 	    }
 
 	    if ($isActive) {
-		/* Reactivate may fail if toolkit support no longer found. */
+		
+
+
+/*  Reactivate may fail if toolkit support no longer found.  */
+
+
+
 		list ($ret, $redirect) = $this->reactivate();
 		if ($ret) {
 		    return array($ret, null);

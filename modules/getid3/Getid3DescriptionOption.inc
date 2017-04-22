@@ -53,7 +53,13 @@ class Getid3DescriptionOption extends ItemAddOption {
 	    return array($ret, null, null);
 	}
 
-	/* Copy the array because we will change it with do / while / array_splice */
+	
+
+
+/*  Copy the array because we will change it with do / while / array_splice  */
+
+
+
 	$itemsInBatches = $items;
 	/*
 	 * Batch size should be <= ulimit max open files, as long as we don't query this value,

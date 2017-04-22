@@ -44,22 +44,52 @@ class UserPreferencesController extends GalleryController {
 	$results = $status = $error = array();
 	if (isset($form['action']['cancel'])) {
 
-	    /* Redirect back to the previous view */
+	    
+
+
+/*  Redirect back to the previous view  */
+
+
+
 	    $results['return'] = true;
 
 	} else if (isset($form['action']['undo'])) {
 
-	    /* Redirect back to the same view to reset the form */
+	    
+
+
+/*  Redirect back to the same view to reset the form  */
+
+
+
 	    $redirect['view'] = 'core.UserAdmin';
 	    $redirect['subView'] = 'core.UserPreferences';
 
 	} else if (isset($form['action']['save'])) {
 
-	    /* Validate our data before we continue. */
+	    
 
-	    /* full name is optional */
 
-	    /* language is optional for everybody */
+/*  Validate our data before we continue.  */
+
+
+
+
+	    
+
+
+/*  full name is optional  */
+
+
+
+
+	    
+
+
+/*  language is optional for everybody  */
+
+
+
 
 	    list ($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
 	    if ($ret) {
@@ -76,13 +106,25 @@ class UserPreferencesController extends GalleryController {
 		return array($ret, null);
 	    }
 
-            /* Locked users are not allowed to edit themselves */
+            
+
+
+/*  Locked users are not allowed to edit themselves  */
+
+
+
             if ($user->isLocked()) {
                 GalleryCoreApi::releaseLocks($lockId);
                 return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
             }
 
-	    /* email is required for non-anonymous but optional for administrators */
+	    
+
+
+/*  email is required for non-anonymous but optional for administrators  */
+
+
+
 	    if (empty($form['email']) && !$isAdmin) {
 		$error[] = 'form[error][email][missing]';
 	    } else if (!empty($form['email'])) {
@@ -115,24 +157,48 @@ class UserPreferencesController extends GalleryController {
 		}
 	    }
 
-	    /* Set a default if for some reason it doesn't get sent from the browser */
+	    
+
+
+/*  Set a default if for some reason it doesn't get sent from the browser  */
+
+
+
 	    $form['email'] = empty($form['email']) ? '' : $form['email'];
 
-	    /* Require a password to change the email address */
+	    
+
+
+/*  Require a password to change the email address  */
+
+
+
 	    if ($form['email'] != $user->getEmail()) {
 		if (empty($form['currentPassword'])) {
 		    $error[] = 'form[error][currentPassword][missing]';
 		}
 	    }
 
-	    /* If all the right fields are in place then go ahead and modify the user. */
+	    
+
+
+/*  If all the right fields are in place then go ahead and modify the user.  */
+
+
+
 	    if (empty($error)) {
 		$user->setFullname(trim($form['fullName']));
 		$user->setEmail($form['email']);
 
 		if (isset($form['language'])) {
 		    $user->setLanguage($form['language']);
-		    /* update the effective language in the current session */
+		    
+
+
+/*  update the effective language in the current session  */
+
+
+
 		    $session =& $gallery->getSession();
 		    $session->put('core.language', $form['language']);
 		}
@@ -143,7 +209,13 @@ class UserPreferencesController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		/* Request a redirect to the confirmation screen */
+		
+
+
+/*  Request a redirect to the confirmation screen  */
+
+
+
 		$redirect['view'] = 'core.UserAdmin';
 		$redirect['subView'] = 'core.UserPreferences';
 		$status['saved'] = 1;
@@ -189,12 +261,24 @@ class UserPreferencesView extends GalleryView {
 
 	$user = $gallery->getActiveUser();
 
-        /* Locked users aren't allowed to edit themselves - display message */
+        
+
+
+/*  Locked users aren't allowed to edit themselves - display message  */
+
+
+
         if ($user->isLocked()) {
             return array(null, array('body' => 'modules/core/templates/UserLocked.tpl'));
         }
 
-	/* Load the form with user data the first time around. */
+	
+
+
+/*  Load the form with user data the first time around.  */
+
+
+
 	if ($form['formName'] != 'UserPreferences') {
 	    $form['userName'] = $user->getUserName();
 	    $form['fullName'] = $user->getFullName();
@@ -203,7 +287,13 @@ class UserPreferencesView extends GalleryView {
 	    $form['formName'] = 'UserPreferences';
 	}
 
-	/* Set up our language selection list */
+	
+
+
+/*  Set up our language selection list  */
+
+
+
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 	if ($ret) {
 	    return array($ret, null);

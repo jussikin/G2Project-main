@@ -37,7 +37,13 @@ class GalleryMimeTypeHelper_advanced {
      */
     static function initializeMimeTypes() {
 	$mimeTypes = array(
-	    /* This data was lifted from Apache's mime.types listing. */
+	    
+
+
+/*  This data was lifted from Apache's mime.types listing.  */
+
+
+
 	    'z' => 'application/x-compress',
 	    'ai' => 'application/postscript',
 	    'aif' => 'audio/x-aiff',
@@ -176,14 +182,32 @@ class GalleryMimeTypeHelper_advanced {
 	    'xyz' => 'chemical/x-xyz',
 	    'zip' => 'application/zip',
 
-	    /* And some of my own additions */
-	    /* From support.microsoft.com/support/kb/articles/Q284/0/94.ASP */
+	    
+
+
+/*  And some of my own additions  */
+
+
+
+	    
+
+
+/*  From support.microsoft.com/support/kb/articles/Q284/0/94.ASP  */
+
+
+
 	    'asf' => 'video/x-ms-asf',
 	    'asx' => 'video/x-ms-asx',
 	    'wmv' => 'video/x-ms-wmv',
 	    'wma' => 'audio/x-ms-wma',
 
-	    /* JPEG 2000: From RFC 3745: http://www.faqs.org/rfcs/rfc3745.html */
+	    
+
+
+/*  JPEG 2000: From RFC 3745: http://www.faqs.org/rfcs/rfc3745.html  */
+
+
+
 	    'jp2' => 'image/jp2',
 	    'jpg2' => 'image/jp2',
 	    'jpf' => 'image/jpx',
@@ -193,7 +217,13 @@ class GalleryMimeTypeHelper_advanced {
 	    'jpm' => 'image/jpm',
 	    'jpgm' => 'image/jpgm',
 
-	    /* Other */
+	    
+
+
+/*  Other  */
+
+
+
 	    'psd' => 'application/photoshop',
 	    'pcd' => 'image/x-photo-cd',
 	    'jpgcmyk' => 'image/jpeg-cmyk',
@@ -206,7 +236,13 @@ class GalleryMimeTypeHelper_advanced {
 	$viewableMimeTypes = array('image/jpeg' => 1, 'image/pjpeg' => 1,
 	    'image/gif' => 1, 'image/png' => 1);
 
-	/* Start with a clean slate */
+	
+
+
+/*  Start with a clean slate  */
+
+
+
 	$ret = GalleryCoreApi::removeAllMapEntries('GalleryMimeTypeMap');
 	if ($ret) {
 	    return $ret;
@@ -243,7 +279,13 @@ class GalleryMimeTypeHelper_advanced {
     static function addMimeType($extension, $mimeType, $viewable) {
 	global $gallery;
 
-	/* Check to see if the extension already exists. */
+	
+
+
+/*  Check to see if the extension already exists.  */
+
+
+
 	$query = '
 	SELECT
 	    [GalleryMimeTypeMap::extension]
@@ -262,7 +304,13 @@ class GalleryMimeTypeHelper_advanced {
 	    return GalleryCoreApi::error(ERROR_COLLISION);
 	}
 
-	/* Insert the record */
+	
+
+
+/*  Insert the record  */
+
+
+
 	$ret = GalleryCoreApi::addMapEntry(
 	    'GalleryMimeTypeMap',
 	    array('extension' => $extension, 'mimeType' => $mimeType,

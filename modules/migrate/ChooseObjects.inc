@@ -41,7 +41,13 @@ class ChooseObjectsController extends GalleryController {
 
 	$status = $error = array();
 
-	/* Make sure the user selected *something* to migrate */
+	
+
+
+/*  Make sure the user selected *something* to migrate  */
+
+
+
 	if (isset($form['action']['import'])) {
 	    if (empty($form['migrateUser']) && empty($form['sourceAlbums'])) {
 		$error[] = 'form[error][nothingSelected]';
@@ -195,7 +201,13 @@ class ChooseObjectsView extends GalleryView {
 	}
 
 	if ($form['formName'] == 'ChooseObjects') {
-	    /* Init the checkboxes to not-checked */
+	    
+
+
+/*  Init the checkboxes to not-checked  */
+
+
+
 	    foreach ($newUsers as $uid => $username) {
 		if (!isset($form['migrateUser'][$uid])) {
 		    $form['migrateUser'][$uid] = null;
@@ -204,7 +216,13 @@ class ChooseObjectsView extends GalleryView {
 	} else {
 	    $form['formName'] = 'ChooseObjects';
 
-	    /* Init the checkboxes to not-checked */
+	    
+
+
+/*  Init the checkboxes to not-checked  */
+
+
+
 	    foreach ($newUsers as $uid => $username) {
 		$form['migrateUser'][$uid] = null;
 	    }
@@ -220,21 +238,39 @@ class ChooseObjectsView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	/* Get ids of all albums where we can add new album items */
+	
+
+
+/*  Get ids of all albums where we can add new album items  */
+
+
+
 	list ($ret, $albumIds) =
 	    GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Load all the album entities */
+	
+
+
+/*  Load all the album entities  */
+
+
+
 	list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 	$g2AlbumTree = GalleryUtilities::createAlbumTree($albums);
 
-	/* See if customfield module is available */
+	
+
+
+/*  See if customfield module is available  */
+
+
+
 	list ($ret, $customFieldInterface) =
 	    GalleryCoreApi::newFactoryInstance('CustomFieldInterface_1_0');
 	if ($ret) {

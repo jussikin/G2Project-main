@@ -103,9 +103,21 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView
         global $gallery;
         $pluginsPackaged = 0;
 
-    /* Set default filter if none is provided. */
+    
+
+
+/*  Set default filter if none is provided.  */
+
+
+
         $filter = GalleryUtilities::getRequestVariables('filter');
-        if (strlen($filter) < 3) { /* Is there a check to see if a regexp is valid? */
+        if (strlen($filter) < 3) { 
+
+
+/*  Is there a check to see if a regexp is valid?  */
+
+
+
             $filter = '/.*/';
         }
 

@@ -37,17 +37,41 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 	$platform =& $gallery->getPlatform();
 	$status = $error = array();
 	if (empty($form['name']['picasaZipPath'])) {
-	    /* No filename was entered */
+	    
+
+
+/*  No filename was entered  */
+
+
+
 	    $error[] = 'form[error][picasaZipPath][missing]';
 	} else if (isset($form['action']['addFromPicasa'])) {
 
-	    /* Upload any new files */
+	    
+
+
+/*  Upload any new files  */
+
+
+
 	    $newItem = null;
 
-	    /* Placeholder for later */
+	    
+
+
+/*  Placeholder for later  */
+
+
+
 	    if (empty($form['tmp_name']['picasaZipPath']) ||
 		    empty($form['size']['picasaZipPath'])) {
-		/* Something went wrong with the upload */
+		
+
+
+/*  Something went wrong with the upload  */
+
+
+
 		$error[] = 'form[error][picasaZipPath][uploaderror]';
 	    } else {
 		$file = array('name' => $form['name']['picasaZipPath'],
@@ -55,7 +79,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 		      'tmp_name' => $form['tmp_name']['picasaZipPath'],
 		      'size' => $form['size']['picasaZipPath']);
 
-		/* Get the mime type. */
+		
+
+
+/*  Get the mime type.  */
+
+
+
 		list ($ret, $mimeType) = GalleryCoreApi::getMimeType($file['name'], $file['type']);
 		if ($ret) {
 		    return array($ret, null, null);
@@ -66,7 +96,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 		    return array($ret, null, null);
 		}
 		if (!isset($toolkit)) {
-		    /* No Toolkit for that mimetype */
+		    
+
+
+/*  No Toolkit for that mimetype  */
+
+
+
 		    $error[] = 'form[error][picasaZipPath][notsupported]';
 		} else {
 		    $base = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'tmp_');
@@ -85,7 +121,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 		    $slash = $platform->getDirectorySeparator();
 		    $picasaXmlPath = trim($tmpDir) . $slash;
 		    if (!Picasa2DataParser::isValidPicasaXmlPath($picasaXmlPath)) {
-			/* The archive does not contain valid Picasa data */
+			
+
+
+/*  The archive does not contain valid Picasa data  */
+
+
+
 			@$platform->recursiveRmdir($tmpDir);
 			@$platform->unlink($base);
 			$error[] = 'form[error][picasaZipPath][invalid]';
@@ -197,26 +239,50 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 	    }
 	}
 
-	/* Make sure we have permission to edit the target item */
+	
+
+
+/*  Make sure we have permission to edit the target item  */
+
+
+
 	$ret = GalleryCoreApi::assertHasItemPermission($destinationAlbumId, 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Try to load targeted parent */
+	
+
+
+/*  Try to load targeted parent  */
+
+
+
 	list ($ret, $targetAlbumObject) =
 	    GalleryCoreApi::loadEntitiesById($destinationAlbumId, 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* Get a lock on said parent */
+	
+
+
+/*  Get a lock on said parent  */
+
+
+
 	list ($ret, $importLockIds[]) = GalleryCoreApi::acquireReadLock($destinationAlbumId);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	/* If everything is good so far, we create a new instance to be our new album */
+	
+
+
+/*  If everything is good so far, we create a new instance to be our new album  */
+
+
+
 	if (!empty($desiredname) && $platform->isLegalPathComponent($desiredname)) {
 	    list ($ret, $newAlbumInstance) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryAlbumItem');
@@ -227,7 +293,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 
-	    /* this is where the album is actually created */
+	    
+
+
+/*  this is where the album is actually created  */
+
+
+
 	    $ret = $newAlbumInstance->create($destinationAlbumId, $desiredname);
 	    if ($ret) {
 		return array($ret, null);
@@ -235,7 +307,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 
 	    $newAlbumInstanceId = $newAlbumInstance->getId();
 
-	    /* load up the album with metadata from the old album */
+	    
+
+
+/*  load up the album with metadata from the old album  */
+
+
+
 	    if (isset($picasaAlbum['albumName'])) {
 		$newAlbumInstance->setTitle(
 			PicasaImportHelper::convertHtml($markupType,
@@ -355,7 +433,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 	}
 
 	if ($form['formName'] != 'ItemAddFromPicasa') {
-	    /* First time around, load the form with item data */
+	    
+
+
+/*  First time around, load the form with item data  */
+
+
+
 	    $form['set'] = array('title' => 'filename', 'summary' => 1, 'description' => 1);
 	    $form['formName'] = 'ItemAddFromPicasa';
 	}
@@ -370,7 +454,13 @@ class ItemAddFromPicasa extends ItemAddPlugin {
 		      'uploadsPermitted' => $fileUploadsBool,
 		      'titleList' => $titleList));
 
-	/* Set the ItemAdmin form's encoding type specially since we're uploading binary files */
+	
+
+
+/*  Set the ItemAdmin form's encoding type specially since we're uploading binary files  */
+
+
+
 	if ($template->hasVariable('ItemAdmin')) {
 	    $ItemAdmin =& $template->getVariableByReference('ItemAdmin');
 	    $ItemAdmin['enctype'] = 'multipart/form-data';

@@ -67,7 +67,13 @@ class UserAlbumController extends GalleryController {
 	}
 
 	if (!isset($album) && $createMode == 'access') {
-	    /* If userId matches active user then create the user album */
+	    
+
+
+/*  If userId matches active user then create the user album  */
+
+
+
 	    if ($userId != $activeUserId) {
 		return
 		    array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);

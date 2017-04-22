@@ -33,7 +33,13 @@ class AlbumSelectCallbacks {
 	    $urlGenerator =& $gallery->getUrlGenerator();
 
 	    if (isset($callbackParams['albumTree']) && $callbackParams['albumTree']) {
-		/* Set unique name for javascript object */
+		
+
+
+/*  Set unique name for javascript object  */
+
+
+
 		$albumTreeName = 'albumTree' . $idCount++;
 	    }
 	    list ($ret, $params) =
@@ -42,7 +48,13 @@ class AlbumSelectCallbacks {
 		return $ret;
 	    }
 
-	    /* Try to load it from the cache */
+	    
+
+
+/*  Try to load it from the cache  */
+
+
+
 	    list ($ret, $locale) = $gallery->getActiveLocale();
 	    if ($ret) {
 		return $ret;
@@ -151,7 +163,13 @@ class AlbumSelectCallbacks {
 		    }
 		}
 
-		/* Need to double escape for javascript (double-quote delimiter, backslash, ..) */
+		
+
+
+/*  Need to double escape for javascript (double-quote delimiter, backslash, ..)  */
+
+
+
 		if (!function_exists('smarty_modifier_escape')) {
 		    GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');
 		}
@@ -166,7 +184,13 @@ class AlbumSelectCallbacks {
 			    array('view' => 'core.ShowItem', 'itemId' => $id),
 			    array('htmlEntities' => false, 'forceServerRelativeUrl' => true,
 			          'forceSessionId' => false));
-		    /* Find common prefix across all URLs */
+		    
+
+
+/*  Find common prefix across all URLs  */
+
+
+
 		    if (!isset($links['prefix'])) {
 			$links['prefix'] = $links[$id];
 			$prefixLength = strlen($links['prefix']);
@@ -194,7 +218,13 @@ class AlbumSelectCallbacks {
 	    $translator =& $gallery->getTranslator();
 	    $params['rtl'] = $translator->isRightToLeft() ? '_rtl' : '';
 
-	    /* Add a sessionId to the URLs if necessary */
+	    
+
+
+/*  Add a sessionId to the URLs if necessary  */
+
+
+
 	    $session =& $gallery->getSession();
 	    if (!$session->isUsingCookies()) {
 		foreach ($links as $id => $url) {

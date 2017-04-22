@@ -50,7 +50,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 		      $hideId=null, $hiddenAncestor=null, $passwordAncestor=null) {
 	global $gallery;
 
-	/* If item is already hidden, we're done */
+	
+
+
+/*  If item is already hidden, we're done  */
+
+
+
 	if ($item->hasOnLoadHandler('Hidden')) {
 	    return null;
 	}
@@ -79,7 +85,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Init/update progress bar if needed */
+	
+
+
+/*  Init/update progress bar if needed  */
+
+
+
 	static $progressBar;
 	if (!isset($progressBar)) {
 	    $progressBar = false;
@@ -108,7 +120,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 		    min($progressBar['count'] / $progressBar['total'], 1));
 	}
 
-	/* Remove public view permission */
+	
+
+
+/*  Remove public view permission  */
+
+
+
 	$ret = GalleryCoreApi::removeUserPermission(
 		$itemId, $coreParams['id.anonymousUser'], 'core.view');
 	if ($ret) {
@@ -120,7 +138,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    return $ret;
 	}
 
-	/* Remove session based permission for a hidden ancestor */
+	
+
+
+/*  Remove session based permission for a hidden ancestor  */
+
+
+
 	if (!isset($hiddenAncestor)) {
 	    list ($ret, $hiddenAncestor, $passwordAncestor) =
 		HiddenHelper::_checkAncestors($item, $passwordInterface);
@@ -141,13 +165,25 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Add session based permission */
+	
+
+
+/*  Add session based permission  */
+
+
+
 	$ret = GalleryCoreApi::addEntityPermission($itemId, $hideId, 'core.view');
 	if ($ret) {
 	    return $ret;
 	}
 
-	/* Set onLoadHandler */
+	
+
+
+/*  Set onLoadHandler  */
+
+
+
 	if ($itemId == $hideId) {
 	    if (!$item->hasOnLoadHandler('Hidden')) {
 		list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($itemId);
@@ -177,7 +213,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Now apply to children as well, but stop at password protected item */
+	
+
+
+/*  Now apply to children as well, but stop at password protected item  */
+
+
+
 	$hasPassword = false;
 	if ($item->getCanContainChildren() && $passwordInterface) {
 	    list ($ret, $hasPassword) = $passwordInterface->hasPassword($item);
@@ -207,7 +249,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	}
 
 	if ($hideId == $itemId) {
-	    /* All done.. cleanup */
+	    
+
+
+/*  All done.. cleanup  */
+
+
+
 	    $ret = GalleryCoreApi::maybeCompactAccessLists();
 	    if ($ret && !($ret->getErrorCode() & ERROR_LOCK_TIMEOUT)) {
 		return $ret;
@@ -236,7 +284,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
     static function unHideItem(&$item, $useProgressBar=false,
 			$hideId=null, $hiddenAncestor=null, $passwordAncestor=null) {
 	global $gallery;
-	/* If given item is not hidden or subitem is hidden, we're done */
+	
+
+
+/*  If given item is not hidden or subitem is hidden, we're done  */
+
+
+
 	if ($item->hasOnLoadHandler('Hidden') == isset($hideId)) {
 	    return null;
 	}
@@ -259,7 +313,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Init/update progress bar if needed */
+	
+
+
+/*  Init/update progress bar if needed  */
+
+
+
 	static $progressBar;
 	if (!isset($progressBar)) {
 	    $progressBar = false;
@@ -296,7 +356,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Remove session based permission */
+	
+
+
+/*  Remove session based permission  */
+
+
+
 	if ($item->getId() != $hideId || !$hasPassword) {
 	    $ret = GalleryCoreApi::removeEntityPermission($itemId, $hideId, 'core.view');
 	    if ($ret) {
@@ -304,7 +370,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Remove onLoadHandler and remove from ItemHiddenMap */
+	
+
+
+/*  Remove onLoadHandler and remove from ItemHiddenMap  */
+
+
+
 	if ($itemId == $hideId) {
 	    $ret = GalleryCoreApi::removeMapEntry('ItemHiddenMap', array('itemId' => $itemId));
 	    if ($ret) {
@@ -331,7 +403,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Check for a hidden ancestor */
+	
+
+
+/*  Check for a hidden ancestor  */
+
+
+
 	if (!isset($hiddenAncestor)) {
 	    list ($ret, $hiddenAncestor, $passwordAncestor) =
 		HiddenHelper::_checkAncestors($item, $passwordInterface);
@@ -340,7 +418,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 	if ($hiddenAncestor) {
-	    /* Mark as hidden under a different id */
+	    
+
+
+/*  Mark as hidden under a different id  */
+
+
+
 	    $ret = GalleryCoreApi::addEntityPermission($itemId, $hiddenAncestor, 'core.view');
 	    if ($ret) {
 		return $ret;
@@ -351,7 +435,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 		return $ret;
 	    }
 	} else {
-	    /* Restore public view permission */
+	    
+
+
+/*  Restore public view permission  */
+
+
+
 	    static $coreParams;
 	    if (!isset($coreParams)) {
 		list ($ret, $coreParams) =
@@ -390,7 +480,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 		}
 	    }
 	    if (!$groupSee && $hasPassword) {
-		/* Add public core.view permission to password item */
+		
+
+
+/*  Add public core.view permission to password item  */
+
+
+
 		$ret = GalleryCoreApi::addGroupPermission(
 			$itemId, $coreParams['id.everybodyGroup'], 'core.view');
 		if ($ret) {
@@ -399,7 +495,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    }
 	}
 
-	/* Now apply to children as well, but stop at password protected item */
+	
+
+
+/*  Now apply to children as well, but stop at password protected item  */
+
+
+
 	if ($item->getCanContainChildren() && !$hasPassword) {
 	    list ($ret, $childIds) = GalleryCoreApi::fetchChildItemIdsIgnorePermissions($item);
 	    if ($ret) {
@@ -422,7 +524,13 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	}
 
 	if ($hideId == $itemId) {
-	    /* All done.. cleanup */
+	    
+
+
+/*  All done.. cleanup  */
+
+
+
 	    $ret = GalleryCoreApi::maybeCompactAccessLists();
 	    if ($ret && !($ret->getErrorCode() & ERROR_LOCK_TIMEOUT)) {
 		return $ret;
@@ -499,14 +607,26 @@ class HiddenHelper extends HiddenInterface_1_0 {
 	    $hiddenAncestors[] = $hiddenAncestor;
 	}
 	if ($hiddenAncestors[1]) {
-	    /* New location is hidden */
+	    
+
+
+/*  New location is hidden  */
+
+
+
 	    $gallery->guaranteeTimeLimit(60);
 	    $ret = HiddenHelper::hideItem($item, false, $hiddenAncestors[1], $hiddenAncestors[0]);
 	    if ($ret) {
 		return $ret;
 	    }
 	} else if ($hiddenAncestors[0]) {
-	    /* Old location was hidden, new location is not */
+	    
+
+
+/*  Old location was hidden, new location is not  */
+
+
+
 	    $gallery->guaranteeTimeLimit(60);
 	    $ret = HiddenHelper::unHideItem($item, false, $hiddenAncestors[0], false);
 	    if ($ret) {

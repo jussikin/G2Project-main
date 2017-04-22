@@ -81,7 +81,13 @@ class ImageBlockOptionTest extends ItemEditOptionTestCase {
     }
 
     function _createSubAlbumWithItems($parentId) {
-	/* Create a new album and image, set thumbnail and highlight */
+	
+
+
+/*  Create a new album and image, set thumbnail and highlight  */
+
+
+
 	list ($ret, $album) = $this->_createRandomAlbum($parentId);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -98,7 +104,13 @@ class ImageBlockOptionTest extends ItemEditOptionTestCase {
     }
 
     function testImageBlockOption() {
-	/* Enable the Option */
+	
+
+
+/*  Enable the Option  */
+
+
+
 	$form['ImageBlockOption']['setRecursive'] = 'off';
 	$form['ImageBlockOption']['setDisabled'] = 'on';
 

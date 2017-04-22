@@ -49,7 +49,13 @@ class StorageSetupStep extends InstallStep {
 		$templateData['error']['missing_value'] = 1;
 	    } else {
 		$dir = rtrim($this->sanitize($_POST['dir']));
-		/* Normalize the path, add a traling slash if necessary */
+		
+
+
+/*  Normalize the path, add a traling slash if necessary  */
+
+
+
 		if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
 		    $dir .= DIRECTORY_SEPARATOR;
 		}
@@ -69,18 +75,36 @@ class StorageSetupStep extends InstallStep {
 			    && is_readable($parentDir) && is_writeable($parentDir)) {
 			$dir = $parentDir . DIRECTORY_SEPARATOR
 			     . basename($dir) . DIRECTORY_SEPARATOR;
-			/* Create the storage folder with restrictive permissions */
+			
+
+
+/*  Create the storage folder with restrictive permissions  */
+
+
+
 			if (@mkdir($dir)) {
 			    chmod($dir, 0700);
 			}
 		    }
 		}
-		/* Ensure that it is an absolute filesystem path */
+		
+
+
+/*  Ensure that it is an absolute filesystem path  */
+
+
+
 		$dir = @realpath($dir);
 		if (!empty($dir) && substr($dir, -1) != DIRECTORY_SEPARATOR) {
 		    $dir .= DIRECTORY_SEPARATOR;
 		}
-		/* Check if the (newly created) dir exists, is writeable etc. */
+		
+
+
+/*  Check if the (newly created) dir exists, is writeable etc.  */
+
+
+
 		if (!is_dir($dir)) {
 		    $templateData['error']['missing_dir'] = 1;
 		} else if (substr($dir, 0, -1) === $_SESSION['configPath']
@@ -102,7 +126,13 @@ class StorageSetupStep extends InstallStep {
 		    if (empty($_POST['i_acknowledge_the_risk'])
 			    && (!$checkExecuted || $webAccessible)) {
 			if (!$checkExecuted) {
-			    /* Show a warning suggesting an obfuscated path. */
+			    
+
+
+/*  Show a warning suggesting an obfuscated path.  */
+
+
+
 			    $templateData['error']['possibly_web_accessible_dir'] = 1;
 			} else if ($webAccessible) {
 			    $templateData['error']['web_accessible_dir'] = 1;
@@ -161,17 +191,35 @@ class StorageSetupStep extends InstallStep {
      *               boolean true if the folder is accessible from the web (=insecure))
      */
     function _isStoragePathWebAccessible($dir) {
-	/* Check if we can use fsockopen. Else we can't test it at all. */
+	
+
+
+/*  Check if we can use fsockopen. Else we can't test it at all.  */
+
+
+
 	if (!function_exists('fsockopen')
 		|| in_array('fsockopen', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(false, false);
 	}
 
-	/* Add a .htaccess file. */
+	
+
+
+/*  Add a .htaccess file.  */
+
+
+
 	if (!secureStorageFolder($dir)) {
 	    return array(false, false);
 	}
-	/* Add a probe file. */
+	
+
+
+/*  Add a probe file.  */
+
+
+
 	$probeFileName = 'probe_' . substr(md5(uniqid(rand())), 0, 10) . '.html';
 	$probeFilePath = $dir . $probeFileName;
 	$checkString = md5(rand());
@@ -186,15 +234,39 @@ class StorageSetupStep extends InstallStep {
 	    return array(false, false);
 	}
 
-	/* Try to guess the URL to the g2data folder. */
+	
+
+
+/*  Try to guess the URL to the g2data folder.  */
+
+
+
 	$storageUrlCandidates = array();
-	/* Get the URL of the G2 folder. */
+	
+
+
+/*  Get the URL of the G2 folder.  */
+
+
+
 	$galleryUrl = getGalleryDirUrl();
-	/* Get the relative path of the g2data folder to the gallery dir. */
+	
+
+
+/*  Get the relative path of the g2data folder to the gallery dir.  */
+
+
+
 	$storagePath = realpath($dir);
 	$galleryPath = realpath(dirname(dirname(dirname(__FILE__))));
 	if (strpos($storagePath, $galleryPath) === 0) {
-	    /* The g2data folder is within the gallery folder. */
+	    
+
+
+/*  The g2data folder is within the gallery folder.  */
+
+
+
 	    $relativeStoragePath = substr($storagePath, strlen($galleryPath) + 1);
 	    $relativeStoragePath = str_replace("\\", '/', $relativeStoragePath);
 	    $storageUrlCandidates[] = $galleryUrl . $relativeStoragePath . '/';
@@ -206,13 +278,25 @@ class StorageSetupStep extends InstallStep {
 	    $galleryPathElements = explode(DIRECTORY_SEPARATOR, $galleryPath);
 	    $storagePathElements = explode(DIRECTORY_SEPARATOR, $storagePath);
 	    $max = 30;
-	    /* Before: e.g. /foo/bar/gallery2/ and /foo/bar/g2data/. */
+	    
+
+
+/*  Before: e.g. /foo/bar/gallery2/ and /foo/bar/g2data/.  */
+
+
+
 	    while (!empty($galleryPathElements) && !empty($storagePathElements) && $max-- > 0
 		    && $galleryPathElements[0] == $storagePathElements[0]) {
 		array_shift($storagePathElements);
 		array_shift($galleryPathElements);
 	    }
-	    /* After, e.g. /g2data/ (common part removed). */
+	    
+
+
+/*  After, e.g. /g2data/ (common part removed).  */
+
+
+
 	    $relativeStoragePath = implode('/', $storagePathElements);
 
 	    $storageUrlCandidates[] = getBaseUrl() . '/' . $relativeStoragePath . '/';
@@ -221,11 +305,23 @@ class StorageSetupStep extends InstallStep {
 	    }
 	}
 
-	/* Also try the default path and other common paths. */
+	
+
+
+/*  Also try the default path and other common paths.  */
+
+
+
 	$storageUrlCandidates[] = $galleryUrl . basename($dir) . '/';
 	$storageUrlCandidates[] = getBaseUrl() . '/' . basename($dir) . '/';
 
-	/* Try to fetch the probe file. */
+	
+
+
+/*  Try to fetch the probe file.  */
+
+
+
 	$isAccessible = false;
 	foreach ($storageUrlCandidates as $storageFolderUrl) {
 	    $url = $storageFolderUrl . $probeFileName;
@@ -236,7 +332,13 @@ class StorageSetupStep extends InstallStep {
 	    }
 	}
 
-	/* Cleanup: Delete the probe file. */
+	
+
+
+/*  Cleanup: Delete the probe file.  */
+
+
+
 	unlink($probeFilePath);
 
 	return array(true, $isAccessible);
@@ -268,7 +370,13 @@ class StorageSetupStep extends InstallStep {
 
 	$get = $components['path'];
 
-	/* Read the web page into a buffer */
+	
+
+
+/*  Read the web page into a buffer  */
+
+
+
 	$ok = fwrite($fd, sprintf("GET %s HTTP/1.0\r\n" .
 				  "Host: %s\r\n" .
 				  "\r\n",
@@ -276,7 +384,13 @@ class StorageSetupStep extends InstallStep {
 				  $components['host']));
 
 	if (!$ok) {
-	    /* Zero bytes written or false was returned */
+	    
+
+
+/*  Zero bytes written or false was returned  */
+
+
+
 	    return array(false, false);
 	}
 	fflush($fd);
@@ -299,21 +413,39 @@ class StorageSetupStep extends InstallStep {
 	 * Let's interpret everything but a successfully detected probe page as "secure".
 	 */
 
-	/* Ignore the headers. */
+	
+
+
+/*  Ignore the headers.  */
+
+
+
 	while (!feof($fd)) {
 	    $line = trim(fgets($fd, 4096));
 	    if (empty($line)) {
 		break;
 	    }
 	}
-	/* Read the body */
+	
+
+
+/*  Read the body  */
+
+
+
 	$fetchedPage = '';
 	while (!feof($fd)) {
 	    $fetchedPage .= fread($fd, 4096);
 	}
 	fclose($fd);
 
-	/* Check if the expected string is present. */
+	
+
+
+/*  Check if the expected string is present.  */
+
+
+
 	return array(true, strpos($fetchedPage, $probeString) !== false);
     }
 }

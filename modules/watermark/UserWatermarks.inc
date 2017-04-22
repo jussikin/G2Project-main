@@ -76,7 +76,13 @@ class UserWatermarksController extends GalleryController {
 		$results['redirect']['view'] = 'core.UserAdmin';
 		$results['redirect']['subView'] = 'watermark.UserWatermarks';
 	    } else {
-		/* Watermark is in use.. redirect to confirm page: */
+		
+
+
+/*  Watermark is in use.. redirect to confirm page:  */
+
+
+
 		$results['redirect']['view'] = 'core.UserAdmin';
 		$results['redirect']['subView'] = 'watermark.ConfirmDelete';
 		$results['redirect']['watermarkId'] = $form['delete']['watermarkId'];
@@ -123,7 +129,13 @@ class UserWatermarksView extends GalleryView {
 	    return array($ret, null);
 	}
 	foreach ($watermarks as $id => $watermark) {
-	    /* Exclude site-wide watermarks (and, in the case of admins -- other people's) */
+	    
+
+
+/*  Exclude site-wide watermarks (and, in the case of admins -- other people's)  */
+
+
+
 	    if ($watermark->getOwnerId() != $gallery->getActiveUserId()) {
 		unset($watermarks[$id]);
 		continue;
@@ -140,7 +152,13 @@ class UserWatermarksView extends GalleryView {
 	    }
 	}
 
-	/* Set the form's encoding type since we're uploading binary files */
+	
+
+
+/*  Set the form's encoding type since we're uploading binary files  */
+
+
+
 	if ($template->hasVariable('UserAdmin')) {
 	    $UserAdmin =& $template->getVariableByReference('UserAdmin');
 	    $UserAdmin['enctype'] = 'multipart/form-data';

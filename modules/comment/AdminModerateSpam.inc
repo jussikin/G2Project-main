@@ -47,7 +47,13 @@ class AdminModerateSpamController extends GalleryController {
 	if (isset($form['action']['deleteAllSpam'])) {
 	    $batchSize = 100;
 	    while (true) {
-		/** @todo use a progress bar here */
+		
+
+
+/*  @todo use a progress bar here  */
+
+
+
 		list ($ret, $comments, $count) = GalleryCommentHelper::fetchAllComments(
 		    $rootId, $batchSize, null, ORDER_ASCENDING, COMMENT_PUBLISH_STATUS_SPAM);
 		if ($ret) {
@@ -69,7 +75,13 @@ class AdminModerateSpamController extends GalleryController {
 	    $status['allSpamDeleted'] = 1;
 	}
 
-	/* Figure out where to redirect upon success */
+	
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results[$method]['view'] = 'core.SiteAdmin';
 	$results[$method]['subView'] = 'comment.AdminModerateSpam';
@@ -121,11 +133,23 @@ class AdminModerateSpamView extends GalleryView {
 
 	$commenters = $itemIds = $can = $itemData = array();
 	foreach ($comments as $i => $comment) {
-	    /* Get the commenter ids */
+	    
+
+
+/*  Get the commenter ids  */
+
+
+
 	    $commenters[$comments[$i]->getCommenterId()] = 1;
 	    $itemIds[$comments[$i]->getParentId()] = 1;
 
-	    /* Extract the member data */
+	    
+
+
+/*  Extract the member data  */
+
+
+
 	    $comments[$i] = (array)$comments[$i];
 	    $comments[$i]['randomId'] = $comments[$i]['id'] . '-' . rand();
 	}
@@ -157,7 +181,13 @@ class AdminModerateSpamView extends GalleryView {
 		$items[$it->getId()] = (array)$it;
 	    }
 
-	    /* get peer thumbnails and resizes */
+	    
+
+
+/*  get peer thumbnails and resizes  */
+
+
+
 	    list ($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds($itemIds);
 	    if ($ret) {
 		return array($ret, null);

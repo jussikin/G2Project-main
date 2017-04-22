@@ -32,7 +32,13 @@ class RssCallbacks {
 	switch($callback) {
 	case 'FeedList':
 	    if (empty($params['number'])) {
-		/* we're called during preload, so we have to find the params another way */
+		
+
+
+/*  we're called during preload, so we have to find the params another way  */
+
+
+
 	    	$tpl_vars = $smarty->getTemplateVars();
 	    	if (!empty($tpl_vars['theme']['params']['sidebarBlocks'])) {
 		    $blocks = $tpl_vars['theme']['params']['sidebarBlocks'];
@@ -46,12 +52,24 @@ class RssCallbacks {
 		}
 
 		if (empty($params['number'])) {
-		    /* still empty, probably because the user never changed the default */
+		    
+
+
+/*  still empty, probably because the user never changed the default  */
+
+
+
 		    $params['number'] = '5';
 		}
 	    }
 
-	    /* since we get called twice (once for the block, once for the head), cache the feeds */
+	    
+
+
+/*  since we get called twice (once for the block, once for the head), cache the feeds  */
+
+
+
 	    if (!isset($feeds)) {
 		list ($ret, $feeds) = RssMapHelper::fetchFeedNames((int) $params['number']);
 		if ($ret) {

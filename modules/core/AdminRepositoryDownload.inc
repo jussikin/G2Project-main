@@ -61,12 +61,24 @@ class AdminRepositoryDownloadController extends AdminRepositoryDownloadAndInstal
 			 null);
 	}
 
-	/* Handle cancel action. */
+	
+
+
+/*  Handle cancel action.  */
+
+
+
 	if (isset($form['action']['cancel'])) {
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminRepository';
 	} else if (isset($form['action']['download'])) {
-	    /* Create package list. */
+	    
+
+
+/*  Create package list.  */
+
+
+
 	    $installPackages = array();
 
 	    $utils = new GalleryRepositoryUtilities();
@@ -95,13 +107,25 @@ class AdminRepositoryDownloadController extends AdminRepositoryDownloadAndInstal
 		}
 	    }
 
-	    /* Show error message if no packages have been selected for download. */
+	    
+
+
+/*  Show error message if no packages have been selected for download.  */
+
+
+
 	    if (empty($installPackages)) {
 		$delegate['view'] = 'core.SiteAdmin';
 		$delegate['subView'] = 'core.AdminRepositoryDownload';
 		$error[] = 'form[error][nothingSelected]';
 
-		/** @todo: Do we need to put these vars back into the request? */
+		
+
+
+/*  @todo: Do we need to put these vars back into the request?  */
+
+
+
 		GalleryUtilities::putRequestVariable('pluginId', $pluginId);
 		GalleryUtilities::putRequestVariable('pluginType', $pluginType);
 	    } else {
@@ -157,7 +181,13 @@ class AdminRepositoryDownloadView extends GalleryView {
 	    $form['formName'] = 'AdminRepositoryDownload';
 	}
 
-	/* Init repository. */
+	
+
+
+/*  Init repository.  */
+
+
+
 	list ($ret, $repositories) = GalleryRepository::getRepositories();
 	if ($ret) {
 	    return array($ret, null);
@@ -181,7 +211,13 @@ class AdminRepositoryDownloadView extends GalleryView {
 		continue;
 	    }
 
-	    /* Downloading and upgrading plugins are only different in the UI */
+	    
+
+
+/*  Downloading and upgrading plugins are only different in the UI  */
+
+
+
 	    list ($ret, $upgradeData) = $repository->getPluginUpgradeInfo($pluginType, $pluginId);
 	    if ($ret) {
 		return array($ret, null);
@@ -197,7 +233,13 @@ class AdminRepositoryDownloadView extends GalleryView {
 		return array($ret, null);
 	    }
 
-	    /* Treat all variations of a language as one */
+	    
+
+
+/*  Treat all variations of a language as one  */
+
+
+
 	    $condensedData = array();
 	    foreach ($upgradeData['languages'] as $langCode => $languageData) {
 	    	if (in_array($langCode, array('zh_CN', 'zh_TW', 'en_GB'))) {

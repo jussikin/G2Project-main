@@ -44,11 +44,29 @@ class MultiLangSiteAdminController extends GalleryController {
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    /* TODO: if removed some language then optionally delete all data for that language? */
-	    $status['saved'] = 1;
-	} /* else $form['action']['reset'] */
+	    
 
-	/* Figure out where to redirect upon success */
+
+/*  TODO: if removed some language then optionally delete all data for that language?  */
+
+
+
+	    $status['saved'] = 1;
+	} 
+
+
+/*  else $form['action']['reset']  */
+
+
+
+
+	
+
+
+/*  Figure out where to redirect upon success  */
+
+
+
 	$results['redirect']['view'] = 'core.SiteAdmin';
 	$results['redirect']['subView'] = 'multilang.MultiLangSiteAdmin';
 	$results['status'] = $status;

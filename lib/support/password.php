@@ -108,7 +108,13 @@ function process(&$process_password_string, &$process_user_name, $process_admin_
             if (isset($_REQUEST['target'])) {
                 // Refreseh elements of G2 cache
                 foreach ($_REQUEST['target'] as $key => $ignored) {
-                    /* Make sure the dir is legit */
+                    
+
+
+/*  Make sure the dir is legit  */
+
+
+
                     if (!array_key_exists($key, $caches)) {
                         $status[] = array('error', "Ignoring illegal cache: $key");
                         continue;
@@ -201,7 +207,13 @@ function validate()
     $platform =& $gallery->getPlatform();
     
     if (!isset($advance)) {
-        /* Generate the auth string on the first visit to this view */
+        
+
+
+/*  Generate the auth string on the first visit to this view  */
+
+
+
         $key = GallerySetupUtilities::generateAuthenticationKey();
         GallerySetupUtilities::setAuthenticationKey($key);
     }

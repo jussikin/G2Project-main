@@ -87,7 +87,13 @@ class GalleryRemoteProperties {
      */
     function setProperty($key, $value) {
 	if ($key != null) {
-		/* perform replace in stages to avoid uncertainty on what gets done first */
+		
+
+
+/*  perform replace in stages to avoid uncertainty on what gets done first  */
+
+
+
 	    $value = str_replace('\\', '\\\\', $value);
 	    $value = str_replace("\r\n", '\n', $value);
 	    $value = str_replace(array("\r", "\n", "\t"), array('\n', '\n', '\t'), $value);

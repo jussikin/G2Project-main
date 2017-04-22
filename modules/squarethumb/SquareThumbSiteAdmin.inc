@@ -42,7 +42,13 @@ class SquareThumbSiteAdminController extends GalleryController {
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    } else {
 		if ($form['mode'] == 'fit') {
-		    /* Can't crop-to-square without PPM support */
+		    
+
+
+/*  Can't crop-to-square without PPM support  */
+
+
+
 		    list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation(
 			'image/x-portable-pixmap', 'convert-to-image/jpeg');
 		    if ($ret) {
@@ -73,7 +79,13 @@ class SquareThumbSiteAdminController extends GalleryController {
 		    $status['saved'] = 1;
 		}
 	    }
-	} /* else $form['action']['reset'] */
+	} 
+
+
+/*  else $form['action']['reset']  */
+
+
+
 
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results = array($method => array('view' => 'core.SiteAdmin',
@@ -110,7 +122,13 @@ class SquareThumbSiteAdminView extends GalleryView {
 	    }
 	}
 
-	/* Can't crop-to-square without ppm support */
+	
+
+
+/*  Can't crop-to-square without ppm support  */
+
+
+
 	list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation('image/x-portable-pixmap',
 								      'convert-to-image/jpeg');
 	if ($ret) {

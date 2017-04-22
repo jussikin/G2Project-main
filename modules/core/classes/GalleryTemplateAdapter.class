@@ -99,24 +99,48 @@ class GalleryTemplateAdapter {
     function url($params) {
 	global $gallery;
 
-	/* Allow the user to pass in bulk params */
+	
+
+
+/*  Allow the user to pass in bulk params  */
+
+
+
 	$urlParams = isset($params['params']) ? $params['params'] : array();
 	unset($params['params']);
 
-	/* Search for args and add them to the params */
+	
+
+
+/*  Search for args and add them to the params  */
+
+
+
 	for ($i = 1; ($arg = "arg$i") && isset($params[$arg]); $i++) {
 	    list ($key, $value) = explode('=', $params[$arg], 2);
 	    $urlParams[$key] = $value;
 	    unset($params[$arg]);
 	}
 
-	/* Add special 'href' key to the params */
+	
+
+
+/*  Add special 'href' key to the params  */
+
+
+
 	if (isset($params['href'])) {
 	    $urlParams['href'] = $params['href'];
 	    unset($params['href']);
 	}
 
-	/* Allow the user to pass in bulk options */
+	
+
+
+/*  Allow the user to pass in bulk options  */
+
+
+
 	if (isset($params['options'])) {
 	    $params = array_merge($params['options'], $params);
 	    unset($params['options']);
@@ -140,24 +164,54 @@ class GalleryTemplateAdapter {
 	$session =& $gallery->getSession();
 	$vars = array();
 
-	/* The 'return' url */
+	
+
+
+/*  The 'return' url  */
+
+
+
 	if (GalleryUtilities::hasRequestVariable('return')) {
 	    $vars['return'] = GalleryUtilities::getRequestVariables('return');
 	}
 
-	/* Remember the current url for getting back to where we came from */
+	
+
+
+/*  Remember the current url for getting back to where we came from  */
+
+
+
 	if (empty($vars['return'])) {
 	    $vars['return'] = $urlGenerator->getNavigationReturnUrl();
 	}
 
-	/* Remember the original URL where this form was first shown */
+	
+
+
+/*  Remember the original URL where this form was first shown  */
+
+
+
 	$vars['formUrl'] = GalleryUtilities::getRequestVariables('formUrl');
 	if (empty($vars['formUrl'])) {
-	    /* First time we load this form */
+	    
+
+
+/*  First time we load this form  */
+
+
+
 	    $vars['formUrl'] = $urlGenerator->getNavigationReturnUrl();
 	}
 
-	/* Add the auth token to all controller requests */
+	
+
+
+/*  Add the auth token to all controller requests  */
+
+
+
 	$vars['authToken'] = $session->getAuthToken();
 
 	$out = '';
@@ -311,7 +365,13 @@ class GalleryTemplateAdapter {
 	 * 3 - Renderer can render the entity (with info from the item)
 	 */
 	if ($params['item']['id'] == $params['image']['id']) {
-	    /* XXX: Can't be more specific than entity-type = GalleryEntity here */
+	    
+
+
+/*  XXX: Can't be more specific than entity-type = GalleryEntity here  */
+
+
+
 	    list ($ret, $item) =
 		GalleryCoreApi::loadEntitiesById($params['item']['id'], 'GalleryEntity');
 	    if ($ret) {
@@ -382,17 +442,35 @@ class GalleryTemplateAdapter {
 	$head = $smarty->getTemplateVars('head');
 	$output = array('');
 
-	/* Title */
+	
+
+
+/*  Title  */
+
+
+
 	if (isset($head['title'])) {
 	    $output[] = '<title>' . $head['title'] . "</title>";
 	}
 
-	/* <link> elements (rss, css) */
+	
+
+
+/*  <link> elements (rss, css)  */
+
+
+
 	foreach (array_keys($head['link']) as $linkHtml) {
 	    $output[] = $linkHtml;
 	}
 		
-	/* Stylesheets */
+	
+
+
+/*  Stylesheets  */
+
+
+
 	if (!empty($head['stylesheet'])) {
 		$theme = $smarty->getTemplateVars('theme');
 		if (empty($theme['pageType']) || $theme['pageType'] != 'error') {
@@ -405,7 +483,13 @@ class GalleryTemplateAdapter {
 		}
 	}
 		
-	/* Javascript */
+	
+
+
+/*  Javascript  */
+
+
+
 	if (!empty($head['javascript'])) {
 	    $theme = $smarty->getTemplateVars('theme');
 	    if (empty($theme['pageType']) || $theme['pageType'] != 'error') {
@@ -418,17 +502,35 @@ class GalleryTemplateAdapter {
 	    }
 	}
 
-	/* Tpl to include. */
+	
+
+
+/*  Tpl to include.  */
+
+
+
 	foreach ($head['tpl'] as $path => $l10Domain) {
 	    echo $this->_smarty_include($smarty, "gallery:$path",
 	        array('l10Domain' => $l10Domain)
 	    );
 	}
 
-	/* This should help out users whose browsers are confused about the character set */
+	
+
+
+/*  This should help out users whose browsers are confused about the character set  */
+
+
+
 	$output[] = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 
-	/* Meta */
+	
+
+
+/*  Meta  */
+
+
+
 	foreach ($head['meta'] as $meta) {
 	    $key = empty($meta['isHttpEquiv']) ? 'name' : 'http-equiv';
 	    $output[] = sprintf('<meta %s="%s" content="%s">',
@@ -486,8 +588,20 @@ class GalleryTemplateAdapter {
 		$codeBase = GalleryCoreApi::getCodeBasePath();
 		$pattern = '<script type="text/javascript" src="%s"></script>';
 		
-		/* Special case utilities.js is superset of yahoo-dom-event.js */
-		/** @todo move this check into GalleryTemplate::javascript */
+		
+
+
+/*  Special case utilities.js is superset of yahoo-dom-event.js  */
+
+
+
+		
+
+
+/*  @todo move this check into GalleryTemplate::javascript  */
+
+
+
 		$yde = array_search('lib/yui/yahoo-dom-event.js', $files);
 		if ($yde !== false) {
 			$util = array_search('lib/yui/utilities.js', $files);
@@ -501,16 +615,34 @@ class GalleryTemplateAdapter {
 			}
 		}
 		foreach ($files as $file) {
-			/* Do not cache dynamic requests */
+			
+
+
+/*  Do not cache dynamic requests  */
+
+
+
 			$path = $codeBase . $file;
 			if (strpos($file, '?') === false && $platform->file_exists($path)) {
-				/* 7 == size, 9 == mtime, see http://php.net/stat */
+				
+
+
+/*  7 == size, 9 == mtime, see http://php.net/stat  */
+
+
+
 				$stats = $platform->stat($path);
 				$key .= "$file $stats[7] $stats[9],";
 				$filteredFiles[] = $file;
 			} else {
 				if ($filteredFiles) {
-					/* Create a combined stylesheet file for what we have now */
+					
+
+
+/*  Create a combined stylesheet file for what we have now  */
+
+
+
 					$output[] = sprintf($pattern,
 					$this->_makeCombinedFile($filteredFiles, $key, 'Javascript'));
 					$filteredFiles = array();
@@ -548,16 +680,34 @@ class GalleryTemplateAdapter {
 		$pattern = '<link type="text/css" rel="stylesheet" href="%s">';
 		
 		foreach ($files as $file) {
-			/* Do not cache dynamic requests */
+			
+
+
+/*  Do not cache dynamic requests  */
+
+
+
 			$path = $codeBase . $file;
 			if (strpos($file, '?') === false && $platform->file_exists($path)) {
-				/* 7 == size, 9 == mtime, see http://php.net/stat */
+				
+
+
+/*  7 == size, 9 == mtime, see http://php.net/stat  */
+
+
+
 				$stats = $platform->stat($path);
 				$key .= "$file $stats[7] $stats[9],";
 				$filteredFiles[] = $file;
 			} else {
 				if ($filteredFiles) {
-					/* Create a combined stylesheet file for what we have now */
+					
+
+
+/*  Create a combined stylesheet file for what we have now  */
+
+
+
 					$output[] = sprintf($pattern,
 					$this->_makeCombinedFile($filteredFiles, $key, 'Stylesheet'));
 					$filteredFiles = array();
@@ -777,7 +927,13 @@ class GalleryTemplateAdapter {
 				if ($current_char == " ") {
 					if (strlen($res) &&
 							(preg_match('/^[^(){}[\]=+\-*\/%&|!><?:~^,;"\']{2}$/', $res[strlen($res)-1].$str[$i+1]) ||
-							preg_match('/^(\+\+)|(--)$/', $res[strlen($res)-1].$str[$i+1]) /* for example i+ ++j; */)) {
+							preg_match('/^(\+\+)|(--)$/', $res[strlen($res)-1].$str[$i+1]) 
+
+
+/*  for example i+ ++j;  */
+
+
+)) {
 						$res .= $current_char;
 					}
 				} elseif ($current_char == "\n") {
@@ -785,7 +941,13 @@ class GalleryTemplateAdapter {
 							(preg_match('/^[^({[=+\-*%&|!><?:~^,;\/][^)}\]=+\-*%&|><?:,;\/]$/', $res[strlen($res)-1].$str[$i+1]) ||
 							(strlen($res)>1 && preg_match('/^(\+\+)|(--)$/', $res[strlen($res)-2].$res[strlen($res)-1])) ||
 							preg_match('/^(\+\+)|(--)$/', $current_char.$str[$i+1]) ||
-							preg_match('/^(\+\+)|(--)$/', $res[strlen($res)-1].$str[$i+1]) /* for example i+ ++j; */ )) {
+							preg_match('/^(\+\+)|(--)$/', $res[strlen($res)-1].$str[$i+1]) 
+
+
+/*  for example i+ ++j;  */
+
+
+ )) {
 						$res .= $current_char;
 					}
 				} else {
@@ -833,7 +995,13 @@ class GalleryTemplateAdapter {
 	}
 
 	$url = trim($content);
-	/* Add the auth token to the URL */
+	
+
+
+/*  Add the auth token to the URL  */
+
+
+
 	if (strstr($url, 'authToken') === false) {
 	    $url = GalleryUrlGenerator::appendParamsToUrl($url,
 	    	array('authToken' => $session->getAuthToken()));
@@ -914,7 +1082,13 @@ class GalleryTemplateAdapter {
 	    $linkId .= '-' . ($subView = $params['urlParams']['subView']);
 	    if (preg_match('{^core\.Item(?:Edit|Move|Delete|CreateLink)(?:Single)?$}', $subView) &&
 		    !empty($params['urlParams']['itemId'])) {
-		/* Append item type for a few subViews, with fallback class without type */
+		
+
+
+/*  Append item type for a few subViews, with fallback class without type  */
+
+
+
 		list ($ret, $item) = GalleryCoreApi::loadEntitiesById(
 		    $params['urlParams']['itemId'], 'GalleryEntity');
 		if (!$ret) {
@@ -959,7 +1133,13 @@ class GalleryTemplateAdapter {
 	    $endTag = '</option>';
 	} else {
 	    if (!array_key_exists('class', $params)) {
-		/* Use default classes */
+		
+
+
+/*  Use default classes  */
+
+
+
 		$params['class'] = $this->linkId(array('urlParams' => $link['params']));
 	    }
 	    $tag = '<a href="' . $urlGenerator->generateUrl($link['params'], $link['options']) . '"'
@@ -1060,7 +1240,13 @@ class GalleryTemplateAdapter {
 	case 'gallery2':
 	    $installedVersions = $core->getInstalledVersions();
 	    if (!$isAdmin) {
-		/* Don't show exact patch release to non-admins */
+		
+
+
+/*  Don't show exact patch release to non-admins  */
+
+
+
 		$installedVersions['gallery'] =
 		    preg_replace('/^(\d+\.\d+).*$/', '$1', $installedVersions['gallery']);
 	    }
@@ -1079,7 +1265,13 @@ class GalleryTemplateAdapter {
 		return;
 	    }
 	    if ($useLink && $gallery->getConfig('allowSessionAccess')) {
-		/* Calculate a URI that we can use for the validation link */
+		
+
+
+/*  Calculate a URI that we can use for the validation link  */
+
+
+
 		$validationUri = $urlGenerator->getCurrentUrl();
 		$session =& $gallery->getSession();
 		if ($session->isUsingCookies()) {
@@ -1143,7 +1335,13 @@ class GalleryTemplateAdapter {
 
 	$buf = '';
 	if ($debug == 'buffered' || $profiling) {
-	    /* don't worry about localizing this -- it's only debug output */
+	    
+
+
+/*  don't worry about localizing this -- it's only debug output  */
+
+
+
 	    $buf .= '<div id="gpDebug"> <h3> Debug Output </h3>';
 	    if ($debug == 'buffered') {
 		$buf .= $gallery->getDebugBuffer();
@@ -1156,7 +1354,13 @@ class GalleryTemplateAdapter {
 	    $buf .= '</div>';
 	}
 	if ($debug == 'buffered') {
-	    /* Smarty debug console */
+	    
+
+
+/*  Smarty debug console  */
+
+
+
 	    if (!function_exists('smarty_function_debug')) {
 		GalleryCoreApi::requireOnce('lib/smarty/plugins/function.debug.php');
 	    }
@@ -1222,7 +1426,13 @@ class GalleryTemplateAdapter {
 
 	list ($ret, $pluginStatus) = GalleryCoreApi::fetchPluginStatus('module');
 	if ($ret) {
-	    /* What can we do here? */
+	    
+
+
+/*  What can we do here?  */
+
+
+
 	    return '[error fetching blocks]';
 	}
 
@@ -1234,7 +1444,13 @@ class GalleryTemplateAdapter {
 	    $params = $params['params'];
 	}
 
-	/* Verify that the requested block actually exists */
+	
+
+
+/*  Verify that the requested block actually exists  */
+
+
+
 	$tplPath = "gallery:modules/$module/templates/blocks/$file.tpl";
 	$compileCheck = GalleryTemplate::shouldDoCompileCheck();
 	
@@ -1277,7 +1493,13 @@ class GalleryTemplateAdapter {
 
 	list ($ret, $pluginStatus) = GalleryCoreApi::fetchPluginStatus('module');
 	if ($ret) {
-	    /* What can we do here? */
+	    
+
+
+/*  What can we do here?  */
+
+
+
 	    return '[container error]';
 	}
 
@@ -1286,7 +1508,13 @@ class GalleryTemplateAdapter {
 	    return $content;
 	}
 
-	/* Guard template vars so that the include doesn't pollute our namespace */
+	
+
+
+/*  Guard template vars so that the include doesn't pollute our namespace  */
+
+
+
 	$save = $smarty->_tpl_vars;
 	$smarty->_smarty_include(
 	    array('smarty_include_tpl_file' =>
@@ -1310,7 +1538,13 @@ class GalleryTemplateAdapter {
 	if (empty($status)) {
 	    list ($ret, $status) = GalleryCoreApi::fetchPluginStatus('module');
 	    if ($ret) {
-		/* What can we do with this error? */
+		
+
+
+/*  What can we do with this error?  */
+
+
+
 		$gallery->debug("Error performing $params[type] callback");
 		$gallery->debug($ret->getAsHtml());
 	    }
@@ -1327,7 +1561,13 @@ class GalleryTemplateAdapter {
 	    $class = new $className;
 	    $ret = $class->callback($params, $_template, $file, $userId);
 	    if ($ret) {
-		/* What can we do with this error? */
+		
+
+
+/*  What can we do with this error?  */
+
+
+
 		$gallery->debug("Error performing $params[type] callback");
 		$gallery->debug($ret->getAsHtml());
 	    }
@@ -1370,7 +1610,13 @@ class GalleryTemplateAdapter {
 		$ret = $ret[0];
 	    }
 	    if ($ret) {
-		/* If progress bar is in use, report error via its interface */
+		
+
+
+/*  If progress bar is in use, report error via its interface  */
+
+
+
 		global $gallery;
 		if ($gallery->getCurrentView() == 'core.ProgressBar') {
 		    $this->errorProgressBar($ret);
@@ -1457,10 +1703,22 @@ class GalleryTemplateAdapter {
 	    $timeRemaining = '';
 	}
 
-	/* it is possible to not have this function compiled into php */
+	
+
+
+/*  it is possible to not have this function compiled into php  */
+
+
+
 	$memoryUsed = (function_exists('memory_get_usage')) ? memory_get_usage() : 0;
 
-	/* A disabled memory_limit is -1, 0 crashes php */
+	
+
+
+/*  A disabled memory_limit is -1, 0 crashes php  */
+
+
+
 	$memoryTotal = (0 < ini_get('memory_limit')) ? ini_get('memory_limit') : 0;
 
 	/*
@@ -1469,7 +1727,13 @@ class GalleryTemplateAdapter {
 	 */
 	$percentComplete = GalleryUtilities::roundToString($percentComplete, 2);
 
-	/* Need to escape for javascript (backslash, ..) */
+	
+
+
+/*  Need to escape for javascript (backslash, ..)  */
+
+
+
 	if (!function_exists('smarty_modifier_escape')) {
 	    GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.escape.php');
 	}
@@ -1480,7 +1744,13 @@ class GalleryTemplateAdapter {
 	    array('text' => 'Memory used: %s, total: %s',
 		  'arg1' => $memoryUsed,
 		  'arg2' => $memoryTotal));
-	/* Newline needed or Opera 9.02 won't show updates */
+	
+
+
+/*  Newline needed or Opera 9.02 won't show updates  */
+
+
+
 	printf('<script type="text/javascript">'
 		. 'updateProgressBar("%s", "%s", "%s", "%s", "%s");</script>%s',
 	       $title, $description, $percentComplete, $timeRemaining, $memoryInfo, "\n");
@@ -1505,14 +1775,26 @@ class GalleryTemplateAdapter {
 	    $isAdmin = false;
 	}
 
-	/* Log the error */
+	
+
+
+/*  Log the error  */
+
+
+
 	$summary = $status->getErrorMessage();
 	if (empty($summary)) {
 	    $summary = implode(', ', $status->getErrorCodeConstants($status->getErrorCode()));
 	}
 	GalleryCoreApi::addEventLogEntry('Gallery Error', $summary, $status->getAsText());
 
-	/* Display an error message */
+	
+
+
+/*  Display an error message  */
+
+
+
 	if ($gallery->getDebug() || $isAdmin) {
 	    $status = $status->getAsHtml($isAdmin);
 	} else {
@@ -1535,12 +1817,24 @@ class GalleryTemplateAdapter {
     function completeProgressBar($continueUrl, $doRedirect=false) {
 	global $gallery;
 	$continueUrl = str_replace('&amp;', '&', $continueUrl);
-	/* Display the continue link after a short delay to avoid bug 2031942 */
+	
+
+
+/*  Display the continue link after a short delay to avoid bug 2031942  */
+
+
+
 	printf('<script type="text/javascript">'
 	     . 'setTimeout(function(){completeProgressBar("%s")}, 2000);</script>',
 	       $continueUrl);
 	if (($debug = $gallery->getDebug()) && $debug != 'logged') {
-	    /* Don't automatically redirect when in debug mode */
+	    
+
+
+/*  Don't automatically redirect when in debug mode  */
+
+
+
 	    print '<hr>';
 	    print '<pre>';
 	    print $gallery->getDebugBuffer();

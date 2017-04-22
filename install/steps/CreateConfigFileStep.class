@@ -54,9 +54,21 @@ class CreateConfigFileStep extends InstallStep {
 	$configFilePath = $configDir . '/config.php';
 	$templateData['OS'] = strncasecmp(PHP_OS, 'win', 3) ? 'unix' : 'winnt';
 	if (file_exists($configFilePath) && !is_writeable($configFilePath)) {
-	    /* The file exists but we can't write to it */
+	    
+
+
+/*  The file exists but we can't write to it  */
+
+
+
 	    if (file_get_contents($configFilePath) == $this->_getConfigContents()) {
-		/* The proper contents are in the file, we can advance to the next step */
+		
+
+
+/*  The proper contents are in the file, we can advance to the next step  */
+
+
+
 		$this->setComplete(true);
 		$templateData['bodyFile'] = 'CreateConfigFileSuccess.html';
 	    } else {
@@ -66,13 +78,25 @@ class CreateConfigFileStep extends InstallStep {
 		$templateData['galleryDir'] = basename($configDir);
 	    }
 	} else {
-	    /* Don't (overwrite) the config file, if we recommend an upgrade */
+	    
+
+
+/*  Don't (overwrite) the config file, if we recommend an upgrade  */
+
+
+
 	    $writeConfigFile = false;
 	    $freshInstall = $galleryStub->getConfig('freshInstall');
 	    $versionStatus = $upgradeRecommended = false;
 	    $versions = array('installed' => '', 'codebase' => false);
 	    if (!$freshInstall) {
-		/* We are reusing database tables, it's not a fresh install */
+		
+
+
+/*  We are reusing database tables, it's not a fresh install  */
+
+
+
 		list ($versionStatus, $upgradeRecommended, $versions) = $this->_versionCheck();
 		if (!$versionStatus && file_exists($configFilePath)) {
 		    if ($upgradeRecommended) {
@@ -92,9 +116,21 @@ class CreateConfigFileStep extends InstallStep {
 		$writeConfigFile = true;
 	    }
 
-	    /* Before writing, check if the file is writable and give instructions if it isn't */
+	    
+
+
+/*  Before writing, check if the file is writable and give instructions if it isn't  */
+
+
+
 	    if ($writeConfigFile && !$out = @fopen($configFilePath, 'w')) {
-		/* Give the user instructions */
+		
+
+
+/*  Give the user instructions  */
+
+
+
 		$templateData['bodyFile'] = 'CreateConfigFileInstructions.html';
 		$templateData['galleryDir'] = basename($configDir);
 
@@ -121,12 +157,24 @@ class CreateConfigFileStep extends InstallStep {
 		    $templateData['configFileWritten'] = $writeConfigFile;
 		    $templateData['bodyFile'] = 'VersionCheckFailed.html';
 		} else {
-		    /* It's a fresh install or the installed version matches the codebase version */
+		    
+
+
+/*  It's a fresh install or the installed version matches the codebase version  */
+
+
+
 		    $this->setComplete(true);
 		    $templateData['bodyFile'] = 'CreateConfigFileSuccess.html';
 		}
 
-		/* Finally write the config file */
+		
+
+
+/*  Finally write the config file  */
+
+
+
 		if ($writeConfigFile) {
 		    fwrite($out, $this->_getConfigContents());
 		    fclose($out);
@@ -169,7 +217,13 @@ class CreateConfigFileStep extends InstallStep {
 
 	    if (trim($line) == '$gallery->setConfig(\'galleryBaseUrl\', \'\');' &&
 		    $configDir != $baseDir) {
-		/* galleryBaseUrl not required for config.php in codebase dir */
+		
+
+
+/*  galleryBaseUrl not required for config.php in codebase dir  */
+
+
+
 		$tmp = strtr($baseUrl, $addslashes);
 		$line = sprintf("\$gallery->setConfig('galleryBaseUrl', '%s');\n", $tmp);
 	    }
@@ -205,19 +259,55 @@ class CreateConfigFileStep extends InstallStep {
 	$recommendUpgrade = false;
 
 	if ($freshInstall) {
-	    /* It's a fresh install */
+	    
+
+
+/*  It's a fresh install  */
+
+
+
 	    $versionsOk = true;
 	} else {
-	    /* Get the installed version from the DatabaseSetup Step */
+	    
+
+
+/*  Get the installed version from the DatabaseSetup Step  */
+
+
+
 	    $tmp = $galleryStub->getConfig('installed.version');
 	    $versions['installed'] = empty($tmp) ? ' ' : $tmp;
-	    /* ^Avoid http://bugs.php.net/bug.php?id=17433 */
-	    /* Get the codebase version, also from the DB setup step */
+	    
+
+
+/*  ^Avoid http://bugs.php.net/bug.php?id=17433  */
+
+
+
+	    
+
+
+/*  Get the codebase version, also from the DB setup step  */
+
+
+
 	    $versions['codebase'] = $galleryStub->getConfig('codebase.version');
 
-	    /* Compare the versions */
+	    
+
+
+/*  Compare the versions  */
+
+
+
 	    if (($cmp = version_compare($versions['installed'], $versions['codebase'])) == 0) {
-		/* Installed version and codebase version are the same. Good. */
+		
+
+
+/*  Installed version and codebase version are the same. Good.  */
+
+
+
 		$versionsOk = true;
 	    } else if ($cmp < 0) {
 		/*

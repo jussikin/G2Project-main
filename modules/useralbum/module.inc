@@ -25,7 +25,13 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class UserAlbumModule extends GalleryModule /* and GalleryEventListener */ {
+class UserAlbumModule extends GalleryModule 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     function __construct() {
 	$this->UserAlbumModule();
@@ -105,7 +111,13 @@ class UserAlbumModule extends GalleryModule /* and GalleryEventListener */ {
 	    return array($ret, null);
 	}
 
-	/* Check if link is enabled */
+	
+
+
+/*  Check if link is enabled  */
+
+
+
 	if (!empty($params['homeLink'])) {
 	    list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
 	    if ($ret) {
@@ -166,7 +178,13 @@ class UserAlbumModule extends GalleryModule /* and GalleryEventListener */ {
 	case 'GalleryEntity::delete':
 	    $entity = $event->getEntity();
 
-	    /* We don't care unless it's an album */
+	    
+
+
+/*  We don't care unless it's an album  */
+
+
+
 	    if (!GalleryUtilities::isA($entity, 'GalleryAlbumItem')) {
 		break;
 	    }
@@ -201,13 +219,25 @@ class UserAlbumModule extends GalleryModule /* and GalleryEventListener */ {
 	    break;
 
 	case 'Gallery::Login':
-	    /* Check if redirect is enabled.. */
+	    
+
+
+/*  Check if redirect is enabled..  */
+
+
+
 	    list ($ret, $loginRedirect) = $this->getParameter('loginRedirect');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	    if (!empty($loginRedirect)) {
-		/* Return a redirect to the user album.. */
+		
+
+
+/*  Return a redirect to the user album..  */
+
+
+
 		$result = array('controller' => 'useralbum.UserAlbum');
 	    }
 	    break;

@@ -167,7 +167,13 @@ class RewriteSimpleHelperTest extends GalleryTestCase {
     }
 
     function testLoadItemIdFromPath() {
-	/* Setup.. */
+	
+
+
+/*  Setup..  */
+
+
+
 	list ($ret, $testAlbum) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;

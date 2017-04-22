@@ -25,7 +25,13 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20951 $
  */
-class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
+class WatermarkModule extends GalleryModule 
+
+
+/*  and GalleryEventListener  */
+
+
+ {
 
     function __construct() {
 	$this->WatermarkModule();
@@ -37,7 +43,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 	$this->setId('watermark');
 	$this->setName($gallery->i18n('Watermark'));
 	$this->setDescription($gallery->i18n('Watermark your images'));
-	$this->setVersion('2.0.0'); /* Update upgrade() too */
+	$this->setVersion('2.0.0'); 
+
+
+/*  Update upgrade() too  */
+
+
+
 	$this->_templateVersion = 1;
 	$this->setGroup('display', $gallery->i18n('Display'));
 	$this->setCallbacks('getSiteAdminViews|getUserAdminViews');
@@ -61,7 +73,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 
 	switch ($currentVersion) {
 	case '0':
-	    /* Initial install */
+	    
+
+
+/*  Initial install  */
+
+
+
 	    list ($success) = GalleryUtilities::guaranteeDirExists($watermarkDir);
 	    if (!$success) {
 		return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__,
@@ -86,7 +104,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 	case '0.8.8':
 	case '0.8.9':
 	case '0.9.1':
-	    /* Move watermark dir from g2data/ to g2data/plugins_data */
+	    
+
+
+/*  Move watermark dir from g2data/ to g2data/plugins_data  */
+
+
+
 	    $oldDir = $gallery->getConfig('data.gallery.base') . 'watermark' . $slash;
 	    if ($platform->is_dir($oldDir)) {
 		if (!$platform->rename($oldDir, $watermarkDir)) {
@@ -101,7 +125,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 		}
 	    }
 
-	    /* Update all derivatives that use watermarks */
+	    
+
+
+/*  Update all derivatives that use watermarks  */
+
+
+
 	    $query = "
 	    SELECT
 	      [GalleryDerivative::id]
@@ -111,7 +141,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 	      [GalleryDerivative::postFilterOperations] LIKE '%composite|watermark%'
 	    ";
 
-	    /* Do them 50 at a time to improve locking efficiency */
+	    
+
+
+/*  Do them 50 at a time to improve locking efficiency  */
+
+
+
 	    while (true) {
 		list ($ret, $searchResults) =
 		    $gallery->search($query, array(), array('limit' => array('count' => 50)));
@@ -120,7 +156,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 		}
 
 		if ($searchResults->resultCount() == 0) {
-		    /* We're done */
+		    
+
+
+/*  We're done  */
+
+
+
 		    break;
 		}
 
@@ -174,23 +216,59 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 	case '1.0.6':
 	case '1.0.7':
 	case '1.0.8':
-	    /* Adding dependency on getRewriteRule() changes */
+	    
+
+
+/*  Adding dependency on getRewriteRule() changes  */
+
+
+
 	case '1.0.9':
 	case '1.0.10':
 	case '1.1.0':
-	    /* .mo file migration */
+	    
+
+
+/*  .mo file migration  */
+
+
+
 	case '1.1.1':
 	case '1.1.2':
-	    /* Refactored to new event registration from core API 7.34 */
+	    
+
+
+/*  Refactored to new event registration from core API 7.34  */
+
+
+
 	case '1.1.3':
-	    /* Combined YUI libraries into a single file */
+	    
+
+
+/*  Combined YUI libraries into a single file  */
+
+
+
 	case '1.1.4':
-	    /* Require minimum core API 7.45 */
+	    
+
+
+/*  Require minimum core API 7.45  */
+
+
+
 	case '1.1.5':
 	case '1.1.6':
 	case '1.1.7':
 	case '1.1.8':
-	    /* Core API 8.0 & Module API 4.0 */
+	    
+
+
+/*  Core API 8.0 & Module API 4.0  */
+
+
+
 
 	case 'end of upgrade path':
 	    /*
@@ -228,7 +306,13 @@ class WatermarkModule extends GalleryModule /* and GalleryEventListener */ {
 	global $gallery;
 	GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 
-	/* Delete all watermarks and remove uses of them */
+	
+
+
+/*  Delete all watermarks and remove uses of them  */
+
+
+
 	$query = '
 	SELECT [WatermarkImage::id]
 	FROM [WatermarkImage]

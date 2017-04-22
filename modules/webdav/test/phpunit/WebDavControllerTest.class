@@ -33,7 +33,13 @@ class WebDavControllerTest extends GalleryControllerTestCase {
     }
 
     function testRequireAuthForAllRequestsByWindowsWebfolders() {
-	/* See bug 1645834 */
+	
+
+
+/*  See bug 1645834  */
+
+
+
 	$this->_becomeGuestUser();
 
 	foreach (array('Microsoft Data Access Internet Publishing Provider DAV foo bar',

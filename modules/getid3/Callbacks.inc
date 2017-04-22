@@ -42,22 +42,46 @@ class Getid3Callbacks {
 		return $ret;
 	    }
 	    if (!$hasPermission) {
-		/* Avoid information disclosure, act as if the item didn't exist. */
+		
+
+
+/*  Avoid information disclosure, act as if the item didn't exist.  */
+
+
+
 		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	    }
 
-	    /* Ensure Item is a data item */
+	    
+
+
+/*  Ensure Item is a data item  */
+
+
+
 	    if (!GalleryUtilities::isA($item, 'GalleryDataItem')) {
 		return null;
 	    }
 
-	    /* Feed the file to getid3 */
+	    
+
+
+/*  Feed the file to getid3  */
+
+
+
 	    list ($ret, $path) = $item->fetchPath();
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    /* Figure out which version we're looking at */
+	    
+
+
+/*  Figure out which version we're looking at  */
+
+
+
 	    $session =& $gallery->getSession();
 	    if (empty($mode)) {
 		$mode = $session->get('getid3.module.LoadGetid3Info.mode');

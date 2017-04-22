@@ -154,7 +154,13 @@ class MimeTest extends GalleryTestCase {
 	sort($exts);
 	$this->assertEquals(array('xxx', 'yyy'), $exts);
 
-	/* empty list (previously returned wrap(success),null if no mapping found) */
+	
+
+
+/*  empty list (previously returned wrap(success),null if no mapping found)  */
+
+
+
 	list ($ret, $exts) = GalleryCoreApi::convertMimeToExtensions('test/unmapped-mime');
 	if ($ret) {
 	    return $ret;
@@ -194,7 +200,13 @@ class MimeTest extends GalleryTestCase {
     }
 
     function testAddMimeTypeForLongMimeTypeString() {
-	/* See bug 1634796 */
+	
+
+
+/*  See bug 1634796  */
+
+
+
 	$mimeType = 'application/super.long.test.mime-type.test+html+application+test';
 	$ret = GalleryCoreApi::addMimeType('mimetest', $mimeType, 0);
 	if ($ret) {
