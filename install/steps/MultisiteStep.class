@@ -50,23 +50,11 @@ class MultisiteStep extends InstallStep {
 		$_SESSION['baseUri'] = getGalleryDirUrl()  . GALLERY_MAIN_PHP;
 		$this->setComplete(true);
 		$this->readConfigFile();
-		
-
-
-/*  Remember the value also for the storage and database setup steps  */
-
-
-
+		/* Remember the value also for the storage and database setup steps */
 		$galleryStub->setConfig('isMultisite', false);
 		$uri = preg_replace('{\?.*}', '', GalleryUrlGenerator::getCurrentRequestUri());
 		$uri .= '?step=' . ($this->getStepNumber() + 1);
-		
-
-
-/*  Cookieless browsing (see index.php), 'session.use_trans_sid' won't help here  */
-
-
-
+		/* Cookieless browsing (see index.php), 'session.use_trans_sid' won't help here */
 		if (!GallerySetupUtilities::areCookiesSupported()) {
 		    $uri .= sprintf('&%s=%s', session_name(), session_id());
 		}
@@ -178,13 +166,7 @@ class MultisiteStep extends InstallStep {
 	fwrite($out, "<?php\ndefine('GALLERY_CONFIG_DIR', dirname(dirname(__FILE__)));\nrequire('" .
 		     $galleryDir . 'upgrade' . DIRECTORY_SEPARATOR . "index.php');\n?>\n");
 	fclose($out);
-	
-
-
-/*  lib/support/index.php is optional; ignore errors  */
-
-
-
+	/* lib/support/index.php is optional; ignore errors */
 	if ((is_dir("$dir/lib") || mkdir("$dir/lib", 0755))
 		&& (is_dir("$dir/lib/support") || mkdir("$dir/lib/support", 0755))
 		&& $out = @fopen("$dir/lib/support/index.php", 'w')) {
@@ -197,13 +179,7 @@ class MultisiteStep extends InstallStep {
     }
 
     function readConfigFile() {
-	
-
-
-/*  Load existing config.php (if found), which requires $gallery to be valid  */
-
-
-
+	/* Load existing config.php (if found), which requires $gallery to be valid */
 	$configFile = $_SESSION['configPath'] . DIRECTORY_SEPARATOR . 'config.php';
 	$gallery = new GalleryStub();
 	if (@is_file($configFile) && is_readable($configFile)) {
@@ -212,24 +188,12 @@ class MultisiteStep extends InstallStep {
 	    ob_end_clean();
 	}
 	global $galleryStub;
-	
-
-
-/*  Copy config data from system checks step which will be used in the install log  */
-
-
-
+	/* Copy config data from system checks step which will be used in the install log */
 	$gallery->setConfig('systemchecks.fileintegrity',
 			    $galleryStub->getConfig('systemchecks.fileintegrity'));
 	$gallery->setConfig('systemchecks.issvninstall',
 			    $galleryStub->getConfig('systemchecks.issvninstall'));
-	
-
-
-/*  Replace galleryStub  */
-
-
-
+	/* Replace galleryStub */
 	$galleryStub = $gallery;
     }
 }

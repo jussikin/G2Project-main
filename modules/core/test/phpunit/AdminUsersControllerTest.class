@@ -52,13 +52,7 @@ class AdminUsersControllerTest extends GalleryControllerTestCase {
     }
 
     function testEditFromText() {
-	
-
-
-/*  Normal  */
-
-
-
+	/* Normal */
 	list ($ret, $user) = $this->_createUser();
 	if ($ret) {
 	    return $ret;
@@ -76,13 +70,7 @@ class AdminUsersControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Missing user name  */
-
-
-
+	/* Missing user name */
 	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][userName]');
 
@@ -93,13 +81,7 @@ class AdminUsersControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noUserSpecified]')),
 			    $results);
 
-	
-
-
-/*  Invalid user name  */
-
-
-
+	/* Invalid user name */
 	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][userName]',
 					     'some-invalid-user-name-'.rand());
@@ -113,13 +95,7 @@ class AdminUsersControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteFromText() {
-	
-
-
-/*  Normal  */
-
-
-
+	/* Normal */
 	list ($ret, $user) = $this->_createUser();
 	if ($ret) {
 	    return $ret;
@@ -137,13 +113,7 @@ class AdminUsersControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Missing user name  */
-
-
-
+	/* Missing user name */
 	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
 	GalleryUtilities::removeRequestVariable('form[text][userName]');
 
@@ -154,13 +124,7 @@ class AdminUsersControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][text][noUserSpecified]')),
 			    $results);
 
-	
-
-
-/*  Invalid user name  */
-
-
-
+	/* Invalid user name */
 	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
 	GalleryUtilities::putRequestVariable('form[text][userName]',
 					     'some-invalid-user-name-'.rand());

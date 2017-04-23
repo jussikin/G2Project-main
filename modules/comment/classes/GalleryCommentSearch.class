@@ -56,13 +56,7 @@ class GalleryCommentSearch extends GallerySearchInterface_1_0 {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  TODO: Update fetchAccessListIds to also accept an array of permission names  */
-
-
-
+	/* TODO: Update fetchAccessListIds to also accept an array of permission names */
 	list ($ret, $aclIds) = GalleryCoreApi::fetchAccessListIds('comment.view',
 								  $gallery->getActiveUserId());
 	if ($ret) {
@@ -134,13 +128,7 @@ class GalleryCommentSearch extends GallerySearchInterface_1_0 {
 	$data[] = '%' . $criteria . '%';
 	$data[] = COMMENT_PUBLISH_STATUS_PUBLISHED;
 
-	
-
-
-/*  Find the total  */
-
-
-
+	/* Find the total */
 	list ($ret, $results) = $gallery->search($countQuery, $data);
 	if ($ret) {
 	    return array($ret, null);

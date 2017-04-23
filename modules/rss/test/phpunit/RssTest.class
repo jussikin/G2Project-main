@@ -68,34 +68,16 @@ class RssTest extends GalleryTestCase {
     }
 
     function testDeleteItem() {
-	
-
-
-/*  The event listener is deactivated during unit tests, register it  */
-
-
-
+	/* The event listener is deactivated during unit tests, register it */
 	GalleryCoreApi::registerEventListener('GalleryEntity::delete', new RssModule());
 
-	
-
-
-/*  create an album  */
-
-
-
+	/* create an album */
 	list ($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  create a test feed  */
-
-
-
+	/* create a test feed */
 	$name = 'test'.rand();
 	$params = array('itemId' => $album->getId());
 	$ret = RssMapHelper::createFeed($name, $params);
@@ -103,33 +85,15 @@ class RssTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Delete album: deletes sub-item and aliases  */
-
-
-
+	/* Delete album: deletes sub-item and aliases */
 	$ret = GalleryCoreApi::deleteEntityById($album->getId(), 'GalleryAlbumItem');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  check that the feed has been deleted  */
-
-
-
+	/* check that the feed has been deleted */
 	list ($ret, $feed) = RssMapHelper::fetchFeed($name);
-	
-
-
-/*  we expect an error  */
-
-
-
+	/* we expect an error */
 	$this->assert($ret);
 	$this->assert($ret->getErrorCode(), ERROR_MISSING_OBJECT);
     }

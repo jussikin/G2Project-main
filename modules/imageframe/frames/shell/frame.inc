@@ -1,39 +1,15 @@
-<?php 
-
-
-/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
-
-
-
-  
-
-
-/*  Contributed by: floridave  */
-
-
-
+<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
+  /* Contributed by: floridave */
 $frameData = array(
 
 'name' => $gallery->i18n('Shells'),
 
-
-
-
-/*  Top Left  */
-
-
-
+/* Top Left */
 'imageTL' => 'TL.jpg',
 'widthTL' => 58,
 'heightTL' => 58,
 
-
-
-
-/*  Top  */
-
-
-
+/* Top */
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -43,24 +19,12 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-
-
-
-/*  Top Right  */
-
-
-
+/* Top Right */
 'imageTR' => 'TR.jpg',
 'widthTR' => 58,
 'heightTR' => 58,
 
-
-
-
-/*  Left  */
-
-
-
+/* Left */
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -70,13 +34,7 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-
-
-
-/*  Right  */
-
-
-
+/* Right */
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -86,24 +44,12 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-
-
-
-/*  Bottom Left  */
-
-
-
+/* Bottom Left */
 'imageBL' => 'BL.jpg',
 'widthBL' => 58,
 'heightBL' => 58,
 
-
-
-
-/*  Bottom  */
-
-
-
+/* Bottom */
 'imageBBL' => '',
 'widthBBL' => 0,
 
@@ -113,13 +59,7 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-
-
-
-/*  Bottom Right  */
-
-
-
+/* Bottom Right */
 'imageBR' => 'BR.jpg',
 'widthBR' => 58,
 'heightBR' => 58

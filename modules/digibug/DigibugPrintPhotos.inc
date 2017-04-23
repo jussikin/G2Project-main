@@ -64,13 +64,7 @@ class DigibugPrintPhotosView extends GalleryView {
 	    return $ret;
 	}
 	
-	
-
-
-/*  Load the necessary item data  */
-
-
-
+	/* Load the necessary item data */
 	$itemIds = array_keys($cartItemIds);
 	list ($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryPhotoItem');
 	if ($ret) {
@@ -83,13 +77,7 @@ class DigibugPrintPhotosView extends GalleryView {
 	}
 	foreach ($itemIds as $id) {
 	    if (empty($permissions[$id]['core.view'])) {
-		
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+		/* Avoid information disclosure, act as if the item didn't exist. */
 		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	    }
 	}
@@ -109,13 +97,7 @@ class DigibugPrintPhotosView extends GalleryView {
 	    return $ret;
 	}
 
-	
-
-
-/*  We want to know which are viewable to guests  */
-
-
-
+	/* We want to know which are viewable to guests */
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -127,25 +109,13 @@ class DigibugPrintPhotosView extends GalleryView {
 	    return $ret;
 	}
 
-	
-
-
-/*  Assemble all our data  */
-
-
-
+	/* Assemble all our data */
 	$i = 1;
 	$entries = $protectedIds = array();
 	foreach ($items as $item) {
 	    $itemId = $item->getId();
 	    if (!isset($permissions[$itemId]['digibug.print'])) {
-		
-
-
-/*  Skip any cart items for which we don't have print permission  */
-
-
-
+		/* Skip any cart items for which we don't have print permission */
 		continue;
 	    }
 
@@ -181,13 +151,7 @@ class DigibugPrintPhotosView extends GalleryView {
 	    $entry['imageHeight'] = $source->getHeight();
 
 	    if (!isset($thumbnails[$itemId]) || $thumbnails[$itemId]->getPostFilterOperations()) {
-		
-
-
-/*  Use the source if the thumbnail has a postfilter (like a watermark)  */
-
-
-
+		/* Use the source if the thumbnail has a postfilter (like a watermark) */
 		$thumbSource = $source;
 	    } else {
 		$thumbSource = $thumbnails[$itemId];
@@ -208,13 +172,7 @@ class DigibugPrintPhotosView extends GalleryView {
 	    }
 	}
 	if (isset($dgSession)) {
-	    
-
-
-/*  Mark this session so that it can be treated specially  */
-
-
-
+	    /* Mark this session so that it can be treated specially */
 	    $dgSession->put('core.isPrintService', $protectedIds);
 
 	    /*
@@ -235,13 +193,7 @@ class DigibugPrintPhotosView extends GalleryView {
 	 * render a form and submit it.. here we set our own cookie that will be
 	 * checked to ensure we submit our form only once.
 	 */
-	if (!headers_sent() 
-
-
-/*  Should only skip cookie in unit test  */
-
-
-) {
+	if (!headers_sent() /* Should only skip cookie in unit test */) {
 	    setcookie('G2_digibug', '1');
 	    header("Content-type: text/html; charset=UTF-8");
 	}

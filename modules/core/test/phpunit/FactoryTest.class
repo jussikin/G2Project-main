@@ -232,13 +232,7 @@ class FactoryTest extends GalleryTestCase {
     function testInactiveModule() {
 	global $gallery;
 
-	
-
-
-/*  Deactivate FactoryTestModule  */
-
-
-
+	/* Deactivate FactoryTestModule */
 	$ret = GalleryCoreApi::deactivatePlugin('module', 'factoryTest');
 	if ($ret) {
 	    return $ret;
@@ -266,13 +260,7 @@ class FactoryTest extends GalleryTestCase {
 			    $ids,
 			    'getAllFactoryImplementationIds');
 
-	
-
-
-/*  Deactivate the other factory test module also  */
-
-
-
+	/* Deactivate the other factory test module also */
 	$ret = GalleryCoreApi::deactivatePlugin('module', 'factoryTest2');
 	if ($ret) {
 	    return $ret;

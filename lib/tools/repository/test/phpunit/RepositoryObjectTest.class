@@ -42,22 +42,10 @@ class RepositoryObjectTest extends GalleryTestCase {
 	$object = new RepositoryObject();
 
 	$platform = new UnitTestPlatform();
-	
-
-
-/*  Test an invalid directory.  */
-
-
-
+	/* Test an invalid directory. */
 	$platform->setReply('is_dir', array('invalidDirectory'), false);
 
-	
-
-
-/*  Test setting a valid directory.  */
-
-
-
+	/* Test setting a valid directory. */
 	$platform->setReply('is_dir', array('validDirectory'), true);
 	$platform->setReply('realpath', array('validDirectory'), 'validDirectory');
 	$gallery->setPlatform($platform);
@@ -68,13 +56,7 @@ class RepositoryObjectTest extends GalleryTestCase {
 	$ret = $object->setOutputDir('validDirectory');
 	$this->assert(!$ret, 'Error returned on a valid directory.');
 
-	
-
-
-/*  Output directory should always end with a directory separator.  */
-
-
-
+	/* Output directory should always end with a directory separator. */
 	$this->assert(preg_match('/\/$/', $object->getOutputDir()),
 	    'Directory separator not appended to output directory path.');
 
@@ -104,26 +86,14 @@ class RepositoryObjectTest extends GalleryTestCase {
 	    true);
 	$gallery->setPlatform($platform);
 
-	
-
-
-/*  Test that an existing file is not overwritten by default.  */
-
-
-
+	/* Test that an existing file is not overwritten by default. */
 	$ret = $object->writeToDisk();
 	if ($ret) {
 	    return ($ret);
 	}
 	$this->assert(!$object->wasFileWritten(), 'Existing file overwritten.');
 
-	
-
-
-/*  Test overwriting an existing file with a template variable contents.  */
-
-
-
+	/* Test overwriting an existing file with a template variable contents. */
 	$object->setTemplate(new RepositoryTestTemplate('', $templateVariableContents));
 	$ret = $object->writeToDisk(true);
 	if ($ret) {
@@ -131,13 +101,7 @@ class RepositoryObjectTest extends GalleryTestCase {
 	}
 	$this->assert($object->wasFileWritten(), 'Existing file not overwritten.');
 
-	
-
-
-/*  Test overwriting an existing file with a processed template.  */
-
-
-
+	/* Test overwriting an existing file with a processed template. */
 	$object->setTemplate(new RepositoryTestTemplate($processedTemplateContents));
 	$object->setTemplateFile('test.tpl');
 	$ret = $object->writeToDisk(true);

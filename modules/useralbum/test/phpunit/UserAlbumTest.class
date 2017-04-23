@@ -38,13 +38,7 @@ class UserAlbumTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Enable event listener (normally disabled for unit tests)  */
-
-
-
+	/* Enable event listener (normally disabled for unit tests) */
 	$this->_registerEventListener('GalleryEntity::save', new UserAlbumModule());
 	$this->_registerEventListener('GalleryEntity::delete', new UserAlbumModule());
 	$this->_registerEventListener('Gallery::Login', new UserAlbumModule());
@@ -99,38 +93,20 @@ class UserAlbumTest extends GalleryTestCase {
     function testUserAlbum() {
 	global $gallery;
 
-	
-
-
-/*  Create new user..  */
-
-
-
+	/* Create new user.. */
 	list ($ret, $user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($user);
 
-	
-
-
-/*  Retrieve the parent album's logical path  */
-
-
-
+	/* Retrieve the parent album's logical path */
 	list ($ret, $parentPath) = $this->_parentAlbum->fetchLogicalPath();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify user's album was created..  */
-
-
-
+	/* Verify user's album was created.. */
 	list ($ret, $albumId) =
 	    GalleryCoreApi::fetchItemIdByPath($parentPath . '/' . $user->getUserName());
 	if ($ret) {
@@ -143,13 +119,7 @@ class UserAlbumTest extends GalleryTestCase {
 	$this->assert(GalleryUtilities::isA($album, 'GalleryAlbumItem'), 'album');
 	$this->assertEquals($user->getId(), $album->getOwnerId(), 'owner');
 
-	
-
-
-/*  Verify permissions..  */
-
-
-
+	/* Verify permissions.. */
 	list ($ret, $permissions) = GalleryCoreApi::fetchAllPermissionsForItem($albumId);
 	if ($ret) {
 	    return $ret;
@@ -177,26 +147,14 @@ class UserAlbumTest extends GalleryTestCase {
 	}
 	$this->assert($hasCoreAll, 'core.all permission not granted to album owner');
 
-	
-
-
-/*  Create a subalbum..  */
-
-
-
+	/* Create a subalbum.. */
 	list ($ret, $subalbum) =
 	    $this->_createRandomAlbum($albumId, array('ownerId' => $user->getId()));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify login redirect..  */
-
-
-
+	/* Verify login redirect.. */
 	$event = GalleryCoreApi::newEvent('Gallery::Login');
 	$event->setEntity($user);
 	list ($ret, $result) = GalleryCoreApi::postEvent($event);
@@ -211,13 +169,7 @@ class UserAlbumTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify no login redirect..  */
-
-
-
+	/* Verify no login redirect.. */
 	$event = GalleryCoreApi::newEvent('Gallery::Login');
 	$event->setEntity($user);
 	list ($ret, $result) = GalleryCoreApi::postEvent($event);
@@ -226,13 +178,7 @@ class UserAlbumTest extends GalleryTestCase {
 	}
 	$this->assertEquals(array(), $result, 'no login redirect');
 
-	
-
-
-/*  Verify system link..  */
-
-
-
+	/* Verify system link.. */
 	$gallery->setActiveUser($user);
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'useralbum');
 	if ($ret) {
@@ -251,13 +197,7 @@ class UserAlbumTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify no system link..  */
-
-
-
+	/* Verify no system link.. */
 	list ($ret, $links) = $module->getSystemLinks();
 	if ($ret) {
 	    return $ret;
@@ -333,13 +273,7 @@ class UserAlbumTest extends GalleryTestCase {
 	$userString = 'useralbum-' . rand();
 	$userName = 'testuser-' . $userString;
 
-	
-
-
-/*  Create album that will collide..  */
-
-
-
+	/* Create album that will collide.. */
 	list ($ret, $album) = $this->_createRandomAlbum($this->_parentAlbum->getId());
 	if ($ret) {
 	    return $ret;
@@ -354,26 +288,14 @@ class UserAlbumTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create new user..  */
-
-
-
+	/* Create new user.. */
 	list ($ret, $user) = $this->_createRandomUser($userString);
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($user);
 
-	
-
-
-/*  Verify user's album was created with uniquified path..  */
-
-
-
+	/* Verify user's album was created with uniquified path.. */
 	list ($ret, $albumId) =
 	    GalleryCoreApi::fetchItemIdByPath($parentPath . '/' . $user->getUserName() . '_');
 	if ($ret) {

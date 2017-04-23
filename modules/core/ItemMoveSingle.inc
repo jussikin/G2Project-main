@@ -64,13 +64,7 @@ class ItemMoveSingleController extends GalleryController {
 		    return array($ret, null);
 		}
 		if (!$canView) {
-		    
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+		    /* Avoid information disclosure, act as if the item didn't exist. */
 		    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 		if (GalleryUtilities::isA($item, 'GalleryDataItem')) {
@@ -86,25 +80,13 @@ class ItemMoveSingleController extends GalleryController {
 			return array($ret, null);
 		    }
 		} else {
-		    
-
-
-/*  The view should never let this happen  */
-
-
-
+		    /* The view should never let this happen */
 		    return array(GalleryCoreApi::error(ERROR_BAD_DATA_TYPE),
 				 null);
 		}
 	    }
 
-	    
-
-
-/*  Make sure the destination is the right type of item  */
-
-
-
+	    /* Make sure the destination is the right type of item */
 	    if (empty($error)) {
 		list ($ret, $newParent) =
 		    GalleryCoreApi::loadEntitiesById($newParentId, 'GalleryAlbumItem');
@@ -113,13 +95,7 @@ class ItemMoveSingleController extends GalleryController {
 		}
 	    }
 
-	    
-
-
-/*  Make sure we don't have recursive moves  */
-
-
-
+	    /* Make sure we don't have recursive moves */
 	    if (empty($error)) {
 		list ($ret, $newParentAncestorIds) =
 		    GalleryCoreApi::fetchParentSequence($newParentId);
@@ -156,39 +132,21 @@ class ItemMoveSingleController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Write lock the item we're moving  */
-
-
-
+		/* Write lock the item we're moving */
 		list ($ret, $lockIds[]) = GalleryCoreApi::acquireWriteLock($itemId);
 		if ($ret) {
 		    GalleryCoreApi::releaseLocks($lockIds);
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Refresh the item in case it changed before it was locked  */
-
-
-
+		/* Refresh the item in case it changed before it was locked */
 		list ($ret, $item) = $item->refresh();
 		if ($ret) {
 		    GalleryCoreApi::releaseLocks($lockIds);
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Do the move  */
-
-
-
+		/* Do the move */
 		$ret = $item->move($newParentId);
 		if ($ret) {
 		    GalleryCoreApi::releaseLocks($lockIds);
@@ -202,13 +160,7 @@ class ItemMoveSingleController extends GalleryController {
 		}
 
 		if (GalleryUtilities::isA($item, 'GalleryDataItem')) {
-		    
-
-
-/*  Update for derivative preferences of new parent  */
-
-
-
+		    /* Update for derivative preferences of new parent */
 		    $ret = GalleryCoreApi::addExistingItemToAlbum($item, $newParentId);
 		    if ($ret) {
 			GalleryCoreApi::releaseLocks($lockIds);
@@ -216,25 +168,13 @@ class ItemMoveSingleController extends GalleryController {
 		    }
 		}
 
-		
-
-
-/*  Release all locks  */
-
-
-
+		/* Release all locks */
 		$ret = GalleryCoreApi::releaseLocks($lockIds);
 		if ($ret) {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Fix thumbnail integrity  */
-
-
-
+		/* Fix thumbnail integrity */
 		list ($ret, $success) = GalleryCoreApi::guaranteeAlbumHasThumbnail($oldParentId);
 		if ($ret) {
 		    return array($ret, null);
@@ -242,13 +182,7 @@ class ItemMoveSingleController extends GalleryController {
 
 		$status['moved'] = 1;
 
-		
-
-
-/*  Figure out where to redirect upon success  */
-
-
-
+		/* Figure out where to redirect upon success */
 		$redirect['view'] = 'core.ItemAdmin';
 		$redirect['subView'] = 'core.ItemMoveSingle';
 		$redirect['itemId'] = $itemId;
@@ -281,13 +215,7 @@ class ItemMoveSingleView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	
-
-
-/*  itemId is the album where we want to move items from  */
-
-
-
+	/* itemId is the album where we want to move items from */
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
@@ -295,13 +223,7 @@ class ItemMoveSingleView extends GalleryView {
 	$itemId = $item->getId();
 
 	if ($form['formName'] != 'ItemMoveSingle') {
-	    
-
-
-/*  First time around, load the form with item data  */
-
-
-
+	    /* First time around, load the form with item data */
 	    $form['destination'] = '';
 	    $form['formName'] = 'ItemMoveSingle';
 	}
@@ -315,25 +237,13 @@ class ItemMoveSingleView extends GalleryView {
 	}
 	$permissions = array($permissions, 'core.view');
 
-	
-
-
-/*  Get ids of all all albums where we can add this items  */
-
-
-
+	/* Get ids of all all albums where we can add this items */
 	list ($ret, $albumIds) = GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', $permissions);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load all the album entities  */
-
-
-
+	/* Load all the album entities */
 	list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);

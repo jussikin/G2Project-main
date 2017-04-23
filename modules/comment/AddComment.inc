@@ -46,13 +46,7 @@ class AddCommentController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	
-
-
-/*  Make sure we have permission to add a comment  */
-
-
-
+	/* Make sure we have permission to add a comment */
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'comment.add');
 	if ($ret) {
 	    return array($ret, null);
@@ -80,13 +74,7 @@ class AddCommentController extends GalleryController {
 		$error[] = 'form[error][comment][missing]';
 	    }
 
-	    
-
-
-/*  Check for flooding - don't allow more than 1 comment every 30 seconds  */
-
-
-
+	    /* Check for flooding - don't allow more than 1 comment every 30 seconds */
 	    list ($ret, $commentTime) = GalleryCommentHelper::getLatestCommentTime(
 		GalleryUtilities::getRemoteHostAddress());
 	    if ($ret) {
@@ -122,13 +110,7 @@ class AddCommentController extends GalleryController {
 		    }
 		}
 
-		
-
-
-/*  Let each plugin do its verification  */
-
-
-
+		/* Let each plugin do its verification */
 		foreach ($pluginInstances as $plugin) {
 		    list ($ret, $pluginErrors, $continue) = $plugin->performValidation($form);
 		    if ($ret) {
@@ -143,13 +125,7 @@ class AddCommentController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Add the comment  */
-
-
-
+		/* Add the comment */
 		list ($ret, $comment) =
 		    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');
 		if ($ret) {
@@ -172,13 +148,7 @@ class AddCommentController extends GalleryController {
 		    return array($ret, null);
 		}
 		if ($markup == 'html') {
-		    
-
-
-/*  Strip malicious content if html markup allowed  */
-
-
-
+		    /* Strip malicious content if html markup allowed */
 		    $form['author'] = GalleryUtilities::htmlSafe($form['author'], true);
 		    $form['subject'] = GalleryUtilities::htmlSafe($form['subject'], true);
 		    $form['comment'] = GalleryUtilities::htmlSafe($form['comment'], true);
@@ -196,13 +166,7 @@ class AddCommentController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Send the user to a confirmation page, for now  */
-
-
-
+		/* Send the user to a confirmation page, for now */
 		$redirect['view'] = 'comment.CommentChangeConfirmation';
 		$redirect['itemId'] = (int)$itemId;
 		$status['added'] = 1;
@@ -220,32 +184,14 @@ class AddCommentController extends GalleryController {
 		$error[] = 'form[error][comment][missing]';
 	    }
 
-	    
-
-
-/*  Fall through back to the current view  */
-
-
-
+	    /* Fall through back to the current view */
 	} else if (isset($form['action']['cancel'])) {
-	    
-
-
-/*  Where to go on a cancel?  Back to viewing the item.  */
-
-
-
+	    /* Where to go on a cancel?  Back to viewing the item. */
 	    $redirect['view'] = 'core.ShowItem';
 	    $redirect['itemId'] = (int)$itemId;
 	}
 
-	
-
-
-/*  Prepare our results  */
-
-
-
+	/* Prepare our results */
 	if (!empty($redirect)) {
 	    $results['redirect'] = $redirect;
 	} else {
@@ -269,13 +215,7 @@ class AddCommentView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class');
 
-	
-
-
-/*  Load our item  */
-
-
-
+	/* Load our item */
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);

@@ -25,13 +25,7 @@
  * @author Ioana Ciocanescu <service@fotokasten.de>
  * @version $Revision: 17580 $
  */
-class FotokastenCartPlugin 
-
-
-/*  implements CartPluginInterface_1_0 and CartPluginInterface_1_1  */
-
-
- {
+class FotokastenCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInterface_1_1 */ {
     /**
      * @see CartPluginInterface_1_0::getSupportedItemTypes
      */

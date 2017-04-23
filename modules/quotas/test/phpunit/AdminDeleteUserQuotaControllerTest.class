@@ -39,13 +39,7 @@ class AdminDeleteUserQuotaControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a user that we can delete  */
-
-
-
+	/* Create a user that we can delete */
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -81,13 +75,7 @@ class AdminDeleteUserQuotaControllerTest extends GalleryControllerTestCase {
 			    $results,
 			    'Failed to delete user quota');
 
-	
-
-
-/*  Verify the user quota is gone  */
-
-
-
+	/* Verify the user quota is gone */
 	list ($ret, $quotaExists, $quota) =
 	    GalleryQuotasHelper::fetchUserQuota($this->_user->getId());
 	if ($quotaExists) {

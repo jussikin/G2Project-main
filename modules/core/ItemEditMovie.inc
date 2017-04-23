@@ -36,22 +36,10 @@ class ItemEditMovie extends ItemEditPlugin {
 	$status = null;
 	$error = array();
 
-	
-
-
-/*  Figure out which command we're taking  */
-
-
-
+	/* Figure out which command we're taking */
 	if (isset($form['action']['save'])) {
 
-	    
-
-
-/*  Missing values get set to 0  */
-
-
-
+	    /* Missing values get set to 0 */
 	    if (isset($form['width']) && $form['width'] < 0) {
 		$error[] = 'form[error][width][invalid]';
 	    } else {
@@ -90,13 +78,7 @@ class ItemEditMovie extends ItemEditPlugin {
 		    return array($ret, null, null, null);
 		}
 
-		
-
-
-/*  Prepare our status message  */
-
-
-
+		/* Prepare our status message */
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 		    return array($ret, null, null, null);
@@ -116,13 +98,7 @@ class ItemEditMovie extends ItemEditPlugin {
 	global $gallery;
 
 	if ($form['formName'] != 'ItemEditMovie') {
-	    
-
-
-/*  First time around, load the form with item data  */
-
-
-
+	    /* First time around, load the form with item data */
 	    $form['width'] = $item->getWidth();
 	    $form['height'] = $item->getHeight();
 	    $form['formName'] = 'ItemEditMovie';

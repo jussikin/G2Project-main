@@ -257,13 +257,7 @@ class CoreModuleTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Clean up  */
-
-
-
+	/* Clean up */
 	$ret = GalleryCoreApi::removePluginParameter('module', 'core', $key);
 	if ($ret) {
 	    return $ret;

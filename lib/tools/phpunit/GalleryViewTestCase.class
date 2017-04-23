@@ -54,13 +54,7 @@ class GalleryViewTestCase extends GalleryTestCase {
     }
 
     function loadTemplate($errorCode=null) {
-	
-
-
-/*  Get our form variables  */
-
-
-
+	/* Get our form variables */
 	$form = GalleryUtilities::getFormVariables('form');
 	if (!isset($form['formName'])) {
 	    $form['formName'] = '';
@@ -84,13 +78,7 @@ class GalleryViewTestCase extends GalleryTestCase {
 	    $this->fail($ret->getAsHtml());
 	    return array();
 	} else {
-	    
-
-
-/*  Check to make sure we got back everything we want  */
-
-
-
+	    /* Check to make sure we got back everything we want */
 	    $this->assert(isset($results['body']) || isset($results['redirect']),
 		'view results neither specify a body nor a redirect');
 	}

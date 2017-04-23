@@ -134,13 +134,7 @@ class SetupRewriteView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Make sure the module is not yet active  */
-
-
-
+	/* Make sure the module is not yet active */
 	list ($ret, $rewrite) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 	if ($ret) {
 	    return array($ret, null);
@@ -161,13 +155,7 @@ class SetupRewriteView extends GalleryView {
 	}
 
 	if (isset($rewriteParser)) {
-	    
-
-
-/*  Error handeling for defined (numeric) REWRITE_STATUS_* errors  */
-
-
-
+	    /* Error handeling for defined (numeric) REWRITE_STATUS_* errors */
 	    $errors = array();
 	    if (isset($form['error'])) {
 		foreach ($form['error'] as $errno => $tmp) {

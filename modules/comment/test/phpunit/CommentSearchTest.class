@@ -76,13 +76,7 @@ class CommentSearchTest extends GalleryTestCase {
 
 	    $this->_markForCleanup($this->_item[$j]);
 
-	    
-
-
-/*  Create 3 comments.  The 3rd one is unpublished.  */
-
-
-
+	    /* Create 3 comments.  The 3rd one is unpublished. */
 	    for ($i = 0; $i < 3; $i++) {
 		list ($ret, $this->_comment[$j][$i]) =
 		    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');

@@ -104,13 +104,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 			    $results);
 
 
-	
-
-
-/*  Verify the watermark exists  */
-
-
-
+	/* Verify the watermark exists */
 	list ($ret, $map) = $this->_fetchWatermarkMapByFilename();
 	if ($ret) {
 	    return $ret;
@@ -131,13 +125,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteWatermark() {
-	
-
-
-/*  Create a watermark (it'll be created as our active user)  */
-
-
-
+	/* Create a watermark (it'll be created as our active user) */
 	$watermark = new WatermarkImage();
 	$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
 	if ($ret) {
@@ -166,13 +154,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteWatermarkInUse() {
-	
-
-
-/*  Create a watermark (it'll be created as our active user)  */
-
-
-
+	/* Create a watermark (it'll be created as our active user) */
 	$watermark = new WatermarkImage();
 	$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
 	if ($ret) {
@@ -184,13 +166,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use this watermark  */
-
-
-
+	/* Use this watermark */
 	list ($ret, $item) = $this->_createRandomDataItem($this->_getRootId());
 	if ($ret) {
 	    return $ret->wrap($ret);
@@ -204,13 +180,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Try to delete it  */
-
-
-
+	/* Try to delete it */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', $watermark->getId());
 
@@ -222,13 +192,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results, 'Confirm Delete');
 
-	
-
-
-/*  Verify that it's NOT gone  */
-
-
-
+	/* Verify that it's NOT gone */
 	$ret = $this->_verifyEntity($watermark);
 	if ($ret) {
 	    return $ret;
@@ -236,25 +200,13 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
     }
 
     function testIllegalDeleteWatermark() {
-	
-
-
-/*  valid, but illegal  */
-
-
-
+	/* valid, but illegal */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', 1);
 
 	$results = $this->handleRequest(ERROR_MISSING_OBJECT);
 
-	
-
-
-/*  invalid and illegal  */
-
-
-
+	/* invalid and illegal */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', 123456789);
 
@@ -287,13 +239,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 			    $results);
 
 
-	
-
-
-/*  Verify the watermark exists  */
-
-
-
+	/* Verify the watermark exists */
 	list ($ret, $map) = $this->_fetchWatermarkMapByFilename();
 	if ($ret) {
 	    return $ret;
@@ -308,13 +254,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  We're expecting the same name, but the . changed to _ in the file extension  */
-
-
-
+	/* We're expecting the same name, but the . changed to _ in the file extension */
 	$this->assertEquals($expectedName, basename($path));
     }
 
@@ -322,13 +262,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Start with admin user..  */
-
-
-
+	/* Start with admin user.. */
 	$gallery->setActiveUser($this->_saveUser);
 
 	$dataFile = GalleryCoreApi::getCodeBasePath('modules/core/test/data/test1.gif');
@@ -352,26 +286,14 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results, 'Add first watermark');
 
-	
-
-
-/*  Verify the watermark exists  */
-
-
-
+	/* Verify the watermark exists */
 	list ($ret, $map) = $this->_fetchWatermarkMapByFilename();
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assert(isset($map[$expectedName]), 'First watermark not added');
 
-	
-
-
-/*  Now change active user and add watermark with same filename..  */
-
-
-
+	/* Now change active user and add watermark with same filename.. */
 	$gallery->setActiveUser($this->_user);
 	$expectedName = '_' . $expectedName;
 
@@ -384,13 +306,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results, 'Add second watermark');
 
-	
-
-
-/*  Verify the watermark exists  */
-
-
-
+	/* Verify the watermark exists */
 	list ($ret, $map) = $this->_fetchWatermarkMapByFilename();
 	if ($ret) {
 	    return $ret;

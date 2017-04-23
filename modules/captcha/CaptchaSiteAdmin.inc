@@ -42,23 +42,11 @@ class CaptchaSiteAdminController extends GalleryController {
 	if (isset($form['action']['save'])) {
 	    if (!isset($form['failedAttemptThreshold']) ||
 		    !is_numeric($form['failedAttemptThreshold'])) {
-		
-
-
-/*  We don't allow free-form input in the HTML, so this should never happen.  */
-
-
-
+		/* We don't allow free-form input in the HTML, so this should never happen. */
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
 
-	    
-
-
-/*  Make sure that we're between 0 and 5, then store the value  */
-
-
-
+	    /* Make sure that we're between 0 and 5, then store the value */
 	    $form['failedAttemptThreshold'] = min($form['failedAttemptThreshold'], 5);
 	    $form['failedAttemptThreshold'] = max($form['failedAttemptThreshold'], 0);
 	    $ret = GalleryCoreApi::setPluginParameter(
@@ -67,13 +55,7 @@ class CaptchaSiteAdminController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Save configuration for other modules  */
-
-
-
+	    /* Save configuration for other modules */
 	    if (!empty($form['level'])) {
 		list ($ret, $optionInstances) = CaptchaAdminOption::getAllOptions();
 		if ($ret) {
@@ -134,13 +116,7 @@ class CaptchaSiteAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load our default values if we didn't just come from this form.  */
-
-
-
+	/* Load our default values if we didn't just come from this form. */
 	if ($form['formName'] != 'CaptchaSiteAdmin') {
 	    $form['formName'] = 'CaptchaSiteAdmin';
 
@@ -151,13 +127,7 @@ class CaptchaSiteAdminView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Load admin options  */
-
-
-
+	/* Load admin options */
 	list ($ret, $optionInstances) = CaptchaAdminOption::getAllOptions();
 	if ($ret) {
 	    return array($ret, null);

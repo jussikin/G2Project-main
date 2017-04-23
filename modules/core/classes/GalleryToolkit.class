@@ -88,21 +88,9 @@ class GalleryToolkit {
     function applyTransform($transformOperation, $targetOperations, $reverse=false) {
 	$transformedOperations = $targetOperations;
 
-	
-
-
-/*  Right now, only the rotate operation will cause issues  */
-
-
-
+	/* Right now, only the rotate operation will cause issues */
 	if (!strncmp($transformOperation, 'rotate', 6)) {
-	    
-
-
-/*  And it will only cause issues to the crop operation  */
-
-
-
+	    /* And it will only cause issues to the crop operation */
 	    if (strstr($targetOperations, 'crop|') !== false) {
 		$rotationAmount = substr($transformOperation, 7);
 		if ($reverse) {
@@ -155,13 +143,7 @@ class GalleryToolkit {
 			    break;
 
 			default:
-			    
-
-
-/*  What do we do now?  Do nothing.  */
-
-
-
+			    /* What do we do now?  Do nothing. */
 			    $newX = $x;
 			    $newY = $y;
 			    $newWidth = $width;
@@ -199,21 +181,9 @@ class GalleryToolkit {
      *                $mergedArgs)
      */
     function mergeOperations($operation1, $args1, $operation2, $args2) {
-	
-
-
-/*  We can only merge like operations  */
-
-
-
+	/* We can only merge like operations */
 	if ($operation1 != $operation2) {
-	    
-
-
-/*  But not all like operations have the same name  */
-
-
-
+	    /* But not all like operations have the same name */
 	    $likeOperations = array('resize', 'scale', 'thumbnail');
 	    if (!(in_array($operation1, $likeOperations)
 		    && in_array($operation2, $likeOperations))) {
@@ -226,33 +196,15 @@ class GalleryToolkit {
 	case 'resize':
 	case 'scale':
 	case 'thumbnail':
-	    
-
-
-/*  For like operations, the second operation takes precedence  */
-
-
-
+	    /* For like operations, the second operation takes precedence */
 	    return array(true, $operation2, $args2);
 	    break;
 
 	case 'rotate':
-	    
-
-
-/*  Rotation is additive  */
-
-
-
+	    /* Rotation is additive */
 	    $rotation = (360 + $args1[0] + $args2[0]) % 360;
 
-	    
-
-
-/*  0 rotation means the operation goes away  */
-
-
-
+	    /* 0 rotation means the operation goes away */
 	    if ($rotation == 0) {
 		return array(true, null, null);
 	    }

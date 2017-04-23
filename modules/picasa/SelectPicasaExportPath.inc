@@ -36,13 +36,7 @@ class SelectPicasaExportPathController extends GalleryController {
     function handleRequest($form) {
 	global $gallery;
 
-	
-
-
-/*  Verify that active user is an admin  */
-
-
-
+	/* Verify that active user is an admin */
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
@@ -119,13 +113,7 @@ class SelectPicasaExportPathView extends GalleryView {
 	    $form['destinationAlbumId'] = '';
 	}
 
-	
-
-
-/*  Load our recent paths from the session  */
-
-
-
+	/* Load our recent paths from the session */
 	$session =& $gallery->getSession();
 	$recentPaths = $session->get('picasa.view.SelectPicasaExportPath.recentPaths');
 
@@ -145,26 +133,14 @@ class SelectPicasaExportPathView extends GalleryView {
 		break;
 	    }
 	}
-	
-
-
-/*  Get ids of all all albums where we can add new album items  */
-
-
-
+	/* Get ids of all all albums where we can add new album items */
 	list ($ret, $albumIds) =
 	    GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load all the album entities  */
-
-
-
+	/* Load all the album entities */
 	list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);

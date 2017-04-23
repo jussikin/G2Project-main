@@ -106,31 +106,13 @@ class CodeAuditTest extends CodeAuditTestCase {
 
 	$this->_lineEnding = $platform->getLineEnding();
 
-	
-
-
-/*  Windows CVS appends a CRLF after ?>, so allow for it  */
-
-
-
+	/* Windows CVS appends a CRLF after ?>, so allow for it */
 	$this->_phpEndFile = '/\?>(' . $this->_lineEnding . ')?$/';
 
-	
-
-
-/*  Use top comment of this file itself as our canonical preamble  */
-
-
-
+	/* Use top comment of this file itself as our canonical preamble */
 	$this->_preamble = $this->getPreamble(file(__FILE__));
 
-	
-
-
-/*  Turn the preamble into a pattern that we can use to match  */
-
-
-
+	/* Turn the preamble into a pattern that we can use to match */
 	$pattern = implode('NEWLINE PLACEHOLDER', $this->_preamble);
 	$pattern = str_replace('?', '\?', $pattern);
 	$pattern = str_replace('*', '\*', $pattern);
@@ -155,13 +137,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 	$dir2 = dirname($dir1);
 	$base3 = basename($dir2);
 
-	
-
-
-/*  Skip generated Maps / Entities files  */
-
-
-
+	/* Skip generated Maps / Entities files */
 	if ($base2 == 'classes' && in_array($base1, array('Entities.inc', 'Maps.inc'))) {
 	    return false;
 	}
@@ -169,13 +145,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 	$dir3 = dirname($dir2);
 	$base4 = basename($dir3);
 
-	
-
-
-/*  Skip known embedded 3rd party libs  */
-
-
-
+	/* Skip known embedded 3rd party libs */
 	if (($base4 == 'lib' && $base3 == 'exifer')
 		|| ($base3 == 'lib' && $base2 == 'exifer')) {
 	    return false;
@@ -216,13 +186,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 	    $this->assert(false, sprintf('%s has Windows line endings', $fileName));
 	}
 	if (substr($fileName, -4) == '.tpl' || substr($fileName, -3) == '.po') {
-	    
-
-
-/*  For tpl and po files only perform newlines check  */
-
-
-
+	    /* For tpl and po files only perform newlines check */
 	    return;
 	}
 
@@ -267,13 +231,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 		$returnTable[$currentFunction][] = preg_replace('/^return\s+/', '', $return);
 	    }
 
-	    
-
-
-/*  Check that Session, UrlGenerator and Platform are always accessed by-reference  */
-
-
-
+	    /* Check that Session, UrlGenerator and Platform are always accessed by-reference */
 	    if (preg_match_all('/= *\$gallery->get(Session|UrlGenerator|Platform)/',
 			       $lines[$i], $matches)) {
 		foreach (array_unique($matches[1]) as $item) {
@@ -294,13 +252,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 			continue;
 		    }
 
-		    
-
-
-/*  It's ok if it's inside a debug statement  */
-
-
-
+		    /* It's ok if it's inside a debug statement */
 		    if (preg_match("/gallery->debug(|_r)\(.*$item.*\)/", $lines[$i])) {
 			continue;
 		    }
@@ -332,13 +284,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 	    }
 	}
 
-	
-
-
-/*  Examine the return table for discrepancies  */
-
-
-
+	/* Examine the return table for discrepancies */
 	$returnMismatch = array();
 	foreach ($returnTable as $function => $returns) {
 	    if (isset($this->_exception['returns'][$fileName][$function])) {
@@ -392,13 +338,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 		}
 	    }
 
-	    
-
-
-/*  Find the first non-function and compare it to every other non-function  */
-
-
-
+	    /* Find the first non-function and compare it to every other non-function */
 	    $compare = false;
 	    for ($i = 0; $i < count($returnCount[$function]); $i++) {
 		if ($returnCount[$function][$i][0] != 'function') {
@@ -423,13 +363,7 @@ class CodeAuditTest extends CodeAuditTestCase {
 		$returns .= sprintf("[%s] return %s%s\n",
 				    $returnCount[$function][$i][0],
 				    $returnTable[$function][$i],
-				    false ? '' :  
-
-
-/*  set to false to see the transformed return  */
-
-
-
+				    false ? '' :  /* set to false to see the transformed return */
 				    ' --> ' . $returnCount[$function][$i][1]);
 	    }
 	    $this->assert(false, sprintf('Mismatched returns in %s %s()<pre>%s</pre>',
@@ -451,20 +385,8 @@ class CodeAuditTest extends CodeAuditTestCase {
 		&& (!isset($this->_exception['longLineCount'][$fileName])
 		    || count($longLineTable) > $this->_exception['longLineCount'][$fileName])) {
 	    $this->_longLineFiles = array_merge($this->_longLineFiles, $longLineTable);
-	    
-
-
-/*  debug  */
-
-
-
-	    
-
-
-/*  printf("%s: %d<br/>", $fileName, $longLineCount);  */
-
-
-
+	    /* debug */
+	    /* printf("%s: %d<br/>", $fileName, $longLineCount); */
 	}
 
 	if ($this->_errorCount > 10) {
@@ -518,13 +440,7 @@ class CodeAuditTest extends CodeAuditTestCase {
     function testCodeAudit() {
 	parent::testCodeAudit();
 
-	
-
-
-/*  Check result of longLineCount  */
-
-
-
+	/* Check result of longLineCount */
 	if (!$this->_shouldHalt) {
 	    if (count($this->_longLineFiles)) {
 		$this->assert(false, 'Found too many lines longer than 100 characters (' .

@@ -118,13 +118,7 @@ function generateEntityDbXml()
                                 break;
 
                             case 'MEMBER-EXTERNAL-ACCESS':
-                                
-
-
-/*  Not relevant for storage layer  */
-
-
-
+                                /* Not relevant for storage layer */
                                 break;
 
                             default:
@@ -206,13 +200,7 @@ function generateMapDbXml()
 	 */
         $mapName = $origMapName;
         $mapName = preg_replace('/^Gallery/', '', $mapName);
-    
-
-
-/*  Shorten some table names to fit Oracle's 30 char name limit..  */
-
-
-
+    /* Shorten some table names to fit Oracle's 30 char name limit.. */
         $mapName = str_replace('Preferences', 'Prefs', $mapName);
         $mapName = str_replace('Toolkit', 'Tk', $mapName);
         $mapName = str_replace('TkOperation', 'TkOperatn', $mapName);
@@ -270,13 +258,7 @@ function generateMapDbXml()
                                 break;
 
                             case 'MEMBER-EXTERNAL-ACCESS':
-                                
-
-
-/*  Not relevant for storage layer  */
-
-
-
+                                /* Not relevant for storage layer */
                                 break;
 
                             default:
@@ -332,13 +314,7 @@ function generateMapDbXml()
 generateEntityDbXml();
 generateMapDbXml();
 
-
-
-
-/*  Clean up the cheap and easy way  */
-
-
-
+/* Clean up the cheap and easy way */
 if (file_exists($tmpdir)) {
     system("rm -rf $tmpdir");
 }

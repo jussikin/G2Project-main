@@ -27,13 +27,7 @@ GalleryCoreApi::requireOnce('modules/notification/classes/NotificationHelper.cla
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class NotificationRouter 
-
-
-/*  extends GalleryEventListener  */
-
-
- {
+class NotificationRouter /* extends GalleryEventListener */ {
     /**
      * Generic event handler for notifications.
      * Determine if there are any notification handlers registered for the input event and if there

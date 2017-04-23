@@ -45,13 +45,7 @@ class Getid3Extractor extends Getid3Interface_1_0 {
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    
-
-
-/*  Only look at GalleryDataItems  */
-
-
-
+	    /* Only look at GalleryDataItems */
 	    if (!GalleryUtilities::isA($item, 'GalleryDataItem')) {
 		continue;
 	    }

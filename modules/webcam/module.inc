@@ -34,13 +34,7 @@ class WebCamModule extends GalleryModule {
 	$this->setId('webcam');
 	$this->setName($gallery->i18n('WebCam'));
 	$this->setDescription($gallery->i18n('Support periodically updated images like a webcam'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() function below too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
 	$this->_templateVersion = 1;
 	$this->setGroup('import', $gallery->i18n('Import'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -58,13 +52,7 @@ class WebCamModule extends GalleryModule {
 	if ($ret) {
 	    return $ret;
 	}
-	foreach (array('duration' => 600 
-
-
-/*  10 minutes  */
-
-
-,
+	foreach (array('duration' => 600 /* 10 minutes */,
 		       'fromweb' => 'admin') as $key => $value) {
 	    if (!isset($params[$key])) {
 		$ret = $this->setParameter($key, $value);
@@ -82,13 +70,7 @@ class WebCamModule extends GalleryModule {
 	    case '0.8.3':
 	    case '0.8.4':
 	    case '0.8.5':
-		
-
-
-/*  Changed from GalleryLiveImage entity type to onLoadHandler  */
-
-
-
+		/* Changed from GalleryLiveImage entity type to onLoadHandler */
 		$storage =& $gallery->getStorage();
 		$query = 'UPDATE [GalleryEntity]
 		    SET [::entityType] = \'GalleryPhotoItem\',
@@ -134,41 +116,17 @@ class WebCamModule extends GalleryModule {
 	    case '1.0.5.1':
 	    case '1.0.5.2':
 	    case '1.1.0':
-		
-
-
-/*  .mo file migration  */
-
-
-
+		/* .mo file migration */
 	    case '1.1.1':
 	    case '1.1.2':
 	    case '1.1.3':
-		
-
-
-/*  Limiting file:// to admins and from URL to trusted people  */
-
-
-
+		/* Limiting file:// to admins and from URL to trusted people */
 	    case '1.1.4':
-		
-
-
-/*  Require minimum core API 7.45  */
-
-
-
+		/* Require minimum core API 7.45 */
 	    case '1.1.5':
 	    case '1.1.6':
 	    case '1.1.7':
-	    
-
-
-/*  Core API 8.0 & Module API 4.0  */
-
-
-
+	    /* Core API 8.0 & Module API 4.0 */
 
 	    case 'end of upgrade path':
 		break;
@@ -226,13 +184,7 @@ class WebCamModule extends GalleryModule {
 	$old = false;
 	$id = $item->getId();
 	$loop = GalleryDataCache::containsKey("webcam:load-$id");
-	
-
-
-/*  We don't want to refresh the external source during an upgrade  */
-
-
-
+	/* We don't want to refresh the external source during an upgrade */
 	if ($duringUpgrade) {
 	    return null;
 	}
@@ -242,22 +194,10 @@ class WebCamModule extends GalleryModule {
 	}
 	if (time() - $item->getModificationTimestamp() > $duration && !$loop) {
 	    if (GalleryCoreApi::isWriteLocked($id)) {
-		
-
-
-/*  Item already busy (maybe being deleted).. don't update now  */
-
-
-
+		/* Item already busy (maybe being deleted).. don't update now */
 		return null;
 	    }
-	    
-
-
-/*  Lock and refresh to ensure another request didn't just update image..  */
-
-
-
+	    /* Lock and refresh to ensure another request didn't just update image.. */
 	    list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($id);
 	    if ($ret) {
 		return $ret;
@@ -285,13 +225,7 @@ class WebCamModule extends GalleryModule {
 
 	    $urlComponents = parse_url($url);
 	    if ($urlComponents['scheme'] == 'file') {
-		
-
-
-/*  PHP 4.3.0 trips on file:///path/here (triple slash).. result lands in 'host'  */
-
-
-
+		/* PHP 4.3.0 trips on file:///path/here (triple slash).. result lands in 'host' */
 		if (!isset($urlComponents['path']) && isset($urlComponents['host'])) {
 		    $urlComponents['path'] = $urlComponents['host'];
 		}
@@ -303,26 +237,14 @@ class WebCamModule extends GalleryModule {
 		    GalleryCoreApi::fetchWebFile($url, $tmpFile);
 	    }
 	    if (!$successfullyCopied) {
-		
-
-
-/*  Can't get the current image.. just keep what we have now  */
-
-
-
+		/* Can't get the current image.. just keep what we have now */
 	    } else {
 		list ($ret, $path) = $item->fetchPath();
 		if ($ret) {
 		    GalleryCoreApi::releaseLocks($lockId);
 		    return $ret;
 		}
-		
-
-
-/*  Backup previous file  */
-
-
-
+		/* Backup previous file */
 		$ret = $platform->copy($path, $backupFile);
 		if (!$ret) {
 		    GalleryCoreApi::releaseLocks($lockId);
@@ -339,13 +261,7 @@ class WebCamModule extends GalleryModule {
 			GalleryCoreApi::releaseLocks($lockId);
 			return $ret;
 		    }
-		    
-
-
-/*  Problem with new file (maybe html response, not data file); rollback  */
-
-
-
+		    /* Problem with new file (maybe html response, not data file); rollback */
 		    $platform->copy($backupFile, $path);
 		} else {
 		    $item->setOriginationTimestamp(time());

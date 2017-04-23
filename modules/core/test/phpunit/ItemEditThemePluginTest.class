@@ -39,26 +39,14 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a random album  */
-
-
-
+	/* Create a random album */
 	list ($ret, $this->_album) = $this->_createRandomAlbum(
 	    $this->_getRootId(), array('theme' => 'ItemEditThemeControllerTest'));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create child album here, since test theme is too rudimentary  */
-
-
-
+	/* Create child album here, since test theme is too rudimentary */
 	list ($ret, $this->_childAlbum) = $this->_createRandomAlbum($this->_album->getId());
 	if ($ret) {
 	    return $ret;
@@ -80,13 +68,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 
 	$this->_preferred = null;
 
-	
-
-
-/*  Reset test theme  */
-
-
-
+	/* Reset test theme */
 	ItemEditThemeControllerTestTheme::reset();
     }
 
@@ -109,22 +91,10 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
     }
 
     function testUndo() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), null), $results);
     }
@@ -134,24 +104,12 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully saved theme settings')),
 			    $results);
 
-	
-
-
-/*  Verify  */
-
-
-
+	/* Verify */
 	$this->assertEquals(array('setParameter(rows, 3)',
 				  'setParameter(columns, 4)'),
 			    ItemEditThemeControllerTestTheme::getMap());
@@ -162,24 +120,12 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array('form[error][key][rows][invalid]'), null),
 			    $results);
 
-	
-
-
-/*  Verify that we have a detailed error message  */
-
-
-
+	/* Verify that we have a detailed error message */
 	$this->assert(GalleryUtilities::hasRequestVariable('form[errorMessage]'));
 
 	$errorMessage = GalleryUtilities::getRequestVariables('form[errorMessage]');
@@ -192,24 +138,12 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[useGlobal][columns]', 'on');
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully saved theme settings')),
 			    $results);
 
-	
-
-
-/*  Verify  */
-
-
-
+	/* Verify */
 	$this->assertEquals(array('setParameter(rows, 3)',
 				  sprintf('removeParameter(columns, %d)', $this->_album->getId())),
 			    ItemEditThemeControllerTestTheme::getMap());
@@ -224,23 +158,11 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[changeInDescendents][theme]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully saved theme settings')),
 			    $results);
-	
-
-
-/*  Verify - 3 albums should be set  */
-
-
-
+	/* Verify - 3 albums should be set */
 	$this->assertEquals(array('setParameter(rows, 3)',
 				  'setParameter(rows, 3)',
 				  'setParameter(rows, 3)',
@@ -261,13 +183,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 
 	$this->_setTheme($this->_grandchildAlbum, 'ItemEditThemeControllerTest');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_grandchildAlbum, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully saved theme settings')),
 			    $results);
@@ -284,13 +200,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable(
 	    'form[serialNumber]', $this->_album->getSerialNumber());
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully changed theme')),
 			    $results);
@@ -309,13 +219,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable(
 	    'form[serialNumber]', $this->_album->getSerialNumber());
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully changed theme')),
 			    $results);
@@ -354,13 +258,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase {
 	GalleryUtilities::putRequestVariable(
 	    'form[serialNumber]', $this->_album->getSerialNumber());
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album, $this->_preferred);
 	$this->assertEquals(array(array(), $this->_translate('Successfully changed theme')),
 			    $results);
@@ -514,13 +412,7 @@ class ItemEditThemeTestPlatform {
     }
 
     function fopen($filename, $modes) {
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	if (preg_match("|\blocks\b|", $filename)) {
 	    return fopen($filename, $modes);
 	}
@@ -530,13 +422,7 @@ class ItemEditThemeTestPlatform {
     }
 
     function fclose($handle) {
-	return fclose($handle); 
-
-
-/*  needed to release locks  */
-
-
-
+	return fclose($handle); /* needed to release locks */
     }
 
     function getDirectorySeparator() {
@@ -544,13 +430,7 @@ class ItemEditThemeTestPlatform {
     }
 
     function unlink($path) {
-	return unlink($path); 
-
-
-/*  needed to release locks  */
-
-
-
+	return unlink($path); /* needed to release locks */
     }
 
     function closedir($path) {

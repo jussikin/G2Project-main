@@ -18,23 +18,11 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
-
-
-/*  General status codes  */
-
-
-
+/* General status codes */
 define('REWRITE_STATUS_OK', 0);
 define('REWRITE_STATUS_BAD_KEYWORD', 1);
 define('REWRITE_STATUS_MULTISITE', 2);
-define('REWRITE_STATUS_DUPE_SHORT_URL', 3); 
-
-
-/*  Deprecated  */
-
-
-
+define('REWRITE_STATUS_DUPE_SHORT_URL', 3); /* Deprecated */
 define('REWRITE_STATUS_INVALID_PATTERN', 4);
 define('REWRITE_STATUS_EMPTY_VALUE', 5);
 
@@ -99,13 +87,7 @@ class RewriteHelper {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
 
-	
-
-
-/*  Get access list information  */
-
-
-
+	/* Get access list information */
 	list ($ret, $accessList) = GalleryCoreApi::getPluginParameter(
 	    'module', 'rewrite', 'accessList');
 	if ($ret) {
@@ -116,13 +98,7 @@ class RewriteHelper {
 	$ourHostNames[$urlGenerator->getHostName(true)] = true;
 	$accessList = array_merge($accessList, array_keys($ourHostNames));
 
-	
-
-
-/*  Get allow empty referer  */
-
-
-
+	/* Get allow empty referer */
 	list ($ret, $allowEmptyReferer) = GalleryCoreApi::getPluginParameter(
 	    'module', 'rewrite', 'allowEmptyReferer');
 	if ($ret) {
@@ -139,23 +115,11 @@ class RewriteHelper {
 	foreach (array_keys($activeRules) as $moduleId) {
 	    $module = null;
 	    if (isset($upgradeModule) && $upgradeModule->getId() == $moduleId) {
-		
-
-
-/*  Avoid PLUGIN_VERSION_MISMATCH during upgrade by passing in module  */
-
-
-
+		/* Avoid PLUGIN_VERSION_MISMATCH during upgrade by passing in module */
 		$module = $upgradeModule;
 	    } else if (isset($modules[$moduleId]) && !empty($modules[$moduleId]['available'])
 		    && isset($modules[$moduleId]['active'])) {
-		
-
-
-/*  Ignore version mismatch to ensure that we don't deactivate any modules  */
-
-
-
+		/* Ignore version mismatch to ensure that we don't deactivate any modules */
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId, true, true);
 		if ($ret) {
 		    return array($ret, null, null, null, null);
@@ -163,13 +127,7 @@ class RewriteHelper {
 	    }
 
 	    if (!isset($module) || !GalleryCoreApi::isPluginCompatibleWithApis($module)) {
-		
-
-
-/*  Remove rules for modules that are incompatible or unavailable  */
-
-
-
+		/* Remove rules for modules that are incompatible or unavailable */
 		$ret = RewriteHelper::setHistoryForModule($moduleId, $activeRules[$moduleId]);
 		if ($ret) {
 		    return array($ret, null, null, null, null);
@@ -180,48 +138,24 @@ class RewriteHelper {
 
 	    $rules = $module->getRewriteRules();
 	    foreach ($activeRules[$moduleId] as $ruleId => $activeRule) {
-		
-
-
-/*  Make sure this rule still exists, if not silently continue  */
-
-
-
+		/* Make sure this rule still exists, if not silently continue */
 		if (!isset($rules[$ruleId])) {
 		    unset($activeRules[$moduleId][$ruleId]);
 		    continue;
 		}
 
-		
-
-
-/*  Make sure this parser supports this kind of rule  */
-
-
-
+		/* Make sure this parser supports this kind of rule */
 		if (!$rewriteParser->isValidRule($rules[$ruleId], $activeRule)) {
 		    return array(null, REWRITE_STATUS_INVALID_PATTERN,
 			null, null, array($moduleId, $ruleId));
 		}
 
-		
-
-
-/*  Save the pattern for the URL generator to use  */
-
-
-
+		/* Save the pattern for the URL generator to use */
 		if (isset($rules[$ruleId]['match']) && isset($activeRule['pattern'])) {
 		    $shortUrl = array('match' => $rules[$ruleId]['match'],
 				      'pattern' => $activeRule['pattern']);
 
-		    
-
-
-/*  Get custom function information  */
-
-
-
+		    /* Get custom function information */
 		    if (!empty($rules[$ruleId]['keywords'])) {
 			foreach ($rules[$ruleId]['keywords'] as $key => $value) {
 			    if (isset($value['function'])) {
@@ -230,13 +164,7 @@ class RewriteHelper {
 			}
 		    }
 
-		    
-
-
-/*  Save the onLoad handler for this rule  */
-
-
-
+		    /* Save the onLoad handler for this rule */
 		    if (isset($rules[$ruleId]['onLoad'])) {
 			$shortUrl['onLoad'] = $rules[$ruleId]['onLoad'];
 		    }
@@ -244,36 +172,18 @@ class RewriteHelper {
 		    $shortUrls[] = $shortUrl;
 		}
 
-		
-
-
-/*  Parse the pattern and create regular expressions with conditions  */
-
-
-
+		/* Parse the pattern and create regular expressions with conditions */
 		if (empty($rules[$ruleId]['keywords'])) {
 		    $rules[$ruleId]['keywords'] = array();
 		}
 
-		
-
-
-/*  Add custom keywords to the list of allowed keywords  */
-
-
-
+		/* Add custom keywords to the list of allowed keywords */
 		if (!isset($rules[$ruleId]['keywords']['itemId'])) {
 		    $rules[$ruleId]['keywords']['itemId'] = array('pattern' => '([0-9]+)');
 
 		}
 
-		
-
-
-/*  Restrict this rule to given query string conditions  */
-
-
-
+		/* Restrict this rule to given query string conditions */
 		if (!empty($rules[$ruleId]['restrict'])) {
 		    foreach ($rules[$ruleId]['restrict'] as $key => $value) {
 			$rules[$ruleId]['conditions'][] = array(
@@ -282,13 +192,7 @@ class RewriteHelper {
 		    }
 		}
 
-		
-
-
-/*  Exempt requests from the following hosts  */
-
-
-
+		/* Exempt requests from the following hosts */
 		if (!empty($rules[$ruleId]['exemptReferer'])) {
 		    foreach ($accessList as $host) {
 			$rules[$ruleId]['conditions'][] = array(
@@ -297,13 +201,7 @@ class RewriteHelper {
 			    'flags' => array('NC'));
 		    }
 
-		    
-
-
-/*  Exempt requests with empty referer  */
-
-
-
+		    /* Exempt requests with empty referer */
 		    if (!empty($allowEmptyReferer)) {
 			$rules[$ruleId]['conditions'][] = array(
 			    'test' => 'HTTP:Referer',
@@ -311,13 +209,7 @@ class RewriteHelper {
 		    }
 		}
 
-		
-
-
-/*  Build the query string to map the request on to  */
-
-
-
+		/* Build the query string to map the request on to */
 		if (empty($rules[$ruleId]['queryString'])) {
 		    $rules[$ruleId]['queryString'] = array();
 		}
@@ -327,24 +219,12 @@ class RewriteHelper {
 			$rules[$ruleId]['match'], $rules[$ruleId]['queryString']);
 		}
 
-		
-
-
-/*  Options  */
-
-
-
+		/* Options */
 		if (empty($rules[$ruleId]['options'])) {
 		    $rules[$ruleId]['options'] = array();
 		}
 
-		
-
-
-/*  Merge with default options.  Later values override defaults.  */
-
-
-
+		/* Merge with default options.  Later values override defaults. */
 		$rules[$ruleId]['options'] = array_merge(
 		    array('forceDirect' => isset($rules[$ruleId]['queryString']['view'])
 			      && $rules[$ruleId]['queryString']['view'] == 'watermark.DownloadItem',
@@ -354,13 +234,7 @@ class RewriteHelper {
 			  'urlEncode' => false,
 			  'useAuthToken' => false), $rules[$ruleId]['options']);
 
-		
-
-
-/*  Build the list of flags to apply to this rule  */
-
-
-
+		/* Build the list of flags to apply to this rule */
 		if (isset($rules[$ruleId]['flags']) && isset($flags)) {
 		    $rules[$ruleId]['flags'] = array_merge(
 			$rules[$ruleId]['flags'], $flags['mandatory']);
@@ -370,33 +244,15 @@ class RewriteHelper {
 		    $rules[$ruleId]['flags'] = array();
 		}
 
-		
-
-
-/*  Make sure that there's no subrequest made when we match by the query string  */
-
-
-
+		/* Make sure that there's no subrequest made when we match by the query string */
 		if (!empty($rules[$ruleId]['restrict'])) {
 		    $rules[$ruleId]['flags'][] = 'L';
 		}
 
-		
-
-
-/*  Ignore duplicate flags  */
-
-
-
+		/* Ignore duplicate flags */
 		$rules[$ruleId]['flags'] = array_unique($rules[$ruleId]['flags']);
 
-		
-
-
-/*  Parse the rule  */
-
-
-
+		/* Parse the rule */
 		list ($ret, $code) = RewriteHelper::_parseRule(
 		    $regexRules, $rules[$ruleId], $activeRule);
 		if ($ret) {
@@ -476,13 +332,7 @@ class RewriteHelper {
 		return REWRITE_STATUS_BAD_KEYWORD;
 	    }
 
-	    
-
-
-/*  TODO: What if $pattern contains more than one instance of "%$keyword%"?  */
-
-
-
+	    /* TODO: What if $pattern contains more than one instance of "%$keyword%"? */
 	    $pattern = str_replace('%' . $keyword . '%', $keywords[$keyword]['pattern'], $pattern);
 
 	    if (empty($keywords[$keyword]['ignore'])) {
@@ -505,13 +355,7 @@ class RewriteHelper {
      * @access private
      */
     function _sortRules($a, $b) {
-	
-
-
-/*  Flags: rules which don't allow subrequests come last  */
-
-
-
+	/* Flags: rules which don't allow subrequests come last */
 	if (in_array('L', $a['flags']) xor in_array('L', $b['flags'])) {
 	    if (in_array('L', $b['flags'])) {
 		return -1;
@@ -520,13 +364,7 @@ class RewriteHelper {
 	    return 1;
 	}
 
-	
-
-
-/*  Conditions  */
-
-
-
+	/* Conditions */
 	if (!empty($a['conditions']) || !empty($b['conditions'])) {
 	    if (!empty($a['conditions']) && !empty($b['conditions'])) {
 		return count($a['conditions']) - count($b['conditions']);

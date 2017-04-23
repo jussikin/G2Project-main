@@ -40,13 +40,7 @@ class ItemAttributesTest extends GalleryTestCase {
 
 	$this->_saveSession = $gallery->_session;
 
-	
-
-
-/*  Clear response headers  */
-
-
-
+	/* Clear response headers */
 	$headers =& GalleryUtilities::_getResponseHeaders();
 	$headers = array();
 
@@ -75,13 +69,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Verify the permissions  */
-
-
-
+	/* Verify the permissions */
 	list ($ret, $compressedPerms) =
 	    GalleryCoreApi::fetchAllPermissionsForItem($this->_album->getId(), true);
 	if ($ret) {
@@ -91,13 +79,7 @@ class ItemAttributesTest extends GalleryTestCase {
 					'permission' => 'core.view')), $compressedPerms,
 			    'Failed to define initial permissions');
 
-	
-
-
-/*  Create additional test items  */
-
-
-
+	/* Create additional test items */
 	for ($i = 0; $i < 3; $i++) {
 	    list ($ret, $this->_items[$i]) =
 		$this->_createRandomAlbum($this->_album->getId());
@@ -214,13 +196,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Backdate our last viewed time by *almost* one day  */
-
-
-
+	/* Backdate our last viewed time by *almost* one day */
 	$lastViewed =& $session->get('core.lastViewed');
 	$lastViewed[$this->_items[0]->getId()] -= 86398;
 
@@ -235,22 +211,10 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  No change; a full day has not elapsed  */
-
-
-
+	/* No change; a full day has not elapsed */
 	$this->assertEquals(1, $viewCount);
 
-	
-
-
-/*  Backdate it further over the day line  */
-
-
-
+	/* Backdate it further over the day line */
 	$lastViewed =& $session->get('core.lastViewed');
 	$lastViewed[$this->_items[0]->getId()] -= 4;
 
@@ -265,13 +229,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Now it changes  */
-
-
-
+	/* Now it changes */
 	$this->assertEquals(2, $viewCount);
     }
 
@@ -299,13 +257,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 	$this->assertEquals(0, $viewCount, 'first attempt, search engine -> do not increment');
-	
-
-
-/*  It only sets the header if it actually increments  */
-
-
-
+	/* It only sets the header if it actually increments */
 	$this->assertEquals(array(), GalleryUtilities::_getResponseHeaders());
     }
 
@@ -554,13 +506,7 @@ class ItemAttributesTest extends GalleryTestCase {
 			    $parentSequence,
 			    'item parent sequence');
 
-	
-
-
-/*  Set virtual root  */
-
-
-
+	/* Set virtual root */
 	$gallery->setConfig('breadcrumbRootId', $this->_items[1]->getId());
 
 	list ($ret, $parentSequence) = GalleryCoreApi::fetchParentSequence($item->getId(), true);
@@ -583,13 +529,7 @@ class ItemAttributesTest extends GalleryTestCase {
 			    $parentSequence,
 			    'virtual root, forced full parent sequence');
 
-	
-
-
-/*  Used to have a bug in item creation with breadcrumbRootId set  */
-
-
-
+	/* Used to have a bug in item creation with breadcrumbRootId set */
 	list ($ret, $item) = $this->_createRandomDataItem($album->getId());
 	if ($ret) {
 	    return $ret;
@@ -621,13 +561,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  Drop perms for one item and one album  */
-
-
-
+	/* Drop perms for one item and one album */
 	$ret = GalleryCoreApi::removeItemPermissions($item[0]->getId());
 	if ($ret) {
 	    return $ret;
@@ -637,13 +571,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify our counts  */
-
-
-
+	/* Verify our counts */
 	list ($ret, $counts) =
 	    GalleryCoreApi::fetchItemizedDescendentCounts(array($this->_album->getId(),
 								  $album->getId()));
@@ -671,13 +599,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  Drop perms for one item and one album  */
-
-
-
+	/* Drop perms for one item and one album */
 	$ret = GalleryCoreApi::removeItemPermissions($item[0]->getId());
 	if ($ret) {
 	    return $ret;
@@ -687,13 +609,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify our counts  */
-
-
-
+	/* Verify our counts */
 	list ($ret, $counts) = GalleryCoreApi::fetchDescendentCounts(
 	    array($this->_album->getId(), $album->getId()));
 	if ($ret) {
@@ -706,13 +622,7 @@ class ItemAttributesTest extends GalleryTestCase {
     }
 
     function testFetchDescendentCountsSessionPermission() {
-	
-
-
-/*  Session based permissions should not apply when calculating cached descendent count  */
-
-
-
+	/* Session based permissions should not apply when calculating cached descendent count */
 	global $gallery;
 	$session =& $gallery->getSession();
 	$this->_saveSessionPerms = $session->get(GALLERY_PERMISSION_SESSION_KEY);
@@ -752,13 +662,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create a new target user  */
-
-
-
+	/* Create a new target user */
 	list ($ret, $user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -772,13 +676,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  Drop perms for one item and one album  */
-
-
-
+	/* Drop perms for one item and one album */
 	$ret = GalleryCoreApi::removeItemPermissions($item[0]->getId());
 	if ($ret) {
 	    return $ret;
@@ -788,13 +686,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add perms back for the active user, but not our target user  */
-
-
-
+	/* Add perms back for the active user, but not our target user */
 	$ret = GalleryCoreApi::addUserPermission(
 	    $item[0]->getId(), $gallery->getActiveUserId(), 'core.view', false);
 	if ($ret) {
@@ -806,13 +698,7 @@ class ItemAttributesTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify that the target user can't see the item (even though the active user can)  */
-
-
-
+	/* Verify that the target user can't see the item (even though the active user can) */
 	list ($ret, $counts) = GalleryCoreApi::fetchDescendentCounts(
 	    array($this->_album->getId(), $album->getId()),
 	    $user->getId());
@@ -894,13 +780,7 @@ class ItemAttributesTestPhpVm extends GalleryPhpVm {
     }
 
     function header($header, $replace=null) {
-	
-
-
-/*  Avoid modifying actual header information  */
-
-
-
+	/* Avoid modifying actual header information */
     }
 
     function headers_sent() {

@@ -53,13 +53,7 @@ class JpegtranModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations()
      */
     function performFactoryRegistrations() {
-	
-
-
-/*  Register our graphics class with the factory  */
-
-
-
+	/* Register our graphics class with the factory */
 
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'JpegtranToolkit', $this->getId(),
@@ -78,13 +72,7 @@ class JpegtranModule extends GalleryModule {
     function activate($postActivationEvent=true) {
 	GalleryCoreApi::requireOnce('modules/jpegtran/classes/JpegtranToolkitHelper.class');
 
-	
-
-
-/*  Test for available operations  */
-
-
-
+	/* Test for available operations */
 	list ($ret, $results) = JpegtranToolkitHelper::getOperations();
 	if ($ret) {
 	    return array($ret, null);
@@ -147,13 +135,7 @@ class JpegtranModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	
-
-
-/*  This module requires exec()  */
-
-
-
+	/* This module requires exec() */
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}
@@ -171,13 +153,7 @@ class JpegtranModule extends GalleryModule {
     function autoConfigure() {
 	global $gallery;
 
-	
-
-
-/*  This module requires exec()  */
-
-
-
+	/* This module requires exec() */
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -190,13 +166,7 @@ class JpegtranModule extends GalleryModule {
 	    return array(null, true);
 	}
 
-	
-
-
-/*  Try a bunch of likely seeming paths to see if any of them work.  */
-
-
-
+	/* Try a bunch of likely seeming paths to see if any of them work. */
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
@@ -252,36 +222,18 @@ class JpegtranModule extends GalleryModule {
 
 	GalleryCoreApi::requireOnce('modules/jpegtran/classes/JpegtranToolkitHelper.class');
 
-	
-
-
-/*  Now try each path in turn to see which ones work  */
-
-
-
+	/* Now try each path in turn to see which ones work */
 	foreach ($paths as $path) {
 	    list ($ret, $testResults) = JpegtranToolkitHelper::testBinary($path);
 	    if ($ret) {
-		
-
-
-/*  This path failed.  Continue with the next one  */
-
-
-
+		/* This path failed.  Continue with the next one */
 		continue;
 	    }
 
 	    $failCount = 0;
 	    $canRotate = false;
 	    foreach ($testResults as $testResult) {
-		
-
-
-/*  Rotate is mandatory, the rest is optional  */
-
-
-
+		/* Rotate is mandatory, the rest is optional */
 		if (isset($testResult['name']['rotate'])) {
 		    if ($testResult['success']) {
 			$canRotate = true;
@@ -292,13 +244,7 @@ class JpegtranModule extends GalleryModule {
 	    }
 
 	    if ($failCount == 0 && $canRotate) {
-		
-
-
-/*  We have a winner  */
-
-
-
+		/* We have a winner */
 		$ret = $this->setParameter('path', $path);
 		if ($ret) {
 		    return array($ret, false);

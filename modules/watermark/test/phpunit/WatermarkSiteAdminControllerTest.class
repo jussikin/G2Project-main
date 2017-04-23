@@ -54,13 +54,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 	$this->_randomName = 'phpunit_' . $rand . '.jpg';
 	$this->_expectedName = 'phpunit_' . $rand . '_jpg';
 
-	
-
-
-/*  Get the list of watermarks before, then after delete any that we created  */
-
-
-
+	/* Get the list of watermarks before, then after delete any that we created */
 	list ($ret, $this->_beforeWatermarks) = WatermarkHelper::fetchWatermarks();
 	if ($ret) {
 	    return $ret;
@@ -72,13 +66,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Get the list of watermarks before, then after delete any that we created  */
-
-
-
+	/* Get the list of watermarks before, then after delete any that we created */
 	list ($ret, $this->_afterWatermarks) = WatermarkHelper::fetchWatermarks();
 	if ($ret) {
 	    return $ret;
@@ -102,13 +90,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testNoFile() {
-	
-
-
-/*  No file  */
-
-
-
+	/* No file */
 	GalleryUtilities::putRequestVariable('form[action][add]', '1');
 
 	$results = $this->handleRequest();
@@ -120,13 +102,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testAdd() {
-	
-
-
-/*  Add  */
-
-
-
+	/* Add */
 	GalleryUtilities::putRequestVariable('form[action][add]', '1');
 	GalleryUtilities::putRequestVariable('form[name][1]', $this->_randomName);
 	GalleryUtilities::putRequestVariable('form[type][1]', 'image/jpeg');
@@ -144,13 +120,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results, 'Add');
 
-	
-
-
-/*  Verify  */
-
-
-
+	/* Verify */
 	list ($ret, $map) = $this->_fetchWatermarkMapByFilename();
 	if ($ret) {
 	    return $ret;
@@ -161,13 +131,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 
     function testAddDuplicate() {
 	for ($i = 0; $i < 2; $i++) {
-	    
-
-
-/*  Add  */
-
-
-
+	    /* Add */
 	    GalleryUtilities::putRequestVariable('form[action][add]', '1');
 	    GalleryUtilities::putRequestVariable('form[name][1]', $this->_randomName);
 	    GalleryUtilities::putRequestVariable('form[type][1]', 'image/jpeg');
@@ -186,13 +150,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 				$results, 'Add');
 	}
 
-	
-
-
-/*  Verify  */
-
-
-
+	/* Verify */
 	list ($ret, $map) = $this->_fetchWatermarkMapByFilename();
 	if ($ret) {
 	    return $ret;
@@ -203,13 +161,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddWrongMimeType() {
-	
-
-
-/*  Add same name, browser doesn't send correct mime type  */
-
-
-
+	/* Add same name, browser doesn't send correct mime type */
 	GalleryUtilities::putRequestVariable('form[action][add]', '1');
 	GalleryUtilities::putRequestVariable('form[name][1]', $this->_randomName);
 	GalleryUtilities::putRequestVariable('form[type][1]', 'image/jpeg');
@@ -242,26 +194,14 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testDelete() {
-	
-
-
-/*  Create something to delete  */
-
-
-
+	/* Create something to delete */
 	list ($ret, $watermark) = $this->_createTestWatermark();
 	if ($ret) {
 	    return $ret;
 	}
 	$idToDelete = $watermark->getId();
 
-	
-
-
-/*  Delete it  */
-
-
-
+	/* Delete it */
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[action][delete]', '1');
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]',$idToDelete);
@@ -284,13 +224,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 	}
 
 	$this->assert(empty($defaultWatermarkId), 'The default Watermark Id was not removed');
-	
-
-
-/*  Verify that it's gone  */
-
-
-
+	/* Verify that it's gone */
 	$ret = $this->_verifyMissing($idToDelete);
 	if ($ret) {
 	    return $ret;
@@ -298,13 +232,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteForceDefault() {
-	
-
-
-/*  Create something to delete  */
-
-
-
+	/* Create something to delete */
 	list ($ret, $watermark) = $this->_createTestWatermark();
 	if ($ret) {
 	    return $ret;
@@ -324,13 +252,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 	    }
 	}
 
-	
-
-
-/*  Delete it  */
-
-
-
+	/* Delete it */
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[action][delete]', '1');
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', $idToDelete);
@@ -362,13 +284,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 	// If there are several watermarks, we can't be sure which one will be selected
 	$this->assert((int)$defaultWatermarkId != (int)$idToDelete, 
 	    'Unexpected default watermark id');
-	
-
-
-/*  Verify that it's gone  */
-
-
-
+	/* Verify that it's gone */
 	$ret = $this->_verifyMissing($idToDelete);
 	if ($ret) {
 	    return $ret;
@@ -382,26 +298,14 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testDeleteInUse() {
-	
-
-
-/*  Create something to delete  */
-
-
-
+	/* Create something to delete */
 	list ($ret, $watermark) = $this->_createTestWatermark();
 	if ($ret) {
 	    return $ret;
 	}
 	$idToDelete = $watermark->getId();
 
-	
-
-
-/*  Use this watermark  */
-
-
-
+	/* Use this watermark */
 	list ($ret, $item) = $this->_createRandomDataItem($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -415,13 +319,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Try to delete it  */
-
-
-
+	/* Try to delete it */
 	GalleryUtilities::removeFormVariables('form');
 	GalleryUtilities::putRequestVariable('form[action][delete]', '1');
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', $idToDelete);
@@ -435,13 +333,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 				      'error' => array()),
 				$results, 'Confirm Delete');
 
-	
-
-
-/*  Verify that it's NOT gone  */
-
-
-
+	/* Verify that it's NOT gone */
 	$ret = $this->_verifyEntity($watermark);
 	if ($ret) {
 	    return $ret;
@@ -449,25 +341,13 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testIllegalDelete() {
-	
-
-
-/*  valid, but illegal  */
-
-
-
+	/* valid, but illegal */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', 1);
 
 	$results = $this->handleRequest(ERROR_MISSING_OBJECT);
 
-	
-
-
-/*  invalid & illegal  */
-
-
-
+	/* invalid & illegal */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 	GalleryUtilities::putRequestVariable('form[delete][watermarkId]', 123456789);
 
@@ -511,13 +391,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
 		return $ret;
 	    }
 
-	    
-
-
-/*  We're expecting the same name, but the . changed to _ in the file extension  */
-
-
-
+	    /* We're expecting the same name, but the . changed to _ in the file extension */
 	    $this->assertEquals($expectedName, basename($path));
 	} else {
 	    $this->assert(false, 'Object is not a watermark');

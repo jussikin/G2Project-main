@@ -158,13 +158,7 @@ class PicLensHelperTest extends GalleryTestCase {
 	$this->_setDownload(
 	    'http://host/path/swf', 'SWF DATA', '/modules/slideshow/PicLensLite.swf.new');
 
-	
-
-
-/*  This rename fails  */
-
-
-
+	/* This rename fails */
 	$gallery->_platform->setReply(
 	    'rename',
 	    array('/modules/slideshow/piclens.js.new', '/modules/slideshow/piclens.js'),
@@ -187,13 +181,7 @@ class PicLensHelperTest extends GalleryTestCase {
 	    'http://host/path/swf', 'SWF DATA', '/modules/slideshow/PicLensLite.swf.new',
 	    '500 Internal Server Error');
 
-	
-
-
-/*  We clean up the file that got downloaded  */
-
-
-
+	/* We clean up the file that got downloaded */
 	$gallery->_platform->setReply(
 	    'file_exists', array('/modules/slideshow/piclens.js.new'), false);
 	$gallery->_platform->setReply(

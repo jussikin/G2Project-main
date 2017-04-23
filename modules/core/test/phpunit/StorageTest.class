@@ -29,27 +29,9 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryChildEntity.class');
  */
 class StorageTest extends GalleryTestCase {
 
-    var $_db;		
-
-
-/*  backup of ADODB object  */
-
-
-
-    var $_results;	
-
-
-/*  results from the generated query on the regular db connection  */
-
-
-
-    var $_resultsNonTransactional;   
-
-
-/*  results on the non transactional db connection  */
-
-
-
+    var $_db;		/* backup of ADODB object */
+    var $_results;	/* results from the generated query on the regular db connection */
+    var $_resultsNonTransactional;   /* results on the non transactional db connection */
 
     function StorageTest($methodName) {
 	$this->GalleryTestCase($methodName);
@@ -85,13 +67,7 @@ class StorageTest extends GalleryTestCase {
 						   'notNull' => true),
 			     'field5' => array('type' => STORAGE_TYPE_INTEGER,
 						 'size' => STORAGE_SIZE_MEDIUM)));
-	
-
-
-/*  Note: keep this cache key in sync with GalleryStorage::describeMap()  */
-
-
-
+	/* Note: keep this cache key in sync with GalleryStorage::describeMap() */
 	GalleryDataCache::put('GalleryStorage::describeMap()', $map);
 
 	$entity = array('GalleryChildEntity'  =>
@@ -116,13 +92,7 @@ class StorageTest extends GalleryTestCase {
 				'size' => STORAGE_SIZE_MEDIUM)),
 		       'parent' => null, 'module' => 'core', 'linked' => array()));
 
-	
-
-
-/*  Note: keep this cache key in sync with GalleryStorageExtras::describeEntity()  */
-
-
-
+	/* Note: keep this cache key in sync with GalleryStorageExtras::describeEntity() */
 	GalleryDataCache::put('GalleryStorageExtras::describeEntity()', $entity);
     }
 
@@ -406,13 +376,7 @@ class StorageTest extends GalleryTestCase {
 	$select = array('field4', 'field3', 'field5');
 	$match = array('field3' => 40);
 
-	
-
-
-/*  Prepare mocked record set  */
-
-
-
+	/* Prepare mocked record set */
 	$recordSet = new StorageTestRecordSet(array(array(1, 6, '15')));
 	$storage->_db->setResults(array($recordSet));
 
@@ -429,13 +393,7 @@ class StorageTest extends GalleryTestCase {
 		array(40))),
 	    $this->_results, 'generated query');
 
-	
-
-
-/*  Verify that the fetched values have been normalized  */
-
-
-
+	/* Verify that the fetched values have been normalized */
 	$row = $searchResults->nextResult();
 	$this->assertEquals(array('1', '6', 15), $row, 'normalized values from record set');
     }
@@ -598,13 +556,7 @@ class StorageTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Only some entity fields are set because we're not calling GalleryEntity::save() here  */
-
-
-
+	/* Only some entity fields are set because we're not calling GalleryEntity::save() here */
 	$this->assertEquals(
 	    array(array(
 		    sprintf('INSERT INTO %1$sChildEntity (%2$sparentId, %2$sid) VALUES (?,?)',
@@ -630,13 +582,7 @@ class StorageTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  onLoadHandlers is a medium string, which is 128 chars  */
-
-
-
+	/* onLoadHandlers is a medium string, which is 128 chars */
 	$entity->onLoadHandlers = str_repeat('x', 200);
 
 	$ret = $storage->saveEntity($entity);
@@ -644,13 +590,7 @@ class StorageTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Only some entity fields are set because we're not calling GalleryEntity::save() here  */
-
-
-
+	/* Only some entity fields are set because we're not calling GalleryEntity::save() here */
 	$this->assertEquals(
 	    array(array(
 		    sprintf('INSERT INTO %1$sEntity (%2$sid, %2$screationTimestamp, ' .
@@ -727,13 +667,7 @@ class StorageTest extends GalleryTestCase {
 	}
     }
 
-    
-
-
-/*  Do not change empty strings to NULL  */
-
-
-
+    /* Do not change empty strings to NULL */
     function testNormalizeValueNotNullEmptyNotAllowed() {
 	global $gallery;
 	$storage =& $gallery->getStorage();
@@ -758,13 +692,7 @@ class StorageTest extends GalleryTestCase {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  We use integers in the DB, thus cast to integer, 3rd param doesn't matter  */
-
-
-
+	/* We use integers in the DB, thus cast to integer, 3rd param doesn't matter */
 	$memberData['type'] = STORAGE_TYPE_BOOLEAN;
 	$memberData['notNull'] = false;
 	$this->assertEquals(1, $storage->_normalizeValue('foo', $memberData), 'from string');
@@ -849,22 +777,10 @@ class StorageTest extends GalleryTestCase {
     function testSqlInjectionWithNullCharacter() {
 	global $gallery;
 	$storage =& $gallery->getStorage();
-	
-
-
-/*  Use a real SQL connection for this test  */
-
-
-
+	/* Use a real SQL connection for this test */
 	$storage->_db = $this->_db;
 
-	
-
-
-/*  \0 -> \\000 special escape, see http://pgsqld.active-venture.com/datatype-binary.html  */
-
-
-
+	/* \0 -> \\000 special escape, see http://pgsqld.active-venture.com/datatype-binary.html */
 	$testString = "The NULL character should be escaped \0 !";
 	$key = 'test' . rand();
 	$ret = $storage->addMapEntry('GalleryPluginParameterMap',
@@ -873,13 +789,7 @@ class StorageTest extends GalleryTestCase {
 					   'itemId' => 1,
 					   'parameterName' => $key,
 					   'parameterValue' => $testString));
-	
-
-
-/*  If the \0 character wasn't properly escaped, PG would throw an error here  */
-
-
-
+	/* If the \0 character wasn't properly escaped, PG would throw an error here */
 	if ($ret) {
 	    return $ret;
 	}
@@ -898,24 +808,12 @@ class StorageTest extends GalleryTestCase {
 	$expected = "The NULL character should be escaped ";
 	$this->assertEquals($expected, substr($value, 0, strlen($expected)));
 
-	
-
-
-/*  Cleanup  */
-
-
-
+	/* Cleanup */
 	$ret = GalleryCoreApi::removeAllPluginParameters('module', 'unitTestModule');
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Commit our DB transaction to release locks from the PluginParameterMap table  */
-
-
-
+	/* Commit our DB transaction to release locks from the PluginParameterMap table */
 	$ret = $storage->checkPoint();
 	if ($ret) {
 	    return $ret;
@@ -925,34 +823,16 @@ class StorageTest extends GalleryTestCase {
     function testEncodeDecodeBlob() {
 	global $gallery;
 	$storage =& $gallery->getStorage();
-	
-
-
-/*  Use a real SQL connection for this test  */
-
-
-
+	/* Use a real SQL connection for this test */
 	$storage->_db = $this->_db;
 
-	
-
-
-/*  We want to store binary (gz-deflated) data in a text field  */
-
-
-
+	/* We want to store binary (gz-deflated) data in a text field */
 	$blobData = '';
 	for ($i = 0; $i <= 255; $i++) {
 	    $blobData .= chr($i);
 	}
 
-	
-
-
-/*  encode it  */
-
-
-
+	/* encode it */
 	$escapedString = $storage->encodeBlob($blobData);
 
 	$key = 'test_' . rand();
@@ -963,13 +843,7 @@ class StorageTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  No (PHP) error? Good! Next, get the entry from the db and compare  */
-
-
-
+	/* No (PHP) error? Good! Next, get the entry from the db and compare */
 
 	list ($ret, $results) = GalleryCoreApi::getMapEntry('GalleryCacheMap',
 		array('value'), array('key' => $key));
@@ -993,24 +867,12 @@ class StorageTest extends GalleryTestCase {
 	    $this->assert(false, 'SELECT failed, got nothing back!');
 	}
 
-	
-
-
-/*  Cleanup  */
-
-
-
+	/* Cleanup */
 	$ret = GalleryCoreApi::removeMapEntry('GalleryCacheMap', array('type' => 'test'));
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Commit our DB transaction to release locks from the Cache table  */
-
-
-
+	/* Commit our DB transaction to release locks from the Cache table */
 	$ret = $storage->checkPoint();
 	if ($ret) {
 	    return $ret;
@@ -1020,31 +882,13 @@ class StorageTest extends GalleryTestCase {
     function testTruncateString() {
 	global $gallery;
 	$storage =& $gallery->getStorage();
-	
-
-
-/*  Use a real SQL connection for this test  */
-
-
-
+	/* Use a real SQL connection for this test */
 	$storage->_db = $this->_db;
 	$storage->_serverInfo = $this->_serverInfo;
 
-	
-
-
-/*  Test UTF-8 string with 5 characters / 10 bytes  */
-
-
-
+	/* Test UTF-8 string with 5 characters / 10 bytes */
 	$testString = "\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba";
-	
-
-
-/*  Get a STRING-LARGE version of that string  */
-
-
-
+	/* Get a STRING-LARGE version of that string */
 	$originalStringLarge = str_repeat($testString, 51);
 	$originalStringTooLarge = str_repeat($testString, 52);
 	$key = 'test' . rand();
@@ -1066,25 +910,13 @@ class StorageTest extends GalleryTestCase {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Cleanup  */
-
-
-
+	    /* Cleanup */
 	    $ret = GalleryCoreApi::removeMapEntry('GalleryDerivativePreferencesMap',
 						  array('itemId' => $itemId));
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Commit our DB transaction to release locks from the PluginParameterMap table  */
-
-
-
+	    /* Commit our DB transaction to release locks from the PluginParameterMap table */
 	    $ret = $storage->checkPoint();
 	    if ($ret) {
 		return $ret;
@@ -1106,23 +938,11 @@ class StorageTest extends GalleryTestCase {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  Result for loadTableVersions  */
-
-
-
+	/* Result for loadTableVersions */
 	$tablesRecordSet = new StorageTestRecordSet(array(array('Entity', 1, 0),
 							  array('AccessMap', 1, 6)));
 	$optimizeStatements = $storage->_getOptimizeStatements();
-	
-
-
-/*  Results for optimize statements  */
-
-
-
+	/* Results for optimize statements */
 	$expectedQueries = array();
 	foreach ($optimizeStatements as $statement) {
 	    foreach (array('Entity', 'AccessMap') as $tableName) {
@@ -1134,25 +954,13 @@ class StorageTest extends GalleryTestCase {
 	array_unshift($mockedResults, $tablesRecordSet);
 	$storage->_db->setResults($mockedResults);
 
-	
-
-
-/*  Execute the test  */
-
-
-
+	/* Execute the test */
 	$ret = $storage->optimize();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Ignore the loadTableVersions query  */
-
-
-
+	/* Ignore the loadTableVersions query */
 	array_shift($this->_results);
 	$this->assertEquals($expectedQueries, $this->_results);
     }
@@ -1161,24 +969,12 @@ class StorageTest extends GalleryTestCase {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  Result for loadTableVersions  */
-
-
-
+	/* Result for loadTableVersions */
 	$tablesRecordSet = new StorageTestRecordSet(array(array('Entity', 1, 0),
 							  array('AccessMap', 1, 6),
 							  array('Item', 2, 0)));
 	$optimizeStatements = $storage->_getOptimizeStatements();
-	
-
-
-/*  Results for optimize statements  */
-
-
-
+	/* Results for optimize statements */
 	$expectedQueries = array();
 	foreach ($optimizeStatements as $statement) {
 	    foreach (array('Entity', 'Item') as $tableName) {
@@ -1190,25 +986,13 @@ class StorageTest extends GalleryTestCase {
 	array_unshift($mockedResults, $tablesRecordSet);
 	$storage->_db->setResults($mockedResults);
 
-	
-
-
-/*  Execute the test  */
-
-
-
+	/* Execute the test */
 	$ret = $storage->optimize(array('GalleryEntity', 'GalleryPhotoItem', 'GalleryItem'));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Ignore the loadTableVersions query  */
-
-
-
+	/* Ignore the loadTableVersions query */
 	array_shift($this->_results);
 	$this->assertEquals($expectedQueries, $this->_results);
     }
@@ -1219,13 +1003,7 @@ class StorageTest extends GalleryTestCase {
 
 	GalleryDataCache::reset();
 
-	
-
-
-/*  Prepare mocked record sets  */
-
-
-
+	/* Prepare mocked record sets */
 	$map = array('GalleryTest2Map' => array('field3' => array('type' => STORAGE_TYPE_STRING,
 								    'size' => STORAGE_SIZE_MEDIUM,
 								    'notNull' => true),
@@ -1244,13 +1022,7 @@ class StorageTest extends GalleryTestCase {
 	}
 	$this->assert(!empty($externalMapInfo), 'empty result');
 
-	
-
-
-/*  Verify that a second call reads from memory, no platform activity  */
-
-
-
+	/* Verify that a second call reads from memory, no platform activity */
 	list ($ret, $externalMapInfo) = GalleryCoreApi::describeMap('GalleryTest2Map');
 	if ($ret) {
 	    return $ret;
@@ -1307,13 +1079,7 @@ class StorageTest extends GalleryTestCase {
 	}
 	$this->assert(!empty($entityInfo), 'empty result');
 
-	
-
-
-/*  Verify that a second call reads from memory, no database activity  */
-
-
-
+	/* Verify that a second call reads from memory, no database activity */
 	list ($ret, $entityInfo) = GalleryCoreApi::describeEntity('GalleryEntity');
 	if ($ret) {
 	    return $ret;
@@ -1359,13 +1125,7 @@ class StorageTest extends GalleryTestCase {
     function testSelectRandomInteger() {
 	global $gallery;
 	$storage =& $gallery->getStorage();
-	
-
-
-/*  Use a real SQL connection for this test  */
-
-
-
+	/* Use a real SQL connection for this test */
 	$storage->_db = $this->_db;
 
 	list ($ret, $randStatement) = $storage->getFunctionSql('RANDOM_INTEGER', array());
@@ -1399,13 +1159,7 @@ class StorageTest extends GalleryTestCase {
 
 class StorageTestDB {
     var $_testCase;
-    var $transCnt = 1; 
-
-
-/*  Pretend we're already in a transaction  */
-
-
-
+    var $transCnt = 1; /* Pretend we're already in a transaction */
     var $_recordSets;
 
     function StorageTestDB(&$testCase, $resultsType) {

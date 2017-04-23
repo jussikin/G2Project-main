@@ -95,13 +95,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	global $gallery;
 	$gallery->setActiveUser($this->_userWithoutAlbum);
 
-	
-
-
-/*  Disable OnAccess creation and test to verify that album is not created  */
-
-
-
+	/* Disable OnAccess creation and test to verify that album is not created */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', 'create', 'immediate');
 	if ($ret) {
 	    return $ret;
@@ -122,13 +116,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Enable OnAccess creation and test to verify that album is created  */
-
-
-
+	/* Enable OnAccess creation and test to verify that album is created */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', 'create', 'access');
 	if ($ret) {
 	    return $ret;
@@ -198,25 +186,13 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create-on-access mode.. should get link whether or not album already exists  */
-
-
-
+	/* Create-on-access mode.. should get link whether or not album already exists */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', 'create', 'access');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Anonymous should never see link  */
-
-
-
+	/* Anonymous should never see link */
 	$this->_becomeGuestUser();
 	list ($ret, $links) = $module->getSystemLinks();
 	if ($ret) {
@@ -244,13 +220,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	}
 	$this->assertEquals($createLink, $links, 'Link not displayed "on access" without album');
 
-	
-
-
-/*  Create-when-user-created mode.. should only get link if album already exists  */
-
-
-
+	/* Create-when-user-created mode.. should only get link if album already exists */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', 'create', 'immediate');
 	if ($ret) {
 	    return $ret;
@@ -270,13 +240,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	}
 	$this->assertEquals($albumLink, $links, 'Link not displayed "immediate" with album');
 
-	
-
-
-/*  User with album should not get a link with homeLink off  */
-
-
-
+	/* User with album should not get a link with homeLink off */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', 'homeLink', 0);
 	if ($ret) {
 	    return $ret;
@@ -290,13 +254,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
     }
 
     function testUserAlbumTitle() {
-	
-
-
-/*  Check that album title is set from user fullname, or username if no fullname  */
-
-
-
+	/* Check that album title is set from user fullname, or username if no fullname */
 	list ($ret, $album) =
 	    GalleryCoreApi::loadEntitiesById($this->_userAlbumId, 'GalleryAlbumItem');
 	if ($ret) {
@@ -373,20 +331,8 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$secArray = array('core.view' => 1, 'core.viewAll' => 1,
 		'core.viewResizes' => 1, 'core.viewSource' => 1);
 
-	
-
-
-/*  make sure applicable core.view* permissions left for Everybody group  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure applicable core.view* permissions left for Everybody group */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $core['id.everybodyGroup']);
 	if ($ret) {
@@ -395,20 +341,8 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals($secArray, array_intersect_assoc($secArray,
 		    $permissions[$albumId]), 'Everybody Permissions');
 
-	
-
-
-/*  registered users' permissions are superceded by Everybody  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* registered users' permissions are superceded by Everybody */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $core['id.allUserGroup']);
 	if ($ret) {
@@ -416,20 +350,8 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	}
 	$this->assert(empty($permissions), 'Registered Permissions');
 
-	
-
-
-/*  make sure applicable core.view* permissions are there for specific users  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure applicable core.view* permissions are there for specific users */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $this->_userWithoutAlbum->getId());
 	if ($ret) {
@@ -438,13 +360,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals($secArray, array_intersect_assoc($secArray, $permissions[$albumId]),
 	    'Specific user');
 
-	
-
-
-/*  check the permissions of the parent album owner  */
-
-
-
+	/* check the permissions of the parent album owner */
 	list ($ret,$permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $this->_userWithAlbum->getId());
 	if ($ret) {
@@ -490,20 +406,8 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$this->assert(isset($albumId), 'Album was not created');
 	$secArray = array('core.view' => 1, 'core.viewAll' => 1,
 		'core.viewResizes' => 1, 'core.viewSource' => 1);
-	
-
-
-/*  make sure that no core.view* permissions left for Everybody group  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure that no core.view* permissions left for Everybody group */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $core['id.everybodyGroup']);
 	if ($ret) {
@@ -512,71 +416,29 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(array(), array_intersect_assoc($secArray,
 		    $permissions[$albumId]), 'Everybody Permissions');
 
-	
-
-
-/*  make sure applicable core.view* permissions are there for registered users  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure applicable core.view* permissions are there for registered users */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $core['id.allUserGroup']);
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  full size is disabled for this test  */
-
-
-
+	/* full size is disabled for this test */
 	$this->assertEquals(array('core.view' => 1, 'core.viewResizes' => 1),
 	    array_intersect_assoc($secArray, $permissions[$albumId]), 'Registered Permissions');
 
-	
-
-
-/*  make sure applicable core.view* permissions are there for specific users  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure applicable core.view* permissions are there for specific users */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $this->_userWithoutAlbum->getId());
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  full size is disabled for this test  */
-
-
-
+	/* full size is disabled for this test */
 	$this->assertEquals(array('core.view' => 1, 'core.viewResizes' => 1),
 	    array_intersect_assoc($secArray, $permissions[$albumId]), 'Specific user');
 
-	
-
-
-/*  check the permissions of the parent album owner  */
-
-
-
+	/* check the permissions of the parent album owner */
 	list ($ret,$permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $this->_userWithAlbum->getId());
 	if ($ret) {
@@ -594,25 +456,13 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Albums viewable by User only  */
-
-
-
+	/* Albums viewable by User only */
 	$ret = $this->_setParameters(array('create' => 'access', 'view' => 'user'));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  give all permissions to everybody group, to registered users and to a specific user  */
-
-
-
+	/* give all permissions to everybody group, to registered users and to a specific user */
 	$ret = GalleryCoreApi::addGroupPermission($this->_targetAlbum->getId(),
 	    $core['id.everybodyGroup'], 'core.all');
 	if ($ret) {
@@ -642,20 +492,8 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$secArray = array('core.view' => 1, 'core.viewAll' => 1,
 		'core.viewResizes' => 1, 'core.viewSource' => 1);
 
-	
-
-
-/*  make sure that no core.view* permissions left for Everybody group  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure that no core.view* permissions left for Everybody group */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret,$permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $core['id.everybodyGroup']);
 	if ($ret) {
@@ -664,20 +502,8 @@ class UserAlbumControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(array(), array_intersect_assoc($secArray,
 		    $permissions[$albumId]), 'Everybody Permissions');
 
-	
-
-
-/*  make sure that no core.view* permissions are there for registered users  */
-
-
-
-	
-
-
-/*  undocumented feature allows you to pass groupId as well as userId  */
-
-
-
+	/* make sure that no core.view* permissions are there for registered users */
+	/* undocumented feature allows you to pass groupId as well as userId */
 	list ($ret,$permissions) = GalleryCoreApi::fetchPermissionsForItems(
 	    array($albumId), $core['id.allUserGroup']);
 	if ($ret) {

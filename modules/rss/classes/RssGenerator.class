@@ -50,13 +50,7 @@ class RssGenerator {
      * @param string $key optional key for the item array
      */
     function addItem($properties, $key='') {
-	
-
-
-/*  add the new item to our items array  */
-
-
-
+	/* add the new item to our items array */
 	if ($key == '') {
 	    $this->_items[] = $properties;
 	} else {

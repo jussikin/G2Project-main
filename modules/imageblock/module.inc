@@ -93,13 +93,7 @@ class ImageBlockModule extends GalleryModule {
 	    }
 	}
 
-	
-
-
-/*  Remove the blocks parameter if necessary, we forgot to remove it in beta 4  */
-
-
-
+	/* Remove the blocks parameter if necessary, we forgot to remove it in beta 4 */
 	if (isset($params['blocks'])) {
 	    $ret = GalleryCoreApi::removePluginParameter('module', 'imageblock', 'blocks');
 	    if ($ret) {
@@ -115,26 +109,14 @@ class ImageBlockModule extends GalleryModule {
 	    }
 	}
 	if (!empty($currentVersion) && version_compare($currentVersion, '1.1.5', '<=')) {
-	    
-
-
-/*  Add ImageBlockCacheMap::random  */
-
-
-
+	    /* Add ImageBlockCacheMap::random */
 	    $ret = $storage->configureStore($this->getId(), array('ImageBlockCacheMap:1.1'));
 	    if ($ret) {
 		return $ret;
 	    }
 	}
 	if (!empty($currentVersion) && version_compare($currentVersion, '1.1.7', '<=')) {
-	    
-
-
-/*  Add proper index with new ::random column  */
-
-
-
+	    /* Add proper index with new ::random column */
 	    $ret = $storage->configureStore($this->getId(), array('ImageBlockCacheMap:1.2'));
 	    if ($ret) {
 		return $ret;

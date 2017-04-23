@@ -116,13 +116,7 @@ class GalleryDataItem extends GalleryItem {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Validate the input file  */
-
-
-
+	/* Validate the input file */
 	if (empty($inputFileName)) {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
@@ -140,13 +134,7 @@ class GalleryDataItem extends GalleryItem {
 	    return GalleryCoreApi::error(ERROR_LOCK_REQUIRED);
 	}
 
-	
-
-
-/*  Set the mime type before we call the parent so that it can use this info if necessary  */
-
-
-
+	/* Set the mime type before we call the parent so that it can use this info if necessary */
 	$this->setMimeType($mimeType);
 
 	$baseName = !empty($targetName) ? $targetName : basename($inputFileName);
@@ -155,13 +143,7 @@ class GalleryDataItem extends GalleryItem {
 	    return $ret;
 	}
 
-	
-
-
-/*  Figure out the new location for this file  */
-
-
-
+	/* Figure out the new location for this file */
 	list ($ret, $parent) = GalleryCoreApi::loadEntitiesById($parentId, 'GalleryItem');
 	if ($ret) {
 	    return $ret;
@@ -191,25 +173,13 @@ class GalleryDataItem extends GalleryItem {
 		return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE);
 	    }
 	} else {
-	    
-
-
-/*  Copy the file to its new location  */
-
-
-
+	    /* Copy the file to its new location */
 	    if (!$platform->copy($inputFileName, $newFileName)) {
 		return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE);
 	    }
 	}
 
-	
-
-
-/*  Set my file size  */
-
-
-
+	/* Set my file size */
 	$this->setSize($platform->filesize($newFileName));
 
 	return null;
@@ -221,13 +191,7 @@ class GalleryDataItem extends GalleryItem {
     function detachLink() {
 	global $gallery;
 
-	
-
-
-/*  Stash the linked entity because the super class is going to get rid of it  */
-
-
-
+	/* Stash the linked entity because the super class is going to get rid of it */
 	$linkedEntity = $this->getLinkedEntity();
 
 	$ret = parent::detachLink();
@@ -251,13 +215,7 @@ class GalleryDataItem extends GalleryItem {
 	    return $ret;
 	}
 
-	
-
-
-/*  This path should already be legal, unless we screwed up elsewhere  */
-
-
-
+	/* This path should already be legal, unless we screwed up elsewhere */
 	$newPath = $newPathBase . $this->getPathComponent();
 
 	if (!$platform->copy($sourcePath, $newPath)) {
@@ -274,25 +232,13 @@ class GalleryDataItem extends GalleryItem {
     function delete() {
 	global $gallery;
 
-	
-
-
-/*  Delete myself  */
-
-
-
+	/* Delete myself */
 	$ret = parent::delete();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Delete our source file, if we're not a link  */
-
-
-
+	/* Delete our source file, if we're not a link */
 	if (!$this->isLinked()) {
 	    list ($ret, $path) = $this->fetchPath();
 	    if ($ret) {
@@ -306,13 +252,7 @@ class GalleryDataItem extends GalleryItem {
 	    }
 	}
 
-	
-
-
-/*  Delete the fast-download cache if it exists  */
-
-
-
+	/* Delete the fast-download cache if it exists */
 	GalleryCoreApi::deleteFastDownloadFileById($this->getId());
 
 	return null;
@@ -350,13 +290,7 @@ class GalleryDataItem extends GalleryItem {
 	    return null;
 	}
 
-	
-
-
-/*  Read lock the parent so that we don't have a race condition below  */
-
-
-
+	/* Read lock the parent so that we don't have a race condition below */
 	list ($ret, $lockId) = GalleryCoreApi::acquireReadLock($this->getParentId());
 	if ($ret) {
 	    return $ret;
@@ -365,13 +299,7 @@ class GalleryDataItem extends GalleryItem {
 	$platform =& $gallery->getPlatform();
 
 
-	
-
-
-/*  Get the current path before we let the superclass do the rename  */
-
-
-
+	/* Get the current path before we let the superclass do the rename */
 	list ($ret, $currentPath) = $this->fetchPath();
 	if ($ret) {
 	    return $ret;
@@ -388,13 +316,7 @@ class GalleryDataItem extends GalleryItem {
 	    $error = $ret;
 	}
 
-	
-
-
-/*  Only rename the filesystem entity if we're not a link  */
-
-
-
+	/* Only rename the filesystem entity if we're not a link */
 	if (!$this->isLinked()) {
 
 	    /*
@@ -406,13 +328,7 @@ class GalleryDataItem extends GalleryItem {
 	    if (!isset($error)) {
 		$newPath = dirname($currentPath) . '/' . $newName;
 
-		
-
-
-/*  Check to see if the desired path exists  */
-
-
-
+		/* Check to see if the desired path exists */
 		if ($platform->file_exists($newPath)) {
 		    $error = GalleryCoreApi::error(ERROR_COLLISION);
 		}
@@ -425,13 +341,7 @@ class GalleryDataItem extends GalleryItem {
 	    }
 	}
 
-	
-
-
-/*  Release locks  */
-
-
-
+	/* Release locks */
 	$ret = GalleryCoreApi::releaseLocks($lockId);
 	if ($ret) {
 	    return $ret;

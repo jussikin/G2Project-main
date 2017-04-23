@@ -103,24 +103,12 @@ $fd = fopen('Maps.inc', 'w');
 fwrite($fd, $new);
 fclose($fd);
 
-
-
-
-/*  Done  */
-
-
-
+/* Done */
 cleanExit(0);
 
 function cleanExit($status = 0)
 {
-    
-
-
-/*  Clean up the cheap and easy way  */
-
-
-
+    /* Clean up the cheap and easy way */
     global $tmpdir;
     if (file_exists($tmpdir)) {
         system("rm -rf $tmpdir");

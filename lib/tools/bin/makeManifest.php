@@ -19,13 +19,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 if (!function_exists('file_put_contents')) {
-    
-
-
-/*  Define file_put_contents if running PHP 4.x  */
-
-
-
+    /* Define file_put_contents if running PHP 4.x */
     function file_put_contents($path, $data)
     {
         if (false === ($file = fopen($path, 'w')) || false === fwrite($file, $data)) {
@@ -84,13 +78,7 @@ function makeManifest($filterPath = '')
     $startTime = time();
 
     if (empty($SRCDIR)) {
-    
-
-
-/*  Current working directory must be gallery2 folder  */
-
-
-
+    /* Current working directory must be gallery2 folder */
         if (!file_exists('modules') && !file_exists('themes')) {
             $baseDir = dirname(dirname(dirname(dirname(__FILE__)))) . '/';
             chdir($baseDir);
@@ -101,13 +89,7 @@ function makeManifest($filterPath = '')
         $baseDir = $SRCDIR . '/gallery2/';
         chdir($baseDir);
     }
-    
-
-
-/*  Just so we are consistent lets standardize on Unix path sepearators  */
-
-
-
+    /* Just so we are consistent lets standardize on Unix path sepearators */
     $baseDir = str_replace("\\", '/', $baseDir);
     $baseDir .= substr($baseDir, -1) == '/' ? '' : '/';
 
@@ -117,13 +99,7 @@ function makeManifest($filterPath = '')
     quiet_print("Sorting...");
     sort($entries);
 
-    
-
-
-/*  Split into sections  */
-
-
-
+    /* Split into sections */
     $sections = array();
     quiet_print("Separating into sections...");
     foreach ($entries as $file) {
@@ -135,13 +111,7 @@ function makeManifest($filterPath = '')
         }
     }
 
-    
-
-
-/*  Now generate the checksum files  */
-
-
-
+    /* Now generate the checksum files */
     quiet_print("Generating checksums...");
     $changed = 0;
     $total = 0;

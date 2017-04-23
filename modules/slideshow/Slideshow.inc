@@ -60,13 +60,7 @@ class SlideshowView extends GalleryView {
 		return array($ret, null);
 	    }
 	} else {
-	    
-
-
-/*  Build slideshow for an album  */
-
-
-
+	    /* Build slideshow for an album */
 	    list ($ret, $item) = $this->getItem();
 	    if ($ret) {
 		return array($ret, null);
@@ -124,13 +118,7 @@ class SlideshowView extends GalleryView {
 		    $jsUrlParams);
 	    }
 
-	    
-
-
-/*  Set the start item  */
-
-
-
+	    /* Set the start item */
 	    if (!empty($items)) {
 		$Slideshow['startItemId'] = $items[$start]['item']['id'];
 	    } else {
@@ -138,13 +126,7 @@ class SlideshowView extends GalleryView {
 	    }
 
 	    if (GalleryUtilities::hasRequestVariable('return')) {
-		
-
-
-/*  Remove HTML entities  */
-
-
-
+		/* Remove HTML entities */
 		$Slideshow['returnUrl'] =
 		    html_entity_decode(GalleryUtilities::getRequestVariables('return'));
 	    }

@@ -128,13 +128,7 @@ class KeywordAlbumTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Keyword param should be unsanitized as it will be resanitized when URL is used  */
-
-
-
+	/* Keyword param should be unsanitized as it will be resanitized when URL is used */
 	$this->assertEquals(array('view' => 'keyalbum.KeywordAlbum', 'keyword' => 'test&key'),
 			    $theme['pageUrl'], 'page url');
 	$this->assert(in_array($this->_album->getId(), $theme['allChildIds']), 'album id');
@@ -146,13 +140,7 @@ class KeywordAlbumTest extends GalleryTestCase {
 	$theme =& $this->_template->getVariableByReference('theme');
 	$theme['actingUserId'] = $gallery->getActiveUserId();
 
-	
-
-
-/*  Query for items with both testkey and fun keywords  */
-
-
-
+	/* Query for items with both testkey and fun keywords */
 	GalleryUtilities::putRequestVariable('keyword', 'test&key,fun');
 
 	list ($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());

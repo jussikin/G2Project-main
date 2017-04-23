@@ -36,25 +36,13 @@ class NotificationItemAdminController extends GalleryController {
     function handleRequest($form) {
 	$status = $error = array();
 	
-	
-
-
-/*  Check that the user is logged in  */
-
-
-
+	/* Check that the user is logged in */
 	list ($ret, $userId) = NotificationHelper::getUserIdCheck();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Is the user an administrator  */
-
-
-
+	/* Is the user an administrator */
 	list ($ret, $isAdminGroup) = GalleryCoreApi::isUserInSiteAdminGroup();
 	if ($ret) {
 	    return array($ret, null);
@@ -116,13 +104,7 @@ class NotificationItemAdminController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Alert of the changes we have done.  */
-
-
-
+		/* Alert of the changes we have done. */
 		$status['saved'] = 1;
 		$returnOption = 'redirect';
 	    } else {
@@ -169,25 +151,13 @@ class NotificationItemAdminView extends GalleryView {
     function _initializeForm(&$form) {
 	$form['formName'] = 'NotificationItemAdmin';
 	
-	
-
-
-/*  Check that the user is logged in  */
-
-
-
+	/* Check that the user is logged in */
 	list ($ret, $userId) = NotificationHelper::getUserIdCheck();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Is the user an administrator  */
-
-
-
+	/* Is the user an administrator */
 	list ($ret, $isAdminGroup) = GalleryCoreApi::isUserInSiteAdminGroup();
 	if ($ret) {
 	    return $ret;
@@ -204,25 +174,13 @@ class NotificationItemAdminView extends GalleryView {
 	}
 	$itemId = $item->getId();
 
-	
-
-
-/*  Subscriptions  */
-
-
-
+	/* Subscriptions */
 	list ($ret, $subscriptions) = NotificationHelper::getSubscriptions($userId, $itemId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Events  */
-
-
-
+	/* Events */
 	$form['notifications'] = array();
 	$i = 0;
 	foreach ($notifications as $notificationName => $notification) {

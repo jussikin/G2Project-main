@@ -38,13 +38,7 @@ class CaptchaModule extends GalleryModule {
 	$this->setName($gallery->i18n('Captcha'));
 	$this->setDescription($gallery->i18n('Prevents abuse by deterring automated bots with ' .
 					     'input that requires visual comprehension'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() function below too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
 	$this->_templateVersion = 1;
 	$this->setGroup('gallery', $gallery->i18n('Gallery'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -79,13 +73,7 @@ class CaptchaModule extends GalleryModule {
 
 	switch ($currentVersion) {
 	case '':
-	    
-
-
-/*  Set some reasonable defaults  */
-
-
-
+	    /* Set some reasonable defaults */
 	    $ret = $this->setParameter('failedAttemptThreshold', 3);
 	    if ($ret) {
 		return $ret;
@@ -93,95 +81,35 @@ class CaptchaModule extends GalleryModule {
 	    break;
 
 	case '0.9.0':
-	    
-
-
-/*  Captcha changed from LoginPlugin to ValidationPlugin to add registration support  */
-
-
-
+	    /* Captcha changed from LoginPlugin to ValidationPlugin to add registration support */
 	case '0.9.1':
-	    
-
-
-/*  Updated GalleryCoreApi requirement to 5.3 to use Gallery::getPhpVm()  */
-
-
-
+	    /* Updated GalleryCoreApi requirement to 5.3 to use Gallery::getPhpVm() */
 	case '0.9.2':
-	    
-
-
-/*  Updated GalleryCoreApi requirement to 6.0  */
-
-
-
+	    /* Updated GalleryCoreApi requirement to 6.0 */
 	case '0.9.3':
 	case '0.9.4':
-	    
-
-
-/*  Upgraded GalleryModule requirement to 1.0  */
-
-
-
+	    /* Upgraded GalleryModule requirement to 1.0 */
 	case '0.9.5':
-	    
-
-
-/*  Upgraded GalleryModule requirement to 2.0  */
-
-
-
+	    /* Upgraded GalleryModule requirement to 2.0 */
 	case '0.9.6':
 	case '1.0.0':
-	    
-
-
-/*  Renamed ValidationPlugin to GalleryValidationPlugin  */
-
-
-
+	    /* Renamed ValidationPlugin to GalleryValidationPlugin */
 	case '1.0.1':
-	    
-
-
-/*  GalleryCoreApi 7.0 and GalleryModule 3.0  */
-
-
-
+	    /* GalleryCoreApi 7.0 and GalleryModule 3.0 */
 	case '1.0.2':
-	    
-
-
-/*  Updated GalleryValidationPlugin API  */
-
-
-
+	    /* Updated GalleryValidationPlugin API */
 	case '1.1.0':
 	case '1.1.1':
 	case '1.1.2':
 	case '1.1.3':
 	case '1.1.4':
 	case '1.1.4.1':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.1.5':
 	case '1.1.6':
 	case '1.1.7':
 	case '2.0.0':
-	    
-
-
-/*  GalleryCoreApi 8.0 and GalleryModule 4.0  */
-
-
-
+	    /* GalleryCoreApi 8.0 and GalleryModule 4.0 */
 
 	case 'end of upgrade path':
 	    break;
@@ -198,13 +126,7 @@ class CaptchaModule extends GalleryModule {
      * @see GalleryModule::autoConfigure
      */
     function autoConfigure() {
-	
-
-
-/*  We need to perform a test before activating  */
-
-
-
+	/* We need to perform a test before activating */
 	list ($ret, $needsConfiguration) = $this->needsConfiguration();
 	if ($ret) {
 	    return array($ret, null);

@@ -73,13 +73,7 @@ class MP3AudioModule extends GalleryModule {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  Add renderer on all GalleryDataItems with audio/mpeg mime type that need it  */
-
-
-
+	/* Add renderer on all GalleryDataItems with audio/mpeg mime type that need it */
 	$query = '
 	SELECT
 	  [GalleryDataItem::id]

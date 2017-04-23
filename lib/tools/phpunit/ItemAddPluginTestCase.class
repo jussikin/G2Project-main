@@ -56,13 +56,7 @@ class ItemAddPluginTestCase extends GalleryTestCase {
     }
 
     function handleRequest(&$item, $errorCode=null) {
-	
-
-
-/*  Get our form variables  */
-
-
-
+	/* Get our form variables */
 	$form = GalleryUtilities::getFormVariables('form');
 
 	$this->_addController = new ItemAddPluginTestItemAddController();
@@ -80,13 +74,7 @@ class ItemAddPluginTestCase extends GalleryTestCase {
 	    return $ret;
 	    return array($error, $status);
 	} else {
-	    
-
-
-/*  Check to make sure we got back everything we want  */
-
-
-
+	    /* Check to make sure we got back everything we want */
 	    $this->assert(isset($error) && is_array($error), 'plugin error results missing');
 
 	    /*

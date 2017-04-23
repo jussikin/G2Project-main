@@ -40,13 +40,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	}
 	global $gallery;
 
-	
-
-
-/*  Initialize test URL generator  */
-
-
-
+	/* Initialize test URL generator */
 	$this->_urlGenerator = new GalleryUrlGenerator();
 	$ret = $this->_urlGenerator->init('http://example.com/gallery2/main.php');
 	if ($ret) {
@@ -54,35 +48,17 @@ class WebDavHelperTest extends GalleryTestCase {
 	}
 	$gallery->setUrlGenerator($this->_urlGenerator);
 
-	
-
-
-/*  Use WebDavHelperTestPhpVm  */
-
-
-
+	/* Use WebDavHelperTestPhpVm */
 	$this->_phpVm = new WebDavHelperTestPhpVm();
 	$this->_phpVm->_extension_loaded = true;
 	$gallery->_phpVm =& $this->_phpVm;
 
-	
-
-
-/*  Mock activate the HTTP auth and rewrite modules  */
-
-
-
+	/* Mock activate the HTTP auth and rewrite modules */
 	$moduleStatus = array('httpauth' => array('active' => true),
 			      'rewrite' => array('active' => true));
 	GalleryDataCache::put('GalleryPluginHelper::fetchPluginList(module)', $moduleStatus);
 
-	
-
-
-/*  Mock preGallery rewrite parser.  Mock activate WebDAV rewrite rules.  */
-
-
-
+	/* Mock preGallery rewrite parser.  Mock activate WebDAV rewrite rules. */
 	$this->_parserType =& WebDavHelperTestRewriteApi::_getParserType();
 	$this->_parserType = 'preGallery';
 	$this->_activeRules =& WebDavHelperTestRewriteApi::_fetchActiveRulesForModule('webdav');
@@ -98,13 +74,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	    'modules/webdav/test/phpunit/WebDavHelperTest.class', 'test');
 	WebDavHelperTestHttpAuthInterface::_getConfiguration(true);
 
-	
-
-
-/*  Define requests  */
-
-
-
+	/* Define requests */
 	$this->_optionsRequest = implode("\r\n", array(
 	    'OPTIONS ' . $this->_urlGenerator->generateUrl(
 		array('controller' => 'webdav.WebDav'),
@@ -122,13 +92,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	    '',
 	    ''));
 
-	
-
-
-/*  Define success and failure responses  */
-
-
-
+	/* Define success and failure responses */
 	$this->_methodHandledResponse = implode("\r\n", array(
 	    'HTTP/1.1 200 OK',
 	    'Date: Mon, 24 Nov 2003 05:40:03 GMT',
@@ -172,13 +136,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	    '',
 	    ''));
 
-	
-
-
-/*  Use WebDavHelperTestPlatform  */
-
-
-
+	/* Use WebDavHelperTestPlatform */
 	$this->_platform = new WebDavHelperTestPlatform();
 
 	$this->_requests = array();
@@ -190,13 +148,7 @@ class WebDavHelperTest extends GalleryTestCase {
 		    array('forceServerRelativeUrl' => true,
 			  'htmlEntities' => false)) . ' HTTP/1.0',
 		'Host: ' . $this->_urlGenerator->getHostName(),
-		'Content-length: 0', 
-
-
-/*  IIS requires a Content-length at least for PUT requests  */
-
-
-
+		'Content-length: 0', /* IIS requires a Content-length at least for PUT requests */
 		'',
 		''));
 
@@ -265,13 +217,7 @@ class WebDavHelperTest extends GalleryTestCase {
 
     function testCheckConfigurationHttpAuthPluginDisabled() {
 	WebDavHelperTestHttpAuthInterface::_getConfiguration(false);
-	
-
-
-/*  Even when the httpauth module is active, none of its auth plugins could be active.  */
-
-
-
+	/* Even when the httpauth module is active, none of its auth plugins could be active. */
 	list ($ret, $code) = WebDavHelper::checkConfiguration();
 	if ($ret) {
 	    return $ret;
@@ -448,13 +394,7 @@ class WebDavHelperTest extends GalleryTestCase {
     }
 
     function _preparePropfindFiles($addObjectAndArrayData=false, $itemTitle='This is the title') {
-	
-
-
-/*  Create a test item and add a few object members for test  */
-
-
-
+	/* Create a test item and add a few object members for test */
 	list ($ret, $item) = $this->_createRandomDataItem($this->_rootAlbumId);
 	if ($ret) {
 	    return array($ret, null, null, null);
@@ -473,13 +413,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	    $item->description = new stdClass();
 	}
 
-	
-
-
-/*  Prepare expected result  */
-
-
-
+	/* Prepare expected result */
 	list ($ret, $memberInfo) =
 	    GalleryCoreApi::getExternalAccessMemberList('GalleryUnknownItem');
 	if ($ret) {
@@ -521,13 +455,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	$files = array();
 	$ret = WebDavHelper::_propfindFiles($user, '/', 0, $files);
 	if ($ret && $ret->getErrorCode() & ERROR_BAD_PARAMETER) {
-	    
-
-
-/*  As expected  */
-
-
-
+	    /* As expected */
 	} else if ($ret) {
 	    return $ret;
 	} else {
@@ -573,13 +501,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	$this->assertEquals(20000000, $item->getCreationTimestamp(), 'creation timestamp');
 	$this->assertEquals('GalleryUnknownItem', $item->getEntityType(), 'entity type changed');
 
-	
-
-
-/*  Verify the status of the props  */
-
-
-
+	/* Verify the status of the props */
 	$this->assertEquals(null, $props[0]['status'], 'summary is writable');
 	$this->assertEquals('403 Forbidden', $props[1]['status'],
 			    'entityType is not writable');
@@ -591,13 +513,7 @@ class WebDavHelperTest extends GalleryTestCase {
     }
 
     function testGetMountLink() {
-	
-
-
-/*  The general case  */
-
-
-
+	/* The general case */
 	$_SERVER['HTTP_USER_AGENT'] = 'Foo Bar';
 
 	$itemId = $this->_getRootId();
@@ -684,13 +600,7 @@ class WebDavHelperTest extends GalleryTestCase {
     function testGetParentItemIdByPathForMissingParent() {
 	list ($ret, $parentId) = WebDavHelper::getParentItemIdByPath('/test_' . rand() . '/foo');
 	if ($ret && $ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-	    
-
-
-/*  As expected  */
-
-
-
+	    /* As expected */
 	} else if ($ret) {
 	    return $ret;
 	} else {
@@ -740,13 +650,7 @@ class WebDavHelperTest extends GalleryTestCase {
 	$this->assertEquals($expectedRenderer, $mirrorEntity->getRenderer());
 	$this->assertEquals('test/new', $mirrorEntity->getMimeType());
 
-	
-
-
-/*  For tear-down  */
-
-
-
+	/* For tear-down */
 	$targetEntity->id = $targetItemIdBackup;
     }
 }
@@ -835,13 +739,7 @@ class WebDavHelperTestPlatform extends GalleryPlatform {
     }
 }
 
-class WebDavHelperTestHttpAuthInterface 
-
-
-/*  extends HttpAuthInterface_1_0  */
-
-
- {
+class WebDavHelperTestHttpAuthInterface /* extends HttpAuthInterface_1_0 */ {
     function _getConfiguration($initPluginsEnabled=null) {
 	static $pluginsEnabled;
 	if (isset($initPluginsEnabled)) {

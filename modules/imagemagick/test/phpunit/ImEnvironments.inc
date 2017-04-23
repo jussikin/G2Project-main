@@ -236,13 +236,7 @@ identify: Missing an image file name.',
 		'testProfile.jpg' =>
 		    'testProfile.jpg JPEG 40x30 DirectClass 8-bit 30585b 0.0u 0:01',
 		'-format' => array('cmyk.jpg' => "DirectClassCMYK\n",
-				   'rgb_file' => "DirectClassCMYK\n"), 
-
-
-/*  Fails to convert to RGB  */
-
-
-
+				   'rgb_file' => "DirectClassCMYK\n"), /* Fails to convert to RGB */
 	),
 );
 

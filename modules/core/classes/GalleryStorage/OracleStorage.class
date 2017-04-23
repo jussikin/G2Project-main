@@ -53,20 +53,8 @@ class OracleStorage extends GalleryStorage {
      * @see GalleryStorage::_setConnectionSettings
      */
     function _setConnectionSettings(&$db) {
-	
-
-
-/*  May cause "ORA-12705: Cannot access NLS data files or invalid environment specified"  */
-
-
-
-	
-
-
-/*  @putenv("NLS_LANG=UTF8");  */
-
-
-
+	/* May cause "ORA-12705: Cannot access NLS data files or invalid environment specified" */
+	/* @putenv("NLS_LANG=UTF8"); */
 
 	return null;
     }
@@ -91,13 +79,7 @@ class OracleStorage extends GalleryStorage {
 	     * this, see OracleCreateBitOr.sql in this directory and run the statements
 	     * with sqlplus.  Then uncomment the line below:
 	     */
-	    
-
-
-/*  return array(null, 'BIT_OR(' . $args[0] . ')');  */
-
-
-
+	    /* return array(null, 'BIT_OR(' . $args[0] . ')'); */
 	    return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION), null);
 	    break;
 
@@ -171,13 +153,7 @@ class OracleStorage extends GalleryStorage {
 	    if (!isset($this->_db)) {
 		list ($ret, $this->_db) = $this->_getConnection();
 		if ($ret) {
-		    
-
-
-/*  Try to fallback  */
-
-
-
+		    /* Try to fallback */
 		    return ociserverversion();
 		}
 	    }
@@ -190,13 +166,7 @@ class OracleStorage extends GalleryStorage {
      * @see GalleryStorage::_getOptimizeStatements
      */
     function _getOptimizeStatements() {
-	
-
-
-/*  Is this the right command to use?  */
-
-
-
+	/* Is this the right command to use? */
 	return array('ANALYZE TABLE %s COMPUTE STATISTICS');
     }
 
@@ -217,13 +187,7 @@ class OracleStorage extends GalleryStorage {
      * @see GalleryStorage::decodeBlob
      */
     function encodeBlob($blob) {
-	
-
-
-/*  See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html  */
-
-
-
+	/* See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html */
 	return addcslashes($blob, "\000..\037\134\177..\377");
     }
 

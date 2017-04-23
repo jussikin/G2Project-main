@@ -41,13 +41,7 @@ class ItemOrderTest extends GalleryTestCase {
 	}
 	$this->_markForCleanup($this->_parentItem);
 
-	
-
-
-/*  Give us full perms  */
-
-
-
+	/* Give us full perms */
 	$userId = $gallery->getActiveUserId();
 	$ret = GalleryCoreApi::addUserPermission($this->_parentItem->getId(),
 						 $userId, 'core.all', false);
@@ -57,13 +51,7 @@ class ItemOrderTest extends GalleryTestCase {
 
 	$titles = array('ztitle', 'ytitle', 'xtitle');
 	for ($i = 0; $i < 3; $i++) {
-	    sleep(1); 
-
-
-/*  So items get different timestamps  */
-
-
-
+	    sleep(1); /* So items get different timestamps */
 	    list ($ret, $this->_childItems[$i]) = $this->_createRandomAlbum(
 		$this->_parentItem->getId(), array('title' => $titles[$i]));
 	    if ($ret) {
@@ -80,13 +68,7 @@ class ItemOrderTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Assign the item order in reverse  */
-
-
-
+	/* Assign the item order in reverse */
 	$correctResults = array();
 	for ($i = 0; $i < count($this->_childItems); $i++) {
 	    $ret = GalleryCoreApi::setItemOrderWeight($this->_childItems[$i]->getId(), 100 - $i);
@@ -110,13 +92,7 @@ class ItemOrderTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Make manual order different from creation order  */
-
-
-
+	/* Make manual order different from creation order */
 	$correctResults = array();
 	for ($i = 0; $i < count($this->_childItems); $i++) {
 	    $ret = GalleryCoreApi::setItemOrderWeight($this->_childItems[$i]->getId(), 100 - $i);
@@ -178,13 +154,7 @@ class ItemOrderTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Can't verify the order (it's random), just make sure we got the right ids  */
-
-
-
+	/* Can't verify the order (it's random), just make sure we got the right ids */
 	$correctResults = array();
 	for ($i = 0; $i < count($this->_childItems); $i++) {
 	    $correctResults[] = $this->_childItems[$i]->getId();

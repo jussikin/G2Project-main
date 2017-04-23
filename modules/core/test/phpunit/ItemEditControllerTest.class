@@ -132,27 +132,9 @@ class ItemEditControllerTest extends GalleryControllerTestCase {
 				      'subView' => 'core.ItemEdit',
 				      'editPlugin' => 'ItemEditControllerTestPluginFailAndWarn'),
 		  'status' => array('editMessage' => null,
-				    'warning' => array('a warning')),   
-
-
-/*  from its option  */
-
-
-
-		  'error' => array('failed',   
-
-
-/*  from the plugin  */
-
-
-
-				   'an error') 
-
-
-/*  from its option  */
-
-
-
+				    'warning' => array('a warning')),   /* from its option */
+		  'error' => array('failed',   /* from the plugin */
+				   'an error') /* from its option */
 		  ),
 	    $results);
     }
@@ -233,21 +215,9 @@ class ItemEditControllerTest extends GalleryControllerTestCase {
  */
 class ItemEditControllerTestPluginSuccess {
     function handleRequest($form, &$item, &$preferred) {
-	
+	/* TODO: We should verify the item is legit here */
 
-
-/*  TODO: We should verify the item is legit here  */
-
-
-
-
-	
-
-
-/*  Check to see if we have a preferred source  */
-
-
-
+	/* Check to see if we have a preferred source */
 	list ($ret, $preferredTable) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
 	if ($ret) {

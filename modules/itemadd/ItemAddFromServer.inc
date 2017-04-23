@@ -68,13 +68,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 
 	if (isset($form['action']['addFromLocalServer'])
 		&& (!empty($form['localServerFiles']) || !empty($form['localServerDirectories']))) {
-	    
-
-
-/*  Add the selected items  */
-
-
-
+	    /* Add the selected items */
 	    $textFields = array(
 		'title' => (isset($form['set']['title'])) ? 1 : 0,
 		'summary' => (isset($form['set']['summary'])) ? 1 : 0,
@@ -87,13 +81,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    $dir = GalleryCoreApi::convertFromUtf8($form['localServerPath']);
 	    GalleryUtilities::unsanitizeInputValues($dir, false);
 
-	    
-
-
-/*  We need the localServerDirList only in the system charset  */
-
-
-
+	    /* We need the localServerDirList only in the system charset */
 	    list ($ret, $unused, $localServerDirList) = $this->fetchLocalServerDirList();
 	    if ($ret) {
 		return array($ret, null, null);
@@ -119,13 +107,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 		return array($ret, null, null);
 	    }
 
-	    
-
-
-/*  In a first pass, recurse to count the total number of items scheduled to be added  */
-
-
-
+	    /* In a first pass, recurse to count the total number of items scheduled to be added */
 	    $gallery->guaranteeTimeLimit(60);
 	    $this->_totalItems = $i = 0;
 	    if (!empty($form['localServerFiles'])) {
@@ -135,13 +117,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 		    }
 		    if (++$i % 200 == 0) {
 			$gallery->guaranteeTimeLimit(30);
-			
-
-
-/*  Inaccurate, but giving the impression of progress  */
-
-
-
+			/* Inaccurate, but giving the impression of progress */
 			$this->_templateAdapter->updateProgressBar(
 			    $this->_fileCountMessage , '', $i / ($i + 500));
 		    }
@@ -156,23 +132,11 @@ class ItemAddFromServer extends ItemAddPlugin {
 		foreach ($form['localServerDirectories'] as $directory => $data) {
 		    if (++$i % 200 == 0) {
 			$gallery->guaranteeTimeLimit(30);
-			
-
-
-/*  Inaccurate, but giving the impression of progress  */
-
-
-
+			/* Inaccurate, but giving the impression of progress */
 			$this->_templateAdapter->updateProgressBar(
 			    $this->_fileCountMessage , '', $i / ($i + 500));
 		    }
-		    
-
-
-/*  Skip current or parent directory entries  */
-
-
-
+		    /* Skip current or parent directory entries */
 		    if (empty($data['selected']) || $directory == '.' || $directory == '..'
 			    || !$this->_platform->is_readable($dir . urldecode($directory))) {
 			continue;
@@ -186,13 +150,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    }
 
 	    if ($requiresAddAlbumPermission) {
-		
-
-
-/*  Make sure we have permission to add subalbums  */
-
-
-
+		/* Make sure we have permission to add subalbums */
 		$ret = GalleryCoreApi::assertHasItemPermission($item->getId(), 'core.addAlbumItem');
 		if ($ret) {
 		    GalleryCoreApi::releaseLocks($lockId);
@@ -205,13 +163,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 		$this->_templateAdapter->updateProgressBar($this->_addingItemsMessage, '', 0);
 	    }
 
-	    
-
-
-/*  Start adding the items  */
-
-
-
+	    /* Start adding the items */
 	    $this->_addedItems = $i = $this->_lastPostProcessed = 0;
 	    $this->_progressBatch = max(1, min(5, $this->_totalItems));
 	    $this->_processBatch = 50;
@@ -230,13 +182,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 		    $useSymlink = isset($data['useSymlink']);
 		    if (!GalleryUtilities::isPathInList(dirname($file), $localServerDirList)
 			    || !$this->_platform->is_readable($file)) {
-			
-
-
-/*  Ensure malformed input like fileKey = ../foo doesn't work  */
-
-
-
+			/* Ensure malformed input like fileKey = ../foo doesn't work */
 			continue;
 		    }
 
@@ -285,13 +231,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 			    $this->_addingItemsMessage , '',
 			    $this->_addedItems / $this->_totalItems);
 		    }
-		    
-
-
-/*  Skip current or parent directory entries  */
-
-
-
+		    /* Skip current or parent directory entries */
 		    $path = $dir . urldecode($directory);
 		    if (!isset($data['selected']) || $directory == "." || $directory == "..") {
 			continue;
@@ -304,13 +244,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 			GalleryCoreApi::releaseLocks($lockId);
 			return array($ret, null, null);
 		    }
-		    $this->_addedItems++; 
-
-
-/*  Increment either way  */
-
-
-
+		    $this->_addedItems++; /* Increment either way */
 
 		    if ($this->_addedItems % $this->_progressBatch == 0) {
 			$gallery->guaranteeTimeLimit(30);
@@ -390,13 +324,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	return null;
     }
 
-    
-
-
-/*  @return array GalleryStatus, mixed id of new album or false  */
-
-
-
+    /** @return array GalleryStatus, mixed id of new album or false */
     function addDirectory($parentId, $path, $useSymlink, $textFields, &$status, &$error) {
 	global $gallery;
 
@@ -412,13 +340,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    return array(null, false);
 	}
 
-	
-
-
-/*  Create new Album  */
-
-
-
+	/* Create new Album */
 	$dirName = basename($path);
 	$dirNameUtf8 = GalleryCoreApi::convertToUtf8($dirName);
 	GalleryUtilities::sanitizeInputValues($dirNameUtf8);
@@ -463,13 +385,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    return $ret;
 	}
 
-	
-
-
-/*  Look into the directory, add anything we find  */
-
-
-
+	/* Look into the directory, add anything we find */
 	$dirList = $albumList = array();
 	$handle = $this->_platform->opendir($path);
 	$i = 0;
@@ -530,13 +446,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 		    $this->_addedItems / $this->_totalItems);
 	    }
 	    if (!empty($error)) {
-		
-
-
-/*  Bail out if an error has occurred  */
-
-
-
+		/* Bail out if an error has occurred */
 		break;
 	    }
 	}
@@ -546,13 +456,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    return $ret;
 	}
 
-	
-
-
-/*  Call post-process after releasing the lock to prevent locking conflicts  */
-
-
-
+	/* Call post-process after releasing the lock to prevent locking conflicts */
 	if ($this->_addedItems - $this->_lastPostProcessed >= $this->_processBatch) {
 	    $this->_lastPostProcessed = $this->_addedItems;
 	    $gallery->guaranteeTimeLimit(30);
@@ -563,13 +467,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    $error = array_merge($error, $optionErrors);
 	}
 	if (!empty($error)) {
-	    
-
-
-/*  Bail out if an error has occurred  */
-
-
-
+	    /* Bail out if an error has occurred */
 	    return null;
 	}
 
@@ -580,13 +478,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 		return $ret;
 	    }
 	    if (!empty($error)) {
-		
-
-
-/*  Bail out if an error has occurred  */
-
-
-
+		/* Bail out if an error has occurred */
 		break;
 	    }
 	}
@@ -603,26 +495,14 @@ class ItemAddFromServer extends ItemAddPlugin {
     function _getFileCountForDirectory($dirName, &$progressCount) {
 	global $gallery;
 
-    	
-
-
-/*  Breadth-first to keep the file-handle count low  */
-
-
-
+    	/* Breadth-first to keep the file-handle count low */
 	$fileCount = 0;
 	$dirList = array();
 	$handle = $this->_platform->opendir($dirName);
 	while (($fileName = $this->_platform->readdir($handle)) !== false) {
 	    if (++$progressCount % 200 == 0) {
 		$gallery->guaranteeTimeLimit(30);
-		
-
-
-/*  Inaccurate, but giving the impression of progress  */
-
-
-
+		/* Inaccurate, but giving the impression of progress */
 		$this->_templateAdapter->updateProgressBar(
 		    $this->_fileCountMessage , '', $progressCount / ($progressCount + 500));
 	    }
@@ -676,13 +556,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	global $gallery;
 
 	if ($form['formName'] != 'ItemAddFromServer') {
-	    
-
-
-/*  First time around, load the form with item data  */
-
-
-
+	    /* First time around, load the form with item data */
 	    $form['localServerPath'] = '';
 	    $form['formName'] = 'ItemAddFromServer';
 	}
@@ -693,26 +567,14 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Look up the platform type  */
-
-
-
+	/* Look up the platform type */
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
 	if (isset($form['action']['startOver'])) {
 	    $form['localServerFiles'] = array();
 	} else if (isset($form['action']['findFilesFromLocalServer'])) {
-	    
-
-
-/*  If we're uploading from the local server, get a file list now  */
-
-
-
+	    /* If we're uploading from the local server, get a file list now */
 	    $localServerPath = trim($form['localServerPath']);
 	    /*
 	     * All input is UTF-8, whether it comes from the browser or from the database.
@@ -727,13 +589,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    $localServerPath = $platform->realpath($localServerPath);
 	    $form['localServerPath'] = GalleryCoreApi::convertToUtf8($localServerPath);
 
-	    
-
-
-/*  Validate the path  */
-
-
-
+	    /* Validate the path */
 	    $form['localServerFiles'] = array();
 	    if (empty($localServerPath)) {
 		$form['error']['localServerPath']['missing'] = 1;
@@ -750,23 +606,11 @@ class ItemAddFromServer extends ItemAddPlugin {
 		    $handle = $platform->opendir($path);
 		    $mimeTypeItemMap = array();
 
-		    
-
-
-/*  Add path to the recent path list  */
-
-
-
+		    /* Add path to the recent path list */
 		    $session =& $gallery->getSession();
 		    $recentPaths =
 			$session->get('itemadd.view.ItemAdd.ItemAddFromServer.recentPaths');
-		    
-
-
-/*  Use the UTF-8 string, recent paths is only for the output  */
-
-
-
+		    /* Use the UTF-8 string, recent paths is only for the output */
 		    $recentPaths[$form['localServerPath']] = 1;
 		    $session->put('itemadd.view.ItemAdd.ItemAddFromServer.recentPaths',
 				  $recentPaths);
@@ -803,13 +647,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 				    if ($ret) {
 					return array($ret, null, null);
 				    }
-				    
-
-
-/*  Get localized and english names:  */
-
-
-
+				    /* Get localized and english names: */
 				    $mimeTypeItem->setMimeType($mimeType);
 				    $mimeTypeItemMap[$mimeType] =
 					array_merge($mimeTypeItem->itemTypeName(),
@@ -850,25 +688,13 @@ class ItemAddFromServer extends ItemAddPlugin {
 			      'unknown' => $mimeTypeItemName[3] == 'unknown',
 			      'fileKey' => urlencode($fileName));
 
-		    
-
-
-/*  Change localServerPath from file path to parent dir  */
-
-
-
+		    /* Change localServerPath from file path to parent dir */
 		    $form['localServerPath'] = GalleryCoreApi::convertToUtf8(dirname($path));
 		}
 	    }
 	}
 
-	
-
-
-/*  Do we have permission to add subalbums  */
-
-
-
+	/* Do we have permission to add subalbums */
 	list ($ret, $canAddAlbum) = GalleryCoreApi::hasItemPermission($item->getId(),
 		'core.addAlbumItem');
 	if ($ret) {
@@ -919,13 +745,7 @@ class ItemAddFromServer extends ItemAddPlugin {
 	    $form['set'] = array('title' => 1, 'summary' => 0, 'description' => 0);
 	}
 
-	
-
-
-/*  Do we want to allow symlinks?  */
-
-
-
+	/* Do we want to allow symlinks? */
 	$ItemAddFromServer['showSymlink'] = $platform->isSymlinkSupported();
 
 	$template->setVariable('ItemAddFromServer', $ItemAddFromServer);

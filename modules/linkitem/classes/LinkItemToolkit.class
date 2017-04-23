@@ -56,13 +56,7 @@ class LinkItemToolkit extends GalleryToolkit {
 	    return array(null, 'image/jpeg', $context);
 	}
 
-	
-
-
-/*  Source URL is passed in as "source filename"  */
-
-
-
+	/* Source URL is passed in as "source filename" */
 	$url = $sourceFilename;
 
 	/* Fetch snapshot image from webdesignbook.net

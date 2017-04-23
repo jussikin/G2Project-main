@@ -37,13 +37,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	$error = array();
 
 	if (isset($form['action']['crop']) || isset($form['action']['reset'])) {
-	    
-
-
-/*  Load the thumbnail  */
-
-
-
+	    /* Load the thumbnail */
 	    list ($ret, $thumbnails) =
 		GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 	    if ($ret) {
@@ -56,13 +50,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	}
 
 	if (isset($form['action']['crop']) && isset($thumbnail)) {
-	    
-
-
-/*  Get our source  */
-
-
-
+	    /* Get our source */
 	    list ($ret, $source) = GalleryCoreApi::loadEntitiesById(
 		$thumbnail->getDerivativeSourceId(),
 		array('GalleryFileSystemEntity', 'GalleryDerivative'));
@@ -86,13 +74,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 		$cropWidth = 100;
 		$cropHeight = 100;
 	    } else {
-		
-
-
-/*  Sanitize inputs to fit within 0-100 (if cropper miscalculates)  */
-
-
-
+		/* Sanitize inputs to fit within 0-100 (if cropper miscalculates) */
 		$cropX = GalleryUtilities::roundToString(
 			max(0, 100 * $form['crop']['x'] / $source->getWidth()), 3);
 		$cropY = GalleryUtilities::roundToString(
@@ -127,13 +109,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 		return array($ret, null, null, null);
 	    }
 
-	    
-
-
-/*  Figure out where to redirect upon success  */
-
-
-
+	    /* Figure out where to redirect upon success */
 	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 	    if ($ret) {
 		return array($ret, null, null, null);
@@ -164,13 +140,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 		return array($ret, null, null, null);
 	    }
 
-	    
-
-
-/*  Figure out where to redirect upon success  */
-
-
-
+	    /* Figure out where to redirect upon success */
 	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 	    if ($ret) {
 		return array($ret, null, null, null);
@@ -196,13 +166,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	}
 
 	if ($form['formName'] != 'ItemEditPhotoThumbnail') {
-	    
-
-
-/*  First time around, reset the form  */
-
-
-
+	    /* First time around, reset the form */
 	    $form['formName'] = 'ItemEditPhotoThumbnail';
 	}
 
@@ -222,13 +186,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	    $crop['widthPercent'] = $matches[3];
 	    $crop['heightPercent'] = $matches[4];
 	} else {
-	    
-
-
-/*  No cropping yet  */
-
-
-
+	    /* No cropping yet */
 	    $crop['leftPercent'] = 0;
 	    $crop['topPercent'] = 0;
 	    $crop['widthPercent'] = 100;
@@ -247,13 +205,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Convert crop percentages into real pixels  */
-
-
-
+	/* Convert crop percentages into real pixels */
 	$crop['left'] = round($crop['leftPercent'] * $source->getWidth() / 100);
 	$crop['top'] = round($crop['topPercent'] * $source->getHeight() / 100);
 	$crop['width'] = round($crop['widthPercent'] * $source->getWidth() / 100);
@@ -288,13 +240,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	    }
 	}
 
-	
-
-
-/*  Make sure we have toolkit support  */
-
-
-
+	/* Make sure we have toolkit support */
 	list ($ret, $toolkit) =
 	    GalleryCoreApi::getToolkitByOperation($source->getMimeType(), 'crop');
 	if ($ret) {
@@ -384,13 +330,7 @@ class ItemEditPhotoThumbnail extends ItemEditPlugin {
 	    $currentAspect = round($crop['width'] / $crop['height'], 2);
 	    $i = 0;
 
-	    
-
-
-/*  Set defaults  */
-
-
-
+	    /* Set defaults */
 	    $selectedAspect = 0;
 	    $selectedOrientation = 'portrait';
 	    $ItemEditPhotoThumbnail['editThumbnail']['cropRatioWidth'] =

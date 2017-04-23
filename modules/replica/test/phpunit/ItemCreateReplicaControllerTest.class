@@ -39,13 +39,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a container album for all our test items  */
-
-
-
+	/* Create a container album for all our test items */
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -176,13 +170,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove add permission in the destination  */
-
-
-
+	/* Remove add permission in the destination */
 	$ret = GalleryCoreApi::removeItemPermissions($this->_album->getId());
 	if ($ret) {
 	    return $ret;
@@ -205,13 +193,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
     function testCreateReplicaNextPageOutOfRange() {
 	global $gallery;
 
-	
-
-
-/*  create random items  */
-
-
-
+	/* create random items */
 	$items = array();
 	for ($i = 0; $i < 5; $i++) {
 	    list ($ret, $items[$i]) = $this->_createRandomDataItem($this->_album->getId());
@@ -231,13 +213,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('page', 3);
 	GalleryUtilities::putRequestVariable('form[action][next]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'replica.ItemCreateReplica',
@@ -251,13 +227,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
     function testCreateReplicaPreviousPageOutOfRange() {
 	global $gallery;
 
-	
-
-
-/*  create random items  */
-
-
-
+	/* create random items */
 	$items = array();
 	for ($i = 0; $i < 5; $i++) {
 	    list ($ret, $items[$i]) = $this->_createRandomDataItem($this->_album->getId());
@@ -276,13 +246,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('page', -1);
 	GalleryUtilities::putRequestVariable('form[action][previous]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.ItemAdmin',
 						      'subView' => 'replica.ItemCreateReplica',

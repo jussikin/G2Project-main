@@ -44,47 +44,23 @@ class ExifCallbacks {
 		return $ret;
 	    }
 	    if (!$hasPermission) {
-		
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+		/* Avoid information disclosure, act as if the item didn't exist. */
 		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	    }
 
-	    
-
-
-/*  We only work on JPEG/raw data items  */
-
-
-
+	    /* We only work on JPEG/raw data items */
 	    if (!GalleryUtilities::isA($item, 'GalleryDataItem') ||
 		!preg_match('{^image/(p?jpeg(-cmyk)?|x-dcraw)$}', $item->getMimeType())) {
 		return null;
 	    }
 
-	    
-
-
-/*  Feed the file to exifer  */
-
-
-
+	    /* Feed the file to exifer */
 	    list ($ret, $path) = $item->fetchPath();
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Figure out which version we're looking at  */
-
-
-
+	    /* Figure out which version we're looking at */
 	    $session =& $gallery->getSession();
 	    if (empty($mode)) {
 		$mode = $session->get('exif.module.LoadExifInfo.mode');

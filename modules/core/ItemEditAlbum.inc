@@ -42,13 +42,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	     * which will reset the form
 	     */
 	} else if (isset($form['action']['save'])) {
-	    
-
-
-/*  Validate the input data  */
-
-
-
+	    /* Validate the input data */
 	    if (!is_numeric($form['thumbnail']['size']) || $form['thumbnail']['size'] < 1) {
 		$error[] = 'form[error][thumbnail][size][invalid]';
 	    }
@@ -69,13 +63,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Delete existing derivative preferences  */
-
-
-
+		/* Delete existing derivative preferences */
 		$ret = GalleryCoreApi::removeDerivativePreferencesForItem($item->getId());
 		if ($ret) {
 		    return array($ret, null, null, null);
@@ -89,13 +77,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 			return array($ret, null, null, null);
 		    }
 		}
-		
-
-
-/*  Add the thumbnail size back in  */
-
-
-
+		/* Add the thumbnail size back in */
 		$ret = GalleryCoreApi::addDerivativePreference(0, $item->getId(),
 		    DERIVATIVE_TYPE_IMAGE_THUMBNAIL,
 		    'thumbnail|' . $form['thumbnail']['size']);
@@ -106,13 +88,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    $changeTypes[] = DERIVATIVE_TYPE_IMAGE_THUMBNAIL;
 		}
 
-		
-
-
-/*  Add the resize-sizes back in  */
-
-
-
+		/* Add the resize-sizes back in */
 		$i = 0;
 		foreach ($form['resizes'] as $resize) {
 		    $ret = GalleryCoreApi::addDerivativePreference(
@@ -126,13 +102,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    $changeTypes[] = DERIVATIVE_TYPE_IMAGE_RESIZE;
 		}
 
-		
-
-
-/*  Use appropriate settings in descendent albums  */
-
-
-
+		/* Use appropriate settings in descendent albums */
 		if (!empty($changeTypes) && !empty($subAlbumIds)) {
 		    $ret = GalleryCoreApi::removeDerivativePreferenceForItemType(
 			    $subAlbumIds, $changeTypes);
@@ -160,13 +130,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    }
 		}
 
-		
-
-
-/*  Recreate the thumbnails, if requested to do so  */
-
-
-
+		/* Recreate the thumbnails, if requested to do so */
 		if (isset($form['recreateThumbnails'])) {
 		    $templateAdapter =& $gallery->getTemplateAdapter();
 		    $templateAdapter->registerTrailerCallback(
@@ -174,13 +138,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    $requiresProgressBar = true;
 		}
 
-		
-
-
-/*  Recreate the resizes, if requested to do so  */
-
-
-
+		/* Recreate the resizes, if requested to do so */
 		if (isset($form['recreateResizes'])) {
 		    $templateAdapter =& $gallery->getTemplateAdapter();
 		    $templateAdapter->registerTrailerCallback(
@@ -188,13 +146,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    $requiresProgressBar = true;
 		}
 
-		
-
-
-/*  Save basic settings  */
-
-
-
+		/* Save basic settings */
 		if (!empty($form['presort'])) {
 		    $item->setOrderBy($form['presort'] . '|' . $form['orderBy']);
 		} else {
@@ -221,13 +173,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    return array($ret, null, null, null);
 		}
 
-		
-
-
-/*  for sort order we need to load subalbums  */
-
-
-
+		/* for sort order we need to load subalbums */
 		if (!empty($subAlbumIds) && isset($form['changeInDescendents']['sort'])) {
 		    list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($subAlbumIds);
 		    if ($ret) {
@@ -262,13 +208,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    }
 		}
 
-		
-
-
-/*  Prepare our status message  */
-
-
-
+		/* Prepare our status message */
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 		    return array($ret, null, null, null);
@@ -297,13 +237,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	    $form['orderDirection'] = $item->getOrderDirection();
 	    $form['formName'] = 'ItemEditAlbum';
 
-	    
-
-
-/*  Load up the data for the resizes table  */
-
-
-
+	    /* Load up the data for the resizes table */
 	    list ($ret, $preferences) =
 		GalleryCoreApi::fetchDerivativePreferencesForItem($item->getId());
 	    if ($ret) {
@@ -333,13 +267,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		}
 	    }
 
-	    
-
-
-/*  Tag on a few form blanks  */
-
-
-
+	    /* Tag on a few form blanks */
 	    if (empty($form['resizes'])) {
 		$extraBlanks = 3;
 	    } else {
@@ -350,26 +278,14 @@ class ItemEditAlbum extends ItemEditPlugin {
 		$form['resizes'][] = array('active' => 0, 'width' => '', 'height' => '');
 	    }
 
-	    
-
-
-/*  Always force these to be false  */
-
-
-
+	    /* Always force these to be false */
 	    $form['recreateThumbnails'] = false;
 	    $form['recreateResizes'] = false;
 	    $form['buildThumbnails'] = false;
 	    $form['buildResizes'] = false;
 	}
 
-	
-
-
-/*  Checkboxes are annoying in that they are empty if false  */
-
-
-
+	/* Checkboxes are annoying in that they are empty if false */
 	$form['recreateThumbnails'] = !empty($form['recreateThumbnails']);
 	$form['recreateResizes'] = !empty($form['recreateThumbnails']);
 	$form['buildThumbnails'] = !empty($form['buildThumbnails']);
@@ -383,13 +299,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Set up our sort order selection list  */
-
-
-
+	/* Set up our sort order selection list */
 	GalleryCoreApi::requireOnce('modules/core/classes/GallerySortInterface_1_2.class');
 	list ($ret, $orderByList, $presortList, $orderDirectionList) =
 	    GallerySortInterface_1_2::getAllSortOrders();
@@ -419,13 +329,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	$heading = $module->translate('Apply resized image settings');
 	$templateAdapter->updateProgressBar($heading, $module->translate('Preparing...'), 0);
 
-	
-
-
-/*  Get the items to process  */
-
-
-
+	/* Get the items to process */
 	if (empty($form['changeInDescendents']['recreateResizes'])) {
 	    list ($ret, $childIds) =
 		GalleryCoreApi::fetchChildItemIdsWithPermission($item->getId(), 'core.edit');
@@ -447,26 +351,14 @@ class ItemEditAlbum extends ItemEditPlugin {
 	$resizePrefs = array();
 	while (!empty($childIds)) {
 	    $currentChildIds = array_splice($childIds, 0, $batchSize);
-	    
-
-
-/*  Load the children  */
-
-
-
+	    /* Load the children */
 	    list ($ret, $childItems) =
 		GalleryCoreApi::loadEntitiesById($currentChildIds, 'GalleryItem');
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Load existing resizes  */
-
-
-
+	    /* Load existing resizes */
 	    list ($ret, $resizesSet) = GalleryCoreApi::fetchResizesByItemIds($currentChildIds);
 	    if ($ret) {
 		return $ret;
@@ -478,13 +370,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		}
 	    }
 
-	    
-
-
-/*  Update the resizes  */
-
-
-
+	    /* Update the resizes */
 	    foreach ($childItems as $child) {
 		if (!(++$ind % $step)) {
 		    $message = $module->translate(array('text' => 'Processing image %d of %d',
@@ -498,13 +384,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		$childId = $child->getId();
 		$albumId = $child->getParentId();
 		if (!isset($resizePrefs[$albumId])) {
-		    
-
-
-/*  Keep resizes for albums in memory  */
-
-
-
+		    /* Keep resizes for albums in memory */
 		    list ($ret, $preferences) =
 			GalleryCoreApi::fetchDerivativePreferencesForItem($albumId);
 		    if ($ret) {
@@ -531,13 +411,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		}
 		$mimeType = $source->getMimeType();
 
-		
-
-
-/*  Determine operations and check against existing resizes  */
-
-
-
+		/* Determine operations and check against existing resizes */
 		$newResizes = array();
 		for ($i = 0; $i < count($resizePrefs[$albumId]); $i++) {
 		    if (!isset($resizePrefs[$albumId][$i][$mimeType])) {
@@ -551,25 +425,13 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    }
 		    $resize = $resizePrefs[$albumId][$i];
 
-		    
-
-
-/*  Validate toolkit support before adding back the resizes  */
-
-
-
+		    /* Validate toolkit support before adding back the resizes */
 		    if (empty($resize[$mimeType]['operations'])) {
 			continue;
 		    }
 		    $operations = $resize[$mimeType]['operations'];
 
-		    
-
-
-/*  Special case to make sure that we don't upsample photos  */
-
-
-
+		    /* Special case to make sure that we don't upsample photos */
 		    if (GalleryUtilities::isA($child, 'GalleryPhotoItem')
 			    && $child->getWidth() <= $resize['width']
 			    && $child->getHeight() <= $resize['height']) {
@@ -577,13 +439,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    }
 
 		    if (isset($resizesTable[$childId][$operations])) {
-			
-
-
-/*  Keep existing resize, build it if requested  */
-
-
-
+			/* Keep existing resize, build it if requested */
 			if (!empty($form['buildResizes'])) {
 			    list ($ret) = GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent(
 				    $resizesTable[$childId][$operations]->getId());
@@ -593,23 +449,11 @@ class ItemEditAlbum extends ItemEditPlugin {
 			}
 			unset($resizesTable[$childId][$operations]);
 		    } else {
-			
-
-
-/*  Create resize with these settings on next pass  */
-
-
-
+			/* Create resize with these settings on next pass */
 			$newResizes[] = $resize;
 		    }
 		}
-		
-
-
-/*  Add new resizes, using existing derivative entities until we run out  */
-
-
-
+		/* Add new resizes, using existing derivative entities until we run out */
 		foreach ($newResizes as $resize) {
 		    if (!empty($resizesTable[$childId])) {
 			$derivative = array_shift($resizesTable[$childId]);
@@ -654,13 +498,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 			}
 			$lockId = null;
 		    }
-		    
-
-
-/*  Build if requested  */
-
-
-
+		    /* Build if requested */
 		    if (!empty($form['buildResizes'])) {
 			list ($ret) = GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent(
 				$derivative->getId());
@@ -669,13 +507,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 			}
 		    }
 		}
-		
-
-
-/*  Remove any leftover resizes  */
-
-
-
+		/* Remove any leftover resizes */
 		if  (isset($resizesTable[$childId])) {
 		    foreach ($resizesTable[$childId] as $resize) {
 			$ret = GalleryCoreApi::deleteEntityById($resize->getId(),
@@ -713,13 +545,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	$heading = $module->translate('Apply thumbnail settings');
 	$templateAdapter->updateProgressBar($heading, $module->translate('Preparing...'), 0);
 
-	
-
-
-/*  Get the items to process  */
-
-
-
+	/* Get the items to process */
 	if (empty($form['changeInDescendents']['recreateThumbnails'])) {
 	    list ($ret, $childIds) =
 		GalleryCoreApi::fetchChildItemIdsWithPermission($item->getId(), 'core.edit');
@@ -741,25 +567,13 @@ class ItemEditAlbum extends ItemEditPlugin {
 	$thumbnailSizes = $thumbnailBuild = array();
 	while (!empty($childIds)) {
 	    $currentChildIds = array_splice($childIds, 0, $batchSize);
-	    
-
-
-/*  Load the children  */
-
-
-
+	    /* Load the children */
 	    list ($ret, $childItems) =
 		GalleryCoreApi::loadEntitiesById($currentChildIds, 'GalleryItem');
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Load the thumbnail of the children  */
-
-
-
+	    /* Load the thumbnail of the children */
 	    list ($ret, $thumbTable) = GalleryCoreApi::fetchThumbnailsByItemIds($currentChildIds);
 	    if ($ret) {
 		return $ret;
@@ -776,13 +590,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		$childId = $child->getId();
 		$albumId = $child->getParentId();
 		if (empty($thumbnailSizes[$albumId])) {
-		    
-
-
-/*  Keep thumbnail sizes for albums in memory  */
-
-
-
+		    /* Keep thumbnail sizes for albums in memory */
 		    list ($ret, $preferences) =
 			GalleryCoreApi::fetchDerivativePreferencesForItem($albumId);
 		    if ($ret) {
@@ -803,33 +611,15 @@ class ItemEditAlbum extends ItemEditPlugin {
 		$thumbnailSize = $thumbnailSizes[$albumId];
 		$thumbnail = null;
 		if (isset($thumbTable[$childId])) {
-		    
-
-
-/*  We already have a thumbnail  */
-
-
-
+		    /* We already have a thumbnail */
 		    $thumbnail = $thumbTable[$childId];
 		    $sourceId = $thumbnail->getDerivativeSourceId();
 
-		    
-
-
-/*  Load the source of the thumbnail  */
-
-
-
+		    /* Load the source of the thumbnail */
 		    list ($ret, $source) = GalleryCoreApi::loadEntitiesById(
 			$sourceId, array('GalleryFileSystemEntity', 'GalleryDerivative'));
 		    if ($ret && $ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-			
-
-
-/*  Someone deleted the source image, we can only delete the thumbnail  */
-
-
-
+			/* Someone deleted the source image, we can only delete the thumbnail */
 			list ($ret, $lockIds[]) =
 			    GalleryCoreApi::acquireWriteLock($thumbnail->getId());
 			if ($ret) {
@@ -853,13 +643,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		     * graphic toolkit). Build new thumbnail from source if it's a GalleryDataItem.
 		     */
 		    if (!GalleryUtilities::isA($child, 'GalleryDataItem')) {
-			
-
-
-/*  It's an album or something else, we can't make a thumbnail  */
-
-
-
+			/* It's an album or something else, we can't make a thumbnail */
 			continue;
 		    }
 
@@ -887,13 +671,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 		    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 		}
 
-		
-
-
-/*  Change the thumbnail  */
-
-
-
+		/* Change the thumbnail */
 		list ($ret, $operation, $outputMimeType) =
 		    GalleryCoreApi::makeSupportedViewableOperationSequence(
 			$source->getMimeType(), $operation);
@@ -939,13 +717,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	    }
 	}
 
-	
-
-
-/*  Build thumbnails if requested  */
-
-
-
+	/* Build thumbnails if requested */
 	if (!empty($thumbnailBuild)) {
 	    $message = $module->translate('Rebuilding thumbnails...');
 	    $templateAdapter->updateProgressBar($heading, $message, 0);
@@ -970,13 +742,7 @@ class ItemEditAlbum extends ItemEditPlugin {
 	}
 
 	if (!isset($form['recreateResizes'])) {
-	    
-
-
-/*  Don't show "Complete" yet if there is another task  */
-
-
-
+	    /* Don't show "Complete" yet if there is another task */
 	    $redirect = array('view' => 'core.ItemAdmin', 'subView' => 'core.ItemEdit',
 			      'itemId' => $item->getId());
 

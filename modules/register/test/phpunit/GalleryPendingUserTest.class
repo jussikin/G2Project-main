@@ -49,13 +49,7 @@ class GalleryPendingUserTest extends GalleryTestCase {
     function testPendingUserCreation() {
 	global $gallery;
 
-	
-
-
-/*  Create a new pending user  */
-
-
-
+	/* Create a new pending user */
 	list ($ret, $user) = $this->_createRandomPendingUser();
 	if ($ret) {
 	    return $ret;
@@ -63,25 +57,13 @@ class GalleryPendingUserTest extends GalleryTestCase {
 
 	GalleryDataCache::reset();
 
-	
-
-
-/*  Verify it  */
-
-
-
+	/* Verify it */
 	$ret = $this->_verifyEntity($user);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Delete it  */
-
-
-
+	/* Delete it */
 	$ret = $this->_deleteAndVerifyEntity($user->getId());
 	if ($ret) {
 	    return $ret;
@@ -89,13 +71,7 @@ class GalleryPendingUserTest extends GalleryTestCase {
     }
 
     function testPendingUserPassword() {
-	
-
-
-/*  Verify hashed password is created as GalleryUser would  */
-
-
-
+	/* Verify hashed password is created as GalleryUser would */
 	list ($ret, $pendingUser) =
 	    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
 	if ($ret) {

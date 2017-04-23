@@ -99,13 +99,7 @@ class CustomFieldSearch extends GallerySearchInterface_1_0 {
 	$data = $aclIds;
 	$data[] = '%' . $criteria . '%';
 
-	
-
-
-/*  Find the total  */
-
-
-
+	/* Find the total */
 	list ($ret, $results) = $gallery->search($countQuery, $data);
 	if ($ret) {
 	    return array($ret, null);

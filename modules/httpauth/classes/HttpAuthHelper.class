@@ -18,13 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
-
-
-/*  HTTP auth status codes  */
-
-
-
+/* HTTP auth status codes */
 define('HTTPAUTH_STATUS_MISSING_AUTHORIZATION', 0x00000002);
 define('HTTPAUTH_STATUS_REWRITE_MODULE_DISABLED', 0x00000004);
 define('HTTPAUTH_STATUS_BAD_REWRITE_PARSER', 0x00000008);
@@ -39,13 +33,7 @@ define('HTTPAUTH_STATUS_ERROR_UNKNOWN', 0x80000000);
  * @version $Revision: 17580 $
  * @static
  */
-class HttpAuthHelper 
-
-
-/*  extends HttpAuthInterface_1_0  */
-
-
- {
+class HttpAuthHelper /* extends HttpAuthInterface_1_0 */ {
 
     /**
      * Check this module's configuration.
@@ -58,25 +46,13 @@ class HttpAuthHelper
 
 	$code = 0x00000000;
 
-	
-
-
-/*  Check that Gallery can access HTTP usernames and passwords  */
-
-
-
+	/* Check that Gallery can access HTTP usernames and passwords */
 	list ($ret, $success) = HttpAuthHelper::checkHttpAuth();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Check for causes why Gallery can't access HTTP usernames and passwords  */
-
-
-
+	/* Check for causes why Gallery can't access HTTP usernames and passwords */
 	if (!$success) {
 	    list ($ret, $moduleStatus) = GalleryCoreApi::fetchPluginList('module');
 	    if ($ret) {
@@ -116,13 +92,7 @@ class HttpAuthHelper
 		}
 	    }
 
-	    
-
-
-/*  No causes found for why Gallery can't access HTTP usernames and passwords!  */
-
-
-
+	    /* No causes found for why Gallery can't access HTTP usernames and passwords! */
 	    if (!$code) {
 		$code |= HTTPAUTH_STATUS_ERROR_UNKNOWN;
 	    }
@@ -181,13 +151,7 @@ class HttpAuthHelper
 
 	$authorization = GalleryUtilities::getRequestVariables('authorization');
 	if (empty($authorization)) {
-	    
-
-
-/*  IIS ISAPI PHP defines HTTP_AUTHORIZATION  */
-
-
-
+	    /* IIS ISAPI PHP defines HTTP_AUTHORIZATION */
 	    $authorization = GalleryUtilities::getServerVar('HTTP_AUTHORIZATION');
 	}
 	if (!empty($authorization)) {
@@ -195,13 +159,7 @@ class HttpAuthHelper
 	    list ($username, $password) = explode(':', base64_decode($authdata));
 	}
 
-	
-
-
-/*  AUTH_TYPE is often not defined, assume a default.  */
-
-
-
+	/* AUTH_TYPE is often not defined, assume a default. */
 	if (!empty($username) && empty($authtype)) {
 	    $authtype = 'Basic';
 	}
@@ -228,24 +186,12 @@ class HttpAuthHelper
 
 	if (!empty($params['regexAuthPlugin'])) {
 	    if (!preg_match($params['authtypePattern'], $authtype)) {
-		
-
-
-/*  Reject authentication type  */
-
-
-
+		/* Reject authentication type */
 	    	return array(null, null);
 	    }
 
 	    if (!preg_match($params['usernamePattern'], $username)) {
-		
-
-
-/*  Reject username  */
-
-
-
+		/* Reject username */
 	    	return array(null, null);
 	    }
 
@@ -257,13 +203,7 @@ class HttpAuthHelper
 	    return array(null, null);
 	}
 
-	
-
-
-/*  Ignore disabled users, since we don't have a facility for showing an error  */
-
-
-
+	/* Ignore disabled users, since we don't have a facility for showing an error */
 	list ($ret, $isDisabled) = GalleryCoreApi::isDisabledUsername($username);
 	if ($ret) {
 	    return array($ret, null);
@@ -274,13 +214,7 @@ class HttpAuthHelper
 
 	list ($ret, $user) = GalleryCoreApi::fetchUserByUsername($username);
 
-	
-
-
-/*  ERROR_MISSING_OBJECT check to suppress error if username doesn't exist  */
-
-
-
+	/* ERROR_MISSING_OBJECT check to suppress error if username doesn't exist */
 	if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
 	    return array($ret, null);
 	}
@@ -299,13 +233,7 @@ class HttpAuthHelper
 
 	$oldUserId = $session->getUserId();
 	if (isset($authenticatedUser) && $oldUserId != $authenticatedUser->getId()) {
-	    
-
-
-/*  This *may* be an initial authentication.  We need to regenerate the session.  */
-
-
-
+	    /* This *may* be an initial authentication.  We need to regenerate the session. */
 	    $ret = $session->regenerate();
 	    if ($ret) {
 		return $ret;

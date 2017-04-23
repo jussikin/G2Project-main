@@ -39,13 +39,7 @@ class NotificationItemsAddedOption extends ItemAddOption {
      * @see ItemAddOption::handleRequestAfterAdd
      */
     function handleRequestAfterAdd($form, $items) {
-	
-
-
-/*  Tell the world we were successful  */
-
-
-
+	/* Tell the world we were successful */
 	$itemAddEvent = GalleryCoreApi::newEvent('Gallery::ItemAdded');
 	$itemAddEvent->setData($items);
 	list ($ret) = GalleryCoreApi::postEvent($itemAddEvent);

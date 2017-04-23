@@ -68,13 +68,7 @@ class AlbumSelectModule extends GalleryModule {
 	    return $ret;
 	}
 
-	
-
-
-/*  We removed the 'show' parameter in 0.9.8 and 'type' in 0.9.11  */
-
-
-
+	/* We removed the 'show' parameter in 0.9.8 and 'type' in 0.9.11 */
 	foreach (array('show', 'type') as $param) {
 	    if (isset($params[$param])) {
 		$ret = $this->removeParameter($param);
@@ -93,13 +87,7 @@ class AlbumSelectModule extends GalleryModule {
 		    return $ret;
 		}
 	    } else if ($key == 'sort' && ($params[$key] == '0' || $params[$key] == '1')) {
-		
-
-
-/*  v0.9.4 changed 'sort' param from 0/1 to manual/title  */
-
-
-
+		/* v0.9.4 changed 'sort' param from 0/1 to manual/title */
 		$value = ($params[$key] == 1) ? 'title' : 'manual';
 		$ret = $this->setParameter($key, $value);
 		if ($ret) {
@@ -108,13 +96,7 @@ class AlbumSelectModule extends GalleryModule {
 	    }
 	}
 
-	
-
-
-/*  Changed cache keys to include language code in 0.9.13  */
-
-
-
+	/* Changed cache keys to include language code in 0.9.13 */
 	if (!empty($currentVersion) && version_compare($currentVersion, '0.9.13', '<')) {
 	    GalleryDataCache::removeFromDisk(
 		array('type' => 'module-data', 'module' => 'albumselect'));

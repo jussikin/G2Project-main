@@ -75,13 +75,7 @@ class CarbonTheme extends GalleryTheme {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Add in our custom settings  */
-
-
-
+	/* Add in our custom settings */
 	$settings[] = array('key' => 'navigatorPhotoTop',
 			    'name' => $this->translate('Show top photo navigator'),
 			    'type' => 'checkbox',
@@ -189,34 +183,16 @@ class CarbonTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Add in our extra stuff  */
-
-
-
+	/* Add in our extra stuff */
 	$theme =& $template->getVariableByReference('theme');
 	$theme['columnWidthPct'] = floor(100 / $params['columns']);
 
-	
-
-
-/*  Check for JavaScript warning flag  */
-
-
-
+	/* Check for JavaScript warning flag */
 	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
 	    $template->setVariable('jsWarning', true);
 	}
 
-	
-
-
-/*  Add our header and styles  */
-
-
-
+	/* Add our header and styles */
 	return array(null, 'theme.tpl');
     }
 
@@ -234,13 +210,7 @@ class CarbonTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Check for JavaScript warning flag  */
-
-
-
+	/* Check for JavaScript warning flag */
 	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
 	    $template->setVariable('jsWarning', true);
 	}
@@ -258,13 +228,7 @@ class CarbonTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Check for JavaScript warning flag  */
-
-
-
+	/* Check for JavaScript warning flag */
 	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
 	    $template->setVariable('jsWarning', true);
 	}
@@ -310,13 +274,7 @@ class CarbonTheme extends GalleryTheme {
      */
     function upgrade($currentVersion) {
 	if (isset($currentVersion) && version_compare($currentVersion, '1.1.2', '<')) {
-	    
-
-
-/*  Rename albumBlocks2 and photoBlocks2  */
-
-
-
+	    /* Rename albumBlocks2 and photoBlocks2 */
 	    foreach (array('albumBlocks2' => 'albumUpperBlocks',
 			   'photoBlocks2' => 'photoUpperBlocks') as $oldKey => $newKey) {
 		list ($ret, $value) = $this->getParameter($oldKey);

@@ -62,13 +62,7 @@ class ErrorPageView extends GalleryView {
 	    $ErrorPage['stackTrace'] = $errorTrace;
 	}
 
-	
-
-
-/*  Landing page for errors  */
-
-
-
+	/* Landing page for errors */
 	if ($errorCode & ERROR_OBSOLETE_DATA) {
 	    $ErrorPage['code']['obsoleteData'] = true;
 	}
@@ -139,13 +133,7 @@ class ErrorPageView extends GalleryView {
 	global $gallery;
 	$failsafe = false;
 
-	
-
-
-/*  Post Gallery::Error event  */
-
-
-
+	/* Post Gallery::Error event */
 	$event = GalleryCoreApi::newEvent('Gallery::Error');
 	$event->setData(array('error' => $error));
 	list ($ret, $eventResults) = GalleryCoreApi::postEvent($event);
@@ -154,13 +142,7 @@ class ErrorPageView extends GalleryView {
 	    $eventResults = array();
 	}
 
-	
-
-
-/*  Return HTTP 404 status for ERROR_MISSING_OBJECT  */
-
-
-
+	/* Return HTTP 404 status for ERROR_MISSING_OBJECT */
 	if ($error->getErrorCode() & ERROR_MISSING_OBJECT) {
 	    GalleryUtilities::setResponseHeader('HTTP/1.0 404 Not Found', false);
 	} else {
@@ -173,13 +155,7 @@ class ErrorPageView extends GalleryView {
 	    $errorHandled |= !empty($eventResult['errorHandled']);
 	}
 	if ($suppressBody) {
-	    
-
-
-/*  One of our error handlers has dealt with the output  */
-
-
-
+	    /* One of our error handlers has dealt with the output */
 	    return $errorHandled;
 	}
 
@@ -271,13 +247,7 @@ class ErrorPageView extends GalleryView {
 	}
 
 	if ($failsafe) {
-	    
-
-
-/*  A catastrophic failure has occurred so just dump the error out to the browser  */
-
-
-
+	    /* A catastrophic failure has occurred so just dump the error out to the browser */
 	    print '<h2>Error</h2>';
 	    list ($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
 	    if ($gallery->getDebug() || (!$ret && $isAdmin)) {

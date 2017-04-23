@@ -40,13 +40,7 @@ class CustomThumbnailOption extends ItemEditOption {
     function loadTemplate(&$template, &$form, $item, $thumbnail) {
 	GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 
-	
-
-
-/*  Is this item already using a custom thumbnail..  */
-
-
-
+	/* Is this item already using a custom thumbnail.. */
 	list ($ret, $thumbnailImage) = ThumbnailHelper::fetchThumbnail($item->getId());
 	if ($ret) {
 	    return array($ret, null, null);
@@ -54,13 +48,7 @@ class CustomThumbnailOption extends ItemEditOption {
 	if (isset($thumbnailImage)) {
 	    $thumbnailImage = (array)$thumbnailImage;
 	} else {
-	    
-
-
-/*  Set the form's encoding type since we're uploading binary files  */
-
-
-
+	    /* Set the form's encoding type since we're uploading binary files */
 	    if ($template->hasVariable('ItemAdmin')) {
 		$ItemAdmin =& $template->getVariableByReference('ItemAdmin');
 		$ItemAdmin['enctype'] = 'multipart/form-data';
@@ -70,13 +58,7 @@ class CustomThumbnailOption extends ItemEditOption {
 	    }
 	}
 
-	
-
-
-/*  Check toolkit support for jpeg thumbnails  */
-
-
-
+	/* Check toolkit support for jpeg thumbnails */
 	list ($ret, $mimeList) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
 	if ($ret) {
 	    return array($ret, null, null);

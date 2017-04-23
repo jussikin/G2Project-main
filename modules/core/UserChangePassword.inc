@@ -45,25 +45,13 @@ class UserChangePasswordController extends GalleryController {
 	$results = $status = $error = array();
 	if (isset($form['action']['cancel'])) {
 
-	    
-
-
-/*  Redirect back to user preferences  */
-
-
-
+	    /* Redirect back to user preferences */
 	    $redirect['view'] = 'core.UserAdmin';
 	    $redirect['subView'] = 'core.UserPreferences';
 
 	} else if (isset($form['action']['undo'])) {
 
-	    
-
-
-/*  Redirect back to the same view to reset the form  */
-
-
-
+	    /* Redirect back to the same view to reset the form */
 	    $redirect['view'] = 'core.UserAdmin';
 	    $redirect['subView'] = 'core.UserChangePassword';
 
@@ -137,13 +125,7 @@ class UserChangePasswordController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Request a redirect to the confirmation screen  */
-
-
-
+		/* Request a redirect to the confirmation screen */
 		$redirect['view'] = 'core.UserAdmin';
 		$redirect['subView'] = 'core.UserChangePassword';
 		$status['changedPassword'] = 1;
@@ -174,13 +156,7 @@ class UserChangePasswordView extends GalleryView {
     function loadTemplate(&$template, &$form) {
         global $gallery;
 
-	
-
-
-/*  Load the form with user data the first time around.  */
-
-
-
+	/* Load the form with user data the first time around. */
 	if ($form['formName'] != 'UserChangePassword') {
 	    $form['formName'] = 'UserChangePassword';
 	}

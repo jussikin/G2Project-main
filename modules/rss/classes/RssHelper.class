@@ -51,34 +51,16 @@ class RssHelper {
     static function getFeed(&$generator, $id, $param) {
 	global $gallery;
 
-	
-
-
-/*  get gallery entity by id  */
-
-
-
+	/* get gallery entity by id */
 	list ($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryItem');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  get member data for the <channel> properties  */
-
-
-
+	/* get member data for the <channel> properties */
 	$memberData = (array) $entity;
 
-	
-
-
-/*  generate url to the album and rss feed  */
-
-
-
+	/* generate url to the album and rss feed */
 	$urlGenerator =& $gallery->getUrlGenerator();
 	$albumUrl = $urlGenerator->generateUrl(
 	    array(
@@ -93,25 +75,13 @@ class RssHelper {
 	$generator->addProperty('link', $albumUrl);
 
 	if ($param['useImage']) {
-	    
-
-
-/*  retrieve gallery thumbnail  */
-
-
-
+	    /* retrieve gallery thumbnail */
 	    list ($ret, $thumbArrayl) = GalleryCoreApi::fetchThumbnailsByItemIds(array($id));
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    
-
-
-/*  check if image tag should be used  */
-
-
-
+	    /* check if image tag should be used */
 	    if (!empty($thumbArrayl)) {
 		$thumb = $thumbArrayl[$id];
 		$imageUrl = $urlGenerator->generateUrl(
@@ -127,13 +97,7 @@ class RssHelper {
 	    }
 	}
 
-	
-
-
-/*  check if the cloud tag should be used  */
-
-
-
+	/* check if the cloud tag should be used */
 	if ($param['useCloud']) {
 	    $cloud = array('domain' => $param['cloudDomain'],
 			   'port' => $param['cloudPort'],
@@ -143,13 +107,7 @@ class RssHelper {
 	    $generator->addProperty('cloud', $cloud);
 	}
 
-	
-
-
-/*  check if the podcast tag should be used  */
-
-
-
+	/* check if the podcast tag should be used */
 	if ($param['usePodcast']) {
 	    $podcast = array('subtitle' => $param['podcastSubtitle'],
 			   'author' => $param['podcastAuthor'],
@@ -158,13 +116,7 @@ class RssHelper {
 	    $generator->addProperty('podcast', $podcast);
 	}
 
-	
-
-
-/*  add copyright, category and generator  */
-
-
-
+	/* add copyright, category and generator */
 	if (isset($param['copyright'])) {
 	    $generator->addProperty('copyright', $param['copyright']);
 	}
@@ -181,13 +133,7 @@ class RssHelper {
 	$vm = $gallery->getPhpVm();
 	$generator->addProperty('lastBuildDate', date('r', $vm->time()));
 
-	
-
-
-/*  language tag  */
-
-
-
+	/* language tag */
 	$generator->addProperty('language', $param['language']);
 
 	$items = array();
@@ -197,13 +143,7 @@ class RssHelper {
 	    case 'album':
 	    case 'photosRecursive':
 	    case 'photosRandomRecursive':
-		
-
-
-/*  get sub-albums or items, ordered by date  */
-
-
-
+		/* get sub-albums or items, ordered by date */
 		list ($ret, $items) = RssHelper::fetchAlbumTree(
 		    $entity->getId(),
 		    $param['count'],
@@ -224,13 +164,7 @@ class RssHelper {
 
 		    if ($param['feedType'] == 'photosRecursive'
 			    || $param['feedType'] == 'photosRandomRecursive') {
-			
-
-
-/*  load parents also, so we can display the name of the parent albums  */
-
-
-
+			/* load parents also, so we can display the name of the parent albums */
 			$parentIds = array();
 
 			foreach ($items as $item) {
@@ -286,13 +220,7 @@ class RssHelper {
 		break;
 	}
 
-	
-
-
-/*  if necessary, fetch the thumbnails  */
-
-
-
+	/* if necessary, fetch the thumbnails */
 	if (! strstr($param['feedType'], 'comments')) {
 	    $itemIds = array();
 
@@ -312,13 +240,7 @@ class RssHelper {
 		}
 	}
 
-	
-
-
-/*  go through subitems array and pass data to generator  */
-
-
-
+	/* go through subitems array and pass data to generator */
 	if (!empty($items)) {
 	    foreach ($items as $item) {
 		$ret = RssHelper::addItem($generator, $item, $param);
@@ -362,25 +284,13 @@ class RssHelper {
     function addPhotoOrAlbum(&$generator, $item, $param) {
 	global $gallery;
 
-	
-
-
-/*  generate url to the images  */
-
-
-
+	/* generate url to the images */
 	$urlGenerator =& $gallery->getUrlGenerator();
 	$url = $urlGenerator->generateUrl(
 	    array('view' => 'core.ShowItem', 'itemId' => $item->getId()),
 	    array('forceSessionId' => false, 'forceFullUrl' => true));
 
-	
-
-
-/*  generate description  */
-
-
-
+	/* generate description */
 	$description = $item->getDescription();
 	if (!isset($description)) {
 	    $description = '';
@@ -450,13 +360,7 @@ class RssHelper {
 
 	if ($param['feedType'] == 'photosRecursive'
 		|| $param['feedType'] == 'photosRandomRecursive') {
-	    
-
-
-/*  add a link to the parent album  */
-
-
-
+	    /* add a link to the parent album */
 	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
 	    if ($ret) {
 		return $ret;
@@ -490,13 +394,7 @@ class RssHelper {
 	$itemSettings['pubDate'] = date('r', $item->getModificationTimestamp());
 	$itemSettings['ownerId'] = $item->getOwnerId();
 
-	
-
-
-/*  check if the enclosure tag should be used  */
-
-
-
+	/* check if the enclosure tag should be used */
 	if (GalleryUtilities::isA($item, 'GalleryPhotoItem') || GalleryUtilities::isA($item, 'GalleryDataItem')
 		&& ((isset($param['useEnclosure']) && $param['useEnclosure'] == '1')
 		  || (isset($param['useMedia']) && $param['useMedia'] == '1')
@@ -543,13 +441,7 @@ class RssHelper {
     function addComment(&$generator, $item, $param) {
 	global $gallery;
 
-	
-
-
-/*  generate url to the images  */
-
-
-
+	/* generate url to the images */
 	$urlGenerator =& $gallery->getUrlGenerator();
 	$url = $urlGenerator->generateUrl(
 	    array('view' => 'comment.ShowAllComments', 'itemId' => $item->getParentId()),
@@ -560,24 +452,12 @@ class RssHelper {
 	    'link' => $url,
 	    'description' => $item->getComment());
 
-	
-
-
-/*  check if we should use the category tag  */
-
-
-
+	/* check if we should use the category tag */
 	if (isset($param['useItemCategory']) && $param['useItemCategory'] == '1') {
 	    $itemSettings['category'] = 'comment';
 	}
 
-	
-
-
-/*  check if pubDate tag should be used  */
-
-
-
+	/* check if pubDate tag should be used */
 	if (isset($param['usePubDate']) && $param['usePubDate']) {
 	    $itemSettings['pubDate'] = date('r', $item->getDate());
 	}
@@ -597,13 +477,7 @@ class RssHelper {
      *               array  creationTimeStamp => GalleryItem
      */
     function getPhotoFeed($entity, $newOnly, $random) {
-	
-
-
-/*  retrieve subitems' ids  */
-
-
-
+	/* retrieve subitems' ids */
 	list ($ret, $subIds) = GalleryCoreApi::fetchChildItemIds($entity);
 	if ($ret) {
 	    return array($ret, null);
@@ -612,34 +486,16 @@ class RssHelper {
 	$itemsAcc = array();
 	$sortParam = $newOnly ? 'creationTimestamp' : 'modificationTimestamp';
 
-	
-
-
-/*  go through subitems array and pass data to generator  */
-
-
-
+	/* go through subitems array and pass data to generator */
 	if (!empty($subIds)) {
-	    
-
-
-/*  retrieve array of subitems  */
-
-
-
+	    /* retrieve array of subitems */
 	    list ($ret, $subItems) = GalleryCoreApi::loadEntitiesById($subIds, 'GalleryItem');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
 	    foreach ($subItems as $key => $subItem) {
-		
-
-
-/*  check if the subitem is a photo  */
-
-
-
+		/* check if the subitem is a photo */
 		if (GalleryUtilities::isA($subItem, 'GalleryDataItem')) {
 		    $itemData = (array) $subItem;
 		    $key = $random ? rand() : $itemData[$sortParam] . '_' . $itemData['id'];
@@ -706,24 +562,12 @@ class RssHelper {
 	list ($ret, $newDays) =
 	    GalleryCoreApi::getPluginParameter('module', 'rss', 'maxAge');
 	if ($ret || !$newDays) {
-	    $newDays = 21; 
-
-
-/*  Use default on error or zero setting  */
-
-
-
+	    $newDays = 21; /* Use default on error or zero setting */
 	}
 	$timeCutOff = time() - 3600 * 24 * $newDays;
 
 	if ($random) {
-	    
-
-
-/*  get the random function for the DB  */
-
-
-
+	    /* get the random function for the DB */
 	    list ($ret, $orderBy) = $storage->getFunctionSql('RAND', array());
 	    if ($ret) {
 		return array($ret, null);
@@ -797,35 +641,17 @@ class RssHelper {
 		    $n = $perAlbum[$result[1]];
 
 		    if ($n < $perAlbumLimit) {
-			
-
-
-/*  under the limit  */
-
-
-
+			/* under the limit */
 			$perAlbum[$result[1]] = $n + 1;
 			$list[] = $result[0];
 		    }
 		} else {
-		    
-
-
-/*  first item for this album: accept  */
-
-
-
+		    /* first item for this album: accept */
 		    $perAlbum[$result[1]] = 1;
 		    $list[] = $result[0];
 		}
 	    } else {
-		
-
-
-/*  include all results  */
-
-
-
+		/* include all results */
 		$list[] = $result[0];
 	    }
 	}

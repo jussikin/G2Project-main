@@ -68,13 +68,7 @@ class HybridTheme extends GalleryTheme {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Add in our custom settings  */
-
-
-
+	/* Add in our custom settings */
 	$settings[] = array('key' => 'showText',
 			    'name' => $this->translate('Show text with thumbnails'),
 			    'type' => 'checkbox',
@@ -160,13 +154,7 @@ class HybridTheme extends GalleryTheme {
 	    $viewIndex = count($imageWidths) - 1;
 	}
 	else if (!empty($showId)) {
-	    
-
-
-/*  Start with initial view of this item  */
-
-
-
+	    /* Start with initial view of this item */
 	    foreach ($theme['children'] as $tmp) {
 		if ($tmp['id'] == $showId) {
 		    if (isset($tmp['imageIndex'])) {
@@ -178,13 +166,7 @@ class HybridTheme extends GalleryTheme {
 	}
 	if (isset($viewIndex)) {
 	    $theme['viewIndex'] = $viewIndex;
-	    
-
-
-/*  Set cookie to popup image just once  */
-
-
-
+	    /* Set cookie to popup image just once */
 	    setcookie('G2_hybrid_view', $slide ? '2' : '1');
 	}
 
@@ -198,26 +180,14 @@ class HybridTheme extends GalleryTheme {
     function showPhotoPage(&$template, $item, $params) {
 	list ($detail, $renderId) = GalleryUtilities::getRequestVariables('detail', 'renderId');
 	if (!empty($renderId)) {
-	    
-
-
-/*  Render this item  */
-
-
-
+	    /* Render this item */
 	    list ($ret, $image) = GalleryCoreApi::loadEntitiesById(
 		    $renderId, array('GalleryDataItem', 'GalleryDerivative'));
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	    if ($renderId != ($itemId = $item->getId()) && $image->getParentId() != $itemId) {
-		
-
-
-/*  Malicious URL.. renderId not for this item  */
-
-
-
+		/* Malicious URL.. renderId not for this item */
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	    $template->setVariable('theme', array('item' => (array)$item,
@@ -226,13 +196,7 @@ class HybridTheme extends GalleryTheme {
 	}
 
 	if (!empty($detail)) {
-	    
-
-
-/*  View item details  */
-
-
-
+	    /* View item details */
 	    $ret = $this->loadCommonTemplateData($template, $item, $params,
 						 array('owner', 'viewCount'));
 	    if ($ret) {
@@ -251,13 +215,7 @@ class HybridTheme extends GalleryTheme {
 	    return array(null, 'detail.tpl');
 	}
 
-	
-
-
-/*  Otherwise, redirect to parent with initial view of this item   */
-
-
-
+	/* Otherwise, redirect to parent with initial view of this item  */
 	list ($ret, $parent) =
 	    GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
 	if ($ret) {
@@ -388,13 +346,7 @@ class HybridTheme extends GalleryTheme {
 
 	    $images = array();
 	    if (isset($permissions['core.viewSource'])) {
-		
-
-
-/*  Full size; check for preferred copy  */
-
-
-
+		/* Full size; check for preferred copy */
 		if (isset($preferredFullImages[$childId])) {
 		    $images[] = $preferredFullImages[$childId];
 		} else if ($child->canBeViewedInline()) {
@@ -407,26 +359,14 @@ class HybridTheme extends GalleryTheme {
 		}
 	    }
 	    if (!isset($permissions['core.viewSource']) && isset($thumbnails[$childId])) {
-		
-
-
-/*  Only use thumbnail as view if we can't link to original file  */
-
-
-
+		/* Only use thumbnail as view if we can't link to original file */
 		$images[] = $thumbnails[$childId];
 	    }
 
 	    if (!empty($images)) {
 		$image = $images[0];
 
-		
-
-
-/*  Rebuild derivative if needed so width/height known..  */
-
-
-
+		/* Rebuild derivative if needed so width/height known.. */
 		if (GalleryUtilities::isA($image, 'GalleryDerivativeImage')
 			&& !($image->getWidth() && $image->getHeight())) {
 		    list ($ret, $image) = GalleryCoreApi::rebuildDerivativeCache($image->getId());
@@ -439,23 +379,11 @@ class HybridTheme extends GalleryTheme {
 		$children[$i]['imageIndex'] = count($imageWidths);
 		if (GalleryUtilities::isExactlyA($child, 'GalleryPhotoItem') &&
 			$image['width'] > 0 && $image['height'] > 0) {
-		    
-
-
-/*  Display in <img>  */
-
-
-
+		    /* Display in <img> */
 		    $imageWidths[] = $image['width'];
 		    $imageHeights[] = $image['height'];
 		} else {
-		    
-
-
-/*  Item must render itself  */
-
-
-
+		    /* Item must render itself */
 		    $children[$i]['renderItem'] = 1;
 		    $imageWidths[] = $imageHeights[] = -1;
 		}

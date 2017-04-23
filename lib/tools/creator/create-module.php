@@ -24,13 +24,7 @@ if (!empty($_SERVER['SERVER_NAME'])) {
 }
 
 if (php_sapi_name() == 'cgi') {
-    
-
-
-/*  Starts in lib/tools/creator for php-cgi  */
-
-
-
+    /* Starts in lib/tools/creator for php-cgi */
     chdir('../../..');
 }
 if (!file_exists('modules')) {
@@ -106,13 +100,7 @@ $smarty->assign('mapName', $ucModuleId . "Map");
  * Start building things!
  */
 
-
-
-
-/*  Make the module directory  */
-
-
-
+/* Make the module directory */
 $modulePath = 'modules/' . $moduleId;
 if (file_exists($modulePath)) {
     error("$modulePath already exists!");
@@ -120,24 +108,12 @@ if (file_exists($modulePath)) {
     mkdir($modulePath) || error("Can't mkdir($modulePath)");
 }
 
-
-
-
-/*  Create module.inc  */
-
-
-
+/* Create module.inc */
 $fd = safe_fopen("$modulePath/module.inc");
 fwrite($fd, $smarty->fetch(dirname(__FILE__) . '/module.inc.tpl'));
 fclose($fd);
 
-
-
-
-/*  Create our sample view and template  */
-
-
-
+/* Create our sample view and template */
 $fd = safe_fopen("$modulePath/$ucModuleId.inc");
 fwrite($fd, $smarty->fetch(dirname(__FILE__) . '/MyPage.inc.tpl'));
 fclose($fd);
@@ -221,13 +197,7 @@ function stdin()
 {
     static $stdin;
     if (!defined('STDERR')) {
-    
-
-
-/*  Already defined for CLI but not for CGI  */
-
-
-
+    /* Already defined for CLI but not for CGI */
         $stdin = fopen('php://stdin', 'w');
         define('STDERR', $stdin);
     }
@@ -238,13 +208,7 @@ function stderr()
 {
     static $stderr;
     if (!defined('STDERR')) {
-    
-
-
-/*  Already defined for CLI but not for CGI  */
-
-
-
+    /* Already defined for CLI but not for CGI */
         $stderr = fopen('php://stderr', 'w');
         define('STDERR', $stderr);
     }

@@ -58,26 +58,14 @@ class DownloadItemView extends GalleryView {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Load the item  */
-
-
-
+	/* Load the item */
 	list ($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryEntity');
 	if ($ret) {
 	    return $ret;
 	}
 
 	if (!method_exists($item, 'fetchPath') || !method_exists($item, 'getMimeType')) {
-	    
-
-
-/*  Avoid information disclosure for bogus entities by acting as if it didn't exist  */
-
-
-
+	    /* Avoid information disclosure for bogus entities by acting as if it didn't exist */
 	    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	}
 
@@ -91,49 +79,25 @@ class DownloadItemView extends GalleryView {
 	    return $ret;
 	}
 
-	
-
-
-/*  Figure out the filename  */
-
-
-
+	/* Figure out the filename */
 	list ($ret, $pseudoFileName) = GalleryUtilities::getPseudoFileName($item);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Don't allow malicious URLs  */
-
-
-
+	/* Don't allow malicious URLs */
 	$fileName = GalleryUtilities::getRequestVariables('fileName');
 	if (!empty($fileName) && $fileName != $pseudoFileName) {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, 'malicious url');
 	}
 
-	
-
-
-/*  Get the path to the file  */
-
-
-
+	/* Get the path to the file */
 	list ($ret, $path) = $item->fetchPath();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Rebuild derivative cache, if necessary  */
-
-
-
+	/* Rebuild derivative cache, if necessary */
 	if (!empty($derivativeType)) {
 	    list ($ret, $item) = GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent($item->getId());
 	    if ($ret) {
@@ -142,13 +106,7 @@ class DownloadItemView extends GalleryView {
 	}
 	$mimeType = $item->getMimeType();
 
-	
-
-
-/*  Apply Watermark -- skip for thumbnails  */
-
-
-
+	/* Apply Watermark -- skip for thumbnails */
 	if ($derivativeType != DERIVATIVE_TYPE_IMAGE_THUMBNAIL) {
 	    list ($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($mimeType, 'composite');
 	    if ($ret) {
@@ -159,13 +117,7 @@ class DownloadItemView extends GalleryView {
 		 * Allow items that can't be watermarked (movies, audio, etc) to be
 		 * downloaded.  Uncomment the line below to block these downloads.
 		 */
-		
-
-
-/*  return GalleryCoreApi::error(ERROR_PERMISSION_DENIED);  */
-
-
-
+		/* return GalleryCoreApi::error(ERROR_PERMISSION_DENIED); */
 	    } else {
 		list ($ret, $hotlinkWatermarkId) =
 		    GalleryCoreApi::getPluginParameter('module', 'watermark', 'hotlinkWatermarkId');
@@ -176,13 +128,7 @@ class DownloadItemView extends GalleryView {
 		    list ($ret, $watermark) =
 			GalleryCoreApi::loadEntitiesById($hotlinkWatermarkId, 'WatermarkImage');
 		    if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
-			
-
-
-/*  Ignore error if this watermark has been deleted  */
-
-
-
+			/* Ignore error if this watermark has been deleted */
 			return $ret;
 		    }
 		}
@@ -275,21 +221,9 @@ class DownloadItemView extends GalleryView {
 	    $itemIdForPermission = $item->getParentId();
 	}
 
-	
-
-
-/*  Make sure we have permission  */
-
-
-
+	/* Make sure we have permission */
 	if (($ids = $session->get('core.isPrintService')) && in_array($item->getId(), $ids)) {
-	    
-
-
-/*  Print services only need core.view to get access to full size version of photos  */
-
-
-
+	    /* Print services only need core.view to get access to full size version of photos */
 	    $permission = 'core.view';
 	} else {
 	    $permission = 'core.viewSource';
@@ -302,24 +236,12 @@ class DownloadItemView extends GalleryView {
 		$permission = 'core.viewResizes';
 		break;
 
-		
-
-
-/*  DERIVATIVE_TYPE_IMAGE_PREFERRED uses core.viewSource  */
-
-
-
+		/* DERIVATIVE_TYPE_IMAGE_PREFERRED uses core.viewSource */
 	    }
 	}
 	$ret = GalleryCoreApi::assertHasItemPermission($itemIdForPermission, $permission);
 	if ($ret) {
-	    
-
-
-/*  Avoid information disclosure  */
-
-
-
+	    /* Avoid information disclosure */
 	    if ($ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
 	    	if ($permission != 'core.view') {
 		    list ($ret2, $hasPermission) =

@@ -62,26 +62,14 @@ class MailHelperTest extends GalleryTestCase {
 	}
 
 	$expectedData = $this->_emailData;
-	
-
-
-/*  Don't expect whitespace to be stripped from tpl, so expect 2 leading spaces in body  */
-
-
-
+	/* Don't expect whitespace to be stripped from tpl, so expect 2 leading spaces in body */
 	$expectedData['body'] = "Hello:\n  " . $expectedData['body'];
 	$expectedData['headers'] = array(
 	    'Date: ELIDED',
 	    'Content-Type: text/plain; charset="utf-8"',
 	    '');
 
-	
-
-
-/*  Test that the from header is empty  */
-
-
-
+	/* Test that the from header is empty */
 	$ret = GalleryCoreApi::sendTemplatedEmail(
 		$this->templateFile, $this->_emailData, null,
 		$this->_emailData['to'], $this->_emailData['subject']);
@@ -100,13 +88,7 @@ class MailHelperTest extends GalleryTestCase {
     }
 
     function testSendTemplatedEmailFromAddressSetByFunctionInput() {
-	
-
-
-/*  Test that the from header is retrieved from function input  */
-
-
-
+	/* Test that the from header is retrieved from function input */
 	$ret = GalleryCoreApi::sendTemplatedEmail(
 	    $this->templateFile, $this->_emailData, 'mailhelpertest1@test.com',
 	    $this->_emailData['to'], $this->_emailData['subject']);
@@ -119,13 +101,7 @@ class MailHelperTest extends GalleryTestCase {
     }
 
     function testSendTemplatedEmailFromAddressSetByCoreSmtpParameter() {
-	
-
-
-/*  Test that the from header is retrieved from the core.smtp.from field  */
-
-
-
+	/* Test that the from header is retrieved from the core.smtp.from field */
 	$ret = GalleryCoreApi::setPluginParameter(
 	    'module', 'core', 'smtp.from', 'mailhelpertest2@test.com');
 	if ($ret) {
@@ -150,22 +126,10 @@ class MailHelperTest extends GalleryTestCase {
 	    return ($ret);
 	}
 
-	
-
-
-/*  Set the from address and update the test data  */
-
-
-
+	/* Set the from address and update the test data */
 	$from = 'mailhelpertest2@test.com';
 
-	
-
-
-/*  Test that the from header is preferred from the function over the core.smtp.from field  */
-
-
-
+	/* Test that the from header is preferred from the function over the core.smtp.from field */
 	$ret = GalleryCoreApi::sendTemplatedEmail(
 	    $this->templateFile, $this->_emailData, 'mailhelpertest3_function_input@test.com',
 	    $this->_emailData['to'], $this->_emailData['subject']);
@@ -237,13 +201,7 @@ class MailHelperDummyPlatform {
 
     function mail($to, $subject, $body, $headers=null) {
 
-	
-
-
-/*  Normalize the date field in the headers to avoid having to worry about exact seconds  */
-
-
-
+	/* Normalize the date field in the headers to avoid having to worry about exact seconds */
 	$headers = preg_replace("/Date:.*?\r\n/", "Date: ELIDED\r\n", $headers);
 
 	$_REQUEST['maildata'] =

@@ -55,13 +55,7 @@ class DeleteSessionsTask extends MaintenanceTask {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Touch this admin session to ensure that we don't delete it  */
-
-
-
+	/* Touch this admin session to ensure that we don't delete it */
 	$session->put('touch', $phpVm->time());
 	$ret = $session->save();
 	if ($ret) {
@@ -99,13 +93,7 @@ class DeleteSessionsTask extends MaintenanceTask {
 	$total = $result[0];
 
 	if ($total) {
-	    
-
-
-/*  This limit controls the query text length, 1000 sessionIds => query size = 32kbyte  */
-
-
-
+	    /* This limit controls the query text length, 1000 sessionIds => query size = 32kbyte */
 	    $stepSize = $session->_expirationLimit = 1000;
 	    $iterations = ceil($total / $stepSize);
 	    $option['limit']['count'] = $stepSize;

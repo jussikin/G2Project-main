@@ -38,20 +38,8 @@ class GalleryLockHelper_simple {
 	$result =& $gallery->getLockSystem();
 	$ret = $result[0];
 	if ($ret) {
-	    
-
-
-/*  Swallow this error; the API does not allow us to return one here  */
-
-
-
-	    $result = array(); return $result;  
-
-
-/*  Doing it this way keeps the Code Audit happy  */
-
-
-
+	    /* Swallow this error; the API does not allow us to return one here */
+	    $result = array(); return $result;  /* Doing it this way keeps the Code Audit happy */
 	}
 	$lockSystem =& $result[1];
 
@@ -99,13 +87,7 @@ class GalleryLockHelper_simple {
 	}
 	$lockSystem =& $result[1];
 
-	
-
-
-/*  Get the parent entity id  */
-
-
-
+	/* Get the parent entity id */
 	$query = '
 	SELECT
 	  [GalleryItemAttributesMap::itemId],
@@ -124,36 +106,18 @@ class GalleryLockHelper_simple {
 	}
 
 	if ($searchResults->resultCount() == 0) {
-	    
-
-
-/*  No parents; nothing to lock  */
-
-
-
+	    /* No parents; nothing to lock */
 	    return array(null, null);
 	}
 
-	
-
-
-/*  Extract the parent ids  */
-
-
-
+	/* Extract the parent ids */
 	$parentIds = array();
 	while ($result = $searchResults->nextResult()) {
 	    $parentIds = preg_split('/\//', $result[1], -1, PREG_SPLIT_NO_EMPTY);
 	    $parentIds[] = $result[0];
 	}
 
-	
-
-
-/*  Get rid of any locks we already have  */
-
-
-
+	/* Get rid of any locks we already have */
 	$tmp = array();
 	foreach ($parentIds as $id) {
 	    if (!$lockSystem->isReadLocked($id) && !$lockSystem->isWriteLocked($id)) {
@@ -163,23 +127,11 @@ class GalleryLockHelper_simple {
 	$parentIds = $tmp;
 
 	if (empty($parentIds)) {
-	    
-
-
-/*  No locks required  */
-
-
-
+	    /* No locks required */
 	    return array(null, null);
 	}
 
-	
-
-
-/*  Read lock the parents  */
-
-
-
+	/* Read lock the parents */
 	list ($ret, $lock) = $lockSystem->acquireReadLock($parentIds, $timeout);
 	if ($ret) {
 	    return array($ret, null);
@@ -197,13 +149,7 @@ class GalleryLockHelper_simple {
 	$result =& $gallery->getLockSystem();
 	$ret = $result[0];
 	if ($ret) {
-	    
-
-
-/*  This method doesn't return a status code.  What should we do?  */
-
-
-
+	    /* This method doesn't return a status code.  What should we do? */
 	    if ($gallery->getDebug()) {
 		$gallery->debug($ret->getAsHtml());
 	    }
@@ -244,13 +190,7 @@ class GalleryLockHelper_simple {
 	$result =& $gallery->getLockSystem();
 	$ret = $result[0];
 	if ($ret) {
-	    
-
-
-/*  This method doesn't return a status code.  What should we do?  */
-
-
-
+	    /* This method doesn't return a status code.  What should we do? */
 	    if ($gallery->getDebug()) {
 		$gallery->debug($ret->getAsHtml());
 	    }

@@ -43,13 +43,7 @@ class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Set up our environment  */
-
-
-
+	/* Set up our environment */
 	foreach (array('isapirewrite.galleryLocation' => '/gallery2/',
 		       'isapirewrite.embeddedLocation' => '/cms/')
 		as $key => $value) {
@@ -80,13 +74,7 @@ class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
 	$env = array('REQUEST_URI' => '/gallery2/' . GALLERY_MAIN_PHP .
 		     '?g2_view=core.ShowItem&g2_itemId=17');
 	$params = $this->_getTestUrlParams();
-	
-
-
-/*  Only test a single URL  */
-
-
-
+	/* Only test a single URL */
 	$params = $params[6];
 	$expectedUrl = '/gallery2/v' . $this->_testAlbumPath;
 

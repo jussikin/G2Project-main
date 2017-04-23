@@ -60,13 +60,7 @@ class ItemAddController extends GalleryController {
 	}
 	$itemId = $item->getId();
 
-	
-
-
-/*  Make sure we have permission to add to this item  */
-
-
-
+	/* Make sure we have permission to add to this item */
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addDataItem');
 	if ($ret) {
 	    return array($ret, null);
@@ -76,13 +70,7 @@ class ItemAddController extends GalleryController {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	
-
-
-/*  Load the correct add plugin  */
-
-
-
+	/* Load the correct add plugin */
 	list ($ret, $addPlugin) =
 	    GalleryCoreApi::newFactoryInstanceById('ItemAddPlugin', $addPluginId);
 	if ($ret) {
@@ -93,13 +81,7 @@ class ItemAddController extends GalleryController {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
 
-	
-
-
-/*  Do the actual work in callback of a progress-bar view  */
-
-
-
+	/* Do the actual work in callback of a progress-bar view */
 	$templateAdapter->registerTrailerCallback(
 		    array($this, 'handleRequestWithProgressBar'),
 		    array($form, $item, $addPlugin));
@@ -123,13 +105,7 @@ class ItemAddController extends GalleryController {
 	$session =& $gallery->getSession();
 
 	$startTime = $phpVm->time();
-	
-
-
-/*  Auto-redirect if we complete the request within this period. Else show the continueURL  */
-
-
-
+	/* Auto-redirect if we complete the request within this period. Else show the continueURL */
 	$autoRedirectSeconds = 15;
 
 	list ($ret, $this->_coreModule) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -146,13 +122,7 @@ class ItemAddController extends GalleryController {
 	    return $ret;
 	}
 
-	
-
-
-/*  Start the add process  */
-
-
-
+	/* Start the add process */
 	list ($ret, $error, $status) = $addPlugin->handleRequest($form, $item, $this);
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockId);
@@ -173,13 +143,7 @@ class ItemAddController extends GalleryController {
 	}
 
 	if (!empty($error)) {
-	    
-
-
-/*  @todo Should we remove all added items in case of a late form validation error?  */
-
-
-
+	    /** @todo Should we remove all added items in case of a late form validation error? */
 	    if (!empty($status['addedFiles'])) {
 		$error[] = 'form[error][itemsAddedDespiteFormErrors]';
 	    }
@@ -271,13 +235,7 @@ class ItemAddController extends GalleryController {
 
 	if (empty($status['addedFiles'])
 		|| empty($this->_extractionToolkitMap) && empty($this->_optionInstances)) {
-	    
-
-
-/*  Nothing to do  */
-
-
-
+	    /* Nothing to do */
 	    return array(null, array());
 	}
 
@@ -294,34 +252,16 @@ class ItemAddController extends GalleryController {
 	}
 	$errors = array();
 
-	
-
-
-/*  The number of items a ItemAddOption should be able to process in less than 30 seconds  */
-
-
-
+	/* The number of items a ItemAddOption should be able to process in less than 30 seconds */
 	$batchSize = 20;
 
-	
-
-
-/*  Extract all archive-type items and call the ItemAddOption instances for postprocessing  */
-
-
-
+	/* Extract all archive-type items and call the ItemAddOption instances for postprocessing */
 	$itemsToProcess = $itemsToProcessKeyMap = array();
 	$i = 0;
 	do {
 	    $file =& $status['addedFiles'][$i];
 	    if (empty($file['id']) || isset($this->_processedItems[$i])) {
-		
-
-
-/*  We couldn't add this file for whatever reason or it has been processed already  */
-
-
-
+		/* We couldn't add this file for whatever reason or it has been processed already */
 		continue;
 	    }
 	    list ($ret, $addedItem) = GalleryCoreApi::loadEntitiesById($file['id'], 'GalleryItem');
@@ -329,13 +269,7 @@ class ItemAddController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Check if we should extract individual files out of an archive  */
-
-
-
+	    /* Check if we should extract individual files out of an archive */
 	    if (GalleryUtilities::isA($addedItem, 'GalleryDataItem')
 		    && isset($this->_extractionToolkitMap[$addedItem->getMimeType()])) {
 		list ($ret, $extractedItems) = $this->_extractAndAddFiles(
@@ -360,13 +294,7 @@ class ItemAddController extends GalleryController {
 		    return array($ret, null);
 		}
 	    } else {
-		
-
-
-/*  This is not an archive, add it to our array of item objects  */
-
-
-
+		/* This is not an archive, add it to our array of item objects */
 		$itemsToProcess[] = $addedItem;
 		/*
 		 * We can't index $itemsToProcess directly by $i because some options expect it to
@@ -377,13 +305,7 @@ class ItemAddController extends GalleryController {
 
 	    if (count($itemsToProcess) % $batchSize == 0
 		    || !isset($status['addedFiles'][$i+1]) && count($itemsToProcess)) {
-		
-
-
-/*  Allow ItemAddOptions to process added item(s)  */
-
-
-
+		/* Allow ItemAddOptions to process added item(s) */
 		$optionNumber = 0;
 		foreach ($this->_optionInstances as $option) {
 		    $this->_templateAdapter->updateProgressBar(
@@ -398,13 +320,7 @@ class ItemAddController extends GalleryController {
 		    }
 
 		    $errors = array_merge($errors, $optionErrors);
-		    
-
-
-/*  For each item, put the items warnings into our status array  */
-
-
-
+		    /* For each item, put the items warnings into our status array */
 		    foreach ($optionWarnings as $j => $messages) {
 			$key = $itemsToProcessKeyMap[$j];
 			if (!isset($status['addedFiles'][$key]['warnings'])) {
@@ -593,13 +509,7 @@ class ItemAddController extends GalleryController {
 				      'warnings' => array());
 	    }
 	    if (count($addedFiles) % 10 == 0) {
-		
-
-
-/*  The percentage isn't accurate at all, we just keep the visual feedback going  */
-
-
-
+		/* The percentage isn't accurate at all, we just keep the visual feedback going */
 		$this->_templateAdapter->updateProgressBar($this->_extractingArchiveMessage, '',
 		    0.1 + 0.9 * count($addedFiles) / (count($list) + count($addedFiles)));
 		$gallery->guaranteeTimeLimit(30);
@@ -634,13 +544,7 @@ class ItemAddView extends GalleryView {
 	}
 	$itemId = $item->getId();
 
-	
-
-
-/*  Make sure we have permission to add to this item  */
-
-
-
+	/* Make sure we have permission to add to this item */
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addDataItem');
 	if ($ret) {
 	    return array($ret, null);
@@ -651,13 +555,7 @@ class ItemAddView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Get all the add plugins  */
-
-
-
+	/* Get all the add plugins */
 	list ($ret, $allPluginIds) =
 	    GalleryCoreApi::getAllFactoryImplementationIds('ItemAddPlugin');
 	if ($ret) {
@@ -682,13 +580,7 @@ class ItemAddView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Get all the add options  */
-
-
-
+	/* Get all the add options */
 	list ($ret, $optionInstances) = ItemAddOption::getAllAddOptions();
 	if ($ret) {
 	    return array($ret, null);
@@ -712,25 +604,13 @@ class ItemAddView extends GalleryView {
 	$errors = $session->get('itemAdd.error');
 	if (!empty($errors)) {
 	    $session->remove('itemAdd.error');
-	    
-
-
-/*  Same logic as in main.php  */
-
-
-
+	    /* Same logic as in main.php */
 	    foreach ($errors as $error) {
 		GalleryUtilities::putRequestVariable($error, 1);
 	    }
 	}
 
-	
-
-
-/*  Get display data for all plugins  */
-
-
-
+	/* Get display data for all plugins */
 	$plugins = array();
 	foreach ($pluginInstances as $pluginId => $plugin) {
 	    list ($ret, $title) =  $plugin->getTitle();
@@ -747,26 +627,14 @@ class ItemAddView extends GalleryView {
 	$ItemAdd['plugins'] = $plugins;
 	$ItemAdd['isAdmin'] = $isAdmin;
 
-	
-
-
-/*  Let the plugin load its template data  */
-
-
-
+	/* Let the plugin load its template data */
 	list ($ret, $ItemAdd['pluginFile'], $ItemAdd['pluginL10Domain']) =
 	    $pluginInstances[$addPlugin]->loadTemplate($template, $form, $item);
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Now let all options load their template data  */
-
-
-
+	/* Now let all options load their template data */
 	$ItemAdd['options'] = array();
 	foreach ($optionInstances as $option) {
 	    list ($ret, $entry['file'], $entry['l10Domain']) =
@@ -779,13 +647,7 @@ class ItemAddView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Make sure that we've got some toolkits  */
-
-
-
+	/* Make sure that we've got some toolkits */
 	list ($ret, $operations) = GalleryCoreApi::getToolkitOperations('image/jpeg');
 	if ($ret) {
 	    return array($ret, null);
@@ -895,13 +757,7 @@ class ItemAddOption {
      * @static
      */
     static function getAllAddOptions() {
-	
-
-
-/*  Get all the option plugins  */
-
-
-
+	/* Get all the option plugins */
 	list ($ret, $allOptionIds) =
 	    GalleryCoreApi::getAllFactoryImplementationIds('ItemAddOption');
 	if ($ret) {

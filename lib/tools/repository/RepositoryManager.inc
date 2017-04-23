@@ -45,13 +45,7 @@ class RepositoryManagerControllerAndView extends RepositoryControllerAndView
         global $gallery;
         $urlGenerator =& $gallery->getUrlGenerator();
 
-    
-
-
-/*  Get repository plugin meta data.  */
-
-
-
+    /* Get repository plugin meta data. */
         $index = new RepositoryIndex();
         $index->init($gallery->getConfig('repository.path'));
         list ($ret, $pluginInfo) = $index->getPluginInfo();
@@ -60,13 +54,7 @@ class RepositoryManagerControllerAndView extends RepositoryControllerAndView
         }
         $data['pluginInfo'] = $pluginInfo;
 
-    
-
-
-/*  Add action links.  */
-
-
-
+    /* Add action links. */
         $upgradeablePlugins = array();
         foreach ($data['pluginInfo'] as $indexId => $plugin) {
             $data['pluginInfo'][$indexId]['actions']['remove'] = $urlGenerator->generateUrl(array(
@@ -113,13 +101,7 @@ class RepositoryManagerControllerAndView extends RepositoryControllerAndView
             );
         }
 
-    
-
-
-/*  Remove 'pluginId-*' files from 'repository/pluginType'.  */
-
-
-
+    /* Remove 'pluginId-*' files from 'repository/pluginType'. */
         $removedFiles = array();
         $platform =& $gallery->getPlatform();
         $repositoryPluginDir = $gallery->getConfig('repository.path') . $pluginType . '/';

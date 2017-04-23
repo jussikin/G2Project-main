@@ -56,13 +56,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set up our environment  */
-
-
-
+	/* Set up our environment */
 	foreach (array('isapirewrite.forced' => '0',
 		       'isapirewrite.galleryLocation' => '/gallery2/',
 		       'isapirewrite.httpdini' => 'C:\phpunit\gallery2',
@@ -74,13 +68,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  Set up our mock platform  */
-
-
-
+	/* Set up our mock platform */
 	$this->_platform = new IsapiRewriteHelperMockPlatform();
 	$this->_platform->init($this);
 	unset($this->_fileContent);
@@ -220,13 +208,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform {
     function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
-	
-
-
-/*  The hostName can include the port part  */
-
-
-
+	/* The hostName can include the port part */
 	list ($host) = explode(':', $urlGenerator->getHostName());
 	if ($target == $host) {
 	    return 'phpunit';

@@ -41,13 +41,7 @@ class DeleteCommentController extends GalleryController {
 
 	$commentId = (int)GalleryUtilities::getRequestVariables('commentId');
 
-	
-
-
-/*  Make sure we have permission to delete a comment  */
-
-
-
+	/* Make sure we have permission to delete a comment */
 	$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'comment.delete');
 	if ($ret) {
 	    return array($ret, null);
@@ -56,25 +50,13 @@ class DeleteCommentController extends GalleryController {
 	$status = array();
 	$error = array();
 	if (isset($form['action']['delete'])) {
-	    
-
-
-/*  Delete the comment  */
-
-
-
+	    /* Delete the comment */
 	    list ($ret, $comment) = GalleryCoreApi::loadEntitiesById($commentId, 'GalleryComment');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Make sure that the comment<->parent relationship is right  */
-
-
-
+	    /* Make sure that the comment<->parent relationship is right */
 	    if ($comment->getParentId() != $itemId) {
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
@@ -88,13 +70,7 @@ class DeleteCommentController extends GalleryController {
 	    $redirect['itemId'] = $itemId;
 	    $status['deleted'] = 1;
 	} else if (isset($form['action']['cancel'])) {
-	    
-
-
-/*  Where to go on a cancel?  Go to item admin. */
-
-
-
+	    /* Where to go on a cancel?  Go to item admin.*/
 	    $redirect['view'] = 'core.ShowItem';
 	    $redirect['itemId'] = (int)$itemId;
 	}
@@ -124,13 +100,7 @@ class DeleteCommentView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	
-
-
-/*  Load our item  */
-
-
-
+	/* Load our item */
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
@@ -138,13 +108,7 @@ class DeleteCommentView extends GalleryView {
 
 	$commentId = (int) GalleryUtilities::getRequestVariables('commentId');
 
-	
-
-
-/*  Make sure we have permission to delete a comment  */
-
-
-
+	/* Make sure we have permission to delete a comment */
 	$ret = GalleryCoreApi::assertHasItemPermission($item->getId(), 'comment.delete');
 	if ($ret) {
 	    return array($ret, null);
@@ -154,25 +118,13 @@ class DeleteCommentView extends GalleryView {
 	    $form['formName'] = 'DeleteComment';
 	}
 
-	
-
-
-/*  Load the specific comment  */
-
-
-
+	/* Load the specific comment */
 	list ($ret, $comment) = GalleryCoreApi::loadEntitiesById($commentId, 'GalleryComment');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Associate the commenter's info  */
-
-
-
+	/* Associate the commenter's info */
 	$commenterId = $comment->getCommenterId();
 	list ($ret, $commenter) = GalleryCoreApi::loadEntitiesById($commenterId, 'GalleryUser');
 	if ($ret) {

@@ -34,38 +34,20 @@ class UserAdminView extends GalleryView {
 	global $gallery;
 	$user = $gallery->getActiveUser();
 
-	
-
-
-/*  Load the module list  */
-
-
-
+	/* Load the module list */
 	list ($ret, $moduleStatus) = GalleryCoreApi::fetchPluginStatus('module');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Get a list of all the admin views for each module  */
-
-
-
+	/* Get a list of all the admin views for each module */
 	$subViewChoices = array();
 	foreach ($moduleStatus as $moduleId => $status) {
 	    if (empty($status['active'])) {
 		continue;
 	    }
 
-	    
-
-
-/*  Get the selected module's admin view  */
-
-
-
+	    /* Get the selected module's admin view */
 	    if (in_array('getUserAdminViews', explode('|', $status['callbacks']))) {
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId);
 		if ($ret) {
@@ -84,13 +66,7 @@ class UserAdminView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  If we have a specific sub view, load it now  */
-
-
-
+	/* If we have a specific sub view, load it now */
 	$subViewName = GalleryUtilities::getRequestVariables('subView');
 	if ($subViewName == 'core.UserAdmin') {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
@@ -104,13 +80,7 @@ class UserAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Our sub view may have set some hints, like the encoding type  */
-
-
-
+	/* Our sub view may have set some hints, like the encoding type */
 	if ($template->hasVariable('UserAdmin')) {
 	    $UserAdmin =& $template->getVariableByReference('UserAdmin');
 	} else {
@@ -123,13 +93,7 @@ class UserAdminView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Set up my view parameters  */
-
-
-
+	/* Set up my view parameters */
 	$UserAdmin['subViewChoices'] = $subViewChoices;
 	$UserAdmin['subViewName'] = $subViewName;
 	$UserAdmin['isSiteAdmin'] = $isSiteAdmin;
@@ -171,13 +135,7 @@ class UserAdminView extends GalleryView {
     function getViewDescription() {
 	global $gallery;
 
-	
-
-
-/*  Get the description from the current subView  */
-
-
-
+	/* Get the description from the current subView */
 	$subViewName = GalleryUtilities::getRequestVariables('subView');
 	if (empty($subViewName)) {
 	    $subViewName = 'core.ItemEdit';

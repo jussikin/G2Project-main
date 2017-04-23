@@ -98,13 +98,7 @@ class RandomHighlightSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testRandomHighlightSiteAdminControllerLocale() {
-	
-
-
-/*  Verify the form can accept input in locales that use comma for the fraction separator  */
-
-
-
+	/* Verify the form can accept input in locales that use comma for the fraction separator */
 	GalleryUtilities::putRequestVariable('form[duration]', '123,4');
 	GalleryUtilities::putRequestVariable('form[action][save]', '1');
 

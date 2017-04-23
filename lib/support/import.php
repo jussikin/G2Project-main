@@ -56,13 +56,7 @@ if ($ret) {
     $templateData['warnings'] = array();
     if (isset($_REQUEST['importDatabase'])) {
         $importFile = $_REQUEST['importFile'];
-    
-
-
-/*  Sanitize the input  */
-
-
-
+    /* Sanitize the input */
         GalleryUtilities::sanitizeInputValues($importFile);
 
         if (!$platform->file_exists($importFile)) {
@@ -75,13 +69,7 @@ if ($ret) {
         }
 
         $verifiedFile = $_REQUEST['verifiedFile'];
-    
-
-
-/*  Sanitize the input  */
-
-
-
+    /* Sanitize the input */
         GalleryUtilities::sanitizeInputValues($verifiedFile);
 
         $doImportFlag = true;
@@ -95,13 +83,7 @@ if ($ret) {
             $template->renderHeader(true);
             $template->renderStatusMessage('Restoring Gallery Database', '', 0);
 
-            
-
-
-/*  Do the database import  */
-
-
-
+            /* Do the database import */
             $importer = $storage->getDatabaseImporter();
             list ($ret, $errors) = $importer->importToDb($verifiedFile, 'importProgressCallback');
             if ($ret) {
@@ -116,13 +98,7 @@ if ($ret) {
                 }
             }
 
-                
-
-
-/*  The import processing sets Gallery into maintenance mode, undo that now  */
-
-
-
+                /* The import processing sets Gallery into maintenance mode, undo that now */
                 $ret = GalleryCoreApi::setMaintenanceMode(false);
             if ($ret) {
                 $templateData['errors'][] = $ret->getAsHtml();
@@ -135,13 +111,7 @@ if ($ret) {
     } else {
         getBackupFiles($templateData);
 
-    
-
-
-/*  Render the output  */
-
-
-
+    /* Render the output */
         $templateData['bodyFile'] = 'ImportRequest.html';
     }
 }
@@ -191,13 +161,7 @@ function verifyVersions(&$templateData, $importFile)
     if ($verificationMessages) {
         getBackupFiles($templateData);
 
-    
-
-
-/*  Render the output  */
-
-
-
+    /* Render the output */
         $templateData['bodyFile'] = 'ImportRequest.html';
         $templateData['hideStatusBlock'] = 1;
     }

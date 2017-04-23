@@ -119,13 +119,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals('test title', $album->getTitle());
 	$this->assertEquals('test summary', $album->getSummary());
 	$this->assertEquals('test description', $album->getDescription());
-	
-
-
-/*  For Oracle, null is replaced with '' when loading data from the database  */
-
-
-
+	/* For Oracle, null is replaced with '' when loading data from the database */
 	$this->assert(in_array($album->getKeywords(), array(null, '')), 'keywords should be empty');
     }
 
@@ -192,13 +186,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase {
     function testNewAlbumBogusParentId() {
 	GalleryUtilities::putRequestVariable('form[parentId]', 0);
 
-	
-
-
-/*  We don't allow this via the UI, so a system error is acceptable  */
-
-
-
+	/* We don't allow this via the UI, so a system error is acceptable */
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
     }
 }

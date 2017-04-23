@@ -97,13 +97,7 @@ class PlatformTest extends GalleryTestCase {
     }
 
     function testMoveUploadedFile() {
-	
-
-
-/*  XXX: How do we test this?  We don't have an uploaded file :-(  */
-
-
-
+	/* XXX: How do we test this?  We don't have an uploaded file :-( */
 	$this->assert(!$this->_platform->move_uploaded_file($this->_sourceFile, $this->_destFile));
     }
 
@@ -127,20 +121,8 @@ class PlatformTest extends GalleryTestCase {
     }
 
     function testIsWriteable() {
-	
-
-
-/*  On Win32, all files are writeable so the next assertion isn't that useful!  */
-
-
-
-	
-
-
-/*  $this->assert(!$this->_platform->is_writeable(__FILE__));  */
-
-
-
+	/* On Win32, all files are writeable so the next assertion isn't that useful! */
+	/* $this->assert(!$this->_platform->is_writeable(__FILE__)); */
 
 	$this->assert($this->_platform->copy($this->_sourceFile, $this->_destFile));
 	$this->assert($this->_platform->is_writeable($this->_destFile));
@@ -171,20 +153,8 @@ class PlatformTest extends GalleryTestCase {
     function testFile() {
 	$lines = $this->_platform->file(__FILE__);
 
-	
-
-
-/*  --> Target Line <--  */
-
-
-
-	$this->assertEquals("
-
-
-/*  --> Target Line <--  */
-
-
-", trim($lines[__LINE__-2]));
+	/* --> Target Line <-- */
+	$this->assertEquals("/* --> Target Line <-- */", trim($lines[__LINE__-2]));
     }
 
     function testFopen() {
@@ -230,20 +200,8 @@ class PlatformTest extends GalleryTestCase {
 	$this->assert($this->_platform->mkdir($this->_destFile));
 	$this->assert($this->_platform->mkdir($this->_destFile . '/1'));
 
-	
-
-
-/*  XXX: this generates a PHP error that I can't seem to turn off.  */
-
-
-
-	
-
-
-/*  $this->assert(!$this->_platform->rmdir($this->_destFile));  */
-
-
-
+	/* XXX: this generates a PHP error that I can't seem to turn off. */
+	/* $this->assert(!$this->_platform->rmdir($this->_destFile)); */
 
 	$this->assert($this->_platform->rmdir($this->_destFile . '/1'));
 	$this->assert($this->_platform->rmdir($this->_destFile));
@@ -428,13 +386,7 @@ class PlatformTest extends GalleryTestCase {
 	    $this->_platform->resetPlatform();
 	    $this->_permissionTest(0751, 4, array('chmod'));
 
-	    
-
-
-/*  exec now uses a default umask of 022 -- exec'ers must chmod output files  */
-
-
-
+	    /* exec now uses a default umask of 022 -- exec'ers must chmod output files */
 	    $this->_permissionTest(0644, 5, array('exec'));
 
 	    $this->_platform->resetPlatform();
@@ -479,25 +431,13 @@ class PlatformTest extends GalleryTestCase {
 
 	    case 'chmod':
 		$this->assert($this->_platform->chmod($this->_destFile), "chmod $testNumber");
-		$this->_platform->clearstatcache(); 
-
-
-/*  is_dir call in chmod() cached old perm  */
-
-
-
+		$this->_platform->clearstatcache(); /* is_dir call in chmod() cached old perm */
 		$stat = $this->_platform->stat($this->_destFile);
 	    }
 
 	    $this->assert(!empty($stat), "$test stat $testNumber $debug");
 	    if ($test == 'symlink') {
-		
-
-
-/*  On some systems symlinks always have 777 permissions  */
-
-
-
+		/* On some systems symlinks always have 777 permissions */
 		$this->assert(($stat[2] & 0777) == $expectedPermissions ||
 			      ($stat[2] & 0777) == 0777,
 		    "$test permissions $testNumber (" . decoct($expectedPermissions) .
@@ -541,13 +481,7 @@ class PlatformTest extends GalleryTestCase {
     }
 
     function testRecursiveChmod1() {
-	
-
-
-/*  Set dir and file permissions by system prefs  */
-
-
-
+	/* Set dir and file permissions by system prefs */
 	$ret = $this->_setupChmodTest();
 	if ($ret) {
 	    return $ret;
@@ -578,13 +512,7 @@ class PlatformTest extends GalleryTestCase {
     }
 
     function testRecursiveChmod2() {
-	
-
-
-/*  Set given dir permission, don't change file permissions  */
-
-
-
+	/* Set given dir permission, don't change file permissions */
 	$ret = $this->_setupChmodTest();
 	if ($ret) {
 	    return $ret;
@@ -616,13 +544,7 @@ class PlatformTest extends GalleryTestCase {
     }
 
     function testRecursiveChmod3() {
-	
-
-
-/*  Set given file permission, don't change dir permissions  */
-
-
-
+	/* Set given file permission, don't change dir permissions */
 	$ret = $this->_setupChmodTest();
 	if ($ret) {
 	    return $ret;
@@ -680,13 +602,7 @@ class PlatformTest extends GalleryTestCase {
 	$gallery->_phpVm = new PlatformTestPhpVm(dirname(__FILE__), $this);
 	$this->assert(!$this->_platform->isRestrictedByOpenBaseDir(__FILE__), 'simple case');
 
-	
-
-
-/*  Bad paths are still checked even though no realpath  */
-
-
-
+	/* Bad paths are still checked even though no realpath */
 	$this->assert(
 	    !$this->_platform->isRestrictedByOpenBaseDir(dirname(__FILE__) . '/bogus/path'),
 	    'bogus path "inside" valid dir');
@@ -697,13 +613,7 @@ class PlatformTest extends GalleryTestCase {
 	$this->assert(!$this->_platform->isRestrictedByOpenBaseDir('/bogus/path'),
 		      'bogus path with no restriction');
 
-	
-
-
-/*  Open_basedir with multiple entries  */
-
-
-
+	/* Open_basedir with multiple entries */
 	$platform = $isWin ? new PlatformTestOpenBaseDirWinNtPlatform()
 			   : new PlatformTestOpenBaseDirUnixPlatform();
 	$platform->setRealpathData(array('C:\\Test' => 'C:\\Test',
@@ -727,13 +637,7 @@ class PlatformTest extends GalleryTestCase {
 	    $platform->isRestrictedByOpenBaseDir($isWin ? 'c:\\TEST\\file' : '/TEST/file'),
 	    'unix case sensitive, windows not');
 
-	
-
-
-/*  Symlinks are resolved in both given path and open_basedir list  */
-
-
-
+	/* Symlinks are resolved in both given path and open_basedir list */
 	if (!$isWin) {
 	    $platform->setRealpathData(array('/test/real' => '/test/real',
 					     '/test/real/file' => '/test/real/file',
@@ -761,13 +665,7 @@ class PlatformTest extends GalleryTestCase {
 			  'invalid path, open_basedir has symlink');
 	}
 
-	
-
-
-/*  Open_basedir entry can be a prefix and not a real dir  */
-
-
-
+	/* Open_basedir entry can be a prefix and not a real dir */
 	$platform->setRealpathData(array('/tes' => false, '/test' => '/test',
 					 '/testfile' => '/testfile',
 					 '/test/file' => '/test/file',
@@ -779,22 +677,10 @@ class PlatformTest extends GalleryTestCase {
 	$this->assert(!$platform->isRestrictedByOpenBaseDir('/test/file'), 'dir with prefix');
 	$this->assert(!$platform->isRestrictedByOpenBaseDir('/tes/bad/path'),
 		      'given path can be invalid and match a prefix');
-			
-
-
-/*  though it would be restricted if /tes was a real dir? odd..  */
-
-
-
+			/* though it would be restricted if /tes was a real dir? odd.. */
 	$this->assert($platform->isRestrictedByOpenBaseDir('/toast/file'), 'not match prefix');
 	if (!$isWin) {
-	    
-
-
-/*  Symlink expansion with prefix (realpath of given path must match prefix)  */
-
-
-
+	    /* Symlink expansion with prefix (realpath of given path must match prefix) */
 	    $this->assert(!$platform->isRestrictedByOpenBaseDir('/link/file'),
 			  'link, realpath has prefix');
 
@@ -820,24 +706,12 @@ class PlatformTest extends GalleryTestCase {
 			  'invalid link path given, open_basedir has prefix with link parent');
 	}
 
-	
-
-
-/*  Open_basedir with .  */
-
-
-
+	/* Open_basedir with . */
 	$gallery->_phpVm = new PlatformTestPhpVm('.', $this);
 	$this->assert(!$this->_platform->isRestrictedByOpenBaseDir(
 	    dirname(__FILE__) . '/../../../../lib/tools/phpunit/index.php'), 'dot basedir');
 
-	
-
-
-/*  Open_basedir with trailing slash  */
-
-
-
+	/* Open_basedir with trailing slash */
 	$s = $this->_platform->getDirectorySeparator();
 	$platform->setRealpathData(array("${s}test${s}" => "${s}test",
 					 "${s}testing" => "${s}testing"));
@@ -846,13 +720,7 @@ class PlatformTest extends GalleryTestCase {
 	$this->assert($platform->isRestrictedByOpenBaseDir("${s}testing"),
 		      'should not match basedir with trailing slash');
 
-	
-
-
-/*  Invalid paths (realpath returns false, our code does relative path and .. handling)  */
-
-
-
+	/* Invalid paths (realpath returns false, our code does relative path and .. handling) */
 	$platform->setRealpathData(array("${s}test" => "${s}test"));
 	$gallery->_phpVm = new PlatformTestPhpVm("${s}test", $this);
 	$this->assert(!$platform->isRestrictedByOpenBaseDir("${s}test${s}bogus"),
@@ -904,13 +772,7 @@ class PlatformTest extends GalleryTestCase {
      * Try opening a socket to a bogus web server.
      */
     function testFsockopenBadHost() {
-	
-
-
-/*  We know this is going to bomb so bypass PHPunit's error handler  */
-
-
-
+	/* We know this is going to bomb so bypass PHPunit's error handler */
 	set_error_handler(array('PlatformTest', 'ignore_error_handler'));
 
 	$fd = @$this->_platform->fsockopen('www.BOGUSBOGUSBOGUSBOGUS.com', $_SERVER['SERVER_PORT'],
@@ -947,22 +809,10 @@ class PlatformTest extends GalleryTestCase {
     }
 
     function testOpenMissingFile() {
-	
-
-
-/*  We know this is going to bomb so bypass PHPunit's error handler  */
-
-
-
+	/* We know this is going to bomb so bypass PHPunit's error handler */
 	set_error_handler(array('PlatformTest', 'ignore_error_handler'));
 
-	
-
-
-/*  And suppress warnings when we call fopen  */
-
-
-
+	/* And suppress warnings when we call fopen */
 	$fd = @$this->_platform->fopen(sprintf('%s_BOGUS_BOGUS', __FILE__), 'rb');
 	$this->assertEquals(false, $fd);
     }
@@ -979,13 +829,7 @@ class PlatformTest extends GalleryTestCase {
 	$output = implode('', $this->_platform->file($this->_destFile));
 	$this->assertEquals($testData1, $output);
 
-	
-
-
-/*  Now write another text to the same file and see if it's ok  */
-
-
-
+	/* Now write another text to the same file and see if it's ok */
 	$testData2 = "this is a test\nmultiline\ntest\nmore\ntext";
 	$this->assert($this->_platform->atomicWrite($this->_destFile, $testData2, 'wb'),
 		      'write 2 failed');
@@ -1016,55 +860,25 @@ class PlatformTest extends GalleryTestCase {
 	$oldCwd = $this->_platform->getcwd();
 	$this->assert($oldCwd);
 
-	
-
-
-/*  Change working directory to g2data/tmp  */
-
-
-
+	/* Change working directory to g2data/tmp */
 	$this->assert($this->_platform->chdir($tmpdir));
 	$newCwd = $this->_platform->getcwd();
 	$this->assertEquals(realpath($tmpdir), $newCwd);
 
-	
-
-
-/*  Go back to original directory  */
-
-
-
+	/* Go back to original directory */
 	$this->_platform->chdir($oldCwd);
     }
 
     function testStrftime() {
 	$this->assertEquals('2005 03', $this->_platform->strftime('%Y %m', 1110101111));
-	
-
-
-/*  For windows we replace %e with %d and convert leading zeros to spaces  */
-
-
-
+	/* For windows we replace %e with %d and convert leading zeros to spaces */
 	$this->assertEquals( ' 6 11', $this->_platform->strftime('%e %S', 1110101111));
 
-	
-
-
-/*  Verify UTF-8 text in format string is not mangled (only % tokens convert to UTF-8)  */
-
-
-
+	/* Verify UTF-8 text in format string is not mangled (only % tokens convert to UTF-8) */
 	$this->assertEquals("\xd0\x9d\xd0\xb5 2005 \xd0\xbd %\n03",
 	    $this->_platform->strftime("\xd0\x9d\xd0\xb5 %Y \xd0\xbd %%\n%m", 1110101111));
 
-	
-
-
-/*  How to test that strftime output is converted to UTF-8?  */
-
-
-
+	/* How to test that strftime output is converted to UTF-8? */
     }
 
     function testFileGetAndPutContents() {

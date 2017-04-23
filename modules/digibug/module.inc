@@ -37,13 +37,7 @@ class DigibugModule extends GalleryModule {
 	$this->setId('digibug');
 	$this->setName($gallery->i18n('Digibug'));
 	$this->setDescription($gallery->i18n('Digibug Photo Printing Module'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() too */
 	$this->_templateVersion = 1;
 	$this->setGroup('commerce', $gallery->i18n('Commerce'));
 	$this->setCallbacks('getSiteAdminViews|getItemLinks');
@@ -66,25 +60,13 @@ class DigibugModule extends GalleryModule {
 
 	switch ($currentVersion) {
 	case '0':
-	    
-
-
-/*  Register our permission  */
-
-
-
+	    /* Register our permission */
 	    $ret = GalleryCoreApi::registerPermission($this->getId(), 'digibug.print',
 						      $gallery->i18n('[digibug] Print'));
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Give everybody print permission by default  */
-
-
-
+	    /* Give everybody print permission by default */
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
@@ -106,33 +88,15 @@ class DigibugModule extends GalleryModule {
 	case '1.0.0':
 	case '1.0.0.1':
 	case '1.0.0.2':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.0.1':
 	case '1.0.2':
 	case '1.0.3':
-	    
-
-
-/*  Implementing new version of the cart plugin interface  */
-
-
-
+	    /* Implementing new version of the cart plugin interface */
 	case '1.0.4':
 	case '1.0.5':
 	case '1.0.6':
-	    
-
-
-/*  Created default Gallery ID  */
-
-
-
+	    /* Created default Gallery ID */
 	    $ret = $this->_setGalleryDefaultId();
 	    if ($ret) {
 		return $ret;
@@ -140,13 +104,7 @@ class DigibugModule extends GalleryModule {
 
 	case '1.0.7':
 	case '1.0.8':
-	    
-
-
-/*  Core API 8.0 & Module API 4.0  */
-
-
-
+	    /* Core API 8.0 & Module API 4.0 */
 	    
 	case 'end of upgrade path':
 	    break;

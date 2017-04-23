@@ -33,13 +33,7 @@ class CustomFieldSiteAdminController extends GalleryController {
      * @see GalleryController::handleRequest
      */
     function handleRequest($form) {
-	
-
-
-/*  Make sure we have adequate permissions  */
-
-
-
+	/* Make sure we have adequate permissions */
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
@@ -50,13 +44,7 @@ class CustomFieldSiteAdminController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Figure out where to redirect upon success  */
-
-
-
+	/* Figure out where to redirect upon success */
 	$results['redirect']['view'] = 'core.SiteAdmin';
 	$results['redirect']['subView'] = 'customfield.CustomFieldSiteAdmin';
 	$results['status'] = $status;

@@ -1,39 +1,15 @@
-<?php 
-
-
-/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
-
-
-
-
-
-
-/*  Contributed by: volksport  */
-
-
-
+<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
+/* Contributed by: volksport */
 $frameData = array(
 
 'name' => $gallery->i18n('Flicking'),
 
-
-
-
-/*  Top Left  */
-
-
-
+/* Top Left */
 'imageTL' => 'TL.gif',
 'widthTL' => 5,
 'heightTL' => 5,
 
-
-
-
-/*  Top  */
-
-
-
+/* Top */
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -43,24 +19,12 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-
-
-
-/*  Top Right  */
-
-
-
+/* Top Right */
 'imageTR' => 'TR.gif',
 'widthTR' => 5,
 'heightTR' => 5,
 
-
-
-
-/*  Left  */
-
-
-
+/* Left */
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -70,13 +34,7 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-
-
-
-/*  Right  */
-
-
-
+/* Right */
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -86,24 +44,12 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-
-
-
-/*  Bottom Left  */
-
-
-
+/* Bottom Left */
 'imageBL' => 'BL.gif',
 'widthBL' => 5,
 'heightBL' => 11,
 
-
-
-
-/*  Bottom  */
-
-
-
+/* Bottom */
 'imageBBL' => '',
 'widthBBL' => 0,
 
@@ -113,13 +59,7 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-
-
-
-/*  Bottom Right  */
-
-
-
+/* Bottom Right */
 'imageBR' => 'BR.gif',
 'widthBR' => 5,
 'heightBR' => 11

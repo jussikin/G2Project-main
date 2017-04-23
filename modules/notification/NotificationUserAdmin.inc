@@ -36,25 +36,13 @@ class NotificationUserAdminController extends GalleryController {
     function handleRequest($form) {
 	$status = $error = array();
 
-	
-
-
-/*  Check that the user is logged in  */
-
-
-
+	/* Check that the user is logged in */
 	list ($ret, $userId) = NotificationHelper::getUserIdCheck();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Is the user an administrator  */
-
-
-
+	/* Is the user an administrator */
 	list ($ret, $isAdminGroup) = GalleryCoreApi::isUserInSiteAdminGroup();
 	if ($ret) {
 	    return array($ret, null);
@@ -97,13 +85,7 @@ class NotificationUserAdminController extends GalleryController {
 				if ($ret) {
 				    return array($ret, null);
 				}
-				
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+				/* Avoid information disclosure, act as if the item didn't exist. */
 				if (!$authorized) {
 				    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 				}
@@ -136,13 +118,7 @@ class NotificationUserAdminController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Alert of the changes we have done.  */
-
-
-
+		/* Alert of the changes we have done. */
 		$status['saved'] = 1;
 	    } else {
 		$returnOption = 'delegate';
@@ -167,25 +143,13 @@ class NotificationUserAdminView extends GalleryView {
      * @see GalleryView::loadTemplate
      */
     function loadTemplate(&$template, &$form) {
-	
-
-
-/*  Check that the user is logged in  */
-
-
-
+	/* Check that the user is logged in */
 	list ($ret, $userId) = NotificationHelper::getUserIdCheck();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Is the user an administrator  */
-
-
-
+	/* Is the user an administrator */
 	list ($ret, $isAdminGroup) = GalleryCoreApi::isUserInSiteAdminGroup();
 	if ($ret) {
 	    return array($ret, null);
@@ -220,13 +184,7 @@ class NotificationUserAdminView extends GalleryView {
 	    return $ret;
 	}
 
-	
-
-
-/*  Subscriptions  */
-
-
-
+	/* Subscriptions */
 	list ($ret, $subscriptions) = NotificationHelper::getSubscriptions($userId);
 	if ($ret) {
 	    return $ret;
@@ -269,13 +227,7 @@ class NotificationUserAdminView extends GalleryView {
 		 */
 		if (!isset($subscriptions[$notificationName])) {
 		    if (!$instance->isGlobal() || !$isAdminGroup) {
-			
-
-
-/*  If it is an item related event then we don't display it here  */
-
-
-
+			/* If it is an item related event then we don't display it here */
 			continue;
 		    }
 
@@ -292,13 +244,7 @@ class NotificationUserAdminView extends GalleryView {
 					  'handler' => $handlerName,
 					  'handlerDescription' => $handlerDescription);
 		    $itemIds = array();
-		    
-
-
-/*  Do the global subscriptions first  */
-
-
-
+		    /* Do the global subscriptions first */
 		    foreach ($subscriptions[$notificationName] as $itemId) {
 			if (empty($itemId)) {
 			    $form['notifications'][$i]['items'][1] = array('itemId' => 0, 
@@ -309,13 +255,7 @@ class NotificationUserAdminView extends GalleryView {
 		    }
 
 		    if (count($itemIds) > 0) {
-		    	
-
-
-/*  Filter out items that we (no longer) have access to  */
-
-
-
+		    	/* Filter out items that we (no longer) have access to */
 			$permission = $instance->getPermission();
 			list ($ret, $itemPermissions) =
 			    GalleryCoreApi::fetchPermissionsForItems($itemIds);

@@ -100,26 +100,14 @@ class SliderTheme extends GalleryTheme {
     function showPhotoPage(&$template, $item, $params) {
 	$renderId = GalleryUtilities::getRequestVariables('renderId');
 	if (!empty($renderId)) {
-	    
-
-
-/*  Render this item  */
-
-
-
+	    /* Render this item */
 	    list ($ret, $image) = GalleryCoreApi::loadEntitiesById(
 		    $renderId, array('GalleryDataItem', 'GalleryDerivative'));
 	    if ($ret) {
 		return array($ret, null);
 	    }
 	    if ($renderId != ($itemId = $item->getId()) && $image->getParentId() != $itemId) {
-		
-
-
-/*  Malicious URL.. renderId not for this item  */
-
-
-
+		/* Malicious URL.. renderId not for this item */
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 	    $template->setVariable('theme', array('item' => (array)$item,
@@ -127,13 +115,7 @@ class SliderTheme extends GalleryTheme {
 	    return array(null, 'render.tpl');
 	}
 
-	
-
-
-/*  Otherwise, load the parent with initial view of this item   */
-
-
-
+	/* Otherwise, load the parent with initial view of this item  */
 	list ($ret, $parent) =
 	    GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
 	if ($ret) {
@@ -264,13 +246,7 @@ class SliderTheme extends GalleryTheme {
 
 	    $images = array();
 	    if (isset($permissions['core.viewSource'])) {
-		
-
-
-/*  Full size; check for preferred copy  */
-
-
-
+		/* Full size; check for preferred copy */
 		if (isset($preferredFullImages[$childId])) {
 		    $images[] = $preferredFullImages[$childId];
 		} else if ($child->canBeViewedInline()) {
@@ -289,13 +265,7 @@ class SliderTheme extends GalleryTheme {
 	    if (!empty($images)) {
 		$image = $images[0];
 
-		
-
-
-/*  Rebuild derivative if needed so width/height known  */
-
-
-
+		/* Rebuild derivative if needed so width/height known */
 		if (GalleryUtilities::isA($image, 'GalleryDerivativeImage')
 			&& !($image->getWidth() && $image->getHeight())) {
 		    list ($ret, $image) = GalleryCoreApi::rebuildDerivativeCache($image->getId());
@@ -308,23 +278,11 @@ class SliderTheme extends GalleryTheme {
 		$children[$i]['imageIndex'] = count($imageWidths);
 		if (GalleryUtilities::isExactlyA($child, 'GalleryPhotoItem') &&
 			    $image['width'] > 0 && $image['height'] > 0) {
-		    
-
-
-/*  Display in <img>  */
-
-
-
+		    /* Display in <img> */
 		    $imageWidths[] = $image['width'];
 		    $imageHeights[] = $image['height'];
 		} else {
-		    
-
-
-/*  Item must render itself  */
-
-
-
+		    /* Item must render itself */
 		    $children[$i]['renderItem'] = 1;
 		    $imageWidths[] = $imageHeights[] = -1;
 		}

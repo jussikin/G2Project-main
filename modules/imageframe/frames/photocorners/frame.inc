@@ -1,39 +1,15 @@
-<?php 
-
-
-/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
-
-
-
-  
-
-
-/*  Contributed by: KnightScene  */
-
-
-
+<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
+  /* Contributed by: KnightScene */
 $frameData = array(
 
 'name' => $gallery->i18n('Photo Corners'),
 
-
-
-
-/*  Top Left  */
-
-
-
+/* Top Left */
 'imageTL' => 'TL.gif',
 'widthTL' => 60,
 'heightTL' => 60,
 
-
-
-
-/*  Top  */
-
-
-
+/* Top */
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -43,24 +19,12 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-
-
-
-/*  Top Right  */
-
-
-
+/* Top Right */
 'imageTR' => 'TR.gif',
 'widthTR' => 60,
 'heightTR' => 60,
 
-
-
-
-/*  Left  */
-
-
-
+/* Left */
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -70,13 +34,7 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-
-
-
-/*  Right  */
-
-
-
+/* Right */
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -86,24 +44,12 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-
-
-
-/*  Bottom Left  */
-
-
-
+/* Bottom Left */
 'imageBL' => 'BL.gif',
 'widthBL' => 60,
 'heightBL' => 60,
 
-
-
-
-/*  Bottom  */
-
-
-
+/* Bottom */
 'imageBBL' => '',
 'widthBBL' => 0,
 
@@ -113,13 +59,7 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-
-
-
-/*  Bottom Right  */
-
-
-
+/* Bottom Right */
 'imageBR' => 'BR.gif',
 'widthBR' => 60,
 'heightBR' => 60

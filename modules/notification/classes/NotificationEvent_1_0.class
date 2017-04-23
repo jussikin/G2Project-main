@@ -28,13 +28,7 @@
  * @abstract
  */
 class NotificationEvent_1_0 {
-    
-
-
-/*  The internal variable to hold the event that is the basis for a notification.  */
-
-
-
+    /* The internal variable to hold the event that is the basis for a notification. */
     var $_event;
 
     /**

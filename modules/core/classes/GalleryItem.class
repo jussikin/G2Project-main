@@ -194,49 +194,19 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    return $ret;
 	}
 
-	
-
-
-/*  Record the owner  */
-
-
-
+	/* Record the owner */
 	$this->setOwnerId($gallery->getActiveUserId());
 
-	
-
-
-/*  Initialize the viewedSince timestamp  */
-
-
-
+	/* Initialize the viewedSince timestamp */
 	$this->setViewedSinceTimestamp(time());
 
-	
-
-
-/*  By default, items can't contain children  */
-
-
-
+	/* By default, items can't contain children */
 	$this->setCanContainChildren($canContainChildren);
 
-	
-
-
-/*  Origination timestamp defaults to now  */
-
-
-
+	/* Origination timestamp defaults to now */
 	$this->setOriginationTimestamp(time());
 
-	
-
-
-/*  Init other fields  */
-
-
-
+	/* Init other fields */
 	$this->setTitle(null);
 	$this->setSummary(null);
 	$this->setDescription(null);
@@ -260,31 +230,13 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    return $ret;
 	}
 
-	
-
-
-/*  Record the owner  */
-
-
-
+	/* Record the owner */
 	$this->setOwnerId($gallery->getActiveUserId());
 
-	
-
-
-/*  Initialize the viewedSince timestamp  */
-
-
-
+	/* Initialize the viewedSince timestamp */
 	$this->setViewedSinceTimestamp(time());
 
-	
-
-
-/*  Origination timestamp defaults to now  */
-
-
-
+	/* Origination timestamp defaults to now */
 	$this->setOriginationTimestamp(time());
 
 	return null;
@@ -310,40 +262,16 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    return GalleryCoreApi::error(ERROR_ILLEGAL_CHILD);
 	}
 
-	
-
-
-/*  Record the owner  */
-
-
-
+	/* Record the owner */
 	$this->setOwnerId($gallery->getActiveUserId());
 
-	
-
-
-/*  Initialize the viewedSince timestamp  */
-
-
-
+	/* Initialize the viewedSince timestamp */
 	$this->setViewedSinceTimestamp(time());
 
-	
-
-
-/*  By default, items can't contain children  */
-
-
-
+	/* By default, items can't contain children */
 	$this->setCanContainChildren(false);
 
-	
-
-
-/*  Copy over anything else from the target entity  */
-
-
-
+	/* Copy over anything else from the target entity */
 	$this->setDescription($entity->getDescription());
 	$this->setKeywords($entity->getKeywords());
 	$this->setSummary($entity->getSummary());
@@ -362,13 +290,7 @@ class GalleryItem extends GalleryFileSystemEntity {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  Delete any children  */
-
-
-
+	/* Delete any children */
 	$query = '
 	SELECT
 	  [GalleryChildEntity::id]
@@ -403,25 +325,13 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    }
 	}
 
-	
-
-
-/*  Delete myself  */
-
-
-
+	/* Delete myself */
 	$ret = parent::delete();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove all my attributes  */
-
-
-
+	/* Remove all my attributes */
 	$ret = GalleryCoreApi::removeItemAttributes($this->getId());
 	if ($ret) {
 	    return $ret;
@@ -435,13 +345,7 @@ class GalleryItem extends GalleryFileSystemEntity {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Instruct G2 to "touch" modification timestamp of parent album at end of request  */
-
-
-
+	    /* Instruct G2 to "touch" modification timestamp of parent album at end of request */
 	    $gallery->addShutdownAction(array('GalleryCoreApi', 'updateModificationTimestamp'),
 					array($this->getParentId()));
 	}
@@ -470,13 +374,7 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set the new parent sequence  */
-
-
-
+	/* Set the new parent sequence */
 	list ($ret, $newParentSequence) = GalleryCoreApi::fetchParentSequence($this->getParentId());
 	if ($ret) {
 	    return $ret;
@@ -512,13 +410,7 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    }
 	}
 
-	
-
-
-/*  Save myself  */
-
-
-
+	/* Save myself */
 	$ret = parent::save($postEvent, $setAclId);
 	if ($ret) {
 	    return $ret;
@@ -536,13 +428,7 @@ class GalleryItem extends GalleryFileSystemEntity {
 		$parentSequence = array();
 	    }
 
-	    
-
-
-/*  Create an empty attribute entry  */
-
-
-
+	    /* Create an empty attribute entry */
 	    $ret = GalleryCoreApi::createItemAttributes($this->getId(), $parentSequence);
 	    if ($ret) {
 		return $ret;
@@ -558,13 +444,7 @@ class GalleryItem extends GalleryFileSystemEntity {
 	    }
 	}
 	if (($isNew || $changedParent) && $this->getParentId()) {
-	    
-
-
-/*  Instruct G2 to "touch" modification timestamp of parent album at end of request  */
-
-
-
+	    /* Instruct G2 to "touch" modification timestamp of parent album at end of request */
 	    $gallery->addShutdownAction(array('GalleryCoreApi', 'updateModificationTimestamp'),
 					array($this->getParentId()));
 	}

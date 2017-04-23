@@ -106,24 +106,12 @@ class AdminEditGroupQuotaControllerTest extends GalleryControllerTestCase {
     }
 
     function testEditGroupQuotaMissingValues() {
-	
-
-
-/*  No Values  */
-
-
-
+	/* No Values */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 
-	
-
-
-/*  Create a group for our tests  */
-
-
-
+	/* Create a group for our tests */
 	list ($ret, $group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;
@@ -131,13 +119,7 @@ class AdminEditGroupQuotaControllerTest extends GalleryControllerTestCase {
 
 	$this->_createGroupQuota($group->getId(), 1024);
 
-	
-
-
-/*  quota size  */
-
-
-
+	/* quota size */
 	GalleryUtilities::putRequestVariable('groupId', $group->getId());
 	GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
 
@@ -148,13 +130,7 @@ class AdminEditGroupQuotaControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][quotaUnit][missing]')),
 			    $results);
 
-	
-
-
-/*  quota unit only  */
-
-
-
+	/* quota unit only */
 	GalleryUtilities::removeRequestVariable('form[quotaSize]');
 	GalleryUtilities::putRequestVariable('form[quotaUnit]', 'MB');
 
@@ -173,13 +149,7 @@ class AdminEditGroupQuotaControllerTest extends GalleryControllerTestCase {
      * Edit a non-existant group quota
      */
     function testEditGroupQuotaNonExistantQuota() {
-	
-
-
-/*  Create a group, but no quota for it  */
-
-
-
+	/* Create a group, but no quota for it */
 	list ($ret, $group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;

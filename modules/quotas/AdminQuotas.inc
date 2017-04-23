@@ -73,13 +73,7 @@ class AdminQuotasController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		
-
-
-/*  Show the "create group quota" view  */
-
-
-
+		/* Show the "create group quota" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminCreateGroupQuota';
 		$redirect['groupId'] = $group->getId();
@@ -100,13 +94,7 @@ class AdminQuotasController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		
-
-
-/*  Show the "create user quota" view  */
-
-
-
+		/* Show the "create user quota" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminCreateUserQuota';
 		$redirect['userId'] = $user->getId();
@@ -128,13 +116,7 @@ class AdminQuotasController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		
-
-
-/*  Show the "edit group quota" view  */
-
-
-
+		/* Show the "edit group quota" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminEditGroupQuota';
 		$redirect['groupId'] = $group->getId();
@@ -157,13 +139,7 @@ class AdminQuotasController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		
-
-
-/*  Show the "edit user quota" view  */
-
-
-
+		/* Show the "edit user quota" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminEditUserQuota';
 		$redirect['userId'] = $user->getId();
@@ -186,13 +162,7 @@ class AdminQuotasController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		
-
-
-/*  Show the "delete group quota" view  */
-
-
-
+		/* Show the "delete group quota" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminDeleteGroupQuota';
 		$redirect['groupId'] = $group->getId();
@@ -215,13 +185,7 @@ class AdminQuotasController extends GalleryController {
 		}
 	    }
 	    if (empty($error)) {
-		
-
-
-/*  Show the "delete user quota" view  */
-
-
-
+		/* Show the "delete user quota" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'quotas.AdminDeleteUserQuota';
 		$redirect['userId'] = $user->getId();
@@ -259,13 +223,7 @@ class AdminQuotasView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load some standard form parameters  */
-
-
-
+	/* Load some standard form parameters */
 	if ($form['formName'] != 'AdminQuotas') {
 	    $form['text']['groupName'] = '';
 	    $form['text']['userName'] = '';
@@ -292,26 +250,14 @@ class AdminQuotasView extends GalleryView {
 	$form['list']['group']['count'] = $totalGroupCount;
 	$form['list']['group']['pageSize'] = $totalGroupCount > 10 ? 10 : $totalGroupCount + 2;
 
-	
-
-
-/*  Figure out our max pages, make sure our current page fits in it  */
-
-
-
+	/* Figure out our max pages, make sure our current page fits in it */
 	$form['list']['group']['maxPages'] =
 	    ceil($form['list']['group']['count'] / $form['list']['group']['pageSize']);
 	if ($form['list']['group']['page'] > $form['list']['group']['maxPages']) {
 	    $form['list']['group']['page'] = $form['list']['group']['maxPages'];
 	}
 
-	
-
-
-/*  Calculate the next/back pages  */
-
-
-
+	/* Calculate the next/back pages */
 	$form['list']['group']['nextPage'] =
 	    min($form['list']['group']['page']+1, $form['list']['group']['maxPages']);
 	$form['list']['group']['backPage'] = max(1, $form['list']['group']['page']-1);
@@ -339,26 +285,14 @@ class AdminQuotasView extends GalleryView {
 	$form['list']['user']['count'] = $totalUserCount;
 	$form['list']['user']['pageSize'] = $totalUserCount > 10 ? 10 : $totalUserCount + 2;
 
-	
-
-
-/*  Figure out our max pages, make sure our current page fits in it  */
-
-
-
+	/* Figure out our max pages, make sure our current page fits in it */
 	$form['list']['user']['maxPages'] =
 	    ceil($form['list']['user']['count'] / $form['list']['user']['pageSize']);
 	if ($form['list']['user']['page'] > $form['list']['user']['maxPages']) {
 	    $form['list']['user']['page'] = $form['list']['user']['maxPages'];
 	}
 
-	
-
-
-/*  Calculate the next/back pages  */
-
-
-
+	/* Calculate the next/back pages */
 	$form['list']['user']['nextPage'] =
 	    min($form['list']['user']['page']+1, $form['list']['user']['maxPages']);
 	$form['list']['user']['backPage'] = max(1, $form['list']['user']['page']-1);

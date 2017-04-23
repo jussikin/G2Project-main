@@ -163,35 +163,17 @@ class GalleryEntity extends GalleryPersistent {
     function create($x1=null, $x2=null, $x3=null) {
 	global $gallery;
 
-	
-
-
-/*  Create a new instance of this entity in the persistent store  */
-
-
-
+	/* Create a new instance of this entity in the persistent store */
 	$storage =& $gallery->getStorage();
 	$ret = $storage->newEntity($this);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set the creation time on this entity  */
-
-
-
+	/* Set the creation time on this entity */
 	$this->setCreationTimestamp(time());
 
-	
-
-
-/*  Set the object type  */
-
-
-
+	/* Set the object type */
 	$this->setEntityType($className = $this->getClassName());
 
 	/*
@@ -211,13 +193,7 @@ class GalleryEntity extends GalleryPersistent {
 						 get_class($this)));
 	}
 
-	
-
-
-/*  By default, entities are not linkable; init other fields  */
-
-
-
+	/* By default, entities are not linkable; init other fields */
 	$this->setIsLinkable(false);
 	$this->setLinkId(null);
 	$this->setLinkedEntity(null);
@@ -245,44 +221,20 @@ class GalleryEntity extends GalleryPersistent {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Follow our usual creation process (same as create() above)  */
-
-
-
+	/* Follow our usual creation process (same as create() above) */
 	$storage =& $gallery->getStorage();
 	$ret = $storage->newEntity($this);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set the creation time on this entity  */
-
-
-
+	/* Set the creation time on this entity */
 	$this->setCreationTimestamp(time());
 
-	
-
-
-/*  Set the object type  */
-
-
-
+	/* Set the object type */
 	$this->setEntityType($this->getClassName());
 
-	
-
-
-/*  But attach to the linked entity  */
-
-
-
+	/* But attach to the linked entity */
 	$this->setIsLinkable(true);
 	$this->setLinkId($entity->getId());
 	$this->setLinkedEntity($entity);
@@ -323,13 +275,7 @@ class GalleryEntity extends GalleryPersistent {
 	}
 
 	if ($this->isModified()) {
-	    
-
-
-/*  Change the modification date  */
-
-
-
+	    /* Change the modification date */
 	    $phpVm = $gallery->getPhpVm();
 	    $this->setModificationTimestamp($phpVm->time());
 
@@ -350,13 +296,7 @@ class GalleryEntity extends GalleryPersistent {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Update our caches  */
-
-
-
+	    /* Update our caches */
 	    if ($changedEntityType) {
 		/*
 		 * We changed the entity type which probably means that the entity class doesn't
@@ -391,13 +331,7 @@ class GalleryEntity extends GalleryPersistent {
     function refresh() {
 	global $gallery;
 
-	
-
-
-/*  Are we trying to refresh an object that isn't in the database?  */
-
-
-
+	/* Are we trying to refresh an object that isn't in the database? */
 	if ($this->testPersistentFlag(STORAGE_FLAG_DELETED) ||
 	    $this->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT),
@@ -499,13 +433,7 @@ class GalleryEntity extends GalleryPersistent {
 	 */
 	$onLoadHandlers = $this->getOnLoadHandlers();
 	if (!empty($onLoadHandlers)) {
-	    
-
-
-/*  Determine whether we're in an upgrade process  */
-
-
-
+	    /* Determine whether we're in an upgrade process */
 	    $session =& $gallery->getSession();
 	    $isDuringInstallOrUpgrade = $session->get('isInstall') || $session->get('isUpgrade');
 
@@ -644,13 +572,7 @@ class GalleryEntity extends GalleryPersistent {
 	    $this->$setFunc($this->linkedEntity->$getFunc());
 	}
 
-	
-
-
-/*  Get rid of the link  */
-
-
-
+	/* Get rid of the link */
 	$this->setLinkedEntity(null);
 	$this->setLinkId(null);
 
@@ -743,13 +665,7 @@ class GalleryEntity extends GalleryPersistent {
      * @todo Consider removing this method when refactoring the renderer code.
      */
     function getRenderer() {
-	
-
-
-/*  See bug 1662652  */
-
-
-
+	/* See bug 1662652 */
 	return null;
     }
 }

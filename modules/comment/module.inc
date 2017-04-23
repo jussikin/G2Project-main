@@ -18,13 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
-
-
-/*  Possible GalleryComment::publishStatus constants  */
-
-
-
+/** Possible GalleryComment::publishStatus constants */
 define('COMMENT_PUBLISH_STATUS_PUBLISHED', 0);
 define('COMMENT_PUBLISH_STATUS_UNPUBLISHED', 1);
 define('COMMENT_PUBLISH_STATUS_SPAM', 2);
@@ -50,13 +44,7 @@ class CommentModule extends GalleryModule {
 	$this->setId('comment');
 	$this->setName($gallery->i18n('Comments'));
 	$this->setDescription($gallery->i18n('User commenting system'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() function below too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
 	$this->_templateVersion = 1;
 	$this->setGroup('data', $gallery->i18n('Extra Data'));
 	$this->setCallbacks('getItemLinks|getItemSummaries|' .
@@ -76,25 +64,13 @@ class CommentModule extends GalleryModule {
 	    $currentVersion = '0';
 	} else if (version_compare($currentVersion, '0.9.6', '<=')
 		|| substr($currentVersion, 0, 4) == '0.81') {
-	    
-
-
-/*  Instead of enumerating all previous versions...  */
-
-
-
+	    /* Instead of enumerating all previous versions... */
 	    $currentVersion = '0.9.6';
 	}
 
 	switch ($currentVersion) {
 	case '0':
-	    
-
-
-/*  Initial install.  Register our permissions  */
-
-
-
+	    /* Initial install.  Register our permissions */
 	    $permissions[] = array('add', $gallery->i18n('[comment] Add comments'), 0, array());
 	    $permissions[] = array('edit', $gallery->i18n('[comment] Edit comments'), 0, array());
 	    $permissions[] = array('delete', $gallery->i18n('[comment] Delete comments'),
@@ -182,68 +158,26 @@ class CommentModule extends GalleryModule {
 	case '1.1.2':
 	case '1.1.3':
 	case '1.1.3.1':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.1.3.2':
-	    
-
-
-/*  Gallery 2.2.4 security release  */
-
-
-
+	    /* Gallery 2.2.4 security release */
 	case '1.1.4':
 	case '1.1.5':
-	    
-
-
-/*  Add Akismet support  */
-
-
-
+	    /* Add Akismet support */
 	    $ret = $storage->configureStore($this->getId(), array('GalleryComment:1.2'));
 	    if ($ret) {
 		return $ret;
 	    }
 	case '1.1.6':
-	    
-
-
-/*  Add CommentAddNotification class  */
-
-
-
+	    /* Add CommentAddNotification class */
 	case '1.1.7':
-	    
-
-
-/*  Refactored to new event registration from core API 7.34  */
-
-
-
+	    /* Refactored to new event registration from core API 7.34 */
 	case '1.1.8':
 	case '1.1.9':
-	    
-
-
-/*  Combined YUI libraries into a single utilities.js file  */
-
-
- 
+	    /* Combined YUI libraries into a single utilities.js file */ 
 	case '1.1.10':
 	case '1.1.11':
-	    
-
-
-/*  Add Comment Moderation Queue Support  */
-
-
-
+	    /* Add Comment Moderation Queue Support */
 	    $ret = $this->setParameter('comments.moderate', 0);
 	    if ($ret) {
 		return $ret;
@@ -252,13 +186,7 @@ class CommentModule extends GalleryModule {
 	case '1.1.12':
 	case '1.1.13':
 	case '1.1.14':
-	    
-
-
-/*  Core API 8.0 & Module API 4.0  */
-
-
-
+	    /* Core API 8.0 & Module API 4.0 */
 
 	case 'end of upgrade path':
 	    /*

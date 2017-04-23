@@ -47,13 +47,7 @@ class AdminNetPbmController extends GalleryController {
 		$error[] = 'form[error][path][missing]';
 	    } else {
 
-		
-
-
-/*  Set the path.  Guarantee that it's got a trailing slash.  */
-
-
-
+		/* Set the path.  Guarantee that it's got a trailing slash. */
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
 		$form['path'] = trim($form['path']);
@@ -72,13 +66,7 @@ class AdminNetPbmController extends GalleryController {
 			return array($ret, null);
 		    }
 		} else if (empty($mimeTypes)) {
-		    
-
-
-/*  At least one mime type must be supported, else this path is invalid  */
-
-
-
+		    /* At least one mime type must be supported, else this path is invalid */
 		    $error[] = 'form[error][path][testError]';
 		}
 	    }
@@ -110,26 +98,14 @@ class AdminNetPbmController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Set the image quality  */
-
-
-
+		/* Set the image quality */
 		$ret = GalleryCoreApi::setPluginParameter(
 		    'module', 'netpbm', 'jpegQuality', $form['jpegQuality']);
 		if ($ret) {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Set the jhead binary name  */
-
-
-
+		/* Set the jhead binary name */
 		$jheadPath = isset($form['jheadPath']) ? $form['jheadPath'] : '';
 		$ret = GalleryCoreApi::setPluginParameter(
 		    'module', 'netpbm', 'jheadPath', $jheadPath);
@@ -137,13 +113,7 @@ class AdminNetPbmController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Save binaries to use for this netpbm path  */
-
-
-
+		/* Save binaries to use for this netpbm path */
 		$ret = NetPbmToolkitHelper::saveParameters($testResults);
 		if ($ret) {
 		    return array($ret, null);
@@ -205,13 +175,7 @@ class AdminNetPbmView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load our default values if we didn't just come from this form.  */
-
-
-
+	/* Load our default values if we didn't just come from this form. */
 	if ($form['formName'] != 'AdminNetPbm') {
 	    foreach (array('path', 'jpegQuality', 'jheadPath') as $key) {
 		list ($ret, $form[$key]) =
@@ -223,13 +187,7 @@ class AdminNetPbmView extends GalleryView {
 	    $form['formName'] = 'AdminNetPbm';
 	}
 
-	
-
-
-/*  Guarantee that the path and jheadPath have a trailing slash.  */
-
-
-
+	/* Guarantee that the path and jheadPath have a trailing slash. */
 	$slash = $platform->getDirectorySeparator();
 	foreach (array('path', 'jheadPath') as $key) {
 	    $form[$key] = trim($form[$key]);
@@ -240,13 +198,7 @@ class AdminNetPbmView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Set up our jpeg quality selection list  */
-
-
-
+	/* Set up our jpeg quality selection list */
 	for ($i = 100; $i >= 50; $i -= 5) {
 	    $jpegQualityList[] = $i;
 	}

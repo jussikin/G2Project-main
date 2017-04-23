@@ -36,13 +36,7 @@ class IconsModule extends GalleryModule {
 	$this->setId('icons');
 	$this->setName($gallery->i18n('Icons'));
 	$this->setDescription($gallery->i18n('Display icons for links'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() function below too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
 	$this->_templateVersion = 1;
 	$this->setGroup('display', $gallery->i18n('Display'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -83,13 +77,7 @@ class IconsModule extends GalleryModule {
 	case '0.9.1':
 	case '0.9.2':
 	    if (isset($params['iconpack']) && $params['iconpack'] == 'paularmstrongdesigns.com') {
-		
-
-
-/*  Removed ".com" from paularmstrongdesigns.com dir, IIS 5.1 didn't like it  */
-
-
-
+		/* Removed ".com" from paularmstrongdesigns.com dir, IIS 5.1 didn't like it */
 		$ret = $this->setParameter('iconpack', 'paularmstrongdesigns');
 		if ($ret) {
 		    return $ret;
@@ -105,23 +93,11 @@ class IconsModule extends GalleryModule {
 	case '1.1.0':
 	case '1.1.1':
 	case '1.1.2':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.1.3':
 	case '1.1.4':
 	case '1.1.5':
-	    
-
-
-/*  Core API 8.0 & Module API 4.0  */
-
-
-
+	    /* Core API 8.0 & Module API 4.0 */
 
 	case 'end of upgrade path':
 	    break;

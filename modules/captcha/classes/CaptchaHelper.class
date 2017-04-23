@@ -60,13 +60,7 @@ class CaptchaHelper {
     static function generateCaptchaSessionKey() {
 	global $gallery;
 
-	
-
-
-/*  These letters are relatively unambiguous when made hard to read  */
-
-
-
+	/* These letters are relatively unambiguous when made hard to read */
 	$goodChars = 'ABEHJKMNPSUWXZ';
 	$code = '' ;
 	for ($i = 0; $i < 6; $i++) {

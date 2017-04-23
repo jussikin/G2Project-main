@@ -69,13 +69,7 @@ class CommentSiteAdminController extends GalleryController {
 	    }
 
 	    if (!empty($form['apiKey']) && $form['apiKey'] != $currentApiKey) {
-		
-
-
-/*  First validate locally (don't rely on remote server for input validation)  */
-
-
-
+		/* First validate locally (don't rely on remote server for input validation) */
 		if (!preg_match('/^[A-Za-z0-9]+$/', trim($form['apiKey']))) {
 		    $error[] = 'form[error][apiKey][invalid]';
 		}
@@ -127,13 +121,7 @@ class CommentSiteAdminController extends GalleryController {
 	    $delegate['view'] = 'core.ProgressBar';
 	}
 
-	
-
-
-/*  Figure out where to redirect upon success  */
-
-
-
+	/* Figure out where to redirect upon success */
 	if (empty($delegate)) {
 	    $method = empty($error) ? 'redirect' : 'delegate';
 	    $results[$method]['view'] = 'core.SiteAdmin';
@@ -182,13 +170,7 @@ class CommentSiteAdminController extends GalleryController {
 	$total = null;
 	while (true) {
 	    $batchSize = 100;
-	    
-
-
-/*  @todo Should we include UNPUBLISHED comments here as well?  */
-
-
-
+	    /** @todo Should we include UNPUBLISHED comments here as well? */
 	    list ($ret, $comments, $total) = GalleryCommentHelper::fetchAllComments(
 		$rootId, $batchSize, $checkedCount, ORDER_ASCENDING,
 		COMMENT_PUBLISH_STATUS_PUBLISHED);
@@ -208,13 +190,7 @@ class CommentSiteAdminController extends GalleryController {
 		    return $ret;
 		}
 		if ($isSpam) {
-		    
-
-
-/*  @todo lock all of these at once  */
-
-
-
+		    /** @todo lock all of these at once */
 		    list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($comment->getId());
 		    if ($ret) {
 			return $ret;

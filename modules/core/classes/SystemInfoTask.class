@@ -64,13 +64,7 @@ class SystemInfoTask extends MaintenanceTask {
 	    : $core->translate('unknown');
 
 	if ($platform->is_dir(GalleryCoreApi::getCodeBasePath('.svn'))) {
-	    
-
-
-/*  Try to determine svn revision; ignore any error  */
-
-
-
+	    /* Try to determine svn revision; ignore any error */
 	    list ($success, $output) =
 		$platform->exec(array(array('svn', 'info', GalleryCoreApi::getCodeBasePath())));
 	    if ($success && is_array($output)) {

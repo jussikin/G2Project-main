@@ -73,13 +73,7 @@ class AdminPerformanceControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[acceleration][guest][expiration]', '1234');
 	GalleryUtilities::putRequestVariable('form[acceleration][user][type]', 'full');
 	GalleryUtilities::putRequestVariable('form[acceleration][user][expiration]', '5678');
-	
-
-
-/*  disableCompileCheck unchecked (disabled checkboxes are not set)  */
-
-
-
+	/* disableCompileCheck unchecked (disabled checkboxes are not set) */
 
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
@@ -110,13 +104,7 @@ class AdminPerformanceControllerTest extends GalleryControllerTestCase {
     function testSaveError() {
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Leave out any form parameters and you get an error  */
-
-
-
+	/* Leave out any form parameters and you get an error */
 	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
     }
 

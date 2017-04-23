@@ -65,13 +65,7 @@ class ThemeTest extends GalleryTestCase {
     }
 
     function tearDown() {
-	
-
-
-/*  If a unit test fails it might not deactivate/uninstall the mock theme properly  */
-
-
-
+	/* If a unit test fails it might not deactivate/uninstall the mock theme properly */
 	list ($ret, $isActive) = $this->_theme->isActive();
 	if ($ret) {
 	    return $ret;
@@ -327,13 +321,7 @@ class ThemeTest extends GalleryTestCase {
     }
 
     function testBlockPreloads() {
-	
-
-
-/*  Used to hardcode just sidebar/album/photoBlocks, now all *Blocks parameters  */
-
-
-
+	/* Used to hardcode just sidebar/album/photoBlocks, now all *Blocks parameters */
 	$template = new GalleryTemplate('/path/to/fake/templatedir');
 	$view = new ThemeTestView();
 	for ($i = 1; $i <= 4; $i++) {
@@ -389,13 +377,7 @@ class ThemeTest extends GalleryTestCase {
     	$backtraceLimit = ini_get('pcre.backtrack_limit');
     	ini_set('pcre.backtrack_limit', 100000);
 
-    	
-
-
-/*  Generate some random HTML that exceeds the backtrace limit in length  */
-
-
-
+    	/* Generate some random HTML that exceeds the backtrace limit in length */
     	$randomHtml = '<meta foo="bar">body head </meta>';
     	$randomHtml = str_repeat($randomHtml, 160000 / strlen($randomHtml));
     	$html = '

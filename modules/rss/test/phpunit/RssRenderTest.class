@@ -50,13 +50,7 @@ class RssRenderTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  set the expected default parameters  */
-
-
-
+	/* set the expected default parameters */
 	foreach (array('defaultVersion' => '2.0',
 		       'defaultCount' => 10,
 		       'maxCount' => 50,
@@ -81,13 +75,7 @@ class RssRenderTest extends GalleryControllerTestCase {
 
 	$gallery->_phpVm = new RssRenderTestVm();
 
-	
-
-
-/*  Create something to map  */
-
-
-
+	/* Create something to map */
 	list ($ret, $this->_root) = $this->_createRandomAlbum(
 		$this->_getRootId(), array('modificationTimestamp' => 123456789));
 	if ($ret) {
@@ -153,13 +141,7 @@ class RssRenderTest extends GalleryControllerTestCase {
     function testValidateRss() {
 	global $gallery;
 
-	
-
-
-/*  create a test feed  */
-
-
-
+	/* create a test feed */
 	$name = 'test'.rand();
 	$params = array(
 	    'itemId' => $this->_root->getId(),

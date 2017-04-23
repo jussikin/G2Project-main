@@ -97,31 +97,13 @@ class FlashVideoRenderer extends GalleryRenderer {
 				'&title=' . urlencode($title);
 		$extraAttr = '';
 		
-		
-
-
-/*  Uncomment the next line to allow download button. Default: false  */
-
-
-
+		/* Uncomment the next line to allow download button. Default: false */
 		//$flashVars .= '&allowDownload=true';
 		
-		
-
-
-/*  Uncomment the next line to disallow fullscreen button. Default: true  */
-
-
-
+		/* Uncomment the next line to disallow fullscreen button. Default: true */
 		//$flashVars .= '&allowFullscreen=false';
 		
-		
-
-
-/*  Uncomment the next two lines to allow the share button. Default: false  */
-
-
-
+		/* Uncomment the next two lines to allow the share button. Default: false */
 		//$flashVars .= '&share=true';
 		//$flashVars .= '&swfUrl=' . urlencode($playerUrl);
 		

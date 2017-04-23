@@ -40,13 +40,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	$this->_repository = new GalleryRepository();
 	$this->_repository->_utilities = new UnitTestRepositoryUtilities();
 
-	
-
-
-/*  Prepare test index.  */
-
-
-
+	/* Prepare test index. */
 	include(dirname(__FILE__) . '/../../../../lib/tools/repository/test/data/SampleIndex.inc');
 	$this->_repository->_index = new GalleryRepositoryIndex('test');
 	$this->_repository->_index->_index = $sampleIndex;
@@ -54,13 +48,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 
 	$this->_repository->_source = 'test';
 
-	
-
-
-/*  Prepare sample descriptor  */
-
-
-
+	/* Prepare sample descriptor */
 	include(dirname(__FILE__)
 	    . '/../../../../lib/tools/repository/test/data/SampleDescriptors.inc');
 	$this->_descriptor = $sampleModuleDescriptor;
@@ -95,13 +83,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	$repositoryUrl = $gallery->getConfig('repository.url') . 'test/';
 	$outputDir = GalleryCoreApi::getCodeBasePath('modules/testModule/');
 
-	
-
-
-/*  Descriptor.  */
-
-
-
+	/* Descriptor. */
 	$descriptorUrl = $repositoryUrl . 'testModule-descriptor';
 	$this->_repository->_utilities->setReply('downloadFile', array($descriptorUrl, null),
 	    array(empty($params['descriptorDownloadFailure']), serialize($this->_descriptor)));
@@ -119,13 +101,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	$platform->setReply('file_put_contents',
 	    array($cachePath . 'testModule-descriptor', serialize($this->_descriptor)), true);
 
-	
-
-
-/*  Preverify both language packages  */
-
-
-
+	/* Preverify both language packages */
 	$response = empty($params['descriptorPreVerifyFailureResponse']) ? array()
 	    : $params['descriptorPreVerifyFailureResponse'];
 	$errors = false;
@@ -155,13 +131,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 		if ($package == 'base') {
 		    break;
 		} else {
-		    
-
-
-/*  If not the base, then skip the rest of the responses for this package  */
-
-
-
+		    /* If not the base, then skip the rest of the responses for this package */
 		    continue;
 		}
 	    }
@@ -190,13 +160,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
     }
 
     function testDownloadPackages() {
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses();
 
 	$downloadData = array('name' => 'Test Module',
@@ -223,13 +187,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('descriptorDownloadFailure' => true));
 
 	$downloadData = array('name' => 'Test Module',
@@ -258,13 +216,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('outputDirectoryNonExistent' => true));
 
 	$downloadData = array('name' => 'Test Module',
@@ -277,13 +229,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	list ($ret, $reactivate, $status) = $this->_repository->downloadPackagesForPlugin(
 	    'module', 'testModule', $downloadData, $this->_callback);
 	if ($ret && $ret->getErrorCode() & ERROR_PLATFORM_FAILURE) {
-	    
-
-
-/*  Good, as expected  */
-
-
-
+	    /* Good, as expected */
 	    $this->assertEquals(null, $status, 'Unexpected returned status');
 	} else if ($ret) {
 	    return ($ret);
@@ -296,13 +242,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('descriptorPreVerifyFailureResponse' =>
 	    array('lang-en_GB' => array('en_GB-package'))));
 
@@ -332,13 +272,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('downloadPackageFailure' =>
 	    array('base' => true)));
 
@@ -368,13 +302,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('downloadPackageOtherFailure' =>
 	    array('base' => true)));
 
@@ -388,13 +316,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	list ($ret, $reactivate, $status) = $this->_repository->downloadPackagesForPlugin(
 	    'module', 'testModule', $downloadData, $this->_callback);
 	if ($ret && $ret->getErrorCode() & ERROR_PLATFORM_FAILURE) {
-	    
-
-
-/*  Good, as expected  */
-
-
-
+	    /* Good, as expected */
 	    $this->assertEquals(null, $status, 'Unexpected returned status');
 	} else if ($ret) {
 	    return ($ret);
@@ -407,13 +329,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('downloadPackageFailure' =>
 	    array('lang-en_GB' => true)));
 
@@ -442,13 +358,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Set up repository responses  */
-
-
-
+	/* Set up repository responses */
 	$this->_setRepositoryResponses(array('downloadPackageOtherFailure' =>
 	    array('lang-en_GB' => true)));
 
@@ -462,13 +372,7 @@ class RepositoryDownloadPackagesTest extends GalleryTestCase {
 	list ($ret, $reactivate, $status) = $this->_repository->downloadPackagesForPlugin(
 	    'module', 'testModule', $downloadData, $this->_callback);
 	if ($ret && $ret->getErrorCode() & ERROR_PLATFORM_FAILURE) {
-	    
-
-
-/*  Good, as expected  */
-
-
-
+	    /* Good, as expected */
 	    $this->assertEquals(null, $status, 'Unexpected returned status');
 	} else if ($ret) {
 	    return ($ret);

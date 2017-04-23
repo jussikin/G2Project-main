@@ -36,13 +36,7 @@ class RatingModule extends GalleryModule {
 	$this->setId('rating');
 	$this->setName($gallery->i18n('Rating'));
 	$this->setDescription($gallery->i18n('Item Rating Interface'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() too */
 	$this->_templateVersion = 1;
 	$this->setCallbacks('getSiteAdminViews|getItemSummaries');
 	$this->setGroup('data', $gallery->i18n('Extra Data'));
@@ -111,13 +105,7 @@ class RatingModule extends GalleryModule {
 	    return array(null, array());
 	}
 
-	
-
-
-/*  Load the G2 templating engine  */
-
-
-
+	/* Load the G2 templating engine */
 	GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
 
 	$template->style('modules/rating/rating.css');
@@ -130,26 +118,14 @@ class RatingModule extends GalleryModule {
 	$RatingSummary = array('ratingValues' => array(1, 2, 3, 4, 5),
 			       'firstCall' => true, 'authToken' => $authToken);
 
-	
-
-
-/*  Check to see if album rating is allowed  */
-
-
-
+	/* Check to see if album rating is allowed */
 	list ($ret, $allowAlbumRating) = GalleryCoreApi::getPluginParameter('module', 'rating',
 		'allowAlbumRating');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Acquire the current rating for the items (populate $RatingData)  */
-
-
-
+	/* Acquire the current rating for the items (populate $RatingData) */
 
 	list ($ret, $RatingData) = RatingHelper::fetchRatings($itemIds,
 		$gallery->getActiveUserId());
@@ -162,24 +138,12 @@ class RatingModule extends GalleryModule {
 	    $itemId = $item->getId();
 	    $parentId = $item->getParentId();
 
-	    
-
-
-/*  Check if item's parent album allows rating  */
-
-
-
+	    /* Check if item's parent album allows rating */
 	    if (!$enabledAlbums[$parentId]) {
 		continue;
 	    }
 
-	    
-
-
-/*  Check if this user can view rating for this item  */
-
-
-
+	    /* Check if this user can view rating for this item */
 	    if (!isset($permissions[$itemId]['rating.view'])) {
 		continue;
 	    }
@@ -192,13 +156,7 @@ class RatingModule extends GalleryModule {
 	    $template->setVariable('RatingData', $RatingData[$itemId]);
 	    $template->setVariable('RatingSummary', $RatingSummary);
 
-	    
-
-
-/*  Render and get the html  */
-
-
-
+	    /* Render and get the html */
 	    list ($ret, $summaries[$itemId]) =
 		$template->fetch('gallery:modules/rating/templates/RatingInterface.tpl');
 	    if ($ret) {
@@ -228,13 +186,7 @@ class RatingModule extends GalleryModule {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Initial install.  Register our permissions  */
-
-
-
+	    /* Initial install.  Register our permissions */
 	    $permissions[] = array('add', $gallery->i18n('[rating] Add ratings'), 0, array());
 	    $permissions[] = array('view', $gallery->i18n('[rating] View ratings'), 0, array());
 	    $permissions[] = array('all', $gallery->i18n('[rating] All access'),
@@ -248,13 +200,7 @@ class RatingModule extends GalleryModule {
 		}
 	    }
 
-	    
-
-
-/*  Give everybody rating permission by default  */
-
-
-
+	    /* Give everybody rating permission by default */
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
@@ -275,30 +221,12 @@ class RatingModule extends GalleryModule {
 	case '1.0.8':
 	case '1.0.8.1':
 	case '1.0.8.2':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.0.9':
 	case '1.0.10':
-	    
-
-
-/*  Refactored to new event registration from core API 7.34  */
-
-
-
+	    /* Refactored to new event registration from core API 7.34 */
 	case '1.0.11':
-	    
-
-
-/*  Combined YUI libraries into a single file  */
-
-
-
+	    /* Combined YUI libraries into a single file */
 	case '1.0.12': 
 
 	case 'end of upgrade path':

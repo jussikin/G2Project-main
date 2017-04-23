@@ -1,32 +1,14 @@
-<?php 
-
-
-/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
-
-
-
+<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
 $frameData = array(
 
 'name' => $gallery->i18n('Shadow'),
 
-
-
-
-/*  Top Left  */
-
-
-
+/* Top Left */
 'imageTL' => '',
 'widthTL' => 0,
 'heightTL' => 0,
 
-
-
-
-/*  Top  */
-
-
-
+/* Top */
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -36,24 +18,12 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-
-
-
-/*  Top Right  */
-
-
-
+/* Top Right */
 'imageTR' => '',
 'widthTR' => 0,
 'heightTR' => 0,
 
-
-
-
-/*  Left  */
-
-
-
+/* Left */
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -63,13 +33,7 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-
-
-
-/*  Right  */
-
-
-
+/* Right */
 'imageRRT' => 'RRT.png',
 'heightRRT' => 10,
 
@@ -79,24 +43,12 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-
-
-
-/*  Bottom Left  */
-
-
-
+/* Bottom Left */
 'imageBL' => '',
 'widthBL' => 0,
 'heightBL' => 0,
 
-
-
-
-/*  Bottom  */
-
-
-
+/* Bottom */
 'imageBBL' => 'BBL.png',
 'widthBBL' => 9,
 
@@ -106,13 +58,7 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-
-
-
-/*  Bottom Right  */
-
-
-
+/* Bottom Right */
 'imageBR' => 'BR.png',
 'widthBR' => 7,
 'heightBR' => 7

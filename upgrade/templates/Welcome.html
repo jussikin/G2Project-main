@@ -4,13 +4,7 @@
 	$templateData['totalSteps'],
 	'<a href="' . generateUrl('../README.html', false) . '" target="_blank">', '</a>') ?>
     </p>
-    <?php if ($templateData['mode.maintenance'] === false): 
-
-
-/*  Available, but off  */
-
-
- ?>
+    <?php if ($templateData['mode.maintenance'] === false): /* Available, but off */ ?>
     <p>
       <?php print _("If you have a busy site, consider putting your Gallery in maintenance mode. This gives visitors a message that the site is temporarily offline, rather than showing everybody this upgrade page. Edit your config.php file to activate maintenance mode.") ?>
     </p>
@@ -21,13 +15,7 @@
       <input type="hidden" name="step" value="<?php print $stepNumber ?>"/>
       <select name="language" onchange="this.form.submit()" style="direction:ltr">
 	<?php
-	  
-
-
-/*  Don't use $language here as it conflicts with $_SESSION if register_globals is on  */
-
-
-
+	  /* Don't use $language here as it conflicts with $_SESSION if register_globals is on */
 	  foreach ($templateData['languages'] as $code => $description) {
 	    print '<option value="' . $code . '"';
 	    if ($code == $_SESSION['language']) print ' selected="selected"';

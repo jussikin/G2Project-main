@@ -39,25 +39,13 @@ class HttpAuthModuleTest extends GalleryTestCase {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
 
-	
-
-
-/*  Load HTTP auth module  */
-
-
-
+	/* Load HTTP auth module */
 	list ($ret, $this->_module) = GalleryCoreApi::loadPlugin('module', 'httpauth');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Mock disable HTTP auth URL rewrite rules  */
-
-
-
+	/* Mock disable HTTP auth URL rewrite rules */
 	$this->_activeRules =& HttpAuthModuleTestRewriteApi::_fetchActiveRulesForModule('httpauth');
 	$this->_activeRules = array();
 	$this->_activateCalls =& HttpAuthModuleTestRewriteApi::_getActivateCalls();
@@ -66,13 +54,7 @@ class HttpAuthModuleTest extends GalleryTestCase {
 	    'RewriteApi', 'HttpAuthModuleTestRewriteApi', 'HttpAuthModuleTestRewriteApi',
 	    'modules/httpauth/test/phpunit/HttpAuthModuleTest.class', 'test');
 
-	
-
-
-/*  Define HTTP auth works request  */
-
-
-
+	/* Define HTTP auth works request */
 	$this->_httpAuthWorksRequest = implode("\r\n", array(
 	    'GET ' . $urlGenerator->generateUrl(
 		array('view' => 'httpauth.HttpAuthWorks'),
@@ -83,13 +65,7 @@ class HttpAuthModuleTest extends GalleryTestCase {
 	    '',
 	    ''));
 
-	
-
-
-/*  Define success and failure responses  */
-
-
-
+	/* Define success and failure responses */
 	$this->_accessAuthorizationResponse = implode("\r\n", array(
 	    'HTTP/1.1 200 OK',
 	    'Date: Mon, 24 Nov 2003 05:40:03 GMT',
@@ -109,13 +85,7 @@ class HttpAuthModuleTest extends GalleryTestCase {
 	    '',
 	    '')) . "\n\n\n\n";
 
-	
-
-
-/*  Use HttpAuthModuleTestPlatform  */
-
-
-
+	/* Use HttpAuthModuleTestPlatform */
 	$this->_platform = new HttpAuthModuleTestPlatform();
 	$this->_platform->_messages[$this->_httpAuthWorksRequest] =
 	    $this->_accessAuthorizationResponse;
@@ -133,33 +103,15 @@ class HttpAuthModuleTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  Use HttpAuthModuleTestPhpVm  */
-
-
-
+	/* Use HttpAuthModuleTestPhpVm */
 	$this->_phpVm = new HttpAuthModuleTestPhpVm();
 	$gallery->_phpVm =& $this->_phpVm;
 
-	
-
-
-/*  Clear response headers  */
-
-
-
+	/* Clear response headers */
 	$this->_headers =& GalleryUtilities::_getResponseHeaders();
 	$this->_headers = array();
 
-	
-
-
-/*  Reset auth related server and request variables  */
-
-
-
+	/* Reset auth related server and request variables */
 	unset($_SERVER['PHP_AUTH_USER']);
 	unset($_SERVER['PHP_AUTH_PW']);
 	unset($_SERVER['REMOTE_USER']);
@@ -298,13 +250,7 @@ class HttpAuthModuleTest extends GalleryTestCase {
 class HttpAuthModuleTestPhpVm extends GalleryPhpVm {
 
     function header($header, $replace=null) {
-	
-
-
-/*  Avoid modifying actual header information  */
-
-
-
+	/* Avoid modifying actual header information */
     }
 }
 

@@ -44,23 +44,11 @@ class AdminCreateGroupQuotaController extends GalleryController {
 	    return array($ret, null);
 	}
 	if (isset($form['action']['cancel'])) {
-	    
-
-
-/*  Go back to the AdminQuotas view  */
-
-
-
+	    /* Go back to the AdminQuotas view */
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'quotas.AdminQuotas';
 	} else if (isset($form['action']['create'])) {
-	    
-
-
-/*  If all the right fields are in place then go ahead and create the group quota  */
-
-
-
+	    /* If all the right fields are in place then go ahead and create the group quota */
 	    if (array_key_exists('quotaSize', $form) && array_key_exists('quotaUnit', $form)) {
 		if (!empty($form['quotaSize']) && is_numeric($form['quotaSize']) &&
 		    $form['quotaSize'] >= 0 && !empty($form['quotaSize'])) {
@@ -94,13 +82,7 @@ class AdminCreateGroupQuotaController extends GalleryController {
 				return array($ret, null);
 			    }
 
-			    
-
-
-/*  Request a redirect to the confirmation screen  */
-
-
-
+			    /* Request a redirect to the confirmation screen */
 			    $redirect['view'] = 'core.SiteAdmin';
 			    $redirect['subView'] = 'quotas.AdminQuotas';
 			    $status['createdGroup'] = $group->getGroupName();
@@ -113,13 +95,7 @@ class AdminCreateGroupQuotaController extends GalleryController {
 		    $error[] = 'form[error][quotaSize][notNumeric]';
 		}
 	    } else {
-		
-
-
-/*  set our error status and fall back to the view  */
-
-
-
+		/* set our error status and fall back to the view */
 		if (empty($form['quotaSize'])) {
 		    $error[] = 'form[error][quotaSize][missing]';
 		}
@@ -163,13 +139,7 @@ class AdminCreateGroupQuotaView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminCreateGroupQuota') {
-	    
-
-
-/*  Set the form defaults  */
-
-
-
+	    /* Set the form defaults */
 	    $form['quotaSize'] = '';
 	    $form['quotaUnit'] = '';
 	    $form['formName'] = 'AdminCreateGroupQuota';

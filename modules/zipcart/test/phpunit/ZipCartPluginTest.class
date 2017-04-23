@@ -45,13 +45,7 @@ class ZipCartPluginTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Register dummy toolkit and operation  */
-
-
-
+	/* Register dummy toolkit and operation */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ZipCartToolkit', 'ZipCartToolkit',
 	    'modules/zipcart/test/phpunit/ZipCartPluginTest.class', 'zipcartTest', null);
@@ -73,39 +67,21 @@ class ZipCartPluginTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Test album  */
-
-
-
+	/* Test album */
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($this->_album);
 
-	
-
-
-/*  Photo with core.viewSource  */
-
-
-
+	/* Photo with core.viewSource */
 	list ($ret, $this->_items[0]) = $this->_addItem($this->_album->getId(), 'GalleryPhotoItem',
 							'test/jpeg', 'core.viewSource');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Photo with core.viewSource and preferred derivative  */
-
-
-
+	/* Photo with core.viewSource and preferred derivative */
 	list ($ret, $this->_items[1]) = $this->_addItem($this->_album->getId(), 'GalleryPhotoItem',
 							'test/jpeg', 'core.viewSource');
 	if ($ret) {
@@ -117,13 +93,7 @@ class ZipCartPluginTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Photo with core.viewResizes and resized derivative  */
-
-
-
+	/* Photo with core.viewResizes and resized derivative */
 	list ($ret, $this->_items[2]) = $this->_addItem($this->_album->getId(), 'GalleryPhotoItem',
 							'test/jpeg', 'core.viewResizes');
 	if ($ret) {
@@ -135,13 +105,7 @@ class ZipCartPluginTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Data item with core.viewSource  */
-
-
-
+	/* Data item with core.viewSource */
 	list ($ret, $this->_items[3]) =
 	    $this->_addItem($this->_album->getId(), 'GalleryUnknownItem',
 			    'test/data', 'core.viewSource');
@@ -149,13 +113,7 @@ class ZipCartPluginTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Photo with a derivative of different extension  */
-
-
-
+	/* Photo with a derivative of different extension */
 	list ($ret, $this->_items[4]) = $this->_addItem($this->_album->getId(), 'GalleryPhotoItem',
 							'test/jpeg', 'core.viewSource');
 	if ($ret) {
@@ -234,25 +192,13 @@ class ZipCartPluginTest extends GalleryTestCase {
     function testZipCart() {
 	global $gallery;
 
-	
-
-
-/*  Create our cart  */
-
-
-
+	/* Create our cart */
 	$cartItemIds = array();
 	for ($i = 0; $i < sizeof($this->_items); $i++) {
 	    $cartItemIds[$this->_items[$i]->getId()] = 1;
 	}
 
-	
-
-
-/*  Create a mock mime type for derivative  */
-
-
-
+	/* Create a mock mime type for derivative */
 	$extension = 'test-' . rand(111, 999);
 	$ret = GalleryCoreApi::addMimeType($extension, 'test/out', false);
 	if ($ret) {
@@ -274,13 +220,7 @@ class ZipCartPluginTest extends GalleryTestCase {
 	@$platform->unlink($gallery->_zipCartTempnam);
 	$slash = $platform->getDirectorySeparator();
 	$path = $this->_album->getPathComponent();
-	
-
-
-/*  Check that the right files were selected..  */
-
-
-
+	/* Check that the right files were selected.. */
 	$this->assertEquals(
 	    array($path . $slash . $this->_items[0]->getPathComponent(),
 		  $path . $slash . $this->_items[1]->getPathComponent(),
@@ -288,13 +228,7 @@ class ZipCartPluginTest extends GalleryTestCase {
 		  $path . $slash . $this->_items[3]->getPathComponent(),
 		  $path . $slash . $this->_items[4]->getPathComponent() . '.' . $extension),
 	    $gallery->_zipCartFiles, 'zip files');
-	
-
-
-/*  Check that derivatives were used appropriately..  */
-
-
-
+	/* Check that derivatives were used appropriately.. */
 	$this->assertEquals(5, count($gallery->_zipCartSources), '5 sources');
 	$this->assert(strpos($gallery->_zipCartSources[0], "${slash}albums${slash}") !== false,
 		      'first item from original (' . $gallery->_zipCartSources[0] . ')');
@@ -422,13 +356,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
 class ZipCartToolkit extends GalleryToolkit {
     function performOperation($mimeType, $operationName, $sourceFilename,
 			      $destFilename, $parameters, $context=array()) {
-	
-
-
-/*  Just copy file and return appropriate mime type  */
-
-
-
+	/* Just copy file and return appropriate mime type */
 	global $gallery;
 	if ($sourceFilename != $destFilename) {
 	    $platform =& $gallery->getPlatform();

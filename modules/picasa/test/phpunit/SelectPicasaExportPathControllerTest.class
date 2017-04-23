@@ -58,13 +58,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase {
     function testBadpicasaXmlPath() {
 	global $gallery;
 
-	
-
-
-/*  Activate the mock platform  */
-
-
-
+	/* Activate the mock platform */
 	$gallery->setPlatform($this->_platform);
 	$this->_platform->setReply('getDirectorySeparator', array(), '/');
 	$this->_platform->setReply('file_exists', array('/index.xml'), true);
@@ -86,13 +80,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase {
      */
     function testGoodPicasaXmlPath() {
 	global $gallery;
-	
-
-
-/*  Activate the mock platform  */
-
-
-
+	/* Activate the mock platform */
 	$gallery->setPlatform($this->_platform);
 	$this->_platform->setReply('getDirectorySeparator', array(), '/');
 	$this->_platform->setReply('file_exists', array('/index.xml'), true);

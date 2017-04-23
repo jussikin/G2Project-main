@@ -94,13 +94,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Make sure translate calls during test won't generate any platform calls  */
-
-
-
+	/* Make sure translate calls during test won't generate any platform calls */
 	list ($ret) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return $ret;
@@ -192,13 +186,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	global $gallery;
 	$itemId = $this->_item->getId();
 
-	
-
-
-/*  Use html format and param specified 'from' for this test  */
-
-
-
+	/* Use html format and param specified 'from' for this test */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'ecard', 'format', 'html');
 	if ($ret) {
 	    return $ret;
@@ -238,13 +226,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
     }
 
     function testLinkPermission() {
-	
-
-
-/*  Verify that without public core.view permission, no link is included  */
-
-
-
+	/* Verify that without public core.view permission, no link is included */
 	global $gallery;
 	$itemId = $this->_item->getId();
 
@@ -253,13 +235,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use html format and param specified 'from' for this test  */
-
-
-
+	/* Use html format and param specified 'from' for this test */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'ecard', 'format', 'html');
 	if ($ret) {
 	    return $ret;
@@ -299,13 +275,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
     }
 
     function testSizePermission() {
-	
-
-
-/*  Verify permission check for size of image included in email  */
-
-
-
+	/* Verify permission check for size of image included in email */
 	global $gallery;
 	$itemId = $this->_item->getId();
 
@@ -315,13 +285,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use plain format and param specified 'from' for this test  */
-
-
-
+	/* Use plain format and param specified 'from' for this test */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'ecard', 'format', 'plain');
 	if ($ret) {
 	    return $ret;
@@ -378,13 +342,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[text]', 'Test email');
 	GalleryUtilities::putRequestVariable('form[action][send]', 1);
 
-	
-
-
-/*  Perform the request and verify validation plugin got error  */
-
-
-
+	/* Perform the request and verify validation plugin got error */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'ecard.SendEcard'),
 				  'status' => array(),
@@ -405,13 +363,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[text]', 'Test email');
 	GalleryUtilities::putRequestVariable('form[action][send]', 1);
 
-	
-
-
-/*  Perform the request and verify validation plugin got error  */
-
-
-
+	/* Perform the request and verify validation plugin got error */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'ecard.SendEcard'),
 				  'status' => array(),
@@ -427,13 +379,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Use plain format and form specified 'from' for this test  */
-
-
-
+	/* Use plain format and form specified 'from' for this test */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'ecard', 'format', 'plain');
 	if ($ret) {
 	    return $ret;
@@ -472,13 +418,7 @@ class EcardControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[text]', 'Test &quot;email&quot;');
 	GalleryUtilities::putRequestVariable('form[action][send]', 1);
 
-	
-
-
-/*  Perform the request and eCard sent (validation plugin skipped)  */
-
-
-
+	/* Perform the request and eCard sent (validation plugin skipped) */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'ecard.Confirmation',

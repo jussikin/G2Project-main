@@ -52,13 +52,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 	$this->_saveUser = $gallery->getActiveUser();
 	$gallery->setActiveUser($this->_user);
 
-	
-
-
-/*  Create a watermark  */
-
-
-
+	/* Create a watermark */
 	list ($ret, $this->_watermark) = $this->_createWatermark();
 	if ($ret) {
 	    return $ret;
@@ -118,13 +112,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -153,13 +141,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -185,13 +167,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 						   'form[error][whichDerivative][missing]')),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -245,13 +221,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -276,13 +246,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -306,13 +270,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -389,13 +347,7 @@ class UserWatermarkEditControllerTest extends GalleryControllerTestCase {
 	    return ($ret);
 	}
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;

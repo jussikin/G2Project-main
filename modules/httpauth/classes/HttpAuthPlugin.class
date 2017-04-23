@@ -31,13 +31,7 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthHelper.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class HttpAuthPlugin 
-
-
-/*  extends GalleryAuthPlugin  */
-
-
- {
+class HttpAuthPlugin /* extends GalleryAuthPlugin */ {
 
     /**
      * @see GalleryAuthPlugin::getUser

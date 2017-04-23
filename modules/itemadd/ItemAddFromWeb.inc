@@ -64,24 +64,12 @@ class ItemAddFromWeb extends ItemAddPlugin {
 	}
 
 	if (isset($form['action']['findFilesFromWebPage'])) {
-	    
-
-
-/*  Delegate back to the same view  */
-
-
-
+	    /* Delegate back to the same view */
 	} else if (isset($form['action']['addFromWebPage']) && empty($form['webPageUrls'])) {
 	    GalleryUtilities::putRequestVariable('form[error][webPage][nothingSelected]', 1);
 	} else if (isset($form['action']['addFromWebPage'])) {
 	    $platform =& $gallery->getPlatform();
-	    
-
-
-/*  Pass referer checking  */
-
-
-
+	    /* Pass referer checking */
 	    if (!empty($form['webPage'])) {
 		$extraHeaders =
 		    array('Referer' => str_replace('&amp;', '&', $form['webPage']));
@@ -95,13 +83,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 	    $totalUrls = count($form['webPageUrls']);
 	    $i = 1;
 	    foreach (array_keys($form['webPageUrls']) as $url) {
-		
-
-
-/*  Copy the file locally  */
-
-
-
+		/* Copy the file locally */
 		$tmpDir = $gallery->getConfig('data.gallery.tmp');
 		$tmpFile = $platform->tempnam($tmpDir, 'add');
 
@@ -113,13 +95,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 		list ($successfullyCopied, $response, $headers) =
 		    GalleryCoreApi::fetchWebFile($url, $tmpFile, $extraHeaders);
 		if ($successfullyCopied) {
-		    
-
-
-/*  Add it  */
-
-
-
+		    /* Add it */
 		    list ($ret, $mimeType, $fileName) = $this->_getMimeType($url, $headers, true);
 		    if ($ret) {
 			return array($ret, null, null);
@@ -183,25 +159,13 @@ class ItemAddFromWeb extends ItemAddPlugin {
 	global $gallery;
 
 	if ($form['formName'] != 'ItemAddFromWeb') {
-	    
-
-
-/*  First time around, load the form with item data  */
-
-
-
+	    /* First time around, load the form with item data */
 	    $form['webPage'] = '';
 	    $form['formName'] = 'ItemAddFromWeb';
 	}
 
 	if (isset($form['action']['findFilesFromWebPage'])) {
-	    
-
-
-/*  Download the web page then parse it to get the file list  */
-
-
-
+	    /* Download the web page then parse it to get the file list */
 	    if (empty($form['webPage'])) {
 		$form['error']['webPage']['missing'] = 1;
 	    }
@@ -224,13 +188,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 		    $baseUrlComponents = parse_url($form['webPage']);
 		}
 
-		
-
-
-/*  Add path to the recent path list  */
-
-
-
+		/* Add path to the recent path list */
 		$session =& $gallery->getSession();
 		$recentUrls = $session->get('itemadd.view.ItemAddFromWeb.recentUrls');
 		$recentUrls[$form['webPage']] = 1;
@@ -264,13 +222,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 						       'itemType' => $typeName);
 		    }
 		} else {
-		    
-
-
-/*  Check for <base href="..."/> element  */
-
-
-
+		    /* Check for <base href="..."/> element */
 		    if (preg_match('#<base(?:\W|\W[^>]*?\W)href\s*=\s*'
 			    . '(?:"(.*?)"|\'(.*?)\'|([^\'"> ]*)).*?>#si', $buffer, $matches)) {
 			/**
@@ -308,13 +260,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 				: (!empty($matches[3][$i]) ? $matches[3][$i]
 				: $matches[4][$i]);
 
-			
-
-
-/*  Avoid XSS by eliminating any HTML from the url  */
-
-
-
+			/* Avoid XSS by eliminating any HTML from the url */
 			$url = str_replace(array('<', '>'), array('&lt;', '&gt;'), $url);
 
 			if (empty($url) || isset($seenBefore[$url])) {
@@ -330,13 +276,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 			    $url = $baseUrlComponents['scheme'] . ':' . $url;
 			}
 
-			
-
-
-/*  Convert urls without scheme/host to full urls  */
-
-
-
+			/* Convert urls without scheme/host to full urls */
 			if (!preg_match('/^\w+:/', $url)) {
 			    $tmp = $baseUrlComponents['scheme'] . '://'
 				 . $baseUrlComponents['host'];
@@ -344,13 +284,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 				$tmp .= ':' . $baseUrlComponents['port'];
 			    }
 			    if ($url[0] == '/') {
-				
-
-
-/*  Absolute path; just prepend scheme/host:port  */
-
-
-
+				/* Absolute path; just prepend scheme/host:port */
 				$url = $tmp . $url;
 			    } else {
 				/*
@@ -389,13 +323,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
 		    }
 		}
 		if (empty($form['webPageUrls'])) {
-		    
-
-
-/*  Didn't find any urls to add  */
-
-
-
+		    /* Didn't find any urls to add */
 		    $form['error']['webPage']['noUrlsFound'] = 1;
 		}
 	    }
@@ -510,13 +438,7 @@ class ItemAddFromWeb extends ItemAddPlugin {
      */
     function _getTypeName($url, $htmlAttribute=null, $headers=null) {
 	if (isset($htmlAttribute) && strtolower($htmlAttribute) == 'src') {
-	    
-
-
-/*  For <img> src attribute just assume "Photo" and don't examine mime type  */
-
-
-
+	    /* For <img> src attribute just assume "Photo" and don't examine mime type */
 	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'itemadd');
 	    if ($ret) {
 		return array($ret, null);

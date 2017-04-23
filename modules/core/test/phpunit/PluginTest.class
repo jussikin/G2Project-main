@@ -114,13 +114,7 @@ class PluginTest extends GalleryTestCase {
 	foreach (array('theme', 'module') as $type) {
 	    $expectedIds = array();
 
-	    
-
-
-/*  Mock platform  */
-
-
-
+	    /* Mock platform */
 	    $platform = new UnitTestPlatform();
 
 	    $path = GalleryCoreApi::getCodeBasePath($type . 's/');
@@ -152,13 +146,7 @@ class PluginTest extends GalleryTestCase {
     function testActivateFlushesTemplateCacheAndLocalUrlMap() {
 	global $gallery;
 
-	
-
-
-/*  Test preparation  */
-
-
-
+	/* Test preparation */
 	$plugin = new PluginTestPlugin();
 	$plugin->setPluginType('theme');
 	$plugin->setId('plugintest');
@@ -193,25 +181,13 @@ class PluginTest extends GalleryTestCase {
 		      null),
 		null);
 
-	
-
-
-/*  Execute the test  */
-
-
-
+	/* Execute the test */
 	list ($ret, $ignored) = $plugin->activate(false);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assert($platform->isComplete(), $platform->getRemaining());
 	$this->assert($gallery->_storage->isComplete(), $gallery->_storage->getRemaining());
     }
@@ -264,13 +240,7 @@ class PluginTest extends GalleryTestCase {
 
 	$ret = $plugin->installOrUpgrade();
 	if ($ret && $ret->getErrorCode() & ERROR_STORAGE_FAILURE) {
-	    
-
-
-/*  Good, as expected  */
-
-
-
+	    /* Good, as expected */
 	} else if ($ret) {
 	    return $ret;
 	} else {

@@ -43,13 +43,7 @@
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 	$this->_template = new GalleryTemplate(dirname(__FILE__) . '/../../../..');
 
-	
-
-
-/*  Set the translation domain  */
-
-
-
+	/* Set the translation domain */
 	$this->_template->setVariable('l10Domain', 'lib_repository');
     }
 
@@ -69,13 +63,7 @@
 	    return null;
 	}
 
-	
-
-
-/*  Calculate template file name and verify that it exists.  */
-
-
-
+	/* Calculate template file name and verify that it exists. */
 	$viewFileRelative = $gallery->getConfig('repository.templates') . $view . '.tpl';
 	$viewFile = dirname(__FILE__) . '/../../../../' . $viewFileRelative;
 
@@ -85,24 +73,12 @@
 					"Invalid path: $viewFile");
 	}
 
-	
-
-
-/*  Set the Smarty variables from the data array.  */
-
-
-
+	/* Set the Smarty variables from the data array. */
 	foreach ($data as $key => $value) {
 	    $this->_template->setVariable($key, $value);
 	}
 
-	
-
-
-/*  Send template to the browser.  */
-
-
-
+	/* Send template to the browser. */
 	list($ret, $templateContents) = $this->_template->fetch('gallery:' . $viewFileRelative);
 	if ($ret) {
 	    return $ret;

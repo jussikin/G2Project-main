@@ -233,13 +233,7 @@ class WatermarkImage extends GalleryEntity {
 	    $targetName = basename($inputFileName);
 	}
 
-	
-
-
-/*  Validate the input file  */
-
-
-
+	/* Validate the input file */
 	if (empty($inputFileName)) {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
@@ -253,13 +247,7 @@ class WatermarkImage extends GalleryEntity {
 	**/
 	$targetFilename = str_replace('.', '_', $targetName);
 
-	
-
-
-/*  Uniquify filename  */
-
-
-
+	/* Uniquify filename */
 	while ($platform->file_exists($dir . $targetFilename)) {
 	    $targetFilename = '_' . $targetFilename;
 	}
@@ -273,13 +261,7 @@ class WatermarkImage extends GalleryEntity {
 	    $nameMap[$watermark->getName()] = true;
 	}
 
-	
-
-
-/*  Uniquify name  */
-
-
-
+	/* Uniquify name */
 	while (isset($nameMap[$targetName])) {
 	    $targetName = '_' . $targetName;
 	}
@@ -358,25 +340,13 @@ class WatermarkImage extends GalleryEntity {
 	function delete() {
 	global $gallery;
 
-	
-
-
-/*  Delete myself  */
-
-
-
+	/* Delete myself */
 	$ret = parent::delete();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Delete our source file  */
-
-
-
+	/* Delete our source file */
 	$path = $this->getWatermarkDir() . $this->getFileName();
 	$platform =& $gallery->getPlatform();
 	if (!$platform->unlink($path)) {
@@ -430,13 +400,7 @@ class WatermarkImage extends GalleryEntity {
 		
 		list ($width, $height) = array($this->getWidth(), $this->getHeight());
 		
-		
-
-
-/*  Shrink our dimensions if necessary  */
-
-
-
+		/* Shrink our dimensions if necessary */
 		if (isset($params['maxSize'])) {
 			list ($width, $height) = GalleryUtilities::shrinkDimensionsToFit(
 					$width, $height, $params['maxSize']

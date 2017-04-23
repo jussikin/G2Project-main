@@ -54,13 +54,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Make sure translate calls during test won't generate any platform calls  */
-
-
-
+	/* Make sure translate calls during test won't generate any platform calls */
 	list ($ret) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return $ret;
@@ -140,13 +134,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
     function testImportAlbumSuccessful() {
 	global $gallery;
 
-	
-
-
-/*  Test with the loosest markup type  */
-
-
-
+	/* Test with the loosest markup type */
 	$ret = $this->_setMarkupType('html', true);
 	if ($ret) {
 	    return $ret;
@@ -193,13 +181,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
 	    '</image>',
 	    '</images>',
 	    '</album>');
-	
-
-
-/*  Calls that read the mock xml and create the album  */
-
-
-
+	/* Calls that read the mock xml and create the album */
 	$this->_platform->setReply('getDirectorySeparator', array(), '/');
 	$this->_platform->setReply('file_exists', array('/index.xml'), true);
 	$this->_platform->setReply('is_readable', array('/index.xml'), true);
@@ -218,13 +200,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
 	$this->_platform->setReply('mkdir', array('fuzzy' => '{.*GalleryTest 2}',
 						  'fuzzy2' => '{\d+}'), true);
 
-	
-
-
-/*  Image creation  */
-
-
-
+	/* Image creation */
 	$testImages = array('ajipankachile5.jpg0', 'californiadriedchile5.jpg0', 'a<script>b.jpg0');
 
 	foreach ($testImages as $testImage) {
@@ -264,85 +240,31 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(array(), $status['albumImportFailure']);
 	$testAlbumId = $status['albumImportSuccess']['GalleryTest 2&lt;script&gt;evil'];
 
-	
-
-
-/*  Get the allegedly successfully imported album  */
-
-
-
+	/* Get the allegedly successfully imported album */
 	list ($ret, $testAlbum) =
 	    GalleryCoreApi::loadEntitiesById($testAlbumId, 'GalleryAlbumItem');
 	if ($ret) {
 	    return $ret;
 	}
 
-	$this->assertEquals(array('GalleryTest 2&lt;script&gt;evil',  
-
-
-/*  title  */
-
-
-
-				  'This is&lt;script&gt;a test',      
-
-
-/*  summary  */
-
-
-
-				  'This is&lt;script&gt;a test',      
-
-
-/*  description  */
-
-
-
+	$this->assertEquals(array('GalleryTest 2&lt;script&gt;evil',  /* title */
+				  'This is&lt;script&gt;a test',      /* summary */
+				  'This is&lt;script&gt;a test',      /* description */
 				  ),
-			    array($testAlbum->getTitle(),             
-
-
-/*  title  */
-
-
-
-				  $testAlbum->getSummary(),           
-
-
-/*  summary  */
-
-
-
-				  $testAlbum->getDescription(),       
-
-
-/*  description  */
-
-
-
+			    array($testAlbum->getTitle(),             /* title */
+				  $testAlbum->getSummary(),           /* summary */
+				  $testAlbum->getDescription(),       /* description */
 				  )
 			    );
 
-	
-
-
-/*  Verify item attributes (like order weight)  */
-
-
-
+	/* Verify item attributes (like order weight) */
 	list ($ret, $ids) = GalleryCoreApi::fetchChildItemIds($testAlbum);
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assertEquals(3, count($ids), 'number of children');
 
-	
-
-
-/*  Get the allegedly successfully imported items  */
-
-
-
+	/* Get the allegedly successfully imported items */
 	list ($ret, $testItem) = GalleryCoreApi::loadEntitiesById($ids[0], 'GalleryItem');
 	if ($ret) {
 	    return $ret;
@@ -376,49 +298,13 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	$this->assertEquals(array('a&lt;script&gt;b',       
-
-
-/*  title  */
-
-
-
-				  'a&lt;script&gt;b.jpg0',  
-
-
-/*  summary  */
-
-
-
-				  'a&lt;script&gt;b.jpg0',  
-
-
-/*  description  */
-
-
-
+	$this->assertEquals(array('a&lt;script&gt;b',       /* title */
+				  'a&lt;script&gt;b.jpg0',  /* summary */
+				  'a&lt;script&gt;b.jpg0',  /* description */
 				  ),
-			    array($testItem->getTitle(),       
-
-
-/*  title  */
-
-
-
-				  $testItem->getSummary(),     
-
-
-/*  summary  */
-
-
-
-				  $testItem->getDescription(), 
-
-
-/*  description  */
-
-
-
+			    array($testItem->getTitle(),       /* title */
+				  $testItem->getSummary(),     /* summary */
+				  $testItem->getDescription(), /* description */
 				  ),
 			    'item 2');
     }

@@ -403,13 +403,7 @@ class RemovePermissionNotification extends NotificationEvent_1_0  {
 	global $gallery;
 
 	$data = $this->_event->getData();
-	
-
-
-/*  @todo: Fix the below message for i18n (%d instead of %s, plural form).  */
-
-
-
+	/** @todo: Fix the below message for i18n (%d instead of %s, plural form). */
 	return $this->_translateText('notification',
 				     array('arg1' => count($data['itemIdsAndBits']),
 				       'text' => $gallery->i18n('Permission Change on %s items.')));
@@ -659,34 +653,16 @@ class ItemAddedNotification extends NotificationEvent_1_0  {
 	global $gallery;
 
 	$items = $this->_event->getData();
-	
-
-
-/*  How should we handle what type it is and where to link?  */
-
-
-
+	/* How should we handle what type it is and where to link? */
 	$parentId = $items[0]->getParentId();
 	$itemCount = count($items);
 	if ($itemCount == 1) {
-	    
-
-
-/*  One item, call it what it is and link to it directly  */
-
-
-
+	    /* One item, call it what it is and link to it directly */
 	    $itemTypeName = $items[0]->itemTypeName();
 	    $itemTypeName = $itemTypeName[1];
 	    $itemId = $items[0]->getId();
 	} else {
-	    
-
-
-/*  Many items, link to the parent  */
-
-
-
+	    /* Many items, link to the parent */
 	    $itemId = $parentId;
 	    $itemTypes = array();
 	    foreach ($items as $item) {
@@ -696,13 +672,7 @@ class ItemAddedNotification extends NotificationEvent_1_0  {
 								      : $itemTypes[$itemTypeName]++;
 	    }
 
-	    
-
-
-/*  Call it all of the items  */
-
-
-
+	    /* Call it all of the items */
 	    if (count($itemTypes) == 1) {
 		$itemTypeNames = array_keys($itemTypes);
 	    } else {
@@ -710,13 +680,7 @@ class ItemAddedNotification extends NotificationEvent_1_0  {
 	    }
 	}
 
-	
-
-
-/*  Get the URL to the item the event was triggered on  */
-
-
-
+	/* Get the URL to the item the event was triggered on */
 	$urlGenerator =& $gallery->getUrlGenerator();
 	$parentUrl = $urlGenerator->generateUrl(array('view' => 'core.ShowItem',
 						      'itemId' => $itemId),

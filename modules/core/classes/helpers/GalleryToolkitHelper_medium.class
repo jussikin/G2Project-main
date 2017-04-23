@@ -93,13 +93,7 @@ class GalleryToolkitHelper_medium {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Add all of its parameters also  */
-
-
-
+	    /* Add all of its parameters also */
 	    for ($i = 0; $i < sizeof($parameterTypesArray); $i++) {
 		$parameterType = $parameterTypesArray[$i];
 		$ret = GalleryCoreApi::addMapEntry(
@@ -114,13 +108,7 @@ class GalleryToolkitHelper_medium {
 	    }
 	}
 
-	
-
-
-/*  Associate all the mime types  */
-
-
-
+	/* Associate all the mime types */
 	foreach ($mimeTypes as $mimeType) {
 	    $ret = GalleryCoreApi::addMapEntry(
 		'GalleryToolkitOperationMimeTypeMap',
@@ -133,13 +121,7 @@ class GalleryToolkitHelper_medium {
 	    }
 	}
 
-	
-
-
-/*  Invalidate our cache  */
-
-
-
+	/* Invalidate our cache */
 	GalleryDataCache::removeByPattern('GalleryToolkitHelper::');
 
 	return null;
@@ -151,13 +133,7 @@ class GalleryToolkitHelper_medium {
     static function registerProperty($toolkitId, $mimeTypes, $propertyName, $type, $description) {
 	global $gallery;
 
-	
-
-
-/*  Check to see if the property name exists, but with a different unique id.  */
-
-
-
+	/* Check to see if the property name exists, but with a different unique id. */
 	list ($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryToolkitPropertyMap',
 	    array('type'),
 	    array('name' => $propertyName), array('limit' => array('count' => 1)));
@@ -190,13 +166,7 @@ class GalleryToolkitHelper_medium {
 	    }
 	}
 
-	
-
-
-/*  Associate our mime types  */
-
-
-
+	/* Associate our mime types */
 	foreach ($mimeTypes as $mimeType) {
 	    $ret = GalleryCoreApi::addMapEntry(
 		'GalleryToolkitPropertyMimeTypeMap',
@@ -224,13 +194,7 @@ class GalleryToolkitHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Invalidate our cache  */
-
-
-
+	/* Invalidate our cache */
 	GalleryDataCache::removeByPattern('GalleryToolkitHelper::');
 
 	return null;
@@ -242,26 +206,14 @@ class GalleryToolkitHelper_medium {
     static function unregisterToolkit($toolkitId) {
 	global $gallery;
 
-	
-
-
-/*  Remove our toolkit/operation mappings  */
-
-
-
+	/* Remove our toolkit/operation mappings */
 	$ret = GalleryCoreApi::removeMapEntry(
 	    'GalleryToolkitOperationMimeTypeMap', array('toolkitId' => $toolkitId));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Find and remove any unused operations  */
-
-
-
+	/* Find and remove any unused operations */
 	$query = '
 	SELECT DISTINCT
 	  [GalleryToolkitOperationMap::name]
@@ -293,26 +245,14 @@ class GalleryToolkitHelper_medium {
 	    }
 	}
 
-	
-
-
-/*  Remove our toolkit/property mappings  */
-
-
-
+	/* Remove our toolkit/property mappings */
 	$ret = GalleryCoreApi::removeMapEntry(
 	    'GalleryToolkitPropertyMimeTypeMap', array('toolkitId' => $toolkitId));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Find and remove any unused properties  */
-
-
-
+	/* Find and remove any unused properties */
 	$query = '
 	SELECT DISTINCT
 	  [GalleryToolkitPropertyMap::name]
@@ -343,13 +283,7 @@ class GalleryToolkitHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Invalidate our cache  */
-
-
-
+	/* Invalidate our cache */
 	GalleryDataCache::removeByPattern('GalleryToolkitHelper::');
 
 	return null;
@@ -575,13 +509,7 @@ class GalleryToolkitHelper_medium {
 		list($operationName, $operationArgs) = explode('|', $operation);
 	    }
 
-	    
-
-
-/*  Get the appropriate toolkit  */
-
-
-
+	    /* Get the appropriate toolkit */
 	    list ($ret, $toolkit, $mimeType) =
 		GalleryCoreApi::getToolkitByOperation($mimeType, $operationName);
 	    if ($ret) {
@@ -614,24 +542,12 @@ class GalleryToolkitHelper_medium {
 	}
 
 	if (!$isSupported && $prependConversion) {
-	    
-
-
-/*  See if we can convert the input type into a format we can deal with first.  */
-
-
-
+	    /* See if we can convert the input type into a format we can deal with first. */
 	    foreach (array('convert-to-image/jpeg;' . $operations,
 			   'convert-to-image/x-portable-pixmap;convert-to-image/jpeg;' .
 			   $operations)
 		     as $tmpOperations) {
-		
-
-
-/*  Remove trailing ';' on empty $operations  */
-
-
-
+		/* Remove trailing ';' on empty $operations */
 		$tmpOperations = preg_replace('/;$/', '', $tmpOperations);
 		list ($ret, $isSupported, $outputMimeType) =
 		    GalleryToolkitHelper_medium::isSupportedOperationSequence(
@@ -649,13 +565,7 @@ class GalleryToolkitHelper_medium {
 	    return array(null, null, null);
 	}
 
-	
-
-
-/*  If the output type isn't viewable, then try to turn it into a form that *is* viewable.  */
-
-
-
+	/* If the output type isn't viewable, then try to turn it into a form that *is* viewable. */
 	list ($ret, $isViewable) = GalleryCoreApi::isViewableMimeType($outputMimeType);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -664,13 +574,7 @@ class GalleryToolkitHelper_medium {
 	    foreach (array($operations . ';convert-to-image/jpeg',
 			 $operations . ';convert-to-image/x-portable-pixmap;convert-to-image/jpeg')
 		     as $tmpOperations) {
-		
-
-
-/*  Remove leading ';' on empty $operations  */
-
-
-
+		/* Remove leading ';' on empty $operations */
 		$tmpOperations = preg_replace('/^;/', '', $tmpOperations);
 		list ($ret, $isSupported, $tmpOutputMimeType) =
 		    GalleryToolkitHelper_medium::isSupportedOperationSequence(
@@ -683,13 +587,7 @@ class GalleryToolkitHelper_medium {
 		    $outputMimeType = $tmpOutputMimeType;
 		    break;
 		} else {
-		    
-
-
-/*  Try the next, or give up if we run out of options.  */
-
-
-
+		    /* Try the next, or give up if we run out of options. */
 		}
 	    }
 	}
@@ -713,13 +611,7 @@ class GalleryToolkitHelper_medium {
 		if (isset($toolkit)) {
 		    $toolkit->estimateDimensions($derivative, $source);
 		} else {
-		    
-
-
-/*  Fall back on the best-guess behaviour  */
-
-
-
+		    /* Fall back on the best-guess behaviour */
 		    GalleryCoreApi::requireOnce(
 			'modules/core/classes/GalleryToolkit.class');
 		    GalleryToolkit::estimateDimensions($derivative, $source);

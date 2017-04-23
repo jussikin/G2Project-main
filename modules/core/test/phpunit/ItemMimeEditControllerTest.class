@@ -189,13 +189,7 @@
 	$this->assert(!$isViewable, 'viewable');
 
 	if (empty($extensions)) {
-	    
-
-
-/*  Delete mime entry in case test failed..  */
-
-
-
+	    /* Delete mime entry in case test failed.. */
 	    $ret = GalleryCoreApi::removeMimeType(array('mimeType' => 'Test/Test'));
 	    if ($ret) {
 		return ($ret);

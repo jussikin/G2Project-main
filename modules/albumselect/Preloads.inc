@@ -39,13 +39,7 @@ class AlbumSelectPreloads {
 	    return null;
 
 	case 'AlbumSelect':
-	    
-
-
-/*  Nothing to do  */
-
-
-
+	    /* Nothing to do */
 	    return null;
 	}
 

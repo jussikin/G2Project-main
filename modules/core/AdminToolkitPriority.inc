@@ -54,13 +54,7 @@ class AdminToolkitPriorityController extends GalleryController {
 	    }
 	    GalleryDataCache::removeByPattern('GalleryToolkitHelper::');
 	    $status['saved'] = 1;
-	} 
-
-
-/*  else $form['action']['reset']  */
-
-
-
+	} /* else $form['action']['reset'] */
 
 	$results['return'] = 0;
 	$results['redirect']['view'] = 'core.SiteAdmin';
@@ -95,13 +89,7 @@ class AdminToolkitPriorityView extends GalleryView {
 	    return array($ret, null);
 	}
 	asort($list);
-	
-
-
-/*  Reset all priorities to start of managed-priority window; ensure we break any ties  */
-
-
-
+	/* Reset all priorities to start of managed-priority window; ensure we break any ties */
 	$priority = 20;
 	foreach ($list as $toolkit => $tmp) {
 	    $list[$toolkit] = $priority++;

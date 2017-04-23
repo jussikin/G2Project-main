@@ -76,13 +76,7 @@ class PluginParameterTest extends GalleryTestCase {
 
 	$this->assertEquals($value, $newValue);
 
-	
-
-
-/*  Reset the cache and try again  */
-
-
-
+	/* Reset the cache and try again */
 	GalleryDataCache::reset();
 
 	list ($ret, $newValue) =
@@ -195,26 +189,14 @@ class PluginParameterTest extends GalleryTestCase {
 
 	$beforeArray = array('0' => 'bar', '1' => 'bar', '2' => 'baz', '3' => 'blat');
 	foreach ($beforeArray as $item => $val) {
-	    
-
-
-/*  Set test parameters  */
-
-
-
+	    /* Set test parameters */
 	    $ret = GalleryCoreApi::setPluginParameter('module', 'unitTestModule',
 						      'foo1', $val, $item);
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Verify that parameters were set  */
-
-
-
+	    /* Verify that parameters were set */
 	    list ($ret, $param) =
 		    GalleryCoreApi::getPluginParameter('module', 'unitTestModule', 'foo1', $item);
 	    if ($ret) {
@@ -223,26 +205,14 @@ class PluginParameterTest extends GalleryTestCase {
 	    $this->assertEquals($param, $val, 'Parameter "foo1" (' . $item . ') should be ' . $val);
 	}
 
-	
-
-
-/*  Remove all 'foo1' => 'bar' pairs  */
-
-
-
+	/* Remove all 'foo1' => 'bar' pairs */
 	$ret = GalleryCoreApi::removePluginParameterByValue('module', 'unitTestModule',
 							    'foo1', 'bar');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify that 'foo1' => 'bar' is deleted and other values remain  */
-
-
-
+	/* Verify that 'foo1' => 'bar' is deleted and other values remain */
 	$afterArray = array('0' => null, '1' => null, '2' => 'baz', '3' => 'blat');
 	foreach ($afterArray as $item => $val) {
 	    list ($ret, $param) =
@@ -257,22 +227,10 @@ class PluginParameterTest extends GalleryTestCase {
     function testAddPluginParameterFieldTypes() {
 	global $gallery;
 	$gallery->_storage = new PluginParameterTestMockStorage($this);
-	
-
-
-/*  Prevent a db query by mocking up some GDC data  */
-
-
-
+	/* Prevent a db query by mocking up some GDC data */
 	$cacheKey = "GalleryPluginHelper::fetchAllParameters(module, foo, 2)";
 	GalleryDataCache::put($cacheKey, array('none' => ''));
-	
-
-
-/*  the API should cast it to type string  */
-
-
-
+	/* the API should cast it to type string */
 	GalleryCoreApi::setPluginParameter('module', 'foo', 'bar', 99, 2);
 	GalleryDataCache::put($cacheKey, array('none' => ''));
 	GalleryCoreApi::setPluginParameter('module', 'foo', 'bar', '99', 2);
@@ -281,22 +239,10 @@ class PluginParameterTest extends GalleryTestCase {
     function testUpdatePluginParameterFieldTypes() {
 	global $gallery;
 	$gallery->_storage = new PluginParameterTestMockStorage($this);
-	
-
-
-/*  Prevent a db query by mocking up some GDC data  */
-
-
-
+	/* Prevent a db query by mocking up some GDC data */
 	$cacheKey = "GalleryPluginHelper::fetchAllParameters(module, foo, 3)";
 	GalleryDataCache::put($cacheKey, array('bar' => 'old value'));
-	
-
-
-/*  the API should cast it to type string  */
-
-
-
+	/* the API should cast it to type string */
 	GalleryCoreApi::setPluginParameter('module', 'foo', 'bar', 55, 3);
 	GalleryDataCache::put($cacheKey, array('bar' => 'old value'));
 	GalleryCoreApi::setPluginParameter('module', 'foo', 'bar', '55', 3);
@@ -312,13 +258,7 @@ class PluginParameterTestMockStorage {
 
     function addMapEntry($map, $entry) {
 	$tc =& $this->_testCase;
-	
-
-
-/*  Make sure all fields but the itemId are of type string  */
-
-
-
+	/* Make sure all fields but the itemId are of type string */
 	foreach (array('pluginType' => 'module',
 		       'pluginId' => 'foo',
 		       'itemId' => 2,
@@ -326,13 +266,7 @@ class PluginParameterTestMockStorage {
 		       'parameterValue' => '99')
 		 as $field => $value) {
 	    $tc->assert(!empty($entry[$field]), "check if field $field is specified");
-	    
-
-
-/*  assertEquals checks with === (including type)  */
-
-
-
+	    /* assertEquals checks with === (including type) */
 	    $tc->assertEquals($value, $entry[$field],
 					   "type / value '$value' for field $field");
 	}

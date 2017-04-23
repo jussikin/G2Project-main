@@ -47,13 +47,7 @@ class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase {
 
 	$gallery->_phpVm = new AdminRepositoryDownloadControllerTestPhpVm();
 
-	
-
-
-/*  Use our own wrapped controller so that we can override _fetchPluginStatus  */
-
-
-
+	/* Use our own wrapped controller so that we can override _fetchPluginStatus */
 	$this->_controller = new AdminRepositoryDownloadControllerTestWrapper();
 	$this->_controller->_version = '0.1';
 	$this->_controller->_active = true;
@@ -65,32 +59,14 @@ class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase {
 	$supportedLanguages = array();
 	$defaultCountry = array();
 
-	
-
-
-/*  English  */
-
-
-
+	/* English */
 	$supportedLanguages['en']['US']['description'] = 'English (US)';
 	$supportedLanguages['en']['GB']['description'] = 'English (UK)';
 
-	
-
-
-/*  Hungarian  */
-
-
-
+	/* Hungarian */
 	$supportedLanguages['hu']['HU']['description'] = 'Magyar';
 
-	
-
-
-/*  Spanish  */
-
-
-
+	/* Spanish */
 	$supportedLanguages['es']['ES']['description'] = 'Espa&#241;ol';
 	$supportedLanguages['es']['MX']['description'] = 'Espa&#241;ol (MX)';
 	$supportedLanguages['es']['AR']['description'] = 'Espa&#241;ol (AR)';

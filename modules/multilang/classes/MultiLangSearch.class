@@ -56,13 +56,7 @@ class MultiLangSearch extends GallerySearchInterface_1_0 {
 	    return array(null, $info);
 	}
 
-	
-
-
-/*  Get name for current language  */
-
-
-
+	/* Get name for current language */
 	$supportedLanguages = GalleryCoreApi::getSupportedLanguages();
 	list ($language, $country) = preg_split('/[-_]/', "${locale}_");
 	if (empty($supportedLanguages[$language][$country]['description'])) {
@@ -167,13 +161,7 @@ class MultiLangSearch extends GallerySearchInterface_1_0 {
 	    $data[] = '%' . $criteria . '%';
 	}
 
-	
-
-
-/*  Find the total  */
-
-
-
+	/* Find the total */
 	list ($ret, $results) = $gallery->search($countQuery, $data);
 	if ($ret) {
 	    return array($ret, null);

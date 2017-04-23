@@ -306,13 +306,7 @@ class AkismetApiTest extends GalleryTestCase {
 	$this->_akismet->setReply(
 	    '_request',
 	    array('submit-ham', $this->_comment, false),
-	    
-
-
-/*  The HTTP status 200 message should processed independently of the HTTP version  */
-
-
-
+	    /* The HTTP status 200 message should processed independently of the HTTP version */
 	    array(null, 'body', 'HTTP/1.0 200 OK', 'headers'));
 
 	$this->assertEquals(null, $this->_akismet->submitHam($this->_comment));

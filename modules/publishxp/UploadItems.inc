@@ -65,35 +65,17 @@ class UploadItemsController extends GalleryController {
 	    list ($ret, $canView) =
 		GalleryCoreApi::hasItemPermission($form['albumId'], 'core.view');
 	    if ($ret) {
-		
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+		/* Avoid information disclosure, act as if the item didn't exist. */
 		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	    }
 
-	    
-
-
-/*  Check the user has permissions in this album  */
-
-
-
+	    /* Check the user has permissions in this album */
 	    $ret = GalleryCoreApi::assertHasItemPermission($form['albumId'], 'core.addDataItem');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Get the file passed in this submission  */
-
-
-
+	    /* Get the file passed in this submission */
 	    $file = GalleryUtilities::getFile('userFile', false);
 	    list ($ret, $lockIds[]) = GalleryCoreApi::acquireReadLock($form['albumId']);
 	    if ($ret) {
@@ -105,26 +87,14 @@ class UploadItemsController extends GalleryController {
 		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	    }
 
-	    
-
-
-/*  The Windows Web Publishing Wizard does not send the file name in UTF-8  */
-
-
-
+	    /* The Windows Web Publishing Wizard does not send the file name in UTF-8 */
 	    $sourceEncoding = $this->_getCharsetFromRequest();
 	    if ($gallery->getDebug()) {
 		$gallery->debug("Source encoding from Windows client: $sourceEncoding");
 	    }
 	    $file['name'] = GalleryCoreApi::convertToUtf8($file['name'], $sourceEncoding);
 
-	    
-
-
-/*  Get the mime type.  */
-
-
-
+	    /* Get the mime type. */
 	    list ($ret, $mimeType) = GalleryCoreApi::getMimeType($file['name'], $file['type']);
 	    if ($ret) {
 		return array($ret, null);
@@ -161,13 +131,7 @@ class UploadItemsController extends GalleryController {
 		}
 	    }
 
-	    
-
-
-/*  Allow ItemAddOptions to process added item(s)  */
-
-
-
+	    /* Allow ItemAddOptions to process added item(s) */
 	    $session =& $gallery->getSession();
 	    if ($session->exists('publishxp.extraOptionsForm')) {
 		$extraOptionsForm = unserialize($session->get('publishxp.extraOptionsForm'));
@@ -218,275 +182,65 @@ class UploadItemsController extends GalleryController {
 	 * http://www.microsoft.com/globaldev/reference/oslocversion.mspx
 	 */
 	switch ($lcid) {
-	    case 1054: 
-
-
-/*  Thai  */
-
-
-
+	    case 1054: /* Thai */
 		$codePage = 874;
 		break;
-	    case 1041: 
-
-
-/*  Japanese  */
-
-
-
+	    case 1041: /* Japanese */
 		$codePage = 932;
 		break;
-	    case 2052: 
-
-
-/*  Chinese (Simplified)  */
-
-
-
+	    case 2052: /* Chinese (Simplified) */
 		$codePage = 936;
 		break; 
-	    case 1042: 
-
-
-/*  Korean  */
-
-
-
+	    case 1042: /* Korean */
 		$codePage = 949;
 		break;
-	    case 1028: 
-
-
-/*  Chinese (Traditional)  */
-
-
-
-	    case 3076: 
-
-
-/*  Chinese (Hong Kong)  */
-
-
-
+	    case 1028: /* Chinese (Traditional) */
+	    case 3076: /* Chinese (Hong Kong) */
 		$codePage = 950;
 		break;
-	    case 1050: 
-
-
-/*  Croatian  */
-
-
-
-	    case 1029: 
-
-
-/*  Czech  */
-
-
-
-	    case 1038: 
-
-
-/*  Hungarian  */
-
-
-
-	    case 1045: 
-
-
-/*  Polish  */
-
-
-
-	    case 1048: 
-
-
-/*  Romanian  */
-
-
-
-	    case 1051: 
-
-
-/*  Slovak  */
-
-
-
-	    case 1060: 
-
-
-/*  Slovenian  */
-
-
-
+	    case 1050: /* Croatian */
+	    case 1029: /* Czech */
+	    case 1038: /* Hungarian */
+	    case 1045: /* Polish */
+	    case 1048: /* Romanian */
+	    case 1051: /* Slovak */
+	    case 1060: /* Slovenian */
 		$codePage = 1250;
 		break;
-	    case 1026: 
-
-
-/*  Bulgarian  */
-
-
-
-	    case 1049: 
-
-
-/*  Russian  */
-
-
-
+	    case 1026: /* Bulgarian */
+	    case 1049: /* Russian */
 		$codePage = 1251;
 		break;
-	    case 1046: 
-
-
-/*  Brazilian  */
-
-
-
-	    case 1027: 
-
-
-/*  Catalan  */
-
-
-
-	    case 1030: 
-
-
-/*  Danish  */
-
-
-
-	    case 1043: 
-
-
-/*  Dutch  */
-
-
-
-	    case 1033: 
-
-
-/*  English  */
-
-
-
-	    case 1035: 
-
-
-/*  Finnish  */
-
-
-
-	    case 1036: 
-
-
-/*  French  */
-
-
-
-	    case 1031: 
-
-
-/*  German  */
-
-
-
-	    case 1040: 
-
-
-/*  Italian  */
-
-
-
-	    case 1044: 
-
-
-/*  Norwegian  */
-
-
-
-	    case 2070: 
-
-
-/*  Portuguese  */
-
-
-
-	    case 3082: 
-
-
-/*  Spanish  */
-
-
-
-	    case 1053: 
-
-
-/*  Swedish  */
-
-
-
+	    case 1046: /* Brazilian */
+	    case 1027: /* Catalan */
+	    case 1030: /* Danish */
+	    case 1043: /* Dutch */
+	    case 1033: /* English */
+	    case 1035: /* Finnish */
+	    case 1036: /* French */
+	    case 1031: /* German */
+	    case 1040: /* Italian */
+	    case 1044: /* Norwegian */
+	    case 2070: /* Portuguese */
+	    case 3082: /* Spanish */
+	    case 1053: /* Swedish */
 		$codePage = 1252;
 		break;
-	    case 1032: 
-
-
-/*  Greek  */
-
-
-
+	    case 1032: /* Greek */
 		$codePage = 1253;
 		break;
-	    case 1055: 
-
-
-/*  Turkish  */
-
-
-
+	    case 1055: /* Turkish */
 		$codePage = 1254;
 		break;
-	    case 1037: 
-
-
-/*  Hebrew  */
-
-
-
+	    case 1037: /* Hebrew */
 		$codePage = 1255;
 		break;
-	    case 1025: 
-
-
-/*  Arabic  */
-
-
-
+	    case 1025: /* Arabic */
 		$codePage = 1256;
 		break;
-	    case 1061: 
-
-
-/*  Estonian  */
-
-
-
-	    case 1062: 
-
-
-/*  Latvian  */
-
-
-
-	    case 1063: 
-
-
-/*  Lithuanian  */
-
-
-
+	    case 1061: /* Estonian */
+	    case 1062: /* Latvian */
+	    case 1063: /* Lithuanian */
 		$codePage = 1257;
 		break;
 	    default: $codePage = 1252;

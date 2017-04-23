@@ -81,26 +81,14 @@ class GalleryLockSystem {
 	    }
 	    $foundIds = array_intersect(array_keys($lock['ids']), $ids);
 	    if (count($foundIds) == count($lock['ids'])) {
-		
-
-
-/*  Release this entire lock  */
-
-
-
+		/* Release this entire lock */
 		$ret = $this->_releaseLocksNow(array($lockId => $lock));
 		if ($ret) {
 		    return array($ret, null);
 		}
 		unset($this->_releaseQueue[$lockId]);
 	    } else if (!empty($foundIds)) {
-		
-
-
-/*  Remove ids from this lock  */
-
-
-
+		/* Remove ids from this lock */
 		$ret = $this->_removeObjectsFromLock($this->_releaseQueue[$lockId], $foundIds);
 		if ($ret) {
 		    return array($ret, null);
@@ -144,26 +132,14 @@ class GalleryLockSystem {
 		$relock[$lockId] = $foundIds;
 		$ids = array_diff($ids, $foundIds);
 	    } else if (count($foundIds) == count($lock['ids'])) {
-		
-
-
-/*  Release this entire read lock  */
-
-
-
+		/* Release this entire read lock */
 		$ret = $this->_releaseLocksNow(array($lockId => $lock));
 		if ($ret) {
 		    return array($ret, null);
 		}
 		unset($this->_releaseQueue[$lockId]);
 	    } else if (!empty($foundIds)) {
-		
-
-
-/*  Remove ids from this read lock  */
-
-
-
+		/* Remove ids from this read lock */
 		$ret = $this->_removeObjectsFromLock($this->_releaseQueue[$lockId], $foundIds);
 		if ($ret) {
 		    return array($ret, null);
@@ -256,25 +232,13 @@ class GalleryLockSystem {
 	    $lockIds = array($lockIds);
 	}
 
-	
-
-
-/*  Remove any empty or invalid elements  */
-
-
-
+	/* Remove any empty or invalid elements */
 	foreach ($lockIds as $key => $lockId) {
 	    if (empty($lockId) || !isset($this->_locks[$lockId])) {
 		unset($lockIds[$key]);
 	    }
 	}
-	
-
-
-/*  Queue locks for release  */
-
-
-
+	/* Queue locks for release */
 	foreach ($lockIds as $lockId) {
 	    $this->_releaseQueue[$lockId] = $this->_locks[$lockId];
 	    unset($this->_locks[$lockId]);

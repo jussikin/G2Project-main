@@ -54,37 +54,19 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase {
     }
 
     function testChangeSize() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', 123);
 	GalleryUtilities::putRequestVariable('form[height]', 456);
 	GalleryUtilities::putRequestVariable('form[serialNumber]', $this->_item->getSerialNumber());
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_item, $this->_preferred);
 	$this->assertEquals(array(array(),
 				  $this->_translate('Changes saved successfully')),
 			    $results);
 
-	
-
-
-/*  Verify that the preferred is gone  */
-
-
-
+	/* Verify that the preferred is gone */
 	list ($ret, $this->_item) = $this->_item->refresh();
 	if ($ret) {
 	    return $ret;
@@ -95,37 +77,19 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase {
     }
 
     function testChangeSizeMissingValues() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', '');
 	GalleryUtilities::putRequestVariable('form[height]', '');
 	GalleryUtilities::putRequestVariable('form[serialNumber]', $this->_item->getSerialNumber());
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_item, $this->_preferred);
 	$this->assertEquals(array(array(),
 				  $this->_translate('Changes saved successfully')),
 			    $results);
 
-	
-
-
-/*  Reload the item  */
-
-
-
+	/* Reload the item */
 	list ($ret, $this->_item) = $this->_item->refresh();
 	if ($ret) {
 	    return $ret;
@@ -136,24 +100,12 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase {
     }
 
     function testChangeSizeInvalidValues() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', -123);
 	GalleryUtilities::putRequestVariable('form[height]', -456);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_item, $this->_preferred);
 	$this->assertEquals(array(array('form[error][width][invalid]',
 					'form[error][height][invalid]'),
@@ -163,24 +115,12 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase {
 
     function testInvalidSerialNumber() {
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', 123);
 	GalleryUtilities::putRequestVariable('form[height]', 456);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Use invalid serial number  */
-
-
-
+	/* Use invalid serial number */
 	GalleryUtilities::putRequestVariable('form[serialNumber]', -1);
 
 	$results = $this->handleRequest($this->_item, $this->_preferred, ERROR_OBSOLETE_DATA);

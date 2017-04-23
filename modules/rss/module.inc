@@ -27,13 +27,7 @@
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 20951 $
  */
-class RssModule extends GalleryModule 
-
-
-/*  and GalleryEventListener  */
-
-
- {
+class RssModule extends GalleryModule /* and GalleryEventListener */ {
 
     function __construct() {
 	$this->RssModule();
@@ -68,13 +62,7 @@ class RssModule extends GalleryModule
 	GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
 	$links = array();
 
-	
-
-
-/*  check that this type of link is allowed  */
-
-
-
+	/* check that this type of link is allowed */
 	list ($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 	if ($ret) {
 	    return array($ret, null);
@@ -98,13 +86,7 @@ class RssModule extends GalleryModule
 		$itemTypeNames = array_merge($item->itemTypeName(), $item->itemTypeName(false));
 
 		if (false) {
-		    
-
-
-/*  Specific translations:  */
-
-
-
+		    /* Specific translations: */
 		    _('RSS Feed for this Album');
 		    _('RSS Feed for this Photo');
 		    _('RSS Feed for this Movie');
@@ -222,13 +204,7 @@ class RssModule extends GalleryModule
 	 */
 	switch($currentVersion) {
 	    case null:
-		
-
-
-/*  Initial install  */
-
-
-
+		/* Initial install */
 
 		foreach (array('defaultVersion' => '2.0',
 			       'defaultCount' => 10,
@@ -248,13 +224,7 @@ class RssModule extends GalleryModule
 			return $ret;
 		    }
 		}
-		
-
-
-/*  keep going  */
-
-
-
+		/* keep going */
 
 	    case '1.0.0':
 		foreach (array('sfAlbumType' => 'photos',
@@ -282,21 +252,9 @@ class RssModule extends GalleryModule
 	    case '1.1.2':
 		GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
 		
+		/* consistent naming */
 		
-
-
-/*  consistent naming  */
-
-
-
-		
-		
-
-
-/*  allowPhotosRecurse -> allowPhotosRecursive  */
-
-
-
+		/* allowPhotosRecurse -> allowPhotosRecursive */
 		list ($ret, $allowPhotosRecursive) = $this->getParameter('allowPhotosRecurse');
 		if ($ret) {
 		    return $ret;
@@ -314,13 +272,7 @@ class RssModule extends GalleryModule
 		    }
 		}
 		
-		
-
-
-/*  sfPhotosRecurseLimit -> sfPhotosRecursiveLimit  */
-
-
-
+		/* sfPhotosRecurseLimit -> sfPhotosRecursiveLimit */
 		list ($ret, $sfPhotosRecursiveLimit) = $this->getParameter('sfPhotosRecurseLimit');
 		if ($ret) {
 		    return $ret;
@@ -338,13 +290,7 @@ class RssModule extends GalleryModule
 		    }
 		}
 		
-		
-
-
-/*  sfAlbumType: photosRecurse -> photosRecursive  */
-
-
-
+		/* sfAlbumType: photosRecurse -> photosRecursive */
 		list ($ret, $sfAlbumType) = $this->getParameter('sfAlbumType');
 		if ($ret) {
 		    return $ret;
@@ -357,13 +303,7 @@ class RssModule extends GalleryModule
 		    }
 		}
 		
-		
-
-
-/*  feed parameters  */
-
-
-
+		/* feed parameters */
 		list ($ret, $names) = RssMapHelper::fetchFeedNames();
 		if ($ret) {
 		    return $ret;
@@ -391,13 +331,7 @@ class RssModule extends GalleryModule
 		}
 	    case '1.1.3':
 	    case '1.1.4':
-		
-
-
-/*  Refactored to new event registration from core API 7.34  */
-
-
-
+		/* Refactored to new event registration from core API 7.34 */
 	}
 
 	return null;

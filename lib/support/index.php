@@ -5,13 +5,7 @@ ob_start();
 ?>
 <!DOCTYPE html>
 <?php
-
-
-
-/*  Tell other scripts we passed security.inc ok  */
-
-
-
+/* Tell other scripts we passed security.inc ok */
 define('G2_SUPPORT', true);
 if (!empty($_SERVER['QUERY_STRING'])) {
     foreach (array('phpinfo', 'cache', 'gd', 'chmod', 'import', 'password', 'search_db') as $script) {
@@ -31,13 +25,7 @@ if (!empty($_SERVER['QUERY_STRING'])) {
 }
 function generateUrl($uri, $print = true)
 {
-    
-
-
-/*  If session.use_trans_sid is on then it will add the session id.  */
-
-
-
+    /* If session.use_trans_sid is on then it will add the session id. */
     if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
         $sid = session_name() . '=' . session_id();
         $uri .= (!strpos($uri, '?') ? '?' : '&amp;') . $sid;

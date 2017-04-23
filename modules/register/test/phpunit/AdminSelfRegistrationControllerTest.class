@@ -48,13 +48,7 @@ class AdminSelfRegistrationControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create a pending user..  */
-
-
-
+	/* Create a pending user.. */
 	list ($ret, $pendingUser) =
 	    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
 	if ($ret) {
@@ -149,13 +143,7 @@ class AdminSelfRegistrationControllerTest extends GalleryControllerTestCase {
     }
 
     function testAdminSelfRegistrationControllerActivateMissingUser() {
-	GalleryUtilities::putRequestVariable('form[userId]', 99999999 
-
-
-/*  very unlikely id  */
-
-
-);
+	GalleryUtilities::putRequestVariable('form[userId]', 99999999 /* very unlikely id */);
 	GalleryUtilities::putRequestVariable('form[action][activate]', '1');
 
 	$results = $this->handleRequest();
@@ -187,13 +175,7 @@ class AdminSelfRegistrationControllerTest extends GalleryControllerTestCase {
     }
 
     function testAdminSelfRegistrationControllerDeleteMissingUser() {
-	GalleryUtilities::putRequestVariable('form[userId]', 99999999 
-
-
-/*  very unlikely id  */
-
-
-);
+	GalleryUtilities::putRequestVariable('form[userId]', 99999999 /* very unlikely id */);
 	GalleryUtilities::putRequestVariable('form[action][delete]', '1');
 
 	$results = $this->handleRequest();

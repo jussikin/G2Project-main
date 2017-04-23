@@ -142,13 +142,7 @@ class GalleryModule extends GalleryPlugin {
 		}
 		$gallery->debug(sprintf('Configure store for %s module', $this->getId()));
 	    }
-	    
-
-
-/*  The store requires configuration.  */
-
-
-
+	    /* The store requires configuration. */
 	    $storage =& $gallery->getStorage();
 	    $ret = $storage->configureStore($this->getId());
 	    if ($ret) {
@@ -237,13 +231,7 @@ class GalleryModule extends GalleryPlugin {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Optimize and analyze altered tables  */
-
-
-
+	    /* Optimize and analyze altered tables */
 	    $cacheKey = 'GalleryStorage::configureStore::alter';
 	    if (GalleryDataCache::containsKey($cacheKey)) {
 		/*
@@ -285,62 +273,32 @@ class GalleryModule extends GalleryPlugin {
     function uninstall() {
 	global $gallery;
 
-	
-
-
-/*  Find and remove all module permissions  */
-
-
-
+	/* Find and remove all module permissions */
 	$ret = GalleryCoreApi::unregisterModulePermissions($this->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove onLoadHandlers  */
-
-
-
+	/* Remove onLoadHandlers */
 	$ret = GalleryCoreApi::removeOnLoadHandlers($this->getOnLoadHandlerIds());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Delete entities for types registered by this module  */
-
-
-
+	/* Delete entities for types registered by this module */
 	$ret = $this->_deleteModuleEntities();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove all tables  */
-
-
-
+	/* Remove all tables */
 	$storage =& $gallery->getStorage();
 	$ret = $storage->unconfigureStore($this->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove this plugin  */
-
-
-
+	/* Remove this plugin */
 	return parent::uninstall();
     }
 
@@ -425,13 +383,7 @@ class GalleryModule extends GalleryPlugin {
 		sprintf('incompatible %s %s', $this->getPluginType(), $this->getId())), null);
 	}
 
-	
-
-
-/*  Make sure that we don't need configuration before we allow activation.  */
-
-
-
+	/* Make sure that we don't need configuration before we allow activation. */
 	list ($ret, $needs) = $this->needsConfiguration();
 	if ($ret) {
 	    return array($ret, null);
@@ -485,13 +437,7 @@ class GalleryModule extends GalleryPlugin {
      *               boolean was module able to autoconfigure
      */
     function autoConfigure() {
-	
-
-
-/*  By default we don't need any configuration  */
-
-
-
+	/* By default we don't need any configuration */
 	return array(null, true);
     }
 
@@ -643,13 +589,7 @@ class GalleryModule extends GalleryPlugin {
 	return array();
     }
 
-    
-
-
-/*  Getters and setters below  */
-
-
-
+    /* Getters and setters below */
 
     function setGroup($group, $groupLabel) {
 	$this->_group = array('group' => $group, 'groupLabel' => $groupLabel);
@@ -736,13 +676,7 @@ class GalleryModule extends GalleryPlugin {
      * @return GalleryStatus a status code
      */
     function _removeObsoleteThemeBlocks() {
-	
-
-
-/*  Get all available blocks, even from inactive modules; and used blocks.  */
-
-
-
+	/* Get all available blocks, even from inactive modules; and used blocks. */
 	list ($ret, $blocks) = GalleryCoreApi::loadAvailableBlocks(true);
 	if ($ret) {
 	    return $ret;
@@ -755,13 +689,7 @@ class GalleryModule extends GalleryPlugin {
 	    return $ret;
 	}
 
-	
-
-
-/*  Go through each available theme and find which blocks they're using.  */
-
-
-
+	/* Go through each available theme and find which blocks they're using. */
 	while ($result = $searchResults->nextResult()) {
 	    $themeId = $result[0];
 	    $itemId = $result[1];
@@ -775,13 +703,7 @@ class GalleryModule extends GalleryPlugin {
 		$pluginName = $blockInfo[0];
 		$blockName = $blockInfo[1];
 
-		
-
-
-/*  Remove used block if it is not available any more.  */
-
-
-
+		/* Remove used block if it is not available any more. */
 		if ($pluginName == $this->getId() && !isset($blocks[$pluginName][$blockName])) {
 		    unset($themeBlocks[$key]);
 		    $ret = GalleryCoreApi::setPluginParameter(

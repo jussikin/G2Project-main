@@ -58,13 +58,7 @@ class SendEcardController extends GalleryController {
 	}
 
 	if (isset($form['action']['send']) || isset($form['action']['preview'])) {
-	    
-
-
-/*  Validate form  */
-
-
-
+	    /* Validate form */
 	    if (empty($form['to'])) {
 		$error[] = 'form[error][to][missing]';
 	    } else if (!GalleryUtilities::isValidEmailString($form['to'])) {
@@ -102,13 +96,7 @@ class SendEcardController extends GalleryController {
 		    }
 		}
 
-		
-
-
-/*  Let each plugin do its verification  */
-
-
-
+		/* Let each plugin do its verification */
 		foreach ($pluginInstances as $plugin) {
 		    list ($ret, $pluginErrors, $continue) = $plugin->performValidation($form);
 		    if ($ret) {
@@ -148,13 +136,7 @@ class SendEcardController extends GalleryController {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Get pseudo filename and attach image  */
-
-
-
+	    /* Get pseudo filename and attach image */
 	    list ($ret, $filename) = GalleryUtilities::getPseudoFileName($resize);
 	    if ($ret) {
 		return array($ret, null);
@@ -198,13 +180,7 @@ class SendEcardController extends GalleryController {
 	    $messagePlain = EcardHelper::replaceKeywords($messagePlain, $dataPlain);
 	    $mime->setTXTBody($messagePlain);
 
-	    
-
-
-/*  Either add attachment (plain) or add HTML image (html)  */
-
-
-
+	    /* Either add attachment (plain) or add HTML image (html) */
 	    if ($config['format'] == 'plain') {
 		$mime->addAttachment($path, $resize->getMimeType(), $filename);
 	    } else {
@@ -241,13 +217,7 @@ class SendEcardController extends GalleryController {
 		$buf .= ($val > 127) ? '=' . dechex($val) : $headers['subject']{$i};
 	    }
 	    if ($buf != $headers['subject']) {
-		
-
-
-/*  Encode subject for UTF-8 display if any extended characters are present  */
-
-
-
+		/* Encode subject for UTF-8 display if any extended characters are present */
 		$headers['subject'] = '=?utf-8?q?' . $buf . '?=';
 	    }
 	    $success = $platform->mail($headers['to'], $headers['subject'], $body, $hdrs);
@@ -256,47 +226,23 @@ class SendEcardController extends GalleryController {
 		     'Could not send mail to ' . $headers['to']), null);
 	    }
 
-	    
-
-
-/*  Put sender data into session  */
-
-
-
+	    /* Put sender data into session */
 	    $session->put('ecard.from', $form['from']);
 	    if (isset($form['fromName'])) {
 		$session->put('ecard.fromName', $form['fromName']);
 	    }
 
-	    
-
-
-/*  Send the user to a confirmation page, for now  */
-
-
-
+	    /* Send the user to a confirmation page, for now */
 	    $redirect['view'] = 'ecard.Confirmation';
 	    $redirect['itemId'] = (int)$itemId;
 	    $status['sent'] = 1;
 	} else if (isset($form['action']['cancel'])) {
-	    
-
-
-/*  Where to go on a cancel?  Back to viewing the item.  */
-
-
-
+	    /* Where to go on a cancel?  Back to viewing the item. */
 	    $redirect['view'] = 'core.ShowItem';
 	    $redirect['itemId'] = (int)$itemId;
 	}
 
-	
-
-
-/*  Prepare our results  */
-
-
-
+	/* Prepare our results */
 	if (!empty($redirect)) {
 	    $results['redirect'] = $redirect;
 	} else {
@@ -332,13 +278,7 @@ class SendEcardView extends GalleryView {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  Load our item  */
-
-
-
+	/* Load our item */
 	list ($ret, $item) = $this->getItem();
 	if ($ret) {
 	    return array($ret, null);
@@ -392,13 +332,7 @@ class SendEcardView extends GalleryView {
 	$SendEcard['header'] = EcardHelper::replaceKeywords($config['header'], $form);
 	$SendEcard['footer'] = EcardHelper::replaceKeywords($config['footer'], $form);
 
-	
-
-
-/*  Check if we should use validation plugins  */
-
-
-
+	/* Check if we should use validation plugins */
 	$plugins = array();
 	list ($ret, $useValidationPlugins) = EcardHelper::useValidationPlugins();
 	if ($ret) {
@@ -411,13 +345,7 @@ class SendEcardView extends GalleryView {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Let each plugin load its template data  */
-
-
-
+	    /* Let each plugin load its template data */
 	    foreach (array_keys($allPluginIds) as $pluginId) {
 		list ($ret, $plugin) =
 		    GalleryCoreApi::newFactoryInstanceById('GalleryValidationPlugin', $pluginId);

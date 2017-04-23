@@ -63,25 +63,13 @@ class ArchiveExtractToolkit extends GalleryToolkit {
 	    return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null, null);
 	}
 
-	
-
-
-/*  Set permissions according to core parameter settings  */
-
-
-
+	/* Set permissions according to core parameter settings */
 	if (!$platform->recursiveChmod($destFilename)) {
 	    return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null, null);
 	}
 
 	if (!$this->_pruneDirectory($destFilename,
-		    
-
-
-/*  Thumbs.db is Windows, the rest are MacOSX  */
-
-
-
+		    /* Thumbs.db is Windows, the rest are MacOSX */
 		    array('file' => array('Thumbs.db', '.DS_Store', '.Trashes'),
 			  'dir' => array('__MACOSX')),
 		    $params['removeMeta'])) {

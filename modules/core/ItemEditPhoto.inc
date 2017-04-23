@@ -38,13 +38,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 
 	if (isset($form['action']['save'])) {
 
-	    
-
-
-/*  Validate the input data  */
-
-
-
+	    /* Validate the input data */
 	    for ($i = 0; $i < count($form['resizes']); $i++) {
 		if (empty($form['resizes'][$i]['active'])) {
 		    continue;
@@ -62,13 +56,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Load existing resizes  */
-
-
-
+		/* Load existing resizes */
 		$itemId = $item->getId();
 		list ($ret, $resizes) = GalleryCoreApi::fetchResizesByItemIds(array($itemId));
 		if ($ret) {
@@ -86,13 +74,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 		    return array($ret, null, null, null);
 		}
 
-		
-
-
-/*  Make sure that we have a toolkit before adding back the resizes  */
-
-
-
+		/* Make sure that we have a toolkit before adding back the resizes */
 		list ($ret, $toolkit, $outputMimeType) =
 		    GalleryCoreApi::getToolkitByOperation($source->getMimeType(), 'scale');
 		if ($ret) {
@@ -100,13 +82,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 		}
 
 		if (isset($toolkit)) {
-		    
-
-
-/*  Determine operations and check against existing resizes  */
-
-
-
+		    /* Determine operations and check against existing resizes */
 		    $count = count($form['resizes']);
 		    for ($i = 0; $i < $count; $i++) {
 			if (empty($form['resizes'][$i]['active'])) {
@@ -129,34 +105,16 @@ class ItemEditPhoto extends ItemEditPlugin {
 			}
 
 			if (isset($resizesTable[$newOperations])) {
-			    
-
-
-/*  Keep existing resize  */
-
-
-
+			    /* Keep existing resize */
 			    unset($resizesTable[$newOperations]);
 			    unset($form['resizes'][$i]);
 			} else {
-			    
-
-
-/*  Create resize with these settings on next pass  */
-
-
-
+			    /* Create resize with these settings on next pass */
 			    $form['resizes'][$i]['operations'] = $newOperations;
 			    $form['resizes'][$i]['mimeType'] = $newOutputMimeType;
 			}
 		    }
-		    
-
-
-/*  Add new resizes, using existing derivative entities until we run out  */
-
-
-
+		    /* Add new resizes, using existing derivative entities until we run out */
 		    foreach ($form['resizes'] as $resizeData) {
 			if (!empty($resizesTable)) {
 			    $derivative = array_shift($resizesTable);
@@ -201,13 +159,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 			    $lockId = null;
 			}
 		    }
-		    
-
-
-/*  Remove any leftover resizes  */
-
-
-
+		    /* Remove any leftover resizes */
 		    foreach ($resizesTable as $resize) {
 			$ret =
 			    GalleryCoreApi::deleteEntityById($resize->getId(), 'GalleryDerivative');
@@ -235,22 +187,10 @@ class ItemEditPhoto extends ItemEditPlugin {
 	global $gallery;
 
 	if ($form['formName'] != 'ItemEditPhoto') {
-	    
-
-
-/*  First time around, reset the form  */
-
-
-
+	    /* First time around, reset the form */
 	    $form['formName'] = 'ItemEditPhoto';
 
-	    
-
-
-/*  Load the resizes  */
-
-
-
+	    /* Load the resizes */
 	    list ($ret, $resizes) = GalleryCoreApi::fetchResizesByItemIds(array($item->getId()));
 	    if ($ret) {
 		return array($ret, null, null);
@@ -269,13 +209,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 	    }
 	}
 
-	
-
-
-/*  Tag on a few form blanks  */
-
-
-
+	/* Tag on a few form blanks */
 	$extraBlanks = 3;
 	if (isset($form['resizes'])) {
 	    foreach ($form['resizes'] as $resize) {
@@ -289,13 +223,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 	    $form['resizes'][] = array('active' => 0, 'width' => '', 'height' => '');
 	}
 
-	
-
-
-/*  Make sure that 'active' is set to a value  */
-
-
-
+	/* Make sure that 'active' is set to a value */
 	for ($i = 0; $i < sizeof($form['resizes']); $i++) {
 	    if (!isset($form['resizes'][$i]['active'])) {
 		$form['resizes'][$i]['active'] = false;
@@ -304,13 +232,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 
 	$ItemEditPhoto = array();
 
-	
-
-
-/*  Check to see if we have a preferred source  */
-
-
-
+	/* Check to see if we have a preferred source */
 	list ($ret, $results) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
 	if ($ret) {
@@ -330,13 +252,7 @@ class ItemEditPhoto extends ItemEditPlugin {
 	    $sourceMimeTypes[] = $preferred->getMimeType();
 	}
 
-	
-
-
-/*  Figure out what options we can provide  */
-
-
-
+	/* Figure out what options we can provide */
 	list ($ret, $ItemEditPhoto['editSizes']['can']['createResizes']) =
 	    $this->_checkForOperation('resize', $sourceMimeTypes);
 	if ($ret) {

@@ -48,13 +48,7 @@ class MSSqlStorage extends GalleryStorage {
 	$this->_isTransactional = true;
 	$this->_isEmptyAllowedForNotNullColumn = true;
 
-	
-
-
-/*  ADO_MSSql driver has different connection parameters.. set values it expects  */
-
-
-
+	/* ADO_MSSql driver has different connection parameters.. set values it expects */
 	$this->_hostname = 'PROVIDER=MSDASQL;DRIVER={SQL Server};SERVER=' . $this->_hostname
 			 . ';DATABASE=' . $this->_database;
 	$this->_database = 'MSDASQL';
@@ -72,13 +66,7 @@ class MSSqlStorage extends GalleryStorage {
      * @see GalleryStorage::_getSqlReplacements
      */
     function _getSqlReplacements() {
-	
-
-
-/*  For SQL Server versions pre-2005, use type NTEXT.  For 2005+, use NVARCHAR(MAX).  */
-
-
-
+	/* For SQL Server versions pre-2005, use type NTEXT.  For 2005+, use NVARCHAR(MAX). */
 	if (!$this->_serverInfo) {
 	    if (preg_match("/(\d+(\.\d+)+)/", $this->getVersion(), $matches)) {
 		$this->_serverInfo = $matches[0];
@@ -107,13 +95,7 @@ class MSSqlStorage extends GalleryStorage {
 	    break;
 
 	case 'BITAND':
-	    
-
-
-/*  Cast any input values as the 'bit' type  */
-
-
-
+	    /* Cast any input values as the 'bit' type */
 	    $sql = $args[0] . ' & ' . $args[1];
 	    break;
 

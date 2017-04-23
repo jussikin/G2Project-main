@@ -1,39 +1,15 @@
-<?php 
-
-
-/*  $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $  */
-
-
-
-  
-
-
-/*  Contributed by: stormfrog  */
-
-
-
+<?php /* $Id: frame.inc 15342 2006-12-01 21:14:46Z andy_st $ */
+  /* Contributed by: stormfrog */
 $frameData = array(
 
 'name' => $gallery->i18n('Wood'),
 
-
-
-
-/*  Top Left  */
-
-
-
+/* Top Left */
 'imageTL' => 'TL.gif',
 'widthTL' => 30,
 'heightTL' => 30,
 
-
-
-
-/*  Top  */
-
-
-
+/* Top */
 'imageTTL' => '',
 'widthTTL' => 0,
 
@@ -43,24 +19,12 @@ $frameData = array(
 'imageTTR' => '',
 'widthTTR' => 0,
 
-
-
-
-/*  Top Right  */
-
-
-
+/* Top Right */
 'imageTR' => 'TR.gif',
 'widthTR' => 30,
 'heightTR' => 30,
 
-
-
-
-/*  Left  */
-
-
-
+/* Left */
 'imageLLT' => '',
 'heightLLT' => 0,
 
@@ -70,13 +34,7 @@ $frameData = array(
 'imageLLB' => '',
 'heightLLB' => 0,
 
-
-
-
-/*  Right  */
-
-
-
+/* Right */
 'imageRRT' => '',
 'heightRRT' => 0,
 
@@ -86,24 +44,12 @@ $frameData = array(
 'imageRRB' => '',
 'heightRRB' => 0,
 
-
-
-
-/*  Bottom Left  */
-
-
-
+/* Bottom Left */
 'imageBL' => 'BL.gif',
 'widthBL' => 30,
 'heightBL' => 30,
 
-
-
-
-/*  Bottom  */
-
-
-
+/* Bottom */
 'imageBBL' => '',
 'widthBBL' => 0,
 
@@ -113,13 +59,7 @@ $frameData = array(
 'imageBBR' => '',
 'widthBBR' => 0,
 
-
-
-
-/*  Bottom Right  */
-
-
-
+/* Bottom Right */
 'imageBR' => 'BR.gif',
 'widthBR' => 30,
 'heightBR' => 30

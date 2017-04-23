@@ -80,13 +80,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 
 	$gallery->setPlatform($this->_symlinkAllowedPlatform);
 
-	
-
-
-/*  Force system charset to ISO-8859-1 so convertToUtf8 will work on test data  */
-
-
-
+	/* Force system charset to ISO-8859-1 so convertToUtf8 will work on test data */
 	$gallery->_phpVm = new ItemAddFromServerTestPhpVm();
 	GalleryDataCache::remove('GalleryCharsetHelper_simple::detectSystemCharset');
     }
@@ -248,13 +242,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	    $gallery->setPlatform($this->_symlinkDisallowedPlatform);
 	}
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromLocalServer]', 1);
 	if ($setTitle) {
 	    GalleryUtilities::putRequestVariable('form[set][title]', 1);
@@ -272,13 +260,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	$fileKeys = array();
 
 	if ($addFiles) {
-	    
-
-
-/*  Some simple filenames and some with special characters  */
-
-
-
+	    /* Some simple filenames and some with special characters */
 	    $files = array('test1.gif', 'test1.jpg', 'test2.gif', 'test[3].gif',
 			   'apo\'strophe.jpg', "t\xebst.png");
 	    rsort($files);
@@ -315,49 +297,25 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 			    'form[localServerDirectories][' . $dirName . '][useSymlink]', 1);
 		}
 	    }
-	    
-
-
-/*  .. is invalid and will be ignored, don't expect it in results  */
-
-
-
+	    /* .. is invalid and will be ignored, don't expect it in results */
 	    unset($dirs[2]);
 	}
 
 	GalleryUtilities::putRequestVariable('form[localServerPath]',
 					     GalleryCoreApi::convertToUtf8($baseDir));
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	if ($symlinkSupported) {
 	    $results = $this->handleRequest($this->_rootAlbum);
 	} else {
 	    $results = $this->handleRequest($this->_rootAlbum, ERROR_UNSUPPORTED_OPERATION);
-	    
-
-
-/*  Set the mock platform back to the one that supports symlink for consistency  */
-
-
-
+	    /* Set the mock platform back to the one that supports symlink for consistency */
 	    $gallery->setPlatform($this->_symlinkAllowedPlatform);
 	    return;
 	}
 	$this->assertEquals(array(), $results[0]);
 
-	
-
-
-/*  We don't know the ids, but we can verify everything else  */
-
-
-
+	/* We don't know the ids, but we can verify everything else */
 	$i = 0;
 	$this->assertEquals(count($files), count($results[1]['addedFiles']), 'added count');
 	usort($results[1]['addedFiles'], $sortAddedFilesFunc);
@@ -368,13 +326,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	    $i++;
 	}
 
-	
-
-
-/*  Verify item attributes (like order weight)  */
-
-
-
+	/* Verify item attributes (like order weight) */
 	list ($ret, $ids) = GalleryCoreApi::fetchChildItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -408,13 +360,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Organize items array by id  */
-
-
-
+	/* Organize items array by id */
 	$newItems = array();
 	foreach ($items as $item) {
 	    $newItems[$item->getId()] = $item;
@@ -478,13 +424,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[localServerPath]', $baseDir);
 	GalleryUtilities::putRequestVariable('form[set][title]', 1);
 	GalleryUtilities::putRequestVariable('form[set][summary]', 1);
-	
-
-
-/*  This is what the browser will send us (urlencoded):  */
-
-
-
+	/* This is what the browser will send us (urlencoded): */
 	GalleryUtilities::putRequestVariable(
 	    'form[localServerFiles][' . urlencode('December - <#952>.jpg') . '][selected]', 1);
 	GalleryUtilities::putRequestVariable(
@@ -495,13 +435,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	$this->assertEquals(1, count($results[1]));
 	$this->assertEquals(1, count($results[1]['addedFiles']));
 
-	
-
-
-/*  Verify added item  */
-
-
-
+	/* Verify added item */
 	list ($ret, $item) =
 	    GalleryCoreApi::loadEntitiesById($results[1]['addedFiles'][0]['id'], 'GalleryDataItem');
 	if ($ret) {
@@ -512,13 +446,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	$this->assertEquals('December - &lt;#952&gt;', $item->getSummary(), 'summary');
 	$this->assertEquals('', $item->getDescription(), 'description');
 
-	
-
-
-/*  Verify added album  */
-
-
-
+	/* Verify added album */
 	list ($ret, $albumIds) = GalleryCoreApi::fetchChildAlbumItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -559,13 +487,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
     }
 
     function testAddFromServerMalformedInput() {
-	
-
-
-/*  Test that manually constructed input can't get outside our approved dirs  */
-
-
-
+	/* Test that manually constructed input can't get outside our approved dirs */
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 	$dirSep = $platform->getDirectorySeparator();
@@ -582,13 +504,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
     }
 
     function testAddFromServerEntityDir() {
-	
-
-
-/*  Test that characters in dirname that get entitized still work ok  */
-
-
-
+	/* Test that characters in dirname that get entitized still work ok */
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 	$dirSep = $platform->getDirectorySeparator();
@@ -644,13 +560,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase {
 	$dirSep = $platform->getDirectorySeparator();
 	$baseDir = $this->_baseDir . $dirSep . 'data' . $dirSep;
 
-	
-
-
-/*  Force some private variables that the plugin normally has at this point  */
-
-
-
+	/* Force some private variables that the plugin normally has at this point */
 	$this->_plugin->_platform = $platform;
 	$this->_plugin->_localServerDirList = array($baseDir);
 
@@ -706,13 +616,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform {
 	case $this->_baseDir . "t\xebst.png":
 	case $this->_baseDir . 'apo\'strophe.jpg':
 	case $this->_baseDirRecursive . 'apo\'strophe.jpg':
-	    
-
-
-/*  The windows path is a little weird -- but we can live with it  */
-
-
-
+	    /* The windows path is a little weird -- but we can live with it */
 	case $this->_baseDir . '\\apo\'strophe.jpg':
 	    return true;
 
@@ -732,13 +636,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform {
 	case $this->_baseDir . "t\xebst.png":
 	case $this->_baseDir . 'apo\'strophe.jpg':
 	case $this->_baseDirRecursive . 'apo\'strophe.jpg':
-	    
-
-
-/*  The windows path is a little weird -- but we can live with it  */
-
-
-
+	    /* The windows path is a little weird -- but we can live with it */
 	case $this->_baseDir . '\\apo\'strophe.jpg':
 	    return true;
 
@@ -755,13 +653,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform {
 	case $this->_baseDir . "t\xebst.png":
 	case $this->_baseDir . 'apo\'strophe.jpg':
 	case $this->_baseDirRecursive . 'apo\'strophe.jpg':
-	    
-
-
-/*  The windows path is a little weird -- but we can live with it  */
-
-
-
+	    /* The windows path is a little weird -- but we can live with it */
 	case $this->_baseDir . '\\apo\'strophe.jpg':
 	case $this->_baseDirRecursive . '\\apo\'strophe.jpg':
 	    $source = $this->_baseDir . 'test1.jpg';
@@ -776,13 +668,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform {
 	case $this->_baseDir . "t\xebst.png":
 	case $this->_baseDir . 'apo\'strophe.jpg':
 	case $this->_baseDirRecursive . 'apo\'strophe.jpg':
-	    
-
-
-/*  The windows path is a little weird -- but we can live with it  */
-
-
-
+	    /* The windows path is a little weird -- but we can live with it */
 	case $this->_baseDir . '\\apo\'strophe.jpg':
 	case $this->_baseDirRecursive . '\\apo\'strophe.jpg':
 	    $source = $this->_baseDir . 'test1.jpg';
@@ -823,13 +709,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform {
     }
 
     function exec($cmd) {
-	
-
-
-/*  In case add of jpeg tries to get 'colorspace' property  */
-
-
-
+	/* In case add of jpeg tries to get 'colorspace' property */
 	return array(true, array(''), array());
     }
 }

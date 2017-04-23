@@ -102,20 +102,8 @@ function clearG2DataDir($dir)
     $status = array(array('info', "Deleting dir: $path"));
     $count = recursiveRmdir($path, $status);
 
-    
-
-
-/*  Commented this out because it's a little noisy  */
-
-
-
-    
-
-
-/*  $status[] = array('info', "Removed $count files and directories");  */
-
-
-
+    /* Commented this out because it's a little noisy */
+    /* $status[] = array('info', "Removed $count files and directories"); */
 
     if (@mkdir($path)) {
         $status[] = array('info', "Recreating dir: $path");
@@ -155,25 +143,13 @@ if (isset($_REQUEST['clear']) && isset($_REQUEST['target'])) {
     require_once(dirname(__FILE__) . '/../../embed.php');
     $ret = GalleryEmbed::init(array('fullInit' => false));
     if ($ret) {
-    
-
-
-/*  Try to swallow the error, but define a session to make ::done() pass.  */
-
-
-
+    /* Try to swallow the error, but define a session to make ::done() pass. */
         global $gallery;
         $gallery->initEmptySession();
     }
     $remember = array();
     foreach ($_REQUEST['target'] as $key => $ignored) {
-    
-
-
-/*  Make sure the dir is legit  */
-
-
-
+    /* Make sure the dir is legit */
         if (!array_key_exists($key, $caches)) {
             $status[] = array('error', "Ignoring illegal cache: $key");
             continue;

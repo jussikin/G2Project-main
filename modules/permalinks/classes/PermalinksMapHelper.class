@@ -80,35 +80,17 @@ class PermalinksMapHelper {
      * @return GalleryStatus a status code
      */
     static function createAlias($aliasName, $itemId) {
-	
-
-
-/*  first, check for collision  */
-
-
-
+	/* first, check for collision */
 	list ($ret, $collisionId) = PermalinksMapHelper::fetchItemIdForAlias($aliasName);
 	if ($ret) {
 	    return $ret;
 	}
 	if (isset($collisionId)) {
-	    
-
-
-/*  we expected null, this means we have a collision. Throw it  */
-
-
-
+	    /* we expected null, this means we have a collision. Throw it */
 	    return GalleryCoreApi::error(ERROR_COLLISION);
 	}
 
-	
-
-
-/*  Add a new alias  */
-
-
-
+	/* Add a new alias */
 	$ret = GalleryCoreApi::addMapEntry('PermalinksMap',
 					   array('aliasName' => $aliasName, 'destId' => $itemId));
 	if ($ret) {
@@ -125,13 +107,7 @@ class PermalinksMapHelper {
      * @return GalleryStatus a status code
      */
     static function deleteAlias($aliasName) {
-	
-
-
-/*  Remove this alias from our groups table.  */
-
-
-
+	/* Remove this alias from our groups table. */
 	$ret = GalleryCoreApi::removeMapEntry('PermalinksMap', array('aliasName' => $aliasName));
 	if ($ret) {
 	    return $ret;

@@ -130,13 +130,7 @@ class AdminPerformanceView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load some standard form parameters  */
-
-
-
+	/* Load some standard form parameters */
 	if ($form['formName'] != 'AdminPerformance') {
 	    $form['formName'] = 'AdminPerformance';
 
@@ -165,24 +159,12 @@ class AdminPerformanceView extends GalleryView {
 
 	$form['disableCompileCheck'] = !empty($form['disableCompileCheck']);
 
-	
-
-
-/*  Set up our type lists  */
-
-
-
+	/* Set up our type lists */
 	$typeList = array('none' => $module->translate('No acceleration'),
 			  'partial' => $module->translate('Partial acceleration'),
 			  'full' => $module->translate('Full acceleration'));
 
-	
-
-
-/*  Set up our time lists  */
-
-
-
+	/* Set up our time lists */
 	$expirationTimeLists = array();
 	foreach (array(15, 30, 45) as $minutes) {
 	    $expirationTimeList[$minutes * 60] =

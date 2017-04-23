@@ -37,13 +37,7 @@ class CartModule extends GalleryModule {
 	$this->setId('cart');
 	$this->setName($gallery->i18n('Cart'));
 	$this->setDescription($gallery->i18n('Shopping Cart Module'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() function below too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() function below too */
 	$this->_templateVersion = 1;
 	$this->setGroup('commerce', $gallery->i18n('Commerce'));
 	$this->setCallbacks('getItemLinks');
@@ -67,25 +61,13 @@ class CartModule extends GalleryModule {
 
 	switch ($currentVersion) {
 	case '0':
-	    
-
-
-/*  Register our permission  */
-
-
-
+	    /* Register our permission */
 	    $ret = GalleryCoreApi::registerPermission($this->getId(), 'cart.add',
 						      $gallery->i18n('[cart] Add to cart'));
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Give everybody cart permission by default  */
-
-
-
+	    /* Give everybody cart permission by default */
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'], 'cart.add', true);
@@ -129,25 +111,13 @@ class CartModule extends GalleryModule {
 	case '0.9.5':
 	case '0.9.6':
 	case '1.0.0':
-	    
-
-
-/*  Register our permission  */
-
-
-
+	    /* Register our permission */
 	    $ret = GalleryCoreApi::registerPermission($this->getId(), 'cart.add',
 						      $gallery->i18n('[cart] Add to cart'));
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Give everybody cart permission by default  */
-
-
-
+	    /* Give everybody cart permission by default */
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'], 'cart.add', true);
 	    if ($ret) {
@@ -160,33 +130,15 @@ class CartModule extends GalleryModule {
 	case '1.0.4':
 	case '1.0.5':
 	case '1.0.6':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.0.7':
 	case '1.0.8':
-	    
-
-
-/*  Added CartPluginInterface_1_1  */
-
-
-
+	    /* Added CartPluginInterface_1_1 */
 	case '1.0.9':
 	case '1.0.10':
 	case '1.0.11':
 	case '1.0.12':
-	    
-
-
-/*  Core API 8.0 & Module API 4.0  */
-
-
-
+	    /* Core API 8.0 & Module API 4.0 */
 
 	case 'end of upgrade path':
 	    break;
@@ -208,13 +160,7 @@ class CartModule extends GalleryModule {
 	    if (isset($permissions[$item->getId()]['cart.add'])) {
 		$itemTypeNames = array_merge($item->itemTypeName(), $item->itemTypeName(false));
 		if (false) {
-		    
-
-
-/*  Specific translations:  */
-
-
- _('Add Album To Cart'); _('Add Photo To Cart');
+		    /* Specific translations: */ _('Add Album To Cart'); _('Add Photo To Cart');
 		}
 		$links[$item->getId()][] =
 		    array('text' => $this->_translate(

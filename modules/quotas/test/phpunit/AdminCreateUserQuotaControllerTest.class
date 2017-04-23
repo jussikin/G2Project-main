@@ -37,13 +37,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a user to add a quota to  */
-
-
-
+	/* Create a user to add a quota to */
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -80,13 +74,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
     }
 
     function testCreateUserQuotaMissingValues() {
-	
-
-
-/*  No Values  */
-
-
-
+	/* No Values */
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 
@@ -98,13 +86,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
 						   'form[error][quotaUnit][missing]')),
 			    $results);
 
-	
-
-
-/*  quota size  */
-
-
-
+	/* quota size */
 	GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
 
 	$results = $this->handleRequest();
@@ -114,13 +96,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
 				  'error' => array('form[error][quotaUnit][missing]')),
 			    $results);
 
-	
-
-
-/*  quota unit only  */
-
-
-
+	/* quota unit only */
 	GalleryUtilities::removeRequestVariable('form[quotaSize]');
 	GalleryUtilities::putRequestVariable('form[quotaUnit]', 'MB');
 
@@ -151,13 +127,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Attempt to create a quota for the user that already has one  */
-
-
-
+	/* Attempt to create a quota for the user that already has one */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'quotas.AdminCreateUserQuota'),

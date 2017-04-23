@@ -56,13 +56,7 @@ class Getid3Helper {
     static function setDefaultProperties($viewMode) {
 	switch($viewMode) {
 	case GETID3_SUMMARY:
-	    
-
-
-/*  This is an initial install; make sure that we have some reasonable defaults  */
-
-
-
+	    /* This is an initial install; make sure that we have some reasonable defaults */
 	    $properties[] = 'Artist';
 	    $properties[] = 'Album';
 	    $properties[] = 'Track';
@@ -124,13 +118,7 @@ class Getid3Helper {
 
     function getId3ArchiveRecurse($results, $fileArray, $nameprefix='') {
 	foreach (array_keys($fileArray) as $filename) {
-	    
-
-
-/*  Only prepend a non-empty nameprefix and '/' to filename  */
-
-
-
+	    /* Only prepend a non-empty nameprefix and '/' to filename */
 	    if ($nameprefix == '') {
 		$prefixedname = $filename;
 	    } else {
@@ -163,56 +151,26 @@ class Getid3Helper {
 	Getid3Helper::_fetchRawGetid3Data($path, $rawGetid3Data);
 	$fileArray = null;
 	if (isset($rawGetid3Data['zip']['files'])) {
-	    
-
-
-/*  We must recurse through files array  */
-
-
-
+	    /* We must recurse through files array */
 	    return(array(null,
 		 Getid3Helper::getId3ArchiveRecurse(array(), $rawGetid3Data['zip']['files'])));
 	}
 	if (isset($rawGetid3Data['iso']['files'])) {
-	    
-
-
-/*  Recurse through files like zip  */
-
-
-
+	    /* Recurse through files like zip */
 	    return(array(null,
 		Getid3Helper::getId3ArchiveRecurse(array(), $rawGetid3Data['iso']['files'])));
 	}
 	if (isset($rawGetid3Data['tar']['file_details'])) {
-	    
-
-
-/*  getid3's tar output allows us to simply look, and not have to recurse  */
-
-
-
+	    /* getid3's tar output allows us to simply look, and not have to recurse */
 	    return(array(null,
 		 Getid3Helper::getId3ArchiveTar($rawGetid3Data['tar']['file_details'])));
 	}
 	if (isset($rawGetid3Data['gzip']['member_header']['1']['tar']['file_details'])) {
-	    
-
-
-/*  tar-gzip is like tar, just buried a little deeper  */
-
-
-
+	    /* tar-gzip is like tar, just buried a little deeper */
 	    return(array(null, Getid3Helper::getId3ArchiveTar(
 	       $rawGetid3Data['gzip']['member_header']['1']['tar']['file_details'])));
 	}
-	
-
-
-/*  File probably isn't an archive  */
-
-
-
+	/* File probably isn't an archive */
 	return (array(null, null));
     }
 
@@ -236,13 +194,7 @@ class Getid3Helper {
 
 	$errors = Getid3Helper::_getValue($rawGetid3Data, explode('.', 'error.0'));
 	if (isset($errors) && strlen($errors)) {
-		
-
-
-/*  If there was an error, return nothing  */
-
-
-
+		/* If there was an error, return nothing */
 		return array(null, array());
 	}
 	foreach ($properties as $property) {
@@ -269,13 +221,7 @@ class Getid3Helper {
      * @return int an unix timestamp, null if not parsed
      */
     function getTimeDowMDHMSY($value) {
-	
-
-
-/*  Match "WED DEC 21 19:19:17 2005" format produced by a Canon SD400  */
-
-
-
+	/* Match "WED DEC 21 19:19:17 2005" format produced by a Canon SD400 */
 	if (preg_match('#(\w+)\ +(\w+)\ +(\d+)\ +(\d+):(\d+):(\d+)\ +(\d+)#', $value, $m)) {
 	    $month = 0;
 	    switch($m[2]) {
@@ -328,20 +274,8 @@ class Getid3Helper {
     function getTimeInt($value) {
 	if (preg_match('/^\d+$/', $value)) {
 	    $time = intval($value);
-	    
-
-
-/*  Adjust time by time zone offset  */
-
-
-
-	    
-
-
-/*  Get difference to UTC in seconds, then add to time  */
-
-
-
+	    /* Adjust time by time zone offset */
+	    /* Get difference to UTC in seconds, then add to time */
 	    $utcdiff = date('Z', $time);
 	    $time = $time + $utcdiff;
 	    return $time;
@@ -367,13 +301,7 @@ class Getid3Helper {
 
 	switch ($property) {
 	case 'DateTime':
-	    
-
-
-/*  If it is already a timestamp, as a string  */
-
-
-
+	    /* If it is already a timestamp, as a string */
 	    $tmp = Getid3Helper::getTimeInt($value);
 	    if (isset($tmp)) {
 		$time = $tmp;
@@ -386,13 +314,7 @@ class Getid3Helper {
 		    if (isset($tmp)) {
 			$time = $tmp;
 		    } else {
-			
-
-
-/*  If we couldn't turn it into a timestamp, just use the original value  */
-
-
-
+			/* If we couldn't turn it into a timestamp, just use the original value */
 			return $value;
 		    }
 		}
@@ -509,13 +431,7 @@ class Getid3Helper {
      * @return GalleryStatus a status code
      */
     static function setProperties($viewMode, $properties) {
-	
-
-
-/*  Remove all old map entries  */
-
-
-
+	/* Remove all old map entries */
 	$ret = GalleryCoreApi::removeMapEntry('Getid3PropsMap', array('viewMode' => $viewMode));
 	if ($ret) {
 	    return $ret;
@@ -557,13 +473,7 @@ class Getid3Helper {
 	    return $data;
 	}
 
-	
-
-
-/*  Must haves  */
-
-
-
+	/* Must haves */
 	$data['Album'] =
 	    array($gallery->i18n('Album'),
 		    'tags.vorbiscomment.album.0',

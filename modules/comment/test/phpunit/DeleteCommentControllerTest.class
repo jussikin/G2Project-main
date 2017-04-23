@@ -38,13 +38,7 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create two random items  */
-
-
-
+	/* Create two random items */
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $this->_item[$i]) = $this->_createRandomDataItem($this->_getRootId());
 	    if ($ret) {
@@ -53,13 +47,7 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase {
 
 	    $this->_markForCleanup($this->_item[$i]);
 
-	    
-
-
-/*  Create a comment in it that we can delete  */
-
-
-
+	    /* Create a comment in it that we can delete */
 	    list ($ret, $this->_comment[$i]) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryComment');
 	    if ($ret) {
@@ -115,24 +103,12 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase {
     }
 
     function testCancelDelete() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 	GalleryUtilities::putRequestVariable('commentId', $this->_comment[1]->getId());
 	GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ShowItem',
 						      'itemId' => $this->_item[0]->getId()),

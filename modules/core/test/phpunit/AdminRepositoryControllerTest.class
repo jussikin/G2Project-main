@@ -68,13 +68,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Assert that we have 1 callback in the queue  */
-
-
-
+	/* Assert that we have 1 callback in the queue */
 	$this->assertEquals(1, $mockAdapter->getCallbackCount());
 
 	$callback = $mockAdapter->getCallback(0);
@@ -124,13 +118,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase {
 	$repository->setReply('getAllUpgradeablePackages', array(), array(null, array()));
 	$this->_controller->_repositories['test'] = $repository;
 
-	
-
-
-/*  Test case when no upgradeable packages exist.  */
-
-
-
+	/* Test case when no upgradeable packages exist. */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminRepository'),
@@ -149,13 +137,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase {
 	$repository->setReply('getAllUpgradeablePackages', array(), array(null, $packages));
 	$this->_controller->_repositories['test'] = $repository;
 
-	
-
-
-/*  Test case when some packages are upgradeable.  */
-
-
-
+	/* Test case when some packages are upgradeable. */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.ProgressBar'),
 				  'status' => array(),

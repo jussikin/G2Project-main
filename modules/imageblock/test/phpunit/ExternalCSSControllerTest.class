@@ -50,13 +50,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase {
 	    }
 	}
 
-	
-
-
-/*  Ensure there's a image frame implementation  */
-
-
-
+	/* Ensure there's a image frame implementation */
 	$this->_markFactoryForCleanup();
 	$this->_registerFactoryImplementationForTest('ImageFrameInterface_1_1',
 		'ExternalCSSControllerTestImageFrame', 'testImplId',
@@ -103,13 +97,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase {
 	    }
 	}
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'imageblock.ExternalCSS'),
 				  'status' => array(),

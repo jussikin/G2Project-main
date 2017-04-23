@@ -57,13 +57,7 @@ class BuildDerivativesTask extends MaintenanceTask {
 	$templateAdapter->updateProgressBar(
 	    $module->translate('Build All Thumbnails/Resizes'), '', 0);
 
-	
-
-
-/*  Check all existing derivatives  */
-
-
-
+	/* Check all existing derivatives */
 	$query = '
 	SELECT
 	  [DerivativeImage::id]
@@ -89,13 +83,7 @@ class BuildDerivativesTask extends MaintenanceTask {
 	    }
 	}
 
-	
-
-
-/*  Also attempt to add derivatives to items without them (no toolkit when item added)  */
-
-
-
+	/* Also attempt to add derivatives to items without them (no toolkit when item added) */
 	$query = '
 	SELECT
 	  [GalleryDataItem::id]
@@ -218,13 +206,7 @@ class BuildDerivativesTask extends MaintenanceTask {
 	$message = $module->translate(
 		array('text' => 'Processing image %d of %d', 'arg1' => $i, 'arg2' => $total));
 	$templateAdapter->updateProgressBar($message, '', $i / $total);
-	
-
-
-/*  Release locks (avoid too many open files for flock based locking)  */
-
-
-
+	/* Release locks (avoid too many open files for flock based locking) */
 	$ret = $storage->checkPoint();
 	if ($ret) {
 	    return $ret;

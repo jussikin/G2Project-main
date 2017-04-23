@@ -40,13 +40,7 @@ class GalleryUserGroupHelper_medium {
 	$userId = (int) $userId;
 	$groupId = (int) $groupId;
 
-	
-
-
-/*  Is the user already in the group?  */
-
-
-
+	/* Is the user already in the group? */
 	list ($ret, $inGroup) = GalleryCoreApi::isUserInGroup($userId, $groupId);
 	if ($ret) {
 	    return $ret;
@@ -55,13 +49,7 @@ class GalleryUserGroupHelper_medium {
 	    return null;
 	}
 
-	
-
-
-/*  Add a new entry in our groups table to represent this relationship.  */
-
-
-
+	/* Add a new entry in our groups table to represent this relationship. */
 	$ret = GalleryCoreApi::addMapEntry(
 	    'GalleryUserGroupMap', array('userId' => $userId, 'groupId' => $groupId));
 	if ($ret) {
@@ -91,13 +79,7 @@ class GalleryUserGroupHelper_medium {
 	$userId = (int) $userId;
 	$groupId = (int) $groupId;
 
-	
-
-
-/*  Remove this relationship from our groups table.  */
-
-
-
+	/* Remove this relationship from our groups table. */
 	$ret = GalleryCoreApi::removeMapEntry(
 	    'GalleryUserGroupMap', array('userId' => $userId, 'groupId' => $groupId));
 	if ($ret) {
@@ -126,13 +108,7 @@ class GalleryUserGroupHelper_medium {
 
 	$userId = (int) $userId;
 
-	
-
-
-/*  Remove this relationship from our groups table.  */
-
-
-
+	/* Remove this relationship from our groups table. */
 	$ret = GalleryCoreApi::removeMapEntry('GalleryUserGroupMap', array('userId' => $userId));
 	if ($ret) {
 	    return $ret;
@@ -159,13 +135,7 @@ class GalleryUserGroupHelper_medium {
 
 	$groupId = (int) $groupId;
 
-	
-
-
-/*  Remove this relationship from our groups table.  */
-
-
-
+	/* Remove this relationship from our groups table. */
 	$ret = GalleryCoreApi::removeMapEntry('GalleryUserGroupMap', array('groupId' => $groupId));
 	if ($ret) {
 	    return $ret;

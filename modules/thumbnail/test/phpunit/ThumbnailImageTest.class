@@ -55,13 +55,7 @@ class ThumbnailImageTest extends GalleryTestCase {
 	    $parentId = $this->_albums[$i]->getId();
 	}
 
-	
-
-
-/*  delete the top album  */
-
-
-
+	/* delete the top album */
 	$this->_markForCleanup($this->_albums[0]);
 
 	list ($ret, $this->_item) = $this->_createRandomDataItem($parentId);
@@ -69,13 +63,7 @@ class ThumbnailImageTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add a custom thumbnail for the data item.  */
-
-
-
+	/* Add a custom thumbnail for the data item. */
 	list ($ret, $customThumbId) = ThumbnailHelper::addItem(null, $this->_item->getId(),
 			    'G2audio.jpg', dirname(__FILE__) . '/../../images/' . 'G2audio.jpg',
 			    'image/jpeg', array('width' => 400, 'height' => 352));
@@ -83,13 +71,7 @@ class ThumbnailImageTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use existing mime-type thumbnail for tests.  */
-
-
-
+	/* Use existing mime-type thumbnail for tests. */
 	list ($ret, $mimeTypeMap) = ThumbnailHelper::fetchMimeTypeMap();
 	if ($ret) {
 	    return $ret;
@@ -158,13 +140,7 @@ class ThumbnailImageTest extends GalleryTestCase {
 	}
 	$this->_markForCleanup($thumbnail);
 
-	
-
-
-/*  Verify that the new thumbnail exists and has the correct attributes.  */
-
-
-
+	/* Verify that the new thumbnail exists and has the correct attributes. */
 	list ($ret, $thumbnailImage) = ThumbnailHelper::fetchThumbnail($rootAlbumId);
 	if ($ret) {
 	    return $ret;

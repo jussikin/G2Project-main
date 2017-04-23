@@ -41,13 +41,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a new user  */
-
-
-
+	/* Create a new user */
 	list ($ret, $this->_user) = $this->_createRandomUser(null, 'pass&word');
 	if ($ret) {
 	    return $ret;
@@ -73,13 +67,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     function testLogin() {
 	global $gallery;
 
-	
-
-
-/*  Does not require request forgery check  */
-
-
-
+	/* Does not require request forgery check */
 	$_SERVER['HTTP_USER_AGENT'] = 'Internet Explorer';
 	GalleryUtilities::removeRequestVariable('authToken');
 
@@ -203,13 +191,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     function testFetchAlbums() {
 	global $gallery;
 
-	
-
-
-/*  Create some albums  */
-
-
-
+	/* Create some albums */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $album[$i]) = $this->_createRandomAlbum($parentId);
@@ -219,13 +201,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	    $parentId = $album[$i]->getId();
 	}
 
-	
-
-
-/*  give the 2nd album only view permissions  */
-
-
-
+	/* give the 2nd album only view permissions */
 	$ret = GalleryCoreApi::removeItemPermissions($album[1]->getId());
 	if ($ret) {
 	    return $ret;
@@ -245,13 +221,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(
 		$this->_code['SUCCESS'], (int)$response->getProperty('status'), 'success');
 
-	
-
-
-/*  Make sure the albums we created are in the list -- Ignore the rest of the results  */
-
-
-
+	/* Make sure the albums we created are in the list -- Ignore the rest of the results */
 	$this->assert($response->getProperty('album_count') >= 4, 'album count');
 	$this->assert($response->hasProperty('status_text'), 'status_text');
 
@@ -287,13 +257,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     function testFetchAlbumsNoPerms() {
 	global $gallery;
 
-	
-
-
-/*  Create some albums  */
-
-
-
+	/* Create some albums */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $album[$i]) = $this->_createRandomAlbum($parentId);
@@ -303,13 +267,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	    $parentId = $album[$i]->getId();
 	}
 
-	
-
-
-/*  give the 2nd album only view permissions  */
-
-
-
+	/* give the 2nd album only view permissions */
 	$ret = GalleryCoreApi::removeItemPermissions($album[1]->getId());
 	if ($ret) {
 	    return $ret;
@@ -330,13 +288,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(
 		$this->_code['SUCCESS'], (int)$response->getProperty('status'), 'success');
 
-	
-
-
-/*  Make sure the albums we created are in the list -- Ignore the rest of the results  */
-
-
-
+	/* Make sure the albums we created are in the list -- Ignore the rest of the results */
 	$this->assert($response->getProperty('album_count') >= 4, 'album count');
 	$this->assert($response->hasProperty('status_text'), 'status_text');
 
@@ -364,13 +316,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     function testFetchAlbumsPrune() {
 	global $gallery;
 
-	
-
-
-/*  Create some albums  */
-
-
-
+	/* Create some albums */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 4; $i++) {
 	    list ($ret, $album[$i]) = $this->_createRandomAlbum($parentId);
@@ -384,13 +330,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  give albums 1 and 3 only view permissions  */
-
-
-
+	/* give albums 1 and 3 only view permissions */
 	foreach (array(1, 3) as $i) {
 	    $ret = GalleryCoreApi::removeItemPermissions($album[$i]->getId());
 	    if ($ret) {
@@ -420,23 +360,11 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(
 		$this->_code['SUCCESS'], (int)$response->getProperty('status'), 'status');
 
-	
-
-
-/*  Make sure the albums we created are in the list -- Ignore the rest of the results  */
-
-
-
+	/* Make sure the albums we created are in the list -- Ignore the rest of the results */
 	$this->assert($response->getProperty('album_count') >= 5, 'album count');
 	$this->assert($response->hasProperty('status_text'), 'status_text');
 
-	
-
-
-/*  test album contents  */
-
-
-
+	/* test album contents */
 	$seen = array();
 	for ($i = 1; $i <= $response->getProperty('album_count'); $i++) {
 	    for ($j = 0; $j < sizeof($album); $j++) {
@@ -471,13 +399,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     function testFetchAlbumsPruneNoPerms() {
 	global $gallery;
 
-	
-
-
-/*  Create some albums  */
-
-
-
+	/* Create some albums */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 4; $i++) {
 	    list ($ret, $album[$i]) = $this->_createRandomAlbum($parentId);
@@ -491,13 +413,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  give albums 1 and 3 only view permissions  */
-
-
-
+	/* give albums 1 and 3 only view permissions */
 	foreach (array(1, 3) as $i) {
 	    $ret = GalleryCoreApi::removeItemPermissions($album[$i]->getId());
 	    if ($ret) {
@@ -527,23 +443,11 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the albums we created are in the list -- Ignore the rest of the results  */
-
-
-
+	/* Make sure the albums we created are in the list -- Ignore the rest of the results */
 	$this->assert($response->getProperty('album_count') >= 5);
 	$this->assert($response->hasProperty('status_text'));
 
-	
-
-
-/*  test album contents  */
-
-
-
+	/* test album contents */
 	$seen = array();
 	for ($i = 1; $i <= $response->getProperty('album_count'); $i++) {
 	    for ($j = 0; $j < sizeof($album); $j++) {
@@ -590,13 +494,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the item was added  */
-
-
-
+	/* Make sure the item was added */
 	list ($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -684,13 +582,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the item was added  */
-
-
-
+	/* Make sure the item was added */
 	list ($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -703,13 +595,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Make sure our option was called  */
-
-
-
+	/* Make sure our option was called */
 	$this->assertEquals($newItem->getId(),
 			    GalleryRemoteControllerTestAddOption::getCalledWithId());
 
@@ -736,13 +622,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 
 	$newAlbumId = (int)$response->getProperty('album_name');
 
-	
-
-
-/*  Make sure the item was added  */
-
-
-
+	/* Make sure the item was added */
 	list ($ret, $newAlbum) = GalleryCoreApi::loadEntitiesById($newAlbumId, 'GalleryAlbumItem');
 	if ($ret) {
 	    return $ret;
@@ -762,25 +642,13 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the there are no images  */
-
-
-
+	/* Make sure the there are no images */
 	$this->assert($response->getProperty('image_count') == 0);
 	$this->assert($response->hasProperty('status_text'));
     }
 
     function testFetchAlbumImages() {
-	
-
-
-/*  Create some images  */
-
-
-
+	/* Create some images */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $image[$i]) = $this->_createRandomDataItem($parentId, 'image/jpg');
@@ -803,25 +671,13 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the there are 2 images  */
-
-
-
+	/* Make sure the there are 2 images */
 	$this->assertEquals('2', $response->getProperty('image_count'));
 	$this->assert($response->hasProperty('status_text'));
     }
 
     function testFetchAlbumImagesAlbumsToo() {
-	
-
-
-/*  Create some images  */
-
-
-
+	/* Create some images */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $image[$i]) = $this->_createRandomDataItem($parentId, 'image/jpg');
@@ -850,25 +706,13 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the there are 2 images and 1 album  */
-
-
-
+	/* Make sure the there are 2 images and 1 album */
 	$this->assertEquals('3', $response->getProperty('image_count'), 'image count');
 	$this->assert($response->hasProperty('status_text'));
     }
 
     function testFetchAlbumImagesExtrafields() {
-	
-
-
-/*  Create some images  */
-
-
-
+	/* Create some images */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $image[$i]) = $this->_createRandomDataItem($parentId, 'image/jpg');
@@ -894,13 +738,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the the extra fields match  */
-
-
-
+	/* Make sure the the extra fields match */
 	$this->assertEquals($image[0]->getSummary(),
                             $response->getProperty('image.extrafield.Summary.1'));
 	$this->assertEquals($image[0]->getDescription(),
@@ -910,13 +748,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 
     function testFetchAlbumImagesAlbumsRandom() {
 	$ids = array();
-	
-
-
-/*  Create some images  */
-
-
-
+	/* Create some images */
 	$parentId = $this->_rootAlbum->getId();
 	for ($i = 0; $i < 2; $i++) {
 	    list ($ret, $image[$i]) = $this->_createRandomDataItem($parentId, 'image/jpg');
@@ -947,26 +779,14 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the there is 1 image  */
-
-
-
+	/* Make sure the there is 1 image */
 	$this->assertEquals('1', $response->getProperty('image_count'));
 	$this->assert(in_array($response->getProperty('image.name.1'), $ids));
 	$this->assert($response->hasProperty('status_text'));
     }
 
     function testIncrementViewCount() {
-	
-
-
-/*  Create some images  */
-
-
-
+	/* Create some images */
 	$parentId = $this->_rootAlbum->getId();
 
 	list ($ret, $image) = $this->_createRandomDataItem($parentId, 'image/jpg');
@@ -979,13 +799,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	return $ret;
 	}
 
-	
-
-
-/*  increase the view count on the image  */
-
-
-
+	/* increase the view count on the image */
 	GalleryUtilities::putRequestVariable('form[cmd]', 'increment-view-count');
 	GalleryUtilities::putRequestVariable('form[itemId]', $image->getId());
 	$results = $this->handleRequest();
@@ -995,13 +809,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  increase the view count on the album  */
-
-
-
+	/* increase the view count on the album */
 	GalleryUtilities::putRequestVariable('form[cmd]', 'increment-view-count');
 	GalleryUtilities::putRequestVariable('form[itemId]', $album->getId());
 	$results = $this->handleRequest();
@@ -1011,13 +819,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Make sure the the view count is 1  */
-
-
-
+	/* Make sure the the view count is 1 */
 	list ($ret, $imageViewCount) = GalleryCoreApi::fetchItemViewCount($image->getId());
 	if ($ret) {
 	    return $ret;
@@ -1044,13 +846,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     }
 
     function testAlbumProperties() {
-	
-
-
-/*  Set the preferences  */
-
-
-
+	/* Set the preferences */
 	$ret = GalleryCoreApi::removeDerivativePreferencesForItem($this->_rootAlbum->getId());
 	if ($ret) {
 	    return $ret;
@@ -1077,13 +873,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
     }
 
     function testImageProperties() {
-	
-
-
-/*  Create an image  */
-
-
-
+	/* Create an image */
 	$parentId = $this->_rootAlbum->getId();
 	list ($ret, $image) = $this->_createRandomDataItem($parentId, 'image/jpg');
 	if ($ret) {
@@ -1111,13 +901,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$response = $results['status']['controllerResponse'];
 	$this->assertEquals($this->_code['SUCCESS'], (int)$response->getProperty('status'));
 
-	
-
-
-/*  Check the results  */
-
-
-
+	/* Check the results */
 	$this->assertEquals($image->getTitle(), $response->getProperty('image.caption'));
 	$this->assertEquals($image->getPathComponent(), $response->getProperty('image.title'));
 	$this->assertEquals($image->getId().'', $response->getProperty('image.name'));
@@ -1130,13 +914,7 @@ class GalleryRemoteControllerTest extends GalleryControllerTestCase {
 	$_SERVER['HTTP_USER_AGENT'] = 'Internet Explorer';
 	GalleryUtilities::removeRequestVariable('authToken');
 
-	
-
-
-/*  Just try any request, it should be blocked.  */
-
-
-
+	/* Just try any request, it should be blocked. */
 	GalleryUtilities::putRequestVariable('form[cmd]', 'add-item');
 
 	$results = $this->handleRequest(ERROR_REQUEST_FORGED);

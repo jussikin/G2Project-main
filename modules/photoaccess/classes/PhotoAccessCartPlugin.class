@@ -25,13 +25,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PhotoAccessCartPlugin 
-
-
-/*  implements CartPluginInterface_1_0 and CartPluginInterface_1_1  */
-
-
- {
+class PhotoAccessCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInterface_1_1 */ {
     /**
      * @see CartPluginInterface_1_0::getSupportedItemTypes
      */

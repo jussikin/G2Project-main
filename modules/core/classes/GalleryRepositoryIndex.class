@@ -87,13 +87,7 @@ class GalleryRepositoryIndex {
 					 'Unable to create repository cached paths');
 	}
 
-	
-
-
-/*  Download index from the Gallery server and verify its integrity.  */
-
-
-
+	/* Download index from the Gallery server and verify its integrity. */
 	list ($wasDownloaded, $indexContents) = $this->_utilities->downloadFile($indexUrl);
 	if (!$wasDownloaded) {
 	    $errorMessage = $gallery->i18n('Error downloading index from \'%s\'.');
@@ -113,26 +107,14 @@ class GalleryRepositoryIndex {
 					$gallery->i18n('Index integrity check failed.'));
 	}
 
-	
-
-
-/*  Write index to the filesystem.  */
-
-
-
+	/* Write index to the filesystem. */
 	$indexPath = $this->getRepositoryCacheDir() . 'index.repository';
 	if (false === $platform->file_put_contents($indexPath, $indexContents)) {
 	    return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__,
 					'Error writing index to the filesystem.');
 	}
 
-	
-
-
-/*  Save update time and unserialize the index.  */
-
-
-
+	/* Save update time and unserialize the index. */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core',
 						  'repository.updateTime', time());
 	if ($ret) {
@@ -167,13 +149,7 @@ class GalleryRepositoryIndex {
 		    null);
 	}
 
-	
-
-
-/*  Get timestamp  */
-
-
-
+	/* Get timestamp */
 	list ($ret, $timestamp) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'repository.updateTime');
 	if ($ret) {
@@ -212,13 +188,7 @@ class GalleryRepositoryIndex {
 	$ret = $this->unserializeIndex($index);
 	if ($ret) {
 	    if ($ret->getErrorCode() & ERROR_BAD_PARAMETER) {
-		
-
-
-/*  Remove the broken index so that a subsequent download will fix it  */
-
-
-
+		/* Remove the broken index so that a subsequent download will fix it */
 		$platform->unlink($indexPath);
 		$ret = GalleryCoreApi::error(
 		    ERROR_BAD_PARAMETER, __FILE__, __LINE__,
@@ -340,25 +310,13 @@ class GalleryRepositoryIndex {
 		    null);
 	}
 
-	
-
-
-/*  Make sure description exists in current language.  */
-
-
-
+	/* Make sure description exists in current language. */
 	list ($ret, $language) = $gallery->getActiveLocale();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Fall back to en_US if the description is not available in the active language.  */
-
-
-
+	/* Fall back to en_US if the description is not available in the active language. */
 	if (!isset($this->_index[$pluginType . 's'][$pluginId]['descriptions'][$language])) {
 	    $language = 'en_US';
 	}
@@ -483,24 +441,12 @@ class GalleryRepositoryIndex {
 	$pluginList = array($pluginType => array());
 
 	foreach ($this->_index[$pluginType . 's'] as $pluginId => $plugin) {
-	    
-
-
-/*  Skip core module.  */
-
-
-
+	    /* Skip core module. */
 	    if ($pluginType == 'module' && $pluginId == 'core') {
 		continue;
 	    }
 
-	    
-
-
-/*  Check compatibility.  */
-
-
-
+	    /* Check compatibility. */
 	    $isCompatible = $this->_utilities->isPluginCompatible($pluginType,
 		    $plugin['header']['requiredCoreApi'], $plugin['header']['requiredPluginApi'],
 		    $coreApis);
@@ -509,13 +455,7 @@ class GalleryRepositoryIndex {
 		$pluginList[$pluginType][$pluginId] = $plugin;
 		$pluginList[$pluginType][$pluginId]['isCompatible'] = $isCompatible;
 
-		
-
-
-/*  If plugin is locally available, get its version.  */
-
-
-
+		/* If plugin is locally available, get its version. */
 		list ($ret, $isPluginAvailable) =
 		    $this->_utilities->isPluginAvailable($pluginType, $pluginId);
 		if ($ret) {

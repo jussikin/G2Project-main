@@ -29,13 +29,7 @@ GalleryCoreApi::requireOnce('modules/comment/module.inc');
  * @version $Revision: 17990 $
  * @static
  */
-class GalleryCommentHelper 
-
-
-/*  implements GalleryEventListener  */
-
-
- {
+class GalleryCommentHelper /* implements GalleryEventListener */ {
 
     /**
      * Return the comments associated with the given item
@@ -94,25 +88,13 @@ class GalleryCommentHelper
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Get all of our ids  */
-
-
-
+	/* Get all of our ids */
 	$allIds = array();
 	while ($result = $searchResults->nextResult()) {
 	    $allIds[] = (int)$result[0];
 	}
 
-	
-
-
-/*  Load all the comments at once  */
-
-
-
+	/* Load all the comments at once */
 	$comments = array();
 	if (!empty($allIds)) {
 	    list ($ret, $comments) = GalleryCoreApi::loadEntitiesById($allIds, 'GalleryComment');
@@ -223,25 +205,13 @@ class GalleryCommentHelper
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Get all of our ids  */
-
-
-
+	/* Get all of our ids */
 	$allIds = array();
 	while ($result = $searchResults->nextResult()) {
 	    $allIds[] = (int)$result[0];
 	}
 
-	
-
-
-/*  Load all the comments at once  */
-
-
-
+	/* Load all the comments at once */
 	$comments = array();
 	if (!empty($allIds)) {
 	    list ($ret, $comments) = GalleryCoreApi::loadEntitiesById($allIds, 'GalleryComment');
@@ -250,13 +220,7 @@ class GalleryCommentHelper
 	    }
 	}
 
-	
-
-
-/*  Get total count of comments  */
-
-
-
+	/* Get total count of comments */
 	if (!$count && !$offset) {
 	    $totalCount = count($allIds);
 	} else {
@@ -366,25 +330,13 @@ class GalleryCommentHelper
      *               array values used for the AddComment page (itemId, host, validation plugins)
      */
     static function getAddComment(&$item, &$form) {
-	
-
-
-/*  Make sure we have permission to add a comment  */
-
-
-
+	/* Make sure we have permission to add a comment */
 	list ($ret, $permissions) = GalleryCoreApi::getPermissions($item->getId());
 	if ($ret) {
 	    return array($ret, null);
 	}
 	if (empty($permissions['core.view'])) {
-	    
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+	    /* Avoid information disclosure, act as if the item didn't exist. */
 	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 	}
 	if (empty($permissions['comment.add'])) {
@@ -402,13 +354,7 @@ class GalleryCommentHelper
 	    }
 	}
 
-	
-
-
-/*  Check if we should use validation plugins for new comments  */
-
-
-
+	/* Check if we should use validation plugins for new comments */
 	$plugins = array();
 	list ($ret, $useValidationPlugins) = GalleryCommentHelper::useValidationPlugins();
 	if ($ret) {
@@ -420,13 +366,7 @@ class GalleryCommentHelper
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Let each plugin load its template data  */
-
-
-
+	    /* Let each plugin load its template data */
 	    foreach (array_keys($allPluginIds) as $pluginId) {
 		list ($ret, $plugin) =
 		    GalleryCoreApi::newFactoryInstanceById('GalleryValidationPlugin', $pluginId);
@@ -494,13 +434,7 @@ class GalleryCommentHelper
 		return array(null, null);
 	    }
 
-	    
-
-
-/*  Delete all comments owned by this user  */
-
-
-
+	    /* Delete all comments owned by this user */
 	    $query = '
 	    SELECT
 	      [GalleryComment::id]
@@ -587,13 +521,7 @@ class GalleryCommentHelper
 	if ($comment->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
 	    list ($ret, $isSpam) = $akismet->checkComment($comment);
 	    if ($ret && $ret->getErrorCode() & ERROR_UNKNOWN) {
-		
-
-
-/*  Akismet returned an error or akismet couldn't be contacted  */
-
-
-
+		/* Akismet returned an error or akismet couldn't be contacted */
 		$logError = true;
 		if ($comment->getPublishStatus() == COMMENT_PUBLISH_STATUS_PUBLISHED) {
 		    $comment->setPublishStatus(COMMENT_PUBLISH_STATUS_UNPUBLISHED);
@@ -609,13 +537,7 @@ class GalleryCommentHelper
 		if ($oldStatus == COMMENT_PUBLISH_STATUS_SPAM) {
 		    $ret = $akismet->submitHam($comment);
 		    if ($ret && $ret->getErrorCode() & ERROR_UNKNOWN) {
-			
-
-
-/*  Akismet returned an error or akismet couldn't be contacted  */
-
-
-
+			/* Akismet returned an error or akismet couldn't be contacted */
 			$logError = true;
 		    } else if ($ret) {
 			return $ret;
@@ -623,13 +545,7 @@ class GalleryCommentHelper
 		} else if ($comment->getPublishStatus() == COMMENT_PUBLISH_STATUS_SPAM) {
 		    $ret = $akismet->submitSpam($comment);
 		    if ($ret && $ret->getErrorCode() & ERROR_UNKNOWN) {
-			
-
-
-/*  Akismet returned an error or akismet couldn't be contacted  */
-
-
-
+			/* Akismet returned an error or akismet couldn't be contacted */
 			$logError = true;
 		    } else if ($ret) {
 			return $ret;

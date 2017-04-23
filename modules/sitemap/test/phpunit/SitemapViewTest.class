@@ -42,31 +42,13 @@ class SitemapViewTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	$this->_start_of_2005 = 1104566400; 
-
-
-/*  2005-01-01T08:00:00+00:00  */
-
-
-
-	$this->_start_of_2006 = 1136102400; 
-
-
-/*  2006-01-01T08:00:00+00:00  */
-
-
-
+	$this->_start_of_2005 = 1104566400; /* 2005-01-01T08:00:00+00:00 */
+	$this->_start_of_2006 = 1136102400; /* 2006-01-01T08:00:00+00:00 */
 
 	$gallery->_phpVm = new SitemapViewTestVm();
 	$gallery->_phpVm->setTime($this->_start_of_2006);
 
-	
-
-
-/*  Our data was created in 2005 and modified now (2006+)  */
-
-
-
+	/* Our data was created in 2005 and modified now (2006+) */
 	list ($ret, $this->_root) = $this->_createRandomAlbum(
 	    $this->_getRootId(), array(
 		'creationTimestamp' => $this->_start_of_2005));
@@ -76,53 +58,17 @@ class SitemapViewTest extends GalleryTestCase {
 	$this->_markForCleanup($this->_root);
 
 	$serials = array(
-	    365 * 24, 
-
-
-/*  change every hour   */
-
-
-
-	    365,      
-
-
-/*  change every day    */
-
-
-
-	    53,       
-
-
-/*  change every week  (not exactly 52 -- round up)  */
-
-
-
-	    13,       
-
-
-/*  change every month (not exactly 12 -- round up)  */
-
-
-
-	    1);       
-
-
-/*  change every year   */
-
-
-
+	    365 * 24, /* change every hour  */
+	    365,      /* change every day   */
+	    53,       /* change every week  (not exactly 52 -- round up) */
+	    13,       /* change every month (not exactly 12 -- round up) */
+	    1);       /* change every year  */
 
 	for ($i = 0; $i < count($serials); $i++) {
 	    $gallery->_phpVm->setTime($this->_start_of_2006 + $i + 1);
 	    list ($ret, $this->_item[$i]) = $this->_createRandomDataItem(
 		$this->_root->getId(), 'application/unknown',
-		array('serialNumber' => $serials[$i] - 1 
-
-
-/*  it will get incremented internally  */
-
-
-,
+		array('serialNumber' => $serials[$i] - 1 /* it will get incremented internally */,
 		      'creationTimestamp' => $this->_start_of_2005));
 	    if ($ret) {
 		return $ret;
@@ -179,13 +125,7 @@ class SitemapViewTest extends GalleryTestCase {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 
-	
-
-
-/*  Precache ACLs and clear locks before using mock storage  */
-
-
-
+	/* Precache ACLs and clear locks before using mock storage */
 	list ($ret) = GalleryCoreApi::fetchAccessListIds('core.view', $gallery->getActiveUserId());
 	if ($ret) {
 	    return $ret;

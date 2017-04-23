@@ -56,13 +56,7 @@ class ExifDescriptionOption extends ItemAddOption {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Check if we need to get/process any exifdata  */
-
-
-
+	/* Check if we need to get/process any exifdata */
 	if (($addOption & EXIF_ITEM_SUMMARY) || ($addOption & EXIF_ITEM_DESCRIPTION)) {
 	    $needed[] = 'IPTC/Caption';
 	    $needed[] = 'ImageDescription';
@@ -79,13 +73,7 @@ class ExifDescriptionOption extends ItemAddOption {
 	}
 
 	if (!empty($needed)) {
-	    
-
-
-/*  Copy the array because we will change it with do / while / array_splice  */
-
-
-
+	    /* Copy the array because we will change it with do / while / array_splice */
 	    $itemsInBatches = $items;
 	    /*
 	     * Batch size should be <= ulimit max open files, as long as we don't query this value,
@@ -220,13 +208,7 @@ class ExifDescriptionOption extends ItemAddOption {
 				    $operation, $args, $preserveOriginal, $currentItems[$i],
 				    empty($preferred) ? null : $preferred[$itemId]);
 			    if ($ret) {
-				
-
-
-/*  Just write to error log; allow (unrotated) photo to be added  */
-
-
-
+				/* Just write to error log; allow (unrotated) photo to be added */
 				GalleryCoreApi::addEventLogEntry('Gallery Error',
 					'Unable to rotate item ' . $itemId, $ret->getAsText());
 			    }

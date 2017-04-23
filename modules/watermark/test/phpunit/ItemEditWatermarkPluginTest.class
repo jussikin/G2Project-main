@@ -40,13 +40,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a watermark  */
-
-
-
+	/* Create a watermark */
 	$this->_watermark = new WatermarkImage();
 	$ret = $this->_watermark->create(
 	    GalleryCoreApi::getCodeBasePath('modules/core/test/data/test1.gif'),
@@ -103,13 +97,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
     }
 
     function _createItem($parentId, $mimeType, $usePreferred, $numResizes, $useThumbnail) {
-	
-
-
-/*  Initialize with watermark for remove tests  */
-
-
-
+	/* Initialize with watermark for remove tests */
 	$field = (strpos($this->name(), 'emove') === false || $mimeType != 'test/file') ? array()
 	    : array('postFilterOperations' => 'composite|plugins_data/modules/watermark/'
 		    . $this->_watermark->getFileName() . ',image/gif,62,75,manual,25.000,50.000');
@@ -166,13 +154,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 				  $this->_translate('Watermark applied successfully')),
 			    $results);
 
-	
-
-
-/*  Verify the postfilters were applied successfully  */
-
-
-
+	/* Verify the postfilters were applied successfully */
 	foreach (array($this->_preferred, $this->_resize, $this->_thumbnail) as $derivative) {
 	    list ($ret, $derivative) = $derivative->refresh();
 	    if ($ret) {
@@ -204,13 +186,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 	$this->assertEquals(array(array(), $this->_translate('Watermark removed successfully')),
 			    $results);
 
-	
-
-
-/*  And verify that they're all gone  */
-
-
-
+	/* And verify that they're all gone */
 	foreach (array($this->_preferred, $this->_resize, $this->_thumbnail) as $derivative) {
 	    list ($ret, $derivative) = $derivative->refresh();
 	    if ($ret) {
@@ -222,13 +198,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
     }
 
     function testWatermarkCreatePreferred() {
-	
-
-
-/*  Remap and get rid of the preferred to start  */
-
-
-
+	/* Remap and get rid of the preferred to start */
 	$ret = GalleryCoreApi::remapSourceIds($this->_preferred->getId(), $this->_item->getId());
 	if ($ret) {
 	    return ($ret);
@@ -252,13 +222,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 				  $this->_translate('Watermark applied successfully')),
 			    $results);
 
-	
-
-
-/*  Verify that we now have a preferred and that it has the right postfilter  */
-
-
-
+	/* Verify that we now have a preferred and that it has the right postfilter */
 	list ($ret, $preferredTable) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($this->_item->getId()));
 	if ($ret) {
@@ -275,13 +239,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 				$preferred->getPostFilterOperations(),
 				'Post filter mismatch');
 
-	    
-
-
-/*  Verify that the thumbnail and resize point to the preferred now  */
-
-
-
+	    /* Verify that the thumbnail and resize point to the preferred now */
 	    foreach (array($this->_resize, $this->_thumbnail) as $derivative) {
 		list ($ret, $derivative) = $derivative->refresh();
 		if ($ret) {
@@ -294,13 +252,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
     }
 
     function testRemoveWatermarkDeletePreferred() {
-	
-
-
-/*  Give our preferred a watermark but no operation  */
-
-
-
+	/* Give our preferred a watermark but no operation */
 	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_preferred->getId());
 	if ($ret) {
 	    return ($ret);
@@ -318,13 +270,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 	    return ($ret);
 	}
 
-	
-
-
-/*  Now tell the controller to remove watermarks  */
-
-
-
+	/* Now tell the controller to remove watermarks */
 	GalleryUtilities::putRequestVariable('form[action][remove]', 1);
 
 	$results = $this->handleRequest($this->_item, $this->_preferred);
@@ -332,13 +278,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 				  $this->_translate('Watermark removed successfully')),
 			    $results);
 
-	
-
-
-/*  Verify that the preferred is gone  */
-
-
-
+	/* Verify that the preferred is gone */
 	list ($ret, $preferredTable) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($this->_item->getId()));
 	if ($ret) {
@@ -347,13 +287,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 
 	$this->assert(empty($preferredTable), 'Preferred should be gone, but isn\'t');
 
-	
-
-
-/*  Verify that the thumbnail and resize point to the item now  */
-
-
-
+	/* Verify that the thumbnail and resize point to the item now */
 	foreach (array($this->_resize, $this->_thumbnail) as $derivative) {
 	    list ($ret, $derivative) = $derivative->refresh();
 	    if ($ret) {
@@ -403,13 +337,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
 	$this->assert(preg_match('/0.*core.ItemEdit.*' . $this->_album->getId() . '/',
 				 implode(' ', $progress)), 'Progress bar output');
 
-	
-
-
-/*  Verify the postfilters were applied successfully  */
-
-
-
+	/* Verify the postfilters were applied successfully */
 	foreach ($this->_items as $i => $item) {
 	    $getsWatermark = ($item->getMimeType() == 'test/file')
 		&& $isApply == ($recursive || $item->getParentId() == $this->_album->getId());
@@ -517,13 +445,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
     }
 
     function _registerTestToolkit($mimeType) {
-	
-
-
-/*  Register a composite operation for test/file  */
-
-
-
+	/* Register a composite operation for test/file */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ItemEditWatermarkPluginTestToolkit',
 	    'ItemEditWatermarkPluginTestToolkit',

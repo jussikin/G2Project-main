@@ -41,13 +41,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create an album to hold all of the test items  */
-
-
-
+	/* Create an album to hold all of the test items */
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return ($ret);
@@ -55,13 +49,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 
 	$this->_markForCleanup($this->_album);
 
-	
-
-
-/*  Save the existing cart  */
-
-
-
+	/* Save the existing cart */
 	list ($ret, $this->_saveCartItemCounts) = CartHelper::fetchCartItemCounts();
 	if ($ret) {
 	    return $ret;
@@ -78,13 +66,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
     function tearDown() {
 	global $gallery;
 
-	
-
-
-/*  Restore the existing cart  */
-
-
-
+	/* Restore the existing cart */
 	$ret = CartHelper::setCartItemCounts($this->_saveCartItemCounts);
 	if ($ret) {
 	    return $ret;
@@ -104,13 +86,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[pluginId]', 'updateCart');
 	GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'cart.ViewCart',
 						      'itemId'=> $this->_album->getId()),
@@ -118,13 +94,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify our cart  */
-
-
-
+	/* Verify our cart */
 	list ($ret, $cartItemCounts) = CartHelper::fetchCartItemCounts();
 	if ($ret) {
 	    return $ret;
@@ -138,13 +108,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[pluginId]', 'emptyCart');
 	GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'cart.ViewCart',
 						      'itemId'=> $this->_album->getId()),
@@ -153,13 +117,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 			    $results);
 
 
-	
-
-
-/*  Verify our cart  */
-
-
-
+	/* Verify our cart */
 	list ($ret, $cartItemCounts) = CartHelper::fetchCartItemCounts();
 	if ($ret) {
 	    return $ret;
@@ -169,13 +127,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
     }
 
     function testFulfillCart() {
-	
-
-
-/*  Work with real items in this test  */
-
-
-
+	/* Work with real items in this test */
 	list ($ret, $photoItem) = $this->_createRandomDataItem(
 		$this->_album->getId(), 'image/jpeg', array(),
 		GalleryCoreApi::getCodeBasePath('modules/core/test/data/test1.jpg'));
@@ -206,33 +158,15 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
 	$this->_registerFactoryImplementationForTest('CartPluginInterface_1_1',
 	    'ModifyCartControllerTestCartPlugin', 'modifycartcontrollertest', __FILE__, 'cart');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('controller' => 'cart.TestPlugin'),
-				  
-
-
-/*  Verify that itemId is not set, see bug 2013274  */
-
-
-
+				  /* Verify that itemId is not set, see bug 2013274 */
 				  'status' => array('cartModified' => 1),
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify that the cart has been processed correctly (filtered and updated count)  */
-
-
-
+	/* Verify that the cart has been processed correctly (filtered and updated count) */
 	/**
 	 * @todo Shouldn't we update item counts on fulfillment requests as well?
 	 */
@@ -243,13 +177,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase {
     }
 }
 
-class ModifyCartControllerTestCartPlugin 
-
-
-/*  extends CartPluginInterface_1_1  */
-
-
- {
+class ModifyCartControllerTestCartPlugin /* extends CartPluginInterface_1_1 */ {
     function getSupportedItemTypes() {
 	return array('GalleryPhotoItem');
     }

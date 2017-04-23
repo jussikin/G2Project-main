@@ -52,13 +52,7 @@ class PrintPhotoController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Prepare our results  */
-
-
-
+	/* Prepare our results */
 	$results['redirect']['href'] = $cartUrl;
 	$results['status'] = array();
 	$results['error'] = array();

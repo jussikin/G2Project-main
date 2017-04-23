@@ -20,13 +20,7 @@
 	line-height: 1.5em;
       }
       h2 {
-	
-
-
-/* font-family: Georgia, Palatino, "Times New Roman", serif; */
-
-
-
+	/*font-family: Georgia, Palatino, "Times New Roman", serif;*/
 	font-family: "Gill Sans", Verdana, Arial, sans-serif;
 	font-size: 1.5em;
 	color: #333;
@@ -178,22 +172,10 @@
 	    for (var i = 0; i < as.length; i++) {
 	      href = as[i].getAttribute('href');
 	      if (href) {
-		
-
-
-/*  links to replace don't begin with # or http or irc  */
-
-
-
+		/* links to replace don't begin with # or http or irc */
 		if ((href.search('http') != 0) && (href.search('irc') != 0) &&
 		    (href.toString().charAt(0) != '#')) {
-		  
-
-
-/*  Don't use setAttribute for onclick (workaround for IE)  */
-
-
-
+		  /* Don't use setAttribute for onclick (workaround for IE) */
 		  as[i].onclick = function() {
 		    alert('It looks like you are not accessing this README through your ' +
 				    'webserver so this link will not work!');

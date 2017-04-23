@@ -39,13 +39,7 @@ class AddToCartController extends GalleryController {
 			return array($ret, null);
 		}
 		
-		
-
-
-/*  Figure out what ids we care about  */
-
-
-
+		/* Figure out what ids we care about */
 		if ($item->getCanContainChildren()) {
 			list ($ret, $ids) = GalleryCoreApi::fetchChildDataItemIds($item);
 			if ($ret) {
@@ -60,13 +54,7 @@ class AddToCartController extends GalleryController {
 			return array($ret, null);
 		}
 		
-		
-
-
-/*  Prepare results  */
-
-
-
+		/* Prepare results */
 		$results['redirect']['href'] = GalleryUtilities::getRequestVariables('return');
 		$results['status'] = array();
 		$results['error'] = array();

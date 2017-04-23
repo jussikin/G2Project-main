@@ -49,13 +49,7 @@ class AdminMembersController extends GalleryController {
 	    }
 
 	    $status['saved'] = 1;
-	} 
-
-
-/*  else $form['action']['cancel']  */
-
-
-
+	} /* else $form['action']['cancel'] */
 
 	if (empty($error)) {
 	    $results['redirect'] = array('view' => 'core.SiteAdmin',
@@ -90,13 +84,7 @@ class AdminMembersView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load our default values if we didn't just come from this form.  */
-
-
-
+	/* Load our default values if we didn't just come from this form. */
 	if ($form['formName'] != 'AdminMembers') {
 	    foreach (array('canViewMembersModule', 'canViewEmailAddress') as $key) {
 		list ($ret, $form[$key]) =

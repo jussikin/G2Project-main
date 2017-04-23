@@ -36,24 +36,12 @@ class UserSelfRegistrationController extends GalleryController {
 	$results = $status = $error = array();
 	if (isset($form['action']['cancel'])) {
 
-	    
-
-
-/*  Go back to the AdminUsers view  */
-
-
-
+	    /* Go back to the AdminUsers view */
 	    $redirect['view'] = 'core.UserAdmin';
 
 	} else if (isset($form['action']['create'])) {
 
-	    
-
-
-/*  Validate inputs  */
-
-
-
+	    /* Validate inputs */
 	    foreach (array('userName', 'email', 'password1', 'password2', 'fullName') as $key) {
 		if (empty($form[$key])) {
 		    $error[] = 'form[error][' . $key . '][missing]';
@@ -93,13 +81,7 @@ class UserSelfRegistrationController extends GalleryController {
 		}
 	    }
 
-	    
-
-
-/*  Let each plugin do its verification  */
-
-
-
+	    /* Let each plugin do its verification */
 	    foreach ($pluginInstances as $plugin) {
 		list ($ret, $pluginErrors, $continue) = $plugin->performValidation($form);
 		if ($ret) {
@@ -112,13 +94,7 @@ class UserSelfRegistrationController extends GalleryController {
 		}
 	    }
 
-	    
-
-
-/*  If all the right fields are in place then go ahead and create the user  */
-
-
-
+	    /* If all the right fields are in place then go ahead and create the user */
 	    if (empty($error)) {
 		list ($ret, $user) =
 		    GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
@@ -136,13 +112,7 @@ class UserSelfRegistrationController extends GalleryController {
 			return array($ret, null);
 		    }
 
-		    
-
-
-/*  Set our error status and fall back to the view  */
-
-
-
+		    /* Set our error status and fall back to the view */
 		    $error[] = 'form[error][userName][exists]';
 		} else {
 		    $user->setEmail($form['email']);
@@ -155,13 +125,7 @@ class UserSelfRegistrationController extends GalleryController {
 			return array($ret, null);
 		    }
 
-		    
-
-
-/*  Send confirmation email or create the "real" user, per module settings  */
-
-
-
+		    /* Send confirmation email or create the "real" user, per module settings */
 		    list ($ret, $params) =
 			GalleryCoreApi::fetchAllPluginParameters('module', 'register');
 		    if ($ret) {
@@ -169,13 +133,7 @@ class UserSelfRegistrationController extends GalleryController {
 		    }
 
 		    if ($params['confirmation'] == 'email') {
-			
-
-
-/*  Send confirmation email  */
-
-
-
+			/* Send confirmation email */
 			$ret = GalleryPendingUserHelper::sendConfirmationEmail($user);
 			if ($ret) {
 			    return array($ret, null);
@@ -183,24 +141,12 @@ class UserSelfRegistrationController extends GalleryController {
 			$redirect['pending'] = true;
 			$redirect['sentConfirmationEmail'] = true;
 		    } else if ($params['confirmation'] == 'auto') {
-			
-
-
-/*  Turn the pending user into a real user right now  */
-
-
-
+			/* Turn the pending user into a real user right now */
 			$ret = GalleryPendingUserHelper::createGalleryUser($user);
 			if ($ret) {
 			    return array($ret, null);
 			}
-		    } else { 
-
-
-/*  confirmation == 'admin'  */
-
-
-
+		    } else { /* confirmation == 'admin' */
 			$redirect['pending'] = true;
 		    }
 
@@ -211,13 +157,7 @@ class UserSelfRegistrationController extends GalleryController {
 			}
 		    }
 
-		    
-
-
-/*  Request a redirect to the confirmation screen  */
-
-
-
+		    /* Request a redirect to the confirmation screen */
 		    $redirect['view'] = 'core.UserAdmin';
 		    $redirect['subView'] = 'register.SelfRegistrationSuccess';
 		}
@@ -259,13 +199,7 @@ class UserSelfRegistrationView extends GalleryView {
      */
     function loadTemplate(&$template, &$form) {
 	if ($form['formName'] != 'UserSelfRegistration') {
-	    
-
-
-/*  First time around, set our defaults here.  */
-
-
-
+	    /* First time around, set our defaults here. */
 	    $form['userName'] = '';
 	    $form['email'] = '';
 	    $form['fullName'] = '';
@@ -274,26 +208,14 @@ class UserSelfRegistrationView extends GalleryView {
 
 	$UserSelfRegistration = array();
 
-	
-
-
-/*  Get all the login plugins  */
-
-
-
+	/* Get all the login plugins */
 	list ($ret, $allPluginIds) =
 	    GalleryCoreApi::getAllFactoryImplementationIds('GalleryValidationPlugin');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Let each plugin load its template data  */
-
-
-
+	/* Let each plugin load its template data */
 	$UserSelfRegistration['plugins'] = array();
 	foreach (array_keys($allPluginIds) as $pluginId) {
 	    list ($ret, $plugin) =

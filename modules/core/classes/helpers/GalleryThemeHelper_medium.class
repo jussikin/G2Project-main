@@ -55,25 +55,13 @@ class GalleryThemeHelper_medium {
 	    }
 	}
 
-	
-
-
-/*  Get the per-item settings (global + item)  */
-
-
-
+	/* Get the per-item settings (global + item) */
 	list ($ret, $settings) = $theme->getSettings($itemId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Fetch the global-only params  */
-
-
-
+	/* Fetch the global-only params */
 	list ($ret, $globalParams) =
 	    GalleryCoreApi::fetchAllPluginParameters('theme', $themeId);
 	if ($ret) {
@@ -92,13 +80,7 @@ class GalleryThemeHelper_medium {
 	    }
 	}
 
-	
-
-
-/*  Fetch the item-only params  */
-
-
-
+	/* Fetch the item-only params */
 	list ($ret, $itemParams) =
 	    GalleryCoreApi::fetchAllPluginParameters('theme', $themeId, $itemId);
 	if ($ret) {
@@ -123,13 +105,7 @@ class GalleryThemeHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Query param is "version".. bump if data format in js changes  */
-
-
-
+	/* Query param is "version".. bump if data format in js changes */
 	$template->javascript('lib/javascript/BlockSelectWidget.js?1');
 	$template->setVariable('ThemeSettingsForm', $data);
 
@@ -203,23 +179,11 @@ class GalleryThemeHelper_medium {
 	}
 
 	if (isset($form['action']['save']) && empty($error)) {
-	    
-
-
-/*  Validate the settings  */
-
-
-
+	    /* Validate the settings */
 	    $themeForm = isset($form['key']) ? $form['key'] : array();
 	    $validationErrors = $theme->validateSettings($themeForm);
 	    if (empty($validationErrors)) {
-		
-
-
-/*  Get the item settings  */
-
-
-
+		/* Get the item settings */
 		list ($ret, $settings) = $theme->getSettings($itemId);
 		if ($ret) {
 		    return array($ret, null, null);

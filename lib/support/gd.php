@@ -46,13 +46,7 @@ function getGdLibraryInfo()
         return '';
     }
 
-    
-
-
-/*  Get GD version from phpinfo or gd_info  */
-
-
-
+    /* Get GD version from phpinfo or gd_info */
     if (function_exists('gd_info')) {
         $gdInfo = gd_info();
         $matchString = $gdInfo['GD Version'];
@@ -79,13 +73,7 @@ function getGdLibraryInfo()
         $isGdBundled = 1;
     }
 
-    
-
-
-/*  Find out supported mime types  */
-
-
-
+    /* Find out supported mime types */
     $mimeChecks = array(
     array(
         'mimeType' => 'image/gif',
@@ -164,13 +152,7 @@ function getGdLibraryInfo()
         $out .= "\t" . '),' . "\n";
     }
 
-    
-
-
-/*  Check which constants are defined  */
-
-
-
+    /* Check which constants are defined */
     $constants = get_defined_constants();
     $out .= "\t" . '\'constants\' => array(' . "\n";
     foreach ($constants as $constant => $value) {
@@ -198,13 +180,7 @@ function getGdLibraryInfo()
     $phpinfo = preg_replace('/\'/', '\\\'', $phpinfo);
     $out .= "\t" . sprintf('\'phpinfo(8)\' => \'%s\',', $phpinfo) . "\n";
 
-    
-
-
-/*  Functions defined in this GD module  */
-
-
-
+    /* Functions defined in this GD module */
     $functions = get_extension_funcs('gd');
     $out .= "\t" . '\'functions\' => array(' . "\n";
     foreach ($functions as $fct) {

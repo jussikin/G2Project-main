@@ -48,13 +48,7 @@ class ViewCartView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'ViewCart') {
-	    
-
-
-/*  First time around, initialize the cart counts  */
-
-
-
+	    /* First time around, initialize the cart counts */
 	    foreach ($cartItemIds as $itemId => $count) {
 		$form['counts'][$itemId] = $count;
 	    }
@@ -62,37 +56,19 @@ class ViewCartView extends GalleryView {
 	}
 	$ViewCart = array();
 
-	
-
-
-/*  Find all our cart plugins  */
-
-
-
+	/* Find all our cart plugins */
 	list ($ret, $plugins) = $this->_loadAllCartPlugins();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Apply the plugin filter criteria (item types, required permissions)  */
-
-
-
+	/* Apply the plugin filter criteria (item types, required permissions) */
 	$items = $supportedItemIds = $thumbnails = $itemTypeNames = array();
 	if (!empty($cartItemIds)) {
 	    foreach ($itemList as $item) {
 		$items[$item->getId()] = (array)$item;
 
-		
-
-
-/*  TODO: This is a O(N^3) operation -- probably should be optimized  */
-
-
-
+		/* TODO: This is a O(N^3) operation -- probably should be optimized */
 		foreach ($plugins as $pluginId => $pluginData) {
 		    foreach ($pluginData['supportedItemTypes'] as $type) {
 			if ($type == '*' || GalleryUtilities::isA($item, $type)) {
@@ -106,13 +82,7 @@ class ViewCartView extends GalleryView {
 		$itemTypeNames[$item->getId()] = $item->itemTypeName();
 	    }
 
-	    
-
-
-/*  Filter out unsupported actions  */
-
-
-
+	    /* Filter out unsupported actions */
 	    $itemIds = array_keys($supportedItemIds);
 	    list ($ret, $permissionMap) = GalleryCoreApi::fetchPermissionsForItems($itemIds);
 	    if ($ret) {
@@ -136,13 +106,7 @@ class ViewCartView extends GalleryView {
 		}
 	    }
 
-	    
-
-
-/*  Fetch thumbnails  */
-
-
-
+	    /* Fetch thumbnails */
 	    list ($ret, $thumbnailList) =
 		GalleryCoreApi::fetchThumbnailsByItemIds(array_keys($cartItemIds));
 	    if ($ret) {

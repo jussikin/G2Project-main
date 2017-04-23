@@ -61,13 +61,7 @@ class RedirectController extends GalleryController {
 	$view = 'core.ShowItem';
 
 	if (count($path) > 1) {
-	    
-
-
-/*  Check for direct link to image file (name.type, name.thumb.type, name.sized.type)  */
-
-
-
+	    /* Check for direct link to image file (name.type, name.thumb.type, name.sized.type) */
 	    $file = explode('.', $path[1]);
 	    switch (count($file)) {
 	    case 3:
@@ -138,26 +132,14 @@ class RedirectController extends GalleryController {
 	    $phpVm->exit_();
 	}
 
-	
-
-
-/*  Redirect browser  */
-
-
-
+	/* Redirect browser */
 	$phpVm->header('HTTP/1.0 301 Moved Permanently');
 	$results = array('redirect' => array('view' => $view, 'itemId' => $id),
 			 'status' => array(), 'error' => array());
 
 	$scriptName = GalleryUtilities::getServerVar('PHP_SELF');
 	if (empty($scriptName)) {
-	    
-
-
-/*  PHP as CGI needs to use PHP_SELF; fallback to SCRIPT_NAME just in case  */
-
-
-
+	    /* PHP as CGI needs to use PHP_SELF; fallback to SCRIPT_NAME just in case */
 	    $scriptName = GalleryUtilities::getServerVar('SCRIPT_NAME');
 	}
 

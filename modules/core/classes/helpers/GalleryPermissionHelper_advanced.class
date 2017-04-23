@@ -208,13 +208,7 @@ class GalleryPermissionHelper_advanced {
 	    return $ret;
 	}
 
-	
-
-
-/*  Convert the permission to its bits  */
-
-
-
+	/* Convert the permission to its bits */
 	list ($ret, $deltaBits) = GalleryCoreApi::convertPermissionIdsToBits($permission);
 	if ($ret) {
 	    return $ret;
@@ -271,13 +265,7 @@ class GalleryPermissionHelper_advanced {
 	    }
 
 	    if ($searchResults->resultCount() < 1) {
-		
-
-
-/*  This entity was (accidentally) created without an ACL entry. Create one first.  */
-
-
-
+		/* This entity was (accidentally) created without an ACL entry. Create one first. */
 		$ret = GalleryCoreApi::addMapEntry('GalleryAccessSubscriberMap',
 						   array('itemId' => $itemId, 'accessListId' => 0));
 		if ($ret) {
@@ -306,13 +294,7 @@ class GalleryPermissionHelper_advanced {
 	while ($result = $searchResults->nextResult()) {
 	    list ($oldAclId, $targetItemId) = array((int)$result[0], (int)$result[1]);
 	    if (!isset($oldToNewAclMapping[$oldAclId])) {
-		
-
-
-/*  Figure out what the current bits are  */
-
-
-
+		/* Figure out what the current bits are */
 		list ($ret, $currentBits) =
 		    GalleryPermissionHelper_advanced::_fetchPermissionBitsForItem(
 			$targetItemId, $entityId);
@@ -323,21 +305,9 @@ class GalleryPermissionHelper_advanced {
 		$newAclId = 0;
 		if ($changeType == 'add') {
 		    if (($currentBits | $deltaBits) == $currentBits) {
-			
-
-
-/*  The item's acl already has the bits we want to add  */
-
-
-
+			/* The item's acl already has the bits we want to add */
 		    } else {
-			
-
-
-/*  Clone the acl  */
-
-
-
+			/* Clone the acl */
 			list ($ret, $newAclId) =
 			    GalleryPermissionHelper_advanced::_copyAccessList($oldAclId);
 			if ($ret) {
@@ -346,26 +316,14 @@ class GalleryPermissionHelper_advanced {
 
 			$newBits = $currentBits | $deltaBits;
 			if (empty($currentBits)) {
-			    
-
-
-/*  Add a new entry in our map to reflect this change.  */
-
-
-
+			    /* Add a new entry in our map to reflect this change. */
 			    $ret = GalleryCoreApi::addMapEntry(
 				'GalleryAccessMap',
 				array('accessListId' => $newAclId,
 				      'userOrGroupId' => $entityId,
 				      'permission' => $newBits));
 			} else {
-			    
-
-
-/*  Update the current entry in our map to reflect this change.  */
-
-
-
+			    /* Update the current entry in our map to reflect this change. */
 			    $ret = GalleryCoreApi::updateMapEntry(
 				'GalleryAccessMap',
 				array('accessListId' => $newAclId,
@@ -383,21 +341,9 @@ class GalleryPermissionHelper_advanced {
 			    $gallery->debug("Tried to remove a non-existant permission!");
 			}
 		    } else if ($currentBits == $newBits) {
-			
-
-
-/*  The item's acl doesn't have the bits we want to remove  */
-
-
-
+			/* The item's acl doesn't have the bits we want to remove */
 		    } else {
-			
-
-
-/*  Clone the acl  */
-
-
-
+			/* Clone the acl */
 			list ($ret, $newAclId) =
 			    GalleryPermissionHelper_advanced::_copyAccessList($oldAclId);
 			if ($ret) {
@@ -405,25 +351,13 @@ class GalleryPermissionHelper_advanced {
 			}
 
 			if ($newBits == 0) {
-			    
-
-
-/*  Remove the map entry; there are no bits left!  */
-
-
-
+			    /* Remove the map entry; there are no bits left! */
 			    $ret = GalleryCoreApi::removeMapEntry(
 				'GalleryAccessMap',
 				array('accessListId' => $newAclId,
 				      'userOrGroupId' => $entityId));
 			} else {
-			    
-
-
-/*  Update the current entry in our map to reflect this change.  */
-
-
-
+			    /* Update the current entry in our map to reflect this change. */
 			    $ret = GalleryCoreApi::updateMapEntry(
 				'GalleryAccessMap',
 				array('accessListId' => $newAclId,
@@ -455,22 +389,10 @@ class GalleryPermissionHelper_advanced {
 		}
 
 		if ($changeType == 'remove') {
-		    
-
-
-/*  Keep track of all items with removed permissions for the postEvent call  */
-
-
-
+		    /* Keep track of all items with removed permissions for the postEvent call */
 		    $removeEventData[$targetItemId] = $removeEventDataForAcl[$oldAclId];
 		}
-		
-
-
-/*  Clear the in-memory permission cache for this item (all groups, users).  */
-
-
-
+		/* Clear the in-memory permission cache for this item (all groups, users). */
 		$cacheKey =
 		    'GalleryPermissionHelper::getPermissions\(' . $targetItemId . ',\d+,\d\)';
 		GalleryDataCache::removeByPattern($cacheKey);
@@ -501,21 +423,9 @@ class GalleryPermissionHelper_advanced {
 	    return $ret;
 	}
 
-	
-
-
-/*  Post a RemovePermission event for all affected items if necessary  */
-
-
-
+	/* Post a RemovePermission event for all affected items if necessary */
 	if (!empty($removeEventIds) && !empty($removeEventData)) {
-	    
-
-
-/*  user/groupId 0 has a special meaning in the RemovePermission event  */
-
-
-
+	    /* user/groupId 0 has a special meaning in the RemovePermission event */
 	    $removeEventIds['itemIdsAndBits'] = $removeEventData;
 	    $event = GalleryCoreApi::newEvent('Gallery::RemovePermission');
 	    $event->setData($removeEventIds);
@@ -560,13 +470,7 @@ class GalleryPermissionHelper_advanced {
 	 * and not multiple item => (user => bits) pairs. This is by design, more detail is not
 	 * needed and would just make the RemovePermission event slower.
 	 */
-	
-
-
-/*  Get the bits for the new permisions. Get it with the API call rather than just using 0  */
-
-
-
+	/* Get the bits for the new permisions. Get it with the API call rather than just using 0 */
 	list ($ret, $zeroBits) = GalleryCoreApi::convertPermissionIdsToBits(array());
 	if ($ret) {
 	    return $ret;
@@ -872,13 +776,7 @@ class GalleryPermissionHelper_advanced {
 					    "but didn't specify any composites!");
 	    }
 
-	    
-
-
-/*  Convert our composites to their associated values  */
-
-
-
+	    /* Convert our composites to their associated values */
 	    list ($ret, $bits) = GalleryPermissionHelper_simple::convertIdsToBits($composites);
 	    if ($ret) {
 		return $ret;
@@ -890,13 +788,7 @@ class GalleryPermissionHelper_advanced {
 	    }
 	}
 
-	
-
-
-/*  Add a new entry in our map to represent this relationship.  */
-
-
-
+	/* Add a new entry in our map to represent this relationship. */
 	$ret = GalleryPermissionHelper_advanced::_setPermission(array('module' => $module,
 								      'permission' => $permissionId,
 								      'description' => $description,
@@ -906,13 +798,7 @@ class GalleryPermissionHelper_advanced {
 	    return $ret;
 	}
 
-	
-
-
-/*  Clear the cache  */
-
-
-
+	/* Clear the cache */
 	GalleryDataCache::remove('GalleryPermissionHelper::allPermissions');
 
 	return null;
@@ -974,13 +860,7 @@ class GalleryPermissionHelper_advanced {
 
 	$ids = array();
 	foreach ($allPermissions as $key => $info) {
-	    
-
-
-/*  Remove this module's non-composite permissions from all entities..  */
-
-
-
+	    /* Remove this module's non-composite permissions from all entities.. */
 	    if ($info['module'] == $moduleId && !($info['flags'] & GALLERY_PERMISSION_COMPOSITE)) {
 		$ids[] = $key;
 	    }
@@ -991,13 +871,7 @@ class GalleryPermissionHelper_advanced {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove the permission from the permission set  */
-
-
-
+	/* Remove the permission from the permission set */
 	$ret = GalleryCoreApi::removeMapEntry(
 	    'GalleryPermissionSetMap', array('module' => $moduleId));
 	if ($ret) {
@@ -1127,13 +1001,7 @@ class GalleryPermissionHelper_advanced {
 	    return $ret;
 	}
 
-	
-
-
-/*  Now remove any rows left with g_permission = 0  */
-
-
-
+	/* Now remove any rows left with g_permission = 0 */
 	$ret = GalleryCoreApi::removeMapEntry('GalleryAccessMap', array('permission' => 0));
 	if ($ret) {
 	    return $ret;
@@ -1201,13 +1069,7 @@ class GalleryPermissionHelper_advanced {
      * @see GalleryCoreApi::maybeCompactAccessLists
      */
     static function maybeCompactAccessLists() {
-	
-
-
-/*  We use a high tech genetic algorithm to make our decision  */
-
-
-
+	/* We use a high tech genetic algorithm to make our decision */
 	if (rand(1, 100) <= 50) {
 	    $ret = GalleryPermissionHelper_advanced::compactAccessLists();
 	    if ($ret) {
@@ -1230,13 +1092,7 @@ class GalleryPermissionHelper_advanced {
 	    return $ret;
 	}
 
-	
-
-
-/*  Load the entire access list into memory  */
-
-
-
+	/* Load the entire access list into memory */
 	list ($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryAccessMap',
 	    array('accessListId', 'userOrGroupId', 'permission'), array(),
 	    array('orderBy' => array('userOrGroupId' => ORDER_ASCENDING,
@@ -1262,13 +1118,7 @@ class GalleryPermissionHelper_advanced {
 	    $keyToAclId[$value][] = $key;
 	}
 
-	
-
-
-/*  We've now got buckets of duplicate acls.  Start compacting.  */
-
-
-
+	/* We've now got buckets of duplicate acls.  Start compacting. */
 	foreach ($keyToAclId as $key => $aclIds) {
 	    $gallery->guaranteeTimeLimit(20);
 	    if (count($aclIds) == 1) {
@@ -1293,13 +1143,7 @@ class GalleryPermissionHelper_advanced {
 	    }
 	}
 
-	
-
-
-/*  Eliminate any unused acls  */
-
-
-
+	/* Eliminate any unused acls */
 	$query = '
 	SELECT DISTINCT
 	  [GalleryAccessMap::accessListId]

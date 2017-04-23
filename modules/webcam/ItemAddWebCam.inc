@@ -44,21 +44,9 @@ class ItemAddWebCam extends ItemAddPlugin {
 	}
 
 	if (isset($form['action']['checkUrl'])) {
-	    
-
-
-/*  Delegate back to the same view  */
-
-
-
+	    /* Delegate back to the same view */
 	} else if (isset($form['action']['addWebCam'])) {
-	    
-
-
-/*  fetch url, create item, set WebCam handler, save params  */
-
-
-
+	    /* fetch url, create item, set WebCam handler, save params */
 	    $platform =& $gallery->getPlatform();
 	    $tmpDir = $gallery->getConfig('data.gallery.tmp');
 	    $url = $form['imageUrl'];
@@ -82,13 +70,7 @@ class ItemAddWebCam extends ItemAddPlugin {
 		    @$platform->unlink($tmpFile);
 		}
 	    } else if ($isAdmin) {
-		
-
-
-/*  PHP 4.3.0 trips on file:///path/here (triple slash).. result lands in 'host'  */
-
-
-
+		/* PHP 4.3.0 trips on file:///path/here (triple slash).. result lands in 'host' */
 		if (!isset($urlComponents['path']) && isset($urlComponents['host'])) {
 		    $urlComponents['path'] = $urlComponents['host'];
 		}
@@ -112,13 +94,7 @@ class ItemAddWebCam extends ItemAddPlugin {
 		    $mimeType = 'application/unknown';
 		}
 
-		
-
-
-/*  Get the mime type.  */
-
-
-
+		/* Get the mime type. */
 		$base = GalleryUtilities::getFileBase($basename);
 		list ($ret, $mimeType) = GalleryCoreApi::getMimeType($basename, $mimeType);
 		if ($ret) {

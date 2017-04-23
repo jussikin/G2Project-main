@@ -54,13 +54,7 @@ class DownloadPicLensView extends GalleryView {
     function renderImmediate($status, $error) {
 	global $gallery;
 
-	
-
-
-/*  Figure out which file we're talking about  */
-
-
-
+	/* Figure out which file we're talking about */
 	$file = GalleryUtilities::getRequestVariables('file');
 
 	$codeDir = $gallery->getConfig('data.gallery.plugins_data') . 'modules/slideshow/';
@@ -118,13 +112,7 @@ class DownloadPicLensView extends GalleryView {
 	$phpVm->header('Expires: ' . GalleryUtilities::getHttpDate(2147483647));
 	$phpVm->header('Cache-Control: public');
 
-	
-
-
-/*  If the request method is HEAD, don't send back the body  */
-
-
-
+	/* If the request method is HEAD, don't send back the body */
 	if ($requestMethod == 'head') {
 	    $phpVm->header('Content-length: 0');
 	} else {

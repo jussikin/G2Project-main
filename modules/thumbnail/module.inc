@@ -39,13 +39,7 @@ class ThumbnailModule extends GalleryModule {
 	$this->setId('thumbnail');
 	$this->setName($gallery->i18n('Thumbnail Manager'));
 	$this->setDescription($gallery->i18n('Set default thumbnails for non-image items'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update ThumbnailModuleExtras::upgrade also!  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update ThumbnailModuleExtras::upgrade also! */
 	$this->_templateVersion = 1;
 	$this->setGroup('display', $gallery->i18n('Display'));
 	$this->setCallbacks('getSiteAdminViews');
@@ -138,25 +132,13 @@ class ThumbnailModule extends GalleryModule {
 	}
 	$containerId = (int)$containerId;
 
-	
-
-
-/*  Also deletes ThumbnailImage entities and restores thumbnails for the affected items.  */
-
-
-
+	/* Also deletes ThumbnailImage entities and restores thumbnails for the affected items. */
 	$ret = parent::uninstall();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove the thumbnail container.  */
-
-
-
+	/* Remove the thumbnail container. */
 	$ret = GalleryCoreApi::deleteEntityById($containerId, 'GalleryChildEntity');
 	if ($ret) {
 	    return $ret;
@@ -190,25 +172,13 @@ class ThumbnailModule extends GalleryModule {
 		array('GalleryFileSystemEntity', 'GalleryDerivative'));
 	    if ($ret) {
 		if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		    
-
-
-/*  Already gone.. ok!  */
-
-
-
+		    /* Already gone.. ok! */
 		    return array(null, null);
 		}
 		return array($ret, null);
 	    }
 	    if (GalleryUtilities::isA($source, 'ThumbnailImage')) {
-		
-
-
-/*  Prevent that we try to restore the thumbnail during the deletion.  */
-
-
-
+		/* Prevent that we try to restore the thumbnail during the deletion. */
 		$key = 'ThumbnailImage::delete';
 		GalleryDataCache::put($key, $entity->getId());
 		$ret = GalleryCoreApi::deleteEntityById($source->getId(), 'ThumbnailImage');

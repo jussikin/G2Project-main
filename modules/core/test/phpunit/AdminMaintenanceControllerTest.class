@@ -70,13 +70,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	    $ret = GalleryCoreApi::removeMapEntry(
 		'GalleryMaintenanceMap', array('taskId' => $taskId));
 	    if ($ret) {
-		
-
-
-/*  Don't return early here, give the loop a chance to try to clear all tasks  */
-
-
-
+		/* Don't return early here, give the loop a chance to try to clear all tasks */
 		return $ret;
 	    }
 	}
@@ -108,13 +102,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	}
 
 	$this->assert($info['runId'] > 0);
-	$this->assert($info['timestamp'] > time() - 2);  
-
-
-/*  assert that it's recent  */
-
-
-
+	$this->assert($info['timestamp'] > time() - 2);  /* assert that it's recent */
 	$this->assert($info['success']);
 	$this->assertEquals(array('success details'), $info['details']);
     }
@@ -138,34 +126,16 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Assert that we have 1 callback in the queue  */
-
-
-
+	/* Assert that we have 1 callback in the queue */
 	$this->assertEquals(1, $mockAdapter->getCallbackCount());
 
-	
-
-
-/*  Run the tasks  */
-
-
-
+	/* Run the tasks */
 	$ret = $mockAdapter->runCallbacks();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Assert that we saw what we expected  */
-
-
-
+	/* Assert that we saw what we expected */
 	$this->assertEquals(
 	    array(0, 50, 100,
 		  'complete:view=core.SiteAdmin,subView=core.AdminMaintenance'),
@@ -178,13 +148,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	}
 
 	$this->assert($info['runId'] > 0);
-	$this->assert($info['timestamp'] > time() - 2);  
-
-
-/*  assert that it's recent  */
-
-
-
+	$this->assert($info['timestamp'] > time() - 2);  /* assert that it's recent */
 	$this->assert($info['success']);
 	$this->assertEquals(array('success details'), $info['details']);
     }
@@ -209,34 +173,16 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Assert that we have 1 callback in the queue  */
-
-
-
+	/* Assert that we have 1 callback in the queue */
 	$this->assertEquals(1, $mockAdapter->getCallbackCount());
 
-	
-
-
-/*  Run the tasks  */
-
-
-
+	/* Run the tasks */
 	$ret = $mockAdapter->runCallbacks();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Assert that we saw what we expected  */
-
-
-
+	/* Assert that we saw what we expected */
 	$this->assertEquals(
 	    array(0, 50, 100,
 		  'complete:view=core.SiteAdmin,subView=core.AdminMaintenance'),
@@ -249,13 +195,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	}
 
 	$this->assert($info['runId'] > 0);
-	$this->assert($info['timestamp'] > time() - 2);  
-
-
-/*  assert that it's recent  */
-
-
-
+	$this->assert($info['timestamp'] > time() - 2);  /* assert that it's recent */
 	$this->assert(!$info['success']);
 	$this->assertEquals(array('fail details'), $info['details']);
     }
@@ -280,32 +220,14 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Assert that we have 1 callback in the queue  */
-
-
-
+	/* Assert that we have 1 callback in the queue */
 	$this->assertEquals(1, $mockAdapter->getCallbackCount());
 
-	
-
-
-/*  Run the tasks  */
-
-
-
+	/* Run the tasks */
 	$ret = $mockAdapter->runCallbacks();
 	if ($ret) {
 	    if ($ret->getErrorCode() & ERROR_UNKNOWN) {
-		
-
-
-/*  This is what we expected  */
-
-
-
+		/* This is what we expected */
 	    } else {
 		return $ret;
 	    }
@@ -313,13 +235,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	    $this->assert(false, 'The task should have failed');
 	}
 
-	
-
-
-/*  Assert that we saw what we expected  */
-
-
-
+	/* Assert that we saw what we expected */
 	$this->assertEquals(array(0, 50, 'error'), $mockAdapter->getProgressBarDump());
 
 	list ($ret, $info) =
@@ -329,13 +245,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	}
 
 	$this->assert($info['runId'] > 0);
-	$this->assert($info['timestamp'] > time() - 2);  
-
-
-/*  assert that it's recent  */
-
-
-
+	$this->assert($info['timestamp'] > time() - 2);  /* assert that it's recent */
 	$this->assert(!$info['success']);
 	$this->assert(strstr($info['details'], 'ERROR_UNKNOWN'));
     }
@@ -361,13 +271,7 @@ class AdminMaintenanceControllerTest extends GalleryControllerTestCase {
 	}
 
 	$this->assert($info['runId'] > 0);
-	$this->assert($info['timestamp'] > time() - 2);  
-
-
-/*  assert that it's recent  */
-
-
-
+	$this->assert($info['timestamp'] > time() - 2);  /* assert that it's recent */
 	$this->assert(!$info['success']);
 	$this->assertEquals(array('fail details'), $info['details']);
     }

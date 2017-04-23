@@ -50,13 +50,7 @@ class SizeLimitOption extends ItemEditOption {
 	if ($ret) {
 	    return array($ret, null, null);
 	}
-	
-
-
-/*  if there aren't any - assume 'no limits'  */
-
-
-
+	/* if there aren't any - assume 'no limits' */
 	if (!isset($params['height']) || $params['height'] == 0) {
 	    $SizeLimitOption['dimensionChoice'] = 'unlimited';
 	    $SizeLimitOption['height'] = '';
@@ -67,13 +61,7 @@ class SizeLimitOption extends ItemEditOption {
 	    $SizeLimitOption['width'] = $params['width'];
 	}
 
-	
-
-
-/*  Now do the same for size  */
-
-
-
+	/* Now do the same for size */
 	if (!isset($params['size']) || $params['size'] == 0) {
 	    $SizeLimitOption['sizeChoice'] = 'unlimited';
 	    $SizeLimitOption['filesize'] = '';
@@ -100,13 +88,7 @@ class SizeLimitOption extends ItemEditOption {
 	$error = $warning = array();
 	$setOriginal = false;
 	if (empty($error) && isset($form['changeInDescendents']['sizelimit'])) {
-	    
-
-
-/*  TODO: We only need subalbums Items that we can administer  */
-
-
-
+	    /* TODO: We only need subalbums Items that we can administer */
 	    list ($ret, $subAlbumIds) = GalleryCoreApi::fetchDescendentAlbumItemIds($item);
 	    if ($ret) {
 		return array($ret, null, null);
@@ -119,13 +101,7 @@ class SizeLimitOption extends ItemEditOption {
 	foreach ($subAlbumIds as $id) {
 	    switch ($form['SizeLimitOption']['dimensionChoice']) {
 	    case 'unlimited':
-		
-
-
-/*  delete parameter from plugin table  */
-
-
-
+		/* delete parameter from plugin table */
 		$ret = GalleryCoreApi::removePluginParameter(
 			'module', 'sizelimit', 'height', $id);
 		if ($ret) {
@@ -144,22 +120,10 @@ class SizeLimitOption extends ItemEditOption {
 		break;
 
 	    case 'explicit':
-		
-
-
-/*  figure out x and y and set them...  */
-
-
-
+		/* figure out x and y and set them... */
 		$width = $form['SizeLimitOption']['dimensions']['width'];
 		$height = $form['SizeLimitOption']['dimensions']['height'];
-		
-
-
-/*  Validate the input data.  */
-
-
-
+		/* Validate the input data. */
 		if (!is_numeric($height) && !is_numeric($width)) {
 		    $error[] = 'form[error][SizeLimitOption][dimensions][missing]';
 		    break;
@@ -186,13 +150,7 @@ class SizeLimitOption extends ItemEditOption {
 
 	    switch ($form['SizeLimitOption']['sizeChoice']) {
 	    case 'unlimited':
-		
-
-
-/*  delete parameter from plugin table  */
-
-
-
+		/* delete parameter from plugin table */
 		$ret = GalleryCoreApi::removePluginParameter('module', 'sizelimit',
 			'size', $id);
 		if ($ret) {
@@ -206,25 +164,13 @@ class SizeLimitOption extends ItemEditOption {
 		break;
 
 	    case 'explicit':
-		
-
-
-/*  Validate the input data.  */
-
-
-
+		/* Validate the input data. */
 		if (!is_numeric($form['SizeLimitOption']['filesize']) ||
 			$form['SizeLimitOption']['filesize'] < 1) {
 		    $error[] = 'form[error][SizeLimitOption][filesize][invalid]';
 		    break;
 		}
-		
-
-
-/*  figure out x and y and set them...  */
-
-
-
+		/* figure out x and y and set them... */
 		$filesize = $form['SizeLimitOption']['filesize'];
 		$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit', 'size',
 			$filesize, $id);

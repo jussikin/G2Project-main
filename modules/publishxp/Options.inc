@@ -38,13 +38,7 @@ class OptionsController extends GalleryController {
 	global $gallery;
 	$results = array();
 	if (isset($form['action']['setOptions'])) {
-	    
-
-
-/*  No form processing/validation required so just continue the next page  */
-
-
-
+	    /* No form processing/validation required so just continue the next page */
 	    $results['redirect']['view'] = 'publishxp.UploadItems';
 	    $results['redirect']['stripExtensions'] = isset($form['stripExtensions']);
 	    $results['redirect']['setCaptions'] = isset($form['setCaptions']);
@@ -84,13 +78,7 @@ class OptionsView extends GalleryView {
 	    list ($form['albumId'], $form['stripExtensions'], $form['setCaptions']) =
 		GalleryUtilities::getRequestVariables('albumId', 'stripExtensions', 'setCaptions');
 
-	    
-
-
-/*  Strip extensions defaults to true, if there was no query parameter for it  */
-
-
-
+	    /* Strip extensions defaults to true, if there was no query parameter for it */
 	    if ($form['stripExtensions'] == null) {
 		$form['stripExtensions'] = true;
 	    }
@@ -101,13 +89,7 @@ class OptionsView extends GalleryView {
 	}
 	$form['albumId'] = (int)$form['albumId'];
 
-	
-
-
-/*  Get all the add options  */
-
-
-
+	/* Get all the add options */
 	GalleryCoreApi::requireOnce('modules/core/ItemAdd.inc');
 	if (isset($this->_optionInstances)) {
 	    $optionInstances = $this->_optionInstances;
@@ -129,13 +111,7 @@ class OptionsView extends GalleryView {
 	    return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
 	}
 
-	
-
-
-/*  Now let all options load their template data  */
-
-
-
+	/* Now let all options load their template data */
 	list ($ret, $item) = GalleryCoreApi::loadEntitiesById($form['albumId'], 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);

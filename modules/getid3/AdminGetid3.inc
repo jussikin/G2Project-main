@@ -174,22 +174,10 @@ class AdminGetid3Controller extends GalleryController {
 
 	    if (isset($form['summary'])) {
 
-		
-
-
-/*  Iterate through each property that we want to shift  */
-
-
-
+		/* Iterate through each property that we want to shift */
 		$count = 0;
 		foreach ($form['summary'] as $propertyToShift) {
-		    
-
-
-/*  Find its spot in the array and swap it with the one ahead of it  */
-
-
-
+		    /* Find its spot in the array and swap it with the one ahead of it */
 		    for ($i = 0; $i < sizeof($properties); $i++) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i > 0) {
@@ -221,22 +209,10 @@ class AdminGetid3Controller extends GalleryController {
 
 	    if (isset($form['summary'])) {
 
-		
-
-
-/*  Iterate through each property that we want to shift  */
-
-
-
+		/* Iterate through each property that we want to shift */
 		$count = 0;
 		foreach ($form['summary'] as $propertyToShift) {
-		    
-
-
-/*  Find its spot in the array and swap it with the one ahead of it  */
-
-
-
+		    /* Find its spot in the array and swap it with the one ahead of it */
 		    for ($i = sizeof($properties) - 1; $i >= 0; $i--) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i < sizeof($properties) - 1) {
@@ -268,22 +244,10 @@ class AdminGetid3Controller extends GalleryController {
 
 	    if (isset($form['detailed'])) {
 
-		
-
-
-/*  Iterate through each property that we want to shift  */
-
-
-
+		/* Iterate through each property that we want to shift */
 		$count = 0;
 		foreach ($form['detailed'] as $propertyToShift) {
-		    
-
-
-/*  Find its spot in the array and swap it with the one ahead of it  */
-
-
-
+		    /* Find its spot in the array and swap it with the one ahead of it */
 		    for ($i = 0; $i < sizeof($properties); $i++) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i > 0) {
@@ -315,22 +279,10 @@ class AdminGetid3Controller extends GalleryController {
 
 	    if (isset($form['detailed'])) {
 
-		
-
-
-/*  Iterate through each property that we want to shift  */
-
-
-
+		/* Iterate through each property that we want to shift */
 		$count = 0;
 		foreach ($form['detailed'] as $propertyToShift) {
-		    
-
-
-/*  Find its spot in the array and swap it with the one ahead of it  */
-
-
-
+		    /* Find its spot in the array and swap it with the one ahead of it */
 		    for ($i = sizeof($properties) - 1; $i >= 0; $i--) {
 			if ($properties[$i] == $propertyToShift) {
 			    if ($i < sizeof($properties) - 1) {
@@ -420,13 +372,7 @@ class AdminGetid3View extends GalleryView {
 	$getid3Keys = Getid3Helper::getGetid3Keys();
 	$visibleKeys = array();
 
-	
-
-
-/*  Prepare the summary list  */
-
-
-
+	/* Prepare the summary list */
 	$summaryList = array();
 	list ($ret, $tmp) = Getid3Helper::getProperties(GETID3_SUMMARY);
 	if ($ret) {
@@ -436,13 +382,7 @@ class AdminGetid3View extends GalleryView {
 	    $summaryList[$property] = $module->translate($getid3Keys[$property][0]);
 	}
 
-	
-
-
-/*  Prepare the detailed list  */
-
-
-
+	/* Prepare the detailed list */
 	$detailedList = array();
 	list ($ret, $tmp) = Getid3Helper::getProperties(GETID3_DETAILED);
 	if ($ret) {
@@ -452,13 +392,7 @@ class AdminGetid3View extends GalleryView {
 	    $detailedList[$property] = $module->translate($getid3Keys[$property][0]);
 	}
 
-	
-
-
-/*  Anything not summary and detailed is available  */
-
-
-
+	/* Anything not summary and detailed is available */
 	$availableList = array();
 	foreach ($getid3Keys as $key => $data) {
 	    if (isset($summaryList[$key]) && isset($detailedList[$key])) {

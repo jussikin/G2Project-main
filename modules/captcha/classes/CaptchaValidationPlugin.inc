@@ -62,25 +62,13 @@ class CaptchaValidationPlugin extends GalleryValidationPlugin {
 		$error[] = 'form[error][CaptchaValidationPlugin][invalid]';
 		$success = false;
 
-		
-
-
-/*  Clear key in session on validation failure to thwart automated attacks  */
-
-
-
+		/* Clear key in session on validation failure to thwart automated attacks */
 		$session->remove('captcha.key');
 	    }
 	}
 
 	if (isset($options['pass']) && !$options['pass']) {
-	    
-
-
-/*  Increment failure count either in db or session  */
-
-
-
+	    /* Increment failure count either in db or session */
 	    if (!empty($options['key'])) {
 		$ret = GalleryCoreApi::setPluginParameter(
 			'module', 'captcha', 'failCount-' . $options['key'], $failedAttempts + 1);
@@ -138,13 +126,7 @@ class CaptchaValidationPlugin extends GalleryValidationPlugin {
 
 	switch ($securityLevel) {
 	case 'HIGH':
-	    
-
-
-/*  Always require captcha to be enabled  */
-
-
-
+	    /* Always require captcha to be enabled */
 	    $useCaptcha = true;
 	    break;
 
@@ -179,13 +161,7 @@ class CaptchaValidationPlugin extends GalleryValidationPlugin {
 	    break;
 
 	default:
-	    
-
-
-/*  Bad Parameter  */
-
-
-
+	    /* Bad Parameter */
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER),
 			 null, null);
 	}

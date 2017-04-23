@@ -66,13 +66,7 @@ class PostgreSqlStorage extends GalleryStorage {
 	    return $ret;
 	}
 
-	
-
-
-/*  Ignore errors when trying to drop the bit_or function  */
-
-
-
+	/* Ignore errors when trying to drop the bit_or function */
 	$this->_traceStart();
 	$recordSet = $tmpDb->Execute('DROP AGGREGATE BIT_OR(bit)');
 	$tmpDb->Close();
@@ -94,13 +88,7 @@ class PostgreSqlStorage extends GalleryStorage {
 	      stype = bit
 	    )';
 
-	    
-
-
-/*  Create a temporary database connection and install our custom aggregate function  */
-
-
-
+	    /* Create a temporary database connection and install our custom aggregate function */
 	    list ($ret, $tmpDb) = $this->_getConnection(true);
 	    if ($ret) {
 		return $ret;
@@ -164,13 +152,7 @@ class PostgreSqlStorage extends GalleryStorage {
 	    break;
 
 	case 'BITAND':
-	    
-
-
-/*  Cast any input values as the 'bit' type  */
-
-
-
+	    /* Cast any input values as the 'bit' type */
 	    $args = str_replace('?', '?', $args);
 	    $sql = $args[0] . ' & ' . $args[1];
 	    break;
@@ -266,13 +248,7 @@ class PostgreSqlStorage extends GalleryStorage {
      * slower than addcslashes.
      */
     function encodeBlob($blob) {
-	
-
-
-/*  See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html  */
-
-
-
+	/* See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html */
 	return addcslashes($blob, "\000..\037\047\134\177..\377");
     }
 

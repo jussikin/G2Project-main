@@ -104,25 +104,13 @@ class RepositoryPackage extends RepositoryObject {
 	$randomString = $this->getPackageHash($packageType, 10);
 	$this->_template->setVariable('random', $randomString);
 
-	
-
-
-/*  Directory structure creation code.  */
-
-
-
+	/* Directory structure creation code. */
 	$packageDirectories = array();
 	foreach ($this->_descriptor->getDirectoriesInPackage($packageType) as $dir) {
 	    $packageDirectories[] = $dir;
 	}
 
-	
-
-
-/*  File creation code.  */
-
-
-
+	/* File creation code. */
 	$platform =& $gallery->getPlatform();
 	$packageFiles = array();
 	foreach ($this->_descriptor->getFilesInPackage($packageType) as $file) {
@@ -143,13 +131,7 @@ class RepositoryPackage extends RepositoryObject {
 	$this->_template->setVariable('directories', $packageDirectories);
 	$this->_template->setVariable('files', $packageFiles);
 
-	
-
-
-/*  Set file name and write it to disk.  */
-
-
-
+	/* Set file name and write it to disk. */
 	$this->setOutputFile($this->getPackageFileName($packageType));
 
 	$ret = $this->writeToDisk($overwritePackage, $compressToo);

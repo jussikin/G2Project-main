@@ -104,13 +104,7 @@ class SlideshowHelperTest extends GalleryTestCase {
 		    break;
 
 		case 'nonphoto':
-		    
-
-
-/*  Already handled  */
-
-
-
+		    /* Already handled */
 		    break;
 
 		default:
@@ -277,13 +271,7 @@ class SlideshowHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Second photo has no thumbnail, get skipped  */
-
-
-
+	/* Second photo has no thumbnail, get skipped */
 	$this->assertEquals(
 	    array(
 		array('item' => (array)$itemInfo[0]['item'],
@@ -307,13 +295,7 @@ class SlideshowHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  First item is not a photo, get skipped  */
-
-
-
+	/* First item is not a photo, get skipped */
 	$this->assertEquals(
 	    array(
 		array('item' => (array)$itemInfo[1]['item'],
@@ -334,13 +316,7 @@ class SlideshowHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  First photo has a preferred image  */
-
-
-
+	/* First photo has a preferred image */
 	$this->assertEquals(
 	    array(
 		array('item' => (array)$itemInfo[0]['item'],
@@ -377,13 +353,7 @@ class SlideshowHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Photo has two resizes, we expect to see the second one since it's larger.  */
-
-
-
+	/* Photo has two resizes, we expect to see the second one since it's larger. */
 	$this->assertEquals(
 	    array(
 		array('item' => (array)$itemInfo[0]['item'],
@@ -416,13 +386,7 @@ class SlideshowHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  All the user can see is the thumbnail  */
-
-
-
+	/* All the user can see is the thumbnail */
 	$this->assertEquals(
 	    array(
 		array('item' => (array)$itemInfo[0]['item'],
@@ -452,21 +416,9 @@ class SlideshowHelperTest extends GalleryTestCase {
 	$this->assertEquals(0, $start, 'Should start at first photo');
     }
 
-    
-
-
-/*  @todo make this test run faster by overriding SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE  */
-
-
-
+    /** @todo make this test run faster by overriding SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE */
     function testPaginateItemSlideshow_NextOffsetOnly() {
-	
-
-
-/*  Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1)  */
-
-
-
+	/* Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1) */
 	$options = str_repeat('thumbnail:preferred,nonphoto:thumbnail:',
 	    SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE) . 'thumbnail';
 
@@ -487,13 +439,7 @@ class SlideshowHelperTest extends GalleryTestCase {
     }
 
     function testPaginateItemSlideshow_PrevOffsetOnly() {
-	
-
-
-/*  Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1)  */
-
-
-
+	/* Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1) */
 	$options = str_repeat('thumbnail:preferred,nonphoto:thumbnail:',
 	    SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE) . 'thumbnail';
 
@@ -515,13 +461,7 @@ class SlideshowHelperTest extends GalleryTestCase {
     }
 
     function testPaginateItemSlideshow_PrevOffsetAndNextOffset() {
-	
-
-
-/*  Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1)  */
-
-
-
+	/* Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1) */
 	$options = str_repeat('thumbnail:preferred,nonphoto:thumbnail:',
 	    SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE) . 'thumbnail';
 

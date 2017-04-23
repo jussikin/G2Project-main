@@ -82,25 +82,13 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testAddComment() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[subject]', 'this is a subject');
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array(
@@ -110,13 +98,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Grab the comment and take a look at it  */
-
-
-
+	/* Grab the comment and take a look at it */
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -137,25 +119,13 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testAddCommentFlood() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[subject]', 'this is a subject');
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array(
@@ -165,13 +135,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results, 'First Comment');
 
-	
-
-
-/*  Perform the second request and verify that we prevented flooding  */
-
-
-
+	/* Perform the second request and verify that we prevented flooding */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array(
@@ -184,26 +148,14 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testAddCommentDifferentIp() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[subject]', 'this is a subject');
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array(
@@ -213,13 +165,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results, 'First Comment');
 
-	
-
-
-/*  Perform the second request from different IP and verify that we succeeded  */
-
-
-
+	/* Perform the second request from different IP and verify that we succeeded */
 	$_SERVER['REMOTE_ADDR'] = '1.2.3.4';
 	$results = $this->handleRequest();
 	$this->assertEquals(
@@ -247,26 +193,14 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 
 	$this->_becomeGuestUser();
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[subject]', 'this is a subject');
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 	GalleryUtilities::putRequestVariable('form[author]', 'this is an author');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array(
@@ -276,13 +210,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Grab the comment and take a look at it  */
-
-
-
+	/* Grab the comment and take a look at it */
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -304,25 +232,13 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testPreviewComment() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][preview]', 1);
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 	GalleryUtilities::putRequestVariable('form[subject]', 'this is a subject');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'comment.AddComment'),
@@ -347,26 +263,14 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 
 	$this->_becomeGuestUser();
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][preview]', 1);
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 	GalleryUtilities::putRequestVariable('form[subject]', 'this is a subject');
 	GalleryUtilities::putRequestVariable('form[author]', 'this is an author');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'comment.AddComment'),
@@ -378,38 +282,20 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testAddEmptyComment() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[comment]', '');
 	GalleryUtilities::putRequestVariable('form[subject]', '');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'comment.AddComment'),
 				  'status' => array(),
 				  'error' => array('form[error][comment][missing]')),
 			    $results);
 
-	
-
-
-/*  Verify that there are no comments  */
-
-
-
+	/* Verify that there are no comments */
 	list ($ret, $counts) =
 	    GalleryCommentHelper::fetchCommentCounts(array($this->_item->getId()));
 	if ($ret) {
@@ -421,38 +307,20 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testPreviewEmptyComment() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[comment]', '');
 	GalleryUtilities::putRequestVariable('form[subject]', '');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'comment.AddComment'),
 				  'status' => array(),
 				  'error' => array('form[error][comment][missing]')),
 			    $results);
 
-	
-
-
-/*  Verify that there are no comments  */
-
-
-
+	/* Verify that there are no comments */
 	list ($ret, $counts) =
 	    GalleryCommentHelper::fetchCommentCounts(array($this->_item->getId()));
 	if ($ret) {
@@ -469,13 +337,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[subject]',
@@ -485,13 +347,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[author]',
 	    'this is an author with <script>evilness</script> in it.');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'comment.CommentChangeConfirmation',
@@ -500,13 +356,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Post the same comment but with html markup mode active  */
-
-
-
+	/* Post the same comment but with html markup mode active */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'misc.markup', 'html');
 	if ($ret) {
 	    return $ret;
@@ -520,13 +370,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Grab the comment and take a look at it  */
-
-
-
+	/* Grab the comment and take a look at it */
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -582,13 +426,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
 	GalleryUtilities::putRequestVariable('form[subject]',
@@ -598,13 +436,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[author]',
 	    'this is an author with <script>evilness</script> in it.');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'comment.CommentChangeConfirmation',
@@ -613,13 +445,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Grab the comment and take a look at it  */
-
-
-
+	/* Grab the comment and take a look at it */
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -649,24 +475,12 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     }
 
     function testCancelComment() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 	GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 	GalleryUtilities::putRequestVariable('form[comment]', 'this is a comment');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.ShowItem',
 						      'itemId' => $this->_item->getId()),
@@ -696,13 +510,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[subject]', 'test');
 	GalleryUtilities::putRequestVariable('form[comment]', 'test');
 
-	
-
-
-/*  Perform the request and verify validation plugin got error  */
-
-
-
+	/* Perform the request and verify validation plugin got error */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'comment.AddComment'),
 				  'status' => array(),
@@ -726,13 +534,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[subject]', 'test');
 	GalleryUtilities::putRequestVariable('form[comment]', 'test');
 
-	
-
-
-/*  Perform the request and verify validation plugin got error  */
-
-
-
+	/* Perform the request and verify validation plugin got error */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'comment.AddComment'),
 				  'status' => array(),
@@ -756,13 +558,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[subject]', 'test');
 	GalleryUtilities::putRequestVariable('form[comment]', 'test');
 
-	
-
-
-/*  Perform the request and verify comment was added (validation plugin skipped)  */
-
-
-
+	/* Perform the request and verify comment was added (validation plugin skipped) */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array(
@@ -772,13 +568,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results);
 
-	
-
-
-/*  Grab the comment and take a look at it  */
-
-
-
+	/* Grab the comment and take a look at it */
 	list ($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId());
 	if ($ret) {
 	    return $ret;
@@ -799,13 +589,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
     function testAddCommentRequiresViewPermission() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	$itemId = $this->_item->getId();
 	GalleryUtilities::putRequestVariable('itemId', $itemId);
 	GalleryUtilities::putRequestVariable('form[action][add]', 1);
@@ -823,13 +607,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Perform the request and verify that we fail  */
-
-
-
+	/* Perform the request and verify that we fail */
 	$results = $this->handleRequest(ERROR_MISSING_OBJECT);
 	$this->assertEquals(null, $results, 'controller results');
 

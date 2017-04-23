@@ -18,13 +18,7 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
-
-
-/*  Define FORCE_GZIP for PHP environments without the zlib extension  */
-
-
-
+/* Define FORCE_GZIP for PHP environments without the zlib extension */
 if (!defined('FORCE_GZIP')) {
     define('FORCE_GZIP', 'FORCE_GZIP');
 }
@@ -157,13 +151,7 @@ class TemplateAdapterTest extends GalleryTestCase {
 	    'for="pirate_ChangeInDescendents"> ninja</label>', $result);
     }
 
-    
-
-
-/*  Make sure viewL10domain doesn't get ignored  */
-
-
-
+    /* Make sure viewL10domain doesn't get ignored */
     function testTextViewL10domain() {
 	global $gallery;
 	$gallery->_translator = new TemplateAdapterMockTranslator();
@@ -463,13 +451,7 @@ class TemplateAdapterTest extends GalleryTestCase {
 			    $this->_mockUrlGenerator->_calls);
     }
 
-    
-
-
-/*  With compile check, i.e., just checking tpl file  */
-
-
-
+    /* With compile check, i.e., just checking tpl file */
     function testMissingBlockWithCompileCheck() {
 	$this->_setupAdapterWithMocks();
 	$ret = $this->_markPluginParametersForCleanup('module', 'core');
@@ -492,13 +474,7 @@ class TemplateAdapterTest extends GalleryTestCase {
 	    $this->_mockSmarty->_includes[0]);
     }
 
-    
-
-
-/*  Without compile check, i.e., happy if compiled template exists  */
-
-
-
+    /* Without compile check, i.e., happy if compiled template exists */
     function testMissingBlockNoCompileCheckTplCached() {
         global $gallery;
 	$this->_setupAdapterWithMocks();
@@ -527,13 +503,7 @@ class TemplateAdapterTest extends GalleryTestCase {
 	    $this->_mockSmarty->_includes[0]);
     }
 
-    
-
-
-/*  Without compile check; no compiled template and no tpl  */
-
-
-
+    /* Without compile check; no compiled template and no tpl */
     function testMissingBlockNoCompileCheck() {
         global $gallery;
 	$this->_setupAdapterWithMocks();
@@ -563,13 +533,7 @@ class TemplateAdapterTest extends GalleryTestCase {
     }
 
     function testHeadContentFromTemplate() {
-	
-
-
-/*  Use a real GalleryTemplate / smarty instance to test the whole loop  */
-
-
-
+	/* Use a real GalleryTemplate / smarty instance to test the whole loop */
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 	$template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
 	$template->title('My Test Page');
@@ -597,13 +561,7 @@ class TemplateAdapterTest extends GalleryTestCase {
     }
 
     function testHeadContentFromTemplateNoCombinedJavascript() {
-	
-
-
-/*  Use a real GalleryTemplate / smarty instance to test the whole loop  */
-
-
-
+	/* Use a real GalleryTemplate / smarty instance to test the whole loop */
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 	$template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
 	$template->title('My Test Page');

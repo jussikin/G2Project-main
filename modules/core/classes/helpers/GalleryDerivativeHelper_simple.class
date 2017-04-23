@@ -75,13 +75,7 @@ class GalleryDerivativeHelper_simple {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Only one thumb per item, so simplify the results  */
-
-
-
+	/* Only one thumb per item, so simplify the results */
 	foreach ($results as $id => $value) {
 	    $results[$id] = $value[0];
 	}
@@ -173,26 +167,14 @@ class GalleryDerivativeHelper_simple {
 	     */
 	    sort($derivativeIds, SORT_NUMERIC);
 
-	    
-
-
-/*  Load all the derivative images  */
-
-
-
+	    /* Load all the derivative images */
 	    list ($ret, $derivativeEntities) =
 			GalleryCoreApi::loadEntitiesById($derivativeIds, 'GalleryDerivative');
 	    if ($ret) {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Create a table of child id -> image data  */
-
-
-
+	    /* Create a table of child id -> image data */
 	    foreach ($derivativeEntities as $derivative) {
 		$derivativeTable[$derivative->getParentId()][] = $derivative;
 	    }

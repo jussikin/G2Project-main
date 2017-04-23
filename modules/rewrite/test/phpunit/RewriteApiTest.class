@@ -46,26 +46,14 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set up our mock parser  */
-
-
-
+	/* Set up our mock parser */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite',
 						  'parserId', 'rewriteapimock');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Make sure we use the mock parser  */
-
-
-
+	/* Make sure we use the mock parser */
 	GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 	list ($ret, $parser) = RewriteHelper::getRewriteParser(true);
 	if ($ret) {
@@ -73,25 +61,13 @@ class RewriteApiTest extends GalleryTestCase {
 	}
 	$this->assertEquals('rewriteapimock', $parser->getParserId(), 'parserId');
 
-	
-
-
-/*  Load the api class  */
-
-
-
+	/* Load the api class */
 	list ($ret, $this->_rewriteApi) = GalleryCoreApi::newFactoryInstance('RewriteApi');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set gallery in embedded mode  */
-
-
-
+	/* Set gallery in embedded mode */
 	GalleryDataCache::put('G2_EMBED', 1, true);
     }
 
@@ -211,25 +187,13 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $activeRules) = $this->_rewriteApi->fetchActiveRulesForModule($moduleId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assertEquals(array_keys($expectedRules[$moduleId]), $activeRules, 'active rules');
     }
 
@@ -240,25 +204,13 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $activeRules) = $this->_rewriteApi->fetchActiveRulesForModule($moduleId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assertEquals(array('rule2', 'rule0'), $activeRules, 'active rules');
     }
 
@@ -268,25 +220,13 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $success) = $this->_rewriteApi->activateRewriteRulesForModule($moduleId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assert($success, 'should have succeeded');
 
 	$expectedRules[$moduleId]['rule1'] = array('pattern' => 'abc');
@@ -300,26 +240,14 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $success) =
 		$this->_rewriteApi->activateRewriteRulesForModule($moduleId, array('rule2'));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assert($success, 'should have succeeded');
 	$expectedRules[$moduleId]['rule2'] = array('pattern' => '123');
 
@@ -333,25 +261,13 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $success) = $this->_rewriteApi->activateRewriteRulesForModule($moduleId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assert(!$success, 'should have failed');
     }
 
@@ -362,25 +278,13 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $success) = $this->_rewriteApi->activateRewriteRulesForModule($moduleId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assert($success, 'should have succeeded');
 
 	$expectedRules[$moduleId]['rule1'] = array('pattern' => 'existing pattern for r1');
@@ -402,26 +306,14 @@ class RewriteApiTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	list ($ret, $success) = $this->_rewriteApi->activateRewriteRulesForModule($moduleId,
 							null, true);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify the results  */
-
-
-
+	/* Verify the results */
 	$this->assert($success, 'should have succeeded');
 
 	$expectedRules[$moduleId]['rule1'] = array('pattern' => 'abc');
@@ -460,13 +352,7 @@ class RewriteApiTest extends GalleryTestCase {
 	$_SERVER['saveActiveRules'] = null;
 
 	if ($hasHistory) {
-	    
-
-
-/*  Create a pattern history for that module  */
-
-
-
+	    /* Create a pattern history for that module */
 	    $ret = RewriteHelper::setHistoryForModule(
 		$moduleId, array('rule2' => array('pattern' => 'old pattern for r2'),
 				 'rule0' => array('pattern' => 'foo')));

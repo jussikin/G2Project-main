@@ -79,13 +79,7 @@ class GalleryCoreSearch extends GallerySearchInterface_1_0 {
 	    }
 	}
 
-	
-
-
-/*  Always select back title and summary  */
-
-
-
+	/* Always select back title and summary */
 	foreach (array('[GalleryItem::title]', '[GalleryItem::summary]') as $column) {
 	    if (!isset($selectMap[$column])) {
 		$selectMap[$column] = $columnNumber++;
@@ -146,13 +140,7 @@ class GalleryCoreSearch extends GallerySearchInterface_1_0 {
 	$data = $whereData;
 	$data = array_merge($data, $aclIds);
 
-	
-
-
-/*  Find the total  */
-
-
-
+	/* Find the total */
 	list ($ret, $results) = $gallery->search($countQuery, $data);
 	if ($ret) {
 	    return array($ret, null);
@@ -160,13 +148,7 @@ class GalleryCoreSearch extends GallerySearchInterface_1_0 {
 	$result = $results->nextResult();
 	$numRows = (int)$result[0];
 
-	
-
-
-/*  Get the results that we're interested in  */
-
-
-
+	/* Get the results that we're interested in */
 	list ($ret, $results) = $gallery->search(
 	    $query, $data, array('limit' => array('offset' => $offset, 'count' => $count)));
 	if ($ret) {

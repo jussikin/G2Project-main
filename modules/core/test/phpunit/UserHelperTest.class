@@ -108,13 +108,7 @@ class UserHelperTest extends GalleryTestCase {
 	$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
 	$event->setData(array('userName' => 'MockUser'));
 	$this->_storage->_count = 1;
-	$this->_storage->_lastAttempt = 1;  
-
-
-/*  way in the past  */
-
-
-
+	$this->_storage->_lastAttempt = 1;  /* way in the past */
 	$this->_phpVm->_time = 'NOW';
 	list ($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
 	if ($ret) {
@@ -179,13 +173,7 @@ class UserHelperTest extends GalleryTestCase {
     }
 
     function testIsDisabledUsernameAboveCutoffAndRecent() {
-	$this->_storage->_count = 10;  
-
-
-/*  disabled for an hour  */
-
-
-
+	$this->_storage->_count = 10;  /* disabled for an hour */
 	$this->_storage->_lastAttempt = 10000;
 	$this->_phpVm->_time = 10001;
 	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
@@ -201,21 +189,9 @@ class UserHelperTest extends GalleryTestCase {
     }
 
     function testIsDisabledUsernameWayAboveCutoffAndTooRecent() {
-	$this->_storage->_count = 100; 
-
-
-/*  disabled for 10 hours  */
-
-
-
+	$this->_storage->_count = 100; /* disabled for 10 hours */
 	$this->_storage->_lastAttempt = 10000;
-	$this->_phpVm->_time = 10000 + 9 * 3600; 
-
-
-/*  9 hours since last attempt  */
-
-
-
+	$this->_phpVm->_time = 10000 + 9 * 3600; /* 9 hours since last attempt */
 	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
 	if ($ret) {
 	    return $ret;
@@ -229,21 +205,9 @@ class UserHelperTest extends GalleryTestCase {
     }
 
     function testIsDisabledUsernameAboveCutoffButNotRecent() {
-	$this->_storage->_count = 100; 
-
-
-/*  disabled for 10 hours  */
-
-
-
+	$this->_storage->_count = 100; /* disabled for 10 hours */
 	$this->_storage->_lastAttempt = 10000;
-	$this->_phpVm->_time = 1000000; 
-
-
-/*  last attempt is in the distant past  */
-
-
-
+	$this->_phpVm->_time = 1000000; /* last attempt is in the distant past */
 	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
 	if ($ret) {
 	    return $ret;
@@ -259,23 +223,11 @@ class UserHelperTest extends GalleryTestCase {
     function testFetchLocaleForUser() {
 	global $gallery;
 
-	
-
-
-/*  Use the real storage instead of the mockup.  */
-
-
-
+	/* Use the real storage instead of the mockup. */
 	$gallery->_storage = $this->_originalStorage;
 	$this->_phpVm->_time = time();
 
-	
-
-
-/*  Create a test user.  */
-
-
-
+	/* Create a test user. */
 	list ($ret, $testUser) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -284,26 +236,14 @@ class UserHelperTest extends GalleryTestCase {
 
 	$testUserId = $testUser->getId();
 
-	
-
-
-/*  Check the default language  */
-
-
-
+	/* Check the default language */
 	list ($ret, $defaultLocale) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
         if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify we get the default language code  */
-
-
-
+	/* Verify we get the default language code */
 	list ($ret, $locale) =
 	    GalleryUserHelper_medium::fetchLocaleForUser($testUserId);
 	if ($ret) {
@@ -318,46 +258,22 @@ class UserHelperTest extends GalleryTestCase {
 	 */
 	$preSetLocale = 'mo_CKUP';
 
-	
-
-
-/*  Lock User  */
-
-
-
+	/* Lock User */
 	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($testUserId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set Language  */
-
-
-
+	/* Set Language */
 	$testUser->setLanguage($preSetLocale);
 
-	
-
-
-/*  Save it  */
-
-
-
+	/* Save it */
 	$ret = $testUser->save();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Unlock it  */
-
-
-
+	/* Unlock it */
 	$ret = GalleryCoreApi::releaseLocks($lockId);
 	if ($ret) {
 	    return $ret;

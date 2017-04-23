@@ -45,13 +45,7 @@ class PathInfoHelperTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set up our environment  */
-
-
-
+	/* Set up our environment */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'pathinfo.forced', '0');
 	if ($ret) {
 	    return $ret;
@@ -60,13 +54,7 @@ class PathInfoHelperTest extends GalleryTestCase {
 	$this->_parser = new PathInfoParser();
 	$_SERVER['REQUEST_URI'] = '/gallery2/phpunit_test.php?foo=1&bar=2';
 
-	
-
-
-/*  Set up our mock platform  */
-
-
-
+	/* Set up our mock platform */
 	$this->_platform = new PathInfoHelperMockPlatform();
 	$gallery->setPlatform($this->_platform);
     }
@@ -127,13 +115,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform {
     function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
-	
-
-
-/*  The hostName can include the port part  */
-
-
-
+	/* The hostName can include the port part */
 	list ($host) = explode(':', $urlGenerator->getHostName());
 	if ($target == $host) {
 	    return 'phpunit';

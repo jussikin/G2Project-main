@@ -46,13 +46,7 @@ class UserAlbumHelper {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create album..  */
-
-
-
+	/* Create album.. */
 	$albumTitle = trim($user->getFullName());
 	if (empty($albumTitle)) {
 	    $albumTitle = $user->getUserName();
@@ -76,13 +70,7 @@ class UserAlbumHelper {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set owner..  */
-
-
-
+	/* Set owner.. */
 	$album->setOwnerId($user->getId());
 	$ret = $album->save();
 	if ($ret) {
@@ -91,21 +79,9 @@ class UserAlbumHelper {
 	}
 	$albumId = $album->getId();
 
-	
+	/* Set permissions.. */
 
-
-/*  Set permissions..  */
-
-
-
-
-	
-
-
-/*  If the active user isn't the album owner, the default permissions should be removed  */
-
-
-
+	/* If the active user isn't the album owner, the default permissions should be removed */
 	$currentUserId = $gallery->getActiveUserId();
 	if ($currentUserId != $user->getId()) {
 	    $ret = GalleryCoreApi::removeUserPermission($albumId, $currentUserId, 'core.all');
@@ -115,13 +91,7 @@ class UserAlbumHelper {
 	    }
 	}
 
-	
-
-
-/*  Make sure the album owner has core.all permissions  */
-
-
-
+	/* Make sure the album owner has core.all permissions */
 	$ret = GalleryCoreApi::addUserPermission($albumId, $user->getId(), 'core.all');
 	if ($ret) {
 	    GalleryCoreApi::releaseLocks($lockId);
@@ -135,21 +105,9 @@ class UserAlbumHelper {
 	}
 	$visited = array();
 	foreach ($permissions as $permission) {
-	    
-
-
-/*  don't bother for administrator group  */
-
-
-
+	    /* don't bother for administrator group */
 	    if (empty($permission['groupId']) || $permission['groupId'] != $core['id.adminGroup']) {
-		
-
-
-/*  remove all view permissions at once  */
-
-
-
+		/* remove all view permissions at once */
 		if (strstr($permission['permission'], 'core.view') ||
 		    ($permission['permission'] == 'core.all')) {
 		    if (!empty($permission['groupId']) && empty($visited[$permission['groupId']])) {
@@ -199,13 +157,7 @@ class UserAlbumHelper {
 	    return $ret;
 	}
 
-	
-
-
-/*  Record id of album  */
-
-
-
+	/* Record id of album */
 	$ret = GalleryCoreApi::setPluginParameter(
 			       'module', 'useralbum', 'albumId', $albumId, $user->getId());
 	if ($ret) {

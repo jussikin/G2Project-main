@@ -37,26 +37,14 @@ class AdminEditGroupUsersControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a test group  */
-
-
-
+	/* Create a test group */
 	list ($ret, $this->_group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;
 	}
 	$this->_markForCleanup($this->_group);
 
-	
-
-
-/*  Create a test user  */
-
-
-
+	/* Create a test user */
 	list ($ret, $this->_user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -77,13 +65,7 @@ class AdminEditGroupUsersControllerTest extends GalleryControllerTestCase {
     }
 
     function testRemoveUser() {
-	
-
-
-/*  Add the user to the group  */
-
-
-
+	/* Add the user to the group */
 	$ret = GalleryCoreApi::addUserToGroup($this->_user->getId(), $this->_group->getId());
 	if ($ret) {
 	    return $ret;
@@ -106,25 +88,13 @@ class AdminEditGroupUsersControllerTest extends GalleryControllerTestCase {
     }
 
     function testRemoveMultipleUser() {
-	
-
-
-/*  Create a second user  */
-
-
-
+	/* Create a second user */
 	list ($ret, $newUser) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add the users to the group  */
-
-
-
+	/* Add the users to the group */
 	$ret = GalleryCoreApi::addUserToGroup($this->_user->getId(), $this->_group->getId());
 	if ($ret) {
 	    return $ret;
@@ -149,13 +119,7 @@ class AdminEditGroupUsersControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Delete it  */
-
-
-
+	/* Delete it */
 	$ret = $this->_deleteAndVerifyEntity($newUser->getId());
 	if ($ret) {
 	    return $ret;
@@ -170,25 +134,13 @@ class AdminEditGroupUsersControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add the user to the site admin group  */
-
-
-
+	/* Add the user to the site admin group */
 	$ret = GalleryCoreApi::addUserToGroup($this->_user->getId(), $adminGroupId);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Become that user  */
-
-
-
+	/* Become that user */
 	$gallery->setActiveUser($this->_user);
 
 	GalleryUtilities::putRequestVariable('groupId', $adminGroupId);

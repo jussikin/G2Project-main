@@ -112,13 +112,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
     }
 
     function testAddRemoveThumbnail() {
-	
-
-
-/*  Add custom thumbnail to item with no thumbnail..  */
-
-
-
+	/* Add custom thumbnail to item with no thumbnail.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>
@@ -143,13 +137,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assertEquals($thumbnailImage->getId(),
 			    $thumbnail->getDerivativeSourceId(), 'source');
 
-	
-
-
-/*  Remove custom thumbnail..  */
-
-
-
+	/* Remove custom thumbnail.. */
 	$form = array('CustomThumbnailOption' => array('delete' => '1'));
 	$result = $this->_handleRequestAfterEdit($form, $this->_item);
 	$this->assertEquals(array(array(), array()), $result);
@@ -169,13 +157,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
     }
 
     function testAddDeleteThumbnail() {
-	
-
-
-/*  Add custom thumbnail to item with no thumbnail..  */
-
-
-
+	/* Add custom thumbnail to item with no thumbnail.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>
@@ -200,13 +182,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assertEquals($thumbnailImage->getId(),
 			    $thumbnail->getDerivativeSourceId(), 'source');
 
-	
-
-
-/*  Delete thumbnail from item and ensure ThumbnailImage is deleted too  */
-
-
-
+	/* Delete thumbnail from item and ensure ThumbnailImage is deleted too */
 	$ret = GalleryCoreApi::deleteEntityById($thumbnail->getId(), 'GalleryDerivative');
 	if ($ret) {
 	    return $ret;
@@ -219,13 +195,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assert(!isset($thumbnailImage), 'thumbnailImage should have been deleted');
 
 	if (isset($thumbnailImage)) {
-	    
-
-
-/*  In case test failed, delete ThumbnailImage  */
-
-
-
+	    /* In case test failed, delete ThumbnailImage */
 	    $ret = GalleryCoreApi::deleteEntityById($thumbnailImage->getId(), 'ThumbnailImage');
 	    if ($ret) {
 		return $ret;
@@ -241,13 +211,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
     }
 
     function testChangeRestoreThumbnail() {
-	
-
-
-/*  Add custom thumbnail to image that has a thumbnail..  */
-
-
-
+	/* Add custom thumbnail to image that has a thumbnail.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>
@@ -275,13 +239,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 			    $thumbnail->getDerivativeOperations(),
 			    'operations should keep thumbnail,composite and drop others');
 
-	
-
-
-/*  Remove custom thumbnail..  */
-
-
-
+	/* Remove custom thumbnail.. */
 	$form = array('CustomThumbnailOption' => array('delete' => '1'));
 	$result = $this->_handleRequestAfterEdit($form, $this->_image);
 	$this->assertEquals(array(array(), array()), $result);
@@ -311,13 +269,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
     }
 
     function testAlbumHighlight() {
-	
-
-
-/*  Add custom thumbnail to album (also test browser not sending mime type in form data)  */
-
-
-
+	/* Add custom thumbnail to album (also test browser not sending mime type in form data) */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'application/unknown'),
 		      'tmp_name' => array(1 =>
@@ -345,13 +297,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assertEquals($thumbnailImage->getId(),
 			    $thumbnail->getDerivativeSourceId(), 'source');
 
-	
-
-
-/*  Remove custom thumbnail..  */
-
-
-
+	/* Remove custom thumbnail.. */
 	$form = array('CustomThumbnailOption' => array('delete' => '1'));
 	$result = $this->_handleRequestAfterEdit($form, $this->_album);
 	$this->assertEquals(array(array(), array()), $result);
@@ -380,13 +326,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add custom thumbnail to album..  */
-
-
-
+	/* Add custom thumbnail to album.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>
@@ -410,13 +350,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assertEquals($thumbnailImage->getId(),
 			    $thumbnail->getDerivativeSourceId(), 'source');
 
-	
-
-
-/*  Remove custom thumbnail..  */
-
-
-
+	/* Remove custom thumbnail.. */
 	$form = array('CustomThumbnailOption' => array('delete' => '1'));
 	$result = $this->_handleRequestAfterEdit($form, $album);
 	$this->assertEquals(array(array(), array()), $result);
@@ -434,21 +368,9 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assertEquals(array(), $thumbnails, 'no highlight');
     }
 
-    
-
-
-/*  Test that guaranteeAlbumHasThumbnail won't remove a custom thumbnail  */
-
-
-
+    /* Test that guaranteeAlbumHasThumbnail won't remove a custom thumbnail */
     function testGuarantee() {
-	
-
-
-/*  Add custom thumbnail to album..  */
-
-
-
+	/* Add custom thumbnail to album.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>
@@ -457,13 +379,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$result = $this->_handleRequestAfterEdit($form, $this->_album);
 	$this->assertEquals(array(array(), array()), $result);
 
-	
-
-
-/*  Call GalleryCoreApi::guaranteeAlbumHasThumbnail  */
-
-
-
+	/* Call GalleryCoreApi::guaranteeAlbumHasThumbnail */
 	list ($ret, $success) = GalleryCoreApi::guaranteeAlbumHasThumbnail($this->_album->getId());
 	if ($ret) {
 	    return $ret;
@@ -488,13 +404,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
     }
 
     function testLongFilename() {
-	
-
-
-/*  Verify filename is truncated to fit in db column; don't want db/filesystem mismatch  */
-
-
-
+	/* Verify filename is truncated to fit in db column; don't want db/filesystem mismatch */
 	$filename = '1234567891123456789212345678931234567894123456789512345678961234567897'
 	    . '123456789812345678991234567890123456789112345678921234567893.jpg';
 	$testfile = GalleryCoreApi::getCodeBasePath('modules/core/test/data/test1.jpg');
@@ -512,21 +422,9 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	$this->assertEquals(substr($filename, 0, 124) . '.jpg', $thumbnail->getPathComponent());
     }
 
-    
-
-
-/*  Regression test: Verify that the collision between test.jpg and TEST.jpg is detected.  */
-
-
-
+    /* Regression test: Verify that the collision between test.jpg and TEST.jpg is detected. */
     function testFilenameCollision() {
-	
-
-
-/*  Add custom thumbnail to item with no thumbnail.  */
-
-
-
+	/* Add custom thumbnail to item with no thumbnail. */
 	$form = array('name' => array(1 => 'test.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>
@@ -541,13 +439,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
 	}
 	$this->assert(isset($thumbnailImage), 'thumbnailImage');
 
-	
-
-
-/*  Now add a custom thumbnail with the same name but in capital letters.  */
-
-
-
+	/* Now add a custom thumbnail with the same name but in capital letters. */
 	$form = array('name' => array(1 => 'TEST.jpg'),
 		      'type' => array(1 => 'image/jpeg'),
 		      'tmp_name' => array(1 =>

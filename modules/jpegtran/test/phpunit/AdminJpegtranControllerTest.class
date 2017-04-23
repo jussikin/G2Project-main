@@ -48,23 +48,11 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
     }
 
     function testSaveGoodPath() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPath/jpegtran');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'jpegtran.AdminJpegtran'),
@@ -72,13 +60,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the settings went in properly  */
-
-
-
+	/* Verify the settings went in properly */
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'jpegtran');
 	if ($ret) {
 	    return $ret;
@@ -109,23 +91,11 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
     }
 
     function testSaveTestErrorPath() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/validPathBadBinary/jpegtran');
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'jpegtran.AdminJpegtran'),
@@ -135,23 +105,11 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
     }
 
     function testSaveBadPath() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/invalidPath/jpegtran');
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'jpegtran.AdminJpegtran'),
@@ -161,23 +119,11 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
     }
 
     function testNotExecutablePath() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/notExecutablePath/jpegtran');
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'jpegtran.AdminJpegtran'),
@@ -187,23 +133,11 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
     }
 
     function testSaveIncompletePath() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '/incompletePath/');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'jpegtran.AdminJpegtran'),
@@ -211,13 +145,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the settings went in properly  */
-
-
-
+	/* Verify the settings went in properly */
 	list ($ret, $path) = GalleryCoreApi::getPluginParameter('module', 'jpegtran', 'path');
 	if ($ret) {
 	    return $ret;
@@ -226,23 +154,11 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase {
     }
 
     function testSaveMissingPath() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	GalleryUtilities::putRequestVariable('form[path]', '');
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'jpegtran.AdminJpegtran'),
@@ -313,13 +229,7 @@ class AdminJpegtranControllerTestPlatform extends WinNtPlatform {
     }
 
     function unlink($args) {
-	
-
-
-/*  do nothing  */
-
-
-
+	/* do nothing */
     }
 
     function isRestrictedByOpenBaseDir($path) {

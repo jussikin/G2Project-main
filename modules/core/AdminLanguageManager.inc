@@ -47,13 +47,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	$results = $status = $error = array();
 
 	if (!empty($form['save'])) {
-	    
-
-
-/*  Remove the reset languageActions  */
-
-
-
+	    /* Remove the reset languageActions */
 	    if (!empty($form['languageAction'])) {
 		foreach ($form['languageAction'] as $language => $action) {
 		    if ($action == 'reset') {
@@ -142,22 +136,10 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 
 	$installLanguagesCount = $this->_countInstallActions($sourceFiles);
 
-	
-
-
-/*  Add one for the actual download  */
-
-
-
+	/* Add one for the actual download */
 	$totalActions = $installLanguagesCount + count($deleteLanguages) + 1;
 
-	
-
-
-/*  If actions > 0, then we have some language packages to work with  */
-
-
-
+	/* If actions > 0, then we have some language packages to work with */
 	if ($totalActions > 0) {
 	    $templateAdapter->updateProgressBar($heading, '', 0);
 
@@ -177,13 +159,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 		$status['languagePacksInstalled'] = $count;
 	    }
 
-	    
-
-
-/*  Delete old language packs  */
-
-
-
+	    /* Delete old language packs */
 	    list ($ret, $languagePacksDeleted, $failedToDeleteLanguage) = 
 		$this->_deleteLanguagePackages($deleteLanguages, $callback);
 	    if ($ret) {
@@ -202,13 +178,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	    $status['allLanguagesCurrent'] = 1;
 	}
 
-	
-
-
-/*  Update progress bar.  */
-
-
-
+	/* Update progress bar. */
 	if (!empty($status['error'])) {
 	    $message = $module->translate('Update completed with errors.');
 	} else {
@@ -234,13 +204,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
      *		     bool flag indicating that the settings were updated
      */
     function _updateGeneralSettings($form) {
-	
-
-
-/*  Handle general language settings.  */
-
-
-
+	/* Handle general language settings. */
 	$form['language']['useBrowserPref'] = !empty($form['language']['useBrowserPref']);
 
 	list ($ret, $coreParameters) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
@@ -296,13 +260,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 		    $locales[$actionType][$locale] = 1;
 		}
 	    } else {
-		
-
-
-/*  Ignore bad language codes  */
-
-
-
+		/* Ignore bad language codes */
 	    }
 	}
 
@@ -432,21 +390,9 @@ class AdminLanguageManagerView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load some standard form parameters  */
-
-
-
+	/* Load some standard form parameters */
 	if ($form['formName'] != 'AdminLanguages') {
-	    
-
-
-/*  Load up our form data  */
-
-
-
+	    /* Load up our form data */
 	    foreach (array('default.language',
 			   'language.useBrowserPref') as $key) {
 
@@ -463,13 +409,7 @@ class AdminLanguageManagerView extends GalleryView {
 	    $form['formName'] = 'AdminLanguages';
 	}
 
-	
-
-
-/*  Set up check boxes.  */
-
-
-
+	/* Set up check boxes. */
 	$form['language']['useBrowserPref'] = (int)!empty($form['language']['useBrowserPref']);
 
 	$AdminLanguages = $languageList = array();
@@ -486,13 +426,7 @@ class AdminLanguageManagerView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Get list of upgradeable packages in repository  */
-
-
-
+	/* Get list of upgradeable packages in repository */
 	$upgradeInfo = $languagePackages = array();
 	$enableAllFlags = array('upgrade' => false, 'remove' => false, 'download' => false);
 	foreach ($repositories as $source => $repository) {
@@ -528,13 +462,7 @@ class AdminLanguageManagerView extends GalleryView {
 	    $status['error']['repositoryInitErrorCount'] = $repositoryInitErrorCount;
 	}
 
-	
-
-
-/*  Render the HTML body  */
-
-
-
+	/* Render the HTML body */
 	$template->setVariable('controller', 'core.AdminLanguageManager');
 	$template->javascript('lib/yui/utilities.js');
 	return array(null, array('body' => 'modules/core/templates/AdminLanguageManager.tpl'));
@@ -610,13 +538,7 @@ class AdminLanguageManagerView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Add in the unistalled languages so the list is complete  */
-
-
-
+	/* Add in the unistalled languages so the list is complete */
 	foreach ($languageData as $language => $countries) {
 	    $gallery->guaranteeTimeLimit(30);
 
@@ -647,13 +569,7 @@ class AdminLanguageManagerView extends GalleryView {
 	    }
 	}
 
-	if (!empty($packages['en'])) {  
-
-
-/*  don't show English(US) as a managed language  */
-
-
-
+	if (!empty($packages['en'])) {  /* don't show English(US) as a managed language */
 	    unset($packages['en']);
 	}
 	ksort($packages);
@@ -681,13 +597,7 @@ class AdminLanguageManagerView extends GalleryView {
 	    foreach ($plugins as $indexData) {
 		$packageCount += count($indexData['files']);
 		if (!empty($indexData['files']['descriptor'])) {
-		    $packageCount--; 
-
-
-/*  don't include the descriptor in the count  */
-
-
-
+		    $packageCount--; /* don't include the descriptor in the count */
 		}
 	    }
 	}

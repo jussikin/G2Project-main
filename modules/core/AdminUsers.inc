@@ -49,24 +49,12 @@ class AdminUsersController extends GalleryController {
 
 	if (isset($form['action']['filterClear'])) {
 
-	    
-
-
-/*  Clear the filter  */
-
-
-
+	    /* Clear the filter */
 	    GalleryUtilities::putRequestVariable('form[list][filter]', null);
 
 	} else if (isset($form['action']['create'])) {
 
-	    
-
-
-/*  Show the "create user" view  */
-
-
-
+	    /* Show the "create user" view */
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminCreateUser';
 
@@ -77,13 +65,7 @@ class AdminUsersController extends GalleryController {
 	    } else if ($user == null) {
 		$error[] = 'form[error][text][noSuchUser]';
 	    } else {
-		
-
-
-/*  Show the "delete user" view  */
-
-
-
+		/* Show the "delete user" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['userId'] = $user->getId();
 		$redirect['subView'] = 'core.AdminEditUser';
@@ -117,13 +99,7 @@ class AdminUsersController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Show the "delete user" view  */
-
-
-
+		/* Show the "delete user" view */
 		$redirect['view'] = 'core.SiteAdmin';
 		$redirect['subView'] = 'core.AdminDeleteUser';
 		$redirect['userId'] = $user->getId();
@@ -160,13 +136,7 @@ class AdminUsersView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminUsers') {
-	    
-
-
-/*  Set some defaults  */
-
-
-
+	    /* Set some defaults */
 	    $form['text']['userName'] = '';
 	    $form['formName'] = 'AdminUsers';
 	}
@@ -179,13 +149,7 @@ class AdminUsersView extends GalleryView {
 	    $form['list']['page'] = 1;
 	}
 
-	
-
-
-/*  Fetch the user count every time we reload  */
-
-
-
+	/* Fetch the user count every time we reload */
 	list ($ret, $totalUserCount) = GalleryCoreApi::fetchUserCount();
 	if ($ret) {
 	    return array($ret, null);
@@ -194,13 +158,7 @@ class AdminUsersView extends GalleryView {
 	$form['list']['count'] = $totalUserCount;
 	$form['list']['pageSize'] = $totalUserCount > 10 ? 10 : $totalUserCount + 2;
 
-	
-
-
-/*  If we have a filter, find out how many users match it  */
-
-
-
+	/* If we have a filter, find out how many users match it */
 	if (!empty($form['list']['filter'])) {
 	    list ($ret, $form['list']['count']) =
 		GalleryCoreApi::fetchUserCount($form['list']['filter']);
@@ -209,25 +167,13 @@ class AdminUsersView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Figure out our max pages, make sure our current page fits in it  */
-
-
-
+	/* Figure out our max pages, make sure our current page fits in it */
 	$form['list']['maxPages'] = ceil($form['list']['count'] / $form['list']['pageSize']);
 	if ($form['list']['page'] > $form['list']['maxPages']) {
 	    $form['list']['page'] = $form['list']['maxPages'];
 	}
 
-	
-
-
-/*  Calculate the next/back pages  */
-
-
-
+	/* Calculate the next/back pages */
 	$form['list']['nextPage'] = min($form['list']['page']+1, $form['list']['maxPages']);
 	$form['list']['backPage'] = max(1, $form['list']['page']-1);
 
@@ -247,13 +193,7 @@ class AdminUsersView extends GalleryView {
 
 	$myUserId = $gallery->getActiveUserId();
 
-	
-
-
-/*  This is inefficient; we should extend GalleryCoreApi::fetchUserNames  */
-
-
-
+	/* This is inefficient; we should extend GalleryCoreApi::fetchUserNames */
 	list ($ret, $users) =
 	    GalleryCoreApi::loadEntitiesById(array_keys($userNames), 'GalleryUser');
 	if ($ret) {

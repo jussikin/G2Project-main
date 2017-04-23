@@ -71,23 +71,11 @@ class MatrixTheme extends GalleryTheme {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Add in our extra stuff  */
-
-
-
+	/* Add in our extra stuff */
 	$theme =& $template->getVariableByReference('theme');
 	$theme['columnWidthPct'] = floor(100 / $params['columns']);
 
-	
-
-
-/*  Add our header and styles  */
-
-
-
+	/* Add our header and styles */
 	return array(null, 'theme.tpl');
     }
 

@@ -98,13 +98,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase {
     function testMissingInputs() {
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 
-	
-
-
-/*  Create one user  */
-
-
-
+	/* Create one user */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminCreateUser'),
@@ -119,13 +113,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase {
     function testPasswordMismatch() {
 	$userName = 'user-' . rand();
 
-	
-
-
-/*  Create one user  */
-
-
-
+	/* Create one user */
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[userName]', $userName);
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
@@ -146,13 +134,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase {
     function testCreateDuplicateUser() {
 	$userName = 'user-' . rand();
 
-	
-
-
-/*  Create one user  */
-
-
-
+	/* Create one user */
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 	GalleryUtilities::putRequestVariable('form[userName]', $userName);
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
@@ -170,13 +152,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase {
 			    'Failed to create user');
 
 
-	
-
-
-/*  Create a second user with the same name  */
-
-
-
+	/* Create a second user with the same name */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminCreateUser'),

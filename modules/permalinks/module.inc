@@ -28,13 +28,7 @@
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 18172 $
  */
-class PermalinksModule extends GalleryModule 
-
-
-/*  and GalleryEventListener  */
-
-
- {
+class PermalinksModule extends GalleryModule /* and GalleryEventListener */ {
 
     function __construct() {
 	$this->PermalinksModule();
@@ -84,13 +78,7 @@ class PermalinksModule extends GalleryModule
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Automatically activate the rewrite rules, if the rewrite module is active  */
-
-
-
+	/* Automatically activate the rewrite rules, if the rewrite module is active */
 	$success = false;
 	list ($ret, $rewriteApi) = GalleryCoreApi::newFactoryInstance('RewriteApi');
 	if ($ret) {
@@ -176,13 +164,7 @@ class PermalinksModule extends GalleryModule
 	    }
 
 	    if ($isActive) {
-		
-
-
-/*  We can't run without the rewrite module, so we might as well deactivate.  */
-
-
-
+		/* We can't run without the rewrite module, so we might as well deactivate. */
 		$ret = $this->deactivate();
 		if ($ret) {
 		    return $ret;
@@ -209,13 +191,7 @@ class PermalinksModule extends GalleryModule
 			    return array($ret, null);
 			}
 
-			
-
-
-/*  We have a collision... not really a problem, just eat it  */
-
-
-
+			/* We have a collision... not really a problem, just eat it */
 		    }
 		}
 	    }

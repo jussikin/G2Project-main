@@ -58,13 +58,7 @@ class SearchShowAllView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	
-
-
-/*  TODO: Parameterize this  */
-
-
-
+	/* TODO: Parameterize this */
 	$pageSize = 20;
 
 	$items = array();
@@ -84,13 +78,7 @@ class SearchShowAllView extends GalleryView {
 		$form['error']['searchCriteria']['missing'] = 1;
 	    } else {
 
-		
-
-
-/*  If we click next/previous, make sure we don't change search criteria  */
-
-
-
+		/* If we click next/previous, make sure we don't change search criteria */
 		if (!empty($form['lastSearchCriteria']) &&
 		    $form['lastSearchCriteria'] != $form['searchCriteria'] &&
 		    (isset($form['action']['nextPage']) ||
@@ -104,13 +92,7 @@ class SearchShowAllView extends GalleryView {
 		    $form['page'] = 1;
 		}
 
-		
-
-
-/*  Reset the page number if we start a new search  */
-
-
-
+		/* Reset the page number if we start a new search */
 		if (isset($form['action']['search'])) {
 		    $form['page'] = 1;
 		}
@@ -169,13 +151,7 @@ class SearchShowAllView extends GalleryView {
 		$itemIds = array_keys($itemIds);
 
 		if (!empty($itemIds)) {
-		    
-
-
-/*  Fetch items  */
-
-
-
+		    /* Fetch items */
 		    list ($ret, $itemList) =
 			GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 		    if ($ret) {
@@ -185,13 +161,7 @@ class SearchShowAllView extends GalleryView {
 			$items[$item->getId()] = (array)$item;
 		    }
 
-		    
-
-
-/*  Fetch thumbnails  */
-
-
-
+		    /* Fetch thumbnails */
 		    list ($ret, $thumbnailList) =
 			GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
 		    if ($ret) {
@@ -206,13 +176,7 @@ class SearchShowAllView extends GalleryView {
 	    $form['searchCriteria'] = '';
 	}
 
-	
-
-
-/*  Render the HTML body  */
-
-
-
+	/* Render the HTML body */
 	$template->setVariable('SearchShowAll', array(
 	    'controller' => 'search.SearchShowAll',
 	    'maxPages' => $maxPages,

@@ -56,13 +56,7 @@ class PanoramaRenderer extends GalleryRenderer {
 		}
 		
 		if (!empty($params['forceRawImage']) || $entity->getWidth() < $viewWidth) {
-			
-
-
-/*  Return nothing so that we fall back to the default renderer  */
-
-
-
+			/* Return nothing so that we fall back to the default renderer */
 			return null;
 		}
 		

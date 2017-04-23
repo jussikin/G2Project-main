@@ -105,13 +105,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Load back the user object and make sure the data got saved  */
-
-
-
+	/* Load back the user object and make sure the data got saved */
 	list ($ret, $this->_user) = $this->_user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -137,13 +131,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Load back the user object and make sure the data got saved  */
-
-
-
+	/* Load back the user object and make sure the data got saved */
 	list ($ret, $this->_user) = $this->_user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -158,13 +146,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
 	GalleryUtilities::putRequestVariable('form[currentPassword]', 'TestPassword');
 
-	
-
-
-/*  As a non-admin, we'll get an error about it being missing  */
-
-
-
+	/* As a non-admin, we'll get an error about it being missing */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('delegate' => array('view' => 'core.UserAdmin',
 						      'subView' => 'core.UserPreferences'),
@@ -174,13 +156,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 
 	$this->_addUserToAdminGroup($this->_user);
 
-	
-
-
-/*  Now it lets us submit with a missing email  */
-
-
-
+	/* Now it lets us submit with a missing email */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.UserAdmin',
 						      'subView' => 'core.UserPreferences'),
@@ -192,13 +168,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
     function testEditInvalidEmail() {
 	foreach (array('user', 'admin') as $userType) {
 	    if ($userType == 'admin') {
-		
-
-
-/*  We have to do 'admin' last for this to work  */
-
-
-
+		/* We have to do 'admin' last for this to work */
 		$this->_addUserToAdminGroup($this->_user);
 	    }
 
@@ -252,13 +222,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 	}
     }
 
-    
-
-
-/*  No password is needed for non-email changes  */
-
-
-
+    /* No password is needed for non-email changes */
     function testEditOtherThanEmailWithoutPassword() {
 	global $gallery;
 	$session =& $gallery->getSession();
@@ -266,13 +230,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
 	GalleryUtilities::putRequestVariable('form[email]', 'test@email.com');
 	GalleryUtilities::putRequestVariable('form[language]', 'language');
-	
-
-
-/*  Make sure the test suit actually unsets previous request vars  */
-
-
-
+	/* Make sure the test suit actually unsets previous request vars */
 	$form = GalleryUtilities::getFormVariables('form');
 	$this->assert(!isset($form['currentPassword']),
 		      'precondition failed, password was specified');
@@ -284,13 +242,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Load back the user object and make sure the data got saved  */
-
-
-
+	/* Load back the user object and make sure the data got saved */
 	list ($ret, $this->_user) = $this->_user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -302,13 +254,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals('language', $session->get('core.language'), 'Language');
     }
 
-    
-
-
-/*  If you provide an email, then return a error message if it's invalid  */
-
-
-
+    /* If you provide an email, then return a error message if it's invalid */
     function testEditOtherThanEmailInvalidPassword() {
 	global $gallery;
 	$session =& $gallery->getSession();
@@ -330,13 +276,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				      'error' => array('form[error][currentPassword][incorrect]')),
 				$results, 'invalid password');
 
-	
-
-
-/*  Load back the user object and make sure the data got not saved  */
-
-
-
+	/* Load back the user object and make sure the data got not saved */
 	list ($ret, $this->_user) = $this->_user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -346,13 +286,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals('test@email.com', $this->_user->getEmail());
 	$this->assertEquals('te', $this->_user->getLanguage());
 
-	
-
-
-/*  Verify our event got posted  */
-
-
-
+	/* Verify our event got posted */
 	$this->assertEventFired('Gallery::FailedLogin', null,
 	    array('userName' => $this->_user->getUserName()));
     }
@@ -378,13 +312,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				      'error' => array('form[error][currentPassword][incorrect]')),
 				$results, 'invalid password');
 
-	
-
-
-/*  Load back the user object and make sure the data got not saved  */
-
-
-
+	/* Load back the user object and make sure the data got not saved */
 	list ($ret, $this->_user) = $this->_user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -394,13 +322,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals('test@email.com', $this->_user->getEmail());
 	$this->assertEquals('te', $this->_user->getLanguage());
 
-	
-
-
-/*  Verify our event got posted  */
-
-
-
+	/* Verify our event got posted */
 	$this->assertEventFired('Gallery::FailedLogin', null,
 	    array('userName' => $this->_user->getUserName()));
     }
@@ -420,13 +342,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				      'error' => array('form[error][currentPassword][missing]')),
 				$results, 'missing password');
 
-	
-
-
-/*  Load back the user object and make sure the data got not saved  */
-
-
-
+	/* Load back the user object and make sure the data got not saved */
 	list ($ret, $this->_user) = $this->_user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -495,13 +411,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Load back the user object and make sure the data got saved  */
-
-
-
+	/* Load back the user object and make sure the data got saved */
 	list ($ret, $user) = $user->refresh();
 	if ($ret) {
 	    return $ret;
@@ -512,13 +422,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase {
     }
 
     function _addUserToAdminGroup() {
-	
-
-
-/*  Make ourselves an admin  */
-
-
-
+	/* Make ourselves an admin */
 	list ($ret, $adminGroupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 	if ($ret) {

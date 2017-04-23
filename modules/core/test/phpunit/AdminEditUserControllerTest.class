@@ -199,13 +199,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase {
     }
 
     function testTrailingSpace() {
-	
-
-
-/*  Trailing space on full/username with no other changes used to give db error on mysql  */
-
-
-
+	/* Trailing space on full/username with no other changes used to give db error on mysql */
 	GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 	$userName = $this->_user[0]->getUserName();

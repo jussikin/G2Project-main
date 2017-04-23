@@ -73,22 +73,10 @@ class CodeAuditTestCase extends GalleryTestCase {
 	 * are listed in wc.h.
 	 */
 	if ((int)$platform->fread($handle, 2) < 7) {
-	    
-
-
-/*  XML format  */
-
-
-
+	    /* XML format */
 	    $functionName = '_scanXmlDir';
 	} else {
-	    
-
-
-/*  Non-XML format  */
-
-
-
+	    /* Non-XML format */
 	    $functionName = '_scanNonXmlDir';
 	}
 	$platform->fclose($handle);
@@ -109,13 +97,7 @@ class CodeAuditTestCase extends GalleryTestCase {
 
 	static $KIND;
 	if (!isset($KIND)) {
-	    $KIND = strtoupper('kind'); 
-
-
-/*  Won't be KIND in Turkish locale  */
-
-
-
+	    $KIND = strtoupper('kind'); /* Won't be KIND in Turkish locale */
 	}
 
 	$parser = xml_parser_create();
@@ -305,13 +287,7 @@ class CodeAuditTestCase extends GalleryTestCase {
 	if (!$fileName || !isset($this->_tokens[$fileName])) {
 	    $tokens = token_get_all($phpCode);
 	    if ($fileName) {
-		
-
-
-/*  Only cache the most recently used file (memory usage)  */
-
-
-
+		/* Only cache the most recently used file (memory usage) */
 		unset($this->_tokens);
 		$this->_tokens[$fileName] = $tokens;
 	    }
@@ -319,13 +295,7 @@ class CodeAuditTestCase extends GalleryTestCase {
 	    $tokens = $this->_tokens[$fileName];
 	}
 
-	
-
-
-/*  Search for all occurrences of $functionName  */
-
-
-
+	/* Search for all occurrences of $functionName */
 	$candidateTokens = array();
 	foreach ($tokens as $i => $token) {
 	    if (is_array($token) && $token[0] == T_STRING
@@ -337,33 +307,15 @@ class CodeAuditTestCase extends GalleryTestCase {
 	    return $calls;
 	}
 
-	
-
-
-/*  Check the candidates and extract the complete calls  */
-
-
-
+	/* Check the candidates and extract the complete calls */
 	foreach ($candidateTokens as $baseIndex) {
 	    $call = $tokens[$baseIndex][1];
-	    
-
-
-/*  Seek backwards to check static / instance method vs. function call  */
-
-
-
+	    /* Seek backwards to check static / instance method vs. function call */
 	    $j = $this->_getNextTokenIndex($tokens, $baseIndex, true);
 	    if ($classMethodCallsOnly && isset($tokens[$j][0])
 		    && in_array($tokens[$j][0], array(T_DOUBLE_COLON, T_OBJECT_OPERATOR))) {
 		$k = $this->_getNextTokenIndex($tokens, $j, true);
-		
-
-
-/*  Check whether it matches $foo->bar or Foo::bar  */
-
-
-
+		/* Check whether it matches $foo->bar or Foo::bar */
 		if (isset($tokens[$k][0]) && in_array($tokens[$k][0],
 							  array(T_STRING, T_VARIABLE))) {
 			if ($tokens[$k][0] == T_STRING
@@ -378,13 +330,7 @@ class CodeAuditTestCase extends GalleryTestCase {
 		continue;
 	    }
 
-	    
-
-
-/*  Search forwards to parse the whole function call and its arguments  */
-
-
-
+	    /* Search forwards to parse the whole function call and its arguments */
 	    $i = $this->_getNextTokenIndex($tokens, $baseIndex);
 	    if (!isset($tokens[$i]) || $tokens[$i] !== '(') {
 		continue;
@@ -422,21 +368,9 @@ class CodeAuditTestCase extends GalleryTestCase {
      * @return array the list of parameters, e.g. array("array(1, 2)", "'moo'")
      */
     function getFunctionParameters($functionCall) {
-	
-
-
-/*  Replace the function with an array  */
-
-
-
+	/* Replace the function with an array */
 	$parameterString = preg_replace('/^.*?\((.*)\)$/', 'array(\1)', $functionCall);
-	
-
-
-/*  Seek to the beginning of the parameter string  */
-
-
-
+	/* Seek to the beginning of the parameter string */
 	$tokens = token_get_all('<?php ' . $parameterString . '; ?>');
 	$i = 0;
 	do {
@@ -444,13 +378,7 @@ class CodeAuditTestCase extends GalleryTestCase {
 	} while (isset($i) && $tokens[$i] !== '(');
 	$parenCount = 1;
 
-	
-
-
-/*  Explode the parameters by ',' unless we're in a sub-expression (in parens)  */
-
-
-
+	/* Explode the parameters by ',' unless we're in a sub-expression (in parens) */
 	$params = array();
 	$param = '';
 	while (($i = $this->_getNextTokenIndex($tokens, $i)) && isset($tokens[$i])
@@ -477,13 +405,7 @@ class CodeAuditTestCase extends GalleryTestCase {
 	}
 
 	if (!empty($param) && $parenCount == 0) {
-	    
-
-
-/*  Remove the trailing ')'  */
-
-
-
+	    /* Remove the trailing ')' */
 	    $params[] = substr($param, 0, -1);
 	}
 

@@ -43,24 +43,12 @@ class LogoutControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Save the session  */
-
-
-
+	/* Save the session */
 	$this->_saveSession = $gallery->_session;
 	$this->_session = new LogoutControllerTestSession();
 	$gallery->_session =& $this->_session;
 
-	
-
-
-/*  TODO: Remove the following once we can disable httpauth's event handler for tests  */
-
-
-
+	/* TODO: Remove the following once we can disable httpauth's event handler for tests */
 	unset($_SERVER['PHP_AUTH_USER']);
 	unset($_SERVER['PHP_AUTH_PW']);
 	unset($_SERVER['REMOTE_USER']);
@@ -70,13 +58,7 @@ class LogoutControllerTest extends GalleryControllerTestCase {
     function tearDown() {
 	global $gallery;
 
-	
-
-
-/*  Restore the session  */
-
-
-
+	/* Restore the session */
 	$gallery->_session = $this->_saveSession;
 	$ret = parent::tearDown();
 	if ($ret) {
@@ -153,13 +135,7 @@ class LogoutControllerTestSession {
     }
 }
 
-class LogoutControllerTestEventListener 
-
-
-/*  extends GalleryEventListener  */
-
-
- {
+class LogoutControllerTestEventListener /* extends GalleryEventListener */ {
 
     function handleEvent($event) {
 	return array(null, array('delegate' => array('view' => 'test.PhpUnit')));

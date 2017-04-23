@@ -37,13 +37,7 @@ class ShutterflyModule extends GalleryModule {
 	$this->setId('shutterfly');
 	$this->setName($gallery->i18n('Shutterfly'));
 	$this->setDescription($gallery->i18n('Shutterfly Photo Printing Module'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() too */
 	$this->_templateVersion = 1;
 	$this->setGroup('commerce', $gallery->i18n('Commerce'));
 	$this->setCallbacks('getItemLinks');
@@ -59,13 +53,7 @@ class ShutterflyModule extends GalleryModule {
 	if (!isset($currentVersion)) {
 	    $currentVersion = '0';
 	} else if (version_compare($currentVersion, '1.0.0', '<')) {
-	    
-
-
-/*  Instead of enumerating all previous versions...  */
-
-
-
+	    /* Instead of enumerating all previous versions... */
 	    $currentVersion = '1.0.0';
 	}
 	list ($ret, $coreParams) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
@@ -75,25 +63,13 @@ class ShutterflyModule extends GalleryModule {
 
 	switch ($currentVersion) {
 	case '0':
-	    
-
-
-/*  Register our permission  */
-
-
-
+	    /* Register our permission */
 	    $ret = GalleryCoreApi::registerPermission($this->getId(), 'shutterfly.print',
 						      $gallery->i18n('[shutterfly] Print'));
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Give everybody print permission by default  */
-
-
-
+	    /* Give everybody print permission by default */
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
@@ -126,34 +102,16 @@ class ShutterflyModule extends GalleryModule {
 	case '1.0.7':
 	case '1.0.7.1':
 	case '1.0.7.2':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.0.8':
 	case '1.0.9':
 	case '1.0.10':
-	    
-
-
-/*  Implementing new version of the cart plugin interface  */
-
-
-
+	    /* Implementing new version of the cart plugin interface */
 	case '1.0.11':
 	case '1.0.12':
 	case '1.0.13':
 	case '1.0.14':
-	    
-
-
-/*  Core API 8.0 & Module API 4.0  */
-
-
-
+	    /* Core API 8.0 & Module API 4.0 */
 
 	case 'end of upgrade path':
 	    break;

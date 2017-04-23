@@ -39,13 +39,7 @@ class AdminCreateUserController extends GalleryController {
 	$results = $status = $error = array();
 	if (isset($form['action']['cancel'])) {
 
-	    
-
-
-/*  Go back to the AdminUsers view  */
-
-
-
+	    /* Go back to the AdminUsers view */
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'core.AdminUsers';
 
@@ -74,13 +68,7 @@ class AdminCreateUserController extends GalleryController {
 			return array($ret, null);
 		    }
 
-		    
-
-
-/*  Set our error status and fall back to the view  */
-
-
-
+		    /* Set our error status and fall back to the view */
 		    $error[] = 'form[error][userName][exists]';
 		} else {
 		    $user->setEmail($form['email']);
@@ -94,13 +82,7 @@ class AdminCreateUserController extends GalleryController {
 			return array($ret, null);
 		    }
 
-		    
-
-
-/*  Request a redirect to the confirmation screen  */
-
-
-
+		    /* Request a redirect to the confirmation screen */
 		    $redirect['view'] = 'core.SiteAdmin';
 		    $redirect['subView'] = 'core.AdminUsers';
 		    $status['createdUser'] = $form['userName'];
@@ -149,13 +131,7 @@ class AdminCreateUserView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminCreateUser') {
-	    
-
-
-/*  First time around, set our defaults here.  */
-
-
-
+	    /* First time around, set our defaults here. */
 	    $form['userName'] = '';
 	    $form['email'] = '';
 	    $form['fullName'] = '';
@@ -163,13 +139,7 @@ class AdminCreateUserView extends GalleryView {
 	    $form['formName'] = 'AdminCreateUser';
 	}
 
-	
-
-
-/*  Set up our language selection list  */
-
-
-
+	/* Set up our language selection list */
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 	if ($ret) {
 	    return array($ret, null);

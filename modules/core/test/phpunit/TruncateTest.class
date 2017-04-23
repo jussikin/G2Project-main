@@ -34,13 +34,7 @@ class TruncateTest extends GalleryTestCase {
     }
 
     function testTruncate1() {
-	
-
-
-/*  Edge case -- no value  */
-
-
-
+	/* Edge case -- no value */
 	$this->assertEquals('', smarty_modifier_entitytruncate('', 5));
 	$this->assertEquals('', smarty_modifier_entitytruncate('', 9, '', true));
     }
@@ -55,13 +49,7 @@ class TruncateTest extends GalleryTestCase {
 	$string = 'truncate at 10 characters with XXX instead of ellipses and no word break';
 	$result = smarty_modifier_entitytruncate($string, 10, 'XXX');
 
-	
-
-
-/*  Can't honor word break because it's less than one word  */
-
-
-
+	/* Can't honor word break because it's less than one word */
 	$this->assertEquals('truncatXXX', $result);
     }
 
@@ -84,47 +72,17 @@ class TruncateTest extends GalleryTestCase {
     }
 
     function testTruncate7() {
-	
-
-
-/*  &eacute; and &amp; and &#1234; are single characters but &foo is 4 characters  */
-
-
-
-	
-
-
-/*  Even &foo; is counted as a single character as it looks like an entity..  */
-
-
-
-	
-
-
-/*  Also ensure &eacute; remains an html entity (not converted to ISO-8859-1 character)  */
-
-
-
-	
-
-
-/*  &#1234; actually gets converted to a UTF-8 character in the process  */
-
-
-
+	/* &eacute; and &amp; and &#1234; are single characters but &foo is 4 characters */
+	/* Even &foo; is counted as a single character as it looks like an entity.. */
+	/* Also ensure &eacute; remains an html entity (not converted to ISO-8859-1 character) */
+	/* &#1234; actually gets converted to a UTF-8 character in the process */
 	$string = 'monk&eacute;y&amp;&foo;&#1234; &foo bar';
 	$result = smarty_modifier_entitytruncate($string, 9, '', true);
 	$this->assertEquals("monk&eacute;y&amp;&foo;\xd3\x92", $result);
     }
 
     function testTruncate8() {
-	
-
-
-/*  Demonstrate that both &amp; and \xd0\xba are counted as single characters  */
-
-
-
+	/* Demonstrate that both &amp; and \xd0\xba are counted as single characters */
 	$string = "monkey&amp;foo\xd0\xbabar";
 	$result = smarty_modifier_entitytruncate($string, 11, '', true);
 	$this->assertEquals("monkey&amp;foo\xd0\xba", $result);
@@ -178,24 +136,12 @@ class TruncateTest extends GalleryTestCase {
     }
 
     function testTruncate14() {
-	
-
-
-/*  Edge case -- etc is larger than the target size  */
-
-
-
+	/* Edge case -- etc is larger than the target size */
 	$this->assertEquals('foo b', smarty_modifier_entitytruncate('foo bar', 5, '......'));
     }
 
     function testTruncate15() {
-	
-
-
-/*  Edge case -- etc is same as the target size  */
-
-
-
+	/* Edge case -- etc is same as the target size */
 	$this->assertEquals('foo b', smarty_modifier_entitytruncate('foo bar', 5, '.....'));
     }
 

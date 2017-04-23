@@ -81,13 +81,7 @@ class ConfigureMultirootView extends GalleryView {
 	$multiroot['baseUri'] = $urlGenerator->generateUrl(array(),
 		array('forceServerRelativeUrl' => true, 'forceSessionId' => false));
 
-	
-
-
-/*  Load all the album entities  */
-
-
-
+	/* Load all the album entities */
 	list ($ret, $albumIds) = GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.view');
 	if ($ret) {
 	    return array($ret, null);
@@ -128,13 +122,7 @@ class ConfigureMultirootView extends GalleryView {
 		if (!$ret) {
 		    $multiroot['viewUserId'] = $user->getId();
 		} else if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-		    
-
-
-/*  Create user, remove from registered users group, assign permissions  */
-
-
-
+		    /* Create user, remove from registered users group, assign permissions */
 		    list ($ret, $multiroot['viewUserId']) =
 			$this->_newGuestUser($form['guestUser'], $form['viewRootId']);
 		    if ($ret) {

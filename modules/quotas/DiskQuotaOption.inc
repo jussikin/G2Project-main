@@ -43,26 +43,14 @@ class DiskQuotaOption extends ItemAddOption {
 
 	$warnings = $errors = array();
 
-	
-
-
-/*  user's disk quota in KB  */
-
-
-
+	/* user's disk quota in KB */
 	list ($ret, $quotaExists, $userDiskQuota) =
 	    GalleryQuotasHelper::getUserDiskQuota($gallery->getActiveUserId());
 	if ($ret) {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  if user has a quota  */
-
-
-
+	/* if user has a quota */
 	if ($quotaExists) {
 	    $excludedIds = array();
 	    foreach ($items as $item) {
@@ -75,31 +63,13 @@ class DiskQuotaOption extends ItemAddOption {
 	    foreach ($items as $i => $item) {
 		$warnings[$i] = array();
 
-		
-
-
-/*  we should come here only if we are adding a data item, not sub-album  */
-
-
-
+		/* we should come here only if we are adding a data item, not sub-album */
 		$albumId = $item->getParentId();
 
-		
-
-
-/*  calculate the item ids of the newly added items  */
-
-
-
+		/* calculate the item ids of the newly added items */
 		array_shift($excludedIds);
 
-		
-
-
-/*  user's disk usage in KiloBytes  */
-
-
-
+		/* user's disk usage in KiloBytes */
 		list ($ret, $userDiskUsage) = GalleryQuotasHelper::getUserDiskUsage(
 		    $gallery->getActiveUserId(), $excludedIds);
 		if ($ret) {

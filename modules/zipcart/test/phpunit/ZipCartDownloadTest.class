@@ -140,13 +140,7 @@ class ZipCartDownloadTest extends GalleryTestCase {
 	$platform->setReply('is_readable', array('/data/tmp/passwd.zip'), false);
 	$gallery->setPlatform($platform);
 
-	
-
-
-/*  Verify a malicious file param can't get out of the tmp dir  */
-
-
-
+	/* Verify a malicious file param can't get out of the tmp dir */
 	GalleryUtilities::putRequestVariable('file', '../../etc/passwd');
 
 	ob_start();
@@ -183,26 +177,14 @@ class ZipCartDownloadPhpVm extends GalleryPhpVm {
 
 function ZipCartDownloadTest_error_handler($errorNumber, $errorString, $file, $line, $context) {
     if ($errorNumber == 2048) {
-    	return; 
-
-
-/*  E_STRICT  */
-
-
-
+    	return; /* E_STRICT */
     }
 
     if (error_reporting() == 0 && strpos($errorString, 'apacheSetenvBroken') !== false) {
 	return;
     }
 
-    
-
-
-/*  Else call our default error_handler  */
-
-
-
+    /* Else call our default error_handler */
     return PHPUnit_error_handler($errorNumber, $errorString, $file, $line, $context);
 }
 ?>

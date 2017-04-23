@@ -101,13 +101,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Make sure they're there  */
-
-
-
+	/* Make sure they're there */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -131,13 +125,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Make sure they're gone  */
-
-
-
+	/* Make sure they're gone */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -160,29 +148,11 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
     }
 
     function testMoveUpSummary() {
-	
-
-
-/*  The first summary entry, can not be moved up.  */
-
-
-
+	/* The first summary entry, can not be moved up. */
 	GalleryUtilities::putRequestVariable('form[summary][0]', 'Make');
-	
-
-
-/*  A summary entry from the middle.  */
-
-
-
+	/* A summary entry from the middle. */
 	GalleryUtilities::putRequestVariable('form[summary][1]', 'ISO');
-	
-
-
-/*  The last summary entry.  */
-
-
-
+	/* The last summary entry. */
 	GalleryUtilities::putRequestVariable('form[summary][2]', 'IPTC/CopyrightNotice');
 	GalleryUtilities::putRequestVariable('form[action][moveUpSummary]', 1);
 
@@ -193,41 +163,17 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the new positions  */
-
-
-
+	/* Verify the new positions */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_SUMMARY);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  check for the first entry to be still the first entry.  */
-
-
-
+	/* check for the first entry to be still the first entry. */
 	$this->assertEquals('Make', $properties[0], 'first entry moved up/disappeared???');
-	
-
-
-/*  ISO should have been moved up.  */
-
-
-
+	/* ISO should have been moved up. */
 	$this->assertEquals('ISO', $properties[7], 'middle entry did not move up???');
-	
-
-
-/*  The previous next to last item shall be our last item now.  */
-
-
-
+	/* The previous next to last item shall be our last item now. */
 	$this->assertEquals('IPTC/Caption', $properties[count($properties) - 1]);
     }
 
@@ -243,29 +189,11 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
     }
 
     function testMoveDownSummary() {
-	
-
-
-/*  The first summary entry.  */
-
-
-
+	/* The first summary entry. */
 	GalleryUtilities::putRequestVariable('form[summary][0]', 'Make');
-	
-
-
-/*  A summary entry from the middle.  */
-
-
-
+	/* A summary entry from the middle. */
 	GalleryUtilities::putRequestVariable('form[summary][1]', 'ISO');
-	
-
-
-/*  The last summary entry, cannot be moved down.  */
-
-
-
+	/* The last summary entry, cannot be moved down. */
 	GalleryUtilities::putRequestVariable('form[summary][2]', 'IPTC/CopyrightNotice');
 	GalleryUtilities::putRequestVariable('form[action][moveDownSummary]', 1);
 
@@ -276,49 +204,19 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the new positions  */
-
-
-
+	/* Verify the new positions */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_SUMMARY);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Count summary entries, must be equal to before the move, one has to adapt.  */
-
-
-
+	/* Count summary entries, must be equal to before the move, one has to adapt. */
 	$this->assertEquals(14, count($properties));
-	
-
-
-/*  Must have been moved down.  */
-
-
-
+	/* Must have been moved down. */
 	$this->assertEquals('Make', $properties[1]);
-	
-
-
-/*  Ditto.  */
-
-
-
+	/* Ditto. */
 	$this->assertEquals('ISO', $properties[9]);
-	
-
-
-/*  Last entry must be the same.  */
-
-
-
+	/* Last entry must be the same. */
 	$this->assertEquals('IPTC/CopyrightNotice', $properties[count($properties) - 1]);
     }
 
@@ -334,13 +232,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
     }
 
     function testResetSummary() {
-	
-
-
-/*  Remove all properties  */
-
-
-
+	/* Remove all properties */
 	$ret = ExifHelper::setProperties(EXIF_SUMMARY, array());
 	if ($ret) {
 	    return $ret;
@@ -354,13 +246,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Make sure they're all back again  */
-
-
-
+	/* Make sure they're all back again */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_SUMMARY);
 	if ($ret) {
 	    return $ret;
@@ -386,13 +272,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Make sure they're there  */
-
-
-
+	/* Make sure they're there */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -416,13 +296,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Make sure they're gone  */
-
-
-
+	/* Make sure they're gone */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -445,30 +319,12 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
     }
 
     function testMoveUpDetailed() {
-	
-
-
-/*  The very first entry, which can't be moved up.  */
-
-
-
+	/* The very first entry, which can't be moved up. */
 	GalleryUtilities::putRequestVariable('form[detailed][0]', 'Make');
-	
-
-
-/*  Entries from the middle.  */
-
-
-
+	/* Entries from the middle. */
 	GalleryUtilities::putRequestVariable('form[detailed][1]', 'ISO');
 	GalleryUtilities::putRequestVariable('form[detailed][2]', 'IPTC/CopyrightNotice');
-	
-
-
-/*  The very last entry.  */
-
-
-
+	/* The very last entry. */
 	GalleryUtilities::putRequestVariable('form[detailed][3]', 'SubjectDistance');
 	GalleryUtilities::putRequestVariable('form[action][moveUpDetailed]', 1);
 
@@ -479,13 +335,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the new positions  */
-
-
-
+	/* Verify the new positions */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -511,30 +361,12 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
     }
 
     function testMoveDownDetailed() {
-	
-
-
-/*  The very first entry.  */
-
-
-
+	/* The very first entry. */
 	GalleryUtilities::putRequestVariable('form[detailed][0]', 'Make');
-	
-
-
-/*  Entries from the middle.  */
-
-
-
+	/* Entries from the middle. */
 	GalleryUtilities::putRequestVariable('form[detailed][1]', 'ISO');
 	GalleryUtilities::putRequestVariable('form[detailed][2]', 'IPTC/CopyrightNotice');
-	
-
-
-/*  The very last entry, which can't be moved down.  */
-
-
-
+	/* The very last entry, which can't be moved down. */
 	GalleryUtilities::putRequestVariable('form[detailed][3]', 'SubjectDistance');
 	GalleryUtilities::putRequestVariable('form[action][moveDownDetailed]', 1);
 
@@ -545,13 +377,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the new positions  */
-
-
-
+	/* Verify the new positions */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_DETAILED);
 	if ($ret) {
 	    return $ret;
@@ -577,13 +403,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
     }
 
     function testResetDetailed() {
-	
-
-
-/*  Remove all properties  */
-
-
-
+	/* Remove all properties */
 	$ret = ExifHelper::setProperties(EXIF_DETAILED, array());
 	if ($ret) {
 	    return $ret;
@@ -597,25 +417,13 @@ class AdminExifControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Make sure they're all back again  */
-
-
-
+	/* Make sure they're all back again */
 	list ($ret, $properties) = ExifHelper::getProperties(EXIF_DETAILED);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Spot check  */
-
-
-
+	/* Spot check */
 	$this->assertEquals(30, sizeof($properties),
 		'Reset did not return the right number of entries???');
 	$this->assertEquals('Make', $properties[0]);

@@ -37,13 +37,7 @@ class ThumbOffsetItemEditPluginTest extends ItemEditPluginTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Register a dummy toolkit and property  */
-
-
-
+	/* Register a dummy toolkit and property */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ThumbOffsetTestToolkit', 'ThumbOffsetTestToolkit',
 	    'modules/thumbpage/test/phpunit/ThumbOffsetItemEditPluginTest.class',

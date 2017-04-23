@@ -65,13 +65,7 @@ class DcrawToolkit extends GalleryToolkit {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  We now have a PPM file, get its dimensions  */
-
-
-
+		/* We now have a PPM file, get its dimensions */
 		list ($ret, $results) =
 		    $toolkit->getProperty('image/x-portable-pixmap', 'dimensions', $tempfile);
 		$platform->unlink($tempfile);
@@ -79,13 +73,7 @@ class DcrawToolkit extends GalleryToolkit {
 		    return array($ret, null);
 		}
 	    } else {
-		
-
-
-/*  We have no idea :-(  */
-
-
-
+		/* We have no idea :-( */
 		$results = array(0, 0);
 	    }
 	    break;
@@ -119,13 +107,7 @@ class DcrawToolkit extends GalleryToolkit {
 	    $platform =& $gallery->getPlatform();
 	    $tmpFilename = $platform->tempnam($tmpDir, 'dcraw_');
 	    if (empty($tmpFilename)) {
-		
-
-
-/*  This can happen if the $tmpDir path is bad  */
-
-
-
+		/* This can happen if the $tmpDir path is bad */
 		return array(GalleryCoreApi::error(ERROR_BAD_PATH), null, null);
 	    }
 

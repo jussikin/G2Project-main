@@ -40,13 +40,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 	$error = array();
 
 	$operation = null;
-	
-
-
-/*  Figure out which command we're taking  */
-
-
-
+	/* Figure out which command we're taking */
 	if (isset($form['action']['resize'])) {
 	    if (empty($form['resize']['width']) || empty($form['resize']['height'])) {
 		$error[] = 'form[error][resize][size][missing]';
@@ -127,13 +121,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 		    }
 		}
 
-		
-
-
-/*  Prepare our status message  */
-
-
-
+		/* Prepare our status message */
 		$status = $module->translate('Reverted rotate and scale changes successfully');
 	    }
 	}
@@ -154,13 +142,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 		return array($ret, null, null, null);
 	    }
 
-	    
-
-
-/*  Set our status message  */
-
-
-
+	    /* Set our status message */
 	    switch ($operation) {
 	    case 'rotate':
 		$status = $module->translate('Rotated photo successfully');
@@ -188,13 +170,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 	}
 
 	if ($form['formName'] != 'ItemEditRotateAndScalePhoto') {
-	    
-
-
-/*  First time around, reset the form  */
-
-
-
+	    /* First time around, reset the form */
 	    $form['resize']['width'] = $form['resize']['height'] = '';
 	    $form['preserveOriginal'] = 1;
 	    $form['formName'] = 'ItemEditRotateAndScalePhoto';
@@ -213,26 +189,14 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 	    $ItemEditRotateAndScalePhoto['editPhoto']['isLinked'] = false;
 	}
 
-	
-
-
-/*  Check to see if we have a preferred source  */
-
-
-
+	/* Check to see if we have a preferred source */
 	list ($ret, $results) =
 	    GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
 	if ($ret) {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Can we allow to delete the original?  */
-
-
-
+	/* Can we allow to delete the original? */
 	$mimeType = $item->getMimeType();
 	list ($ret, $toolkit) =
 	    GalleryCoreApi::getToolkitByOperation($mimeType, 'rotate');
@@ -240,13 +204,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 	    return array($ret, null, null);
 	}
 	$ItemEditRotateAndScalePhoto['editPhoto']['noToolkitSupport'] = !isset($toolkit);
-	
-
-
-/*  Get worst of rotate and resize  */
-
-
-
+	/* Get worst of rotate and resize */
 	if (isset($toolkit)) {
 	    list ($ret, $toolkit) =
 		GalleryCoreApi::getToolkitByOperation($mimeType, 'resize');
@@ -270,13 +228,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 	    $sourceMimeTypes[] = $preferred->getMimeType();
 	}
 
-	
-
-
-/*  Figure out what options we can provide  */
-
-
-
+	/* Figure out what options we can provide */
 	list ($ret, $ItemEditRotateAndScalePhoto['editPhoto']['can']['rotate']) =
 	    $this->_checkForOperation('rotate', $sourceMimeTypes);
 	if ($ret) {

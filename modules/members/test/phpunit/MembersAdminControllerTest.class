@@ -48,13 +48,7 @@ class MembersAdminControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'members.AdminMembers'),
@@ -69,13 +63,7 @@ class MembersAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[canViewMembersModule]', '2');
 	GalleryUtilities::putRequestVariable('form[canViewEmailAddress]', '0');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'members.AdminMembers'),
@@ -83,13 +71,7 @@ class MembersAdminControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  TODO: verify that the parameters were actually saved properly to the database  */
-
-
-
+	/* TODO: verify that the parameters were actually saved properly to the database */
     }
 }
 ?>

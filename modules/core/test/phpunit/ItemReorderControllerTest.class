@@ -245,13 +245,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase {
     }
 
     function testReorderItemsForceRebalance() {
-	
-
-
-/*  Pack 'em in tight  */
-
-
-
+	/* Pack 'em in tight */
 	for ($i = 0; $i < 5; $i++) {
 	    $ret = GalleryCoreApi::setItemOrderWeight($this->_child[$i]->getId(), $i);
 	    if ($ret) {
@@ -287,13 +281,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase {
     }
 
     function testReorderItemsForceRebalance2() {
-	
-
-
-/*  Pack 'em in tight  */
-
-
-
+	/* Pack 'em in tight */
 	for ($i = 0; $i < 5; $i++) {
 	    $ret = GalleryCoreApi::setItemOrderWeight($this->_child[$i]->getId(), $i);
 	    if ($ret) {

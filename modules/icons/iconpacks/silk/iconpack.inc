@@ -1,10 +1,4 @@
-<?php 
-
-
-/*  $Id: iconpack.inc 15342 2006-12-01 21:14:46Z andy_st $  */
-
-
-
+<?php /* $Id: iconpack.inc 15342 2006-12-01 21:14:46Z andy_st $ */
 /* Contributed by: leozonline.org
    Compiled with the free Silk Icons Set available at
    http://www.famfamfam.com/lab/icons/silk/

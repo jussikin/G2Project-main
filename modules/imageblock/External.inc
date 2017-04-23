@@ -56,13 +56,7 @@ class ExternalView extends GalleryView {
 	GalleryCoreApi::requireOnce('modules/imageblock/classes/ImageBlockHelper.class');
 	global $gallery;
 
-	
-
-
-/*  Force UrlGenerator to not add session id into urls..  */
-
-
-
+	/* Force UrlGenerator to not add session id into urls.. */
 	$session =& $gallery->getSession();
 	$session->_isUsingCookies = true;
 
@@ -113,13 +107,7 @@ class ExternalView extends GalleryView {
 	    $ImageBlockData =& $template->getVariableByReference('ImageBlockData');
 	    $ImageBlockData['forceFullUrl'] = 1;
 
-	    
-
-
-/*  Check for rawImage - if requested, send binary image (only one image)  */
-
-
-
+	    /* Check for rawImage - if requested, send binary image (only one image) */
 	    if (isset($params['show']) && $params['show'] === 'rawImage') {
 		if (isset($ImageBlockData['blocks'][0]['deriv']['id'])) {
 		    GalleryUtilities::putRequestVariable('itemId',

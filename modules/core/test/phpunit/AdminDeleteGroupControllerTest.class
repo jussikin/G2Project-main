@@ -46,26 +46,14 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase {
      */
     function testDeleteGroup() {
 
-	
-
-
-/*  Create a group that we can delete  */
-
-
-
+	/* Create a group that we can delete */
 	list ($ret, $group) = $this->_createGroup();
 	if ($ret) {
 	    return $ret;
 	}
 	$groupId = $group->getId();
 
-	
-
-
-/*  Assign a permission using this group  */
-
-
-
+	/* Assign a permission using this group */
 	list ($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -87,42 +75,18 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase {
 			    $results,
 			    'Failed to delete group');
 
-	
-
-
-/*  Verify the group is gone  */
-
-
-
+	/* Verify the group is gone */
 	list ($ret, $group) = $group->refresh();
 	if ($ret && $ret->getErrorCode() & ERROR_MISSING_OBJECT) {
-	    
-
-
-/*  This is correct -- we expect it to be gone  */
-
-
-
+	    /* This is correct -- we expect it to be gone */
 	} else {
 	    $this->assert(false, 'The group was not actually deleted');
 
-	    
-
-
-/*  Clean up  */
-
-
-
+	    /* Clean up */
 	    $this->_deleteGroup($group);
 	}
 
-	
-
-
-/*  Verify the permissions are cleaned up  */
-
-
-
+	/* Verify the permissions are cleaned up */
 	list ($ret, $perms) = GalleryCoreApi::fetchAllPermissionsForItem($album->getId(), true);
 	if ($ret) {
 	    return $ret;
@@ -134,13 +98,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase {
 	}
     }
 
-    
-
-
-/*  Try to delete the all users group (this will fail)  */
-
-
-
+    /* Try to delete the all users group (this will fail) */
     function testDeleteAllUsersGroup() {
 	list ($ret, $groupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
@@ -155,13 +113,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(null, $results);
     }
 
-    
-
-
-/*  Try to delete the everybody group (this will fail)  */
-
-
-
+    /* Try to delete the everybody group (this will fail) */
     function testDeleteEverybodyGroup() {
 	list ($ret, $groupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
@@ -176,13 +128,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals(null, $results);
     }
 
-    
-
-
-/*  Try to delete the site admin group (this will fail)  */
-
-
-
+    /* Try to delete the site admin group (this will fail) */
     function testDeleteSiteAdminsGroup() {
 	list ($ret, $groupId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');

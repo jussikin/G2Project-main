@@ -82,13 +82,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
     }
 
     function testLoadTemplateDefault() {
-	
-
-
-/*  With no options, level defaults to HIGH  */
-
-
-
+	/* With no options, level defaults to HIGH */
 	$result = $this->_plugin->loadTemplate($this->_form);
 	$this->assertEquals(
 		array(null, 'modules/captcha/templates/CaptchaValidationPlugin.tpl',
@@ -142,13 +136,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
     }
 
     function testValidateMissingCode() {
-	
-
-
-/*  With no options, level defaults to HIGH  */
-
-
-
+	/* With no options, level defaults to HIGH */
 	$result = $this->_plugin->performValidation($this->_form);
 	$this->assertEquals(array(null, array('form[error][CaptchaValidationPlugin][missing]'),
 					false),
@@ -156,13 +144,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
     }
 
     function testValidateHigh() {
-	
-
-
-/*  Test with HIGH level  */
-
-
-
+	/* Test with HIGH level */
 	$this->_form['CaptchaValidationPlugin']['word'] = '1234';
 	$result = $this->_plugin->performValidation($this->_form, array('level' => 'HIGH'));
 	$this->assertEquals(array(null, array(), true), $result, 'pass');
@@ -178,13 +160,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  First call doesn't check given code, just increments fail count  */
-
-
-
+	/* First call doesn't check given code, just increments fail count */
 	$this->_form['CaptchaValidationPlugin']['word'] = '4321';
 	$result = $this->_plugin->performValidation($this->_form,
 		array('level' => 'MEDIUM', 'key' => 'captcha.UnitTest', 'pass' => false));
@@ -197,26 +173,14 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 	}
 	$this->assertEquals(1, (int)$count, 'failure count 1');
 
-	
-
-
-/*  Now we've exceeded the failure threshold and code is checked  */
-
-
-
+	/* Now we've exceeded the failure threshold and code is checked */
 	$result = $this->_plugin->performValidation($this->_form,
 		array('level' => 'MEDIUM', 'key' => 'captcha.UnitTest', 'pass' => true));
 	$this->assertEquals(array(null, array('form[error][CaptchaValidationPlugin][invalid]'),
 					false),
 			    $result, 2);
 
-	
-
-
-/*  Failure count not reset when captcha validation failed  */
-
-
-
+	/* Failure count not reset when captcha validation failed */
 	list ($ret, $count) =
 	    GalleryCoreApi::getPluginParameter('module', 'captcha', 'failCount-captcha.UnitTest');
 	if ($ret) {
@@ -224,13 +188,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 	}
 	$this->assertEquals(1, (int)$count, 'failure count 2');
 
-	
-
-
-/*  Successful validation but invalid entry  */
-
-
-
+	/* Successful validation but invalid entry */
 	$session->put('captcha.key', '1234');
 	$this->_form['CaptchaValidationPlugin']['word'] = '1234';
 	$result = $this->_plugin->performValidation($this->_form,
@@ -244,13 +202,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 	}
 	$this->assertEquals(2, (int)$count, 'failure count 3');
 
-	
-
-
-/*  Now success, failure count is cleared  */
-
-
-
+	/* Now success, failure count is cleared */
 	$result = $this->_plugin->performValidation($this->_form,
 		array('level' => 'MEDIUM', 'key' => 'captcha.UnitTest', 'pass' => true));
 	$this->assertEquals(array(null, array(), true), $result, 4);
@@ -267,13 +219,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  First call doesn't check given code, just increments fail count  */
-
-
-
+	/* First call doesn't check given code, just increments fail count */
 	$this->_form['CaptchaValidationPlugin']['word'] = '4321';
 	$result = $this->_plugin->performValidation($this->_form,
 		array('level' => 'LOW', 'pass' => false));
@@ -281,13 +227,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 
 	$this->assertEquals(1, (int)$session->get('captcha.failedAttempts'), 'failure count');
 
-	
-
-
-/*  Now we've exceeded the failure threshold and code is checked  */
-
-
-
+	/* Now we've exceeded the failure threshold and code is checked */
 	$result = $this->_plugin->performValidation($this->_form,
 		array('level' => 'LOW', 'pass' => true));
 	$this->assertEquals(array(null, array('form[error][CaptchaValidationPlugin][invalid]'),
@@ -296,13 +236,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
     }
 
     function testSecurity() {
-	
-
-
-/*  Make sure to clear/repick key value on validation failure to thwart automated attacks  */
-
-
-
+	/* Make sure to clear/repick key value on validation failure to thwart automated attacks */
 	global $gallery;
 	$session =& $gallery->getSession();
 
@@ -314,13 +248,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase {
 
 	$this->assertEquals(null, $session->get('captcha.key'), 'key should be cleared');
 
-	
-
-
-/*  Retry now fails, even with previously correct key  */
-
-
-
+	/* Retry now fails, even with previously correct key */
 	$this->_form['CaptchaValidationPlugin']['word'] = '1234';
 	$result = $this->_plugin->performValidation($this->_form, array('level' => 'HIGH'));
 	$this->assertEquals(array(null, array('form[error][CaptchaValidationPlugin][invalid]'),

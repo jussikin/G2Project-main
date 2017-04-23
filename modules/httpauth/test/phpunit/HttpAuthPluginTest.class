@@ -40,13 +40,7 @@ class HttpAuthPluginTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create test user  */
-
-
-
+	/* Create test user */
 	list ($ret, $this->_user) = $this->_createRandomUser(null, 'password');
 	if ($ret) {
 	    return $ret;

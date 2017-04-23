@@ -81,13 +81,7 @@ class GalleryPluginHelper_medium {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Remove all plugin parameters  */
-
-
-
+	/* Remove all plugin parameters */
 	$ret = GalleryPluginHelper_medium::removeAllParameters($pluginType, $pluginId);
 	if ($ret) {
 	    return $ret;
@@ -99,13 +93,7 @@ class GalleryPluginHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Flush the cache  */
-
-
-
+	/* Flush the cache */
 	GalleryDataCache::remove("GalleryPluginHelper::fetchPluginStatus($pluginType)");
 	GalleryDataCache::removeFromDisk(array('type' => $pluginType,
 					       'itemId' => 'GalleryPluginHelper_fetchPluginStatus',
@@ -174,13 +162,7 @@ class GalleryPluginHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Invalidate our cache  */
-
-
-
+	/* Invalidate our cache */
 	GalleryDataCache::removeByPattern("GalleryPluginHelper::fetchAllParameters\(.*, $itemId\)");
 	GalleryDataCache::removeFromDisk(array('type' => 'module',
 					       'itemId' => $itemId));
@@ -201,13 +183,7 @@ class GalleryPluginHelper_medium {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Convert null to 0, just in case  */
-
-
-
+	/* Convert null to 0, just in case */
 	if ($itemIds == null) {
 	    $itemIds = array(0);
 	} elseif (!is_array($itemIds)) {
@@ -225,13 +201,7 @@ class GalleryPluginHelper_medium {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Invalidate our cache  */
-
-
-
+	    /* Invalidate our cache */
 	    $cacheKey = "GalleryPluginHelper::fetchAllParameters($pluginType, $pluginId, $itemId)";
 	    GalleryDataCache::remove($cacheKey);
 	    GalleryDataCache::removeFromDisk(array('type' => $pluginType,
@@ -263,13 +233,7 @@ class GalleryPluginHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Invalidate the entire cache for this plugin, because we can't invalidate by value  */
-
-
-
+	/* Invalidate the entire cache for this plugin, because we can't invalidate by value */
 	$cacheKey = "GalleryPluginHelper::fetchAllParameters\($pluginType, $pluginId, .*\)";
 	GalleryDataCache::removeByPattern($cacheKey);
 	GalleryDataCache::removeFromDisk(array('type' => $pluginType,
@@ -293,13 +257,7 @@ class GalleryPluginHelper_medium {
 	    return $ret;
 	}
 
-	
-
-
-/*  Invalidate our cache  */
-
-
-
+	/* Invalidate our cache */
 	GalleryDataCache::removeByPattern(
 	    "GalleryPluginHelper::fetchAllParameters\($pluginType, $pluginId, ");
 	GalleryDataCache::removeFromDisk(array('type' => $pluginType,
@@ -324,13 +282,7 @@ class GalleryPluginHelper_medium {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Convert null to 0, just in case  */
-
-
-
+	/* Convert null to 0, just in case */
 	if ($itemId == null) {
 	    $itemId = 0;
 	}
@@ -365,13 +317,7 @@ class GalleryPluginHelper_medium {
 		}
 	    }
 
-	    
-
-
-/*  Invalidate our cache  */
-
-
-
+	    /* Invalidate our cache */
 	    $cacheKey = "GalleryPluginHelper::fetchAllParameters($pluginType, $pluginId, $id)";
 	    GalleryDataCache::remove($cacheKey);
 	    GalleryDataCache::removeFromDisk(array('type' => $pluginType,
@@ -403,13 +349,7 @@ class GalleryPluginHelper_medium {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Convert null to 0, just in case  */
-
-
-
+	/* Convert null to 0, just in case */
 	if ($itemId == null) {
 	    $itemId = 0;
 	}
@@ -447,13 +387,7 @@ class GalleryPluginHelper_medium {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Convert null to 0, just in case  */
-
-
-
+	/* Convert null to 0, just in case */
 	if ($itemId == null) {
 	    $itemId = 0;
 	}

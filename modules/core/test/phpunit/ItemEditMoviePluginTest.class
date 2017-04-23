@@ -39,13 +39,7 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Cache this data to lighten the load on our dummy toolkit  */
-
-
-
+	/* Cache this data to lighten the load on our dummy toolkit */
 	GalleryCoreApi::fetchPluginStatus('module');
 
 	$gallery->setPlatform(new ItemEditMoviePluginTestPlatform($gallery->getPlatform()));
@@ -67,37 +61,19 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase {
     }
 
     function testChangeSize() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', 123);
 	GalleryUtilities::putRequestVariable('form[height]', 456);
 	GalleryUtilities::putRequestVariable('form[serialNumber]', $this->_item->getSerialNumber());
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_item, $this->_preferred);
 	$this->assertEquals(array(array(),
 				  $this->_translate('Changes saved successfully')),
 			    $results);
 
-	
-
-
-/*  Verify that the preferred is gone  */
-
-
-
+	/* Verify that the preferred is gone */
 	list ($ret, $this->_item) = $this->_item->refresh();
 	if ($ret) {
 	    return $ret;
@@ -108,37 +84,19 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase {
     }
 
     function testChangeSizeMissingValues() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', '');
 	GalleryUtilities::putRequestVariable('form[height]', '');
 	GalleryUtilities::putRequestVariable('form[serialNumber]', $this->_item->getSerialNumber());
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_item, $this->_preferred);
 	$this->assertEquals(array(array(),
 				  $this->_translate('Changes saved successfully')),
 			    $results);
 
-	
-
-
-/*  Reload the item  */
-
-
-
+	/* Reload the item */
 	list ($ret, $this->_item) = $this->_item->refresh();
 	if ($ret) {
 	    return $ret;
@@ -149,24 +107,12 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase {
     }
 
     function testChangeSizeInvalidValues() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', -123);
 	GalleryUtilities::putRequestVariable('form[height]', -456);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_item, $this->_preferred);
 	$this->assertEquals(array(array('form[error][width][invalid]',
 					'form[error][height][invalid]'),
@@ -176,24 +122,12 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase {
 
 
     function testInvalidSerialNumber() {
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[width]', 123);
 	GalleryUtilities::putRequestVariable('form[height]', 456);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  use Invalid serial number  */
-
-
-
+	/* use Invalid serial number */
 	GalleryUtilities::putRequestVariable('form[serialNumber]', -1);
 
 	$results = $this->handleRequest($this->_item, $this->_preferred, ERROR_OBSOLETE_DATA);
@@ -278,13 +212,7 @@ class ItemEditMoviePluginTestPlatform {
     }
 
     function fopen($filename, $modes) {
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	if (preg_match("|\blocks\b|", $filename)) {
 	    return fopen($filename, $modes);
 	}
@@ -345,13 +273,7 @@ class ItemEditMoviePluginTestPlatform {
     }
 
     function unlink($path) {
-	return unlink($path); 
-
-
-/*  needed to release locks  */
-
-
-
+	return unlink($path); /* needed to release locks */
     }
 
     function realpath($file) {
@@ -359,13 +281,7 @@ class ItemEditMoviePluginTestPlatform {
     }
 
     function flock($handle, $operation, &$wouldblock) {
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	return flock($handle, $operation, $wouldblock);
     }
 

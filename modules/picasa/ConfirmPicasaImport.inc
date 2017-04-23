@@ -35,25 +35,13 @@ class ConfirmPicasaImportController extends GalleryController {
     function handleRequest($form) {
 	global $gallery;
 
-	
-
-
-/*  Verify that active user is an admin  */
-
-
-
+	/* Verify that active user is an admin */
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  build framework for error and status arrays  */
-
-
-
+	/* build framework for error and status arrays */
 	$error = $status = array();
 
 	if (isset($form['action']['cancel'])) {
@@ -128,13 +116,7 @@ class ConfirmPicasaImportController extends GalleryController {
 	    $form['destinationAlbumId'] = $rootId;
 	}
 
-	
-
-
-/*  Convert the form variables into local temporary variables  */
-
-
-
+	/* Convert the form variables into local temporary variables */
 	$picasaXmlPath = $form['picasaXmlPath'];
 	$destinationAlbumId = $form['destinationAlbumId'];
 
@@ -164,13 +146,7 @@ class ConfirmPicasaImportController extends GalleryController {
 
 	$sanitizedAlbumName = $picasaAlbum['albumName'];
 	GalleryUtilities::sanitizeInputValues($sanitizedAlbumName);
-	
-
-
-/*  We definitely need notices before each album  */
-
-
-
+	/* We definitely need notices before each album */
 	$templateAdapter->updateProgressBar(
 	    $module->translate('Importing albums'),
 	    $sanitizedAlbumName, $numberOfItemsImported / $totalItemsToImport);
@@ -192,38 +168,20 @@ class ConfirmPicasaImportController extends GalleryController {
 	    }
 	}
 
-	
-
-
-/*  Make sure we have permission to edit the target item  */
-
-
-
+	/* Make sure we have permission to edit the target item */
 	$ret = GalleryCoreApi::assertHasItemPermission($destinationAlbumId, 'core.addAlbumItem');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Try to load targeted parent  */
-
-
-
+	/* Try to load targeted parent */
 	list ($ret, $targetAlbumObject) =
 	    GalleryCoreApi::loadEntitiesById($destinationAlbumId, 'GalleryAlbumItem');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Get a lock on said parent  */
-
-
-
+	/* Get a lock on said parent */
 	list ($ret, $importLockIds[]) = GalleryCoreApi::acquireReadLock($destinationAlbumId);
 	if ($ret) {
 	    return $ret;
@@ -243,13 +201,7 @@ class ConfirmPicasaImportController extends GalleryController {
 		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	    }
 
-	    
-
-
-/*  this is where the album is actually created  */
-
-
-
+	    /* this is where the album is actually created */
 	    $ret = $newAlbumInstance->create($destinationAlbumId, $desiredname);
 	    if ($ret) {
 		return $ret;
@@ -257,13 +209,7 @@ class ConfirmPicasaImportController extends GalleryController {
 
 	    $newAlbumInstanceId = $newAlbumInstance->getId();
 
-	    
-
-
-/*  load up the album with metadata from the old album  */
-
-
-
+	    /* load up the album with metadata from the old album */
 	    if (isset($picasaAlbum['albumName'])) {
 		$newAlbumInstance->setTitle(
 		    PicasaImportHelper::convertHtml($markupType, $picasaAlbum['albumName'],
@@ -371,13 +317,7 @@ class ConfirmPicasaImportView extends GalleryView {
     function loadTemplate(&$template, &$form) {
 	global $gallery;
 
-	
-
-
-/*  Verify that active user is an admin  */
-
-
-
+	/* Verify that active user is an admin */
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);

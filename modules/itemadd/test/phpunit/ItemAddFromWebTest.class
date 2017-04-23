@@ -160,13 +160,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase {
     function testAddChildrenFromWebPage() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromWebPage]', 1);
 	GalleryUtilities::putRequestVariable('form[webPage]',
 					     'http://www.test.com/index.php?foo=bar&amp;a=b');
@@ -183,13 +177,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[set][summary]', 1);
 	$basenames = array('test1', 'test2', 'test3', 'test4', 'apo\'strophe');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album);
 	$this->assertEquals(array(), $results[0], 'errors');
 	$this->assertEquals(5, sizeof($results[1]['addedFiles']), 'number of added files');
@@ -231,13 +219,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase {
     function testAddMaliciousFilename() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromWebPage]', 1);
 	GalleryUtilities::putRequestVariable(
 	    'form[webPage]', 'http://www.test.com/');
@@ -248,13 +230,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[set][description]', 1);
 	$basenames = array('test1', 'test2', 'test3', 'test4', 'apo\'strophe');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album);
 	$this->assertEquals(array(), $results[0], 'errors');
 	$this->assertEquals(1, sizeof($results[1]['addedFiles']), 'number of added files');
@@ -284,23 +260,11 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase {
     function testAddEmptyListFromWebPage() {
 	global $gallery;
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromWebPage]', 1);
 	GalleryUtilities::putRequestVariable('form[webPageUrls]', null);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_album);
 	$this->assertEquals(array(array(), array()), $results);
 
@@ -859,13 +823,7 @@ class ItemAddFromWebTestPlatform  {
 	    return 1;
 	}
 
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	if (preg_match("|\blocks\b|", $filename)) {
 	    return unlink($filename);
 	}
@@ -918,13 +876,7 @@ class ItemAddFromWebTestPlatform  {
     }
 
     function flock($handle, $operation, &$wouldblock) {
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	return flock($handle, $operation, $wouldblock);
     }
 
@@ -934,13 +886,7 @@ class ItemAddFromWebTestPlatform  {
 	    return true;
 	}
 
-	
-
-
-/*  Pass locks  */
-
-
-
+	/* Pass locks */
 	if (is_resource($handle)) {
 	    return fclose($handle);
 	}
@@ -957,13 +903,7 @@ class ItemAddFromWebTestPlatform  {
 	    return $filename;
 	}
 
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	if (preg_match("|\blocks\b|", $filename)) {
 	    return fopen($filename, $modes);
 	}
@@ -977,13 +917,7 @@ class ItemAddFromWebTestPlatform  {
     }
 
     function exec($cmd) {
-	
-
-
-/*  In case add of jpeg tries to get 'colorspace' property  */
-
-
-
+	/* In case add of jpeg tries to get 'colorspace' property */
 	return array(true, array(''), array());
     }
 }

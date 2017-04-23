@@ -27,13 +27,7 @@ GalleryCoreApi::requireOnce('modules/notification/classes/NotificationHelper.cla
  * item are removed.  In the case of the save event, if there are any subscriptions on the
  * parent item, then these are propagated to the new item.
  */
-class NotificationItemStateChangeHandler 
-
-
-/*  extends GalleryEventListener  */
-
-
- {
+class NotificationItemStateChangeHandler /* extends GalleryEventListener */ {
     /**
      * @see GalleryEventListener::handleEvent
      */

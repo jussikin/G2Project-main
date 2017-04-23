@@ -37,13 +37,7 @@ class CoreModule extends GalleryModule {
 	$this->setName($gallery->i18n('Core'));
 	$this->setGalleryVersion('2.4.0');
 
-	
-
-
-/*  Don't forget to update CoreModuleExtras::upgrade and _prepareConfigUpgrade too!  */
-
-
-
+	/* Don't forget to update CoreModuleExtras::upgrade and _prepareConfigUpgrade too! */
 	$this->setVersion('1.4.0.0');
 	$this->_templateVersion = 1;
 
@@ -67,13 +61,7 @@ class CoreModule extends GalleryModule {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Fetch child counts  */
-
-
-
+	/* Fetch child counts */
 	$itemIds = array();
 	foreach ($items as $item) {
 	    $itemIds[] = $item->getId();
@@ -89,13 +77,7 @@ class CoreModule extends GalleryModule {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Fetch thumbnail ids  */
-
-
-
+	/* Fetch thumbnail ids */
 	list ($ret, $thumbTable) = GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
 	if ($ret) {
 	    return array($ret, null);
@@ -107,13 +89,7 @@ class CoreModule extends GalleryModule {
 	    $isRoot = ($itemId == $rootId);
 	    $isAlbum = $item->getCanContainChildren();
 
-	    
-
-
-/*  Permissions for its parent  */
-
-
-
+	    /* Permissions for its parent */
 	    list ($ret, $parentPermissions) =
 		GalleryCoreApi::getPermissions($item->getParentId(), $userId);
 	    if ($ret) {
@@ -133,13 +109,7 @@ class CoreModule extends GalleryModule {
 	    $itemTypeNames = array_merge($item->itemTypeName(), $item->itemTypeName(false));
 	    if (isset($permissions[$itemId]['core.edit'])) {
 		if (false) {
-		    
-
-
-/*  Specific translations:  */
-
-
- _('Edit Album'); _('Edit Photo'); _('Edit Movie');
+		    /* Specific translations: */ _('Edit Album'); _('Edit Photo'); _('Edit Movie');
 		}
 		$links[$itemId][] =
 		    array('text' => $this->_translate(
@@ -174,13 +144,7 @@ class CoreModule extends GalleryModule {
 
 	    if (!$isRoot && isset($permissions[$itemId]['core.delete'])) {
 		if (false) {
-		    
-
-
-/*  Specific translations:  */
-
-
-
+		    /* Specific translations: */
 		    _('Delete Album'); _('Delete Photo'); _('Delete Movie');
 		}
 		if (!function_exists('smarty_modifier_escape')) {
@@ -189,13 +153,7 @@ class CoreModule extends GalleryModule {
                 $title = smarty_modifier_escape(GalleryUtilities::markup(
 		    $item->getTitle(), 'strip'), 'javascript', 'UTF-8');
 		list ($thisItemId, $page) = GalleryUtilities::getRequestVariables('itemId', 'page');
-		
-
-
-/*  If no page item defined, we will navigate to the parent of the deleted item  */
-
-
-
+		/* If no page item defined, we will navigate to the parent of the deleted item */
 		if (empty($thisItemId)) {
 		    $thisItemId = $itemId;
 		}
@@ -213,13 +171,7 @@ class CoreModule extends GalleryModule {
 		    array('text' => $this->_translate(
 			  array('text' => 'Delete %s', 'arg1' => $itemTypeNames[0]),
 			  	$itemTypeNames[2]),
-			  
-
-
-/*  Params are for g->linkId used by icons, or themes ignoring 'script'  */
-
-
-
+			  /* Params are for g->linkId used by icons, or themes ignoring 'script' */
 			  'params' => array('view' => 'core.ItemAdmin',
 					    'subView' => 'core.ItemDelete',
 					    'itemId' => $item->getParentId(),
@@ -229,13 +181,7 @@ class CoreModule extends GalleryModule {
 
 	    if (!$isRoot && isset($permissions[$itemId]['core.delete'])) {
 		if (false) {
-		    
-
-
-/*  Specific translations:  */
-
-
- _('Move Album'); _('Move Photo'); _('Move Movie');
+		    /* Specific translations: */ _('Move Album'); _('Move Photo'); _('Move Movie');
 		}
 		$links[$itemId][] =
 		    array('text' => $this->_translate(
@@ -302,13 +248,7 @@ class CoreModule extends GalleryModule {
 				'subView' => 'core.ItemDelete',
 				'itemId' => $itemId,
 				'return' => 1);
-		
-
-
-/*  First item on the page will be in the list for deletion  */
-
-
-
+		/* First item on the page will be in the list for deletion */
 		if ($next) {
 		    $params['anchorId'] = $next->getId();
 		}
@@ -458,13 +398,7 @@ class CoreModule extends GalleryModule {
 	    $childCount = empty($childCounts[$item->getId()]) ? 0 : $childCounts[$item->getId()];
 	}
 
-	
-
-
-/*  Fetch thumbnail ids  */
-
-
-
+	/* Fetch thumbnail ids */
 	list ($ret, $thumbTable) =
 	    GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 	if ($ret) {
@@ -494,13 +428,7 @@ class CoreModule extends GalleryModule {
 				 'view' => 'core.ItemEditCaptions');
 	    }
 
-	    
-
-
-/*  Edit view for all item types  */
-
-
-
+	    /* Edit view for all item types */
 	    $views[] = array('name' => $this->_translate(
 				  array('text' => 'Edit %s', 'arg1' => $itemTypeNames[0]),
 				  $itemTypeNames[2]),
@@ -524,13 +452,7 @@ class CoreModule extends GalleryModule {
 		}
                 $title = smarty_modifier_escape(GalleryUtilities::markup(
 		    $item->getTitle(), 'strip'), 'javascript', 'UTF-8');
-		
-
-
-/*  This is ItemAdmin view, hence page item is the one we are deleting  */
-
-
-
+		/* This is ItemAdmin view, hence page item is the one we are deleting */
 		$thisItemId = $itemId;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$url = $urlGenerator->generateUrl(
@@ -542,13 +464,7 @@ class CoreModule extends GalleryModule {
 			  'selectedId' => $itemId));
 		$views[] = array('name' => $this->_translate(
 		    array('text' => 'Delete %s', 'arg1' => $itemTypeNames[0]), $itemTypeNames[2]),
-		    'view' => 'core.ItemDeleteSingle', 
-
-
-/*  just for g->linkId used by icons  */
-
-
-
+		    'view' => 'core.ItemDeleteSingle', /* just for g->linkId used by icons */
 		    'script' => "core_confirmDelete('$url', '$moreUrl', '$title');return false");
 
 		$views[] = array('name' => $this->_translate(

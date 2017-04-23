@@ -34,13 +34,7 @@
  * @package Install
  */
 
-
-
-
-/*  Show all errors.  */
-
-
-
+/* Show all errors. */
 @ini_set('display_errors', 1);
 
 /*
@@ -69,13 +63,7 @@ if (!function_exists('_')) {
     }
 }
 
-
-
-
-/*  Our install steps, in order  */
-
-
-
+/* Our install steps, in order */
 $stepOrder = array();
 $stepOrder[] = 'Welcome';
 $stepOrder[] = 'Authenticate';
@@ -100,13 +88,7 @@ GallerySetupUtilities::startSession();
 require_once($g2Base . 'modules/core/classes/GalleryStatus.class');
 require_once($g2Base . 'modules/core/classes/GalleryTranslator.class');
 if (empty($_SESSION['language'])) {
-    
-
-
-/*  Select language based on preferences sent from browser  */
-
-
-
+    /* Select language based on preferences sent from browser */
     $_SESSION['language'] = GalleryTranslator::getLocaleFromRequest();
 }
 if (function_exists('dgettext')) {
@@ -119,13 +101,7 @@ if (function_exists('dgettext')) {
     if (function_exists('bind_textdomain_codeset')) {
         bind_textdomain_codeset('gallery2_install', 'UTF-8');
     }
-    
-
-
-/*  Set the appropriate charset in our HTTP header  */
-
-
-
+    /* Set the appropriate charset in our HTTP header */
     if (!headers_sent()) {
         header('Content-Type: text/html; charset=UTF-8');
     }
@@ -144,13 +120,7 @@ if (!isset($_GET['startOver']) && !empty($_SESSION['install_steps'])) {
     }
 }
 
-
-
-
-/*  If we don't have our steps in our session, initialize them now.  */
-
-
-
+/* If we don't have our steps in our session, initialize them now. */
 if (empty($steps) || !is_array($steps)) {
     $steps = array();
     for ($i = 0; $i < count($stepOrder); $i++) {
@@ -165,25 +135,13 @@ if (empty($steps) || !is_array($steps)) {
         }
     }
 
-    
-
-
-/*  Don't do this in the loop, since not all steps are relevant  */
-
-
-
+    /* Don't do this in the loop, since not all steps are relevant */
     $steps[count($steps)-1]->setIsLastStep(true);
 }
 
 $stepNumber = isset($_GET['step']) ? (int)$_GET['step'] : 0;
 
-
-
-
-/*  Make sure all steps up to the current one are ok  */
-
-
-
+/* Make sure all steps up to the current one are ok */
 for ($i = 0; $i < $stepNumber; $i++) {
     if (!$steps[$i]->isComplete() && !$steps[$i]->isOptional()) {
         $stepNumber = $i;
@@ -196,13 +154,7 @@ if (!empty($_GET['doOver'])) {
     $currentStep->setComplete(false);
 }
 
-
-
-
-/*  If the current step is incomplete, the rest of the steps can't be complete either  */
-
-
-
+/* If the current step is incomplete, the rest of the steps can't be complete either */
 if (!$currentStep->isComplete()) {
     for ($i = $stepNumber+1; $i < count($steps); $i++) {
         $steps[$i]->setComplete(false);
@@ -211,32 +163,14 @@ if (!$currentStep->isComplete()) {
 }
 
 if ($currentStep->processRequest()) {
-    
-
-
-/*  Load up template data from the current step  */
-
-
-
+    /* Load up template data from the current step */
     $templateData = array();
 
-    
-
-
-/*  Round percentage to the nearest 5  */
-
-
-
+    /* Round percentage to the nearest 5 */
     $templateData['errors'] = array();
     $currentStep->loadTemplateData($templateData);
 
-    
-
-
-/*  Render the output  */
-
-
-
+    /* Render the output */
     $template = new StatusTemplate();
     $template->renderHeaderBodyAndFooter($templateData);
 }
@@ -244,13 +178,7 @@ if ($currentStep->processRequest()) {
 function processAutoCompleteRequest()
 {
     $path = !empty($_GET['path']) ? $_GET['path'] : '';
-    
-
-
-/*  Undo the damage caused by magic_quotes  */
-
-
-
+    /* Undo the damage caused by magic_quotes */
     if (get_magic_quotes_gpc()) {
         $path = stripslashes($path);
     }
@@ -297,26 +225,14 @@ function processAutoCompleteRequest()
  */
 function populateDataDirectory($dataBase)
 {
-    
-
-
-/*  Use non-restrictive umask to create directories with lax permissions  */
-
-
-
+    /* Use non-restrictive umask to create directories with lax permissions */
     umask(0);
 
     if ($dataBase{strlen($dataBase)-1} != DIRECTORY_SEPARATOR) {
         $dataBase .= DIRECTORY_SEPARATOR;
     }
 
-    
-
-
-/*  Create the sub directories, if necessary  */
-
-
-
+    /* Create the sub directories, if necessary */
     foreach (array('albums',
            'cache',
            'locks',
@@ -375,22 +291,10 @@ function secureStorageFolder($dataBase)
     return file_exists($htaccessPath);
 }
 
-
-
-
-/*  Returns something like https://example.com  */
-
-
-
+/* Returns something like https://example.com */
 function getBaseUrl()
 {
-    
-
-
-/*  Can't use GalleryUrlGenerator::makeUrl since it's an object method  */
-
-
-
+    /* Can't use GalleryUrlGenerator::makeUrl since it's an object method */
     if (!($hostName = GalleryUtilities::getServerVar('HTTP_X_FORWARDED_HOST'))) {
         $hostName = GalleryUtilities::getServerVar('HTTP_HOST');
     }
@@ -399,13 +303,7 @@ function getBaseUrl()
     return sprintf('%s://%s', $protocol, $hostName);
 }
 
-
-
-
-/*  Returns the URL to the G2 folder, e.g. http://example.com/gallery2/.  */
-
-
-
+/** Returns the URL to the G2 folder, e.g. http://example.com/gallery2/. */
 function getGalleryDirUrl()
 {
     global $g2Base;
@@ -426,13 +324,7 @@ function getGalleryDirUrl()
 function generateUrl($uri, $print = true)
 {
     if (!strncmp($uri, 'index.php', 9)) {
-    
-
-
-/*  Cookieless browsing: If session.use_trans_sid is on then it will add the session id.  */
-
-
-
+    /* Cookieless browsing: If session.use_trans_sid is on then it will add the session id. */
         if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
             /*
              * Don't use SID since it's a constant and we change (regenerate) the session id

@@ -75,13 +75,7 @@ class ResetViewCountsTask extends FlushDatabaseCacheTask {
 
 	$details = array($module->translate('View counts reset successfully'));
 
-	
-
-
-/*  Call parent::run() to flush cache  */
-
-
-
+	/* Call parent::run() to flush cache */
 	list ($ret, $success, $subDetails) = parent::run();
 	if ($ret) {
 	    return array($ret, null, null);

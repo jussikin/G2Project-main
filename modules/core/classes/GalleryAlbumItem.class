@@ -91,13 +91,7 @@ class GalleryAlbumItem extends GalleryItem {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 
-	
-
-
-/*  Let our superclass take care of creation in the persistent store  */
-
-
-
+	/* Let our superclass take care of creation in the persistent store */
 	$ret = parent::create($parentId, $albumName, true);
 	if ($ret) {
 	    return $ret;
@@ -115,13 +109,7 @@ class GalleryAlbumItem extends GalleryItem {
 	    return $ret;
 	}
 
-	
-
-
-/*  Copy over derivative preferences from the parent  */
-
-
-
+	/* Copy over derivative preferences from the parent */
 	$ret = GalleryCoreApi::copyDerivativePreferences($parentId, $this->getId());
 	if ($ret) {
 	    return $ret;
@@ -134,13 +122,7 @@ class GalleryAlbumItem extends GalleryItem {
 	}
 
 	if ($useDefaults != 'true') {
-	    
-
-
-/*  Use parent's settings  */
-
-
-
+	    /* Use parent's settings */
 	    $this->setTheme($theme = $parent->getTheme());
 	    $this->setOrderBy($parent->getOrderBy());
 	    $this->setOrderDirection($parent->getOrderDirection());
@@ -184,13 +166,7 @@ class GalleryAlbumItem extends GalleryItem {
     function createRoot() {
 	global $gallery;
 
-	
-
-
-/*  See if we already have a root  */
-
-
-
+	/* See if we already have a root */
 	list ($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 	if ($ret) {
 	    return $ret;
@@ -200,41 +176,17 @@ class GalleryAlbumItem extends GalleryItem {
 	    return GalleryCoreApi::error(ERROR_COLLISION);
 	}
 
-	
-
-
-/*  Let our superclass take care of creation in the persistent store  */
-
-
-
+	/* Let our superclass take care of creation in the persistent store */
 	$ret = parent::createRoot();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Root album can contain children  */
-
-
-
+	/* Root album can contain children */
 	$this->setCanContainChildren(true);
 
-	
-
-
-/*  Create default preferences  */
-
-
-
-	
-
-
-/*  XXX: parameterize this  */
-
-
-
+	/* Create default preferences */
+	/* XXX: parameterize this */
 	$ret = GalleryCoreApi::addDerivativePreference(
 	    0, $this->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'thumbnail|150');
 	if ($ret) {
@@ -247,13 +199,7 @@ class GalleryAlbumItem extends GalleryItem {
 	    return $ret;
 	}
 
-	
-
-
-/*  Use site default theme and sort order  */
-
-
-
+	/* Use site default theme and sort order */
 	$this->setTheme('');
 	$this->setOrderBy('');
 	$this->setOrderDirection(ORDER_ASCENDING);
@@ -312,13 +258,7 @@ class GalleryAlbumItem extends GalleryItem {
 	    return $ret;
 	}
 
-	
-
-
-/*  @todo move the setting of the owner permission to before the save event */
-
-
-
+	/** @todo move the setting of the owner permission to before the save event*/
 	if ($isNew) {
 	    list ($ret, $groupId) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
@@ -349,49 +289,25 @@ class GalleryAlbumItem extends GalleryItem {
     function delete() {
 	global $gallery;
 
-	
-
-
-/*  Delete myself from the store  */
-
-
-
+	/* Delete myself from the store */
 	$ret = parent::delete();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Delete derivative preferences  */
-
-
-
+	/* Delete derivative preferences */
 	$ret = GalleryCoreApi::removeDerivativePreferencesForItem($this->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Get my path  */
-
-
-
+	/* Get my path */
 	list ($ret, $path) = $this->fetchPath();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove my directory and everything in it  */
-
-
-
+	/* Remove my directory and everything in it */
 	$platform =& $gallery->getPlatform();
 
 	if ($platform->file_exists($path)) {
@@ -456,23 +372,11 @@ class GalleryAlbumItem extends GalleryItem {
 	    $error = $ret;
 	}
 
-	
-
-
-/*  The parent class may have changed/sanitized the pathComponent, so get it again  */
-
-
-
+	/* The parent class may have changed/sanitized the pathComponent, so get it again */
 	$newName = $this->getPathComponent();
 
 	if (!isset($error)) {
-	    
-
-
-/*  Check to see if the desired path exists.  */
-
-
-
+	    /* Check to see if the desired path exists. */
 	    $newPath = dirname($currentPath) . '/' . $newName;
 	    if ($platform->file_exists($newPath)) {
 		$error = GalleryCoreApi::error(ERROR_COLLISION);
@@ -485,13 +389,7 @@ class GalleryAlbumItem extends GalleryItem {
 	    }
 	}
 
-	
-
-
-/*  Release locks  */
-
-
-
+	/* Release locks */
 	$ret = GalleryCoreApi::releaseLocks($lockId);
 	if ($ret) {
 	    return $ret;
@@ -511,13 +409,7 @@ class GalleryAlbumItem extends GalleryItem {
      * @return GalleryStatus a status code
      */
     function move($newParentId) {
-	
-
-
-/*  Get the current parent sequence  */
-
-
-
+	/* Get the current parent sequence */
 	list ($ret, $oldParentSequence) = GalleryCoreApi::fetchParentSequence($this->getId());
 	if ($ret) {
 	    return $ret;
@@ -533,13 +425,7 @@ class GalleryAlbumItem extends GalleryItem {
 	    return $ret;
 	}
 
-	
-
-
-/*  Figure out the new one  */
-
-
-
+	/* Figure out the new one */
 	list ($ret, $newParentSequence) = GalleryCoreApi::fetchParentSequence($this->getParentId());
 	if ($ret) {
 	    return $ret;
@@ -547,13 +433,7 @@ class GalleryAlbumItem extends GalleryItem {
 	$newChildParentSequence = array_merge($newParentSequence,
 					      array($this->getParentId(), $this->getId()));
 
-	
-
-
-/*  Convert my children's parent sequences  */
-
-
-
+	/* Convert my children's parent sequences */
 	$ret = GalleryCoreApi::updateParentSequence(
 	    $oldChildParentSequence, $newChildParentSequence);
 	if ($ret) {

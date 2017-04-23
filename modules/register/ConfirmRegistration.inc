@@ -35,13 +35,7 @@ class ConfirmRegistrationController extends GalleryController {
 	    'modules/register/classes/GalleryPendingUserHelper.class');
 	$results = array('status' => array(), 'error' => array());
 
-	
-
-
-/*  turn the pending user into a real user  */
-
-
-
+	/* turn the pending user into a real user */
 	list ($username, $regKey) = GalleryUtilities::getRequestVariables('username', 'key');
 
 	list ($ret, $user) = GalleryPendingUserHelper::fetchPendingUserByUsername($username);
@@ -61,13 +55,7 @@ class ConfirmRegistrationController extends GalleryController {
 		return array($ret, null);
 	    }
 	} else {
-	    
-
-
-/*  verify registration key:  */
-
-
-
+	    /* verify registration key: */
 	    if ($regKey != $user->getRegistrationKey()) {
 		$results['error'][] = 'form[error][unknownUser]';
 	    } else {

@@ -46,34 +46,16 @@ class RenderView extends GalleryView {
     function renderImmediate($status, $error) {
 	global $gallery;
 
-	
-
-
-/*  get all parameters  */
-
-
-
+	/* get all parameters */
 	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  retrieve request variables  */
-
-
-
+	/* retrieve request variables */
 	$name = GalleryUtilities::getRequestVariables('name');
 
-	
-
-
-/*  we're a configurable feed, load the parameters  */
-
-
-
+	/* we're a configurable feed, load the parameters */
 	list ($ret, $params1) = RssMapHelper::fetchFeed($name);
 	if ($ret) {
 	    $this->handleError($gallery->i18n('This feed no longer exists!'));
@@ -108,36 +90,18 @@ class RenderView extends GalleryView {
     function continueRender($params) {
 	global $gallery;
 
-	
-
-
-/*  check permissions  */
-
-
-
+	/* check permissions */
 	list ($ret, $perm) = GalleryCoreApi::hasItemPermission($params['itemId'], 'core.view');
 	if ($ret) {
 	    return $ret;
 	}
 
 	if (!$perm) {
-	    
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+	    /* Avoid information disclosure, act as if the item didn't exist. */
 	    return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	}
 
-	
-
-
-/*  check render type  */
-
-
-
+	/* check render type */
 	$feedType = $params['feedType'];
 	if (!in_array($feedType, array('album',
 					'photos',
@@ -151,21 +115,9 @@ class RenderView extends GalleryView {
 	    return null;
 	}
 
-	
-
-
-/*  check if comments are active  */
-
-
-
+	/* check if comments are active */
 	if (in_array($feedType, array('commentsAlbum', 'commentsPhoto', 'commentsRecursive'))) {
-	    
-
-
-/*  make sure that the comments module is active  */
-
-
-
+	    /* make sure that the comments module is active */
 	    list ($ret, $modulestatus) = GalleryCoreApi::fetchPluginStatus('module');
 	    if ($ret) {
 		return $ret;
@@ -177,13 +129,7 @@ class RenderView extends GalleryView {
 		return null;
 	    }
 
-	    
-
-
-/*  check the permissions  */
-
-
-
+	    /* check the permissions */
 	    list ($ret, $perm) =
 		GalleryCoreApi::hasItemPermission($params['itemId'], 'comment.view');
 	    if ($ret) {
@@ -196,13 +142,7 @@ class RenderView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  check if count is set, if not, retrieve default values  */
-
-
-
+	/* check if count is set, if not, retrieve default values */
 	$maxcount = $params['maxCount'];
 	$count = $params['count'];
 	if (empty($count)) {
@@ -213,13 +153,7 @@ class RenderView extends GalleryView {
 	}
 	$params['count'] = $count;
 
-	
-
-
-/*  create an instance of the rss data generator  */
-
-
-
+	/* create an instance of the rss data generator */
 	$generator = new RssGenerator();
 
 	$ret = RssHelper::getFeed($generator, $params['itemId'], $params);
@@ -246,13 +180,7 @@ class RenderView extends GalleryView {
 
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
 	if ($ret) {
-	    
-
-
-/*  swallow the error and just print the untranslated message  */
-
-
-
+	    /* swallow the error and just print the untranslated message */
 	    print($message);
 	} else {
 	    print($module->translate($message));

@@ -58,13 +58,7 @@ class SQLiteStorage extends GalleryStorage {
      */
     function removeAllMapEntries($mapName, $useNonTransactionalConnection=false) {
 	$extras =& $this->_getExtras();
-	
-
-
-/*  SQLite does not support TRUNCATE  */
-
-
-
+	/* SQLite does not support TRUNCATE */
 	return $extras->removeAllMapEntries($mapName, $useNonTransactionalConnection, false);
     }
 
@@ -106,13 +100,7 @@ class SQLiteStorage extends GalleryStorage {
 	    break;
 
 	case 'RANDOM_INTEGER':
-	    
-
-
-/*  If the DB returns bigints, divide by 2^32 to get numbers in the desired range  */
-
-
-
+	    /* If the DB returns bigints, divide by 2^32 to get numbers in the desired range */
 	    if (!isset($has64bitRandomValues) && $this->_db) {
 		$sqliteVersion = $this->_db->GetOne('SELECT sqlite_version(*)');
 		$has64bitRandomValues = version_compare('3.3.5', $sqliteVersion, '<=');

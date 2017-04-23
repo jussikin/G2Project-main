@@ -55,31 +55,13 @@ class SlideshowAppletModule extends GalleryModule {
 	}
 
 	if (!isset($params['slideshowdefaultVariables'])) {
-	    
-
-
-/*  upgrade or install  */
-
-
-
+	    /* upgrade or install */
 	    if (isset($params['slideshowRecursive']) && isset($params['slideshowMaxPictures'])) {
-		
-
-
-/*  definitely upgrade  */
-
-
-
+		/* definitely upgrade */
 		$newDefault = 'slideshowRecursive=' . $params['slideshowRecursive'] .
 			      '|slideshowMaxPictures=' . $params['slideshowMaxPictures'];
 
-		
-
-
-/*  remove the old parameters  */
-
-
-
+		/* remove the old parameters */
 		$ret = $this->removeParameter('slideshowRecursive');
 		if ($ret) {
 		    return $ret;
@@ -90,13 +72,7 @@ class SlideshowAppletModule extends GalleryModule {
 		    return $ret;
 		}
 	    } else {
-		
-
-
-/*  install  */
-
-
-
+		/* install */
 		$newDefault = 'slideshowRecursive=false|slideshowMaxPictures=0';
 	    }
 	    $ret = $this->setParameter('slideshowdefaultVariables', $newDefault);
@@ -145,13 +121,7 @@ class SlideshowAppletModule extends GalleryModule {
 			}
 		    }
 		} else {
-		    
-
-
-/*  @todo Check with isA instead of entityType (thus matching subclasses).  */
-
-
-
+		    /** @todo Check with isA instead of entityType (thus matching subclasses). */
 		    $showSlideshowLink = $item->getEntityType() === 'GalleryPhotoItem';
 					}
 		if ($showSlideshowLink) {

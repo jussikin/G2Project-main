@@ -48,13 +48,7 @@ class ItemCreateReplicaSingleController extends GalleryController {
 	    if (empty($error)) {
 		$destinationId = $form['destination'];
 
-		
-
-
-/*  Make sure we can write to the destination  */
-
-
-
+		/* Make sure we can write to the destination */
 		list ($ret, $permissions) =
 		    GalleryCoreApi::fetchPermissionsForItems(array($itemId, $destinationId));
 		if ($ret) {
@@ -62,13 +56,7 @@ class ItemCreateReplicaSingleController extends GalleryController {
 		}
 
 		if (!isset($permissions[$destinationId])) {
-		    
-
-
-/*  Avoid information disclosure, act as if the item didn't exist.  */
-
-
-
+		    /* Avoid information disclosure, act as if the item didn't exist. */
 		    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
@@ -80,13 +68,7 @@ class ItemCreateReplicaSingleController extends GalleryController {
 		    return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
 		}
 
-		
-
-
-/*  Look out for monkey business  */
-
-
-
+		/* Look out for monkey business */
 		if (!$item->getIsLinkable()) {
 		    return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
 		}
@@ -114,13 +96,7 @@ class ItemCreateReplicaSingleController extends GalleryController {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Create all our links  */
-
-
-
+		/* Create all our links */
 		$classType = get_class($item);
 		$linkedItem = new $classType;
 
@@ -153,25 +129,13 @@ class ItemCreateReplicaSingleController extends GalleryController {
 
 		$status['linked'] = 1;
 
-		
-
-
-/*  Release the locks  */
-
-
-
+		/* Release the locks */
 		$ret = GalleryCoreApi::releaseLocks($locks);
 		if ($ret) {
 		    return array($ret, null);
 		}
 
-		
-
-
-/*  Figure out where to redirect upon success  */
-
-
-
+		/* Figure out where to redirect upon success */
 		$redirect['view'] = 'core.ItemAdmin';
 		$redirect['subView'] = 'replica.ItemCreateReplicaSingle';
 		$redirect['itemId'] = $itemId;
@@ -208,37 +172,19 @@ class ItemCreateReplicaSingleView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'ItemCreateReplicaSingle') {
-	    
-
-
-/*  First time around, load the form with item data  */
-
-
-
+	    /* First time around, load the form with item data */
 	    $form['destination'] = '';
 	    $form['formName'] = 'ItemCreateReplicaSingle';
 	}
 
-	
-
-
-/*  Find all the possible locations where this item can be linked.  */
-
-
-
+	/* Find all the possible locations where this item can be linked. */
 	list ($ret, $albumIds) = GalleryCoreApi::fetchAllItemIds(
 	    'GalleryAlbumItem', array('core.addDataItem', 'core.view'));
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load all the album entities  */
-
-
-
+	/* Load all the album entities */
 	list ($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 	if ($ret) {
 	    return array($ret, null);

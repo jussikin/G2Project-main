@@ -57,13 +57,7 @@ class GdToolkitHelper {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  -------------------- Operations --------------------  */
-
-
-
+	/* -------------------- Operations -------------------- */
 
 	if (GdToolkitHelper::isOperationSupported('convert-to-image/jpeg', $gd)) {
 	    $convertToJpegMimeTypes = array_intersect(
@@ -79,13 +73,7 @@ class GdToolkitHelper {
 	}
 
 	if (GdToolkitHelper::isOperationSupported('scale', $gd)) {
-	    
-
-
-/*  Scale  */
-
-
-
+	    /* Scale */
 	    $operations['scale']['params'][] = array('type' => 'int', 'description' =>
 		    $gallery->i18n(array('text' => 'target width (# pixels or #% of full size)',
 					 'cFormat' => false)));
@@ -98,24 +86,12 @@ class GdToolkitHelper {
 
 	if (GdToolkitHelper::isOperationSupported('thumbnail', $gd)
 		&& isset($operations['scale'])) {
-	    
-
-
-/*  Thumbnail is an alias for scale  */
-
-
-
+	    /* Thumbnail is an alias for scale */
 	    $operations['thumbnail'] = $operations['scale'];
 	}
 
 	if (GdToolkitHelper::isOperationSupported('resize', $gd)) {
-	    
-
-
-/*  Resize  */
-
-
-
+	    /* Resize */
 	    $operations['resize']['params'][] = array('type' => 'int', 'description' =>
 		    $gallery->i18n(array('text' => 'target width (# pixels or #% of full size)',
 					 'cFormat' => false)));
@@ -128,13 +104,7 @@ class GdToolkitHelper {
 	}
 
 	if (GdToolkitHelper::isOperationSupported('rotate', $gd)) {
-	    
-
-
-/*  Rotate  */
-
-
-
+	    /* Rotate */
 	    $operations['rotate']['params'][] =
 		array('type' => 'int',
 		      'description' => $gallery->i18n('rotation degrees'));
@@ -143,13 +113,7 @@ class GdToolkitHelper {
 	}
 
 	if (GdToolkitHelper::isOperationSupported('crop', $gd)) {
-	    
-
-
-/*  Crop  */
-
-
-
+	    /* Crop */
 	    $operations['crop']['params'][] = array('type' => 'float',
 						    'description' => $gallery->i18n('left edge %'));
 	    $operations['crop']['params'][] = array('type' => 'float',
@@ -163,13 +127,7 @@ class GdToolkitHelper {
 	}
 
 	if (GdToolkitHelper::isOperationSupported('composite', $gd)) {
-	    
-
-
-/*  Composite  */
-
-
-
+	    /* Composite */
 	    $operations['composite']['params'][] =
 		array('type' => 'string',
 		      'description' => $gallery->i18n('overlay path'));
@@ -196,13 +154,7 @@ class GdToolkitHelper {
 	    $operations['composite']['mimeTypes'] = $mimeTypes;
 	}
 
-	
-
-
-/*  Compress  */
-
-
-
+	/* Compress */
 	$qualityMimeTypes = array_intersect(array('image/jpeg'), $mimeTypes);
 	if (!empty($qualityMimeTypes)) {
 	    $operations['compress'] = array(
@@ -212,31 +164,13 @@ class GdToolkitHelper {
 		'mimeTypes' => $qualityMimeTypes);
 	}
 
-	
+	/* -------------------- Properties -------------------- */
 
-
-/*  -------------------- Properties --------------------  */
-
-
-
-
-	
-
-
-/*  Dimensions  */
-
-
-
+	/* Dimensions */
 	$properties['dimensions']['type'] = 'int,int';
 	$properties['dimensions']['description'] =
 	    $gallery->i18n('Get the width and height of the image');
-	$mimeTypes[] = 'application/x-shockwave-flash'; 
-
-
-/*  Supported by php getimagesize  */
-
-
-
+	$mimeTypes[] = 'application/x-shockwave-flash'; /* Supported by php getimagesize */
 	$properties['dimensions']['mimeTypes'] = $mimeTypes;
 
 	return array(null, array('operations' => $operations,
@@ -257,13 +191,7 @@ class GdToolkitHelper {
 	case 'resize':
 	case 'crop':
 	case 'composite':
-	    
-
-
-/*  We can always do these  */
-
-
-
+	    /* We can always do these */
 	    return true;
 	    break;
 	case 'convert-to-image/jpeg':
@@ -346,13 +274,7 @@ class GdToolkitHelper {
      */
     static function isGdVersionSupported($gdVersion=null, $gd=null) {
 	if (!isset($gdVersion)) {
-	    
-
-
-/*  Find out current GD version  */
-
-
-
+	    /* Find out current GD version */
 	    if (!isset($gd)) {
 		$gd =& GdToolkitHelper::getGdFunctionality();
 	    }
@@ -365,13 +287,7 @@ class GdToolkitHelper {
             if ($matches[0] >= 2.0)
 	        return array(null, true);
 	}
-	
-
-
-/*  1.6, 1.8, ... is too old  */
-
-
-
+	/* 1.6, 1.8, ... is too old */
 	return array(null, false);
     }
 

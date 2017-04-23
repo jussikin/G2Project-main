@@ -210,13 +210,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	    case 'Channel Mode':
 	    case 'Video Bit Rate':
 	    case 'Date/Time':
-		
-
-
-/*  Don't verify these  */
-
-
-
+		/* Don't verify these */
 		break;
 	    default:
 		print "<!-- Unknown: ".$id3Data[$i]['title']." = ".$id3Data[$i]['value']." -->\n";
@@ -227,13 +221,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	$this->assertEquals(6, $verifiedCount, 'Verified count');
 	$this->assertEquals(0, $unknownCount, 'Unknown count');
 
-	
-
-
-/*  Make sure there are no duplicates in the list  */
-
-
-
+	/* Make sure there are no duplicates in the list */
 	$seen = array();
 	for ($i = 0; $i < sizeof($id3Data); $i++) {
 	    $title = $id3Data[$i]['title'];
@@ -286,13 +274,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	}
 	$this->assertEquals(4, $verifiedCount, 'verified count');
 
-	
-
-
-/*  Make sure there are no duplicates in the list  */
-
-
-
+	/* Make sure there are no duplicates in the list */
 	$seen = array();
 	for ($i = 0; $i < sizeof($id3Data); $i++) {
 	    $title = $id3Data[$i]['title'];
@@ -330,13 +312,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	}
 	$this->assertEquals(2, $verifiedCount);
 
-	
-
-
-/*  Make sure there are no duplicates in the list  */
-
-
-
+	/* Make sure there are no duplicates in the list */
 	$seen = array();
 	for ($i = 0; $i < sizeof($id3Data); $i++) {
 	    $title = $id3Data[$i]['title'];
@@ -376,13 +352,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	    }
 	}
 	$this->assertEquals(2, $verifiedCount);
-	
-
-
-/*  Make sure there are no duplicates in the list  */
-
-
-
+	/* Make sure there are no duplicates in the list */
 	$seen = array();
 	for ($i = 0; $i < sizeof($id3Data); $i++) {
 	    $title = $id3Data[$i]['title'];
@@ -417,13 +387,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	}
 	$this->assertEquals(1, $verifiedCount, 'verified count');
 
-	
-
-
-/*  Make sure there are no duplicates in the list  */
-
-
-
+	/* Make sure there are no duplicates in the list */
 	$seen = array();
 	for ($i = 0; $i < sizeof($id3Data); $i++) {
 	    $title = $id3Data[$i]['title'];
@@ -460,13 +424,7 @@ class Getid3HelperTest extends GalleryTestCase {
 	    }
 	}
 	$this->assertEquals(2, $verifiedCount);
-	
-
-
-/*  Make sure there are no duplicates in the list  */
-
-
-
+	/* Make sure there are no duplicates in the list */
 	$seen = array();
 	for ($i = 0; $i < sizeof($id3Data); $i++) {
 	    $title = $id3Data[$i]['title'];
@@ -479,13 +437,7 @@ class Getid3HelperTest extends GalleryTestCase {
      * Test getting all the id3 keys
      */
     function testGetId3Keys() {
-	
-
-
-/*  There are a bajillion keys.  Do a quick sanity check  */
-
-
-
+	/* There are a bajillion keys.  Do a quick sanity check */
 	$getid3Keys = Getid3Helper::getGetid3Keys();
 	$this->assertEquals(24, sizeof($getid3Keys));
 	$this->assert(isset($getid3Keys['Genre']));

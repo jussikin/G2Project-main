@@ -39,23 +39,11 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Control the user agent; we pass this to SnapGalaxy  */
-
-
-
+	/* Control the user agent; we pass this to SnapGalaxy */
 	$_SERVER['HTTP_USER_AGENT'] = 'Test User Agent';
 	$_SERVER['HTTP_REFERER'] = 'TestHttpReferer';
 
-	
-
-
-/*  Create some random photo items that we can print  */
-
-
-
+	/* Create some random photo items that we can print */
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -75,13 +63,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Create a stub thumbnail  */
-
-
-
+	/* Create a stub thumbnail */
 	list ($ret, $derivative) = GalleryCoreApi::newFactoryInstanceByHint(
 			  'GalleryDerivative', $this->_photo->getEntityType());
 	if ($ret) {
@@ -102,13 +84,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Ensure we have print permission  */
-
-
-
+	/* Ensure we have print permission */
 	$ret = GalleryCoreApi::removeItemPermissions($this->_photo->getId());
 	if ($ret) {
 	    return $ret;
@@ -132,49 +108,25 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Empty out the plugin session id  */
-
-
-
+	/* Empty out the plugin session id */
 	$session =& $gallery->getSession();
 	$this->_saveCartUrlFragment = $session->get('snapgalaxy.cartUrlFragment');
 	$session->remove('snapgalaxy.cartUrlFragment');
 
-	 
-
-
-/*  Make sure translate calls during test won't generate any platform calls  */
-
-
-
+	 /* Make sure translate calls during test won't generate any platform calls */
 	list ($ret) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Swap in a dummy url generator  */
-
-
-
+	/* Swap in a dummy url generator */
 	$gallery->_urlGenerator = new SnapGalaxyPrintPhotosControllerTestUrlGenerator();
     }
 
     function tearDown() {
 	global $gallery;
 
-	
-
-
-/*  Restore session id  */
-
-
-
+	/* Restore session id */
 	$session =& $gallery->getSession();
 	if (isset($this->_saveCartUrlFragment)) {
 	    $session->put('snapgalaxy.cartUrlFragment', $this->_saveCartUrlFragment);
@@ -213,13 +165,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('itemId', $this->_photo->getId());
 	GalleryUtilities::putRequestVariable('returnUrl', 'RETURN_URL');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$expectedHref = 'http://www.snapgalaxy.com/REDIRECT_URL';
 	$this->assertEquals(array('redirect' => array('href' => $expectedHref),
@@ -242,13 +188,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	$session =& $gallery->getSession();
 	$session->put('snapgalaxy.cartUrlFragment', '/EXISTING_FRAGMENT');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$expectedHref = 'http://www.snapgalaxy.com/REDIRECT_URL2';
 	$this->assertEquals(array('redirect' => array('href' => $expectedHref),
@@ -267,13 +207,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('itemId', $itemId);
 	GalleryUtilities::putRequestVariable('returnUrl', 'RETURN_URL');
 
-	
-
-
-/*  We only have permission to print and view the thumbnail  */
-
-
-
+	/* We only have permission to print and view the thumbnail */
 	$ret = GalleryCoreApi::removeItemPermissions($itemId);
 	if ($ret) {
 	    return $ret;
@@ -291,13 +225,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Make sure we don't get any platform calls during test from releasing flock locks  */
-
-
-
+	/* Make sure we don't get any platform calls during test from releasing flock locks */
 	$storage =& $gallery->getStorage();
 	$ret = $storage->checkPoint();
 	if ($ret) {
@@ -307,13 +235,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	$gallery->setPlatform(
 	    $this->_getTestPlatform('pt/ptcartpost', '/REQUEST_URL', '/REDIRECT_URL'));
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$expectedHref = 'http://www.snapgalaxy.com/REDIRECT_URL';
 	$this->assertEquals(array('redirect' => array('href' => $expectedHref),
@@ -324,13 +246,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
 	$session =& $gallery->getSession();
 	$this->assertEquals('/REQUEST_URL', $session->get('snapgalaxy.cartUrlFragment'));
 
-	
-
-
-/*  Get the session id that we passed to SnapGalaxy  */
-
-
-
+	/* Get the session id that we passed to SnapGalaxy */
 	$written = $gallery->_platform->getCalled('fwrite');
 	$content = urldecode($written[0][1]);
 

@@ -53,13 +53,7 @@ class SystemChecksStep extends UpgradeStep {
 	    header("Content-Type: text/plain");
 	    header("Content-Length: 8");
 	    $x = array(new stdclass());
-	    
-
-
-/*  v-- This may cause PHP to crash!  */
-
-
-
+	    /* v-- This may cause PHP to crash! */
 	    $x = $x[0];
 	    print "SUCCESS\n";
 	    return false;
@@ -72,13 +66,7 @@ class SystemChecksStep extends UpgradeStep {
 	    foreach ($manifest['shouldRemove'] as $file) {
 		$removeList[$file] = is_dir($base . $file);
 	    }
-	    
-
-
-/*  Reverse sort it by key so that directories are last  */
-
-
-
+	    /* Reverse sort it by key so that directories are last */
 	    krsort($removeList);
 
 	    $isWindows = !strncasecmp(PHP_OS, 'win', 3);
@@ -89,13 +77,7 @@ class SystemChecksStep extends UpgradeStep {
 	    return false;
 	}
 
-	
-
-
-/*  Normal request  */
-
-
-
+	/* Normal request */
 	global $gallery;
 	$failCount = 0;
 	$suggestedHtaccess = array();
@@ -105,13 +87,7 @@ class SystemChecksStep extends UpgradeStep {
 	$template->renderHeader(true);
 	$template->renderStatusMessage(_('Performing system checks'), '', 0);
 
-	
-
-
-/*  assert compatible version of PHP, we accept 5.6.0+ but prefer 7.1.0+  */
-
-
-
+	/* assert compatible version of PHP, we accept 5.6.0+ but prefer 7.1.0+ */
 	if (version_compare(PHP_VERSION, '5.6.0', '<')) {
 	    $templateData['check'][] =
 		array('title' => _('PHP version &gt;= v5.6.0'),
@@ -137,13 +113,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => _('PHP version &gt;= v7.1.0'), 'success' => true);
 	}
 
-	
-
-
-/*  assert that __FILE__ works correctly  */
-
-
-
+	/* assert that __FILE__ works correctly */
 	$fileDirectiveWorks = SystemChecksStep::CheckFileDirective();
 	if (!$fileDirectiveWorks) {
 	    $templateData['check'][] =
@@ -158,13 +128,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => _('FILE Directive'), 'success' => true);
 	}
 
-	
-
-
-/*  Make sure that safe mode is not enabled  */
-
-
-
+	/* Make sure that safe mode is not enabled */
 	if (GalleryUtilities::getPhpIniBool('safe_mode')) {
 	    $templateData['check'][] =
 		array('title' => _('Safe mode disabled'),
@@ -177,13 +141,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => _('Safe Mode'), 'success' => true);
 	}
 
-	
-
-
-/*  Make sure we have PCRE support  */
-
-
-
+	/* Make sure we have PCRE support */
 	if (!function_exists('preg_match') || !function_exists('preg_replace')) {
 	    $templateData['check'][] =
 		array('title' => _('Regular expressions'),
@@ -193,21 +151,9 @@ class SystemChecksStep extends UpgradeStep {
 			    'Regular Expressions%s. You must enable these functions before ' .
 			    'Gallery will run.'), '<a href="http://php.net/pcre">', '</a>'));
 	    $failCount++;
-	} 
+	} /* skip showing 'success' for this one */
 
-
-/*  skip showing 'success' for this one  */
-
-
-
-
-	
-
-
-/*  Warning when exec() is disabled  */
-
-
-
+	/* Warning when exec() is disabled */
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    $templateData['check'][] =
 		array('title' => _('exec() allowed'),
@@ -224,13 +170,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => _('exec() allowed'), 'success' => true);
 	}
 
-	
-
-
-/*  Warning when set_time_limit() is disabled  */
-
-
-
+	/* Warning when set_time_limit() is disabled */
 	if (in_array('set_time_limit', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    $timeLimit = ini_get('max_execution_time');
 	    $templateData['check'][] =
@@ -248,26 +188,14 @@ class SystemChecksStep extends UpgradeStep {
 	    $templateData['check'][] =
 		array('title' => _('set_time_limit() allowed'), 'success' => true);
 
-	    
-
-
-/*  Set the time limit large enough for the remaining checks (slow systems)  */
-
-
-
+	    /* Set the time limit large enough for the remaining checks (slow systems) */
 	    set_time_limit(180);
 	    $setTimeLimitAvailable = true;
 	}
 
 	$template->renderStatusMessage(_('Performing system checks'), '', 0.02);
 
-	
-
-
-/*  Make sure filesystem operations are allowed  */
-
-
-
+	/* Make sure filesystem operations are allowed */
 	$missingFilesystemFunctions = array();
 	foreach (array('fopen', 'fclose', 'fread', 'fwrite', 'file', 'copy', 'rename', 'readfile',
 		'file_get_contents', 'copy', 'move_uploaded_file', 'file_exists', 'tempnam', 'glob',
@@ -288,21 +216,9 @@ class SystemChecksStep extends UpgradeStep {
 			    'missing: %s.'),
 			  implode(', ', $missingFilesystemFunctions)));
 	    $failCount++;
-	} 
+	} /* skip showing 'success' for this one */
 
-
-/*  skip showing 'success' for this one  */
-
-
-
-
-	
-
-
-/*  Warning if memory_limit is set and is too low  */
-
-
-
+	/* Warning if memory_limit is set and is too low */
 	$memoryLimit = ini_get('memory_limit');
 	$title = sprintf('%s (%s)', _('Memory limit'),
 			 ($memoryLimit == '' ? _('no limit') : $memoryLimit . 'b'));
@@ -324,13 +240,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => $title, 'success' => true);
 	}
 
-	
-
-
-/*  Warning if file_uploads are not allowed  */
-
-
-
+	/* Warning if file_uploads are not allowed */
 	if (! GalleryUtilities::getPhpIniBool('file_uploads')) {
 	    $templateData['check'][] =
 		array('title' => _('File uploads allowed'),
@@ -346,13 +256,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => _('File uploads allowed'), 'success' => true);
 	}
 
-	
-
-
-/*  Warning if upload_max_filesize is less than 2M  */
-
-
-
+	/* Warning if upload_max_filesize is less than 2M */
 	$title = sprintf('%s (%sb)', _('Maximum upload size'), ini_get('upload_max_filesize'));
 	$minimumUploadsize = 2;
 	$uploadSize = $this->_getBytes(ini_get('upload_max_filesize')) / (1024 * 1024);
@@ -372,13 +276,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => $title, 'success' => true);
 	}
 
-	
-
-
-/*  Warning if post_max_size is less than 2M  */
-
-
-
+	/* Warning if post_max_size is less than 2M */
 	$title = sprintf('%s (%sb)', _('Maximum POST size'), ini_get('post_max_size'));
 	$minimumPostsize = 2;
 	$postSize = $this->_getBytes(ini_get('post_max_size')) / (1024 * 1024);
@@ -398,13 +296,7 @@ class SystemChecksStep extends UpgradeStep {
 		array('title' => $title, 'success' => true);
 	}
 
-	
-
-
-/*  Check for gettext support  */
-
-
-
+	/* Check for gettext support */
 	$title = _('Translation support');
 	if (!function_exists('dgettext')) {
 	    $templateData['check'][] =
@@ -436,13 +328,7 @@ class SystemChecksStep extends UpgradeStep {
 	    $templateData['check'][] = array('title' => $title, 'success' => true);
 	}
 
-	
-
-
-/*  $x=$x[0] <--(an object) can crash PHP with zend.ze1_compatibility_mode ON  */
-
-
-
+	/* $x=$x[0] <--(an object) can crash PHP with zend.ze1_compatibility_mode ON */
 	if (GalleryUtilities::getPhpIniBool('zend.ze1_compatibility_mode')) {
 	    $templateData['check'][] =
 		array('title' => _('Zend compatibility mode'),
@@ -457,21 +343,9 @@ class SystemChecksStep extends UpgradeStep {
 							. $this->_stepNumber . '&amp;zendtest=1')),
 			  '</a>'),
 		);
-	} 
+	} /* skip showing 'success' for this one */
 
-
-/*  skip showing 'success' for this one  */
-
-
-
-
-	
-
-
-/*  Warning if putenv is disabled  */
-
-
-
+	/* Warning if putenv is disabled */
 	if (in_array('putenv', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    $templateData['check'][] =
 		array('title' => _('putenv() allowed'),
@@ -482,21 +356,9 @@ class SystemChecksStep extends UpgradeStep {
 			'this setting, but on some rare systems Gallery will be unable to run in ' .
 			'other languages than the system language and English.'),
 		);
-	} 
+	} /* skip showing 'success' for this one */
 
-
-/*  skip showing 'success' for this one  */
-
-
-
-
-	
-
-
-/*  Warning if output_buffering / handlers are enabled  */
-
-
-
+	/* Warning if output_buffering / handlers are enabled */
 	$outputBuffers = array();
 	foreach (array('output_buffering', 'zlib.output_compression') as $outputFunction) {
 	    if (GalleryUtilities::getPhpIniBool($outputFunction) ||
@@ -522,23 +384,11 @@ class SystemChecksStep extends UpgradeStep {
 			    ' if output buffering is enabled unless ini_set() is allowed.'),
 			  implode(', ', $outputBuffers)),
 		);
-	} 
-
-
-/*  skip showing 'success' for this one  */
-
-
-
+	} /* skip showing 'success' for this one */
 
 	$template->renderStatusMessage(_('Performing system checks'), '', 0.06);
 
-	
-
-
-/*  Check if the files and dirs in the storage dir are (still) writeable  */
-
-
-
+	/* Check if the files and dirs in the storage dir are (still) writeable */
 	$title = _('Storage Directory Permissions');
 	if (!$fileDirectiveWorks || !empty($missingFilesystemFunctions)) {
 	    $templateData['check'][] =
@@ -568,13 +418,7 @@ class SystemChecksStep extends UpgradeStep {
 
 	$template->renderStatusMessage(_('Performing system checks'), '', 0.07);
 
-	
-
-
-/*  Check all files against MANIFEST  */
-
-
-
+	/* Check all files against MANIFEST */
 	$title = _('Gallery file integrity');
 	if (!$fileDirectiveWorks || !empty($missingFilesystemFunctions)) {
 	    $templateData['check'][] =
@@ -595,13 +439,7 @@ class SystemChecksStep extends UpgradeStep {
 		$templateData['check'][] = array('title' => $title, 'success' => true);
 		$_SESSION['fileintegrity'] = 'Ok';
 	    } else {
-		global $currentStep; 
-
-
-/*  needed for ManifestSystemCheck.html  */
-
-
-
+		global $currentStep; /* needed for ManifestSystemCheck.html */
 
 		$message = $notice = '';
 		if (!empty($manifest['missing'])) {
@@ -658,13 +496,7 @@ class SystemChecksStep extends UpgradeStep {
 	    }
 	}
 
-	
-
-
-/*  Check if the db user has (all?) required db privileges to finish the upgrader  */
-
-
-
+	/* Check if the db user has (all?) required db privileges to finish the upgrader */
 	$title = _('Database permissions');
 	if (!$fileDirectiveWorks || !empty($missingFilesystemFunctions)) {
 	    $templateData['check'][] =
@@ -707,13 +539,7 @@ class SystemChecksStep extends UpgradeStep {
 	}
     }
 
-    
-
-
-/*  Check if the files / dirs in the storage directory are writeable  */
-
-
-
+    /* Check if the files / dirs in the storage directory are writeable */
     function CheckStorageDirectory() {
 	global $gallery;
 
@@ -726,13 +552,7 @@ class SystemChecksStep extends UpgradeStep {
 	    $storagePath .= $platform->getDirectorySeparator();
 	}
 
-	
-
-
-/*  An exhaustive test would take too long, test a few dirs / files  */
-
-
-
+	/* An exhaustive test would take too long, test a few dirs / files */
 	foreach (array('', 'versions.dat', 'albums') as $path) {
 	    $path = $storagePath . $path;
 	    if (!$platform->file_exists($path) || !$platform->is_readable($path)
@@ -741,13 +561,7 @@ class SystemChecksStep extends UpgradeStep {
 	    }
 	}
 
-	
-
-
-/*  Check up to 400 other files  */
-
-
-
+	/* Check up to 400 other files */
 	$tested = 0;
 	$max = 400;
 	$storagePath = substr($storagePath, 0, strlen($storagePath)-1);
@@ -786,13 +600,7 @@ class SystemChecksStep extends UpgradeStep {
 	    }
 
 	    if ($platform->is_dir($path) && $tested < $max) {
-		
-
-
-/*  Threshold not yet reached, check subdirectory tree  */
-
-
-
+		/* Threshold not yet reached, check subdirectory tree */
 		$storageFiles = array_merge($storageFiles,
 		    SystemChecksStep::_checkStorageSubDirectory($path, $tested, $max));
 	    }
@@ -853,13 +661,7 @@ class SystemChecksStep extends UpgradeStep {
 		 */
 		$actualSize = filesize($path);
 		if ($actualSize != $info['size'] && $actualSize != $info['size_crlf']) {
-		    
-
-
-/*  This can be useful debug info  */
-
-
-
+		    /* This can be useful debug info */
 		    if (false) {
 			printf("%s (expected: %s/%s, actual: %s)<br/>", $file,
 			       $info['size'], $info['size_crlf'], $actualSize);
@@ -903,13 +705,7 @@ class SystemChecksStep extends UpgradeStep {
 	$storage =& $gallery->getStorage();
 	$storageExtras = $storage->_getExtras();
 
-	
-
-
-/*  We might have lost our database connection (timeout) so check and reconnect  */
-
-
-
+	/* We might have lost our database connection (timeout) so check and reconnect */
 	$ret = $storage->validateConnection();
 	if ($ret) {
 	    $gallery->debug($ret->getAsHtml());
@@ -966,13 +762,7 @@ class SystemChecksStep extends UpgradeStep {
 	    }
 	}
 
-	
-
-
-/*  Check CREATE and DROP SEQUENCE privileges  */
-
-
-
+	/* Check CREATE and DROP SEQUENCE privileges */
 	$gallery->startRecordingDebugSnippet();
 	$storage->_traceStart();
 	$sequenceId = 'g2privtestseq';
@@ -1031,13 +821,7 @@ class SystemChecksStep extends UpgradeStep {
 	    if (!empty($query)) {
 		$query = str_replace('DB_TABLE_PREFIX', $tablePrefix, $query);
 		$query = str_replace('DB_COLUMN_PREFIX', $columnPrefix, $query);
-		
-
-
-/*  For mysql, another replacement is required  */
-
-
-
+		/* For mysql, another replacement is required */
 		$query = str_replace('DB_TABLE_TYPE', '', $query);
 
 		$gallery->startRecordingDebugSnippet();

@@ -152,22 +152,10 @@ class UserRecoverPasswordAdminView extends GalleryView {
 	if ($form['formName'] != 'UserRecoverPasswordAdmin') {
 	    $form['formName'] = 'UserRecoverPasswordAdmin';
 
-	    
-
-
-/*  Don't display the Authorization Incorrect error on first page load  */
-
-
-
+	    /* Don't display the Authorization Incorrect error on first page load */
 	    $status['firstLoad'] = 1;
 
-	    
-
-
-/*  Generate the auth string on the first visit to this view  */
-
-
-
+	    /* Generate the auth string on the first visit to this view */
 	    $this->_generateAuthString();
 	}
 

@@ -97,13 +97,7 @@ class AdminGdView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load our default values if we didn't just come from this form.  */
-
-
-
+	/* Load our default values if we didn't just come from this form. */
 	if ($form['formName'] != 'AdminGd') {
 	    foreach (array('path', 'jpegQuality') as $key) {
 		list ($ret, $form[$key]) =
@@ -115,13 +109,7 @@ class AdminGdView extends GalleryView {
 	    $form['formName'] = 'AdminGd';
 	}
 
-	
-
-
-/*  Set up our jpeg quality selection list  */
-
-
-
+	/* Set up our jpeg quality selection list */
 	for ($i = 100; $i >= 50; $i -= 5) {
 	    $jpegQualityList[] = $i;
 	}

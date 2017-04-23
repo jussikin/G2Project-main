@@ -111,24 +111,12 @@ class RewriteParser {
 	    return false;
 	}
 
-	
-
-
-/*  Only supported by preGallery parsers  */
-
-
-
+	/* Only supported by preGallery parsers */
 	if (isset($rule['conditions']) && $this->getParserType() != 'preGallery') {
 	    return false;
 	}
 
-	
-
-
-/*  Only supported by preGallery parsers  */
-
-
-
+	/* Only supported by preGallery parsers */
 	if (isset($rule['restrict']) && $this->getParserType() != 'preGallery') {
 	    return false;
 	}
@@ -254,13 +242,7 @@ class RewriteParser {
 	return array(null, REWRITE_STATUS_OK, null);
     }
 
-    
-
-
-/*  Getters and setters below  */
-
-
-
+    /* Getters and setters below */
 
     function _setParserId($parserId) {
 	$this->_parserId = $parserId;

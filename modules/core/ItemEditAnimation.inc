@@ -36,13 +36,7 @@ class ItemEditAnimation extends ItemEditPlugin {
 	$status = null;
 	$error = array();
 
-	
-
-
-/*  Figure out which command we're taking  */
-
-
-
+	/* Figure out which command we're taking */
 	if (isset($form['action']['save'])) {
 
 	    if (isset($form['width']) && $form['width'] < 0) {
@@ -83,13 +77,7 @@ class ItemEditAnimation extends ItemEditPlugin {
 		    return array($ret, null, null, null);
 		}
 
-		
-
-
-/*  Prepare our status message  */
-
-
-
+		/* Prepare our status message */
 		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 		    return array($ret, null, null, null);
@@ -109,13 +97,7 @@ class ItemEditAnimation extends ItemEditPlugin {
 	global $gallery;
 
 	if ($form['formName'] != 'ItemEditAnimation') {
-	    
-
-
-/*  First time around, load the form with item data  */
-
-
-
+	    /* First time around, load the form with item data */
 	    $form['width'] = $item->getWidth();
 	    $form['height'] = $item->getHeight();
 	    $form['formName'] = 'ItemEditAnimation';

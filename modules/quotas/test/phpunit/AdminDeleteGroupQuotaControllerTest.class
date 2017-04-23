@@ -39,13 +39,7 @@ class AdminDeleteGroupQuotaControllerTest extends GalleryControllerTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create a group for quota testing  */
-
-
-
+	/* Create a group for quota testing */
 	list ($ret, $this->_group) = $this->_createRandomGroup();
 	if ($ret) {
 	    return $ret;
@@ -82,13 +76,7 @@ class AdminDeleteGroupQuotaControllerTest extends GalleryControllerTestCase {
 		  'error' => array()),
 	    $results, 'Failed to delete group quota');
 
-	
-
-
-/*  Verify the group quota is gone  */
-
-
-
+	/* Verify the group quota is gone */
 	list ($ret, $quotaExists, $quota) =
 	    GalleryQuotasHelper::fetchGroupQuota($this->_group->getId());
 	if ($quotaExists) {

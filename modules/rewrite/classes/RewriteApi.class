@@ -232,13 +232,7 @@ class RewriteApi {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Update the history  */
-
-
-
+	/* Update the history */
 	if ($code == REWRITE_STATUS_OK) {
 	    $ret = RewriteHelper::setHistoryForModule($moduleId, $history);
 	    if ($ret) {
@@ -249,13 +243,7 @@ class RewriteApi {
 	return array(null, $code == REWRITE_STATUS_OK);
     }
 
-    
-
-
-/*  Getters below  */
-
-
-
+    /* Getters below */
 
     /**
      * @return array api version

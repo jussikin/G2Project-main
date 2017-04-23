@@ -47,24 +47,12 @@ class AdminPluginsView extends GalleryView {
 	$themeGroup = array('group' => 'theme', 'groupLabel' => $core->translate('Themes'));
 
 	if ($form['formName'] != 'AdminPlugins') {
-	    
-
-
-/*  We have no form variables  */
-
-
-
+	    /* We have no form variables */
 	    $form['formName'] = 'AdminPlugins';
 	}
 
 	foreach (array('module', 'theme') as $type) {
-	    
-
-
-/*  Load the module list  */
-
-
-
+	    /* Load the module list */
 	    list ($ret, $pluginStatus[$type]) = GalleryCoreApi::fetchPluginStatus($type, true);
 	    if ($ret) {
 		return array($ret, null);
@@ -86,13 +74,7 @@ class AdminPluginsView extends GalleryView {
 		}
 	    }
 
-	    
-
-
-/*  Reload the plugin list, which may now be updated because of obsolete modules.  */
-
-
-
+	    /* Reload the plugin list, which may now be updated because of obsolete modules. */
 	    list ($ret, $pluginStatus[$type]) = GalleryCoreApi::fetchPluginStatus($type, true);
 	    if ($ret) {
 		return array($ret, null);
@@ -169,13 +151,7 @@ class AdminPluginsView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Only the codebase install can delete plugins, not multisites  */
-
-
-
+	/* Only the codebase install can delete plugins, not multisites */
 	$AdminPlugins['canDeletePlugins'] =
 	    GALLERY_CONFIG_DIR == dirname(dirname(dirname(__FILE__)));
 
@@ -199,13 +175,7 @@ class AdminPluginsView extends GalleryView {
 				'inactive' => 4, 'active' => 5, 'uninstalled' => 6);
 	}
 	if (!isset($groupOrder)) {
-	    
-
-
-/*  gallery first, toolkits second, other last  */
-
-
-
+	    /* gallery first, toolkits second, other last */
 	    $groupOrder = array('gallery' => 1, 'toolkits' => 2, '' => 3, 'other' => 4);
 	}
 	$ag = $a['group'];

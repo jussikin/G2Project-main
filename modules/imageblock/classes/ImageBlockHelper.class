@@ -26,13 +26,7 @@
  * @version $Revision: 17616 $
  * @static
  */
-class ImageBlockHelper 
-
-
-/*  extends GalleryEventListener  */
-
-
- {
+class ImageBlockHelper /* extends GalleryEventListener */ {
 
     /**
      * Load image block data into template.
@@ -107,13 +101,7 @@ class ImageBlockHelper
 	    if (!empty($blockData[$block])) {
 		$nextBlock = array_shift($blockData[$block]);
 		if ($heading) {
-		    
-
-
-/*  On 2nd of same type, update first to be plural; 3rd or more, no heading  */
-
-
-
+		    /* On 2nd of same type, update first to be plural; 3rd or more, no heading */
 		    $plural = ($block == $lastType)
 			? (empty($blocks[count($blocks) - 1]['title']) ? 0 : 2)
 			: 1;
@@ -186,13 +174,7 @@ class ImageBlockHelper
 	}
 
 	if (!empty($blocks)) {
-	    
-
-
-/*  Prepare image frames, if available  */
-
-
-
+	    /* Prepare image frames, if available */
 	    list ($ret, $imageframe) =
 		GalleryCoreApi::newFactoryInstance('ImageFrameInterface_1_1');
 	    if ($ret) {
@@ -237,13 +219,7 @@ class ImageBlockHelper
 		return array($ret, null);
 	    }
 	    if (!$ok) {
-		
-
-
-/*  Ignore permission error.. just don't add a block  */
-
-
-
+		/* Ignore permission error.. just don't add a block */
 		return array(null, array());
 	    }
 	    list ($ret, $item) = GalleryCoreApi::loadEntitiesById($parentId, 'GalleryItem');
@@ -259,23 +235,11 @@ class ImageBlockHelper
 	    $now = localtime();
 	    switch ($order) {
 	    case 'daily':
-		$now = $now[7]; 
-
-
-/*  tm_yday  */
-
-
-
+		$now = $now[7]; /* tm_yday */
 		break;
 
 	    case 'weekly':
-		
-
-
-/*  Week number; Sunday as first day of week  */
-
-
-
+		/* Week number; Sunday as first day of week */
 		$now = ((int)(($now[7] - $now[6] + ($now[7] < $now[6] ? 7 : 0)) / 7)) % 52;
 		break;
 
@@ -296,13 +260,7 @@ class ImageBlockHelper
 	    if (isset($itemId)) {
 		list ($ret, $ok) = GalleryCoreApi::hasItemPermission($itemId, 'core.view', $userId);
 		if ($ret || !$ok) {
-		    
-
-
-/*  Just pick a new item if this one is inaccessible or missing  */
-
-
-
+		    /* Just pick a new item if this one is inaccessible or missing */
 		} else {
 		    list ($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 		    if ($ret) {
@@ -311,26 +269,14 @@ class ImageBlockHelper
 		    break;
 		}
 	    }
-	    
-
-
-/*  Set random selection for anonymous user  */
-
-
-
+	    /* Set random selection for anonymous user */
 	    $order = 'random';
 	    $count = 1;
 	    list ($ret, $userId) = GalleryCoreApi::getAnonymousUserId();
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    
-
-
-/*  Fall through to pick new item  */
-
-
-
+	    /* Fall through to pick new item */
 
 	default:
 	    list ($ret, $data) =
@@ -349,13 +295,7 @@ class ImageBlockHelper
 	    }
 	    $data = array($data);
 	} else if (isset($key) && !empty($data)) {
-	    
-
-
-/*  Record the id and time for selected item  */
-
-
-
+	    /* Record the id and time for selected item */
 	    $ret = GalleryCoreApi::setPluginParameter('module', 'imageblock',
 						      $key, $data[0]['id'] . '|' . $now);
 	    if ($ret) {
@@ -382,21 +322,9 @@ class ImageBlockHelper
 	    $image = $source = null;
 	    $derivativeParentId = $id;
 	    if (GalleryUtilities::isA($item, 'GalleryAlbumItem') && ($fullSize || $maxSize)) {
-		
-
-
-/*  If we may use a size larger than thumbnail, find derivative source for album  */
-
-
-
+		/* If we may use a size larger than thumbnail, find derivative source for album */
 		if (!isset($thumbnail)) {
-		    
-
-
-/*  No thumbnail, no source for larger size.. just skip this block  */
-
-
-
+		    /* No thumbnail, no source for larger size.. just skip this block */
 		    continue;
 		}
 		$source = $thumbnail;
@@ -420,22 +348,10 @@ class ImageBlockHelper
 		}
 		if (!$ok) {
 		    if ($fullSize) {
-			
-
-
-/*  Can't view source item, so no fullsize is available  */
-
-
-
+			/* Can't view source item, so no fullsize is available */
 			continue;
 		    }
-		    
-
-
-/*  Can't view source item, so just stick with album thumbnail  */
-
-
-
+		    /* Can't view source item, so just stick with album thumbnail */
 		    $derivativeParentId = $id;
 		    $source = null;
 		}
@@ -447,23 +363,11 @@ class ImageBlockHelper
 		    return array($ret, null);
 		}
 		if (!$ok) {
-		    
-
-
-/*  Ignore permission error.. just don't add a block  */
-
-
-
+		    /* Ignore permission error.. just don't add a block */
 		    continue;
 		}
 		if (isset($source)) {
-		    
-
-
-/*  Use full size source of album thumbnail, located above  */
-
-
-
+		    /* Use full size source of album thumbnail, located above */
 		    $image = $source;
 		} else {
 		    list ($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array($id));
@@ -474,22 +378,10 @@ class ImageBlockHelper
 		}
 	    } else if ($maxSize && isset($thumbnail) && ($thumbnail->getWidth() >= $maxSize
 			|| $thumbnail->getHeight() >= $maxSize)) {
-		
-
-
-/*  Thumbnail is big enough  */
-
-
-
+		/* Thumbnail is big enough */
 		$image = $thumbnail;
 	    } else if (!$maxSize) {
-		
-
-
-/*  Use thumbnail if there is one  */
-
-
-
+		/* Use thumbnail if there is one */
 		$image = $thumbnail;
 	    } else {
 		/*
@@ -501,13 +393,7 @@ class ImageBlockHelper
 		 * If $biggerOnly is set, then we don't want any negative differentials.
 		 */
 
-		
-
-
-/*  Get the preferred item object  */
-
-
-
+		/* Get the preferred item object */
 		list ($ret, $ok) = GalleryCoreApi::hasItemPermission(
 			$derivativeParentId, 'core.viewSource', $userId);
 		if ($ret) {
@@ -515,13 +401,7 @@ class ImageBlockHelper
 		}
 		if ($ok) {
 		    if (isset($source)) {
-			
-
-
-/*  Use full size source of album thumbnail, located above  */
-
-
-
+			/* Use full size source of album thumbnail, located above */
 			$image = $source;
 		    } else {
 			list ($ret, $preferred) =
@@ -543,13 +423,7 @@ class ImageBlockHelper
 		    $imageSize = $image->getHeight() * $image->getWidth();
 		}
 
-		
-
-
-/*  Get the list of resizes  */
-
-
-
+		/* Get the list of resizes */
 		$resizes = array();
 		list ($ret, $ok) = GalleryCoreApi::hasItemPermission(
 			$derivativeParentId, 'core.viewResizes', $userId);
@@ -598,13 +472,7 @@ class ImageBlockHelper
 		$itemData['deriv'] = (array)$image;
 		$itemData['owner'] = (array)$owner;
 		$itemData['thumb'] = (array)$image;
-		
-
-
-/*  {g->image} won't work with item!=image and image not a derivative  */
-
-
-
+		/* {g->image} won't work with item!=image and image not a derivative */
 		if ($image->getId() != $id && !GalleryUtilities::isA($image, 'GalleryDerivative')) {
 		    $itemData['forceItem'] = true;
 		}
@@ -633,13 +501,7 @@ class ImageBlockHelper
 	    $userId = $gallery->getActiveUserId();
 	}
 
-	
-
-
-/*  Someone probably typoed a blocks parameter  */
-
-
-
+	/* Someone probably typoed a blocks parameter */
 	if (empty($typeMap[$itemType])) {
 	    return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null);
 	}
@@ -661,13 +523,7 @@ class ImageBlockHelper
 	    }
 	}
 	
-	
-
-
-/*  Prepare the query  */
-
-
-
+	/* Prepare the query */
 	$select[] = '[ImageBlockCacheMap::itemId]';
 	$from[] = '[ImageBlockCacheMap] LEFT JOIN [ImageBlockDisabledMap] ON ' .
 	    '[ImageBlockCacheMap::itemId]=[ImageBlockDisabledMap::itemId]';
@@ -688,22 +544,10 @@ class ImageBlockHelper
 	if ($ret) {
 	    return array($ret, null);
 	}
-	
-
-
-/*  Only use LIKE statement if necessary  */
-
-
-
+	/* Only use LIKE statement if necessary */
 	$parentSequence = null;
 	if (isset($parentId) && $parentId != $rootAlbumId) {
-	    
-
-
-/*  @todo Evaluate adding parentSequence to the ImageBlockCachedMap (and its index)  */
-
-
-
+	    /** @todo Evaluate adding parentSequence to the ImageBlockCachedMap (and its index) */
 	    $where[] = '[GalleryItemAttributesMap::parentSequence] LIKE ?';
 	    list ($ret, $sequence) = GalleryCoreApi::fetchParentSequence($parentId);
 	    if ($ret) {
@@ -718,13 +562,7 @@ class ImageBlockHelper
 	}
 
 	if ($order == 'random') {
-	    
-
-
-/*  Prepare where clause for use in second query below  */
-
-
-
+	    /* Prepare where clause for use in second query below */
 	    $whereRequery = $where;
 	    $whereRequery[] = '[ImageBlockCacheMap::random] < ?';
 	    $where[] = '[ImageBlockCacheMap::random] > ?';
@@ -733,23 +571,11 @@ class ImageBlockHelper
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    
-
-
-/*  We want that the returned integer is smaller than any number in the range  */
-
-
-
+	    /* We want that the returned integer is smaller than any number in the range */
 	    $data[] = ImageBlockHelper::getRandomKey($minMax[0], $minMax[1]) - 1;
 	}
 
-	
-
-
-/*  Build the query  */
-
-
-
+	/* Build the query */
 	$query = 'SELECT ' . implode(', ', $select) .
 		 ' FROM ' . implode(', ', $from) .
 		 ' WHERE ' . implode(' AND ', $where) .
@@ -765,22 +591,10 @@ class ImageBlockHelper
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Requery if necessary to fill requested count  */
-
-
-
+	/* Requery if necessary to fill requested count */
 	$remainder = $count - count($results);
 	if ($order == 'random' && $remainder > 0) {
-	    
-
-
-/*  Using exact same query as above except for where clause  */
-
-
-
+	    /* Using exact same query as above except for where clause */
 	    $query = 'SELECT ' . implode(', ', $select) .
 		     ' FROM ' . implode(', ', $from) .
 		     ' WHERE ' . implode(' AND ', $whereRequery) .
@@ -796,13 +610,7 @@ class ImageBlockHelper
 		return array($ret, null);
 	    }
 	    
-	    
-
-
-/*  Combine results from both queries  */
-
-
-
+	    /* Combine results from both queries */
 	    $results = array_merge($results, $resultsRequery);
 	}
 
@@ -1032,34 +840,16 @@ class ImageBlockHelper
 	    if (GalleryUtilities::isA($entity, 'GalleryDataItem')) {
 		$echo = !empty($parentDisabledFlag) ? "true" : "false";
 
-		
-
-
-/*  Disable flag is managed (GUI) on album level, reflect this here  */
-
-
-
+		/* Disable flag is managed (GUI) on album level, reflect this here */
 		if (!empty($parentDisabledFlag) && empty($disabledFlag)) {
-		    
-
-
-/*  New parent has disabled flag, item hasn't. Change it.  */
-
-
-
+		    /* New parent has disabled flag, item hasn't. Change it. */
 		    $ret = GalleryCoreApi::addMapEntry(
 			'ImageBlockDisabledMap', array('itemId' => $entity->getId()));
 		    if ($ret) {
 			return array($ret, null);
 		    }
 		} else if (empty($parentDisabledFlag) && !empty($disabledFlag)) {
-		    
-
-
-/*  New parent doesn't have disabled flag, remove it from the item  */
-
-
-
+		    /* New parent doesn't have disabled flag, remove it from the item */
 		    $ret = GalleryCoreApi::removeMapEntry(
 			'ImageBlockDisabledMap', array('itemId' => $entity->getId()));
 		    if ($ret) {
@@ -1122,13 +912,7 @@ class ImageBlockHelper
 	    }
 	    $sequence = empty($sequence) ? '' : (implode('/', $sequence) . '/');
 
-	    
-
-
-/*  Build the query  */
-
-
-
+	    /* Build the query */
 	    $query = '
 	    SELECT
 	      [GalleryItemAttributesMap::itemId]

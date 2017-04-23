@@ -37,13 +37,7 @@ class ModuleTest extends GalleryTestCase {
 	$this->_platform = new ModuleTestPlatform($this);
 	$gallery->setPlatform($this->_platform);
 
-	
-
-
-/*  Register a new module  */
-
-
-
+	/* Register a new module */
 	GalleryDataCache::reset(true);
 	$_REQUEST['testCase'] = $this;
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
@@ -66,13 +60,7 @@ class ModuleTest extends GalleryTestCase {
     }
 
     function tearDown() {
-	
-
-
-/*  If a unittest fails it might not deactivate/uninstall the mock module properly  */
-
-
-
+	/* If a unittest fails it might not deactivate/uninstall the mock module properly */
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest', true);
 	if ($ret) {
 	    return $ret;
@@ -130,13 +118,7 @@ class ModuleTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add a real theme block if one is available, that should not be removed.  */
-
-
-
+	/* Add a real theme block if one is available, that should not be removed. */
 	list ($ret, $blocks) = GalleryCoreApi::loadAvailableBlocks();
 	if ($ret) {
 	    return $ret;
@@ -153,13 +135,7 @@ class ModuleTest extends GalleryTestCase {
 	    }
 	}
 	
-	
-
-
-/*  Install the module  */
-
-
-
+	/* Install the module */
 	$ret = $module->installOrUpgrade();
 	if ($ret) {
 	    return $ret;
@@ -173,38 +149,20 @@ class ModuleTest extends GalleryTestCase {
 	$this->assert(empty($plugins[$module->getId()]['active']),
 		      'wrong PluginMap value for active');
 
-	
-
-
-/*  Verify that the first permission was added */
-
-
-
+	/* Verify that the first permission was added*/
 	list ($ret, $ids) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assert(array_key_exists('moduletest.one', $ids), 'Permission was not added');
 
-	
-
-
-/*  Remove all permissions  */
-
-
-
+	/* Remove all permissions */
 	$ret = GalleryCoreApi::removeItemPermissions($this->_rootAlbum->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Add a token permission so that we have something tangible to compare  */
-
-
-
+	/* Add a token permission so that we have something tangible to compare */
 	$ret = GalleryCoreApi::addUserPermission($this->_rootAlbum->getId(),
 						 $gallery->getActiveUserId(),
 						 'core.view');
@@ -220,13 +178,7 @@ class ModuleTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Assign our permission  */
-
-
-
+	/* Assign our permission */
 	$ret = GalleryCoreApi::addUserPermission($this->_rootAlbum->getId(),
 						 $gallery->getActiveUserId(),
 						 'moduletest.one');
@@ -234,13 +186,7 @@ class ModuleTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Activate the module  */
-
-
-
+	/* Activate the module */
 	list ($ret, $redirect) = $module->activate();
 	if ($ret) {
 	    return $ret;
@@ -260,13 +206,7 @@ class ModuleTest extends GalleryTestCase {
 	$this->assert(!empty($plugins[$module->getId()]['active']),
 		      'wrong PluginMap value for active');
 
-	
-
-
-/*  Create an entity  */
-
-
-
+	/* Create an entity */
 	$entity = new ModuleTestEntity();
 	$ret = $entity->create();
 	if ($ret) {
@@ -277,13 +217,7 @@ class ModuleTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify that the bogus blocks have been removed from the theme.  */
-
-
-
+	/* Verify that the bogus blocks have been removed from the theme. */
 	list ($ret, $bogusBlock) =
 	    GalleryCoreApi::getPluginParameter('theme', 'bogusTheme', 'albumBlocks');
 	if ($ret) {
@@ -299,13 +233,7 @@ class ModuleTest extends GalleryTestCase {
 			    unserialize($bogusBlock),
 			    'bogusTheme parameter');
 
-	
-
-
-/*  Make sure the real block hasn't been removed.  */
-
-
-
+	/* Make sure the real block hasn't been removed. */
 	if ($blockAvailable) {
 	    list ($ret, $realBlock) =
 		GalleryCoreApi::getPluginParameter('theme', 'bogusTheme', 'albumBlocks', 1337);
@@ -317,13 +245,7 @@ class ModuleTest extends GalleryTestCase {
 				'Real block removed!');
 	}
 
-	
-
-
-/*  Deactivate the module  */
-
-
-
+	/* Deactivate the module */
 	$ret = $module->deactivate();
 	if ($ret) {
 	    return $ret;
@@ -338,39 +260,21 @@ class ModuleTest extends GalleryTestCase {
 	$this->assert(empty($plugins[$module->getId()]['active']),
 		      'wrong PluginMap value for active (3)');
 
-	
-
-
-/*  Upgrade the module  */
-
-
-
+	/* Upgrade the module */
 	$module->setVersion('1.0.1');
 	$ret = $module->installOrUpgrade();
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Verify that the second permission was added */
-
-
-
+	/* Verify that the second permission was added*/
 	list ($ret, $ids) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return $ret;
 	}
 	$this->assert(array_key_exists('moduletest.two', $ids), 'Permission was not added');
 
-	
-
-
-/*  Uninstall the module  */
-
-
-
+	/* Uninstall the module */
 	$ret = $module->uninstall();
 	if ($ret) {
 	    return $ret;
@@ -384,22 +288,10 @@ class ModuleTest extends GalleryTestCase {
 	}
 	$this->assert(!isset($plugins[$module->getId()]), 'PluginMap entry still set');
 
-	
-
-
-/*  Flush cached permissions  */
-
-
-
+	/* Flush cached permissions */
 	GalleryDataCache::reset();
 
-	
-
-
-/*  Verify that the item permissions are gone.  */
-
-
-
+	/* Verify that the item permissions are gone. */
 	list ($ret, $newBits) =
 	    $this->_fetchPermissionBitsForItem($this->_rootAlbum->getId(),
 					       $gallery->getActiveUserId(),
@@ -407,13 +299,7 @@ class ModuleTest extends GalleryTestCase {
 
 	$this->assertEquals($originalBits, $newBits, 'Permission bits not restored');
 
-	
-
-
-/*  Verify that the permission itself is gone  */
-
-
-
+	/* Verify that the permission itself is gone */
 	list ($ret, $ids) = GalleryCoreApi::getPermissionIds();
 	if ($ret) {
 	    return $ret;
@@ -424,24 +310,12 @@ class ModuleTest extends GalleryTestCase {
 		'Permission was not removed');
 	}
 
-	
-
-
-/*  Verify our OnLoadHandler was removed from all entities  */
-
-
-
+	/* Verify our OnLoadHandler was removed from all entities */
 	list ($ret, $album) = $this->_rootAlbum->refresh();
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  For Oracle, null is replaced with '' when loading data from the database  */
-
-
-
+	/* For Oracle, null is replaced with '' when loading data from the database */
 	$this->assert(in_array($album->getOnLoadHandlers(), array(null, '')),
 		      'album onLoadHandlers');
 
@@ -451,36 +325,18 @@ class ModuleTest extends GalleryTestCase {
 	}
 	$this->assertEquals('|OtherHandler|', $item->getOnLoadHandlers(), 'item onLoadHandlers');
 
-	
-
-
-/*  Verify our entity was deleted  */
-
-
-
+	/* Verify our entity was deleted */
 	list ($ret) = $entity->refresh();
 	$this->assertEquals(GALLERY_ERROR | ERROR_MISSING_OBJECT, $ret->getErrorCode(), 'entity');
 
-	
-
-
-/*  Remove all references to the bogus theme from the database.  */
-
-
-
+	/* Remove all references to the bogus theme from the database. */
 	$ret = GalleryCoreApi::removeMapEntry('GalleryPluginParameterMap',
 					      array('pluginId' => 'bogusTheme'));
 	if ($ret) {
 	    return $ret;
 	}
 	
-	
-
-
-/*  TODO: How do we verify that the tables are removed successfully?  */
-
-
-
+	/* TODO: How do we verify that the tables are removed successfully? */
     }
 
     function testInstallBadModuleApi() {
@@ -574,13 +430,7 @@ class ModuleTest extends GalleryTestCase {
     }
 
     function testPermissionsCleanup() {
-	
-
-
-/*  Test against bug where module uninstall can leave AccessMap rows with g_permission=0  */
-
-
-
+	/* Test against bug where module uninstall can leave AccessMap rows with g_permission=0 */
 	global $gallery;
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 	if ($ret) {
@@ -611,13 +461,7 @@ class ModuleTest extends GalleryTestCase {
 	}
 	$this->assert($bits == 0, 'no bits');
 
-	
-
-
-/*  If above leaves a row with g_permission=0 it will foul up this call:  */
-
-
-
+	/* If above leaves a row with g_permission=0 it will foul up this call: */
 	$ret = GalleryCoreApi::addUserPermission($this->_rootAlbum->getId(),
 						 $gallery->getActiveUserId(),
 						 'core.viewAll');
@@ -632,13 +476,7 @@ class ModuleTest extends GalleryTestCase {
     }
 
     function testInstallOrUpgradeSetsNewModuleVersion() {
-	
-
-
-/*  Manually set the version to an older one  */
-
-
-
+	/* Manually set the version to an older one */
 	$module = new ModuleTestModule();
 	$ret = $module->setParameter('_version', '0.5.0');
 	if ($ret) {
@@ -650,22 +488,10 @@ class ModuleTest extends GalleryTestCase {
 	}
 	$module->_activate = false;
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	$ret = $module->installOrUpgrade();
 	if ($ret && $ret->getErrorCode() & ERROR_CONFIGURATION_REQUIRED) {
-	    
-
-
-/*  That's what we expect  */
-
-
-
+	    /* That's what we expect */
 	} else if ($ret) {
 	    return $ret;
 	} else {
@@ -682,13 +508,7 @@ class ModuleTest extends GalleryTestCase {
     function testDeactivatePostsEventAfterFactoryUnregistration() {
 	global $gallery;
 
-	
-
-
-/*  Prepare the test by activating a test module with some factory registrations  */
-
-
-
+	/* Prepare the test by activating a test module with some factory registrations */
 	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 	if ($ret) {
 	    return $ret;
@@ -716,23 +536,11 @@ class ModuleTest extends GalleryTestCase {
 	}							       
 	$this->assert(isset($handler), 'Precondition failed: No factory implementation registered');
 
-	
-
-
-/*  Register our event listener to observe the test  */
-
-
-
+	/* Register our event listener to observe the test */
 	$testEventListener = new ModuleTestEventListener();
 	$this->_registerEventListener('Gallery::DeactivatePlugin', $testEventListener);
 
-	
-
-
-/*  Execute the method under test  */
-
-
-
+	/* Execute the method under test */
 	$ret = $module->deactivate();
 	if ($ret) {
 	    return $ret;
@@ -762,13 +570,7 @@ class ModuleTest extends GalleryTestCase {
 				'BIT_OR', array('[GalleryAccessMap::permission]',
 						'[GalleryAccessSubscriberMap::itemId]'));
 	if ($ret) {
-	    
-
-
-/*  Try to OR permissions using aggregate function in DB; fallback to OR in PHP  */
-
-
-
+	    /* Try to OR permissions using aggregate function in DB; fallback to OR in PHP */
 	    if ($ret->getErrorCode() & ERROR_UNSUPPORTED_OPERATION) {
 		$bitOr = '[GalleryAccessMap::permission]';
 	    } else {

@@ -46,13 +46,7 @@ class ItemAddSiteAdminController extends GalleryController {
 	if (isset($form['action']['addUploadLocalServerDir'])) {
 	    $path = $form['uploadLocalServer']['newDir'];
 	    GalleryUtilities::unsanitizeInputValues($path, false);
-	    
-
-
-/*  $path is UTF-8, $realPath is in the system charset for filesystem interactions  */
-
-
-
+	    /* $path is UTF-8, $realPath is in the system charset for filesystem interactions */
 	    $realPath = GalleryCoreApi::convertFromUtf8($path);
 	    if (empty($path)) {
 		$error[] = 'form[error][uploadLocalServer][newDir][missing]';
@@ -60,13 +54,7 @@ class ItemAddSiteAdminController extends GalleryController {
 		$platform =& $gallery->getPlatform();
 		$splitPath = $platform->splitPath($realPath);
 		if (!preg_match('{[\\/]}', $splitPath[0]) || in_array('..', $splitPath)) {
-		    
-
-
-/*  Use realpath value if path is relative or has ..  */
-
-
-
+		    /* Use realpath value if path is relative or has .. */
 		    $realPath = $platform->realpath($realPath);
 		    $path = GalleryCoreApi::convertToUtf8($realPath);
 		}
@@ -80,13 +68,7 @@ class ItemAddSiteAdminController extends GalleryController {
 		}
 	    }
 
-	    
-
-
-/*  Store the path in UTF-8 in the database  */
-
-
-
+	    /* Store the path in UTF-8 in the database */
 	    if (empty($error)) {
 		for ($i = 1; !empty($params['uploadLocalServer.dir.' . $i])
 			  && ($params['uploadLocalServer.dir.' . $i] != $path); $i++) { }
@@ -129,13 +111,7 @@ class ItemAddSiteAdminController extends GalleryController {
 		}
 	    }
 	    $status['saved'] = 1;
-	} 
-
-
-/*  else $form['action']['reset']  */
-
-
-
+	} /* else $form['action']['reset'] */
 
 	$method = empty($error) ? 'redirect' : 'delegate';
 	$results = array($method => array('view' => 'core.SiteAdmin',

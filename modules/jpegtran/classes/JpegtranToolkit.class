@@ -53,13 +53,7 @@ class JpegtranToolkit extends GalleryToolkit {
 	$platform =& $gallery->getPlatform();
 	$tmpFilename = $platform->tempnam($tmpDir, 'jpgt_');
 	if (empty($tmpFilename)) {
-	    
-
-
-/*  This can happen if the $tmpDir path is bad  */
-
-
-
+	    /* This can happen if the $tmpDir path is bad */
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH), null, null);
 	}
 
@@ -99,13 +93,7 @@ class JpegtranToolkit extends GalleryToolkit {
 	    break;
 
 	case 'crop':
-	    
-
-
-/*  Source dimensions are required to convert from percentages to pixels  */
-
-
-
+	    /* Source dimensions are required to convert from percentages to pixels */
 	    if (!isset($width)) {
 		list ($ret, $width, $height) = $this->_getImageDimensions($sourceFilename);
 		if ($ret) {
@@ -113,13 +101,7 @@ class JpegtranToolkit extends GalleryToolkit {
 		}
 	    }
 
-	    
-
-
-/*  Source dimensions are required to convert from percentages to pixels   */
-
-
-
+	    /* Source dimensions are required to convert from percentages to pixels  */
 	    $pixelX = round($parameters[0] / 100 * $width);
 	    $pixelY = round($parameters[1] / 100 * $height);
 	    $width = round($parameters[2] / 100 * $width);
@@ -194,13 +176,7 @@ class JpegtranToolkit extends GalleryToolkit {
 	$tmpFilename = $platform->tempnam($tmpDir, 'jpgt_');
 
 	if (empty($tmpFilename)) {
-	    
-
-
-/*  This can happen if the $tmpDir path is bad  */
-
-
-
+	    /* This can happen if the $tmpDir path is bad */
 	    return array(GalleryCoreApi::error(ERROR_BAD_PATH), null, null);
 	}
 

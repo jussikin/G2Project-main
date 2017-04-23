@@ -46,24 +46,12 @@ class AdminEditGroupQuotaController extends GalleryController {
 
 	if (isset($form['action']['cancel'])) {
 
-	    
-
-
-/*  Redirect back to the AdminGroups view  */
-
-
-
+	    /* Redirect back to the AdminGroups view */
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'quotas.AdminQuotas';
 	} else if (isset($form['action']['undo'])) {
 
-	    
-
-
-/*  Redirect back to the same view to reset the form  */
-
-
-
+	    /* Redirect back to the same view to reset the form */
 	    $redirect['view'] = 'core.SiteAdmin';
 	    $redirect['subView'] = 'quotas.AdminEditGroupQuota';
 	    $redirect['groupId'] = $groupId;
@@ -106,13 +94,7 @@ class AdminEditGroupQuotaController extends GalleryController {
 				return array($ret, null);
 			    }
 
-			    
-
-
-/*  Request a redirect to the confirmation screen  */
-
-
-
+			    /* Request a redirect to the confirmation screen */
 			    $redirect['view'] = 'core.SiteAdmin';
 			    $redirect['subView'] = 'quotas.AdminQuotas';
 			    $status['modifiedGroup'] = $group->getGroupName();
@@ -125,13 +107,7 @@ class AdminEditGroupQuotaController extends GalleryController {
 		    $error[] = 'form[error][quotaSize][notNumeric]';
 		}
 	    } else {
-		
-
-
-/*  set our error status and fall back to the view  */
-
-
-
+		/* set our error status and fall back to the view */
 		if (empty($form['quotaSize'])) {
 		    $error[] = 'form[error][quotaSize][missing]';
 		}
@@ -183,13 +159,7 @@ class AdminEditGroupQuotaView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'AdminEditGroupQuota') {
-	    
-
-
-/*  First time around initialize our form  */
-
-
-
+	    /* First time around initialize our form */
 	    $form['formName'] = 'AdminEditGroupQuota';
 	}
 

@@ -203,13 +203,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase {
 	$this->_prepareToReadFromDiskCache('module/_all/0/0/CombinedJavascript_gzip_123.inc', null);
 	$this->_prepareToReadFromDiskCache('module/_all/0/0/CombinedJavascript_123.inc', null);
 
-	
-
-
-/*  Adding a log entry  */
-
-
-
+	/* Adding a log entry */
 	$gallery->_storage->setReply('getUniqueId', array('SequenceEventLog'), array(null, 1));
 	$gallery->_storage->setReply('updateMapEntry', '*', null);
 	$gallery->_storage->setReply('getAffectedRows', array(true), array(null, 1));
@@ -222,13 +216,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase {
 	$this->assertEquals('', $results);
     }
 
-    
-
-
-/*  Regression test. See bug 2021019  */
-
-
-
+    /* Regression test. See bug 2021019 */
     function testAutoCacheControlDoesNotConflict() {
 	global $gallery;
 

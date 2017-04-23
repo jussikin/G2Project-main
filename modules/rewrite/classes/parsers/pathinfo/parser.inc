@@ -20,13 +20,7 @@
 
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteParser.class');
 
-
-
-
-/*  Status code used by the PHP Path Info parser  */
-
-
-
+/* Status code used by the PHP Path Info parser */
 define('REWRITE_STATUS_NO_PATH_INFO', 21);
 
 /**

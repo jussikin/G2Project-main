@@ -25,13 +25,7 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ThumbPageModule extends GalleryModule 
-
-
-/*  and GalleryEventListener  */
-
-
- {
+class ThumbPageModule extends GalleryModule /* and GalleryEventListener */ {
 
     function __construct() {
 	$this->ThumbPageModule();
@@ -93,13 +87,7 @@ class ThumbPageModule extends GalleryModule
 	}
 
 	if (empty($page) && empty($movie)) {
-	    
-
-
-/*  Can't activate unless there's already toolkit support  */
-
-
-
+	    /* Can't activate unless there's already toolkit support */
 	    return array(null, array('view' => 'core.SiteAdmin',
 							 'subView' => 'thumbpage.CantActivate'));
 	} else {
@@ -216,13 +204,7 @@ class ThumbPageModule extends GalleryModule
 		return array($ret, null);
 	    }
 	    if ($isActive) {
-		
-
-
-/*  Reactivate may fail if toolkit support no longer found.  */
-
-
-
+		/* Reactivate may fail if toolkit support no longer found. */
 		list ($ret, $redirect) = $this->reactivate();
 		if ($ret) {
 		    return array($ret, null);

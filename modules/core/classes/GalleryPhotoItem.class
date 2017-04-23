@@ -90,13 +90,7 @@ class GalleryPhotoItem extends GalleryDataItem {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Validate the input filename  */
-
-
-
+	/* Validate the input filename */
 	if (empty($imageFileName)) {
 	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
@@ -105,54 +99,24 @@ class GalleryPhotoItem extends GalleryDataItem {
 	    return GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__, $imageFileName);
 	}
 
-	
-
-
-/*  Create our data item  */
-
-
-
+	/* Create our data item */
 	$ret = parent::create($parentId, $imageFileName,
 			      $mimeType, $targetName, $symlink);
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  We're linkable  */
-
-
-
+	/* We're linkable */
 	$this->setIsLinkable(true);
 
-	
-
-
-/*  Default to empty dimensions  */
-
-
-
+	/* Default to empty dimensions */
 	$this->setWidth(0);
 	$this->setHeight(0);
 
-	
-
-
-/*  Detect our dimensions, if possible  */
-
-
-
+	/* Detect our dimensions, if possible */
 	$ret = $this->rescan();
 	if ($ret) {
-	    
-
-
-/*  Cleanup our datafile on failure  */
-
-
-
+	    /* Cleanup our datafile on failure */
 	    list ($ret2, $path) = $this->fetchPath();
 	    if (!$ret2) {
 		@$platform->unlink($path);
@@ -178,13 +142,7 @@ class GalleryPhotoItem extends GalleryDataItem {
 	}
 	$mimeType = $this->getMimeType();
 
-	
-
-
-/*  Check for CMYK colorspace and alter mime type if detected  */
-
-
-
+	/* Check for CMYK colorspace and alter mime type if detected */
 	list ($ret, $toolkit) = GalleryCoreApi::getToolkitByProperty($mimeType, 'colorspace');
 	if ($ret) {
 	    return $ret;
@@ -192,13 +150,7 @@ class GalleryPhotoItem extends GalleryDataItem {
 	if (isset($toolkit)) {
 	    list ($ret, $colorspace) = $toolkit->getProperty($mimeType, 'colorspace', $path);
 	    if ($ret) {
-		$ret->addErrorCode(ERROR_BAD_DATA_TYPE); 
-
-
-/*  See BAD_DATA_TYPE comment below  */
-
-
-
+		$ret->addErrorCode(ERROR_BAD_DATA_TYPE); /* See BAD_DATA_TYPE comment below */
 		return $ret;
 	    }
 	    if ($colorspace[0] == 'CMYK') {
@@ -261,13 +213,7 @@ class GalleryPhotoItem extends GalleryDataItem {
 		);
 		list ($width, $height) = array($this->getWidth(), $this->getHeight());
 		
-		
-
-
-/*  Shrink our dimensions if necessary  */
-
-
-
+		/* Shrink our dimensions if necessary */
 		if (isset($params['maxSize'])) {
 			list ($width, $height) = GalleryUtilities::shrinkDimensionsToFit(
 					$width, $height, $params['maxSize']);

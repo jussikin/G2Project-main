@@ -23,26 +23,14 @@ if (!defined('G2_SUPPORT')) {
 }
 
 
-
-
-
-/*  Commands  */
-
-
-
+/* Commands */
 define('CMD_CHMOD_MODULES_AND_THEMES_DIR', 'chmodModulesAndThemesDir');
 define('CMD_ADVANCED', 'advanced');
 define('CMD_CHMOD_PLUGIN_DIR', 'chmodPluginDir');
 define('CMD_CHMOD_GALLERY_DIR', 'chmodGalleryDir');
 define('CMD_CHMOD_STORAGE_DIR', 'chmodStorageDir');
 define('CMD_CHMOD_LOCALE_DIR', 'chmodLocaleDir');
-
-
-
-/*  For get/post input sanitation  */
-
-
-
+/* For get/post input sanitation */
 require_once(dirname(__FILE__) . '/../../modules/core/classes/GalleryUtilities.class');
 
 $DEFAULT_FOLDER_PERMISSIONS = PermissionBits::fromString('555');
@@ -51,30 +39,12 @@ $DEFAULT_FILE_PERMISSIONS = PermissionBits::fromString('444');
 $status = array();
 $ret = null;
 
-
-
-
-/*  The permission bit sets that we accept / handle.  */
-
-
-
+/* The permission bit sets that we accept / handle. */
 $permissionBitSets = getPermissionSets();
-
-
-
-/*  Gather a complete list of plugins in this installation.  */
-
-
-
+/* Gather a complete list of plugins in this installation. */
 $plugins = getPluginList();
 
-
-
-
-/*  Process inputs and set some variables to default values  */
-
-
-
+/* Process inputs and set some variables to default values */
 
 $path = getRequestVariable('path');
 if (empty($path)) {
@@ -86,32 +56,14 @@ if (empty($path)) {
      */
     GalleryUtilities::sanitizeInputValues($path);
 }
-
-
-
-/*  Some basic sanitation  */
-
-
-
+/* Some basic sanitation */
 $path = str_replace('..', '', $path);
 if (!file_exists($path)) {
-    
-
-
-/*  TODO: add open_basedir check  */
-
-
-
+    /* TODO: add open_basedir check */
     $status['error'][] = "Folder or file '$path' does not exist!";
 }
 
-
-
-
-/*  Permissions (format e.g. 755644, split after 3 characters to get 755 and 644) */
-
-
-
+/* Permissions (format e.g. 755644, split after 3 characters to get 755 and 644)*/
 $permissions = (string)getRequestVariable('permissions');
 if (empty($permissions)) {
     $permissions = $DEFAULT_FOLDER_PERMISSIONS->getAsString() .
@@ -147,13 +99,7 @@ if (empty($status['error'])) {
     $command = trim(getRequestVariable('command'));
     switch ($command) {
         case CMD_ADVANCED:
-        
-
-
-/*  Advanced Options, allow chmod of any folder / file  */
-
-
-
+        /* Advanced Options, allow chmod of any folder / file */
         $ret = chmodRecursively($path, $folderPermissions->getAsInt(),
              $filePermissions->getAsInt(), time() - 60);
     if (!empty($ret)) {
@@ -165,13 +111,7 @@ if (empty($status['error'])) {
         }
         break;
     case CMD_CHMOD_MODULES_AND_THEMES_DIR:
-        
-
-
-/*  Chmod the modules/ and themes/ dir writeable or read-only (not recursively)  */
-
-
-
+        /* Chmod the modules/ and themes/ dir writeable or read-only (not recursively) */
         $mode = getRequestVariable('mode');
         if (!in_array($mode, array('open', 'secure'))) {
             $status['error'][] = "Unknown mode '$mode'. Please try again.";
@@ -187,22 +127,10 @@ if (empty($status['error'])) {
         }
         break;
     case CMD_CHMOD_PLUGIN_DIR:
-        
-
-
-/*  Chmod a _specific_ plugin (theme or module) writeable or read-only (recursively)  */
-
-
-
+        /* Chmod a _specific_ plugin (theme or module) writeable or read-only (recursively) */
         $mode = getRequestVariable('mode');
 
-        
-
-
-/*  Check the given plugin path against a white list  */
-
-
-
+        /* Check the given plugin path against a white list */
         $pluginPath = getRequestVariable('pluginId');
         if (!isset($plugins[$pluginPath])) {
             $status['error'][] = "Unknown plugin path '$pluginPath'.";
@@ -221,13 +149,7 @@ if (empty($status['error'])) {
 
         break;
     case CMD_CHMOD_GALLERY_DIR:
-        
-
-
-/*  Chmod the whole gallery2 dir writeable or read-only  */
-
-
-
+        /* Chmod the whole gallery2 dir writeable or read-only */
         $mode = getRequestVariable('mode');
         if (!in_array($mode, array('open', 'secure'))) {
             $status['error'][] = "Unknown mode '$mode'. Please try again.";
@@ -243,13 +165,7 @@ if (empty($status['error'])) {
         }
         break;
     case CMD_CHMOD_STORAGE_DIR:
-        
-
-
-/*  Chmod the entire storage dir writeable  */
-
-
-
+        /* Chmod the entire storage dir writeable */
     $ret = chmodStorageDirRecursively();
     if (!empty($ret)) {
             $status['error'][] = 'Failed to change the filesystem permissions '
@@ -260,13 +176,7 @@ if (empty($status['error'])) {
         }
         break;
     case CMD_CHMOD_LOCALE_DIR:
-        
-
-
-/*  Chmod the entire locale dir writeable  */
-
-
-
+        /* Chmod the entire locale dir writeable */
     $ret = chmodLocaleDirRecursively();
     if (!empty($ret)) {
             $status['error'][] = 'Failed to change the filesystem permissions '
@@ -277,13 +187,7 @@ if (empty($status['error'])) {
         }
         break;
     default:
-       
-
-
-/*  Just redisplay the page.  */
-
-
-
+       /* Just redisplay the page. */
        break;
     }
 }
@@ -308,13 +212,7 @@ printFooter();
 function chmodRecursively($filename, $folderPermissions, $filePermissions, $start) {
     $filename = rtrim($filename, '\\/');
     $error = 0;
-    
-
-
-/*  Try to prevent timeouts  */
-
-
-
+    /* Try to prevent timeouts */
     if (time() - $start > 55) {
     if (function_exists('apache_reset_timeout')) {
             @apache_reset_timeout();
@@ -333,13 +231,7 @@ function chmodRecursively($filename, $folderPermissions, $filePermissions, $star
         $error = 1;
     }
     if (is_dir($filename)) {
-        
-
-
-/*  For folders, we change the permissions to the right ones with a second chmod call.  */
-
-
-
+        /* For folders, we change the permissions to the right ones with a second chmod call. */
         if (!$error) {
             if (!@chmod($filename, $folderPermissions)) {
                 error("[ERROR]", $filename);
@@ -465,13 +357,7 @@ class PermissionBits {
         case 0644:
         return 'Read And Write for Owner, Read for Everyone Else';
         default:
-            
-
-
-/*  No description available  */
-
-
-
+            /* No description available */
             return null;
         }
     }
@@ -490,13 +376,7 @@ class PermissionBits {
     }
 }
 
-
-
-
-/*  Functions which control the HTML output of the page.  */
-
-
-
+/* Functions which control the HTML output of the page. */
 $errorBoxOpen = 0;
 function status($msg, $obj) {
     openErrorBox();
@@ -525,13 +405,7 @@ function chmodModulesAndThemesDir($makeItWriteable) {
     $ret = null;
     foreach (array('/modules/', '/themes/') as $dir) {
         if (file_exists(GallerySetupUtilities::getConfigDir() . $dir)) {
-            
-
-
-/*  Try to chmod all dirs, even if one fails  */
-
-
-
+            /* Try to chmod all dirs, even if one fails */
         if (!@chmod(GallerySetupUtilities::getConfigDir() . $dir, $mode)) {
         error("[ERROR]", GallerySetupUtilities::getConfigDir() . $dir);
             $ret = 1;
@@ -551,34 +425,16 @@ function isGalleryDirWriteable() {
  * @return null on success, non 0 integer on error
  */
 function chmodGalleryDirRecursively($makeItWriteable) {
-    
-
-
-/*  This is just a wrapper function for the general chmod recursively function  */
-
-
-
+    /* This is just a wrapper function for the general chmod recursively function */
     $folderMode = $makeItWriteable ? 0777 : 0555;
     $fileMode = $makeItWriteable ? 0666 : 0444;
     return chmodRecursively(GallerySetupUtilities::getConfigDir(), $folderMode, $fileMode,
                 time() - 60);
 }
 
-
-
-
-/*  Chmod a specific plugin dir recursively  */
-
-
-
+/* Chmod a specific plugin dir recursively */
 function chmodPluginDir($pluginPath, $makeItWriteable) {
-    
-
-
-/*  This is just a wrapper function for the general chmod recursively function  */
-
-
-
+    /* This is just a wrapper function for the general chmod recursively function */
     $folderMode = $makeItWriteable ? 0777 : 0555;
     $fileMode = $makeItWriteable ? 0666 : 0444;
     return chmodRecursively(GallerySetupUtilities::getConfigDir() . $pluginPath, $folderMode,
@@ -586,24 +442,12 @@ function chmodPluginDir($pluginPath, $makeItWriteable) {
 }
 
 function chmodStorageDirRecursively() {
-    
-
-
-/*  This is just a wrapper function for the general chmod recursively function  */
-
-
-
+    /* This is just a wrapper function for the general chmod recursively function */
     return chmodRecursively(getGalleryStoragePath(), 0777, 0666, time() - 60);
 }
 
 function chmodLocaleDirRecursively() {
-    
-
-
-/*  This is just a wrapper function for the general chmod recursively function  */
-
-
-
+    /* This is just a wrapper function for the general chmod recursively function */
     return chmodRecursively(getGalleryStoragePath() . 'locale', 0777, 0666, time() - 60);
 }
 
@@ -627,13 +471,7 @@ function getPluginList() {
       continue;
         }
 
-    
-
-
-/*  For each folder in the plugin dir, check if it's writeable  */
-
-
-
+    /* For each folder in the plugin dir, check if it's writeable */
     while (($folderName = readdir($fh)) !== false) {
         if ($folderName == '.' || $folderName == '..' || $folderName == '.svn') {
         continue;

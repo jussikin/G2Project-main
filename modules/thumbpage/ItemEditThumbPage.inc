@@ -70,13 +70,7 @@ class ItemEditThumbPage extends ItemEditPlugin {
 	    }
 
 	    $status = $module->translate('Changes saved successfully');
-	} 
-
-
-/*  else $form['action']['reset'])  */
-
-
-
+	} /* else $form['action']['reset']) */
 
 	return array(null, $error, $status, false);
     }

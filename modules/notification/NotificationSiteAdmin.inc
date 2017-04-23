@@ -38,13 +38,7 @@ class NotificationSiteAdminController extends GalleryController {
 
 	$error = $status = array();
 
-	
-
-
-/*  Check if logged in and is admin  */
-
-
-
+	/* Check if logged in and is admin */
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
@@ -107,13 +101,7 @@ class NotificationSiteAdminController extends GalleryController {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'notification', '_enabledMap',
 							  serialize($notifications));
 		if (empty($ret)) {
-		    
-
-
-/*  Alert the user of the changes we have done.  */
-
-
-
+		    /* Alert the user of the changes we have done. */
 		    $status['saved'] = 1;
 		}
 	    } else {

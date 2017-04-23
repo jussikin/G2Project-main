@@ -42,13 +42,7 @@ class SelectAlbumController extends GalleryController {
 	 * handled by the target views.
 	 */
 	if (isset($form['action']['newAlbum'])) {
-	    
-
-
-/*  Redirect to the new album page.  */
-
-
-
+	    /* Redirect to the new album page. */
 	    if (isset($form['albumId'])) {
 		$redirect['view'] = 'publishxp.NewAlbum';
 		$redirect['parentId'] = $form['albumId'];
@@ -56,13 +50,7 @@ class SelectAlbumController extends GalleryController {
 		$error[] = 'form[error][albumId][missing]';
 	    }
 	} else if (isset($form['action']['select'])) {
-	    
-
-
-/*  Redirect to the options page  */
-
-
-
+	    /* Redirect to the options page */
 	    if (isset($form['albumId'])) {
 		$redirect['view'] = 'publishxp.Options';
 		$redirect['albumId'] = $form['albumId'];
@@ -108,50 +96,26 @@ class SelectAlbumView extends GalleryView {
 	    }
 	}
 
-	
-
-
-/*  Get ids of all all albums where we can add new data items  */
-
-
-
+	/* Get ids of all all albums where we can add new data items */
 	list ($ret, $albumIds['addDataItem']) =
 	    GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addDataItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Get ids of all all albums where we can add new album items  */
-
-
-
+	/* Get ids of all all albums where we can add new album items */
 	list ($ret, $albumIds['addAlbumItem']) =
 	    GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Merge them together to get the master list of ids  */
-
-
-
+	/* Merge them together to get the master list of ids */
 	$albumIds['allIds'] =
 	    array_unique(array_merge($albumIds['addDataItem'], $albumIds['addAlbumItem']));
 
 	if (!empty($albumIds['allIds'])) {
-	    
-
-
-/*  @todo Use fetchAllItemIds with multiple permissions once the API is available  */
-
-
-
+	    /** @todo Use fetchAllItemIds with multiple permissions once the API is available */
 	    list ($ret, $permissions) =
 		GalleryCoreApi::fetchPermissionsForItems($albumIds['allIds']);
 	     if ($ret) {
@@ -168,13 +132,7 @@ class SelectAlbumView extends GalleryView {
 
 	$albums = array();
 	if (!empty($albumIds['allIds'])) {
-	    
-
-
-/*  Load all the album entities  */
-
-
-
+	    /* Load all the album entities */
 	    list ($ret, $albums) =
 		GalleryCoreApi::loadEntitiesById($albumIds['allIds'], 'GalleryAlbumItem');
 	    if ($ret) {

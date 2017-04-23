@@ -87,13 +87,7 @@ class ItemAddWebCamTest extends ItemAddPluginTestCase {
     function tearDown() {
 	global $gallery;
 
-	
-
-
-/*  Restore platform before releasing locks  */
-
-
-
+	/* Restore platform before releasing locks */
 	$gallery->setPlatform($this->_savePlatform);
 
 	$ret = GalleryCoreApi::releaseLocks($this->_lockId);
@@ -194,13 +188,7 @@ class ItemAddWebCamTest extends ItemAddPluginTestCase {
     function testCheckUrlAsNormalUser() {
 	global $gallery;
 
-	
-
-
-/*  Make sure the request isn't blocked because of the "fromweb" setting  */
-
-
-
+	/* Make sure the request isn't blocked because of the "fromweb" setting */
 	$ret = $this->_module->setParameter('fromweb', 'on');
 	if ($ret) {
 	    return $ret;
@@ -312,13 +300,7 @@ class ItemAddWebCamTest extends ItemAddPluginTestCase {
     function testAddWebCamFileOnlyAllowedForSiteAdmins() {
 	global $gallery;
 
-	
-
-
-/*  Make sure the request isn't blocked because of the "fromweb" setting  */
-
-
-
+	/* Make sure the request isn't blocked because of the "fromweb" setting */
 	$ret = $this->_module->setParameter('fromweb', 'on');
 	if ($ret) {
 	    return $ret;
@@ -373,24 +355,12 @@ class ItemAddWebCamTest extends ItemAddPluginTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  If refreshed successfully then our fake filesize should be set  */
-
-
-
+	/* If refreshed successfully then our fake filesize should be set */
 	$this->assertEquals(7, $refresh->getSize());
     }
 
     function testRefreshFail() {
-	
-
-
-/*  Register a dummy toolkit and property  */
-
-
-
+	/* Register a dummy toolkit and property */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ItemAddWebCamTestToolkit', 'ItemAddWebCamTestToolkit',
 	    'modules/webcam/test/phpunit/ItemAddWebCamTest.class', 'webcamTest', null);
@@ -405,25 +375,13 @@ class ItemAddWebCamTest extends ItemAddPluginTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Now we have a toolkit to get image/test dimensions, but it will fail  */
-
-
-
+	/* Now we have a toolkit to get image/test dimensions, but it will fail */
 	list ($ret, $refresh) =
 	    GalleryCoreApi::loadEntitiesById($this->_item->getId(), 'GalleryDataItem');
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  If refreshed successfully then our fake filesize should be set  */
-
-
-
+	/* If refreshed successfully then our fake filesize should be set */
 	$this->assertEquals(7, $refresh->getSize());
     }
 }
@@ -594,13 +552,7 @@ class ItemAddWebCamTestPlatform {
 	    return 1;
 	}
 
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	if (preg_match("|\blocks\b|", $filename)) {
 	    return unlink($filename);
 	}
@@ -653,13 +605,7 @@ class ItemAddWebCamTestPlatform {
     }
 
     function flock($handle, $operation, &$wouldblock) {
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	return flock($handle, $operation, $wouldblock);
     }
 
@@ -669,13 +615,7 @@ class ItemAddWebCamTestPlatform {
 	    return true;
 	}
 
-	
-
-
-/*  Pass locks  */
-
-
-
+	/* Pass locks */
 	if (is_resource($handle)) {
 	    return fclose($handle);
 	}
@@ -692,13 +632,7 @@ class ItemAddWebCamTestPlatform {
 	    return $filename;
 	}
 
-	
-
-
-/*  Pass lock requests  */
-
-
-
+	/* Pass lock requests */
 	if (preg_match("|\blocks\b|", $filename)) {
 	    return fopen($filename, $modes);
 	}
@@ -712,13 +646,7 @@ class ItemAddWebCamTestPlatform {
     }
 
     function exec($cmd) {
-	
-
-
-/*  In case add of jpeg tries to get 'colorspace' property  */
-
-
-
+	/* In case add of jpeg tries to get 'colorspace' property */
 	return array(true, array(''), array());
     }
 }

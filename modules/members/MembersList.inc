@@ -43,13 +43,7 @@ class MembersListView extends GalleryView {
 	}
 
 	if ($form['formName'] != 'MembersList') {
-	    
-
-
-/*  Set some defaults  */
-
-
-
+	    /* Set some defaults */
 	    $form['text']['userName'] = '';
 	    $form['text']['userId'] = '';
 	    $form['formName'] = 'MembersList';
@@ -66,13 +60,7 @@ class MembersListView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Fetch the user count every time we reload  */
-
-
-
+	/* Fetch the user count every time we reload */
 	list ($ret, $totalUserCount) = GalleryCoreApi::fetchUserCount(null, $groupId);
 	if ($ret) {
 	    return array($ret, null);
@@ -81,25 +69,13 @@ class MembersListView extends GalleryView {
 	$form['list']['count'] = $totalUserCount;
 	$form['list']['pageSize'] = $totalUserCount > 25 ? 25 : $totalUserCount;
 
-	
-
-
-/*  Figure out our max pages, make sure our current page fits in it  */
-
-
-
+	/* Figure out our max pages, make sure our current page fits in it */
 	$form['list']['maxPages'] = ceil($form['list']['count'] / $form['list']['pageSize']);
 	if ($form['list']['page'] > $form['list']['maxPages']) {
 	    $form['list']['page'] = $form['list']['maxPages'];
 	}
 
-	
-
-
-/*  Calculate the next/back pages  */
-
-
-
+	/* Calculate the next/back pages */
 	$form['list']['nextPage'] = min($form['list']['page']+1, $form['list']['maxPages']);
 	$form['list']['backPage'] = max(1, $form['list']['page']-1);
 	$form['list']['startingUser'] = ($form['list']['page'] - 1) * $form['list']['pageSize'];

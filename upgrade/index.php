@@ -34,13 +34,7 @@
  * @package Upgrade
  */
 
-
-
-
-/*  Show all errors.  */
-
-
-
+/* Show all errors. */
 @ini_set('display_errors', 1);
 
 /*
@@ -69,13 +63,7 @@ if (!function_exists('_')) {
 
 $error = false;
 
-
-
-
-/*  Our install steps, in order  */
-
-
-
+/* Our install steps, in order */
 $stepOrder = array();
 $stepOrder[] = 'Welcome';
 $stepOrder[] = 'Authenticate';
@@ -94,22 +82,10 @@ foreach ($stepOrder as $stepName) {
 GallerySetupUtilities::startSession();
 
 require_once(dirname(__FILE__) . '/../init.inc');
-
-
-
-/*  Check if config.php is ok  */
-
-
-
+/* Check if config.php is ok */
 $storageConfig = @$gallery->getConfig('storage.config');
 if (!empty($storageConfig)) {
-    
-
-
-/*  We want to avoid using the cache  */
-
-
-
+    /* We want to avoid using the cache */
     GalleryDataCache::setFileCachingEnabled(false);
 
     $ret = GalleryInitFirstPass(array('debug' => 'buffered', 'noDatabase' => 1));
@@ -126,46 +102,22 @@ if (!empty($storageConfig)) {
 	    $_SESSION['language'] = GalleryTranslator::getLocaleFromRequest();
 	}
 	$translator->init($_SESSION['language'], true);
-	
-
-
-/*  Select domain for translation  */
-
-
-
+	/* Select domain for translation */
 	bindtextdomain('gallery2_upgrade', dirname(dirname(__FILE__)) . '/locale');
 	textdomain('gallery2_upgrade');
 	if (function_exists('bind_textdomain_codeset')) {
 	    bind_textdomain_codeset('gallery2_upgrade', 'UTF-8');
 	}
-	
-
-
-/*  Set the appropriate charset in our HTTP header  */
-
-
-
+	/* Set the appropriate charset in our HTTP header */
 	if (!headers_sent()) {
 	    header('Content-Type: text/html; charset=UTF-8');
 	}
     }
 
-    
-
-
-/*  Preallocate at least 5 minutes for the upgrade  */
-
-
-
+    /* Preallocate at least 5 minutes for the upgrade */
     $gallery->guaranteeTimeLimit(300);
 
-    
-
-
-/*  Check to see if we have a database.  If we don't, then go to the installer  */
-
-
-
+    /* Check to see if we have a database.  If we don't, then go to the installer */
     $storage =& $gallery->getStorage();
     list ($ret, $isInstalled) = $storage->isInstalled();
     if ($ret || !$isInstalled) {
@@ -175,13 +127,7 @@ if (!empty($storageConfig)) {
     $error = true;
 }
 
-
-
-
-/*  If we don't have our steps in our session, initialize them now.  */
-
-
-
+/* If we don't have our steps in our session, initialize them now. */
 if (!isset($_GET['startOver']) && !empty($_SESSION['upgrade_steps'])) {
     $steps = unserialize($_SESSION['upgrade_steps']);
 }
@@ -200,13 +146,7 @@ if (empty($steps) || !is_array($steps)) {
 	}
     }
 
-    
-
-
-/*  Don't do this in the loop, since not all steps are relevant  */
-
-
-
+    /* Don't do this in the loop, since not all steps are relevant */
     $steps[sizeof($steps)-1]->setIsLastStep(true);
 }
 
@@ -216,13 +156,7 @@ if (isset($_GET['step'])) {
     $stepNumber = 0;
 }
 
-
-
-
-/*  Make sure all steps up to the current one are ok  */
-
-
-
+/* Make sure all steps up to the current one are ok */
 for ($i = 0; $i < $stepNumber; $i++) {
     if (!$steps[$i]->isComplete() && ! $steps[$i]->isOptional()) {
 	$stepNumber = $i;
@@ -241,13 +175,7 @@ if (!empty($_GET['doOver'])) {
     $currentStep->setComplete(false);
 }
 
-
-
-
-/*  If the current step is incomplete, the rest of the steps can't be complete either  */
-
-
-
+/* If the current step is incomplete, the rest of the steps can't be complete either */
 if (!$currentStep->isComplete()) {
     for ($i = $stepNumber+1; $i < sizeof($steps); $i++) {
 	$steps[$i]->setComplete(false);
@@ -256,32 +184,14 @@ if (!$currentStep->isComplete()) {
 }
 
 if ($currentStep->processRequest()) {
-    
-
-
-/*  Load up template data from the current step  */
-
-
-
+    /* Load up template data from the current step */
     $templateData = array();
 
-    
-
-
-/*  Round percentage to the nearest 5  */
-
-
-
+    /* Round percentage to the nearest 5 */
     $templateData['errors'] = array();
     $currentStep->loadTemplateData($templateData);
 
-    
-
-
-/*  Render the output  */
-
-
-
+    /* Render the output */
     $template = new StatusTemplate();
     $template->renderHeaderBodyAndFooter($templateData);
 }
@@ -307,24 +217,12 @@ function selectAdminUser($fallback=false) {
     if (empty($adminUserInfo)) {
 	return GalleryCoreApi::error(ERROR_MISSING_VALUE);
     }
-    
-
-
-/*  Fetch the first admin from list  */
-
-
-
+    /* Fetch the first admin from list */
     list ($userId, $userName) = each($adminUserInfo);
     list ($ret, $adminUser) = GalleryCoreApi::loadEntitiesById($userId, 'GalleryUser');
     if ($ret) {
 	if ($fallback) {
-	    
-
-
-/*  Initialize a GalleryUser with the id of a real admin  */
-
-
-
+	    /* Initialize a GalleryUser with the id of a real admin */
 	    $gallery->debug('Unable to load admin user. Using in-memory user object as fallback');
 	    GalleryCoreApi::requireOnce('modules/core/classes/GalleryUser.class');
 	    $adminUser = new GalleryUser();
@@ -346,33 +244,15 @@ function selectAdminUser($fallback=false) {
  */
 function generateUrl($uri, $print=true) {
     if (strncmp($uri, 'index.php', 9) && strncmp($uri, '../' . GALLERY_MAIN_PHP, 11)) {
-	
-
-
-/*  upgrade/images/*, upgrade/styles/*, ... URLs  */
-
-
-
+	/* upgrade/images/*, upgrade/styles/*, ... URLs */
 	global $gallery;
-	
-
-
-/*  Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl  */
-
-
-
+	/* Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl */
 	$baseUrl = @$gallery->getConfig('galleryBaseUrl');
 	if (!empty($baseUrl)) {
 	     $uri = $baseUrl . 'upgrade/' . $uri;
 	}
     } else if (!strncmp($uri, 'index.php', 9)) {
-	
-
-
-/*  If session.use_trans_sid is on then it will add the session id.  */
-
-
-
+	/* If session.use_trans_sid is on then it will add the session id. */
 	if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
 	    /*
 	     * Don't use SID since it's a constant and we change (regenerate) the session id

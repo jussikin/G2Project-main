@@ -36,13 +36,7 @@ class SelectGalleryController extends GalleryController {
     function handleRequest($form) {
 	global $gallery;
 
-	
-
-
-/*  Verify that active user is an admin  */
-
-
-
+	/* Verify that active user is an admin */
 	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 	if ($ret) {
 	    return array($ret, null);
@@ -68,13 +62,7 @@ class SelectGalleryController extends GalleryController {
 	    }
 
 	    if (empty($error)) {
-		
-
-
-/*  Save our albums path in the session  */
-
-
-
+		/* Save our albums path in the session */
 		$session =& $gallery->getSession();
 		$recentPaths = $session->get('migrate.view.SelectGallery.recentPaths');
 		if (empty($recentPaths)) {
@@ -135,13 +123,7 @@ class SelectGalleryView extends GalleryView {
 	    $form['albumsPath'] = '';
 	}
 
-	
-
-
-/*  Load our recent paths from the session  */
-
-
-
+	/* Load our recent paths from the session */
 	$session =& $gallery->getSession();
 	$recentPaths = $session->get('migrate.view.SelectGallery.recentPaths');
 	if (empty($recentPaths)) {

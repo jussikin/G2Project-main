@@ -92,13 +92,7 @@ class ImageFrameTest extends GalleryTestCase {
 	$this->assertEquals(array('modules/imageframe/templates/ImageFrameHead.tpl'),
 			    $template->data['head'], 'head tpl');
 
-	
-
-
-/*  Another init should add data, not overwrite  */
-
-
-
+	/* Another init should add data, not overwrite */
 	$ret = $this->_imageframe->init($template, array('solid'));
 	if ($ret) {
 	    return $ret;
@@ -134,24 +128,12 @@ class ImageFrameTest extends GalleryTestCase {
 	$template1 = new GalleryTemplate(dirname(dirname(__FILE__)), true, true);
 	$template2 = new GalleryTemplate(dirname(dirname(__FILE__)), true, true);
 
-	
-
-
-/*  Verify these are separate instances  */
-
-
-
+	/* Verify these are separate instances */
 	$template1->setVariable('foo', 'bar');
 	$template2->setVariable('foo', 'hoho');
 	$this->assertEquals('bar', $template1->getVariable('foo'));
 
-	
-
-
-/*  Verify {counter} works across smarty instances  */
-
-
-
+	/* Verify {counter} works across smarty instances */
 	$result = $template1->fetch('gallery:data/counter.tpl');
 	$result[1] = trim($result[1]);
 	$this->assertEquals(array(null, '1'), $result);

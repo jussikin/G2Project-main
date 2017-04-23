@@ -116,13 +116,7 @@ class ArchiveUploadHelper {
 	    $paths[] = '/bin/unzip';
 	}
 
-	
-
-
-/*  Now try each path in turn to see which ones work  */
-
-
-
+	/* Now try each path in turn to see which ones work */
 	foreach ($paths as $path) {
 	    list ($valid) = ArchiveUploadHelper::testBinary($path);
 	    if ($valid) {

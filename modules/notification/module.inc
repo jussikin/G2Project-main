@@ -52,13 +52,7 @@ class NotificationModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	
-
-
-/*  Email Method  */
-
-
-
+	/* Email Method */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'NotificationHandler_1_0', 'NotificationMethodEmail', 'NotificationMethodEmail',
 	    'modules/notification/classes/NotificationMethodEmail.class', 'notification', null);
@@ -66,13 +60,7 @@ class NotificationModule extends GalleryModule {
 	    return $ret;
 	}
 
-	
-
-
-/*  Entity Delete and Save Handler  */
-
-
-
+	/* Entity Delete and Save Handler */
 	$handlerPath = 'modules/notification/classes/NotificationItemStateChangeHandler.class';
 	$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener',
 	    'NotificationItemStateChangeHandler', 'NotificationItemStateChangeHandler',
@@ -81,13 +69,7 @@ class NotificationModule extends GalleryModule {
 	    return $ret;
 	}
 
-	
-
-
-/*  Item Added Option Handler  */
-
-
-
+	/* Item Added Option Handler */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'ItemAddOption', 'NotificationItemsAddedOption', 'NotificationItemsAddedOption',
 	    'modules/notification/NotificationItemsAddedOption.inc', 'notification', null, 9);
@@ -95,13 +77,7 @@ class NotificationModule extends GalleryModule {
 	    return $ret;
 	}
 
-	
-
-
-/*  Notification module integration  */
-
-
-
+	/* Notification module integration */
 	$events[] = array('NotificationEvent_1_0', 'ActivatePluginNotification',
 			  'ActivatePluginNotification',
 			  'modules/notification/classes/GalleryCoreEventNotifications.class',
@@ -157,26 +133,14 @@ class NotificationModule extends GalleryModule {
 	    }
 	}
 
-	
-
-
-/*  Get a list of events that we need to subscribe to  */
-
-
-
+	/* Get a list of events that we need to subscribe to */
 	list ($ret, $hints) = NotificationHelper::getActiveSubscriptionsEvents();
 	$this->setParameter('_activeListeners', serialize($hints));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Generic Notification Router  */
-
-
-
+	/* Generic Notification Router */
 	$handlerPath = 'modules/notification/classes/NotificationRouter.class';
 	$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener',
 	    'NotificationRouter', 'NotificationRouter',

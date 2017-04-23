@@ -39,13 +39,7 @@ class ShutterflyCartPluginTest extends GalleryTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Create some random photo items that we can print  */
-
-
-
+	/* Create some random photo items that we can print */
 	list ($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 	if ($ret) {
 	    return $ret;
@@ -74,25 +68,13 @@ class ShutterflyCartPluginTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  Print permission on all but one  */
-
-
-
+	/* Print permission on all but one */
 	$ret = GalleryCoreApi::removeUserPermission(
 	    $this->_items[1]->getId(), $gallery->getActiveUserId(), 'shutterfly.print');
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Public view permission on one  */
-
-
-
+	/* Public view permission on one */
 	list ($ret, $anonymousUserId) =
 	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 	if ($ret) {
@@ -103,13 +85,7 @@ class ShutterflyCartPluginTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Watermarked thumbnail for one */
-
-
-
+	/* Watermarked thumbnail for one*/
 	for ($i = 0; $i < 3; $i++) {
 	    list ($ret, $this->_thumbs[$i]) = $this->_createDerivative(
 		    $this->_items[$i], $this->_items[$i]->getId(),
@@ -150,13 +126,7 @@ class ShutterflyCartPluginTest extends GalleryTestCase {
 	$printCart = $session->get('shutterfly.cart');
 	$this->assertEquals($cartItemIds, $printCart, 'cart');
 
-	
-
-
-/*  Render PrintPhotos view to test processing of cart items  */
-
-
-
+	/* Render PrintPhotos view to test processing of cart items */
 	list ($ret, $view) = GalleryView::loadView('shutterfly.PrintPhotos');
 	if ($ret) {
 	    return $ret;
@@ -201,13 +171,7 @@ class ShutterflyCartPluginTest extends GalleryTestCase {
 	$printCart = $session->get('shutterfly.cart');
 	$this->assertEquals(null, $printCart, 'cart');
 
-	
-
-
-/*  Clean up  */
-
-
-
+	/* Clean up */
 	$session->remove('shutterfly.cart');
 	if (!empty($matches[1]) && $matches[1][0] != $session->getId()) {
 	    $testSession = new GallerySession();

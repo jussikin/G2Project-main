@@ -49,13 +49,7 @@ class ZipCartModule extends GalleryModule {
      * @see GalleryModule::performFactoryRegistrations
      */
     function performFactoryRegistrations() {
-	
-
-
-/*  Register our cart plugin  */
-
-
-
+	/* Register our cart plugin */
 	foreach (array('1_0', '1_1') as $version) {
 	    $ret = GalleryCoreApi::registerFactoryImplementation(
 		'CartPluginInterface_' . $version, 'ZipCartPlugin', 'zipcart',
@@ -72,13 +66,7 @@ class ZipCartModule extends GalleryModule {
      * @see GalleryModule::needsConfiguration
      */
     function needsConfiguration() {
-	
-
-
-/*  This module requires exec()  */
-
-
-
+	/* This module requires exec() */
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, true);
 	}
@@ -96,13 +84,7 @@ class ZipCartModule extends GalleryModule {
     function autoConfigure() {
 	global $gallery;
 
-	
-
-
-/*  This module requires exec()  */
-
-
-
+	/* This module requires exec() */
 	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 	    return array(null, false);
 	}
@@ -115,13 +97,7 @@ class ZipCartModule extends GalleryModule {
 	    return array(null, true);
 	}
 
-	
-
-
-/*  Try a bunch of likely seeming paths to see if any of them work.  */
-
-
-
+	/* Try a bunch of likely seeming paths to see if any of them work. */
 	$platform =& $gallery->getPlatform();
 	$slash = $platform->getDirectorySeparator();
 
@@ -166,22 +142,10 @@ class ZipCartModule extends GalleryModule {
 	    return array(null, false);
 	}
 
-	
-
-
-/*  Now try each path in turn to see which ones work  */
-
-
-
+	/* Now try each path in turn to see which ones work */
 	foreach ($paths as $path) {
 	    if (!$platform->isRestrictedByOpenBaseDir($path) && $platform->is_executable($path)) {
-		
-
-
-/*  We have a winner  */
-
-
-
+		/* We have a winner */
 		$ret = $this->setParameter('path', $path);
 		if ($ret) {
 		    return array($ret, false);

@@ -69,24 +69,12 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 	    'format.time' => 'x17',
 	    'format.datetime' => 'x18');
 
-	
-
-
-/*  The AdminCore controller uses the url generator to check the cookie path  */
-
-
-
+	/* The AdminCore controller uses the url generator to check the cookie path */
 	$gallery->setUrlGenerator(new AdminCoreControllerTestUrlGenerator());
     }
 
     function _setFormFromValues($valueMap) {
-	
-
-
-/*  Change the defaults to something meaningless  */
-
-
-
+	/* Change the defaults to something meaningless */
 	foreach ($valueMap as $key => $value) {
 	    list ($outer, $inner) = explode('.', $key);
 	    GalleryUtilities::putRequestVariable('form[' . $outer . '][' . $inner . ']', $value);
@@ -99,13 +87,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 	$this->_setFormFromValues($valueMap);
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminCore'),
@@ -127,13 +109,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
     function testChangeEmailPasswordWithStars() {
 	$valueMap = $this->_valueMap;
 
-	
-
-
-/*  Set the password to a 3-letter value (it should be b64 encoded, but this is a dummy)  */
-
-
-
+	/* Set the password to a 3-letter value (it should be b64 encoded, but this is a dummy) */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'smtp.password', 'abc');
 	if ($ret) {
 	    return $ret;
@@ -144,13 +120,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminCore'),
@@ -172,37 +142,19 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
     function testChangeEmailPasswordWithWrongNumberOfStars() {
 	$valueMap = $this->_valueMap;
 
-	
-
-
-/*  Set the password to a 3-letter value (it should be b64 encoded, but this is a dummy)  */
-
-
-
+	/* Set the password to a 3-letter value (it should be b64 encoded, but this is a dummy) */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'smtp.password', 'abc');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  But oops, the user entered 4 stars  */
-
-
-
+	/* But oops, the user entered 4 stars */
 	$valueMap['smtp.password'] = '****';
 	$this->_setFormFromValues($valueMap);
 
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminCore'),
@@ -228,13 +180,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'core.AdminCore'),
@@ -252,13 +198,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 	$this->assertEquals('pass&word', base64_decode($storedPass));
     }
 
-    
-
-
-/*  Test that we don't accept just any cookie path  */
-
-
-
+    /* Test that we don't accept just any cookie path */
     function testChangeCookiePath() {
 	/* 
 	 * AdminCore expects all the form vars, even if we test here only the cookie path.  Don't 
@@ -275,24 +215,12 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 			  'language.useBrowserPref' => 'IGNORED',
 			  'session.lifetime' => 'IGNORED',
 			  'misc.markup' => 'IGNORED',
-			  
-
-
-/*  Set the cookie path in this test, the domain has to be a valid value  */
-
-
-
+			  /* Set the cookie path in this test, the domain has to be a valid value */
 			  'cookie.domain' => '.example.com',
 			  'lock.system' => 'IGNORED',
 			  'format.date' => 'IGNORED');
 
-	
-
-
-/*  Some test cases  */
-
-
-
+	/* Some test cases */
 	$tests = array();
 	$tests[] = array('path' => '', 'saved' => 1, 'ep' => '');
 	$tests[] = array('path' => '/', 'saved' => 1, 'ep' => '/');
@@ -302,47 +230,23 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 	$tests[] = array('path' => '/sub/application', 'saved' => 0);
 
 	foreach ($tests as $testCase) {
-	    
-
-
-/*  Set the cookie path manually to a known value to check later if it was changed  */
-
-
-
+	    /* Set the cookie path manually to a known value to check later if it was changed */
 	    $ret = GalleryCoreApi::setPluginParameter('module', 'core', 'cookie.path', '/bad/');
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Try to change the parameter  */
-
-
-
+	    /* Try to change the parameter */
 	    GalleryUtilities::putRequestVariable('form[cookie][path]', $testCase['path']);
 	    GalleryUtilities::putRequestVariable('form[action][save]', 1);
-	    
-
-
-/*  Just add the other form vars to the request such that it accepts the save request  */
-
-
-
+	    /* Just add the other form vars to the request such that it accepts the save request */
 	    foreach ($valueMap as $key => $value) {
 		list ($outer, $inner) = explode('.', $key);
 		GalleryUtilities::putRequestVariable('form[' . $outer . '][' . $inner . ']',
 						     $value);
 	    }
 
-	    
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	    /* Perform the request and verify that we succeeded */
 	    $results = $this->handleRequest();
 	    $error = $testCase['saved'] ? array() : array('form[error][cookie][invalidPath]');
 	    $status = !$testCase['saved'] ? array() : array('saved' => 1);
@@ -356,13 +260,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 
 	    GalleryDataCache::reset();
 
-	    
-
-
-/*  Check if the correct value was stored  */
-
-
-
+	    /* Check if the correct value was stored */
 	    list ($ret, $realValue) = GalleryCoreApi::getPluginParameter('module', 'core',
 									 'cookie.path');
 	    if ($ret) {
@@ -374,13 +272,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 	}
     }
 
-    
-
-
-/*  Test that we don't accept just any cookie domain  */
-
-
-
+    /* Test that we don't accept just any cookie domain */
     function testChangeCookieDomain() {
 	/* 
 	 * AdminCore expects all the form vars, even if we test here only the cookie path.  Don't 
@@ -397,24 +289,12 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 			  'language.useBrowserPref' => 'IGNORED',
 			  'session.lifetime' => 'IGNORED',
 			  'misc.markup' => 'IGNORED',
-			  
-
-
-/*  Set the cookie domain in this test, set the path to a valid value  */
-
-
-
+			  /* Set the cookie domain in this test, set the path to a valid value */
 			  'cookie.path' => '/sub/',
 			  'lock.system' => 'IGNORED',
 			  'format.date' => 'IGNORED');
 
-	
-
-
-/*  Some test cases  */
-
-
-
+	/* Some test cases */
 	$tests = array();
 	$tests[] = array('domain' => '', 'saved' => 1, 'ep' => '');
 	$tests[] = array('domain' => 'example.com', 'saved' => 1, 'ep' => '.example.com');
@@ -424,48 +304,24 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 	$tests[] = array('domain' => '.com', 'saved' => 0);
 
 	foreach ($tests as $testCase) {
-	    
-
-
-/*  Set the cookie domain manually to a known value to check later if it was changed  */
-
-
-
+	    /* Set the cookie domain manually to a known value to check later if it was changed */
 	    $ret = GalleryCoreApi::setPluginParameter('module', 'core', 'cookie.domain', 'bad');
 	    if ($ret) {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Try to change the parameter  */
-
-
-
+	    /* Try to change the parameter */
 	    GalleryUtilities::putRequestVariable('form[cookie][domain]', $testCase['domain']);
 	    GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
-	    
-
-
-/*  Just add the other form vars to the request such that it accepts the save request  */
-
-
-
+	    /* Just add the other form vars to the request such that it accepts the save request */
 	    foreach ($valueMap as $key => $value) {
 		list ($outer, $inner) = explode('.', $key);
 		GalleryUtilities::putRequestVariable('form[' . $outer . '][' . $inner . ']',
 						     $value);
 	    }
 
-	    
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	    /* Perform the request and verify that we succeeded */
 	    $results = $this->handleRequest();
 	    $error = $testCase['saved'] ? array() : array('form[error][cookie][invalidDomain]');
 	    $status = !$testCase['saved'] ? array() : array('saved' => 1);
@@ -479,13 +335,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
 
 	    GalleryDataCache::reset();
 
-	    
-
-
-/*  Check if the correct value was stored  */
-
-
-
+	    /* Check if the correct value was stored */
 	    list ($ret, $realValue) = GalleryCoreApi::getPluginParameter('module', 'core',
 									 'cookie.domain');
 	    if ($ret) {
@@ -581,25 +431,13 @@ class AdminCoreControllerTest extends GalleryControllerTestCase {
     }
 
     function testReset() {
-	
-
-
-/*  Set the default language to a value such that we can ensure that it hasn't changed  */
-
-
-
+	/* Set the default language to a value such that we can ensure that it hasn't changed */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'default.language', 'de');
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  A request with some changes, but "reset" is requested  */
-
-
-
+	/* A request with some changes, but "reset" is requested */
 	GalleryUtilities::putRequestVariable('form[smtp][server]', 'smtp.example.com');
 	GalleryUtilities::putRequestVariable('form[default][language]', 'en');
 	GalleryUtilities::putRequestVariable('form[action][reset]', 1);

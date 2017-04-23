@@ -46,22 +46,10 @@ class GalleryRepositoryUtilities {
 	} else if (preg_match('/Revision: (\d+) /U', $string, $revision)) {
 	    $revision = $revision[1];
 	} else if (preg_match('/Id: \S+,v (.*?) .*/U', $string, $revision)) {
-	    
-
-
-/*  support 2.1.2 pre-svn strings.raw  */
-
-
-
+	    /* support 2.1.2 pre-svn strings.raw */
 	    $revision = 10212;
 	} else if (preg_match('/crc32 crc32/', $string)) {
-	    
-
-
-/*  support 2.1.2 pre-svn MANIFEST files */
-
-
-
+	    /* support 2.1.2 pre-svn MANIFEST files*/
 	    $revision = 10212;
 	} else {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
@@ -105,37 +93,19 @@ class GalleryRepositoryUtilities {
     function compareVersions($version1, $version2, $build1=null, $build2=null) {
 	$relation = '';
 
-	
-
-
-/*  Compare versions if they're different.  */
-
-
-
+	/* Compare versions if they're different. */
 	if ($version1 != $version2) {
 	    $relation = $this->compareRevisions($version1, $version2);
 	}
 
-	
-
-
-/*  Compare builds if they're specified and if versions are identical.  */
-
-
-
+	/* Compare builds if they're specified and if versions are identical. */
 	if (!empty($build1) && !empty($build2) && empty($relation)) {
 	    if ($build1 != $build2) {
 		$relation = $build1 > $build2 ? 'newer' : 'older';
 	    }
 	}
 
-	
-
-
-/*  If no differences have been found, versions/builds are equal.  */
-
-
-
+	/* If no differences have been found, versions/builds are equal. */
 	if (empty($relation)) {
 	    $relation = 'equal';
 	}
@@ -211,13 +181,7 @@ class GalleryRepositoryUtilities {
     function getLanguageBaseRevision($pluginType, $pluginId) {
 	global $gallery;
 
-	
-
-
-/*  Make sure that strings.raw exists where we expect it.  */
-
-
-
+	/* Make sure that strings.raw exists where we expect it. */
 	$platform =& $gallery->getPlatform();
 	$pluginBaseDir = GalleryCoreApi::getCodeBasePath();
 	$pluginLanguageBasePath =
@@ -228,13 +192,7 @@ class GalleryRepositoryUtilities {
 			 null);
 	}
 
-	
-
-
-/*  Get the strings.raw file's first line which contains the timestamp.  */
-
-
-
+	/* Get the strings.raw file's first line which contains the timestamp. */
 	list ($ret, $line) = $this->getFirstBytesFromFile($pluginLanguageBasePath, 128);
 	if ($ret) {
 	    return array($ret, null);
@@ -292,13 +250,7 @@ class GalleryRepositoryUtilities {
 	$requiredPluginApi[0] = (int)$requiredPluginApi[0];
 	$requiredPluginApi[1] = (int)$requiredPluginApi[1];
 
-	
-
-
-/*  If no provided core API versions were specified, get versions from installed core.  */
-
-
-
+	/* If no provided core API versions were specified, get versions from installed core. */
 	list ($providedCoreApi, $providedPluginApi) =
 	    $this->getProvidedApis($pluginType, $providedApis);
 
@@ -448,13 +400,7 @@ class GalleryRepositoryUtilities {
     function updatePackageMetaData(
 	$pluginType, $pluginId, $packageName, $packageVersion, $packageBuild, $locked) {
 
-	
-
-
-/*  Check if specified package exists in the database.  */
-
-
-
+	/* Check if specified package exists in the database. */
 	list ($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryPluginPackageMap',
 	    array('packageVersion', 'packageBuild'),
 	    array('pluginType' => $pluginType, 'pluginId' => $pluginId,
@@ -470,13 +416,7 @@ class GalleryRepositoryUtilities {
 	}
 	$existsInDatabase = $searchResults->resultCount() > 0;
 
-	
-
-
-/*  Add or update package data.  */
-
-
-
+	/* Add or update package data. */
 	if ($existsInDatabase) {
 	    $ret = GalleryCoreApi::updateMapEntry(
 		'GalleryPluginPackageMap',
@@ -642,33 +582,15 @@ class GalleryRepositoryUtilities {
 
 	$packages = array('module' => array(), 'theme' => array());
 
-	
-
-
-/*  Sample: file: modules/albumselect-lang-en_GB-12345-12345.package.gz 12345  */
-
-
-
+	/* Sample: file: modules/albumselect-lang-en_GB-12345-12345.package.gz 12345 */
 	$languagePackPattern = '#^file:\s+((module|theme)s/([a-zA-Z0-9]+)-'
 	    . '(?:(lang-[a-z]{2}(?:_[A-Z]{2})?)(?:-\d+){2})\.package)(\.gz)?\s+(\d+)$#';
 
-	
-
-
-/*  Sample: file: modules/albumselect-1.0.10-12345-base.package.gz 12345  */
-
-
-
+	/* Sample: file: modules/albumselect-1.0.10-12345-base.package.gz 12345 */
 	 $basePattern = '#^file:\s+((module|theme)s/([a-zA-Z0-9]+)-(?:\.?\d+){2,}-\d+-'
 	    . 'base\.package)(\.gz)?\s+(\d+)$#';
 
-	
-
-
-/*  Sample: file: modules/albumselect-1.0.10-12345.descriptor.gz 12345  */
-
-
-
+	/* Sample: file: modules/albumselect-1.0.10-12345.descriptor.gz 12345 */
 	$descriptorPattern = '#^file:\s+((module|theme)s/([a-zA-Z0-9]+)-(?:\.?\d+){2,}-\d+'
 	    . '\.descriptor)(\.gz)?\s+(\d+)$#';
 
@@ -718,13 +640,7 @@ class GalleryRepositoryUtilities {
 		$packages[$pluginType][$pluginId] = array('files' => array());
 	    }
 
-	    
-
-
-/*  Write package to the local repository cache directory  */
-
-
-
+	    /* Write package to the local repository cache directory */
 	    $absolutePackagePath = $cacheDir . $file;
 	    if ($platform->file_put_contents($absolutePackagePath, $contents) === false) {
 		$platform->fclose($handle);
@@ -787,13 +703,7 @@ class GalleryRepositoryUtilities {
 	$platform =& $gallery->getPlatform();
 	$phpVm = $gallery->getPhpVm();
 
-	
-
-
-/*  Create a temporary file for the multipart download file  */
-
-
-
+	/* Create a temporary file for the multipart download file */
 	$tmpDir = $gallery->getConfig('data.gallery.tmp');
 	$outputFile = $platform->tempnam($tmpDir, 'multipart');
 	if (!$platform->file_exists($outputFile)) {

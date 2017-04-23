@@ -65,13 +65,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromBrowser]', 1);
 
 	$baseDir = dirname(__FILE__) . '/../data/';
@@ -103,23 +97,11 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[set][summary]', 1);
 	GalleryUtilities::putRequestVariable('form[set][description]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_rootAlbum);
 	$this->assertEquals(array(), $results[0]);
 
-	
-
-
-/*  We don't know the ids, but we can verify everything else  */
-
-
-
+	/* We don't know the ids, but we can verify everything else */
 	$i = 0;
 	foreach ($files as $file) {
 	    $this->assertEquals($file, $results[1]['addedFiles'][$i]['fileName']);
@@ -128,13 +110,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	    $i++;
 	}
 
-	
-
-
-/*  Verify item attributes (like order weight)  */
-
-
-
+	/* Verify item attributes (like order weight) */
 	list ($ret, $itemIds) = GalleryCoreApi::fetchChildItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -179,13 +155,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromBrowser]', 1);
 	GalleryUtilities::putRequestVariable('form[name][1]', basename(__FILE__));
 	GalleryUtilities::putRequestVariable('form[type][1]', 'test/unknown-type');
@@ -196,33 +166,15 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[uploadBoxCount]', 1);
 	GalleryUtilities::putRequestVariable('form[set][title]', 'caption');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_rootAlbum);
 	$this->assertEquals(array(), $results[0]);
 
-	
-
-
-/*  We don't know the ids, but we can verify everything else  */
-
-
-
+	/* We don't know the ids, but we can verify everything else */
 	$this->assertEquals(basename(__FILE__), $results[1]['addedFiles'][0]['fileName']);
 	$this->assert(isset($results[1]['addedFiles'][0]['id']), 'Id is not set');
 
-	
-
-
-/*  Verify item attributes  */
-
-
-
+	/* Verify item attributes */
 	list ($ret, $ids) = GalleryCoreApi::fetchChildItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -248,13 +200,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Use valid inputs  */
-
-
-
+	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromBrowser]', 1);
 	GalleryUtilities::putRequestVariable('form[name][1]', basename(__FILE__));
 	GalleryUtilities::putRequestVariable('form[type][1]', 'test/unknown-type');
@@ -266,33 +212,15 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	GalleryUtilities::putRequestVariable('form[set][title]', '');
 	GalleryUtilities::putRequestVariable('form[set][summary]', 1);
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest($this->_rootAlbum);
 	$this->assertEquals(array(), $results[0]);
 
-	
-
-
-/*  We don't know the ids, but we can verify everything else  */
-
-
-
+	/* We don't know the ids, but we can verify everything else */
 	$this->assertEquals(basename(__FILE__), $results[1]['addedFiles'][0]['fileName']);
 	$this->assert(isset($results[1]['addedFiles'][0]['id']), 'Id is not set');
 
-	
-
-
-/*  Verify item attributes  */
-
-
-
+	/* Verify item attributes */
 	list ($ret, $ids) = GalleryCoreApi::fetchChildItemIds($this->_rootAlbum);
 	if ($ret) {
 	    return $ret;
@@ -326,13 +254,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	$results = $this->handleRequest($this->_rootAlbum);
 	$this->assertEquals(array(), $results[0]);
 
-	
-
-
-/*  We don't know the ids, but we can verify everything else  */
-
-
-
+	/* We don't know the ids, but we can verify everything else */
 	$this->assertEquals(" $name ", $results[1]['addedFiles'][0]['fileName'], 'added file');
 	$this->assert(isset($results[1]['addedFiles'][0]['id']), 'Id is not set');
 
@@ -387,13 +309,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
 	$this->assert(!isset($results[1]['addedFiles'][1]['id']), 'id');
     }
 
-    
-
-
-/*  One file upload fails and one succeeds  */
-
-
-
+    /* One file upload fails and one succeeds */
     function testAddFromBrowserMix() {
 	global $gallery;
 	$platform =& $gallery->getPlatform();

@@ -110,13 +110,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  For Oracle, null is replaced with '' when loading data from the database  */
-
-
-
+	/* For Oracle, null is replaced with '' when loading data from the database */
 	$this->assert(in_array($item->getRenderer(), array(null, '')), 'renderer not empty');
     }
 
@@ -131,13 +125,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase {
     }
 
     function testRender() {
-	
-
-
-/*  Make sure we use full urls in applet parameters, and sessionid in image url  */
-
-
-
+	/* Make sure we use full urls in applet parameters, and sessionid in image url */
 	$ret = $this->_makePanoramas();
 	if ($ret) {
 	    return $ret;
@@ -162,13 +150,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase {
 				 . SESSION_ID_PARAMETER . '}', $html),
 		      'deriv: image full url: ' . htmlentities($html));
 
-	
-
-
-/*  Accept forceRawImage parameter to bypass applet display  */
-
-
-
+	/* Accept forceRawImage parameter to bypass applet display */
 	$html = $this->_renderer->render(
 	    $this->_item, $this->_item, array('forceRawImage' => true));
 	$this->assertEquals(null, $html, 'item: raw image');

@@ -25,13 +25,7 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ShutterflyCartPlugin 
-
-
-/*  implements CartPluginInterface_1_0 and CartPluginInterface_1_1  */
-
-
- {
+class ShutterflyCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInterface_1_1 */ {
     /**
      * @see CartPluginInterface_1_0::getSupportedItemTypes
      */

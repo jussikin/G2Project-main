@@ -72,13 +72,7 @@ class PanoramaHelper {
 	    }
 
 	    if (isset($permissions['core.viewSource'])) {
-		
-
-
-/*  Full size; check for preferred copy  */
-
-
-
+		/* Full size; check for preferred copy */
 		if (isset($preferredFullImages[$id])) {
 		    $data[$id] = $preferredFullImages[$id];
 		} else {

@@ -168,13 +168,7 @@ class AdminMaintenanceView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load some standard form parameters  */
-
-
-
+	/* Load some standard form parameters */
 	if ($form['formName'] != 'AdminMaintenance') {
 	    $form['formName'] = 'AdminMaintenance';
 	}

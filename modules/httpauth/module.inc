@@ -24,13 +24,7 @@
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 20958 $
  */
-class HttpAuthModule extends GalleryModule 
-
-
-/*  and GalleryEventListener  */
-
-
- {
+class HttpAuthModule extends GalleryModule /* and GalleryEventListener */ {
 
     function __construct() {
 	$this->HttpAuthModule();
@@ -41,13 +35,7 @@ class HttpAuthModule extends GalleryModule
 
 	$this->setId('httpauth');
 	$this->setName($gallery->i18n('HTTP Auth'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() too!  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() too! */
 	$this->_templateVersion = 1;
 	$this->setDescription($gallery->i18n('Login using HTTP authentication.'));
 	$this->setGroup('authentication', $gallery->i18n('Authentication'));
@@ -117,13 +105,7 @@ class HttpAuthModule extends GalleryModule
     function upgrade($currentVersion, $x1=null) {
 	switch ($currentVersion) {
 	case null:
-	    
-
-
-/*  Initial install  */
-
-
-
+	    /* Initial install */
 	    foreach (array('httpAuthPlugin' => true,
 		    'authName' => 'Gallery',
 		    'authtypePattern' => '//',
@@ -137,31 +119,13 @@ class HttpAuthModule extends GalleryModule
 	    }
 
 	case '0.0.1':
-	    
-
-
-/*  Add AuthFilterPlugin and RegexAuthFilterPlugin  */
-
-
-
+	    /* Add AuthFilterPlugin and RegexAuthFilterPlugin */
 
 	case '0.1.0':
-	    
-
-
-/*  Update to lighter event subsystem  */
-
-
-
+	    /* Update to lighter event subsystem */
 
 	case '0.1.1':
-	    
-
-
-/*  Introduce auth plugins  */
-
-
-
+	    /* Introduce auth plugins */
 
 	    list ($ret, $params) = $this->fetchParameters();
 	    if ($ret) {
@@ -205,83 +169,35 @@ class HttpAuthModule extends GalleryModule
 	    }
 
 	case '0.2.0':
-	    
-
-
-/*  Some 2.2 API changes  */
-
-
-
+	    /* Some 2.2 API changes */
 
 	case '0.2.1':
-	    
-
-
-/*  Simplify auth plugin system  */
-
-
-
+	    /* Simplify auth plugin system */
 
 	case '0.3.0':
-	    
-
-
-/*  Add support for the php-cgi server API  */
-
-
-
+	    /* Add support for the php-cgi server API */
 	    $ret = $this->_activateRewriteRules();
 	    if ($ret && !($ret->getErrorCode() & ERROR_CONFIGURATION_REQUIRED)) {
 		return $ret;
 	    }
 
 	case '0.4.0':
-	    
-
-
-/*  Add logout view to clear browsers' authentication cache  */
-
-
-
+	    /* Add logout view to clear browsers' authentication cache */
 
 	case '0.5.0':
-	    
-
-
-/*  Adding HttpAuthInterface and new site admin option  */
-
-
-
+	    /* Adding HttpAuthInterface and new site admin option */
 	    $ret = $this->setParameter('useGlobally', false);
 	    if ($ret) {
 		return $ret;
 	    }
 
 	case '0.5.1':
-	    
-
-
-/*  Version 1.0.0 for Gallery 2.2 release  */
-
-
-
+	    /* Version 1.0.0 for Gallery 2.2 release */
 
 	case '1.0.0':
-	    
-
-
-/*  .mo file migration  */
-
-
-
+	    /* .mo file migration */
 	case '1.0.1':
-	    
-
-
-/*  Refactored to new event registration from core API 7.34  */
-
-
-
+	    /* Refactored to new event registration from core API 7.34 */
 	case '1.0.2':
 	case '1.0.3':
 
@@ -344,13 +260,7 @@ class HttpAuthModule extends GalleryModule
 	    return $rules;
 	}
 	if (!in_array('authorization', $activeRules)) {
-	    
-
-
-/*  Check that Gallery can access HTTP usernames and passwords  */
-
-
-
+	    /* Check that Gallery can access HTTP usernames and passwords */
 	    GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthHelper.class');
 	    list ($ret, $success) = HttpAuthHelper::checkHttpAuth();
 	    if ($ret) {
@@ -365,13 +275,7 @@ class HttpAuthModule extends GalleryModule
 	    }
 	}
 
-	
-
-
-/*  Pass the Authorization header to Gallery in a request variable  */
-
-
-
+	/* Pass the Authorization header to Gallery in a request variable */
 	$rules['authorization'] = array(
 	    'comment' => $this->translate('Authorization Header'),
 	    'help' => $this->translate(

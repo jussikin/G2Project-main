@@ -123,25 +123,13 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase {
 	$thumbnail = $thumbnailTable[$childIds[0]];
 	$this->assertEquals($highlight->getId(), $thumbnail->getDerivativeSourceId(), 'src');
 	$this->assertEquals('thumbnail|123', $thumbnail->getDerivativeOperations(), 'op');
-	
-
-
-/*  For Oracle, null is replaced with '' when loading data from the database  */
-
-
-
+	/* For Oracle, null is replaced with '' when loading data from the database */
 	$this->assert(in_array($thumbnail->getPostFilterOperations(), array(null, '')),
 		      'postfilter');
     }
 
     function testAddEmptyAlbumLink() {
-	
-
-
-/*  Link to empty album (no highlight) falls back to using linkitem as thumbnail source  */
-
-
-
+	/* Link to empty album (no highlight) falls back to using linkitem as thumbnail source */
 	GalleryUtilities::putRequestVariable('form[action][addLinkItem]', 1);
 	GalleryUtilities::putRequestVariable('form[linkType]', 'album');
 	GalleryUtilities::putRequestVariable('form[linkedAlbumId]', $this->_album->getId());

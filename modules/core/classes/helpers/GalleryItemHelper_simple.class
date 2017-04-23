@@ -34,13 +34,7 @@ class GalleryItemHelper_simple {
     static function fetchThemeId($item) {
 	global $gallery;
 
-	
-
-
-/*  Find the right theme for this item  */
-
-
-
+	/* Find the right theme for this item */
 	if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 	    $themeId = $item->getTheme();
 	} else {
@@ -61,13 +55,7 @@ class GalleryItemHelper_simple {
 	    }
 	}
 
-	
-
-
-/*  No default?  We're screwed  */
-
-
-
+	/* No default?  We're screwed */
 	if (empty($themeId)) {
 	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 	}
@@ -167,13 +155,7 @@ class GalleryItemHelper_simple {
 	    $counts[$result[0]] = $result[1];
 	}
 
-	
-
-
-/*  Now we have all the results that were cached.  Get the rest  */
-
-
-
+	/* Now we have all the results that were cached.  Get the rest */
 	$remaining = array();
 	foreach ($itemIds as $itemId) {
 	    if (!isset($counts[$itemId])) {
@@ -188,13 +170,7 @@ class GalleryItemHelper_simple {
 		return array($ret, null);
 	    }
 
-	    
-
-
-/*  Update the cache  */
-
-
-
+	    /* Update the cache */
 	    foreach ($results as $itemId => $count) {
 		$ret = GalleryCoreApi::addMapEntry(
 		    'GalleryDescendentCountsMap',

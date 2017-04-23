@@ -39,13 +39,7 @@ class SnapGalaxyModule extends GalleryModule {
 	$this->setId('snapgalaxy');
 	$this->setName($gallery->i18n('SnapGalaxy'));
 	$this->setDescription($gallery->i18n('SnapGalaxy Photo Printing Module'));
-	$this->setVersion('2.0.0'); 
-
-
-/*  Update upgrade() too  */
-
-
-
+	$this->setVersion('2.0.0'); /* Update upgrade() too */
 	$this->_templateVersion = 1;
 	$this->setGroup('commerce', $gallery->i18n('Commerce'));
 	$this->setCallbacks('getSiteAdminViews|getItemLinks');
@@ -69,25 +63,13 @@ class SnapGalaxyModule extends GalleryModule {
 
 	switch ($currentVersion) {
 	case '0':
-	    
-
-
-/*  Register our permission  */
-
-
-
+	    /* Register our permission */
 	    $ret = GalleryCoreApi::registerPermission($this->getId(), 'snapgalaxy.print',
 		  $gallery->i18n('[snapgalaxy] Print'));
 	    if ($ret) {
 		return $ret;
 	    }
-	    
-
-
-/*  Give everybody print permission by default  */
-
-
-
+	    /* Give everybody print permission by default */
 	    $gallery->guaranteeTimeLimit(300);
 	    $ret = GalleryCoreApi::addGroupPermission(
 		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
@@ -104,13 +86,7 @@ class SnapGalaxyModule extends GalleryModule {
 	case '0.9.0':
 	case '0.9.0.1':
 	case '0.9.1':
-	    
-
-
-/*  Implementing new version of the cart plugin interface  */
-
-
-
+	    /* Implementing new version of the cart plugin interface */
 	case '0.9.2':
 	case '0.9.3':
 	case '0.9.4':

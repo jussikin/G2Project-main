@@ -78,13 +78,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'admin');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'off');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'itemadd.ItemAddSiteAdmin'),
@@ -101,13 +95,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddUploadLocalServerDir() {
-	
-
-
-/*  Add should save other settings on the page too  */
-
-
-
+	/* Add should save other settings on the page too */
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'on');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'admin');
 
@@ -119,13 +107,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'itemadd.ItemAddSiteAdmin'),
@@ -153,13 +135,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[uploadLocalServer][newDir]', '');
 	GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -173,13 +149,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[uploadLocalServer][newDir]', __FILE__);
 	GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -197,13 +167,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 					     '/this/fake/gallery2/path/wont/exist');
 	GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -212,22 +176,10 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 		  'error' => array('form[error][uploadLocalServer][newDir][notReadable]')),
 	    $results);
 
-	
-
-
-/*  Test again with an open_basedir restriction  */
-
-
-
+	/* Test again with an open_basedir restriction */
 	$gallery->_phpVm = new ItemAddSiteAdminControllerTestPhpVm('/valid/dir');
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -249,13 +201,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[uploadLocalServer][newDir]', '/test/path');
 	GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -275,13 +221,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[uploadLocalServer][newDir]', '/test/path');
 	GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -293,13 +233,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddUploadLocalServerDirDotDotPath() {
-	
-
-
-/*  Apply realpath to paths with ..  */
-
-
-
+	/* Apply realpath to paths with .. */
 	global $gallery;
 	$platform = new UnitTestPlatform();
 	$platform->setReply('splitPath', array('/test/../path'), array('/', 'test', '..', 'path'));
@@ -314,13 +248,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'off');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'on');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -331,13 +259,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddUploadLocalServerDirRelativePath() {
-	
-
-
-/*  Relative path should be converted to absolute (with realpath)  */
-
-
-
+	/* Relative path should be converted to absolute (with realpath) */
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 	$saveDir = $platform->getcwd();
@@ -353,13 +275,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'off');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'admin');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -393,13 +309,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'on');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'on');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -412,13 +322,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
     function testAddUploadLocalServerDirWithUmlaut() {
 	global $gallery;
 
-	
-
-
-/*  Fake a specific charset to isolate this test  */
-
-
-
+	/* Fake a specific charset to isolate this test */
 	GalleryDataCache::put('GalleryCharsetHelper_simple::detectSystemCharset', 'ISO-8859-1');
 
 	$gallery->_phpVm = new ItemAddSiteAdminControllerTestPhpVm('');
@@ -430,13 +334,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	$platform->setReply('is_dir', array($iso88591String), true);
 	$gallery->setPlatform($platform);
 
-	
-
-
-/*  German umlaut '�' in ISO-8859-1  */
-
-
-
+	/* German umlaut '�' in ISO-8859-1 */
 	$umlautUtf8 = GalleryCoreApi::convertToUtf8(chr(228), 'ISO-8859-1');
 	$dir = '/php' . $umlautUtf8 . 'unit';
 	GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
@@ -444,13 +342,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'admin');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'on');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -461,26 +353,14 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testAddUploadLocalServerDirWithSymlink() {
-	
-
-
-/*  If symlink in the path check open_basedir with realpath but store given path  */
-
-
-
+	/* If symlink in the path check open_basedir with realpath but store given path */
 	global $gallery;
 	$ret = $this->_setUploadDirs(array(1 => 'a', 2 => null));
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  realpath of /link/dir is /other/fun/dir  */
-
-
-
+	/* realpath of /link/dir is /other/fun/dir */
 	$platform = new UnitTestPlatform();
 	$platform->setReply('splitPath', array('/link/dir'), array('/', 'link', 'dir'));
 	$platform->setReply('isRestrictedByOpenBaseDir', array('/link/dir'), false);
@@ -493,13 +373,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[fromweb]', 'off');
 	GalleryUtilities::putRequestVariable('form[fromserver]', 'on');
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('redirect' => array('view' => 'core.SiteAdmin',
@@ -525,13 +399,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Perform the request and verify that we succeeded  */
-
-
-
+	/* Perform the request and verify that we succeeded */
 	$results = $this->handleRequest();
 	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
 						      'subView' => 'itemadd.ItemAddSiteAdmin'),
@@ -554,13 +422,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('form[uploadLocalServer][selectedDir]', '');
 	GalleryUtilities::putRequestVariable('form[action][removeUploadLocalServerDir]', 1);
 
-	
-
-
-/*  Perform the request and verify that we failed  */
-
-
-
+	/* Perform the request and verify that we failed */
 	$results = $this->handleRequest();
 	$this->assertEquals(
 	    array('delegate' => array('view' => 'core.SiteAdmin',
@@ -587,21 +449,9 @@ class ItemAddSiteAdminControllerTestPhpVm extends GalleryPhpVm {
 	return parent::ini_get($varname);
     }
 
-    
-
-
-/*  For the upload directory test  */
-
-
-
+    /* For the upload directory test */
     function function_exists($functionName) {
-	
-
-
-/*  make it use our charset tables, they work on all platforms  */
-
-
-
+	/* make it use our charset tables, they work on all platforms */
 	switch ($functionName) {
 	case 'iconv':
 	case 'mb_convert_encoding':

@@ -45,13 +45,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
 	if ($ret) {
 	   return $ret;
 	}
-	
-
-
-/*  Register a dummy toolkit and operation  */
-
-
-
+	/* Register a dummy toolkit and operation */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ImageBlockToolkit', 'ImageBlockToolkit',
 	    'modules/imageblock/test/phpunit/ImageBlockDisabledTest.class', 'imageblock', null);
@@ -91,13 +85,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Set the ImageBlockDisabled flag  */
-
-
-
+	/* Set the ImageBlockDisabled flag */
 	$ret = ImageBlockHelper::setDisabledFlag($this->_topAlbum, true, true);
 	if ($ret) {
 	    return $ret;
@@ -124,13 +112,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Unset the ImageBlockDisabled flag  */
-
-
-
+	/* Unset the ImageBlockDisabled flag */
 	$ret = ImageBlockHelper::setDisabledFlag($this->_topAlbum, true, false);
 	if ($ret) {
 	    return $ret;
@@ -143,13 +125,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
     }
 
     function _createSubAlbumWithItems($parentId) {
-	
-
-
-/*  Create a new album and image, set thumbnail and highlight  */
-
-
-
+	/* Create a new album and image, set thumbnail and highlight */
 	list ($ret, $album) = $this->_createRandomAlbum($parentId);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -200,13 +176,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
 	if ($ret) {
 	    return array($ret, null, null);
 	}
-	
-
-
-/*  add thumbnail  */
-
-
-
+	/* add thumbnail */
 	list ($ret, $thumbId) = $this->_addDerivative($photo, $photo,
 	    DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 150);
 	if ($ret) {
@@ -232,13 +202,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
 	$derivative->setMimeType($src->getMimeType());
 	$derivative->setDerivativeOperations('testoperation|0');
 	if ($size) {
-	    
-
-
-/*  Set scaled size:  */
-
-
-
+	    /* Set scaled size: */
 	    $w = $src->getWidth();
 	    $h = $src->getHeight();
 	    if ($w <= $size && $h <= $size && $derivativeType == DERIVATIVE_TYPE_IMAGE_THUMBNAIL) {
@@ -252,13 +216,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
 		$derivative->setWidth((int)($size*$w/$h));
 	    }
 	} else {
-	    
-
-
-/*  Set rotated size (swap wd/ht):  */
-
-
-
+	    /* Set rotated size (swap wd/ht): */
 	    $derivative->setWidth($src->getHeight());
 	    $derivative->setHeight($src->getWidth());
 	}
@@ -289,13 +247,7 @@ class ImageBlockDisabledTest extends GalleryTestCase {
     }
 
     function testImageBlockDisabledOneItemReturned() {
-	
-
-
-/*  Unset the ImageBlockDisabled flag on the subAlbum  */
-
-
-
+	/* Unset the ImageBlockDisabled flag on the subAlbum */
 	$ret = ImageBlockHelper::setDisabledFlag($this->_subAlbum, true, false);
 	if ($ret) {
 	    return $ret;

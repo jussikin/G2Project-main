@@ -122,13 +122,7 @@ class GalleryPlugin {
 	global $gallery;
 	$translator =& $gallery->getTranslator();
 	if (!isset($translator)) {
-	    
-
-
-/*  No translator! (could be an old module calling translate() from constructor)  */
-
-
-
+	    /* No translator! (could be an old module calling translate() from constructor) */
 	    return 'Translation error: ' . print_r($params, true);
 	}
 	list ($ret, $content) =
@@ -185,25 +179,13 @@ class GalleryPlugin {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Flush the cache  */
-
-
-
+	/* Flush the cache */
 	$this->_flushPluginCache();
 	GalleryDataCache::removeFromDisk(array('type' => 'local-url-map'));
 
 	$templateCacheDir = $gallery->getConfig('data.smarty.templates_c');
 	if ($platform->file_exists($templateCacheDir)) {
-	    
-
-
-/*  Ignore errors  */
-
-
-
+	    /* Ignore errors */
 	    $platform->recursiveRmdir($templateCacheDir);
 	}
 
@@ -311,13 +293,7 @@ class GalleryPlugin {
 
 	list ($ret, $redirect) = $this->activate(false);
 	if ($ret) {
-	    
-
-
-/*  Try to send the deactivation event before failing completely.  */
-
-
-
+	    /* Try to send the deactivation event before failing completely. */
 	    $this->_postDeactivationEvent();
 	    return array($ret, null);
 	}
@@ -360,25 +336,13 @@ class GalleryPlugin {
     function uninstall() {
 	global $gallery;
 
-	
-
-
-/*  Remove this plugin  */
-
-
-
+	/* Remove this plugin */
 	$ret = GalleryCoreApi::removePlugin($this->getPluginType(), $this->getId());
 	if ($ret) {
 	    return $ret;
 	}
 
-	
-
-
-/*  Remove data directory for this plugin  */
-
-
-
+	/* Remove data directory for this plugin */
 	$platform =& $gallery->getPlatform();
 	$dataDir = $gallery->getConfig('data.gallery.plugins_data') . $this->getPluginType() .
 		   's' . $platform->getDirectorySeparator() . $this->getId();
@@ -460,13 +424,7 @@ class GalleryPlugin {
 	    }
 	}
 
-	
-
-
-/*  @todo Change scanPlugin to be called as a static function or helper function  */
-
-
-
+	/** @todo Change scanPlugin to be called as a static function or helper function */
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryRepository.class');
 	list ($ret, $repositories) = GalleryRepository::getRepositories();
 	if ($ret) {
@@ -500,13 +458,7 @@ class GalleryPlugin {
      * Flush plugin-related caches.
      */
     function _flushPluginCache() {
-	
-
-
-/*  Flush the cache  */
-
-
-
+	/* Flush the cache */
 	$pluginType = $this->getPluginType();
 	GalleryDataCache::remove("GalleryPluginHelper::fetchPluginStatus($pluginType)");
 	GalleryDataCache::removeFromDisk(array('type' => $pluginType,
@@ -608,13 +560,7 @@ class GalleryPlugin {
 	}
 
 	$results = array();
-	
-
-
-/*  TODO: we should do this in one database query, ordered by id.  */
-
-
-
+	/* TODO: we should do this in one database query, ordered by id. */
 	foreach ($order as $id) {
 	    list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters(
 		$this->getPluginType(), $this->getId(), $id);
@@ -645,13 +591,7 @@ class GalleryPlugin {
 	return null;
     }
 
-    
-
-
-/*  Getters and setters below  */
-
-
-
+    /* Getters and setters below */
 
     function setId($id) {
 	$this->_id = $id;

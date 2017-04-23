@@ -39,13 +39,7 @@ class AdminDigibugController extends GalleryController {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Provide compatibility with 2.1 and 2.2  */
-
-
-
+	/* Provide compatibility with 2.1 and 2.2 */
 	$apiVersion = GalleryCoreApi::getApiVersion();
 	$adminPlugins = 'core.Admin'
 	    . ($apiVersion[0] > 7 || $apiVersion[1] >= 7 ? 'Plugins' : 'Modules');

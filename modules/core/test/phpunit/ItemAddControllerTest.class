@@ -154,13 +154,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
     }
 
     function testHandleRequestRequiresContainerItem() {
-	
-
-
-/*  Some users report illegal child error when adding items.  Do the check ASAP.  */
-
-
-
+	/* Some users report illegal child error when adding items.  Do the check ASAP. */
 	list ($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
 	if ($ret) {
 	    return $ret;
@@ -288,13 +282,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
 		  'addPlugin' => 'ItemAddControllerTestPluginSuccess',
 		  'itemId' => $this->_album->getId()),
 	    true);
-	
-
-
-/*  No status information is saved / shown  */
-
-
-
+	/* No status information is saved / shown */
 	$this->assertEquals(null, $this->_getStatusFromProgressBar(), 'status');
     }
 
@@ -423,13 +411,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Ensure that the active user is missing the core.addAlbumItem permission  */
-
-
-
+	/* Ensure that the active user is missing the core.addAlbumItem permission */
 	$ret = GalleryCoreApi::removeItemPermissions($this->_album->getId());
 	if ($ret) {
 	    return $ret;
@@ -480,13 +462,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
 				"warning $i - item not processed by ItemAddOption");
 	}
 
-	
-
-
-/*  All files from the archive should be added in a flat hierarchy, folders are ignored  */
-
-
-
+	/* All files from the archive should be added in a flat hierarchy, folders are ignored */
 	$expected = array();
 	$expected[] = 'blah.ext';
 	if ($isUnix) {
@@ -580,13 +556,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
     function testHandleRequestWithProgressBarAutoRedirectOnError() {
     	global $gallery;
 
-    	
-
-
-/*  Ensure that we don't redirect because of time constraints  */
-
-
-
+    	/* Ensure that we don't redirect because of time constraints */
     	$gallery->_phpVm = new ItemAddPhpVm(0, 0);
 
 	GalleryUtilities::putRequestVariable('addPlugin', 'ItemAddControllerTestPluginFail');
@@ -610,13 +580,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
     function testHandleRequestWithProgressBarAutoRedirectOnSuccessWithinPeriod() {
 	global $gallery;
 
-	
-
-
-/*  Time progresses very slowly  */
-
-
-
+	/* Time progresses very slowly */
     	$gallery->_phpVm = new ItemAddPhpVm(0, 1);
 
 	list ($ret, $item) = GalleryTestCase::_createRandomDataItem($this->_album->getId());
@@ -648,13 +612,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
     function testHandleRequestWithProgressBarNoAutoRedirectOnSuccessAfterPeriod() {
 	global $gallery;
 
-	
-
-
-/*  Make the time progress in large steps  */
-
-
-
+	/* Make the time progress in large steps */
     	$gallery->_phpVm = new ItemAddPhpVm(0, 16);
 
 	list ($ret, $item) = GalleryTestCase::_createRandomDataItem($this->_album->getId());
@@ -729,13 +687,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
 	 * progress-bar view.
 	 */
 
-	
-
-
-/*  Don't test with the real plugin instance  */
-
-
-
+	/* Don't test with the real plugin instance */
 	$this->_registerFactoryImplementationForTest(
 	    'ItemAddPlugin', 'ItemAddControllerTestAddPluginWebDav', 'ItemAddWebDav',
 	    'modules/core/test/phpunit/ItemAddControllerTest.class', 'coreTest');
@@ -749,13 +701,7 @@ class ItemAddControllerTest extends GalleryControllerTestCase {
 	GalleryUtilities::putRequestVariable('addPlugin', 'ItemAddWebDav');
 
 	ob_start();
-	
-
-
-/*  Do a static call, that's how WebDAV invokes / invoked the controller.  */
-
-
-
+	/* Do a static call, that's how WebDAV invokes / invoked the controller. */
 	list ($ret, $results) = ItemAddController::handleRequest(array());
 	$output = ob_get_contents();
 	ob_end_clean();
@@ -804,13 +750,7 @@ class ItemAddControllerTestPluginSuccess {
 		array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null, null);
 	}
 
-	
-
-
-/*  Pretend we just added item(s) that are already there  */
-
-
-
+	/* Pretend we just added item(s) that are already there */
 	list ($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($item);
 	if ($ret) {
 	    return array($ret, null, null);
@@ -829,13 +769,7 @@ class ItemAddControllerTestPluginSuccess {
  */
 class ItemAddControllerTestAddPluginWebDav {
     function handleRequest($form, &$item) {
-	
-
-
-/*  Pretend we just added item(s) that are already there  */
-
-
-
+	/* Pretend we just added item(s) that are already there */
 	list ($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($item);
 	if ($ret) {
 	    return array($ret, null, null);

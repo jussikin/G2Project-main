@@ -45,13 +45,7 @@ class CreateThumbnailOptionTest extends ItemAddOptionTestCase {
 	}
 	$this->_markForCleanup($this->_album);
 
-	
-
-
-/*  Register a dummy toolkit  */
-
-
-
+	/* Register a dummy toolkit */
 	$path = 'modules/core/test/phpunit/CreateThumbnailOptionTest.class';
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'CreateThumbnailOptionTestToolkit',
@@ -62,13 +56,7 @@ class CreateThumbnailOptionTest extends ItemAddOptionTestCase {
 	}
 	$this->_markToolkitForCleanup('CreateThumbnailOptionTestToolkit');
 
-	
-
-
-/*  Register operations that we can perform on our mock data items  */
-
-
-
+	/* Register operations that we can perform on our mock data items */
 	$ret = GalleryCoreApi::registerToolkitOperation('CreateThumbnailOptionTestToolkit',
 		array('test/file'), 'thumbnail',
 		array(array('type' => 'int', 'description' => 'test'),
@@ -108,13 +96,7 @@ class CreateThumbnailOptionTest extends ItemAddOptionTestCase {
 	$this->assert($isCurrent, 'Thumbnail was not created!');
 	$this->assert(!$this->_itemThumbnail[0]->getIsBroken(), 'Thumbnail is broken!');
 
-	
-
-
-/*  Check if the derivative was saved by checking  */
-
-
-
+	/* Check if the derivative was saved by checking */
 	$this->assert(!$this->_itemThumbnail[0]->isModified(),
 		      'Thumbnail still modified, should be saved');
     }
@@ -164,13 +146,7 @@ class CreateThumbnailOptionTest extends ItemAddOptionTestCase {
 	}
     }
 
-    
-
-
-/*  This won't do anything, but shouldn't have any errors either.  */
-
-
-
+    /* This won't do anything, but shouldn't have any errors either. */
     function testCreateWithNoThumbnail() {
 	$form['CreateThumbnailOption']['createThumbnail'] = 1;
 	list ($errors, $warnings) = $this->_handleRequestAfterAdd($form, $this->_items);
@@ -178,13 +154,7 @@ class CreateThumbnailOptionTest extends ItemAddOptionTestCase {
 	$this->assertEquals($errors, $this->_noErrors);
     }
 
-    
-
-
-/*  This won't do anything, but shouldn't have any errors either.  */
-
-
-
+    /* This won't do anything, but shouldn't have any errors either. */
     function testCreateMultipleWithNoThumbnail() {
 	$totalTestItems = 3;
 	for ($j = 1; $j < $totalTestItems; $j++) {

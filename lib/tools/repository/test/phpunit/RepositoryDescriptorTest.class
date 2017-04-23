@@ -45,13 +45,7 @@ class RepositoryDescriptorTest extends GalleryTestCase {
 	}
 	global $gallery;
 
-	
-
-
-/*  This maps to ../data/MANIFEST  */
-
-
-
+	/* This maps to ../data/MANIFEST */
 	$this->_canonicalFileMetaData = array(
 	    'files' => array(
 		'MANIFEST' => array(
@@ -293,55 +287,13 @@ class RepositoryDescriptorTest extends GalleryTestCase {
 	}
 
 	$phpVm = new RepositoryDescriptorTestPhpVm();
-	$phpVm->setCrc32('file.1',      1);     
-
-
-/*  wrong checksum  */
-
-
-
-	$phpVm->setCrc32('file.2',      12345); 
-
-
-/*  correct checksum  */
-
-
-
-	$phpVm->setCrc32('strings.raw', 12345); 
-
-
-/*  correct checksum  */
-
-
-
-	$phpVm->setCrc32('aa.po',       12345); 
-
-
-/*  correct checksum  */
-
-
-
-	$phpVm->setCrc32('aa.mo',       12345); 
-
-
-/*  correct checksum  */
-
-
-
-	$phpVm->setCrc32('test.mo',     12345); 
-
-
-/*  correct checksum  */
-
-
-
-	$phpVm->setCrc32('file.test',   12345); 
-
-
-/*  correct checksum  */
-
-
-
+	$phpVm->setCrc32('file.1',      1);     /* wrong checksum */
+	$phpVm->setCrc32('file.2',      12345); /* correct checksum */
+	$phpVm->setCrc32('strings.raw', 12345); /* correct checksum */
+	$phpVm->setCrc32('aa.po',       12345); /* correct checksum */
+	$phpVm->setCrc32('aa.mo',       12345); /* correct checksum */
+	$phpVm->setCrc32('test.mo',     12345); /* correct checksum */
+	$phpVm->setCrc32('file.test',   12345); /* correct checksum */
 	$gallery->_phpVm = $phpVm;
 
 	$platform = new UnitTestPlatform();
@@ -349,43 +301,19 @@ class RepositoryDescriptorTest extends GalleryTestCase {
 	$platform->setReply('is_readable', array($base . 'MANIFEST'), true);
 	$platform->setReply('stat', array($base . 'MANIFEST'), array(9 => 1000000));
 
-	
-
-
-/*  file.1 has a bad crc  */
-
-
-
+	/* file.1 has a bad crc */
 	$platform->setReply('file_exists', array($base . 'file.1'), true);
 	$platform->setReply('file_get_contents', array($base . 'file.1'), 'file.1');
 
-	
-
-
-/*  file.2 is newer than the MANIFEST, and has the wrong size  */
-
-
-
+	/* file.2 is newer than the MANIFEST, and has the wrong size */
 	$platform->setReply('file_exists', array($base . 'file.2'), true);
 	$platform->setReply('file_get_contents', array($base . 'file.2'), 'file.2');
 	$platform->setReply('stat', array($base . 'file.2'), array(7 => 1, 9 => 2000000));
 
-	
-
-
-/*  strings.raw is missing  */
-
-
-
+	/* strings.raw is missing */
 	$platform->setReply('file_exists', array($base . 'po/strings.raw'), false);
 
-	
-
-
-/*  the rest of the files are older than the MANIFEST and have the right file size  */
-
-
-
+	/* the rest of the files are older than the MANIFEST and have the right file size */
 	$platform->setReply('file_exists', array($base . 'po/aa.po'), true);
 	$platform->setReply('file_get_contents', array($base . 'po/aa.po'), 'aa.po');
 	$platform->setReply('stat', array($base . 'po/aa.po'), array(7 => 11111, 9 => 1));

@@ -497,13 +497,7 @@ class NotificationHelper {
 	$updateHints = false;
 	if (!empty($hints)) {
 	    $key = array_search($hint, $hints);
-	    
-
-
-/*  Only add if it is not in the hint list already  */
-
-
-
+	    /* Only add if it is not in the hint list already */
 	    if ($key === false) {
 		$hints[] = $hint;
 		$updateHints = true;

@@ -68,13 +68,7 @@ class WatermarkOption extends ItemAddOption {
     function isAppropriate() {
 	GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 
-	
-
-
-/*  Only appropriate if we've got some watermarks to show  */
-
-
-
+	/* Only appropriate if we've got some watermarks to show */
 	list ($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 	if ($ret) {
 	    return array($ret, null);

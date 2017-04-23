@@ -42,13 +42,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 
 	$this->_registerEventListener('GalleryEntity::delete', new WatermarkModule());
 
-	
-
-
-/*  Create a watermark  */
-
-
-
+	/* Create a watermark */
 	$watermark = new WatermarkImage();
 	$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
 	if ($ret) {
@@ -87,13 +81,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -122,13 +110,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -155,13 +137,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 						   'form[error][whichDerivative][missing]')),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -181,13 +157,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -211,13 +181,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 				  'error' => array()),
 			    $results);
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;
@@ -294,13 +258,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
 	    return ($ret);
 	}
 
-	
-
-
-/*  Verify the watermark  */
-
-
-
+	/* Verify the watermark */
 	list ($ret, $this->_watermark) = $this->_watermark->refresh();
 	if ($ret) {
 	    return $ret;

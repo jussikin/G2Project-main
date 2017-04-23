@@ -65,13 +65,7 @@ class ThumbnailSiteAdminController extends GalleryController {
 	    } else {
 		$status = 'add';
 	    }
-	} else if (isset($form['action']['add'])) { 
-
-
-/*  $form['image']=='old'  */
-
-
-
+	} else if (isset($form['action']['add'])) { /* $form['image']=='old' */
 	    $ret = ThumbnailHelper::updateItem($form['oldimage'], $form['mimeType'], true);
 	    if ($ret) {
 		return array($ret, null);
@@ -169,13 +163,7 @@ class ThumbnailSiteAdminView extends GalleryView {
 	unset($toolkitMime['Thumbnail']);
 	$form['operationSupport'] = $toolkitMime;
 
-	
-
-
-/*  Set the form's encoding type since we're uploading binary files  */
-
-
-
+	/* Set the form's encoding type since we're uploading binary files */
 	if ($template->hasVariable('SiteAdmin')) {
 	    $SiteAdmin =& $template->getVariableByReference('SiteAdmin');
 	    $SiteAdmin['enctype'] = 'multipart/form-data';

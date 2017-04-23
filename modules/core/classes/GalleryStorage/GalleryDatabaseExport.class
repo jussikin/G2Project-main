@@ -97,13 +97,7 @@ class GalleryDatabaseExport {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  Calculate the number of tables that will probably be exported  */
-
-
-
+	/* Calculate the number of tables that will probably be exported */
 	list ($tableName, $unused) = $storage->_translateTableName('Schema');
 
 	list ($ret, $results) = $storage->search('SELECT COUNT(*) FROM ' . $tableName);
@@ -240,32 +234,14 @@ class GalleryDatabaseExport {
 	}
 
 	foreach ($plugins as $pluginId => $plugin) {
-	    
-
-
-/*  If the plugin version isn't set in the plugin data array, it's not installed  */
-
-
-
+	    /* If the plugin version isn't set in the plugin data array, it's not installed */
 	    if (empty($plugin['version'])) {
-		
-
-
-/*  This plugin is not installed so issue a warning message.  */
-
-
-
+		/* This plugin is not installed so issue a warning message. */
 		$warnings[] = $coreModule->translate(
 			array('text' => 'The %s "%s" is not installed and will not be backed up.',
 			      'arg1' => $coreModule->translate($pluginType), 'arg2' => $pluginId));
 		if (false) {
-		    
-
-
-/*  Specific translations for $pluginType  */
-
-
- _('module'); _('theme');
+		    /* Specific translations for $pluginType */ _('module'); _('theme');
 		}
 		continue;
 	    }
@@ -334,13 +310,7 @@ class GalleryDatabaseExport {
 	}
 
 	$this->_callBack['total'] += count($sql['table']);
-	
-
-
-/*  If the core module then export schema and sequence tables first  */
-
-
-
+	/* If the core module then export schema and sequence tables first */
 	if ($pluginId == 'core') {
 	    $this->_callBack['total'] += 3;
 
@@ -356,13 +326,7 @@ class GalleryDatabaseExport {
 		return $ret;
 	    }
 
-	    
-
-
-/*  Export our sequences now  */
-
-
-
+	    /* Export our sequences now */
 	    foreach (array(DATABASE_SEQUENCE_LOCK, DATABASE_SEQUENCE_ID,
 			   DATABASE_SEQUENCE_EVENT_LOG) as $sequenceId) {
 		$ret = $this->_exportSequence($handle, $sequenceId);
@@ -501,13 +465,7 @@ class GalleryDatabaseExport {
 	 */
 	$tableLower = GalleryUtilities::strToLower($nameInSchema);
 
-	
-
-
-/*  Check to see if we want to skip the data.  */
-
-
-
+	/* Check to see if we want to skip the data. */
 	if (!array_key_exists($tableLower, $this->_ignoreTables)) {
 	    $ret = $this->_exportData($handle, $table, $warnings);
 	    if ($ret) {
@@ -556,13 +514,7 @@ class GalleryDatabaseExport {
 	}
 
 	if ($rowCount > 0) {
-	    
-
-
-/*  Calculate the number of data chunks to read.  */
-
-
-
+	    /* Calculate the number of data chunks to read. */
 	    $dataChunks = 1;
 
 	    /*
@@ -570,24 +522,12 @@ class GalleryDatabaseExport {
 	     * and provides some feedback that we are actually working.
 	     */
 	    if ($rowCount > $this->_rowChunkSize) {
-		
-
-
-/*  Oops the amount of work just got bigger.  */
-
-
-
+		/* Oops the amount of work just got bigger. */
 		$dataChunks = ceil($rowCount / $this->_rowChunkSize);
 		$this->_callBack['total'] += $dataChunks;
 	    }
 
-	    
-
-
-/*  Check for Map definition; if not found try Entity  */
-
-
-
+	    /* Check for Map definition; if not found try Entity */
 	    list ($ret, $fields) = $storage->describeMap($table);
 	    if ($ret && !($ret->getErrorCode() & ERROR_MISSING_VALUE)) {
 		return $ret;
@@ -637,13 +577,7 @@ class GalleryDatabaseExport {
 		$fieldDescriptor[$translatedName] = $definition;
 	    }
 
-	    
-
-
-/*  Create Query Statement.  Just use all the fields to create an order  */
-
-
-
+	    /* Create Query Statement.  Just use all the fields to create an order */
 	    $query = 'SELECT ' . implode(', ', $fieldNames) . ' FROM ' . $tableName
 			. ' ORDER BY ' . implode(' ASC, ', $fieldNames) . ' ASC';
 

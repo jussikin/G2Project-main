@@ -57,13 +57,7 @@ class ImageBlockPreloads {
 		    $ret = $imageframe->init($template, $frameIds);
 		    if ($ret) {
 			if ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH) {
-			    
-
-
-/*  It's there, but unusable so ignore it.  */
-
-
-
+			    /* It's there, but unusable so ignore it. */
 			} else {
 			    return $ret;
 			}

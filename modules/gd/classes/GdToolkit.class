@@ -88,13 +88,7 @@ class GdToolkit extends GalleryToolkit {
     function _hasImageCreateTrueColor() {
 	if (!isset($this->_hasImageCreateTrueColor)) {
 	    $gd =& $this->_getGdFunctionality();
-	    
-
-
-/*  Remember the info for later calls  */
-
-
-
+	    /* Remember the info for later calls */
 	    list ($ret, $this->_hasImageCreateTrueColor) =
 		GdToolkitHelper::hasImageCreateTrueColor($gd);
 	    if ($ret) {
@@ -156,13 +150,7 @@ class GdToolkit extends GalleryToolkit {
 		}
 	    }
 	    if ($usePercent) {
-		
-
-
-/*  Convert percentages to real image dimensions  */
-
-
-
+		/* Convert percentages to real image dimensions */
 		if (substr($parameters[0], -1) == '%') {
 		    $parameters[0] = (int)round($width * rtrim($parameters[0], '%') / 100);
 		}
@@ -175,21 +163,9 @@ class GdToolkit extends GalleryToolkit {
 	switch($operationName) {
 	case 'thumbnail':
 	case 'scale':
-	    
-
-
-/*  $parameters[0]: target width, [1]: optional target height  */
-
-
-
+	    /* $parameters[0]: target width, [1]: optional target height */
 	    $targetHeight = empty($parameters[1]) ? $parameters[0] : $parameters[1];
-	    
-
-
-/*  Don't enlarge images for a thumbnail  */
-
-
-
+	    /* Don't enlarge images for a thumbnail */
 	    if ($operationName == 'thumbnail'
 		    && $width <= $parameters[0] && $height <= $targetHeight) {
 		break;
@@ -252,13 +228,7 @@ class GdToolkit extends GalleryToolkit {
 	     * $parameters[3]: height %
 	     */
 
-	    
-
-
-/*  source dimensions are required to convert from percentages to pixels   */
-
-
-
+	    /* source dimensions are required to convert from percentages to pixels  */
 	    list ($ret, $width, $height) = $this->_getImageDimensionsForResource($sourceRes);
 	    if ($ret) {
 		$this->_free($sourceRes);
@@ -276,13 +246,7 @@ class GdToolkit extends GalleryToolkit {
 		return array($ret, null, null);
 	    }
 	    $ret = $gd->imageCopy($destRes, $sourceRes,
-				  0, 0,				
-
-
-/*  dst x,y  */
-
-
-
+				  0, 0,				/* dst x,y */
 				  $pixelX, $pixelY, $pixelWidth, $pixelHeight);
 	    $this->_free($sourceRes);
 	    if ($ret) {
@@ -373,13 +337,7 @@ class GdToolkit extends GalleryToolkit {
 		break;
 
 	    case 'manual':
-		
-
-
-/*  Use the alignments we received  */
-
-
-
+		/* Use the alignments we received */
 		break;
 
 	    default:
@@ -389,23 +347,11 @@ class GdToolkit extends GalleryToolkit {
 			     null, null);
 	    }
 
-	    
-
-
-/*  Convert from percentages to pixels  */
-
-
-
+	    /* Convert from percentages to pixels */
 	    $compositeAlignX = (int)($compositeAlignX / 100 * ($sourceWidth - $compositeWidth));
 	    $compositeAlignY = (int)($compositeAlignY / 100 * ($sourceHeight - $compositeHeight));
 
-	    
-
-
-/*  Clip to our bounding box  */
-
-
-
+	    /* Clip to our bounding box */
 	    $compositeAlignX = min($compositeAlignX, $sourceWidth - $compositeWidth);
 	    $compositeAlignX = max(0, $compositeAlignX);
 	    $compositeAlignY = min($compositeAlignY, $sourceHeight - $compositeHeight);
@@ -420,13 +366,7 @@ class GdToolkit extends GalleryToolkit {
 	    }
 
 	    $destRes = $sourceRes;
-	    
-
-
-/*  Don't use imageCopyMerge here, as it will lose alpha-transparency  */
-
-
-
+	    /* Don't use imageCopyMerge here, as it will lose alpha-transparency */
 	    $ret = $gd->imageCopy($destRes, $overlayRes,
 				       $compositeAlignX, $compositeAlignY,
 				       0, 0,
@@ -440,23 +380,11 @@ class GdToolkit extends GalleryToolkit {
 
 	case 'compress':
 	    $targetSize = $parameters[0];
-	    $fileSize = $gd->filesize($sourceFilename) >> 10; 
-
-
-/*  Size in KB  */
-
-
-
+	    $fileSize = $gd->filesize($sourceFilename) >> 10; /* Size in KB */
 	    if ($fileSize <= $targetSize) {
 		break;
 	    }
-	    
-
-
-/*  Use module quality parameter as initial guess  */
-
-
-
+	    /* Use module quality parameter as initial guess */
 	    list ($ret, $quality) =
 		GalleryCoreApi::getPluginParameter('module', 'gd', 'jpegQuality');
 	    if ($ret) {
@@ -466,13 +394,7 @@ class GdToolkit extends GalleryToolkit {
 	    $maxQuality = 100;
 	    $minQuality = 5;
 	    do {
-		
-
-
-/*  _saveImageResourceToFile changes the resource. Get a fresh one.  */
-
-
-
+		/* _saveImageResourceToFile changes the resource. Get a fresh one. */
 	    	$this->_free($sourceRes);
 	    	list ($ret, $sourceRes) = $this->_getImageResource($mimeType, $sourceFilename);
 		if ($ret) {
@@ -513,13 +435,7 @@ class GdToolkit extends GalleryToolkit {
 		return array($ret, null, null);
 	    }
 	} else {
-	    
-
-
-/*  Just copy the source to the destination  */
-
-
-
+	    /* Just copy the source to the destination */
 	    if ($sourceFilename != $destFilename) {
 		if (!$gd->copy($sourceFilename, $destFilename)) {
 		    $this->_free($sourceRes);
@@ -599,23 +515,11 @@ class GdToolkit extends GalleryToolkit {
 		return array($ret, null);
 	    }
 	} else {
-	    
-
-
-/*  Do something else to get a truecolor GD resource  */
-
-
-
+	    /* Do something else to get a truecolor GD resource */
 	    global $gallery;
 	    $tmpDir = $gallery->getConfig('data.gallery.tmp');
 	    $tmpFile = $gd->tempnam($tmpDir, 'gd');
-	    
-
-
-/*  Create a temporary jpeg file ...  */
-
-
-
+	    /* Create a temporary jpeg file ... */
 	    list ($ret, $tmpRes) = $gd->imageCreate($width, $height);
 	    if ($ret) {
 		return array($ret, null);
@@ -624,13 +528,7 @@ class GdToolkit extends GalleryToolkit {
 	    if ($ret) {
 		return array($ret, null);
 	    }
-	    
-
-
-/*  ... and load it back into a resource (now truecolor)  */
-
-
-
+	    /* ... and load it back into a resource (now truecolor) */
 	    list ($ret, $res) = $gd->imageCreateFromJpeg($tmpFile);
 	    if ($ret) {
 		return array($ret, null);
@@ -643,13 +541,7 @@ class GdToolkit extends GalleryToolkit {
 
 	if ($prepareAlpha) {
 	    $this->_prepareResourceForAlphaChannel($res);
-	    
-
-
-/*  Ignore errors  */
-
-
-
+	    /* Ignore errors */
 	}
 
 	return array(null, $res);
@@ -740,27 +632,9 @@ class GdToolkit extends GalleryToolkit {
 	}
 	$result = false;
 	$ret = $this->_imageCopyResampled($destRes, $sourceRes,
-				 0, 0, 0, 0,    
-
-
-/*  dst and src X,Y  */
-
-
-
-				 $destWidth, $destHeight,    
-
-
-/*  dst W,H  */
-
-
-
-				 $sourceWidth, $sourceHeight 
-
-
-/*  src W,H  */
-
-
-
+				 0, 0, 0, 0,    /* dst and src X,Y */
+				 $destWidth, $destHeight,    /* dst W,H */
+				 $sourceWidth, $sourceHeight /* src W,H */
 				 );
 	if ($ret) {
 	    return array($ret, null);
@@ -839,13 +713,7 @@ class GdToolkit extends GalleryToolkit {
 	    $ret = $gd->imageCopyResampled($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY,
 					   $dstW, $dstH, $srcW, $srcH);
 	} else {
-	    
-
-
-/*  Fallback  */
-
-
-
+	    /* Fallback */
 	    $ret = $gd->imageCopyResized($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY,
 					 $dstW, $dstH, $srcW, $srcH);
 	}
@@ -919,38 +787,14 @@ class GdToolkit extends GalleryToolkit {
     function _flattenAlphaChannel($res, $outputMimeType) {
 	$gd =& $this->_getGdFunctionality();
 	if ($this->_canHaveAlphaChannel($outputMimeType)) {
-	    
-
-
-/*  Input and output have transparency, no need to flatten.  */
-
-
-
+	    /* Input and output have transparency, no need to flatten. */
 	    return null;
 	} else if ($this->_canHaveTransparency($outputMimeType)) {
-	    
-
-
-/*  The output can only have a single transparency color.  */
-
-
-
+	    /* The output can only have a single transparency color. */
 	    $transparentColor = $gd->imagecolortransparent($res);
-	    
-
-
-/*  No operation if the transparent color is already defined  */
-
-
-
+	    /* No operation if the transparent color is already defined */
 	    if ($transparentColor == -1) {
-		
-
-
-/*  No transparency color defined  */
-
-
-
+		/* No transparency color defined */
 		list ($ret, $width, $height) = $this->_getImageDimensionsForResource($res);
 		if ($ret) {
 		    return $ret;
@@ -974,25 +818,13 @@ class GdToolkit extends GalleryToolkit {
 		    for ($y = 0; $y < $height; $y++) {
 			$pixelColor =
 			    $gd->imagecolorsforindex($res, $gd->imagecolorat($res, $x, $y));
-			
-
-
-/*  The alpha channel has a max value of 127  */
-
-
-
+			/* The alpha channel has a max value of 127 */
 			$gd->imagesetpixel($alphaMixdownDitherImage, $x, $y,
 					   $ditherColors[($pixelColor['alpha'] * 2)]);
 		    }
 		}
 
-		
-
-
-/*  Dither alpha channel grayscale version down to 2 colors  */
-
-
-
+		/* Dither alpha channel grayscale version down to 2 colors */
 		$gd->imagetruecolortopalette($alphaMixdownDitherImage, true, 2);
 
 		/*
@@ -1001,13 +833,7 @@ class GdToolkit extends GalleryToolkit {
 		 */
 		$gd->imagetruecolortopalette($res, true, 255);
 
-		
-
-
-/*  Allocate a new (random, hopefully unused) color for transparent color index. */
-
-
-
+		/* Allocate a new (random, hopefully unused) color for transparent color index.*/
 		$transparentColor = $gd->imagecolorallocate($res, 1, 254, 253);
 		$gd->imagecolortransparent($res, $transparentColor);
 
@@ -1027,13 +853,7 @@ class GdToolkit extends GalleryToolkit {
 		$this->_free($alphaMixdownDitherImage);
 	    }
 	} else {
-	    
-
-
-/*  The output image can't store any transparencies. Use a background color instead.  */
-
-
-
+	    /* The output image can't store any transparencies. Use a background color instead. */
 	    list ($ret, $width, $height) = $this->_getImageDimensionsForResource($res);
 	    if ($ret) {
 		return $ret;
@@ -1059,13 +879,7 @@ class GdToolkit extends GalleryToolkit {
 
 	    $gd->imagealphablending($res, true);
 	    $gd->imagesavealpha($res, false);
-	    
-
-
-/*  Ignore errors  */
-
-
-
+	    /* Ignore errors */
 
 	    $gd->imagecolortransparent($res, -1);
 	    $ret = $gd->imageCopy($res, $tempImage, 0, 0, 0, 0, $width, $height);
@@ -1098,13 +912,7 @@ class GdToolkit extends GalleryToolkit {
     	$canHaveTransparency =
 	    in_array($mimeType, array('image/gif', 'image/png', 'image/tiff', 'image/ico'));
 	if ($mimeType == 'image/gif' && $res) {
-	    
-
-
-/*  Don't unnecessarily dither  */
-
-
-
+	    /* Don't unnecessarily dither */
 	    $gd =& $this->_getGdFunctionality();
 	    $transparentColor = $gd->imagecolortransparent($res);
 	    $canHaveTransparency = $transparentColor != -1;

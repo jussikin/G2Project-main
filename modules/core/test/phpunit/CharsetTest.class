@@ -40,13 +40,7 @@ class CharsetTest extends GalleryTestCase {
     }
 
     function testAssertMbFunctionOverloadingDisabled() {
-        
-
-
-/*  Assert that we're not accidentaly using mb_ functions in our fallback  */
-
-
-
+        /* Assert that we're not accidentaly using mb_ functions in our fallback */
 	$mbFuncOverload = (int) ini_get('mbstring.func_overload');
 	$this->assert(!($mbFuncOverload & 2), 'mb function overload str functions. ' .
 		'Please disable mbstring.func_overload to test PHP fallback.');
@@ -159,13 +153,7 @@ class CharsetTest extends GalleryTestCase {
     function testWindowsAndCodePageAreSynonyms() {
 	global $gallery;
 
-	
-
-
-/*  Force it to use our PHP charset tables  */
-
-
-
+	/* Force it to use our PHP charset tables */
 	$phpVm = new CharsetTestPhpVm();
 	$phpVm->setFunctionExists('iconv', false);
 	$phpVm->setFunctionExists('mb_convert_encoding', false);
@@ -178,13 +166,7 @@ class CharsetTest extends GalleryTestCase {
 			    'CP1252');
     }
 
-    
-
-
-/*  Iconv fails, so we use mb_convert_encoding instead  */
-
-
-
+    /* Iconv fails, so we use mb_convert_encoding instead */
     function testConvertToUtf8UsingIconvFallback1() {
 	global $gallery;
 
@@ -199,13 +181,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('success', GalleryCoreApi::convertToUtf8('foo', 'ISO-8859-1'));
     }
 
-    
-
-
-/*  Iconv fails, so we use mb_convert_encoding instead  */
-
-
-
+    /* Iconv fails, so we use mb_convert_encoding instead */
     function testConvertFromUtf8UsingIconvFallback1() {
 	global $gallery;
 
@@ -220,13 +196,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('success', GalleryCoreApi::convertFromUtf8('foo', 'ISO-8859-1'));
     }
 
-    
-
-
-/*  Iconv fails, so we use recode_string instead  */
-
-
-
+    /* Iconv fails, so we use recode_string instead */
     function testConvertToUtf8UsingIconvFallback2() {
 	global $gallery;
 
@@ -241,13 +211,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('success', GalleryCoreApi::convertToUtf8('foo', 'ISO-8859-1'));
     }
 
-    
-
-
-/*  Iconv fails, so we use recode_string instead  */
-
-
-
+    /* Iconv fails, so we use recode_string instead */
     function testConvertFromUtf8UsingIconvFallback2() {
 	global $gallery;
 
@@ -262,13 +226,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('success', GalleryCoreApi::convertFromUtf8('foo', 'ISO-8859-1'));
     }
 
-    
-
-
-/*  Iconv fails, so we use PHP instead  */
-
-
-
+    /* Iconv fails, so we use PHP instead */
     function testConvertToUtf8UsingIconvFallback3() {
 	global $gallery;
 
@@ -283,13 +241,7 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCoreApi::convertToUtf8(chr(245), 'ISO-8859-1'));
     }
 
-    
-
-
-/*  Iconv fails, so we use PHP instead  */
-
-
-
+    /* Iconv fails, so we use PHP instead */
     function testConvertFromUtf8UsingIconvFallback3() {
 	global $gallery;
 
@@ -304,13 +256,7 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCoreApi::convertFromUtf8(chr(195) . chr(181), 'ISO-8859-1'));
     }
 
-    
-
-
-/*  Unknown source encoding; pure php punts and returns original string  */
-
-
-
+    /* Unknown source encoding; pure php punts and returns original string */
     function testConvertToUtf8UsingPurePhpUnknownSourceEncoding() {
 	global $gallery;
 
@@ -323,13 +269,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals(chr(245), GalleryCoreApi::convertToUtf8(chr(245), 'ISO-BOGO-9000'));
     }
 
-    
-
-
-/*  Unknown source encoding; pure php punts and returns original string  */
-
-
-
+    /* Unknown source encoding; pure php punts and returns original string */
     function testConvertFromUtf8UsingPurePhpUnknownSourceEncoding() {
 	global $gallery;
 
@@ -345,13 +285,7 @@ class CharsetTest extends GalleryTestCase {
     function testDetectSourceEncodingWithNlLangInfo() {
 	global $gallery;
 
-	
-
-
-/*  On windows boxes, we don't have the CODESET constant, so fake it  */
-
-
-
+	/* On windows boxes, we don't have the CODESET constant, so fake it */
 	if (!defined('CODESET')) {
 	    define('CODESET', 'CODESET');
 	}
@@ -367,48 +301,24 @@ class CharsetTest extends GalleryTestCase {
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('Windows-1252', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  Verify value is cached  */
-
-
-
+	/* Verify value is cached */
 	$phpVm->setReturn('nl_langinfo', array(CODESET), 'abc123');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('Windows-1252', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  FreeBSD may return charset with missing hyphen; verify we remap this  */
-
-
-
+	/* FreeBSD may return charset with missing hyphen; verify we remap this */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('nl_langinfo', array(CODESET), 'ISO8859-1');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('ISO-8859-1', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  Gentoo may return ANSI_X3.4-1968 which is just ASCII  */
-
-
-
+	/* Gentoo may return ANSI_X3.4-1968 which is just ASCII */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('nl_langinfo', array(CODESET), 'ANSI_X3.4-1968');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('ASCII', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  We can override what the system tells us using $gallery->setConfig  */
-
-
-
+	/* We can override what the system tells us using $gallery->setConfig */
 	$gallery->setConfig('systemCharset', 'xyz123');
 	GalleryDataCache::reset();
 	$this->assertEquals('xyz123', GalleryCharsetHelper_simple::detectSystemCharset());
@@ -425,78 +335,42 @@ class CharsetTest extends GalleryTestCase {
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('UTF-8', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  Verify we map 1252 from setlocale to full charset name  */
-
-
-
+	/* Verify we map 1252 from setlocale to full charset name */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('setlocale', array(LC_ALL, '0'),
 			  'LC_CTYPE=English_United States.1252;LC_NUMERIC=C;LC_TIME=C');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('Windows-1252', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  Sometimes we just get French_France.1252 instead of LC_CTYPE=...  */
-
-
-
+	/* Sometimes we just get French_France.1252 instead of LC_CTYPE=... */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('setlocale', array(LC_ALL, '0'), 'German_Switzerland.1252');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('Windows-1252', GalleryCharsetHelper_simple::detectSystemCharset(),
 			    'short format');
 
-	
-
-
-/*  Sometimes we just get French_France.1252 instead of LC_CTYPE=...  */
-
-
-
+	/* Sometimes we just get French_France.1252 instead of LC_CTYPE=... */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('setlocale', array(LC_ALL, '0'), 'German_Switzerland.1252');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('Windows-1252', GalleryCharsetHelper_simple::detectSystemCharset(),
 			    'short format');
 
-	
-
-
-/*  All .125x charsets should get converted to CP125x  */
-
-
-
+	/* All .125x charsets should get converted to CP125x */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('setlocale', array(LC_ALL, '0'),
 			  'LC_CTYPE=Russian_Russia.1251;LC_NUMERIC=C;LC_TIME=C');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('CP1251', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  All .125x charsets should get converted to CP125x  */
-
-
-
+	/* All .125x charsets should get converted to CP125x */
 	GalleryDataCache::reset();
 	$phpVm->setReturn('setlocale', array(LC_ALL, '0'),
 			  'LC_CTYPE=Whatever.1258;LC_NUMERIC=C;LC_TIME=C');
 	$gallery->_phpVm = $phpVm;
 	$this->assertEquals('CP1258', GalleryCharsetHelper_simple::detectSystemCharset());
 
-	
-
-
-/*  On windows boxes, we don't have the CODESET constant, so fake it  */
-
-
-
+	/* On windows boxes, we don't have the CODESET constant, so fake it */
 	if (!defined('CODESET')) {
 	    define('CODESET', 'CODESET');
 	}
@@ -515,13 +389,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('CP1251', GalleryCharsetHelper_simple::detectSystemCharset(),
 			    'Wrong system charset');
 
-	
-
-
-/*  We can override what the system tells us using $gallery->setConfig  */
-
-
-
+	/* We can override what the system tells us using $gallery->setConfig */
 	$gallery->setConfig('systemCharset', 'xyz123');
 	GalleryDataCache::reset();
 	$this->assertEquals('xyz123', GalleryCharsetHelper_simple::detectSystemCharset());
@@ -529,22 +397,10 @@ class CharsetTest extends GalleryTestCase {
     }
 
     function testDetectSourceEncodingWithOpenBSDBug() {
-	
-
-
-/*  nl_langinfo(CODESET) on OpenBSD 3.7 returns the wrong value (D_T_FMT value instead)  */
-
-
-
+	/* nl_langinfo(CODESET) on OpenBSD 3.7 returns the wrong value (D_T_FMT value instead) */
 	global $gallery;
 
-	
-
-
-/*  On windows boxes, we don't have the CODESET constant, so fake it  */
-
-
-
+	/* On windows boxes, we don't have the CODESET constant, so fake it */
 	if (!defined('CODESET')) {
 	    define('CODESET', 'CODESET');
 	}
@@ -565,13 +421,7 @@ class CharsetTest extends GalleryTestCase {
     function testConvertToUtf8SystemCharset() {
 	global $gallery;
 
-	
-
-
-/*  On windows boxes, we don't have the CODESET constant, so fake it  */
-
-
-
+	/* On windows boxes, we don't have the CODESET constant, so fake it */
 	if (!defined('CODESET')) {
 	    define('CODESET', 'CODESET');
 	}
@@ -589,13 +439,7 @@ class CharsetTest extends GalleryTestCase {
     function testConvertFromUtf8SystemCharset() {
 	global $gallery;
 
-	
-
-
-/*  On windows boxes, we don't have the CODESET constant, so fake it  */
-
-
-
+	/* On windows boxes, we don't have the CODESET constant, so fake it */
 	if (!defined('CODESET')) {
 	    define('CODESET', 'CODESET');
 	}
@@ -637,13 +481,7 @@ class CharsetTest extends GalleryTestCase {
     }
 
     function testUtf8Substring() {
-	
-
-
-/*  Russian  */
-
-
-
+	/* Russian */
 	$utf8 = ("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba\xd0" .
 		 "\xb8\xd0\xb9\xd0\x97\xd0\xb4\xd1\x80\xd0\xb0" .
 		 "\xd0\xb2\xd1\x81\xd1\x82\xd0\xb2\xd1\x83");
@@ -660,13 +498,7 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCharsetHelper_medium::phpUtf8Substring($utf8, 0, 4),
 			    '4 chars (ru), php version');
 
-	
-
-
-/*  Hebrew  */
-
-
-
+	/* Hebrew */
 	$utf8 = ("\xd7\x90\xd7\xa0\xd7\x99 \xd7\x99\xd7\x9b\xd7\x95\xd7" .
 		 "\x9c \xd7\x9c\xd7\x90\xd7\x9b\xd7\x95\xd7\x9c \xd7\x96" .
 		 "\xd7\x9b\xd7\x95\xd7\x9b\xd7\x99\xd7\xaa \xd7\x95\xd7" .
@@ -684,13 +516,7 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCharsetHelper_medium::phpUtf8Substring($utf8, 0, 4),
 			    '4 chars (he), php version');
 
-	
-
-
-/*  Test some special characters  */
-
-
-
+	/* Test some special characters */
 	$utf8 = 'apo\'strophe.jpg "quotes"';
 	$this->assertEquals('apo\'strophe.jpg "quotes"',
 			    GalleryCoreApi::utf8Substring($utf8, 0, 24),
@@ -703,13 +529,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('e&am', GalleryCharsetHelper_medium::phpUtf8Substring($utf8, 0, 4),
 		'php; html entity not truncated because this preg is in ::utf8Substring');
 
-	
-
-
-/*  Test incomplete html entity at end of string is truncated  */
-
-
-
+	/* Test incomplete html entity at end of string is truncated */
 	$utf8 = '1234567890- &amp;';
 	$this->assertEquals('67890- ', GalleryCoreApi::utf8Substring($utf8, 5, 9), 'entity');
     }
@@ -727,13 +547,7 @@ class CharsetTest extends GalleryTestCase {
     }
 
     function testUtf8Strcut() {
-	
-
-
-/*  Russian  */
-
-
-
+	/* Russian */
 	$utf8 = ("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba\xd0" .
 		 "\xb8\xd0\xb9\xd0\x97\xd0\xb4\xd1\x80\xd0\xb0" .
 		 "\xd0\xb2\xd1\x81\xd1\x82\xd0\xb2\xd1\x83");
@@ -745,13 +559,7 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCharsetHelper_medium::phpUtf8Strcut($utf8, 0, 10),
 			    'PHP version');
 
-	
-
-
-/*  With byte offset  */
-
-
-
+	/* With byte offset */
 	$this->assertEquals("\xd1\x81\xd1\x82\xd0\xb2",
 			    GalleryCoreApi::utf8Strcut($utf8, 24, 7),
 			    'standard version with offset');
@@ -759,13 +567,7 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCharsetHelper_medium::phpUtf8Strcut($utf8, 24, 7),
 			    'PHP version with offset');
 
-	
-
-
-/*  With byte offset and length matching total length  */
-
-
-
+	/* With byte offset and length matching total length */
 	$this->assertEquals("\xd1\x81\xd1\x82\xd0\xb2\xd1\x83",
 			    GalleryCoreApi::utf8Strcut($utf8, 24, 8),
 			    'standard version with offset up to end');
@@ -773,25 +575,13 @@ class CharsetTest extends GalleryTestCase {
 			    GalleryCharsetHelper_medium::phpUtf8Strcut($utf8, 24, 8),
 			    'PHP version with offset up to end');
 
-	
-
-
-/*  Start position larger than string  */
-
-
-
+	/* Start position larger than string */
 	$this->assertEquals('', GalleryCoreApi::utf8Strcut("short", 20, 5),
 			    'standard version with too large start position');
 	$this->assertEquals('', GalleryCharsetHelper_medium::phpUtf8Strcut("short", 20, 5),
 			    'PHP version with too large start position');
 
-	
-
-
-/*  Test some special characters  */
-
-
-
+	/* Test some special characters */
 	$utf8 = 'apo\'strophe.jpg "quotes"';
 	$this->assertEquals('apo\'strophe.jpg "quote',
 			    GalleryCoreApi::utf8Strcut($utf8, 0, 22),
@@ -804,13 +594,7 @@ class CharsetTest extends GalleryTestCase {
 	$this->assertEquals('e&am', GalleryCharsetHelper_medium::phpUtf8Strcut($utf8, 0, 4),
 		'php; html entity not truncated because this preg is in ::utf8Strcut');
 
-	
-
-
-/*  Test incomplete html entity at end of string is truncated  */
-
-
-
+	/* Test incomplete html entity at end of string is truncated */
 	$utf8 = '1234567890- &amp;';
 	$this->assertEquals('67890- ', GalleryCoreApi::utf8Strcut($utf8, 5, 9), 'entity');
     }

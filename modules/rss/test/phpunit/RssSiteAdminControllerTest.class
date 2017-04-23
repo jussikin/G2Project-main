@@ -168,13 +168,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase {
     }
 
     function testRssSiteAdminControllerDelete() {
-	
-
-
-/*  create a test feed  */
-
-
-
+	/* create a test feed */
 	$name = 'test'.rand();
 	$params = array('itemId' => $this->_getRootId());
 	$ret = RssMapHelper::createFeed($name, $params);
@@ -197,13 +191,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase {
 	    $results);
 
 	list ($ret, $feed) = RssMapHelper::fetchFeed($name);
-	
-
-
-/*  we expect an error  */
-
-
-
+	/* we expect an error */
 	if (!$ret) {
 	    return $this->assert(false, 'Expected an error');
 	}

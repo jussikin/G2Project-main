@@ -47,13 +47,7 @@ class AdminFfmpegController extends GalleryController {
 		$error[] = 'form[error][path][missing]';
 	    } else {
 
-		
-
-
-/*  Verify the path  */
-
-
-
+		/* Verify the path */
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
 		if (!$platform->isRestrictedByOpenBaseDir($form['path'])) {
@@ -65,25 +59,13 @@ class AdminFfmpegController extends GalleryController {
 			    }
 			}
 
-			
-
-
-/*  Try adding on "ffmpeg"  */
-
-
-
+			/* Try adding on "ffmpeg" */
 			$path = $form['path'] . 'ffmpeg';
 
 			if (!$platform->file_exists($path)) {
 			    $error[] = 'form[error][path][badPath]';
 			} else {
-			    
-
-
-/*  Got a match  */
-
-
-
+			    /* Got a match */
 			    $form['path'] = $path;
 			    GalleryUtilities::putRequestVariable('form.path', $path);
 			}
@@ -111,13 +93,7 @@ class AdminFfmpegController extends GalleryController {
 		    } else {
 			$failCount = 0;
 			foreach ($testResults as $testResult) {
-			    
-
-
-/*  At least one test should work, else this path is not a valid one  */
-
-
-
+			    /* At least one test should work, else this path is not a valid one */
 			    if (!$testResult['success']) {
 				$failCount++;
 			    }
@@ -276,13 +252,7 @@ class AdminFfmpegView extends GalleryView {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Load our default values if we didn't just come from this form.  */
-
-
-
+	/* Load our default values if we didn't just come from this form. */
 	if ($form['formName'] != 'AdminFfmpeg') {
 	    foreach (array('path', 'useWatermark') as $key) {
 		list ($ret, $form[$key]) =

@@ -90,13 +90,7 @@ class SampleView extends GalleryView {
 	    if (!($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
 		return array($ret, null, null, null);
 	    }
-	    
-
-
-/*  Fallback to default theme if given invalid itemId  */
-
-
-
+	    /* Fallback to default theme if given invalid itemId */
 	    GalleryUtilities::removeRequestVariable('itemId');
 	    list ($ret, $theme, $params, $item) = parent::loadThemeAndParameters();
 	    if ($ret) {

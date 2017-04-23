@@ -110,13 +110,7 @@ class CoreCallbacks {
 		$peerLast = count($peerIds) - 1;
 		$peerNeighborStart = max($peerItemIndex - (int)($windowSize/2), 0);
 		$peerNeighborEnd = min($peerItemIndex + (int)(($windowSize+1)/2), $peerLast);
-		
-
-
-/*  If the window is pinned to one end, expand it to the entire windowSize  */
-
-
-
+		/* If the window is pinned to one end, expand it to the entire windowSize */
 		if ($peerNeighborStart == 0) {
 		    $peerNeighborEnd = min($peerLast, $windowSize);
 		} else if ($peerNeighborEnd == $peerLast) {
@@ -183,13 +177,7 @@ class CoreCallbacks {
 		}
 	    }
 
-	    
-
-
-/*  Let each plugin load its template data  */
-
-
-
+	    /* Let each plugin load its template data */
 	    $block['core']['ValidationPlugins'] = array();
 	    foreach (array_keys($allPluginIds) as $pluginId) {
 		list ($ret, $plugin) =

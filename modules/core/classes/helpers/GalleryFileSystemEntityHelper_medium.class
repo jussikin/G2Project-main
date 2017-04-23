@@ -49,13 +49,7 @@ class GalleryFileSystemEntityHelper_medium {
 	  AND
 	    [GalleryChildEntity::id] = [GalleryFileSystemEntity::id]
 	';
-	
-
-
-/*  The check is case-insensitive since it should be DBMS / FS independent.  */
-
-
-
+	/* The check is case-insensitive since it should be DBMS / FS independent. */
 	$data = array((int)$parentId, GalleryUtilities::strToUpper($pathComponent));
 	if (isset($selfId)) {
 	    $query .= '
@@ -82,34 +76,16 @@ class GalleryFileSystemEntityHelper_medium {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 
-	
-
-
-/*  Make sure our path component uses legal characters  */
-
-
-
+	/* Make sure our path component uses legal characters */
 	$pathComponent = $platform->legalizePathComponent(trim($pathComponent), $forDirectory);
 
-	
-
-
-/*  Get the parent, just to verify id is valid  */
-
-
-
+	/* Get the parent, just to verify id is valid */
 	list ($ret, $parent) = GalleryCoreApi::loadEntitiesById($parentId, 'GalleryEntity');
 	if ($ret) {
 	    return array($ret, null);
 	}
 
-	
-
-
-/*  Extract the file base and extension  */
-
-
-
+	/* Extract the file base and extension */
 	list ($fileBase, $extension) = GalleryUtilities::getFileNameComponents($pathComponent);
 	if (!empty($extension)) {
 	    $extension = '.' . $extension;
@@ -135,13 +111,7 @@ class GalleryFileSystemEntityHelper_medium {
 	    $newPathComponent = GalleryFileSystemEntityHelper_medium::_truncatePathComponent(
 			$fileBase, $retry > 0 ? sprintf('_%03d', $retry) : '', $extension);
 
-	    
-
-
-/*  Make sure that we don't have a collision in the db.  */
-
-
-
+	    /* Make sure that we don't have a collision in the db. */
 	    list ($ret, $isCollision) = GalleryFileSystemEntityHelper_medium::checkPathCollision(
 					$newPathComponent, $parentId, $selfId);
 	    if ($ret) {

@@ -117,13 +117,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase {
 	list ($ret, $destId) = PermalinksMapHelper::fetchItemIdForAlias('newAlias');
 	$this->assertEquals($this->_item1->getId(), $destId);
 
-	
-
-
-/*  now test a collision, this generates an error with some DB drivers, that's OK  */
-
-
-
+	/* now test a collision, this generates an error with some DB drivers, that's OK */
 	$result = $this->_handleRequestAfterEdit($form, $this->_item);
 	$this->assertEquals(array(array('form[error][PermalinksOption][exists]'), array()),
 		$result);
@@ -140,13 +134,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase {
 	list ($ret, $destId) = PermalinksMapHelper::fetchItemIdForAlias('newAlias');
 	$this->assertEquals($this->_item->getId(), $destId);
 
-	
-
-
-/*  now delete it  */
-
-
-
+	/* now delete it */
 	unset($form['PermalinksOption']['aliasName']);
 	$form['PermalinksOption']['delete']['newAlias'] = 'on';
 

@@ -42,13 +42,7 @@ class EmbedTest extends GalleryTestCase {
 	$this->_markFactoryForCleanup();
 	$this->_unregisterFactoryImplementationForTest('GalleryEventListener');
 
-	
-
-
-/*  Some of the test replace the global gallery object, therefore back it up  */
-
-
-
+	/* Some of the test replace the global gallery object, therefore back it up */
 	global $gallery;
 	$this->_origGallery = $gallery;
 	$this->_savedSession = $gallery->_session;
@@ -62,13 +56,7 @@ class EmbedTest extends GalleryTestCase {
 	    return $ret;
 	}
 
-	
-
-
-/*  Clean all cached variables  */
-
-
-
+	/* Clean all cached variables */
 	GalleryDataCache::reset();
 
 	$session =& $gallery->getSession();
@@ -78,13 +66,7 @@ class EmbedTest extends GalleryTestCase {
     }
 
     function tearDown() {
-	
-
-
-/*  Restore  */
-
-
-
+	/* Restore */
 	global $gallery;
 	$GLOBALS['gallery'] = $this->_origGallery;
 	$gallery =& $GLOBALS['gallery'];
@@ -103,13 +85,7 @@ class EmbedTest extends GalleryTestCase {
      * Furthermore, there are 2 types of css tags and 2 types of script tags.
      */
     function testParseHtml() {
-	
-
-
-/*  Create some pseudo html <head> section  */
-
-
-
+	/* Create some pseudo html <head> section */
 	$refTitle = '
   Gallery
 ';
@@ -190,44 +166,20 @@ class EmbedTest extends GalleryTestCase {
     function testInitMultipleTimes() {
 	$expectedUrl = 'http://example.com/cms/';
 	$_SERVER['HTTP_HOST'] = 'example.com';
-	
-
-
-/*  These cache keys are the same as the ones defined in GalleryEmbed::init  */
-
-
-
+	/* These cache keys are the same as the ones defined in GalleryEmbed::init */
 	$firstCacheKey = 'GalleryEmbed::initFirstPass';
 	$secondCacheKey = 'GalleryEmbed::initSecondPass';
-	
-
-
-/*  Init a first time  */
-
-
-
+	/* Init a first time */
 	$ret = GalleryEmbed::init(array('embedUri' => '/cms/index.php?mod=g2', 'g2Uri' => '/'));
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Check if we get the the urls that it should generate (sanity check)  */
-
-
-
+	/* Check if we get the the urls that it should generate (sanity check) */
 	global $gallery;
 	$urlgenerator =& $gallery->getUrlGenerator();
 	$this->assertEquals($expectedUrl, $urlgenerator->getCurrentUrlDir(),
 			   'First init call failed.');
-	
-
-
-/*  And check if init first pass has been called, but not init second pass  */
-
-
-
+	/* And check if init first pass has been called, but not init second pass */
 	$this->assert(GalleryDataCache::containsKey($firstCacheKey),
 		      'GalleryInitFirstPass has not been called in first init.');
 	$this->assert(!GalleryDataCache::containsKey($secondCacheKey),
@@ -242,33 +194,15 @@ class EmbedTest extends GalleryTestCase {
 	}
 	global $gallery;
 	$urlgenerator =& $gallery->getUrlGenerator();
-	
-
-
-/*  force the embedded url directory  */
-
-
-
+	/* force the embedded url directory */
 	$this->assertEquals('http://example.com/', $urlgenerator->getCurrentUrlDir(true),
 			   'Second init call called initFirstPass again.');
-	
-
-
-/*  And check if init first pass has been called, but not init second pass  */
-
-
-
+	/* And check if init first pass has been called, but not init second pass */
 	$this->assert(GalleryDataCache::containsKey($firstCacheKey),
 		      'GalleryInitFirstPass has not been called in second init.');
 	$this->assert(!GalleryDataCache::containsKey($secondCacheKey),
 		      'GallerySecondPass has been called in second init.');
-	
-
-
-/*  Now check initSecondPass  */
-
-
-
+	/* Now check initSecondPass */
 	/*
 	 * TODO: Currently, calling initSecondPass just sets the activeUserId, which isn't
 	 * harmful and the same is done in GalleryEmbed::init (checkActiveUser)
@@ -287,82 +221,40 @@ class EmbedTest extends GalleryTestCase {
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Both, init first pass and second pass should have been called  */
-
-
-
+	/* Both, init first pass and second pass should have been called */
 	$this->assert(GalleryDataCache::containsKey($firstCacheKey),
 		      'GalleryInitFirstPass has not been called in first call.');
 	$this->assert(GalleryDataCache::containsKey($secondCacheKey),
 		      'GallerySecondPass has not been called in first call.');
-	
-
-
-/*  Reset for next try  */
-
-
-
+	/* Reset for next try */
 	GalleryDataCache::reset();
 	$this->assert(!GalleryDataCache::containsKey($firstCacheKey),
 		      'GDC reset did not delete GalleryEmbed:initFirstPass key.');
 	$this->assert(!GalleryDataCache::containsKey($secondCacheKey),
 		      'GDC reset did not delete GalleryEmbed:initSecondPass key.');
 
-	
-
-
-/*  we set fullInit = false, only InitFirstPass should be called  */
-
-
-
+	/* we set fullInit = false, only InitFirstPass should be called */
 	$ret = GalleryEmbed::init(array('fullInit' => false));
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Verify  */
-
-
-
+	/* Verify */
 	$this->assert(GalleryDataCache::containsKey($firstCacheKey),
 		      'GalleryInitFirstPass has not been called in second call.');
 	$this->assert(!GalleryDataCache::containsKey($secondCacheKey),
 		      'GallerySecondPass has been called in second call.');
-	
-
-
-/*  Reset for next try  */
-
-
-
+	/* Reset for next try */
 	GalleryDataCache::reset();
 	$this->assert(!GalleryDataCache::containsKey($firstCacheKey),
 		      'GDC reset did not delete GalleryEmbed:initFirstPass key.');
 	$this->assert(!GalleryDataCache::containsKey($secondCacheKey),
 		      'GDC reset did not delete GalleryEmbed:initSecondPass key.');
-	
-
-
-/*  we set fullInit = true, both should be called  */
-
-
-
+	/* we set fullInit = true, both should be called */
 	$ret = GalleryEmbed::init(array('fullInit' => true));
 	if ($ret) {
 	    return $ret;
 	}
-	
-
-
-/*  Verify  */
-
-
-
+	/* Verify */
 	$this->assert(GalleryDataCache::containsKey($firstCacheKey),
 		      'GalleryInitFirstPass has not been called in third call.');
 	$this->assert(GalleryDataCache::containsKey($secondCacheKey),
@@ -385,24 +277,12 @@ class EmbedTest extends GalleryTestCase {
 	$this->assert(!GalleryEmbed::isCompatibleWithEmbedApi($apiVersion), '(major) API too new');
     }
 
-    
-
-
-/*  Test the session doesn't change if the activeUserId equals the session's external id  */
-
-
-
+    /* Test the session doesn't change if the activeUserId equals the session's external id */
     function testCheckActiveUserSameId() {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  First, create test users an mappings  */
-
-
-
+	/* First, create test users an mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(2);
 	if ($ret) {
 	    return $ret;
@@ -413,13 +293,7 @@ class EmbedTest extends GalleryTestCase {
 	$activeLocale[0] = 'some language code';
 	$session->put('core.language', $activeLocale[0]);
 
-	
-
-
-/*  Call the function under test  */
-
-
-
+	/* Call the function under test */
 	$sessionId = $session->getId();
 	$ret = GalleryEmbed::checkActiveUser($activeUserIds[0]);
 	if ($ret) {
@@ -437,24 +311,12 @@ class EmbedTest extends GalleryTestCase {
 	$this->assertEventNotFired('Gallery::Logout');
     }
 
-    
-
-
-/*  Check that the session changes correctly if the activeUserId is different  */
-
-
-
+    /* Check that the session changes correctly if the activeUserId is different */
     function testCheckActiveUserNewId() {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  First, create test users an mappings  */
-
-
-
+	/* First, create test users an mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(2);
 	if ($ret) {
 	    return $ret;
@@ -465,13 +327,7 @@ class EmbedTest extends GalleryTestCase {
 	$activeLocale[0] = 'some language code';
 	$session->put('core.language', $activeLocale[0]);
 
-	
-
-
-/*  Call the function under test  */
-
-
-
+	/* Call the function under test */
 	$sessionId = $session->getId();
 
 	$ret = GalleryEmbed::checkActiveUser($activeUserIds[1]);
@@ -490,24 +346,12 @@ class EmbedTest extends GalleryTestCase {
 	$this->assertEventFired('Gallery::Logout', $users[0]);
     }
 
-    
-
-
-/*  Check that the session changes to an anonymous session if the activeUserId is ''  */
-
-
-
+    /* Check that the session changes to an anonymous session if the activeUserId is '' */
     function testCheckActiveUserChangeToAnonymous() {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  First, create test users an mappings  */
-
-
-
+	/* First, create test users an mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 	if ($ret) {
 	    return $ret;
@@ -549,13 +393,7 @@ class EmbedTest extends GalleryTestCase {
 	$activeLocale = 'some language code';
 	$session->put('core.language', $activeLocale);
 
-	
-
-
-/*  Also test resuming a guest session.  */
-
-
-
+	/* Also test resuming a guest session. */
 	$sessionId = $session->getId();
 	$ret = GalleryEmbed::checkActiveUser('');
 	if ($ret) {
@@ -577,13 +415,7 @@ class EmbedTest extends GalleryTestCase {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  First, create test users and mappings  */
-
-
-
+	/* First, create test users and mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 	if ($ret) {
 	    return $ret;
@@ -595,13 +427,7 @@ class EmbedTest extends GalleryTestCase {
 	$activeLocale = 'some language code';
 	$session->put('core.language', $activeLocale);
 
-	
-
-
-/*  And login again  */
-
-
-
+	/* And login again */
 	$sessionId = $session->getId();
 	$ret = GalleryEmbed::checkActiveUser($activeUserIds[0]);
 	if ($ret) {
@@ -620,26 +446,14 @@ class EmbedTest extends GalleryTestCase {
 	$this->assertEventFired('Gallery::Login', $users[0]);
     }
 
-    
-
-
-/*  Check that timeout is reset after administrator login  */
-
-
-
+    /* Check that timeout is reset after administrator login */
     function testCheckActiveUserLoginAdministrator() {
 	global $gallery;
 	$session =& $gallery->getSession();
 	$phpVm = $gallery->getPhpVm();
 	$session->remove('session.siteAdminActivityTimestamp');
 
-	
-
-
-/*  First, create test users and mappings  */
-
-
-
+	/* First, create test users and mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 	if ($ret) {
 	    return $ret;
@@ -664,26 +478,14 @@ class EmbedTest extends GalleryTestCase {
 	$this->assert($phpVm->time() - $lastActivityTimestamp < 1000, 'time out reset');
     }
 
-    
-
-
-/*  Check that timeout is not reset after non-administrator login  */
-
-
-
+    /* Check that timeout is not reset after non-administrator login */
     function testCheckActiveUserLoginNonAdministrator() {
 	global $gallery;
 	$session =& $gallery->getSession();
 	$phpVm = $gallery->getPhpVm();
 	$session->remove('session.siteAdminActivityTimestamp');
 
-	
-
-
-/*  First, create test users and mappings  */
-
-
-
+	/* First, create test users and mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 	if ($ret) {
 	    return $ret;
@@ -697,25 +499,13 @@ class EmbedTest extends GalleryTestCase {
 	$this->assert(is_null($session->get('session.siteAdminActivityTimestamp')),  'timestamp'); 
     }
 
-    
-
-
-/*  Regression test for bug 2030470  */
-
-
-
+    /* Regression test for bug 2030470 */
     function testCheckActiveUserSwitchUserGalleryUserNotSet() {
 	global $gallery;
 	$session =& $gallery->getSession();
 	$phpVm = $gallery->getPhpVm();
 
-	
-
-
-/*  First, create test users and mappings  */
-
-
-
+	/* First, create test users and mappings */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(2);
 	if ($ret) {
 	    return $ret;
@@ -729,13 +519,7 @@ class EmbedTest extends GalleryTestCase {
 	 */
 	$gallery->_activeUser = null;
 
-	
-
-
-/*  Execute the function under test  */
-
-
-
+	/* Execute the function under test */
 	$ret = GalleryEmbed::checkActiveUser($activeUserIds[1]);
 	if ($ret) {
 	    return $ret;
@@ -782,13 +566,7 @@ class EmbedTest extends GalleryTestCase {
 	 */
 	$storage->_getConnection(true);
 
-	
-
-
-/*  The new connection is FETCH_NUM and we didn't change the global state  */
-
-
-
+	/* The new connection is FETCH_NUM and we didn't change the global state */
 	$this->assertEquals(ADODB_FETCH_NUM, $storage->_db->fetchMode);
 	$this->assertEquals(ADODB_FETCH_ASSOC, $GLOBALS['ADODB_FETCH_MODE']);
 
@@ -930,13 +708,7 @@ class EmbedTest extends GalleryTestCase {
 	global $gallery;
 	$session =& $gallery->getSession();
 
-	
-
-
-/*  Create a user and log them in  */
-
-
-
+	/* Create a user and log them in */
 	list ($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 	if ($ret) {
 	    return $ret;

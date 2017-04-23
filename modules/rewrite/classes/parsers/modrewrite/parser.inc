@@ -20,13 +20,7 @@
 
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteParser.class');
 
-
-
-
-/*  Status codes used by the Apache mod_rewrite parser  */
-
-
-
+/* Status codes used by the Apache mod_rewrite parser */
 define('REWRITE_STATUS_APACHE_NO_MOD_REWRITE', 11);
 define('REWRITE_STATUS_APACHE_UNABLE_TO_TEST', 12);
 define('REWRITE_STATUS_HTACCESS_MISSING', 13);
@@ -194,13 +188,7 @@ class ModRewriteParser extends RewriteParser {
 	    return array($ret, null, null);
 	}
 
-	
-
-
-/*  We can only save the embedded .htaccess in embedded mode  */
-
-
-
+	/* We can only save the embedded .htaccess in embedded mode */
 	if (!GalleryUtilities::isEmbedded()) {
 	    return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION),
 		null, null);

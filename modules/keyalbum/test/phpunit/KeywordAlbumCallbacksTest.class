@@ -343,53 +343,17 @@ class KeywordAlbumCallbacksTest extends GalleryTestCase {
 		);
 
 	foreach (array(
-		    
-
-
-/*  All keywords  */
-
-
-
+		    /* All keywords */
 		    array('allKeywords.time', false, 0, false, 3, array()),
-		    
-
-
-/*  All keywords with frequency data  */
-
-
-
+		    /* All keywords with frequency data */
 		    array('allKeywords.time', false, 0, true, 3, array()),
-		    
-
-
-/*  Three most common keywords  */
-
-
-
+		    /* Three most common keywords */
 		    array('allKeywords.3.time', false, 3, false, 6, array()),
-		    
-
-
-/*  Keywords for public items  */
-
-
-
+		    /* Keywords for public items */
 		    array('allKeywords.public.time', true, 0, false, 3, array(123, 456)),
-		    
-
-
-/*  Keywords for public items but guest has no ACLs  */
-
-
-
+		    /* Keywords for public items but guest has no ACLs */
 		    array('allKeywords.public.time', true, 0, false, 3, array()),
-		    
-
-
-/*  Verify cached value is used  */
-
-
-
+		    /* Verify cached value is used */
 		    array('allKeywords.public.time', false, 3, false, 3, array()),
 		    ) as $i => $params) {
 	    $ret = GalleryCoreApi::removePluginParameter('module', 'keyalbum', $params[0]);
@@ -463,13 +427,7 @@ class KeywordAlbumCallbacksTest extends GalleryTestCase {
     function _makeOnlyTestItemsPublic($itemId) {
 	global $gallery;
 
-	
-
-
-/*  Create a new multiroot guest user  */
-
-
-
+	/* Create a new multiroot guest user */
 	list ($ret, $user) = $this->_createRandomUser();
 	if ($ret) {
 	    return $ret;
@@ -487,13 +445,7 @@ class KeywordAlbumCallbacksTest extends GalleryTestCase {
 	    }
 	}
 
-	
-
-
-/*  The new "public" user can only view our subtree of test items  */
-
-
-
+	/* The new "public" user can only view our subtree of test items */
 	$ret = GalleryCoreApi::addUserPermission($itemId, $user->getId(), 'core.viewAll', true);
 	if ($ret) {
 	    return $ret;
@@ -509,13 +461,7 @@ class KeywordAlbumCallbacksTest extends GalleryTestCase {
  */
 class KeywordAlbumCallbacksTestStorage {
     function KeywordAlbumCallbacksTestStorage($storage, $queries) {
-	
-
-
-/*  Avoid weird reference thing in php4 that makes _extras->_gs point to mock storage  */
-
-
-
+	/* Avoid weird reference thing in php4 that makes _extras->_gs point to mock storage */
 	$storage->_extras = null;
 
 	$this->_storage = $storage;

@@ -29,13 +29,7 @@
  * @author Jess Martin <jmartin@cs.unc.edu>
  * @version $Revision: 17588 $
  */
-class HiddenModule extends GalleryModule 
-
-
-/*  and GalleryEventListener  */
-
-
- {
+class HiddenModule extends GalleryModule /* and GalleryEventListener */ {
 
     function __construct() {
 	$this->HiddenModule();
@@ -182,13 +176,7 @@ class HiddenModule extends GalleryModule
 		    || isset($permissions['core.viewSource']))) {
 		GalleryCoreApi::addPermissionToSession($itemId);
 
-		
-
-
-/*  Use a blunt instrument to clear the permission cache.  */
-
-
-
+		/* Use a blunt instrument to clear the permission cache. */
 		GalleryDataCache::reset();
 	    }
 	}
@@ -275,13 +263,7 @@ class HiddenModule extends GalleryModule
 		    }
 		    while ($result = $searchResults->nextResult()) {
 			$id = $result[0];
-			
-
-
-/*  Remove public view permission  */
-
-
-
+			/* Remove public view permission */
 			$ret = GalleryCoreApi::removeUserPermission(
 			    $id, $anonymousUserId, 'core.view');
 			if ($ret) {

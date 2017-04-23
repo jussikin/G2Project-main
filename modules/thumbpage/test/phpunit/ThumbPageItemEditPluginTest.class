@@ -37,13 +37,7 @@ class ThumbPageItemEditPluginTest extends ItemEditPluginTestCase {
 	   return $ret;
 	}
 
-	
-
-
-/*  Register a dummy toolkit and property  */
-
-
-
+	/* Register a dummy toolkit and property */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 	    'GalleryToolkit', 'ThumbPageTestToolkit', 'ThumbPageTestToolkit',
 	    'modules/thumbpage/test/phpunit/ThumbPageItemEditPluginTest.class',

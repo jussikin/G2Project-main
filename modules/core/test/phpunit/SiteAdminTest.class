@@ -44,13 +44,7 @@ class SiteAdminTest extends GalleryTestCase {
     }
 
     function testGuestRedirect() {
-	
-
-
-/*  Verify redirect to login view if guest access SiteAdmin view  */
-
-
-
+	/* Verify redirect to login view if guest access SiteAdmin view */
 	$ret = $this->_becomeGuestUser();
 	if ($ret) {
 	    return $ret;
