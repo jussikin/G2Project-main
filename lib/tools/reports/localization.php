@@ -22,7 +22,7 @@
  * Authors: Jens Tkotz, Bharat Mediratta
  */
 define('G2_SUPPORT_URL_FRAGMENT', '../../support/');
-require_once(dirname(__FILE__) . '/../../support/security.inc');
+require_once dirname(__FILE__) . '/../../support/security.inc';
 ini_set('magic_quotes_runtime', false);
 set_time_limit(0);
 
@@ -32,13 +32,13 @@ if (!empty($_REQUEST['type']) && $_REQUEST['type'] == 'detail') {
 } elseif (php_sapi_name() == 'cli' && $argv[1] == 'detail') {
     $type = 'detail';
 }
-$precision = isset($_GET['precision']) ? (int)$_GET['precision'] : ($type == 'detail' ? 2 : 1);
+$precision = isset($_GET['precision']) ? (int) $_GET['precision'] : ($type == 'detail' ? 2 : 1);
 $pow = pow(10, $precision);
 
 $poFiles = findPoFiles('../../..');
-list ($reportData, $mostRecentPoDate, $totalTranslated) = parsePoFiles($poFiles);
+list($reportData, $mostRecentPoDate, $totalTranslated) = parsePoFiles($poFiles);
 
-require(dirname(__FILE__) . '/localization/main_' . $type . '.inc');
+ require(dirname(__FILE__) . '/localization/main_' . $type . '.inc');
 exit;
 
 function findPoFiles($dir)
@@ -47,7 +47,7 @@ function findPoFiles($dir)
     if (!is_dir($dir)) {
         return $results;
     }
-
+    
     if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
             if ($file == '.' || $file == '..') {
@@ -63,6 +63,7 @@ function findPoFiles($dir)
             }
         }
     }
+
     return $results;
 }
 
@@ -79,53 +80,56 @@ function parsePoFiles($poFiles)
         if (!preg_match("|((?:\w+/)+)po/(\w{2}(?:_\w{2})?)\.po|", $poFile, $matches)) {
             continue;
         }
-        list ($plugin, $locale) = array($matches[1], $matches[2]);
+        list($plugin, $locale) = array(
+            $matches[1],
+            $matches[2]
+        );
         $seenPlugins[$plugin] = 1;
         $stat = stat($poFile);
         if ($stat && $stat['mtime'] > $mostRecentPoDate) {
             $mostRecentPoDate = $stat['mtime'];
         }
-
+        
         $fuzzy = $translated = $untranslated = $obsolete = 0;
-    /*
-	 * Untranslated:
-	 *   msgid "foo"
-	 *   msgstr ""
-	 *
-	 * Translated:
-	 *   msgid "foo"
-	 *   msgstr "bar"
-	 *
-	 * Translated:
-	 *   msgid "foo"
-	 *   msgstr ""
-	 *   "blah blah blah"
-	 *
-	 * Untranslated:
-	 *   msgid "foo"
-	 *   msgid_plural "foos"
-	 *   msgstr[0] ""
-	 *   msgstr[1] ""
-	 *   msgstr[2] ""
-	 *
-	 * Translated:
-	 *   msgid "foo"
-	 *   msgid_plural "foos"
-	 *   msgstr[0] "bar1"
-	 *   msgstr[1] "bar2"
-	 *   msgstr[2] "bar3"
-	 *
-	 * Translated, Fuzzy:
-	 *   # fuzzy
-	 *   msgid "foo"
-	 *   msgstr "bar"
-	 *
-	 * Deleted, Fuzzy:
-	 *   # fuzzy
-	 *   #~ msgid "foo"
-	 *   #~ msgstr "bar"
-	 *
-	 */
+        /*
+         * Untranslated:
+         *   msgid "foo"
+         *   msgstr ""
+         *
+         * Translated:
+         *   msgid "foo"
+         *   msgstr "bar"
+         *
+         * Translated:
+         *   msgid "foo"
+         *   msgstr ""
+         *   "blah blah blah"
+         *
+         * Untranslated:
+         *   msgid "foo"
+         *   msgid_plural "foos"
+         *   msgstr[0] ""
+         *   msgstr[1] ""
+         *   msgstr[2] ""
+         *
+         * Translated:
+         *   msgid "foo"
+         *   msgid_plural "foos"
+         *   msgstr[0] "bar1"
+         *   msgstr[1] "bar2"
+         *   msgstr[2] "bar3"
+         *
+         * Translated, Fuzzy:
+         *   # fuzzy
+         *   msgid "foo"
+         *   msgstr "bar"
+         *
+         * Deleted, Fuzzy:
+         *   # fuzzy
+         *   #~ msgid "foo"
+         *   #~ msgstr "bar"
+         *
+         */
         $msgId = null;
         $nextIsFuzzy = $lastLineWasEmptyMsgStr = $lastLineWasEmptyMsgId = 0;
         foreach (file($poFile) as $line) {
@@ -145,7 +149,7 @@ function parsePoFiles($poFiles)
                 }
                 continue;
             }
-
+            
             /*
              * Scan for:
              *   msgid ""
@@ -158,17 +162,17 @@ function parsePoFiles($poFiles)
                 $lastLineWasEmptyMsgId = 0;
                 continue;
             }
-
+            
             if (strpos($line, '#, fuzzy') === 0) {
                 $nextIsFuzzy = 1;
                 continue;
             }
-
+            
             if (preg_match('/^#~ msgid "(.*)"/', $line, $matches)) {
                 $obsolete++;
                 $nextIsFuzzy = 0;
             }
-
+            
             /*
              * Scan for:
              *   msgstr ""
@@ -182,7 +186,7 @@ function parsePoFiles($poFiles)
                     $translated++;
                 } else {
                     if ($nextIsFuzzy) {
-                        print "ERROR: DISCARD FUZZY for [$locale, $plugin, $msgId]<br>";
+                        echo "ERROR: DISCARD FUZZY for [$locale, $plugin, $msgId]<br>";
                     }
                     $untranslated++;
                 }
@@ -190,7 +194,7 @@ function parsePoFiles($poFiles)
                 $nextIsFuzzy = 0;
                 $lastLineWasEmptyMsgStr = 0;
             }
-
+            
             /*
              * Scan for:
              *   msgstr "foo bar"
@@ -214,11 +218,11 @@ function parsePoFiles($poFiles)
                 }
             }
         }
-    /* Catch msgstr "" in last line */
+        /* Catch msgstr "" in last line */
         if (!empty($msgId) && $lastLineWasEmptyMsgStr) {
             $untranslated++;
         }
-
+        
         $total = $translated + $untranslated;
         if (empty($total)) {
             $percentDone = $exactPercentDone = 0;
@@ -226,37 +230,44 @@ function parsePoFiles($poFiles)
             $percentDone = floor(($translated - $fuzzy) * 100 * $pow / $total) / $pow;
             $exactPercentDone = ($translated - $fuzzy) * 100 / $total;
         }
-        $poData[$locale]['plugins'][$plugin] = array('translated' => $translated,
-                             'untranslated' => $untranslated,
-                             'total' => $total,
-                             'fuzzy' => $fuzzy,
-                             'obsolete' => $obsolete,
-                             'percentDone' => $percentDone,
-                             'exactPercentDone' => $exactPercentDone,
-                             'name' => $plugin);
+        $poData[$locale]['plugins'][$plugin] = array(
+            'translated' => $translated,
+            'untranslated' => $untranslated,
+            'total' => $total,
+            'fuzzy' => $fuzzy,
+            'obsolete' => $obsolete,
+            'percentDone' => $percentDone,
+            'exactPercentDone' => $exactPercentDone,
+            'name' => $plugin
+        );
         $totalTranslated += $translated - $fuzzy;
-
-        foreach (array('translated', 'untranslated', 'fuzzy', 'obsolete') as $key) {
+        
+        foreach (array(
+            'translated',
+            'untranslated',
+            'fuzzy',
+            'obsolete'
+        ) as $key) {
             if (!isset($summary[$locale][$key])) {
                 $summary[$locale][$key] = 0;
             }
-
+            
             $summary[$locale][$key] += $poData[$locale]['plugins'][$plugin][$key];
         }
-
-    /* Keep track of the largest message count we've seen per plugin */
+        
+        /* Keep track of the largest message count we've seen per plugin */
         if (empty($maxMessageCount[$plugin]) || $total > $maxMessageCount[$plugin]) {
             $maxMessageCount[$plugin] = $total;
         }
     }
-
+    
     /* Overall total message count */
     $overallTotal = array_sum(array_values($maxMessageCount));
-
+    
     foreach (array_keys($poData) as $locale) {
         $pluginTotal = 0;
-
-    /* Fill in any missing locales */
+        
+        /* Fill in any missing locales */
         foreach (array_keys($seenPlugins) as $plugin) {
             if (!isset($poData[$locale]['plugins'][$plugin])) {
                 $poData[$locale]['plugins'][$plugin]['missing'] = 1;
@@ -264,33 +275,38 @@ function parsePoFiles($poFiles)
                 $poData[$locale]['plugins'][$plugin]['exactPercentDone'] = 0;
                 $poData[$locale]['plugins'][$plugin]['name'] = $plugin;
             } else {
-                $pluginTotal +=
-                $poData[$locale]['plugins'][$plugin]['translated'] -
-                $poData[$locale]['plugins'][$plugin]['fuzzy'];
+                $pluginTotal += $poData[$locale]['plugins'][$plugin]['translated'] - $poData[$locale]['plugins'][$plugin]['fuzzy'];
             }
         }
         uasort($poData[$locale]['plugins'], 'sortByPercentDone');
-
-    /* Figure out total percentage */
+        
+        /* Figure out total percentage */
         if (empty($overallTotal)) {
             $poData[$locale]['percentDone'] = $poData[$locale]['exactPercentDone'] = 0;
         } else {
-            $poData[$locale]['percentDone'] =
-            floor($pluginTotal * 100 * $pow / $overallTotal) / $pow;
+            $poData[$locale]['percentDone'] = floor($pluginTotal * 100 * $pow / $overallTotal) / $pow;
             $poData[$locale]['exactPercentDone'] = $pluginTotal * 100 / $overallTotal;
         }
-
-        foreach (array('translated', 'untranslated', 'fuzzy', 'obsolete') as $key) {
-            $poData[$locale]['summary'][$key] =
-            floor($summary[$locale][$key] * 100 * $pow / $overallTotal) / $pow;
+        
+        foreach (array(
+            'translated',
+            'untranslated',
+            'fuzzy',
+            'obsolete'
+        ) as $key) {
+            $poData[$locale]['summary'][$key] = floor($summary[$locale][$key] * 100 * $pow / $overallTotal) / $pow;
         }
         $poData[$locale]['summary']['total'] = $overallTotal;
     }
-
+    
     /* Sort locales by overall total */
     uasort($poData, 'sortByPercentDone');
-
-    return array($poData, $mostRecentPoDate, $totalTranslated);
+    
+    return array(
+        $poData,
+        $mostRecentPoDate,
+        $totalTranslated
+    );
 }
 
 /**
@@ -312,28 +328,30 @@ function sortByPercentDone($a, $b)
     } elseif (isset($b['missing']) && !isset($a['missing'])) {
         return -1;
     }
-
+    
     if ($a['exactPercentDone'] == $b['exactPercentDone']) {
         if (isset($a['name']) && isset($b['name'])) {
             return ($a['name'] < $b['name']) ? -1 : 1;
         }
+
         return 0;
     }
+
     return ($a['exactPercentDone'] < $b['exactPercentDone']) ? 1 : -1;
 }
 
 function percentColor($percent)
 {
-    $border=50;
+    $border = 50;
     if ($percent < $border) {
         $color = dechex(255 - $percent * 2) . "0000";
     } else {
-        $color= "00" . dechex(55 + $percent * 2). "00";
+        $color = "00" . dechex(55 + $percent * 2) . "00";
     }
-    if (strlen($color) <6) {
-        $color= "0" . $color;
+    if (strlen($color) < 6) {
+        $color = "0" . $color;
     }
-
+    
     return $color;
 }
 
@@ -349,13 +367,14 @@ function &getRowCount()
     if (!isset($count)) {
         $count = 0;
     }
+
     return $count;
 }
 
 function modifier($string)
 {
     $count =& getRowCount();
-
+    
     if ($count % 2) {
         return $string . '_light';
     } else {
