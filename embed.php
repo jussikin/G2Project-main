@@ -17,6 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 /**
  * Access point for external application in which Gallery is embedded.
  * See modules/core/classes/GalleryEmbed.class  and
@@ -29,6 +30,7 @@
 
 /* Define G2_EMBED = 1 to remember to generate correct URLs and return the HTML, etc. */
 require_once(dirname(__FILE__) . '/modules/core/classes/GalleryDataCache.class');
+
 GalleryDataCache::put('G2_EMBED', 1, true);
 require(dirname(__FILE__) . '/main.php');
 require(dirname(__FILE__) . '/modules/core/classes/GalleryEmbed.class');
