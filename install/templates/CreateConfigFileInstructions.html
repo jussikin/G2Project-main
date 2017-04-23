@@ -1,4 +1,4 @@
-    <h1><?php print _('Create a config file') ?></h1>
+    <h1><?php echo _('Create a config file') ?></h1>
 
     <?php if (!empty($templateData['error'])): ?>
     <div class="error">
@@ -10,7 +10,7 @@
 	  '</a>',
 	  '<tt>' . $templateData['galleryDir'] . '</tt>') ?>
       <?php else: ?>
-	<?php print $templateData['error'] ?>
+	<?php echo $templateData['error'] ?>
       <?php endif; ?>
       </h2>
     </div>
@@ -25,20 +25,20 @@
       <?php printf(_("Before we can proceed, you should create a file in your <b>%s</b> directory called <i>config.php</i>.  You must make sure that the webserver will be able to write to it."), $templateData['galleryDir']) ?>
       <?php if ($templateData['OS'] == 'unix'): ?>
 	<div class="example">
-	  <h2> <?php print _("Unix (with shell access)"); ?> </h2>
+	  <h2> <?php echo _("Unix (with shell access)"); ?> </h2>
 	  <pre> $ <b>touch config.php</b> <br/> $ <b>chmod 666 config.php</b> </pre>
 	</div>
 
       <?php else: ?>
 	<div class="example">
 	  <h2> Windows </h2>
-	  <pre> <?php print _("On Windows, you shouldn't have to do anything special.") ?> </pre>
+	  <pre> <?php echo _("On Windows, you shouldn't have to do anything special.") ?> </pre>
 	</div>
       <?php endif; ?>
     <?php endif; ?>
-    <?php print _("When you've created this file and set the permissions properly, you can proceed.  If there's a problem, we'll tell you what to fix.") ?>
+    <?php echo _("When you've created this file and set the permissions properly, you can proceed.  If there's a problem, we'll tell you what to fix.") ?>
     </p>
 
     <div class="go">
-      <a href="<?php generateUrl(sprintf('%s?step=%s', INDEX_PHP, $currentStep->getStepNumber())) ?>" class="btn continue"><i></i><span><span></span><i></i><?php print _('Create config file') ?></span></a>
+      <a href="<?php generateUrl(sprintf('%s?step=%s', INDEX_PHP, $currentStep->getStepNumber())) ?>" class="btn continue"><i></i><span><span></span><i></i><?php echo _('Create config file') ?></span></a>
     </div>
