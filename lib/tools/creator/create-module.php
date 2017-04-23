@@ -19,7 +19,7 @@
  */
 ini_set('error_reporting', 2047);
 if (!empty($_SERVER['SERVER_NAME'])) {
-    print "You must run this from the command line\n";
+    echo "You must run this from the command line\n";
     exit(1);
 }
 
@@ -28,7 +28,7 @@ if (php_sapi_name() == 'cgi') {
     chdir('../../..');
 }
 if (!file_exists('modules')) {
-    print "You must run this from the gallery2 directory\n";
+    echo "You must run this from the gallery2 directory\n";
     exit(1);
 }
 
@@ -42,7 +42,7 @@ if (function_exists('posix_getlogin')) {
     }
 }
 
-require_once(dirname(__FILE__) . '/../../../lib/smarty/Smarty.class.php');
+require_once dirname(__FILE__) . '/../../../lib/smarty/Smarty.class.php';
 if (!empty($_ENV['TMP'])) {
     $tmpdir = $_ENV['TMP'];
 } else {
@@ -50,12 +50,12 @@ if (!empty($_ENV['TMP'])) {
 }
 $tmpdir .= "/g2_" . rand(1, 30000);
 if (file_exists($tmpdir)) {
-    print "Tmp dir already exists: $tmpdir\n";
+    echo "Tmp dir already exists: $tmpdir\n";
     exit(1);
 }
 
 if (!mkdir($tmpdir)) {
-    print "Unable to make tmp dir: $tmpdir\n";
+    echo "Unable to make tmp dir: $tmpdir\n";
     exit(1);
 }
 
@@ -80,10 +80,7 @@ while (empty($moduleName)) {
 }
 
 while (empty($moduleId)) {
-    $moduleId = ask(
-        'What is the id of your module?',
-        strtolower(preg_replace('/ /', '', $moduleName))
-    );
+    $moduleId = ask('What is the id of your module?', strtolower(preg_replace('/ /', '', $moduleName)));
 }
 $moduleId = preg_replace('/\W/', '', $moduleId);
 $ucModuleId = ucfirst($moduleId);
@@ -147,27 +144,28 @@ $fd = safe_fopen($modulePath . '/classes/' . $ucModuleId . 'Helper.class');
 fwrite($fd, $smarty->fetch(dirname(__FILE__) . '/MyPageHelper.class.tpl'));
 fclose($fd);
 
-print "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
-print "Your module is ready!  You must build it by doing: \n";
-print "\n";
-print "  cd modules/$moduleId/classes \n";
-print "  make && make clean\n";
-print "\n";
-print "Then you can go to the Site Admin -> Modules \n";
-print "page and install and activate your module!\n";
-print "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
+echo "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
+echo "Your module is ready!  You must build it by doing: \n";
+echo "\n";
+echo "  cd modules/$moduleId/classes \n";
+echo "  make && make clean\n";
+echo "\n";
+echo "Then you can go to the Site Admin -> Modules \n";
+echo "page and install and activate your module!\n";
+echo "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
 
 function ask($prompt, $default = '')
 {
-    print $prompt;
+    echo $prompt;
     if (!empty($default)) {
-        print " [$default]";
+        echo " [$default]";
     }
-    print ' ';
+    echo ' ';
     $line = trim(fgets(stdin()));
     if (empty($line)) {
         return $default;
     }
+
     return $line;
 }
 
@@ -190,6 +188,7 @@ function cleanup()
 function safe_fopen($path)
 {
     ($fd = fopen($path, 'wb')) || error("Can't write to $path");
+
     return $fd;
 }
 
@@ -197,10 +196,11 @@ function stdin()
 {
     static $stdin;
     if (!defined('STDERR')) {
-    /* Already defined for CLI but not for CGI */
+        /* Already defined for CLI but not for CGI */
         $stdin = fopen('php://stdin', 'w');
         define('STDERR', $stdin);
     }
+
     return STDERR;
 }
 
@@ -208,9 +208,10 @@ function stderr()
 {
     static $stderr;
     if (!defined('STDERR')) {
-    /* Already defined for CLI but not for CGI */
+        /* Already defined for CLI but not for CGI */
         $stderr = fopen('php://stderr', 'w');
         define('STDERR', $stderr);
     }
+
     return STDERR;
 }
