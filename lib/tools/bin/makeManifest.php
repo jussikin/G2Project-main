@@ -14,21 +14,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- *ten You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA  02110-1301, USA.
  */
-if (!function_exists('file_put_contents')) {
-    /* Define file_put_contents if running PHP 4.x */
-    function file_put_contents($path, $data)
-    {
-        if (false === ($file = fopen($path, 'w')) || false === fwrite($file, $data)) {
-            return false;
-        }
-        fclose($file);
-        return true;
-    }
-}
 
 /*
  * Prepare the environment if the script was run directly from command line
@@ -38,11 +27,11 @@ if (empty($SRCDIR)) {
     if (!empty($_SERVER['SERVER_NAME'])) {
         die("You must run this from the command line\n");
     }
-
+    
     $quiet = false;
     $path = '';
     array_shift($argv);
-
+    
     for ($i = 0; $i < count($argv); $i++) {
         if ($argv[$i] === '-q') {
             $quiet = true;
@@ -57,7 +46,7 @@ if (empty($SRCDIR)) {
             }
         }
     }
-
+    
     /**
      * If quiet mode is not enabled, display the message on standard out.
      * @param string $message Message to display.
@@ -66,7 +55,7 @@ if (empty($SRCDIR)) {
     {
         global $quiet;
         if (!$quiet) {
-            print "$message\n";
+            echo "$message\n";
         }
     }
     makeManifest($path);
@@ -76,9 +65,9 @@ function makeManifest($filterPath = '')
 {
     global $SRCDIR;
     $startTime = time();
-
+    
     if (empty($SRCDIR)) {
-    /* Current working directory must be gallery2 folder */
+        /* Current working directory must be gallery2 folder */
         if (!file_exists('modules') && !file_exists('themes')) {
             $baseDir = dirname(dirname(dirname(dirname(__FILE__)))) . '/';
             chdir($baseDir);
@@ -92,13 +81,13 @@ function makeManifest($filterPath = '')
     /* Just so we are consistent lets standardize on Unix path sepearators */
     $baseDir = str_replace("\\", '/', $baseDir);
     $baseDir .= substr($baseDir, -1) == '/' ? '' : '/';
-
+    
     quiet_print("Finding all files...");
     $entries = listSvn($filterPath);
-
+    
     quiet_print("Sorting...");
     sort($entries);
-
+    
     /* Split into sections */
     $sections = array();
     quiet_print("Separating into sections...");
@@ -110,12 +99,12 @@ function makeManifest($filterPath = '')
             $sections['MANIFEST'][] = $file;
         }
     }
-
+    
     /* Now generate the checksum files */
     quiet_print("Generating checksums...");
     $changed = 0;
     $total = 0;
-
+    
     foreach ($sections as $manifest => $entries) {
         if (!file_exists($baseDir . $manifest)) {
             $oldLines = array();
@@ -126,16 +115,15 @@ function makeManifest($filterPath = '')
             $oldContent = implode('', $oldLines);
             $nl = preg_match('/\r\n/', $oldContent) ? "\r\n" : "\n";
             $matches = array();
-            $oldRevision =
-            preg_match('/Revision: (\d+\s*)\$/', $oldLines[0], $matches) ? $matches[1] : '';
+            $oldRevision = preg_match('/Revision: (\d+\s*)\$/', $oldLines[0], $matches) ? $matches[1] : '';
         }
-    
+        
         $newContent = "# \$Revi" . "sion: $oldRevision\$$nl";
         $newContent .= "# File crc32 crc32(crlf) size size(crlf)  or  R File$nl";
-
+        
         $deleted = $seen = array();
         foreach ($entries as $entry) {
-            list ($file, $isBinary) = preg_split('/\@\@/', $entry);
+            list($file, $isBinary) = preg_split('/\@\@/', $entry);
             $relativeFilePath = $file;
             $file = $baseDir . $file;
             if (preg_match('/deleted:(.*)/', $relativeFilePath, $matches)) {
@@ -146,7 +134,7 @@ function makeManifest($filterPath = '')
                 $fileSize = filesize($file);
                 $data = fread($fileHandle, $fileSize);
                 fclose($fileHandle);
-    
+                
                 $data_crlf = $data;
                 if ($isBinary) {
                     $size = $size_crlf = filesize($file);
@@ -156,22 +144,16 @@ function makeManifest($filterPath = '')
                     } else {
                         $data_crlf = str_replace("\n", "\r\n", $data_crlf);
                     }
-                        $size = strlen($data);
-                        $size_crlf = strlen($data_crlf);
+                    $size = strlen($data);
+                    $size_crlf = strlen($data_crlf);
                 }
-        
+                
                 $cksum = crc32($data);
                 $cksum_crlf = crc32($data_crlf);
-                $newContent .= sprintf(
-                    "$relativeFilePath\t%u\t%u\t%d\t%d$nl",
-                    $cksum,
-                    $cksum_crlf,
-                    $size,
-                    $size_crlf
-                );
+                $newContent .= sprintf("$relativeFilePath\t%u\t%u\t%d\t%d$nl", $cksum, $cksum_crlf, $size, $size_crlf);
             }
         }
-    
+        
         if (!empty($oldLines)) {
             foreach ($oldLines as $line) {
                 if ($line[0] == '#') {
@@ -190,12 +172,12 @@ function makeManifest($filterPath = '')
                     }
                 }
             }
-    
+            
             foreach ($deleted as $file => $unused) {
                 $newContent .= "R\t$file$nl";
             }
         }
-    
+        
         if ($oldContent != $newContent) {
             file_put_contents($baseDir . $manifest, $newContent);
             $changed++;
@@ -215,7 +197,7 @@ function makeManifest($filterPath = '')
 function listSvn($filterpath)
 {
     $entries = array();
-
+    
     $binaryList = array();
     exec("svn propget --non-interactive -R svn:mime-type $filterpath", $output);
     foreach ($output as $line) {
@@ -223,7 +205,7 @@ function listSvn($filterpath)
         $file = str_replace("\\", '/', $parts[0]);
         $binaryList[$file] = 1;
     }
-
+    
     $output = array();
     exec("svn status --non-interactive -v -q $filterpath", $output);
     foreach ($output as $line) {
@@ -234,26 +216,31 @@ function listSvn($filterpath)
         if (!file_exists($matches[2])) {
             die("The file '$matches[2]' does not exist");
         }
-
+        
         if (is_dir($matches[2])) {
             continue;
         }
-
+        
         if (preg_match('#[\\/]MANIFEST#', $matches[2]) > 0) {
             continue;
         }
-
+        
         if ($matches[1] == 'M') {
             quiet_print("Warning: $matches[2] is locally modified");
-        } elseif (!in_array($matches[1], array(' ', 'D', 'M'))) {
+        } elseif (!in_array($matches[1], array(
+            ' ',
+            'D',
+            'M'
+        ))) {
             die("Check {$matches[1]} status for {$matches[2]}");
         }
-
+        
         $status = $matches[1] === 'D' ? 'deleted:' : '';
-
+        
         $file = str_replace("\\", '/', $matches[2]);
         $entries[] = sprintf("%s%s@@%d", $status, $file, isset($binaryList[$file]));
     }
+
     return $entries;
 }
 

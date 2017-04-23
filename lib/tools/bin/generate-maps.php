@@ -57,27 +57,26 @@ $root = $p->parse($xmlFile);
 $maps = array();
 foreach ($root[0]['child'] as $map) {
     $mapName = $map['child'][0]['content'];
-
+    
     for ($j = 2; $j < count($map['child']); $j++) {
         $child = $map['child'][$j];
         if ($child['name'] == 'MEMBER') {
             $member = array(
-            'name' => $child['child'][0]['content'],
-            'type' => 'STORAGE_TYPE_' . $child['child'][1]['content']);
-
-            if (!empty($child['child'][2]['name']) &&
-                $child['child'][2]['name'] == 'MEMBER-SIZE') {
+                'name' => $child['child'][0]['content'],
+                'type' => 'STORAGE_TYPE_' . $child['child'][1]['content']
+            );
+            
+            if (!empty($child['child'][2]['name']) && $child['child'][2]['name'] == 'MEMBER-SIZE') {
                 $member['size'] = 'STORAGE_SIZE_' . $child['child'][2]['content'];
             } else {
                 $member['size'] = 'STORAGE_SIZE_MEDIUM';
             }
-
+            
             for ($k = 2; $k < count($child['child']); $k++) {
                 if (!empty($child['child'][$k]['name'])) {
                     $elem = $child['child'][$k];
                     if ($elem['name'] == 'PRIMARY' || $elem['name'] == 'REQUIRED') {
-                        if ($elem['name'] != 'REQUIRED' || empty($elem['attrs']['EMPTY']) ||
-                            $elem['attrs']['EMPTY'] != 'allowed') {
+                        if ($elem['name'] != 'REQUIRED' || empty($elem['attrs']['EMPTY']) || $elem['attrs']['EMPTY'] != 'allowed') {
                             $member['notNull'] = true;
                         } else {
                             $member['notNullEmptyAllowed'] = true;
@@ -86,8 +85,8 @@ foreach ($root[0]['child'] as $map) {
                     }
                 }
             }
-
-                $maps[$mapName][] = $member;
+            
+            $maps[$mapName][] = $member;
         }
     }
 }
@@ -96,7 +95,7 @@ $smarty->assign('maps', $maps);
 $smarty->assign('mapName', $mapName);
 $new = $smarty->fetch('maps.tpl');
 
-# Windows leaves a CR at the end of the file
+// Windows leaves a CR at the end of the file
 $new = rtrim($new, "\r");
 
 $fd = fopen('Maps.inc', 'w');
