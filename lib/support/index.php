@@ -1,45 +1,53 @@
 <?php
 define('G2_SUPPORT_URL_FRAGMENT', '');
-require_once(dirname(__FILE__) . '/security.inc');
+require_once dirname(__FILE__) . '/security.inc';
 ob_start();
-?>
-<!DOCTYPE html>
-<?php
+
 /* Tell other scripts we passed security.inc ok */
 define('G2_SUPPORT', true);
 if (!empty($_SERVER['QUERY_STRING'])) {
-    foreach (array('phpinfo', 'cache', 'gd', 'chmod', 'import', 'password', 'search_db') as $script) {
-        /*
-    	 * Don't use isset($_GET[$script]) since we want to allow for GET args could collide
-    	 * with the above mentioned script names
-    	 */
-        if ($_SERVER['QUERY_STRING'] == $script ||
-            strncmp($_SERVER['QUERY_STRING'], $script . '&', strlen($script)+1) == 0) {
-            include(dirname(__FILE__) . '/' . $script . '.php');
-            $results = ob_get_contents();
-            ob_end_clean();
-            print $results;
-            return;
-        }
-    }
+	foreach (array(
+		'phpinfo',
+		'cache',
+		'gd',
+		'chmod',
+		'import',
+		'password',
+		'search_db'
+	) as $script) {
+		/*
+	     * Don't use isset($_GET[$script]) since we want to allow for GET args could collide
+	     * with the above mentioned script names
+	     */
+		if ($_SERVER['QUERY_STRING'] == $script || strncmp($_SERVER['QUERY_STRING'], $script . '&', strlen($script) + 1) == 0) {
+			include dirname(__FILE__) . '/' . $script . '.php';
+			$results = ob_get_contents();
+			ob_end_clean();
+			echo $results;
+
+			return;
+		}
+	}
 }
 function generateUrl($uri, $print = true)
 {
-    /* If session.use_trans_sid is on then it will add the session id. */
-    if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
-        $sid = session_name() . '=' . session_id();
-        $uri .= (!strpos($uri, '?') ? '?' : '&amp;') . $sid;
-    }
-    if ($print) {
-        print $uri;
-    }
-    return $uri;
+	/* If session.use_trans_sid is on then it will add the session id. */
+	if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
+		$sid = session_name() . '=' . session_id();
+		$uri .= (!strpos($uri, '?') ? '?' : '&amp;') . $sid;
+	}
+	if ($print) {
+		echo $uri;
+	}
+
+	return $uri;
 }
 ?>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Gallery Support</title>
-    <link rel="stylesheet" type="text/css" href="<?php print $baseUrl ?>support.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>support.css">
   </head>
 
   <body>

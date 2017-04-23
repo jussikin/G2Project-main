@@ -1,7 +1,7 @@
 <?php
 if (!defined('G2_SUPPORT')) {
-    define('G2_SUPPORT_FILE', true);
-    require_once(dirname(__FILE__) . '/lib/support/defaultloc.inc');
+	define('G2_SUPPORT_FILE', true);
+	require_once dirname(__FILE__) . '/lib/support/defaultloc.inc';
 }
 ob_start();
 phpinfo();
@@ -10,17 +10,13 @@ ob_end_clean();
 
 preg_match('#<body>(.*)</body>#ims', $phpinfo, $matches);
 $phpinfo = $matches[1];
-$phpinfo = preg_replace_callback(
-    '#(<td class="v">)(.*?)(</td>)#ims',
-    create_function('$matches', 'return $matches[1] . wordwrap($matches[2], 10, "<wbr>", true) . $matches[3];'),
-    $phpinfo
-);
+$phpinfo = preg_replace_callback('#(<td class="v">)(.*?)(</td>)#ims', create_function('$matches', 'return $matches[1] . wordwrap($matches[2], 10, "<wbr>", true) . $matches[3];'), $phpinfo);
 
 ?>
 <html lang="en">
   <head>
     <title> Gallery Support | PHP Info</title>
-    <link rel="stylesheet" type="text/css" href="<?php print $baseUrl ?>support.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>support.css">
     <style type="text/css">
       pre {
     margin: 0px;
@@ -70,7 +66,7 @@ $phpinfo = preg_replace_callback(
     <a href="../../">Gallery</a> &raquo;
     <a href="<?php generateUrl('index.php') ?>">Support</a> &raquo; PHP Info
       </div>
-        <?php print $phpinfo; ?>
+        <?php echo $phpinfo; ?>
     </div>
   </body>
 </html>
