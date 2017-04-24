@@ -25,16 +25,16 @@
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 18677 $
  */
-class RepositoryPackage extends RepositoryObject {
-
+class RepositoryPackage extends RepositoryObject
+{
     /**
      * A RepositoryDescriptor object, used for getting meta data for package generation.
      *
      * @var object
      * @access private
      */
-    var $_descriptor;
-
+    public $_descriptor;
+    
     /**
      * Initializes the package generator.
      *
@@ -45,23 +45,24 @@ class RepositoryPackage extends RepositoryObject {
      * @param string $outputDir output directory
      * @return GalleryStatus a status code
      */
-    function init($descriptor, $outputDir) {
-	parent::init();
-
-	$ret = $this->setOutputDir($outputDir);
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_descriptor = $descriptor;
-
-	$this->setTemplateFile('package.tpl');
-	if ($ret) {
-	    return $ret;
-	}
-
-	return null;
+    public function init($descriptor, $outputDir)
+    {
+        parent::init();
+        
+        $ret = $this->setOutputDir($outputDir);
+        if ($ret) {
+            return $ret;
+        }
+        $this->_descriptor = $descriptor;
+        
+        $this->setTemplateFile('package.tpl');
+        if ($ret) {
+            return $ret;
+        }
+        
+        return null;
     }
-
+    
     /**
      * Writes all possible packages for this plugin to the repository.
      *
@@ -70,26 +71,35 @@ class RepositoryPackage extends RepositoryObject {
      * @return array GalleryStatus a status code
      *		     array packages created for this plugin
      */
-    function writeAllPackagesToDisk($overwritePackages=false, $compressToo=false) {
-	$packagesWritten = array();
-	$packagesSkipped = array();
-
-	foreach ($this->_descriptor->getPackages() as $packageType) {
-	    $ret = $this->writeSinglePackageToDisk($packageType, $overwritePackages, $compressToo);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    if ($this->_wasFileWritten) {
-		$packagesWritten[] = $packageType;
-	    } else {
-		$packagesSkipped[] = $packageType;
-	    }
-	}
-
-	return array(null, array('packagesWritten' => $packagesWritten,
-				 'packagesSkipped' => $packagesSkipped));
+    public function writeAllPackagesToDisk($overwritePackages = false, $compressToo = false)
+    {
+        $packagesWritten = array();
+        $packagesSkipped = array();
+        
+        foreach ($this->_descriptor->getPackages() as $packageType) {
+            $ret = $this->writeSinglePackageToDisk($packageType, $overwritePackages, $compressToo);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            if ($this->_wasFileWritten) {
+                $packagesWritten[] = $packageType;
+            } else {
+                $packagesSkipped[] = $packageType;
+            }
+        }
+        
+        return array(
+            null,
+            array(
+                'packagesWritten' => $packagesWritten,
+                'packagesSkipped' => $packagesSkipped
+            )
+        );
     }
-
+    
     /**
      * Writes the specified package of current plugin to the repository.
      *
@@ -98,49 +108,52 @@ class RepositoryPackage extends RepositoryObject {
      * @param boolean $compressToo write a compressed version also?
      * @return GalleryStatus a status code
      */
-    function writeSinglePackageToDisk($packageType, $overwritePackage=false, $compressToo=false) {
-	global $gallery;
+    public function writeSinglePackageToDisk($packageType, $overwritePackage = false, $compressToo = false)
+    {
+        global $gallery;
+        
+        $randomString = $this->getPackageHash($packageType, 10);
+        $this->_template->setVariable('random', $randomString);
+        
+        /* Directory structure creation code. */
+        $packageDirectories = array();
+        foreach ($this->_descriptor->getDirectoriesInPackage($packageType) as $dir) {
+            $packageDirectories[] = $dir;
+        }
+        
+        /* File creation code. */
+        $platform =& $gallery->getPlatform();
+        $packageFiles = array();
+        foreach ($this->_descriptor->getFilesInPackage($packageType) as $file) {
+            $pluginFilePath = $this->_descriptor->getPluginDir() . $file;
+            if (false === ($fileContents = $platform->file_get_contents($pluginFilePath))) {
+                return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__, sprintf('Error reading path [%s]', $pluginFilePath));
+            }
+            
+            if ($file == 'MANIFEST') {
+                $fileContents = $this->filterManifestForBasePackage($fileContents);
+            }
+            
+            $packageFiles[] = array(
+                'path' => $file,
+                'data' => base64_encode($fileContents)
+            );
+        }
+        
+        $this->_template->setVariable('directories', $packageDirectories);
+        $this->_template->setVariable('files', $packageFiles);
+        
+        /* Set file name and write it to disk. */
+        $this->setOutputFile($this->getPackageFileName($packageType));
+        
+        $ret = $this->writeToDisk($overwritePackage, $compressToo);
+        if ($ret) {
+            return $ret;
+        }
 
-	$randomString = $this->getPackageHash($packageType, 10);
-	$this->_template->setVariable('random', $randomString);
-
-	/* Directory structure creation code. */
-	$packageDirectories = array();
-	foreach ($this->_descriptor->getDirectoriesInPackage($packageType) as $dir) {
-	    $packageDirectories[] = $dir;
-	}
-
-	/* File creation code. */
-	$platform =& $gallery->getPlatform();
-	$packageFiles = array();
-	foreach ($this->_descriptor->getFilesInPackage($packageType) as $file) {
-	    $pluginFilePath = $this->_descriptor->getPluginDir() . $file;
-	    if (false === ($fileContents = $platform->file_get_contents($pluginFilePath))) {
-		return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__, sprintf(
-						 'Error reading path [%s]', $pluginFilePath));
-	    }
-
-	    if ($file == 'MANIFEST') {
-		$fileContents = $this->filterManifestForBasePackage($fileContents);
-	    }
-
-	    $packageFiles[] = array('path' => $file,
-				    'data' => base64_encode($fileContents));
-	}
-
-	$this->_template->setVariable('directories', $packageDirectories);
-	$this->_template->setVariable('files', $packageFiles);
-
-	/* Set file name and write it to disk. */
-	$this->setOutputFile($this->getPackageFileName($packageType));
-
-	$ret = $this->writeToDisk($overwritePackage, $compressToo);
-	if ($ret) {
-	    return $ret;
-	}
-	return null;
+        return null;
     }
-
+    
     /**
      * Calculates the file name of the specified package of this plugin.
      *
@@ -155,22 +168,20 @@ class RepositoryPackage extends RepositoryObject {
      * @param string $package package name
      * @return string package file name
      */
-    function getPackageFileName($package) {
-	if (preg_match('/^lang-(.*)$/', $package, $locale)) {
-	    $stringsRevision = $this->_descriptor->getStringsRevision();
-	    $locale = $locale[1];
+    public function getPackageFileName($package)
+    {
+        if (preg_match('/^lang-(.*)$/', $package, $locale)) {
+            $stringsRevision = $this->_descriptor->getStringsRevision();
+            $locale = $locale[1];
+            
+            $packageFileName = sprintf('%s-%s-%s-%s.package', $this->_descriptor->getPluginId(), $package, $stringsRevision, $this->_descriptor->getLanguageRevision($locale));
+        } else {
+            $packageFileName = sprintf('%s-%s-%s-%s.package', $this->_descriptor->getPluginId(), $this->_descriptor->getPluginVersion(), $this->_descriptor->getBuildTimestamp(), $package);
+        }
 
-	    $packageFileName = sprintf('%s-%s-%s-%s.package', $this->_descriptor->getPluginId(),
-		$package, $stringsRevision,
-		$this->_descriptor->getLanguageRevision($locale));
-	} else {
-	    $packageFileName = sprintf('%s-%s-%s-%s.package', $this->_descriptor->getPluginId(),
-		$this->_descriptor->getPluginVersion(), $this->_descriptor->getBuildTimestamp(),
-		$package);
-	}
-	return $packageFileName;
+        return $packageFileName;
     }
-
+    
     /**
      * Return a hash code for the given descriptor.  Not guaranteed to be unique,
      * but at 5 characters the collision rate is 1 in 60 million.
@@ -179,12 +190,12 @@ class RepositoryPackage extends RepositoryObject {
      * @param int $length desired length
      * @return string random string
      */
-    function getPackageHash($packageType, $length) {
-	global $gallery;
-	$phpVm = $gallery->getPhpVm();
-	$key = $this->getPackageFileName($packageType) .
-          GalleryUtilities::getRequestVariables('repositoryName');
-	return substr($phpVm->md5($key), 0, $length);
+    public function getPackageHash($packageType, $length)
+    {
+        global $gallery;
+        $phpVm = $gallery->getPhpVm();
+        $key = $this->getPackageFileName($packageType) . GalleryUtilities::getRequestVariables('repositoryName');
+
+        return substr($phpVm->md5($key), 0, $length);
     }
 }
-?>
