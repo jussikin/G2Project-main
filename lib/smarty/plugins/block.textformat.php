@@ -78,7 +78,6 @@ function smarty_block_textformat($params, $content, $template, &$repeat)
     $_paragraphs = preg_split('![\r\n]{2}!', $content);
     $_output = '';
 
-
     foreach ($_paragraphs as &$_paragraph) {
         if (!$_paragraph) {
             continue;
@@ -91,7 +90,7 @@ function smarty_block_textformat($params, $content, $template, &$repeat)
         }
         // wordwrap sentences
         if (Smarty::$_MBSTRING) {
-            require_once(SMARTY_PLUGINS_DIR . 'shared.mb_wordwrap.php');
+            require_once SMARTY_PLUGINS_DIR . 'shared.mb_wordwrap.php';
             $_paragraph = smarty_mb_wordwrap($_paragraph, $wrap - $indent, $wrap_char, $wrap_cut);
         } else {
             $_paragraph = wordwrap($_paragraph, $wrap - $indent, $wrap_char, $wrap_cut);
@@ -109,5 +108,3 @@ function smarty_block_textformat($params, $content, $template, &$repeat)
         return $_output;
     }
 }
-
-?>

@@ -18,7 +18,7 @@
  * @param array $params parameters
  * @return string with compiled code
  */
-function smarty_modifiercompiler_default ($params, $compiler)
+function smarty_modifiercompiler_default($params, $compiler)
 {
     $output = $params[0];
     if (!isset($params[1])) {
@@ -29,7 +29,6 @@ function smarty_modifiercompiler_default ($params, $compiler)
     foreach ($params as $param) {
         $output = '(($tmp = @' . $output . ')===null||$tmp===\'\' ? ' . $param . ' : $tmp)';
     }
+
     return $output;
 }
-
-?>

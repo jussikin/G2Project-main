@@ -5,8 +5,7 @@
  * @package Smarty
  * @subpackage PluginsShared
  */
-
-if(!function_exists('smarty_mb_wordwrap')) {
+if (!function_exists('smarty_mb_wordwrap')) {
 
     /**
      * Wrap a string to a given number of characters
@@ -19,7 +18,7 @@ if(!function_exists('smarty_mb_wordwrap')) {
      * @return string wrapped string
      * @author Rodney Rehm
      */
-    function smarty_mb_wordwrap($str, $width=75, $break="\n", $cut=false)
+    function smarty_mb_wordwrap($str, $width = 75, $break = "\n", $cut = false)
     {
         // break words into tokens using white space as a delimiter
         $tokens = preg_split('!(\s)!S' . Smarty::$_UTF8_MODIFIER, $str, -1, PREG_SPLIT_NO_EMPTY + PREG_SPLIT_DELIM_CAPTURE);
@@ -63,7 +62,7 @@ if(!function_exists('smarty_mb_wordwrap')) {
                         $length = 0;
                         continue;
                     }
-                } else if ($token == "\n") {
+                } elseif ($token == "\n") {
                     // hard break must reset counters
                     $_previous = 0;
                     $length = 0;
@@ -78,6 +77,4 @@ if(!function_exists('smarty_mb_wordwrap')) {
 
         return $t;
     }
-
 }
-?>

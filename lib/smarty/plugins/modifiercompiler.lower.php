@@ -18,7 +18,6 @@
  * @param array $params parameters
  * @return string with compiled code
  */
-
 function smarty_modifiercompiler_lower($params, $compiler)
 {
     if (Smarty::$_MBSTRING) {
@@ -27,5 +26,3 @@ function smarty_modifiercompiler_lower($params, $compiler)
     // no MBString fallback
     return 'strtolower(' . $params[0] . ')';
 }
-
-?>
