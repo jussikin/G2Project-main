@@ -25,178 +25,286 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class FloatrixTheme extends GalleryTheme {
-
-    function __construct() {
-	$this->FloatrixTheme();
+class FloatrixTheme extends GalleryTheme
+{
+    public function __construct()
+    {
+        $this->FloatrixTheme();
     }
-
-    function FloatrixTheme() {
-	global $gallery;
-
-	$this->setId('floatrix');
-	$this->setName($gallery->i18n('Floatrix'));
-	$this->setDescription($gallery->i18n('Variable column theme based on Matrix'));
-	$this->setVersion('2.0.0');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredThemeApi(array(3, 0));
-	$this->setStandardSettings(
-	    array('perPage' => 12,
-		  'columnWidth' => 200, 'rowHeight' => 300,
-		  'showImageOwner' => 0, 'showAlbumOwner' => 1,
-		  'albumFrame' => '', 'itemFrame' => '', 'photoFrame' => '',
-		  'colorpack' => '',
-		  'showMicroThumbs' => 0, 'dynamicLinks' => 'browse',
-		  'sidebarBlocks' => serialize(array(
-			array('core.ItemLinks', array('useDropdown' => false)),
-			array('core.PeerList', array()),
-			array('imageblock.ImageBlock', array()))),
-		  'albumBlocks' => serialize(array(
-			array('comment.ViewComments', array()))),
-		  'photoBlocks' => serialize(array(
-			array('exif.ExifInfo', array()),
-			array('comment.ViewComments', array())))));
+    
+    public function FloatrixTheme()
+    {
+        global $gallery;
+        
+        $this->setId('floatrix');
+        $this->setName($gallery->i18n('Floatrix'));
+        $this->setDescription($gallery->i18n('Variable column theme based on Matrix'));
+        $this->setVersion('2.0.0');
+        $this->setRequiredCoreApi(array(
+            8,
+            0
+        ));
+        $this->setRequiredThemeApi(array(
+            3,
+            0
+        ));
+        $this->setStandardSettings(array(
+            'perPage' => 12,
+            'columnWidth' => 200,
+            'rowHeight' => 300,
+            'showImageOwner' => 0,
+            'showAlbumOwner' => 1,
+            'albumFrame' => '',
+            'itemFrame' => '',
+            'photoFrame' => '',
+            'colorpack' => '',
+            'showMicroThumbs' => 0,
+            'dynamicLinks' => 'browse',
+            'sidebarBlocks' => serialize(array(
+                array(
+                    'core.ItemLinks',
+                    array(
+                        'useDropdown' => false
+                    )
+                ),
+                array(
+                    'core.PeerList',
+                    array()
+                ),
+                array(
+                    'imageblock.ImageBlock',
+                    array()
+                )
+            )),
+            'albumBlocks' => serialize(array(
+                array(
+                    'comment.ViewComments',
+                    array()
+                )
+            )),
+            'photoBlocks' => serialize(array(
+                array(
+                    'exif.ExifInfo',
+                    array()
+                ),
+                array(
+                    'comment.ViewComments',
+                    array()
+                )
+            ))
+        ));
     }
-
+    
     /**
      * @see GalleryTheme::validateSettings
      */
-    function validateSettings($settings) {
-	$error = parent::validateSettings($settings);
-	if (empty($settings['columnWidth'])) {
-	    $error['columnWidth'] = $this->translate('You must enter a number');
-	}
-	if (empty($settings['rowHeight'])) {
-	    $error['rowHeight'] = $this->translate('You must enter a number');
-	}
-	return $error;
+    public function validateSettings($settings)
+    {
+        $error = parent::validateSettings($settings);
+        if (empty($settings['columnWidth'])) {
+            $error['columnWidth'] = $this->translate('You must enter a number');
+        }
+        if (empty($settings['rowHeight'])) {
+            $error['rowHeight'] = $this->translate('You must enter a number');
+        }
+        
+        return $error;
     }
-
+    
     /**
      * @see GalleryTheme::showAlbumPage
      */
-    function showAlbumPage(&$template, $item, $params, $childIds) {
-	$ret = $this->loadCommonTemplateData(
-	    $template, $item, $params,
-	    array('owner', 'viewCount', 'childCount', 'descendentCount', 'parents',
-	      'systemLinks', 'itemLinks', 'itemSummaries', 'permissions',
-	      'thumbnails', 'pageNavigator', 'jumpRange'),
-	     $childIds);
-	if ($ret) {
-	    return array($ret, null);
-	}
-	$ret = $this->preloadBlock($template, 'search.SearchBlock');
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	/* Check for JavaScript warning flag */
-	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
-	    $template->setVariable('jsWarning', true);
-	}
-
-	$this->_splitItemLinks($template);
-	return array(null, 'theme.tpl');
+    public function showAlbumPage(&$template, $item, $params, $childIds)
+    {
+        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
+            'owner',
+            'viewCount',
+            'childCount',
+            'descendentCount',
+            'parents',
+            'systemLinks',
+            'itemLinks',
+            'itemSummaries',
+            'permissions',
+            'thumbnails',
+            'pageNavigator',
+            'jumpRange'
+        ), $childIds);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        $ret = $this->preloadBlock($template, 'search.SearchBlock');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        /* Check for JavaScript warning flag */
+        if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
+            $template->setVariable('jsWarning', true);
+        }
+        
+        $this->_splitItemLinks($template);
+        
+        return array(
+            null,
+            'theme.tpl'
+        );
     }
-
+    
     /**
      * @see GalleryTheme::showPhotoPage
      */
-    function showPhotoPage(&$template, $item, $params) {
-	$dataTypes = array('owner', 'parents', 'systemLinks', 'itemLinks', 'permissions',
-			   'itemLinksDetailed', 'itemNavigator', 'imageViews');
-	if (!empty($params['showMicroThumbs'])) {
-	    $dataTypes[] = 'navThumbnails';
-	}
-	$ret = $this->loadCommonTemplateData($template, $item, $params, $dataTypes);
-	if ($ret) {
-	    return array($ret, null);
-	}
-	$ret = $this->preloadBlock($template, 'search.SearchBlock');
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	/* Check for JavaScript warning flag */
-	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
-	    $template->setVariable('jsWarning', true);
-	}
-
-	$this->_splitItemLinks($template);
-	return array(null, 'theme.tpl');
+    public function showPhotoPage(&$template, $item, $params)
+    {
+        $dataTypes = array(
+            'owner',
+            'parents',
+            'systemLinks',
+            'itemLinks',
+            'permissions',
+            'itemLinksDetailed',
+            'itemNavigator',
+            'imageViews'
+        );
+        if (!empty($params['showMicroThumbs'])) {
+            $dataTypes[] = 'navThumbnails';
+        }
+        $ret = $this->loadCommonTemplateData($template, $item, $params, $dataTypes);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        $ret = $this->preloadBlock($template, 'search.SearchBlock');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        /* Check for JavaScript warning flag */
+        if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
+            $template->setVariable('jsWarning', true);
+        }
+        
+        $this->_splitItemLinks($template);
+        
+        return array(
+            null,
+            'theme.tpl'
+        );
     }
-
+    
     /**
      * Split item links into user and admin actions
      */
-    function _splitItemLinks(&$template) {
-	$theme =& $template->getVariableByReference('theme');
-	$userViews = array(
-		'slideshow.Slideshow' => true,
-		'slideshowapplet.SlideshowApplet' => true,
-		'comment.AddComment' => true,
-		'comment.ShowAllComments' => true,
-		'ecard.SendEcard' => true,
-		'rss.SimpleRender' => true,
-		);
-	$theme['userLinks'] = array();
-	foreach ($theme['itemLinks'] as $i => $link) {
-	    if (isset($link['params']['view']) && isset($userViews[$link['params']['view']])) {
-		$theme['userLinks'][] = $link;
-		unset($theme['itemLinks'][$i]);
-	    }
-	}
+    public function _splitItemLinks(&$template)
+    {
+        $theme =& $template->getVariableByReference('theme');
+        $userViews = array(
+            'slideshow.Slideshow' => true,
+            'slideshowapplet.SlideshowApplet' => true,
+            'comment.AddComment' => true,
+            'comment.ShowAllComments' => true,
+            'ecard.SendEcard' => true,
+            'rss.SimpleRender' => true
+        );
+        $theme['userLinks'] = array();
+        foreach ($theme['itemLinks'] as $i => $link) {
+            if (isset($link['params']['view']) && isset($userViews[$link['params']['view']])) {
+                $theme['userLinks'][] = $link;
+                unset($theme['itemLinks'][$i]);
+            }
+        }
     }
-
+    
     /**
      * @see GalleryTheme::showModulePage
      */
-    function showModulePage(&$template, $item, $params, $templateFile) {
-	$ret = $this->loadCommonTemplateData(
-	    $template, $item, $params, array('parents', 'systemLinks'));
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	/* Check for JavaScript warning flag */
-	if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
-	    $template->setVariable('jsWarning', true);
-	}
-
-	return array(null, 'theme.tpl');
+    public function showModulePage(&$template, $item, $params, $templateFile)
+    {
+        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
+            'parents',
+            'systemLinks'
+        ));
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        /* Check for JavaScript warning flag */
+        if (GalleryUtilities::getRequestVariables('jsWarning') != null) {
+            $template->setVariable('jsWarning', true);
+        }
+        
+        return array(
+            null,
+            'theme.tpl'
+        );
     }
-
+    
     /**
      * @see GalleryTheme::showAdminPage
      */
-    function showAdminPage(&$template, $item, $params, $templateFile) {
-	$ret = $this->loadCommonTemplateData(
-	    $template, $item, $params, array('parents', 'systemLinks'));
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	return array(null, 'theme.tpl');
+    public function showAdminPage(&$template, $item, $params, $templateFile)
+    {
+        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
+            'parents',
+            'systemLinks'
+        ));
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        return array(
+            null,
+            'theme.tpl'
+        );
     }
-
+    
     /**
      * @see GalleryTheme::showErrorPage
      */
-    function showErrorPage(&$template) {
-	return array(null, 'error.tpl');
+    public function showErrorPage(&$template)
+    {
+        return array(
+            null,
+            'error.tpl'
+        );
     }
-
+    
     /**
      * @see GalleryTheme::showProgressBarPage
      */
-    function showProgressBarPage(&$template, $item, $params) {
-	$ret = $this->loadCommonTemplateData(
-	    $template, $item, $params, array('parents', 'systemLinks'));
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	return array(null, 'theme.tpl');
+    public function showProgressBarPage(&$template, $item, $params)
+    {
+        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
+            'parents',
+            'systemLinks'
+        ));
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        return array(
+            null,
+            'theme.tpl'
+        );
     }
 }
-?>

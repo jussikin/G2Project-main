@@ -599,18 +599,18 @@ td.bsw_BlockCommands {
 .navGIF {
   width: 20px;
   height: 17px;
-  position: absolute; 
-  top: 30px; 
-  visibility: hidden; 
+  position: absolute;
+  top: 30px;
+  visibility: hidden;
   cursor: pointer
 }
 
 .navGIFL {
-  left: 30px; 
+  left: 30px;
 }
 
 .navGIFR {
-  left: 30px; 
+  left: 30px;
 }
 .navPNG {
   width: 18px;

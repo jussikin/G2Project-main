@@ -640,11 +640,11 @@ a .alt { display: none; }
 }
 
 .exifBlock {
-  position:absolute; 
-  left:0px; 
-  top:0px; 
-  padding:1px; 
-  visibility:hidden; 
+  position:absolute;
+  left:0px;
+  top:0px;
+  padding:1px;
+  visibility:hidden;
   z-index:5000;
 }
 

@@ -42,13 +42,14 @@ var CONTROLS_HIDDEN_DEPTH = -35;
 /* Initialisation */
 addEvent(window, 'load', slideShow, false);
 
-function slideShow() {
+function slideShow()
+{
     if (!document.getElementById) {
-	return;
+        return;
     }
     var playpause = document.getElementById('controls-play');
     if (!playpause) {
-	return;
+        return;
     }
 
     /* Set up controls */
@@ -68,97 +69,108 @@ function slideShow() {
     returnToPlaying = false;
 }
 
-function advanceSlideShow() {
+function advanceSlideShow()
+{
     if (slideshowState == PLAYING) {
-	switchImages(currentImageIndex + 1);
+        switchImages(currentImageIndex + 1);
     }
 }
 
-function play() {
+function play()
+{
     slideshowState = PLAYING;
     resetInterval();
     returnToPlaying = true;
     /* Swap Images */
     var theImage =
-	document.getElementById('controls-play').getElementsByTagName('img')[0];
+    document.getElementById('controls-play').getElementsByTagName('img')[0];
     theImage.src = theImage.src.replace(/play/, 'pause');
 }
 
-function pause() {
+function pause()
+{
     slideshowState = PAUSED;
     clearInterval(slideShowInterval);
     returnToPlaying = false;
     /* Swap Images */
     var theImage =
-	document.getElementById('controls-play').getElementsByTagName('img')[0];
+    document.getElementById('controls-play').getElementsByTagName('img')[0];
     theImage.src = theImage.src.replace(/pause/, 'play');
 }
 
-function resetInterval() {
-    clearInterval(slideShowInterval);	/* Just in case... */
+function resetInterval()
+{
+    clearInterval(slideShowInterval);   /* Just in case... */
     slideShowInterval =
-	setInterval("advanceSlideShow()", SECONDS_BETWEEN_IMAGES * 1000);
+    setInterval("advanceSlideShow()", SECONDS_BETWEEN_IMAGES * 1000);
 }
 
-function skipLeft() {
+function skipLeft()
+{
     switchImages(currentImageIndex - 1);
     resetInterval();
 }
 
-function skipRight() {
+function skipRight()
+{
     switchImages(currentImageIndex + 1);
     resetInterval();
 }
 
-function togglePlayPause() {
+function togglePlayPause()
+{
     if (slideshowState == PAUSED) {
-	play();
+        play();
     } else {
-	pause();
+        pause();
     }
 }
 
-function showControls() {
+function showControls()
+{
     controls = document.getElementById('control-buttons');
     clearInterval(showControlsInterval);
     clearInterval(hideControlsInterval);
     controls.state = 'showing';
     if (controls.state != 'shown') {
-	showControlsInterval = setInterval('animateControlShow()', 15);
+        showControlsInterval = setInterval('animateControlShow()', 15);
     }
 }
 
-function hideControlBar() {
+function hideControlBar()
+{
     clearInterval(hideControlsInterval);
     /*
      * Pass an anonymous function to setTimeout that is only executed after
      * 1500 milliseconds has passed. Mousing over the controls' action area
      * within this time will reset the timeout.
      */
-    hideControlsInterval = setTimeout(function() {
-	if (controls.state == 'shown' || controls.state == 'showing') {
-	  hideControlsInterval = setInterval('animateControlHide()', 50);
-	}
+    hideControlsInterval = setTimeout(function () {
+        if (controls.state == 'shown' || controls.state == 'showing') {
+              hideControlsInterval = setInterval('animateControlHide()', 50);
+        }
     }, 1500);
 }
 
-function animateControlShow() {
+function animateControlShow()
+{
     var pos = parseInt(getElementStyle(controls.id, 'top'));
     if (pos < 0) {
-	controls.style.top = (pos + 3) + 'px';
+        controls.style.top = (pos + 3) + 'px';
     } else {
-	clearInterval(showControlsInterval);
-	controls.state = 'shown';
+        clearInterval(showControlsInterval);
+        controls.state = 'shown';
     }
 }
 
-function animateControlHide() {
+function animateControlHide()
+{
     var pos = parseInt(getElementStyle(controls.id, 'top'));
     if (pos > CONTROLS_HIDDEN_DEPTH) {
-	controls.style.top = (pos - 3) + 'px';
+        controls.style.top = (pos - 3) + 'px';
     } else {
-	clearInterval(hideControlsInterval);
-	controls.state = 'hidden';
+        clearInterval(hideControlsInterval);
+        controls.state = 'hidden';
     }
 }
 

@@ -619,109 +619,109 @@ td.bsw_BlockCommands {
 }
 
 #width10 {
-	width: 10%;
+    width: 10%;
 }
 
 #width15 {
-	width: 15%;
+    width: 15%;
 }
 
 #width20 {
-	width: 20%;
+    width: 20%;
 }
 
 #width25 {
-	width: 25%;
+    width: 25%;
 }
 
 #width30 {
-	width: 30%;
+    width: 30%;
 }
 
 #width35 {
-	width: 35%;
+    width: 35%;
 }
 
 #width40 {
-	width: 40%;
+    width: 40%;
 }
 
 #width45 {
-	width: 45%;
+    width: 45%;
 }
 
 #width50 {
-	width: 50%;
+    width: 50%;
 }
 
 #width55 {
-	width: 55%;
+    width: 55%;
 }
 
 #width60 {
-	width: 60%;
+    width: 60%;
 }
 
 #width65 {
-	width: 65%;
+    width: 65%;
 }
 
 #width70 {
-	width: 70%;
+    width: 70%;
 }
 
 #width75 {
-	width: 75%;
+    width: 75%;
 }
 
 #width80 {
-	width: 80%;
+    width: 80%;
 }
 
 #width85 {
-	width: 85%;
+    width: 85%;
 }
 
 #width90 {
-	width: 90%;
+    width: 90%;
 }
 
 #width95 {
-	width: 95%;
+    width: 95%;
 }
 
 #width100 {
-	width: 100%;
+    width: 100%;
 }
 
 #cellS_P0 {
-	cellspacing: 0px;
-	cellpadding: 0px;
+    cellspacing: 0px;
+    cellpadding: 0px;
 }
 
 #valignTop {
-	valign: top;
+    valign: top;
 }
 
 #progressMemoryInfo {
-	position: absolute;
-	top: 0px;
-	right: 15px;
+    position: absolute;
+    top: 0px;
+    right: 15px;
 }
 
 #hidden {
-	display: none
+    display: none
 }
 
 #titledivstart {
-	background-color: #ccddff;
-	color: #4466cc;
-	text-align: center;
-	font-size: 1.3em;
+    background-color: #ccddff;
+    color: #4466cc;
+    text-align: center;
+    font-size: 1.3em;
 }
 
 #titlediv {
-	color: #222;
-	font-size: 1.3em;
+    color: #222;
+    font-size: 1.3em;
 }
 
