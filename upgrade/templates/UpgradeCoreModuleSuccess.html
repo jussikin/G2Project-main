@@ -1,9 +1,9 @@
 <div class="success">
-    <h1><?php print _("Upgraded Gallery Core Module successfully.") ?></h1>
+    <h1><?php echo _("Upgraded Gallery Core Module successfully.") ?></h1>
 </div>
 
     <p>
-      <?php print _("We've successfully upgraded the Gallery Core Module.") ?>
+      <?php echo _("We've successfully upgraded the Gallery Core Module.") ?>
     </p>
 
     <?php if ($templateData['canChmod'] && !$templateData['isConfigSecure']): ?>
@@ -14,6 +14,6 @@
       <pre> <?php printf("chmod 644 %s", $templateData['configFilePath']) ?></pre>
     </div>
     <div class="go">
-	  <a href="<?php generateUrl('index.php?step=' . $stepNumber) ?>" class="btn redo"><i></i><span><span></span><i></i><?php print _('Recheck config.php') ?></span></a>
+	  <a href="<?php generateUrl('index.php?step=' . $stepNumber) ?>" class="btn redo"><i></i><span><span></span><i></i><?php echo _('Recheck config.php') ?></span></a>
     </div>
     <?php endif; ?>

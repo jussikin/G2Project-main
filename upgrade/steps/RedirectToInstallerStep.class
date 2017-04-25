@@ -22,30 +22,28 @@
  * Show a warning page with a link to the installer
  * @package Upgrade
  */
-class RedirectToInstallerStep extends UpgradeStep {
+class RedirectToInstallerStep extends UpgradeStep
+{
+    public function loadTemplateData(&$templateData)
+    {
+        global $gallery, $stepNumber;
+        
+        /* Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl */
+        $baseUrl = @$gallery->getConfig('galleryBaseUrl');
+        if (empty($baseUrl)) {
+            $url = '../install/index.php';
+        } else {
+            /* Multisite dir has no installer, point to the codebase */
+            $url = $baseUrl . 'install/index.php';
+        }
+        
+        /* Don't redirect immediately as user might want to upgrade but has lost config.php. */
+        $this->setComplete(false);
 
-    function loadTemplateData(&$templateData) {
-	global $gallery, $stepNumber;;
-
-	/* Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl */
-	$baseUrl = @$gallery->getConfig('galleryBaseUrl');
-	if (empty($baseUrl)) {
-	    $url = '../install/index.php';
-	} else {
-	    /* Multisite dir has no installer, point to the codebase */
-	    $url = $baseUrl . 'install/index.php';
-	}
-
-	/*
-	 * Don't redirect immediately because the user might actually want to upgrade
-	 * but accidentally lost config.php.
-	 */
-	$this->setComplete(false);
-	/* Fix progress bar / hack */
-	$stepNumber = 1;
-
-	$templateData['installerUrl'] = $url;
-	$templateData['bodyFile'] = 'RedirectToInstaller.html';
+        /* Fix progress bar / hack */
+        $stepNumber = 1;
+        
+        $templateData['installerUrl'] = $url;
+        $templateData['bodyFile'] = 'RedirectToInstaller.html';
     }
 }
-?>

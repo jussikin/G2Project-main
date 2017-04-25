@@ -2,7 +2,7 @@
   <table cellspacing="0">
     <tr>
       <td class="heading" colspan="2">
-        <?php print _('Upgrade Steps') ?>
+        <?php echo _('Upgrade Steps') ?>
       </td>
     </tr>
     <?php for ($i = 0; $i < count($steps); $i++): ?>
@@ -14,7 +14,7 @@
         <?php elseif ($steps[$i]->isInError()): ?>
           <span class="error">&#10007;</span>
         <?php else: ?>
-          <?php print $i ?>
+          <?php echo $i ?>
         <?php endif; ?>
       </td>
       <td class="navtext">
@@ -29,7 +29,7 @@
 	      	<?php endif; ?>
 	      >
         <?php endif; ?>
-        <?php print $steps[$i]->stepName(); ?>
+        <?php echo $steps[$i]->stepName(); ?>
         <?php if ($linkable): ?>
           </a>
         <?php endif; ?>
