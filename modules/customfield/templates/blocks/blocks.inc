@@ -1,5 +1,4 @@
 <?php
 $blocks = array(
     'CustomFields' => array(
-	'description' => $gallery->i18n('Custom Fields')));
-?>
+    'description' => $gallery->i18n('Custom Fields')));

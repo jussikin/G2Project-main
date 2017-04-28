@@ -27,8 +27,8 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class CustomFieldInterface_1_0 {
-
+class CustomFieldInterface_1_0
+{
     /**
      * Create new custom fields
      *
@@ -37,10 +37,14 @@ class CustomFieldInterface_1_0 {
      * @return array GalleryStatus a status code,
      *               array(string duplicate field names)
      */
-    function createCustomFields($fieldNames, $containerId=0) {
-	return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null);
+    public function createCustomFields($fieldNames, $containerId = 0)
+    {
+        return array(
+            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+            null
+        );
     }
-
+    
     /**
      * Set custom field values for an item; overwrites all existing field values.
      *
@@ -48,8 +52,8 @@ class CustomFieldInterface_1_0 {
      * @param array $data field values
      * @return GalleryStatus a status code
      */
-    function setCustomFieldValues($itemId, $data) {
-	return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
+    public function setCustomFieldValues($itemId, $data)
+    {
+        return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
     }
 }
-?>
