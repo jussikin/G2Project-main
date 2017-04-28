@@ -23,46 +23,48 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CartCallbacks {
-
-    function callback($params, $smarty, $callback, $userId=null) {
-	global $gallery;
-
-	switch($callback) {
-	case 'LoadCart':
-	    /* The cart contents' count */
-	    GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
-	    list ($ret, $cartItemIds) = CartHelper::fetchCartItemCounts();
-	    if ($ret) {
-		return $ret;
-	    }
-
-	    $unique = array_keys($cartItemIds);
-	    $total = 0;
-	    foreach ($cartItemIds as $itemId => $count) {
-		$total += $count;
-	    }
-
-	    $block = $smarty->getTemplateVars('block');
-	    $smarty->assignByRef('block', $block);
-	    
-	    
-	    $block['cart']['ShowCart']['unique'] = $unique;
-	    $block['cart']['ShowCart']['total'] = $total;
-
-	    $urlParams = array('view' => 'cart.ViewCart');
-	    $itemId = GalleryUtilities::getRequestVariables('itemId');
-	    if (!empty($itemId)) {
-		$urlParams['itemId'] = $itemId;
-	    }
-
-	    $urlGenerator =& $gallery->getUrlGenerator();
-	    $block['cart']['ShowCart']['url'] = $urlGenerator->generateUrl($urlParams, array());
-
-	    return null;
-	}
-
-	return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+class CartCallbacks
+{
+    public function callback($params, $smarty, $callback, $userId = null)
+    {
+        global $gallery;
+        
+        switch ($callback) {
+            case 'LoadCart':
+                /* The cart contents' count */
+                GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
+                list($ret, $cartItemIds) = CartHelper::fetchCartItemCounts();
+                if ($ret) {
+                    return $ret;
+                }
+                
+                $unique = array_keys($cartItemIds);
+                $total = 0;
+                foreach ($cartItemIds as $itemId => $count) {
+                    $total += $count;
+                }
+                
+                $block = $smarty->getTemplateVars('block');
+                $smarty->assignByRef('block', $block);
+                
+                
+                $block['cart']['ShowCart']['unique'] = $unique;
+                $block['cart']['ShowCart']['total'] = $total;
+                
+                $urlParams = array(
+                    'view' => 'cart.ViewCart'
+                );
+                $itemId = GalleryUtilities::getRequestVariables('itemId');
+                if (!empty($itemId)) {
+                    $urlParams['itemId'] = $itemId;
+                }
+                
+                $urlGenerator =& $gallery->getUrlGenerator();
+                $block['cart']['ShowCart']['url'] = $urlGenerator->generateUrl($urlParams, array());
+                
+                return null;
+        }
+        
+        return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
     }
 }
-?>

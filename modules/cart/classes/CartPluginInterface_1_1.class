@@ -31,7 +31,8 @@ GalleryCoreApi::requireOnce('modules/cart/classes/CartPluginInterface_1_0.class'
  * @version $Revision: 17580 $
  * @abstract
  */
-class CartPluginInterface_1_1 extends CartPluginInterface_1_0 {
+class CartPluginInterface_1_1 extends CartPluginInterface_1_0
+{
     /**
      * Return the permission ids required to fulfill the cart action, e.g.
      * array('someprintmodule.print').
@@ -39,8 +40,8 @@ class CartPluginInterface_1_1 extends CartPluginInterface_1_0 {
      * @return array permission ids
      * @since 1.1
      */
-    function getRequiredPermissions() {
-	return array();
+    public function getRequiredPermissions()
+    {
+        return array();
     }
 }
-?>
