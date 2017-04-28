@@ -26,19 +26,20 @@
  * @author Dariush Molavi <dari@nukedgallery.net>
  * @version $Revision: 17580 $
  */
-class ConfirmationView extends GalleryView {
-
+class ConfirmationView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	list ($ret, $item) = $this->getItem();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public function loadTemplate(&$template, &$form)
+    {
+        list($ret, $item) = $this->getItem();
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	$template->setVariable('Confirmation', array('itemId' => $item->getId()));
-	return array(null, array('body' => 'modules/ecard/templates/Confirmation.tpl'));
+        $template->setVariable('Confirmation', array('itemId' => $item->getId()));
+
+        return array(null, array('body' => 'modules/ecard/templates/Confirmation.tpl'));
     }
 }
-?>

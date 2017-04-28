@@ -26,86 +26,88 @@
  * @author Dariush Molavi <dari@nukedgallery.net>
  * @version $Revision: 17580 $
  */
-class AdminEcardController extends GalleryController {
-
+class AdminEcardController extends GalleryController
+{
     /**
      * @see GalleryController::handleRequest
      */
-    function handleRequest($form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public function handleRequest($form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	$results = $error = $status = array();
+        $results = $error = $status = array();
 
-	if (isset($form['action']['save'])) {
-	    foreach (array('from', 'subject', 'bcc', 'header', 'footer', 'format') as $key) {
-		$ret = GalleryCoreApi::setPluginParameter('module', 'ecard', $key, $form[$key]);
-		if ($ret) {
-		    return array($ret, null);
-		}
-	    }
-	    $redirect['view'] = 'core.SiteAdmin';
-	    $redirect['subView'] = 'ecard.AdminEcard';
-	    $status['saved'] = 1;
-	} else if (isset($form['action']['reset'])) {
-	    $redirect['view'] = 'core.SiteAdmin';
-	    $redirect['subView'] = 'ecard.AdminEcard';
-	}
+        if (isset($form['action']['save'])) {
+            foreach (array('from', 'subject', 'bcc', 'header', 'footer', 'format') as $key) {
+                $ret = GalleryCoreApi::setPluginParameter('module', 'ecard', $key, $form[$key]);
+                if ($ret) {
+                    return array($ret, null);
+                }
+            }
+            $redirect['view'] = 'core.SiteAdmin';
+            $redirect['subView'] = 'ecard.AdminEcard';
+            $status['saved'] = 1;
+        } elseif (isset($form['action']['reset'])) {
+            $redirect['view'] = 'core.SiteAdmin';
+            $redirect['subView'] = 'ecard.AdminEcard';
+        }
 
-	if (!empty($redirect)) {
-	    $results['redirect'] = $redirect;
-	} else {
-	    $results['delegate']['view'] = 'core.SiteAdmin';
-	    $results['delegate']['subView'] = 'ecard.AdminEcard';
-	}
-	$results['status'] = $status;
-	$results['error'] = $error;
+        if (!empty($redirect)) {
+            $results['redirect'] = $redirect;
+        } else {
+            $results['delegate']['view'] = 'core.SiteAdmin';
+            $results['delegate']['subView'] = 'ecard.AdminEcard';
+        }
+        $results['status'] = $status;
+        $results['error'] = $error;
 
-	return array(null, $results);
+        return array(null, $results);
     }
 }
 
 /**
  * Settings for eCards
  */
-class AdminEcardView extends GalleryView {
-
+class AdminEcardView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public function loadTemplate(&$template, &$form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	if ($form['formName'] != 'AdminEcard') {
-	    $form['formName'] = 'AdminEcard';
-	    foreach (array('from', 'subject', 'bcc', 'header', 'footer', 'format') as $key) {
-		list ($ret, $form[$key]) =
-		    GalleryCoreApi::getPluginParameter('module', 'ecard', $key);
-		if ($ret) {
-		    return array($ret, null);
-		}
-	    }
-	}
+        if ($form['formName'] != 'AdminEcard') {
+            $form['formName'] = 'AdminEcard';
+            foreach (array('from', 'subject', 'bcc', 'header', 'footer', 'format') as $key) {
+                list($ret, $form[$key]) =
+                GalleryCoreApi::getPluginParameter('module', 'ecard', $key);
+                if ($ret) {
+                    return array($ret, null);
+                }
+            }
+        }
 
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'ecard');
-	if ($ret) {
-	    return array($ret, null);
-	}
+        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'ecard');
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	$AdminEcard = array(
-	    'formatList' => array(
-		'plain' => $module->translate('Plain text only'),
-		'html'  => $module->translate('HTML')
-	));
+        $AdminEcard = array(
+        'formatList' => array(
+        'plain' => $module->translate('Plain text only'),
+        'html'  => $module->translate('HTML')
+        ));
 
-	$template->setVariable('AdminEcard', $AdminEcard);
-	$template->setVariable('controller', 'ecard.AdminEcard');
-	return array(null, array('body' => 'modules/ecard/templates/AdminEcard.tpl'));
+        $template->setVariable('AdminEcard', $AdminEcard);
+        $template->setVariable('controller', 'ecard.AdminEcard');
+
+        return array(null, array('body' => 'modules/ecard/templates/AdminEcard.tpl'));
     }
 }
-?>
