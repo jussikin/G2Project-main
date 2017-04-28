@@ -26,149 +26,209 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20951 $
  */
-class ArchiveUploadModule extends GalleryModule {
-
-    function __construct() {
-	$this->ArchiveUploadModule();
+class ArchiveUploadModule extends GalleryModule
+{
+    public function __construct()
+    {
+        $this->ArchiveUploadModule();
     }
-
-    function ArchiveUploadModule() {
-	global $gallery;
-
-	$this->setId('archiveupload');
-	$this->setName($gallery->i18n('Archive Upload'));
-	$this->setDescription($gallery->i18n('Extract items from uploaded zip files'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('import', $gallery->i18n('Import'));
-	$this->setCallbacks('getSiteAdminViews');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
+    
+    public function ArchiveUploadModule()
+    {
+        global $gallery;
+        
+        $this->setId('archiveupload');
+        $this->setName($gallery->i18n('Archive Upload'));
+        $this->setDescription($gallery->i18n('Extract items from uploaded zip files'));
+        $this->setVersion('2.0.0');
+        $this->_templateVersion = 1;
+        $this->setGroup('import', $gallery->i18n('Import'));
+        $this->setCallbacks('getSiteAdminViews');
+        $this->setRequiredCoreApi(array(
+            8,
+            0
+        ));
+        $this->setRequiredModuleApi(array(
+            4,
+            0
+        ));
     }
-
+    
     /**
      * @see GalleryModule::upgrade
      */
-    function upgrade($currentVersion, $x1=null) {
-	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'archiveupload');
-	if ($ret) {
-	    return $ret;
-	}
-	foreach (array('unzipPath' => '', 'removeMeta' => 1) as $key => $value) {
-	    if (!isset($params[$key])) {
-		$ret = $this->setParameter($key, $value);
-		if ($ret) {
-		    return $ret;
-		}
-	    }
-	}
-
-	return null;
+    public function upgrade($currentVersion, $x1 = null)
+    {
+        list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'archiveupload');
+        if ($ret) {
+            return $ret;
+        }
+        foreach (array(
+            'unzipPath' => '',
+            'removeMeta' => 1
+        ) as $key => $value) {
+            if (!isset($params[$key])) {
+                $ret = $this->setParameter($key, $value);
+                if ($ret) {
+                    return $ret;
+                }
+            }
+        }
+        
+        return null;
     }
-
+    
     /**
      * @see GalleryModule::performFactoryRegistrations
      */
-    function performFactoryRegistrations() {
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'GalleryToolkit', 'ArchiveExtractToolkit', 'ArchiveUpload',
-	    'modules/archiveupload/classes/ArchiveExtractToolkit.class', 'archiveupload', null);
-	if ($ret) {
-	    return $ret;
-	}
-
-	return null;
+    public function performFactoryRegistrations()
+    {
+        $ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'ArchiveExtractToolkit', 'ArchiveUpload', 'modules/archiveupload/classes/ArchiveExtractToolkit.class', 'archiveupload', null);
+        if ($ret) {
+            return $ret;
+        }
+        
+        return null;
     }
-
+    
     /**
      * @see GalleryModule::autoConfigure
      */
-    function autoConfigure() {
-	/* This module requires exec() */
-	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
-	    return array(null, false);
-	}
-
-	list ($ret, $needsConfiguration) = $this->needsConfiguration();
-	if ($ret) {
-	    return array($ret, false);
-	}
-	if (!$needsConfiguration) {
-	    return array(null, true);
-	}
-
-	GalleryCoreApi::requireOnce(
-	    'modules/archiveupload/classes/ArchiveUploadHelper.class');
-	$unzipPath = ArchiveUploadHelper::findUnzipBinary();
-	if (empty($unzipPath)) {
-	    return array(null, false);
-	}
-
-	$this->setParameter('unzipPath', $unzipPath);
-	if ($ret) {
-	    return array($ret, false);
-	}
-
-	return array(null, true);
+    public function autoConfigure()
+    {
+        /* This module requires exec() */
+        if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
+            return array(
+                null,
+                false
+            );
+        }
+        
+        list($ret, $needsConfiguration) = $this->needsConfiguration();
+        if ($ret) {
+            return array(
+                $ret,
+                false
+            );
+        }
+        if (!$needsConfiguration) {
+            return array(
+                null,
+                true
+            );
+        }
+        
+        GalleryCoreApi::requireOnce('modules/archiveupload/classes/ArchiveUploadHelper.class');
+        $unzipPath = ArchiveUploadHelper::findUnzipBinary();
+        if (empty($unzipPath)) {
+            return array(
+                null,
+                false
+            );
+        }
+        
+        $this->setParameter('unzipPath', $unzipPath);
+        if ($ret) {
+            return array(
+                $ret,
+                false
+            );
+        }
+        
+        return array(
+            null,
+            true
+        );
     }
-
+    
     /**
      * @see GalleryModule::needsConfiguration
      */
-    function needsConfiguration() {
-	/* This module requires exec() */
-	if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
-	    return array(null, true);
-	}
+    public function needsConfiguration()
+    {
+        /* This module requires exec() */
+        if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
+            return array(
+                null,
+                true
+            );
+        }
+        
+        foreach (array(
+            'unzipPath'
+        ) as $key) {
+            list($ret, $value) = $this->getParameter($key);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            
+            if (empty($value)) {
+                return array(
+                    null,
+                    true
+                );
+            }
+        }
 
-	foreach (array('unzipPath') as $key) {
-	    list ($ret, $value) = $this->getParameter($key);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-
-	    if (empty($value)) {
-		return array(null, true);
-	    }
-	}
-	return array(null, false);
+        return array(
+            null,
+            false
+        );
     }
-
+    
     /**
      * @see GalleryModule::activate
      */
-    function activate($postActivationEvent=true) {
-	$ret = GalleryCoreApi::registerToolkitOperation('ArchiveUpload',
-							array('application/zip'),
-							'extract',
-							array(),
-							'extract files from an archive');
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	list ($ret, $redirect) = parent::activate($postActivationEvent);
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	return array(null, $redirect);
+    public function activate($postActivationEvent = true)
+    {
+        $ret = GalleryCoreApi::registerToolkitOperation('ArchiveUpload', array(
+            'application/zip'
+        ), 'extract', array(), 'extract files from an archive');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        list($ret, $redirect) = parent::activate($postActivationEvent);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        return array(
+            null,
+            $redirect
+        );
     }
-
+    
     /**
      * @see GalleryModule::getSiteAdminViews
      */
-    function getSiteAdminViews() {
-	return array(null,
-		     array(array('name' => $this->translate('Archive'),
-				 'view' => 'archiveupload.ArchiveUploadSiteAdmin')));
+    public function getSiteAdminViews()
+    {
+        return array(
+            null,
+            array(
+                array(
+                    'name' => $this->translate('Archive'),
+                    'view' => 'archiveupload.ArchiveUploadSiteAdmin'
+                )
+            )
+        );
     }
-
+    
     /**
      * @see GalleryModule::getConfigurationView
      */
-    function getConfigurationView() {
-	return 'archiveupload.ArchiveUploadSiteAdmin';
+    public function getConfigurationView()
+    {
+        return 'archiveupload.ArchiveUploadSiteAdmin';
     }
 }
-?>
