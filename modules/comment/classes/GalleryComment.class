@@ -38,8 +38,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryChildEntity.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryComment extends GalleryChildEntity {
-
+class GalleryComment extends GalleryChildEntity
+{
     /**
      * Id of the commenter
      *
@@ -53,8 +53,8 @@ class GalleryComment extends GalleryChildEntity {
      * @var int $commenterId
      * @access public
      */
-    var $commenterId;
-
+    public $commenterId;
+    
     /**
      * Commenter's host name or address
      *
@@ -68,8 +68,8 @@ class GalleryComment extends GalleryChildEntity {
      * @var string $host
      * @access public
      */
-    var $host;
-
+    public $host;
+    
     /**
      * Subject of the comment
      *
@@ -83,8 +83,8 @@ class GalleryComment extends GalleryChildEntity {
      * @var string $subject
      * @access public
      */
-    var $subject;
-
+    public $subject;
+    
     /**
      * Text of the comment
      *
@@ -98,8 +98,8 @@ class GalleryComment extends GalleryChildEntity {
      * @var string $comment
      * @access public
      */
-    var $comment;
-
+    public $comment;
+    
     /**
      * Date of the comment
      *
@@ -114,8 +114,8 @@ class GalleryComment extends GalleryChildEntity {
      * @var int $date
      * @access public
      */
-    var $date;
-
+    public $date;
+    
     /**
      * Author of the comment. Only used for guest comments.
      *
@@ -129,8 +129,8 @@ class GalleryComment extends GalleryChildEntity {
      * @var string $author
      * @access public
      */
-    var $author;
-
+    public $author;
+    
     /**
      * Publication status of this comment.
      * @see modules/comment/module.inc for possible status values.
@@ -147,97 +147,111 @@ class GalleryComment extends GalleryChildEntity {
      * @var string $publishStatus
      * @access public
      */
-    var $publishStatus;
-
+    public $publishStatus;
+    
     /**
      * @see GalleryEntity::getClassName
      */
-    function getClassName() {
-	return 'GalleryComment';
+    public function getClassName()
+    {
+        return 'GalleryComment';
     }
-
+    
     /**
      * @see GalleryEntity::create
      */
-    function create($parentId) {
-	$ret = parent::create($parentId);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->setCommenterId(null);
-	$this->setHost(null);
-	$this->setSubject(null);
-	$this->setComment(null);
-	$this->setDate(time());
-	$this->setAuthor(null);
-
-	list ($ret, $moderate) =
-	    GalleryCoreApi::getPluginParameter ('module', 'comment', 'comments.moderate');
-	if ($ret) {
-	    return $ret;
-	}
-	if ($moderate) {
-	    $this->setPublishStatus(COMMENT_PUBLISH_STATUS_UNPUBLISHED);
+    public function create($parentId)
+    {
+        $ret = parent::create($parentId);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->setCommenterId(null);
+        $this->setHost(null);
+        $this->setSubject(null);
+        $this->setComment(null);
+        $this->setDate(time());
+        $this->setAuthor(null);
+        
+        list($ret, $moderate) = GalleryCoreApi::getPluginParameter('module', 'comment', 'comments.moderate');
+        if ($ret) {
+            return $ret;
+        }
+        if ($moderate) {
+            $this->setPublishStatus(COMMENT_PUBLISH_STATUS_UNPUBLISHED);
         } else {
-	    $this->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
-	}
+            $this->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
+        }
     }
-
-    function getCommenterId() {
-	return $this->commenterId;
+    
+    public function getCommenterId()
+    {
+        return $this->commenterId;
     }
-
-    function setCommenterId($commenterId) {
-	$this->commenterId = $commenterId;
+    
+    public function setCommenterId($commenterId)
+    {
+        $this->commenterId = $commenterId;
     }
-
-    function getHost() {
-	return $this->host;
+    
+    public function getHost()
+    {
+        return $this->host;
     }
-
-    function setHost($host) {
-	$this->host = $host;
+    
+    public function setHost($host)
+    {
+        $this->host = $host;
     }
-
-    function getSubject() {
-	return $this->subject;
+    
+    public function getSubject()
+    {
+        return $this->subject;
     }
-
-    function setSubject($subject) {
-	$this->subject = $subject;
+    
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
     }
-
-    function getComment() {
-	return $this->comment;
+    
+    public function getComment()
+    {
+        return $this->comment;
     }
-
-    function setComment($comment) {
-	$this->comment = $comment;
+    
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
     }
-
-    function getDate() {
-	return $this->date;
+    
+    public function getDate()
+    {
+        return $this->date;
     }
-
-    function setDate($date) {
-	$this->date = $date;
+    
+    public function setDate($date)
+    {
+        $this->date = $date;
     }
-
-    function setAuthor($author) {
-	$this->author = $author;
+    
+    public function setAuthor($author)
+    {
+        $this->author = $author;
     }
-
-    function getAuthor() {
-	return $this->author;
+    
+    public function getAuthor()
+    {
+        return $this->author;
     }
-
-    function setPublishStatus($publishStatus) {
-	$this->publishStatus = $publishStatus;
+    
+    public function setPublishStatus($publishStatus)
+    {
+        $this->publishStatus = $publishStatus;
     }
-
-    function getPublishStatus() {
-	return $this->publishStatus;
+    
+    public function getPublishStatus()
+    {
+        return $this->publishStatus;
     }
 }
-?>
