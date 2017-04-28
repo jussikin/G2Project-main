@@ -27,19 +27,21 @@ GalleryCoreApi::requireOnce('modules/dynamicalbum/UpdatesAlbum.inc');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class PopularAlbumView extends UpdatesAlbumView {
-
-    function __construct() {
-	$this->PopularAlbumView();
+class PopularAlbumView extends UpdatesAlbumView
+{
+    public function __construct()
+    {
+        $this->PopularAlbumView();
     }
 
-    function PopularAlbumView() {
-	global $gallery;
-	$this->_view = 'dynamicalbum.PopularAlbum';
-	$this->_title = $gallery->i18n('Most Viewed Items');
-	$this->_itemType = array($gallery->i18n('Most Viewed'), $gallery->i18n('most viewed'));
-	$this->_viewDescription = $gallery->i18n('most viewed');
-	$this->_param = 'views';
+    public function PopularAlbumView()
+    {
+        global $gallery;
+        $this->_view = 'dynamicalbum.PopularAlbum';
+        $this->_title = $gallery->i18n('Most Viewed Items');
+        $this->_itemType = array($gallery->i18n('Most Viewed'), $gallery->i18n('most viewed'));
+        $this->_viewDescription = $gallery->i18n('most viewed');
+        $this->_param = 'views';
     }
 
     /**
@@ -49,9 +51,15 @@ class PopularAlbumView extends UpdatesAlbumView {
      *               array of item ids
      * @static
      */
-    function getChildIds($userId) {
-	return parent::getChildIds($userId, 'views', 'viewCount', ORDER_DESCENDING,
-				   'GalleryItemAttributesMap', 'itemId');
+    public function getChildIds($userId)
+    {
+        return parent::getChildIds(
+            $userId,
+            'views',
+            'viewCount',
+            ORDER_DESCENDING,
+            'GalleryItemAttributesMap',
+            'itemId'
+        );
     }
 }
-?>

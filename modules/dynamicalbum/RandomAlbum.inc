@@ -27,19 +27,21 @@ GalleryCoreApi::requireOnce('modules/dynamicalbum/UpdatesAlbum.inc');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RandomAlbumView extends UpdatesAlbumView {
-
-    function __construct() {
-	$this->RandomAlbumView();
+class RandomAlbumView extends UpdatesAlbumView
+{
+    public function __construct()
+    {
+        $this->RandomAlbumView();
     }
 
-    function RandomAlbumView() {
-	global $gallery;
-	$this->_view = 'dynamicalbum.RandomAlbum';
-	$this->_title = $gallery->i18n('Random Items');
-	$this->_itemType = array($gallery->i18n('Random'), $gallery->i18n('random'));
-	$this->_viewDescription = $gallery->i18n('random');
-	$this->_param = 'random';
+    public function RandomAlbumView()
+    {
+        global $gallery;
+        $this->_view = 'dynamicalbum.RandomAlbum';
+        $this->_title = $gallery->i18n('Random Items');
+        $this->_itemType = array($gallery->i18n('Random'), $gallery->i18n('random'));
+        $this->_viewDescription = $gallery->i18n('random');
+        $this->_param = 'random';
     }
 
     /**
@@ -49,8 +51,8 @@ class RandomAlbumView extends UpdatesAlbumView {
      *               array of item ids
      * @static
      */
-    function getChildIds($userId) {
-	return parent::getChildIds($userId, 'random', 'random', ORDER_ASCENDING, null, 'id');
+    public function getChildIds($userId)
+    {
+        return parent::getChildIds($userId, 'random', 'random', ORDER_ASCENDING, null, 'id');
     }
 }
-?>
