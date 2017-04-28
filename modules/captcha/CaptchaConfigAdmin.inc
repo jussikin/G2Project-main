@@ -25,50 +25,52 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CaptchaConfigAdminController extends GalleryController {
-
+class CaptchaConfigAdminController extends GalleryController
+{
     /**
      * @see GalleryController::handleRequest
      */
-    function handleRequest($form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public static function handleRequest($form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	$results['status'] = $results['error'] = array();
-	$results['redirect'] = array('view' => 'core.SiteAdmin', 'subView' => 'core.AdminPlugins');
-	return array(null, $results);
+        $results['status'] = $results['error'] = array();
+        $results['redirect'] = array('view' => 'core.SiteAdmin', 'subView' => 'core.AdminPlugins');
+
+        return array(null, $results);
     }
 }
-
 
 /**
  * Show the user which required GD functions are missing.  They can't install the module, and
  * there's nothing we can do about it.
  */
-class CaptchaConfigAdminView extends GalleryView {
-
+class CaptchaConfigAdminView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public static function loadTemplate(&$template, &$form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array($ret, null);
+        }
 
-	if ($form['formName'] != 'CaptchaConfigAdmin') {
-	    $form['formName'] = 'CaptchaConfigAdmin';
-	}
+        if ($form['formName'] != 'CaptchaConfigAdmin') {
+            $form['formName'] = 'CaptchaConfigAdmin';
+        }
 
-	GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
-	$gdReport = CaptchaHelper::testRequiredGdFunctions();
+        GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
+        $gdReport = CaptchaHelper::testRequiredGdFunctions();
 
-	$template->setVariable('CaptchaConfigAdmin', array('gdReport' => $gdReport));
-	$template->setVariable('controller', 'captcha.CaptchaConfigAdmin');
-	return array(null,
-		     array('body' => 'modules/captcha/templates/CaptchaConfigAdmin.tpl'));
+        $template->setVariable('CaptchaConfigAdmin', array('gdReport' => $gdReport));
+        $template->setVariable('controller', 'captcha.CaptchaConfigAdmin');
+
+        return array(null,
+             array('body' => 'modules/captcha/templates/CaptchaConfigAdmin.tpl'));
     }
 }
-?>
