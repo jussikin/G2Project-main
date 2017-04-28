@@ -25,67 +25,95 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemRestrictMimeOption extends ItemAddOption {
-
+class ItemRestrictMimeOption extends ItemAddOption
+{
     /**
      * @see ItemAddOption::isAppropriate
      */
-    function isAppropriate() {
-	list ($ret, $allowMime) = GalleryCoreApi::getPluginParameter('module', 'core', 'allowMime');
-	if ($ret) {
-	    return array($ret, null);
-	}
-	return array(null, $allowMime != 'all');
-    }
+    public function isAppropriate()
+    {
+        list($ret, $allowMime) = GalleryCoreApi::getPluginParameter('module', 'core', 'allowMime');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
 
+        return array(
+            null,
+            $allowMime != 'all'
+        );
+    }
+    
     /**
      * @see ItemAddOption::handleRequestAfterAdd
      */
-    function handleRequestAfterAdd($form, $items) {
-	global $gallery;
-	$errors = $warnings = array();
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-	if ($ret) {
-	    return array($ret, null, null);
-	}
-	list ($ret, $allowMime) = $module->getParameter('allowMime');
-	if ($ret) {
-	    return array($ret, null, null);
-	}
-	list ($ret, $mimeList) = $module->getParameter('mimeList');
-	if ($ret) {
-	    return array($ret, null, null);
-	}
-	$mimeList = array_flip(explode(' | ', $mimeList));
-
-	for ($i = 0; $i < count($items); $i++) {
-	    if (!GalleryUtilities::isA($items[$i], 'GalleryDataItem')) {
-		continue;
-	    }
-
-	    $warnings[$i] = array();
-	    $mimeType = $items[$i]->getMimeType();
-	    $extension = GalleryUtilities::getFileExtension($items[$i]->getPathComponent());
-	    if (!empty($extension)) {
-		list ($ret, $derivedMimeType) = GalleryCoreApi::convertExtensionToMime($extension);
-		if ($ret) {
-		    return array($ret, null, null);
-		}
-	    } else {
-		$derivedMimeType = $mimeType;
-	    }
-	    if (($allowMime == 'block'
-			&& (isset($mimeList[$mimeType]) || isset($mimeList[$derivedMimeType])))
-		    || ($allowMime == 'allow'
-			&& (!isset($mimeList[$mimeType]) || !isset($mimeList[$derivedMimeType])))) {
-		$warnings[$i][] = $module->translate(
-			'This type of file not allowed; item will not be added.');
-		$gallery->addShutdownAction(array('GalleryCoreApi', 'deleteEntityById'),
-					    array($items[$i]->getId()));
-	    }
-	}
-
-	return array(null, $errors, $warnings);
+    public function handleRequestAfterAdd($form, $items)
+    {
+        global $gallery;
+        $errors = $warnings = array();
+        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+        if ($ret) {
+            return array(
+                $ret,
+                null,
+                null
+            );
+        }
+        list($ret, $allowMime) = $module->getParameter('allowMime');
+        if ($ret) {
+            return array(
+                $ret,
+                null,
+                null
+            );
+        }
+        list($ret, $mimeList) = $module->getParameter('mimeList');
+        if ($ret) {
+            return array(
+                $ret,
+                null,
+                null
+            );
+        }
+        $mimeList = array_flip(explode(' | ', $mimeList));
+        
+        for ($i = 0; $i < count($items); $i++) {
+            if (!GalleryUtilities::isA($items[$i], 'GalleryDataItem')) {
+                continue;
+            }
+            
+            $warnings[$i] = array();
+            $mimeType = $items[$i]->getMimeType();
+            $extension = GalleryUtilities::getFileExtension($items[$i]->getPathComponent());
+            if (!empty($extension)) {
+                list($ret, $derivedMimeType) = GalleryCoreApi::convertExtensionToMime($extension);
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null,
+                        null
+                    );
+                }
+            } else {
+                $derivedMimeType = $mimeType;
+            }
+            if (($allowMime == 'block' && (isset($mimeList[$mimeType]) || isset($mimeList[$derivedMimeType]))) || ($allowMime == 'allow' && (!isset($mimeList[$mimeType]) || !isset($mimeList[$derivedMimeType])))) {
+                $warnings[$i][] = $module->translate('This type of file not allowed; item will not be added.');
+                $gallery->addShutdownAction(array(
+                    'GalleryCoreApi',
+                    'deleteEntityById'
+                ), array(
+                    $items[$i]->getId()
+                ));
+            }
+        }
+        
+        return array(
+            null,
+            $errors,
+            $warnings
+        );
     }
 }
-?>

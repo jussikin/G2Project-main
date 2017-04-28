@@ -25,25 +25,31 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ChangeLanguageController extends GalleryController {
-
+class ChangeLanguageController extends GalleryController
+{
     /**
      * @see GalleryController::handleRequest
      */
-    function handleRequest($form) {
-	global $gallery;
-
-	$language = GalleryUtilities::getRequestVariables('language');
-	$ret = $gallery->setActiveLocale($language);
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	$results['return'] = 1;
-	$results['status'] = array();
-	$results['error'] = array();
-
-	return array(null, $results);
+    public function handleRequest($form)
+    {
+        global $gallery;
+        
+        $language = GalleryUtilities::getRequestVariables('language');
+        $ret      = $gallery->setActiveLocale($language);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        $results['return'] = 1;
+        $results['status'] = array();
+        $results['error']  = array();
+        
+        return array(
+            null,
+            $results
+        );
     }
 }
-?>

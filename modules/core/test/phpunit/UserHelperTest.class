@@ -28,366 +28,525 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryUserHelper_medi
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17608 $
  */
-class UserHelperTest extends GalleryTestCase {
-
-    function setUp() {
-	global $gallery;
-	$ret = parent::setUp();
-	if ($ret) {
-	   return $ret;
-	}
-
-	$this->_originalStorage = $gallery->_storage;
-	$gallery->_storage = new UserHelperTestMockStorage();
-	$this->_storage =& $gallery->getStorage();
-	$gallery->_phpVm = new UserHelperTestPhpVm();
-	$this->_phpVm =& $gallery->_phpVm;
-	$this->_saveSession = $gallery->_session;
-    }
-
-    function tearDown() {
-	global $gallery;
-	$gallery->_session = $this->_saveSession;
-
-	$ret = parent::tearDown();
-	if ($ret) {
-	   return $ret;
-	}
-    }
-
-    function testGalleryLoginEvent() {
-	global $gallery;
-
-	$gallery->_session = new UserHelperTestSession();
-
-	$event = GalleryCoreApi::newEvent('Gallery::Login');
-	$event->setEntity(new UserHelperTestMockUser());
-	list ($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('remove', 'FailedLoginsMap', array('userName' => 'MockUser'))),
-	    $this->_storage->_operations);
-
-	$this->assert($gallery->_session->regenerateWasCalled(),
-		      'Regenerate session was not called!');
-    }
-
-    function testGalleryFailedLoginEventFirstFailure() {
-	$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
-	$event->setData(array('userName' => 'MockUser'));
-	$this->_phpVm->_time = 'NOW';
-	list ($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(
-		array('get', 'FailedLoginsMap', array('count', 'lastAttempt'),
-		      array('userName' => 'MockUser')),
-		array('add', 'FailedLoginsMap',
-		      array('userName' => 'MockUser', 'count' => 1, 'lastAttempt' => 'NOW'))),
-	    $this->_storage->_operations);
-    }
-
-    function testGalleryFailedLoginEventMissingUsername() {
-	$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
-	list ($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(array(), $this->_storage->_operations);
-    }
-
-    function testGalleryFailedLoginEventSecondFailure() {
-	global $gallery;
-	$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
-	$event->setData(array('userName' => 'MockUser'));
-	$this->_storage->_count = 1;
-	$this->_storage->_lastAttempt = 1;  /* way in the past */
-	$this->_phpVm->_time = 'NOW';
-	list ($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(
-		array('get', 'FailedLoginsMap',
-		      array('count', 'lastAttempt'), array('userName' => 'MockUser')),
-		array('remove', 'FailedLoginsMap', array('userName' => 'MockUser')),
-		array('add', 'FailedLoginsMap',
-		      array('userName' => 'MockUser', 'count' => 2, 'lastAttempt' => 'NOW'))),
-	    $this->_storage->_operations);
-    }
-
-    function testGalleryFailedLoginEventFailuresWhenDisabledAreIgnored() {
-	global $gallery;
-	$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
-	$event->setData(array('userName' => 'MockUser'));
-	$this->_storage->_count = 100;
-	$this->_storage->_lastAttempt = time();
-	$this->_phpVm->_time = time();
-	list ($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('get', 'FailedLoginsMap',
-			array('count', 'lastAttempt'), array('userName' => 'MockUser'))),
-	    $this->_storage->_operations);
-    }
-
-    function testIsDisabledUsernameNoRows() {
-	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('SomeBogusUser');
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('get', 'FailedLoginsMap',
-			array('count', 'lastAttempt'), array('userName' => 'SomeBogusUser'))),
-	    $this->_storage->_operations);
-
-	$this->assertEquals(false, $disabled);
-    }
-
-    function testIsDisabledUsernameBelowCutoff() {
-	$this->_storage->_count = 9;
-	$this->_storage->_lastAttempt = 10000;
-	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('get', 'FailedLoginsMap',
-			array('count', 'lastAttempt'), array('userName' => 'MockUser'))),
-	    $this->_storage->_operations);
-	$this->assertEquals(false, $disabled, 'should not be disabled');
-    }
-
-    function testIsDisabledUsernameAboveCutoffAndRecent() {
-	$this->_storage->_count = 10;  /* disabled for an hour */
-	$this->_storage->_lastAttempt = 10000;
-	$this->_phpVm->_time = 10001;
-	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('get', 'FailedLoginsMap',
-			array('count', 'lastAttempt'), array('userName' => 'MockUser'))),
-	    $this->_storage->_operations);
-	$this->assertEquals(true, $disabled, 'should be disabled');
-    }
-
-    function testIsDisabledUsernameWayAboveCutoffAndTooRecent() {
-	$this->_storage->_count = 100; /* disabled for 10 hours */
-	$this->_storage->_lastAttempt = 10000;
-	$this->_phpVm->_time = 10000 + 9 * 3600; /* 9 hours since last attempt */
-	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('get', 'FailedLoginsMap',
-			array('count', 'lastAttempt'), array('userName' => 'MockUser'))),
-	    $this->_storage->_operations);
-	$this->assertEquals(true, $disabled, 'should be disabled');
-    }
-
-    function testIsDisabledUsernameAboveCutoffButNotRecent() {
-	$this->_storage->_count = 100; /* disabled for 10 hours */
-	$this->_storage->_lastAttempt = 10000;
-	$this->_phpVm->_time = 1000000; /* last attempt is in the distant past */
-	list ($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals(
-	    array(array('get', 'FailedLoginsMap',
-			array('count', 'lastAttempt'), array('userName' => 'MockUser'))),
-	    $this->_storage->_operations);
-	$this->assertEquals(false, $disabled, 'should not be disabled');
-    }
-
-    function testFetchLocaleForUser() {
-	global $gallery;
-
-	/* Use the real storage instead of the mockup. */
-	$gallery->_storage = $this->_originalStorage;
-	$this->_phpVm->_time = time();
-
-	/* Create a test user. */
-	list ($ret, $testUser) = $this->_createRandomUser();
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_markForCleanup($testUser);
-
-	$testUserId = $testUser->getId();
-
-	/* Check the default language */
-	list ($ret, $defaultLocale) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
+class UserHelperTest extends GalleryTestCase
+{
+    public function setUp()
+    {
+        global $gallery;
+        $ret = parent::setUp();
         if ($ret) {
-	    return $ret;
-	}
-
-	/* Verify we get the default language code */
-	list ($ret, $locale) =
-	    GalleryUserHelper_medium::fetchLocaleForUser($testUserId);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals($defaultLocale, $locale, 'should be same as default');
-
-	/*
-	 * Test in case user has a preferred language.
-	 * Invalid language code used, thus it won't be the same as the default for sure.
-	 */
-	$preSetLocale = 'mo_CKUP';
-
-	/* Lock User */
-	list ($ret, $lockId) = GalleryCoreApi::acquireWriteLock($testUserId);
-	if ($ret) {
-	    return $ret;
-	}
-
-	/* Set Language */
-	$testUser->setLanguage($preSetLocale);
-
-	/* Save it */
-	$ret = $testUser->save();
-	if ($ret) {
-	    return $ret;
-	}
-
-	/* Unlock it */
-	$ret = GalleryCoreApi::releaseLocks($lockId);
-	if ($ret) {
-	    return $ret;
-	}
-
-	list ($ret, $locale) =
-	    GalleryUserHelper_medium::fetchLocaleForUser($testUserId);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$this->assertEquals($preSetLocale, $locale, 'should be same as preferred');
+            return $ret;
+        }
+        
+        $this->_originalStorage = $gallery->_storage;
+        $gallery->_storage = new UserHelperTestMockStorage();
+        $this->_storage =& $gallery->getStorage();
+        $gallery->_phpVm = new UserHelperTestPhpVm();
+        $this->_phpVm =& $gallery->_phpVm;
+        $this->_saveSession = $gallery->_session;
+    }
+    
+    public function tearDown()
+    {
+        global $gallery;
+        $gallery->_session = $this->_saveSession;
+        
+        $ret = parent::tearDown();
+        if ($ret) {
+            return $ret;
+        }
+    }
+    
+    public function testGalleryLoginEvent()
+    {
+        global $gallery;
+        
+        $gallery->_session = new UserHelperTestSession();
+        
+        $event = GalleryCoreApi::newEvent('Gallery::Login');
+        $event->setEntity(new UserHelperTestMockUser());
+        list($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'remove',
+                'FailedLoginsMap',
+                array(
+                    'userName' => 'MockUser'
+                )
+            )
+        ), $this->_storage->_operations);
+        
+        $this->assert($gallery->_session->regenerateWasCalled(), 'Regenerate session was not called!');
+    }
+    
+    public function testGalleryFailedLoginEventFirstFailure()
+    {
+        $event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
+        $event->setData(array(
+            'userName' => 'MockUser'
+        ));
+        $this->_phpVm->_time = 'NOW';
+        list($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            ),
+            array(
+                'add',
+                'FailedLoginsMap',
+                array(
+                    'userName' => 'MockUser',
+                    'count' => 1,
+                    'lastAttempt' => 'NOW'
+                )
+            )
+        ), $this->_storage->_operations);
+    }
+    
+    public function testGalleryFailedLoginEventMissingUsername()
+    {
+        $event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
+        list($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(), $this->_storage->_operations);
+    }
+    
+    public function testGalleryFailedLoginEventSecondFailure()
+    {
+        global $gallery;
+        $event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
+        $event->setData(array(
+            'userName' => 'MockUser'
+        ));
+        $this->_storage->_count = 1;
+        $this->_storage->_lastAttempt = 1;
+        /* way in the past */
+        $this->_phpVm->_time = 'NOW';
+        list($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            ),
+            array(
+                'remove',
+                'FailedLoginsMap',
+                array(
+                    'userName' => 'MockUser'
+                )
+            ),
+            array(
+                'add',
+                'FailedLoginsMap',
+                array(
+                    'userName' => 'MockUser',
+                    'count' => 2,
+                    'lastAttempt' => 'NOW'
+                )
+            )
+        ), $this->_storage->_operations);
+    }
+    
+    public function testGalleryFailedLoginEventFailuresWhenDisabledAreIgnored()
+    {
+        global $gallery;
+        $event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
+        $event->setData(array(
+            'userName' => 'MockUser'
+        ));
+        $this->_storage->_count = 100;
+        $this->_storage->_lastAttempt = time();
+        $this->_phpVm->_time = time();
+        list($ret, $ignored) = GalleryUserHelper_medium::handleEvent($event);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            )
+        ), $this->_storage->_operations);
+    }
+    
+    public function testIsDisabledUsernameNoRows()
+    {
+        list($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('SomeBogusUser');
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'SomeBogusUser'
+                )
+            )
+        ), $this->_storage->_operations);
+        
+        $this->assertEquals(false, $disabled);
+    }
+    
+    public function testIsDisabledUsernameBelowCutoff()
+    {
+        $this->_storage->_count = 9;
+        $this->_storage->_lastAttempt = 10000;
+        list($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            )
+        ), $this->_storage->_operations);
+        $this->assertEquals(false, $disabled, 'should not be disabled');
+    }
+    
+    public function testIsDisabledUsernameAboveCutoffAndRecent()
+    {
+        $this->_storage->_count = 10;
+        /* disabled for an hour */
+        $this->_storage->_lastAttempt = 10000;
+        $this->_phpVm->_time = 10001;
+        list($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            )
+        ), $this->_storage->_operations);
+        $this->assertEquals(true, $disabled, 'should be disabled');
+    }
+    
+    public function testIsDisabledUsernameWayAboveCutoffAndTooRecent()
+    {
+        $this->_storage->_count = 100;
+        /* disabled for 10 hours */
+        $this->_storage->_lastAttempt = 10000;
+        $this->_phpVm->_time = 10000 + 9 * 3600;
+        /* 9 hours since last attempt */
+        list($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            )
+        ), $this->_storage->_operations);
+        $this->assertEquals(true, $disabled, 'should be disabled');
+    }
+    
+    public function testIsDisabledUsernameAboveCutoffButNotRecent()
+    {
+        $this->_storage->_count = 100;
+        /* disabled for 10 hours */
+        $this->_storage->_lastAttempt = 10000;
+        $this->_phpVm->_time = 1000000;
+        /* last attempt is in the distant past */
+        list($ret, $disabled) = GalleryUserHelper_medium::isDisabledUsername('MockUser');
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals(array(
+            array(
+                'get',
+                'FailedLoginsMap',
+                array(
+                    'count',
+                    'lastAttempt'
+                ),
+                array(
+                    'userName' => 'MockUser'
+                )
+            )
+        ), $this->_storage->_operations);
+        $this->assertEquals(false, $disabled, 'should not be disabled');
+    }
+    
+    public function testFetchLocaleForUser()
+    {
+        global $gallery;
+        
+        /* Use the real storage instead of the mockup. */
+        $gallery->_storage = $this->_originalStorage;
+        $this->_phpVm->_time = time();
+        
+        /* Create a test user. */
+        list($ret, $testUser) = $this->_createRandomUser();
+        if ($ret) {
+            return $ret;
+        }
+        $this->_markForCleanup($testUser);
+        
+        $testUserId = $testUser->getId();
+        
+        /* Check the default language */
+        list($ret, $defaultLocale) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
+        if ($ret) {
+            return $ret;
+        }
+        
+        /* Verify we get the default language code */
+        list($ret, $locale) = GalleryUserHelper_medium::fetchLocaleForUser($testUserId);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals($defaultLocale, $locale, 'should be same as default');
+        
+        /*
+         * Test in case user has a preferred language.
+         * Invalid language code used, thus it won't be the same as the default for sure.
+         */
+        $preSetLocale = 'mo_CKUP';
+        
+        /* Lock User */
+        list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($testUserId);
+        if ($ret) {
+            return $ret;
+        }
+        
+        /* Set Language */
+        $testUser->setLanguage($preSetLocale);
+        
+        /* Save it */
+        $ret = $testUser->save();
+        if ($ret) {
+            return $ret;
+        }
+        
+        /* Unlock it */
+        $ret = GalleryCoreApi::releaseLocks($lockId);
+        if ($ret) {
+            return $ret;
+        }
+        
+        list($ret, $locale) = GalleryUserHelper_medium::fetchLocaleForUser($testUserId);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $this->assertEquals($preSetLocale, $locale, 'should be same as preferred');
     }
 }
 
 /**
  * Fake storage class, pretends to extend GalleryStorage
  */
-class UserHelperTestMockStorage {
-    var $_operations;
-    var $_count;
-    var $_lastAttempt;
-
-    function UserHelperTestMockStorage() {
-	$this->_operations = array();
-	$this->_count = null;
-	$this->_lastAttempt = null;
+class UserHelperTestMockStorage
+{
+    public $_operations;
+    public $_count;
+    public $_lastAttempt;
+    
+    public function UserHelperTestMockStorage()
+    {
+        $this->_operations = array();
+        $this->_count = null;
+        $this->_lastAttempt = null;
     }
+    
+    public function addMapEntry($mapName, $params)
+    {
+        $this->_operations[] = array(
+            'add',
+            $mapName,
+            $params
+        );
 
-    function addMapEntry($mapName, $params) {
-	$this->_operations[] = array('add', $mapName, $params);
-	return null;
+        return null;
     }
+    
+    public function getMapEntry($mapName, $members, $match)
+    {
+        $this->_operations[] = array(
+            'get',
+            $mapName,
+            $members,
+            $match
+        );
+        
+        if (count($members) == 1) {
+            $results = new UserHelperTestMockStorageFakeResults($this->_count);
+        } else {
+            $results = new UserHelperTestMockStorageFakeResults($this->_count, $this->_lastAttempt);
+        }
 
-    function getMapEntry($mapName, $members, $match) {
-	$this->_operations[] = array('get', $mapName, $members, $match);
-
-	if (count($members) == 1) {
-	    $results = new UserHelperTestMockStorageFakeResults($this->_count);
-	} else {
-	    $results = new UserHelperTestMockStorageFakeResults($this->_count, $this->_lastAttempt);
-	}
-	return array(null, $results);
+        return array(
+            null,
+            $results
+        );
     }
-
-    function removeMapEntry($mapName, $data) {
-	$this->_operations[] = array('remove', $mapName, $data);
+    
+    public function removeMapEntry($mapName, $data)
+    {
+        $this->_operations[] = array(
+            'remove',
+            $mapName,
+            $data
+        );
     }
 }
 
 /**
  * Fake search results class, pretends to extend GallerySearchResults
  */
-class UserHelperTestMockStorageFakeResults {
-    function UserHelperTestMockStorageFakeResults($count, $lastAttempt=null) {
-	$this->_count = $count;
-	$this->_lastAttempt = $lastAttempt;
+class UserHelperTestMockStorageFakeResults
+{
+    public function UserHelperTestMockStorageFakeResults($count, $lastAttempt = null)
+    {
+        $this->_count = $count;
+        $this->_lastAttempt = $lastAttempt;
     }
+    
+    public function resultCount()
+    {
+        if (isset($this->_count)) {
+            return 1;
+        }
 
-    function resultCount() {
-	if (isset($this->_count)) {
-	    return 1;
-	}
-	return 0;
+        return 0;
     }
+    
+    public function nextResult()
+    {
+        if ($this->_lastAttempt) {
+            $results = array(
+                $this->_count,
+                $this->_lastAttempt
+            );
+        } else {
+            $results = array(
+                $this->_count
+            );
+        }
 
-    function nextResult() {
-	if ($this->_lastAttempt) {
-	    $results = array($this->_count, $this->_lastAttempt);
-	} else {
-	    $results = array($this->_count);
-	}
-	return $results;
+        return $results;
     }
 }
 
 /**
  * Mock user, pretends to extend GalleryUser
  */
-class UserHelperTestMockUser {
-    function getUserName() {
-	return 'MockUser';
+class UserHelperTestMockUser
+{
+    public function getUserName()
+    {
+        return 'MockUser';
     }
 }
 
 /**
  * Fake PHP vm, pretends to extend GalleryPhpVm
  */
-class UserHelperTestPhpVm {
-    var $_time;
-
-    function time() {
-	return $this->_time;
+class UserHelperTestPhpVm
+{
+    public $_time;
+    
+    public function time()
+    {
+        return $this->_time;
     }
 }
 
 /**
  * Mock Session
  */
-class UserHelperTestSession {
-    function UserHelperTestSession() {
-	$this->_regenerateWasCalled = false;
+class UserHelperTestSession
+{
+    public function UserHelperTestSession()
+    {
+        $this->_regenerateWasCalled = false;
     }
-
-    function regenerate() {
-	$this->_regenerateWasCalled = true;
+    
+    public function regenerate()
+    {
+        $this->_regenerateWasCalled = true;
     }
-
-    function regenerateWasCalled() {
-	return $this->_regenerateWasCalled;
+    
+    public function regenerateWasCalled()
+    {
+        return $this->_regenerateWasCalled;
     }
-
-    function put($key, $value) {
-	$this->_sessionData[$key] = $value;
+    
+    public function put($key, $value)
+    {
+        $this->_sessionData[$key] = $value;
     }
 }
-?>

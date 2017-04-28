@@ -26,32 +26,37 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryFactoryHelper_simple {
-
+class GalleryFactoryHelper_simple
+{
     /**
      * Reset the static factory registry
      */
-    static function deleteCache() {
-	$cacheParams = array('type' => 'module',
-			     'itemId' => 'GalleryFactoryHelper_loadRegistry',
-			     'id' => '_all');
-	GalleryDataCache::removeFromDisk($cacheParams);
-
-	$registry =& GalleryFactoryHelper_simple::_getSingleton();
-	$registry = array();
+    public static function deleteCache()
+    {
+        $cacheParams = array(
+            'type' => 'module',
+            'itemId' => 'GalleryFactoryHelper_loadRegistry',
+            'id' => '_all'
+        );
+        GalleryDataCache::removeFromDisk($cacheParams);
+        
+        $registry =& self::_getSingleton();
+        $registry = array();
     }
-
+    
     /**
      * The single copy of the factory registry data
      *
      * @return array factory registry data
      * @access private
      */
-    static function &_getSingleton() {
-	static $registry = array();
-	return $registry;
-    }
+    public static function &_getSingleton()
+    {
+        static $registry = array();
 
+        return $registry;
+    }
+    
     /**
      * Get the static factory registry
      *
@@ -59,168 +64,239 @@ class GalleryFactoryHelper_simple {
      * @return array factory data
      * @access private
      */
-    static function &_getFactoryData() {
-	$registry =& GalleryFactoryHelper_simple::_getSingleton();
-	if (empty($registry)) {
-	    $cacheParams = array('type' => 'module',
-				 'itemId' => 'GalleryFactoryHelper_loadRegistry',
-				 'id' => '_all');
+    public static function &_getFactoryData()
+    {
+        $registry =& self::_getSingleton();
+        if (empty($registry)) {
+            $cacheParams = array(
+                'type' => 'module',
+                'itemId' => 'GalleryFactoryHelper_loadRegistry',
+                'id' => '_all'
+            );
+            
+            /* Don't get by reference here, it'll detach $registry from the singleton */
+            $registry = GalleryDataCache::getFromDisk($cacheParams);
+            if (!isset($registry)) {
+                list($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryFactoryMap', array(
+                    'classType',
+                    'className',
+                    'implId',
+                    'implPath',
+                    'hints',
+                    'implModuleId',
+                    'orderWeight'
+                ), array(), array(
+                    'orderBy' => array(
+                        'orderWeight' => ORDER_ASCENDING
+                    )
+                ));
+                if ($ret) {
+                    $ret = array(
+                        $ret,
+                        null
+                    );
 
-	    /* Don't get by reference here, it'll detach $registry from the singleton */
-	    $registry = GalleryDataCache::getFromDisk($cacheParams);
-	    if (!isset($registry)) {
-		list ($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryFactoryMap',
-		    array('classType', 'className', 'implId', 'implPath',
-			  'hints', 'implModuleId', 'orderWeight'),
-		    array(), array('orderBy' => array('orderWeight' => ORDER_ASCENDING)));
-		if ($ret) {
-		    $ret = array($ret, null);
-		    return $ret;
-		}
+                    return $ret;
+                }
+                
+                while ($result = $searchResults->nextResult()) {
+                    $registry['implementations'][$result[0]][$result[1]] = $result[3];
+                    $registry['ids'][$result[0]][$result[2]] = $result[1];
+                    $registry['pluginIds'][$result[0]][$result[1]] = $result[5];
+                    
+                    $hints = unserialize($result[4]);
+                    if (isset($hints)) {
+                        foreach ($hints as $hint) {
+                            $registry['hints'][$result[0]][$hint][$result[2]] = $result[1];
+                        }
+                    }
+                }
+                GalleryDataCache::putToDisk($cacheParams, $registry);
+            }
+        }
+        
+        $ret = array(
+            null,
+            &$registry
+        );
 
-		while ($result = $searchResults->nextResult()) {
-		    $registry['implementations'][$result[0]][$result[1]] = $result[3];
-		    $registry['ids'][$result[0]][$result[2]] = $result[1];
-		    $registry['pluginIds'][$result[0]][$result[1]] = $result[5];
-
-		    $hints = unserialize($result[4]);
-		    if (isset($hints)) {
-			foreach ($hints as $hint) {
-			    $registry['hints'][$result[0]][$hint][$result[2]] = $result[1];
-			}
-		    }
-		}
-		GalleryDataCache::putToDisk($cacheParams, $registry);
-	    }
-	}
-
-	$ret = array(null, &$registry);
-	return $ret;
+        return $ret;
     }
-
+    
     /**
      * @see GalleryCoreApi::newFactoryInstanceByHint
      */
-    static function newInstanceByHint($classType, $hints) {
-	list ($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
-	if ($ret) {
-	    return array($ret, null);
-	}
-	if (!is_array($hints)) {
-	    $hints = array($hints);
-	}
-	$hints[] = '*';
-
-	foreach ($hints as $hint) {
-	    $hint = GalleryUtilities::strToLower($hint);
-	    if (!empty($registry['hints'][$classType][$hint])) {
-		$classNames = array_values($registry['hints'][$classType][$hint]);
-		break;
-	    }
-	}
-	if (!isset($classNames)) {
-	    return array(null, null);
-	}
-
-	/* Right now we just use the first available hint */
-	$className = $classNames[0];
-	list ($ret, $instance) = GalleryFactoryHelper_simple::newInstance($classType, $className);
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	return array(null, $instance);
+    public static function newInstanceByHint($classType, $hints)
+    {
+        list($ret, $registry) = self::_getFactoryData();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        if (!is_array($hints)) {
+            $hints = array(
+                $hints
+            );
+        }
+        $hints[] = '*';
+        
+        foreach ($hints as $hint) {
+            $hint = GalleryUtilities::strToLower($hint);
+            if (!empty($registry['hints'][$classType][$hint])) {
+                $classNames = array_values($registry['hints'][$classType][$hint]);
+                break;
+            }
+        }
+        if (!isset($classNames)) {
+            return array(
+                null,
+                null
+            );
+        }
+        
+        /* Right now we just use the first available hint */
+        $className = $classNames[0];
+        list($ret, $instance) = self::newInstance($classType, $className);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        return array(
+            null,
+            $instance
+        );
     }
-
+    
     /**
      * @see GalleryCoreApi::newFactoryInstance
      */
-    static function newInstance($classType, $className=null) {
-	global $gallery;
+    public static function newInstance($classType, $className = null)
+    {
+        global $gallery;
+        
+        list($ret, $registry) = self::_getFactoryData();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        if (!isset($className)) {
+            if (empty($registry['implementations'][$classType])) {
+                if ($gallery->getDebug()) {
+                    $gallery->debug("Unimplemented: $classType");
+                }
 
-	list ($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
-	if ($ret) {
-	    return array($ret, null);
-	}
+                return array(
+                    null,
+                    null
+                );
+            }
+            $classNames = array_keys($registry['implementations'][$classType]);
+            $className = $classNames[0];
+        }
+        
+        if (empty($registry['implementations'][$classType][$className])) {
+            if ($gallery->getDebug()) {
+                $gallery->debug("Unimplemented: $classType, $className");
+            }
 
-	if (!isset($className)) {
-	    if (empty($registry['implementations'][$classType])) {
-		if ($gallery->getDebug()) {
-		    $gallery->debug("Unimplemented: $classType");
-		}
-		return array(null, null);
-	    }
-	    $classNames = array_keys($registry['implementations'][$classType]);
-	    $className = $classNames[0];
-	}
-
-	if (empty($registry['implementations'][$classType][$className])) {
-	    if ($gallery->getDebug()) {
-		$gallery->debug("Unimplemented: $classType, $className");
-	    }
-	    return array(null, null);
-	}
-
-	if (!class_exists($className)) {
-	    $relativePath = $registry['implementations'][$classType][$className];
-
-	    $platform =& $gallery->getPlatform();
-	    if (!$platform->file_exists(
-		GalleryCoreApi::getCodeBasePath($relativePath))) {
-		return array(GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
-						  "Invalid path: $relativePath"),
-			     null);
-	    }
-
-	    GalleryCoreApi::requireOnce($relativePath);
-
-	    if (!class_exists($className)) {
-		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-						  "Missing class: $className"),
-			     null);
-	    }
-	}
-
-	return array(null, new $className);
+            return array(
+                null,
+                null
+            );
+        }
+        
+        if (!class_exists($className)) {
+            $relativePath = $registry['implementations'][$classType][$className];
+            
+            $platform =& $gallery->getPlatform();
+            if (!$platform->file_exists(GalleryCoreApi::getCodeBasePath($relativePath))) {
+                return array(
+                    GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__, "Invalid path: $relativePath"),
+                    null
+                );
+            }
+            
+            GalleryCoreApi::requireOnce($relativePath);
+            
+            if (!class_exists($className)) {
+                return array(
+                    GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "Missing class: $className"),
+                    null
+                );
+            }
+        }
+        
+        return array(
+            null,
+            new $className()
+        );
     }
-
+    
     /**
      * @see GalleryCoreApi::newFactoryInstanceById
      */
-    static function newInstanceById($classType, $id) {
-	list ($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	if (empty($registry['ids'][$classType][$id])) {
-	    return array(null, null);
-	}
-
-	$className = $registry['ids'][$classType][$id];
-	list ($ret, $instance) = GalleryFactoryHelper_simple::newInstance($classType, $className);
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	return array(null, $instance);
+    public static function newInstanceById($classType, $id)
+    {
+        list($ret, $registry) = self::_getFactoryData();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        if (empty($registry['ids'][$classType][$id])) {
+            return array(
+                null,
+                null
+            );
+        }
+        
+        $className = $registry['ids'][$classType][$id];
+        list($ret, $instance) = self::newInstance($classType, $className);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        return array(
+            null,
+            $instance
+        );
     }
-
+    
     /**
      * @see GalleryCoreApi::getAllFactoryImplementationIds
      */
-    static function getAllImplementationIds($classType) {
-	list ($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public static function getAllImplementationIds($classType)
+    {
+        list($ret, $registry) = self::_getFactoryData();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        if (isset($registry['ids'][$classType])) {
+            $result = $registry['ids'][$classType];
+        } else {
+            $result = array();
+        }
 
-	if (isset($registry['ids'][$classType])) {
-	    $result = $registry['ids'][$classType];
-	} else {
-	    $result = array();
-	}
-	return array(null, $result);
+        return array(
+            null,
+            $result
+        );
     }
 }
-?>

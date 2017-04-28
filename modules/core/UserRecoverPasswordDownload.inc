@@ -25,43 +25,44 @@
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17785 $
  */
-class UserRecoverPasswordDownloadView extends GalleryView {
-
+class UserRecoverPasswordDownloadView extends GalleryView
+{
     /**
      * @see GalleryView::isImmediate
      */
-    function isImmediate() {
-	return true;
+    public function isImmediate()
+    {
+        return true;
     }
-
+    
     /**
      * @see GalleryView::isAllowedInEmbedOnly
      */
-    function isAllowedInEmbedOnly() {
-	return true;
+    public function isAllowedInEmbedOnly()
+    {
+        return true;
     }
-
+    
     /**
      * @see GalleryView::renderImmediate
      */
-    function renderImmediate($status, $error) {
-	global $gallery;
-	$session =& $gallery->getSession();
-
-	$authString = $session->get('core.UserRecoverPasswordAdminAuthKey');
-
-	if (empty($authString)) {
-	    return GalleryCoreApi::error(ERROR_MISSING_VALUE, __FILE__, __LINE__, 
-					 'Authorization String Not Set');
-	}
-
-	header('Content-Type: text/plain');
-	header('Content-Length: ' . strlen($authString));
-	header('Content-Description: Download login.txt to your computer.');
-	header('Content-Disposition: attachment; filename="login.txt"');
-	print $authString;
-
-	return null;
+    public function renderImmediate($status, $error)
+    {
+        global $gallery;
+        $session =& $gallery->getSession();
+        
+        $authString = $session->get('core.UserRecoverPasswordAdminAuthKey');
+        
+        if (empty($authString)) {
+            return GalleryCoreApi::error(ERROR_MISSING_VALUE, __FILE__, __LINE__, 'Authorization String Not Set');
+        }
+        
+        header('Content-Type: text/plain');
+        header('Content-Length: ' . strlen($authString));
+        header('Content-Description: Download login.txt to your computer.');
+        header('Content-Disposition: attachment; filename="login.txt"');
+        echo $authString;
+        
+        return null;
     }
 }
-?>

@@ -28,42 +28,50 @@ GalleryCoreApi::requireOnce('modules/mime/classes/helpers/ItemMimeHelper_simple.
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemMimeHelper_simpleTest extends GalleryTestCase {
-    function ItemMimeHelperTest($methodname) {
-	$this->GalleryTestCase($methodname);
+class ItemMimeHelper_simpleTest extends GalleryTestCase
+{
+    public function ItemMimeHelperTest($methodname)
+    {
+        $this->GalleryTestCase($methodname);
     }
-
-    function setUp() {
-	$ret = parent::setUp();
-	if ($ret) {
-	   return $ret;
-	}
-
-	$ret = GalleryCoreApi::addMimeType('xxx', 'test/test', false);
-	if ($ret) {
-	    return $ret;
-	}
+    
+    public function setUp()
+    {
+        $ret = parent::setUp();
+        if ($ret) {
+            return $ret;
+        }
+        
+        $ret = GalleryCoreApi::addMimeType('xxx', 'test/test', false);
+        if ($ret) {
+            return $ret;
+        }
     }
-
-    function tearDown() {
-	$ret = GalleryCoreApi::removeMimeType(array('mimeType' =>'test/test'));
-	if ($ret) {
-	    return $ret;
-	}
-
-	$ret = parent::tearDown();
-	if ($ret) {
-	   return $ret;
-	}
+    
+    public function tearDown()
+    {
+        $ret = GalleryCoreApi::removeMimeType(array(
+            'mimeType' => 'test/test'
+        ));
+        if ($ret) {
+            return $ret;
+        }
+        
+        $ret = parent::tearDown();
+        if ($ret) {
+            return $ret;
+        }
     }
-
-    function testMimeTypeMap() {
-	list ($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
-	if ($ret) {
-	    return $ret;
-	}
-	$this->assertEquals(array('xxx'), $typeMap['ext']['test/test'], 'Extensions');
-	$this->assert(!$typeMap['viewable']['test/test'], 'Viewable');
+    
+    public function testMimeTypeMap()
+    {
+        list($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
+        if ($ret) {
+            return $ret;
+        }
+        $this->assertEquals(array(
+            'xxx'
+        ), $typeMap['ext']['test/test'], 'Extensions');
+        $this->assert(!$typeMap['viewable']['test/test'], 'Viewable');
     }
 }
-?>

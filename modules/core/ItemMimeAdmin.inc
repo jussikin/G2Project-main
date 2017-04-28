@@ -25,96 +25,132 @@
  * @author Felix Rabinovich <Felix@Rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemMimeAdminController extends GalleryController {
-
+class ItemMimeAdminController extends GalleryController
+{
     /**
      * @see GalleryController::handleRequest
      */
-    function handleRequest($form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	$status = array();
-	if (isset($form['action']['save'])) {
-	    $ret = GalleryCoreApi::setPluginParameter('module', 'core',
-						      'allowMime', $form['allowMime']);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    $mimeList = ($form['allowMime'] == 'all')
-		? '' : implode(' | ', array_keys($form['upload']));
-	    $ret = GalleryCoreApi::setPluginParameter('module', 'core', 'mimeList', $mimeList);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    $status['saved'] = true;
-	} else if (isset($form['action']['delete'])) {
-	    $mimeType = $form['action']['delete'];
-	    $ret = GalleryCoreApi::removeMimeType(array('mimeType' => $mimeType));
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    $status['deleted'] = $mimeType;
-	} /* else $form['action']['reset'] */
-
-	$results = array(
-		'redirect' => array('view' => 'core.SiteAdmin', 'subView' => 'core.ItemMimeAdmin'),
-		'status' => $status,
-		'error' => array());
-
-	return array(null, $results);
+    public function handleRequest($form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        $status = array();
+        if (isset($form['action']['save'])) {
+            $ret = GalleryCoreApi::setPluginParameter('module', 'core', 'allowMime', $form['allowMime']);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            $mimeList = ($form['allowMime'] == 'all') ? '' : implode(' | ', array_keys($form['upload']));
+            $ret      = GalleryCoreApi::setPluginParameter('module', 'core', 'mimeList', $mimeList);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            $status['saved'] = true;
+        } elseif (isset($form['action']['delete'])) {
+            $mimeType = $form['action']['delete'];
+            $ret      = GalleryCoreApi::removeMimeType(array(
+                'mimeType' => $mimeType
+            ));
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            $status['deleted'] = $mimeType;
+        }
+        /* else $form['action']['reset'] */
+        
+        $results = array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.ItemMimeAdmin'
+            ),
+            'status' => $status,
+            'error' => array()
+        );
+        
+        return array(
+            null,
+            $results
+        );
     }
 }
 
 /**
  * Settings for Mime types
  */
-class ItemMimeAdminView extends GalleryView {
-
+class ItemMimeAdminView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public function loadTemplate(&$template, &$form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        if ($form['formName'] != 'MimeAdmin') {
+            $form['formName'] = 'MimeAdmin';
+            
+            list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            if (!empty($params['allowMime'])) {
+                $form['allowMime'] = $params['allowMime'];
+            } else {
+                $form['allowMime'] = 'allow';
+            }
+            $form['upload'] = array();
+            foreach (explode(' | ', $params['mimeList']) as $mime) {
+                $form['upload'][$mime] = true;
+            }
+        }
+        GalleryCoreApi::requireOnce('modules/core/classes/helpers/ItemMimeHelper_simple.class');
+        list($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        $MimeAdmin = array();
+        foreach (array_keys($typeMap['ext']) as $mimeType) {
+            $ext                              = implode(', ', $typeMap['ext'][$mimeType]);
+            $MimeAdmin[$mimeType]['ext']      = $ext;
+            $MimeAdmin[$mimeType]['viewable'] = $typeMap['viewable'][$mimeType];
+        }
+        
+        $template->setVariable('MimeAdmin', $MimeAdmin);
+        $template->setVariable('controller', 'core.ItemMimeAdmin');
 
-	if ($form['formName'] != 'MimeAdmin') {
-	    $form['formName'] = 'MimeAdmin';
-
-	    list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    if (!empty($params['allowMime'])) {
-	    	$form['allowMime'] = $params['allowMime'];
-	    } else {
-	    	$form['allowMime'] = 'allow';
-	    }
-	    $form['upload'] = array();
-	    foreach (explode(' | ', $params['mimeList']) as $mime) {
-		$form['upload'][$mime] = true;
-	    }
-	}
-	GalleryCoreApi::requireOnce('modules/core/classes/helpers/ItemMimeHelper_simple.class');
-	list ($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	$MimeAdmin = array();
-	foreach (array_keys($typeMap['ext']) as $mimeType) {
-	    $ext = implode(', ', $typeMap['ext'][$mimeType]);
-	    $MimeAdmin[$mimeType]['ext'] = $ext;
-	    $MimeAdmin[$mimeType]['viewable'] = $typeMap['viewable'][$mimeType];
-	}
-
-	$template->setVariable('MimeAdmin', $MimeAdmin);
-	$template->setVariable('controller', 'core.ItemMimeAdmin');
-	return array(null, array('body' => 'modules/core/templates/ItemMimeAdmin.tpl'));
+        return array(
+            null,
+            array(
+                'body' => 'modules/core/templates/ItemMimeAdmin.tpl'
+            )
+        );
     }
 }
-?>

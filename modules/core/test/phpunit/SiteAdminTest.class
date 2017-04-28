@@ -25,38 +25,44 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SiteAdminTest extends GalleryTestCase {
-
-    function SiteAdminTest($methodName) {
-	$this->GalleryTestCase($methodName);
+class SiteAdminTest extends GalleryTestCase
+{
+    public function SiteAdminTest($methodName)
+    {
+        $this->GalleryTestCase($methodName);
     }
-
-    function setUp() {
-	$ret = parent::setUp();
-	if ($ret) {
-	    return $ret;
-	}
-
-	list ($ret, $this->_view) = GalleryView::loadView('core.SiteAdmin');
-	if ($ret) {
-	    return $ret;
-	}
+    
+    public function setUp()
+    {
+        $ret = parent::setUp();
+        if ($ret) {
+            return $ret;
+        }
+        
+        list($ret, $this->_view) = GalleryView::loadView('core.SiteAdmin');
+        if ($ret) {
+            return $ret;
+        }
     }
-
-    function testGuestRedirect() {
-	/* Verify redirect to login view if guest access SiteAdmin view */
-	$ret = $this->_becomeGuestUser();
-	if ($ret) {
-	    return $ret;
-	}
-	$template = $form = null;
-	list ($ret, $result) = $this->_view->loadTemplate($template, $form);
-	if ($ret) {
-	    return $ret;
-	}
-	$this->assertEquals(
-	    array('redirect' => array('view' => 'core.UserAdmin', 'subView' => 'core.UserLogin',
-				      'return' => true)), $result);
+    
+    public function testGuestRedirect()
+    {
+        /* Verify redirect to login view if guest access SiteAdmin view */
+        $ret = $this->_becomeGuestUser();
+        if ($ret) {
+            return $ret;
+        }
+        $template = $form = null;
+        list($ret, $result) = $this->_view->loadTemplate($template, $form);
+        if ($ret) {
+            return $ret;
+        }
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.UserAdmin',
+                'subView' => 'core.UserLogin',
+                'return' => true
+            )
+        ), $result);
     }
 }
-?>

@@ -25,51 +25,76 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CreateThumbnailOption extends ItemAddOption {
-
+class CreateThumbnailOption extends ItemAddOption
+{
     /**
      * @see ItemAddOption::loadTemplate
      */
-    function loadTemplate(&$template, &$form, $item) {
-	return array(null, 'modules/core/templates/CreateThumbnailOption.tpl', 'modules_core');
+    public function loadTemplate(&$template, &$form, $item)
+    {
+        return array(
+            null,
+            'modules/core/templates/CreateThumbnailOption.tpl',
+            'modules_core'
+        );
     }
-
+    
     /**
      * @see ItemAddOption::isAppropriate
      */
-    function isAppropriate() {
-	return array(null, true);
+    public function isAppropriate()
+    {
+        return array(
+            null,
+            true
+        );
     }
-
+    
     /**
      * @see ItemAddOption::handleRequestAfterAdd
      */
-    function handleRequestAfterAdd($form, $items) {
-	$errors = $warnings = $itemIds = array();
-	foreach ($items as $item) {
-	    $itemIds[] = $item->getId();
-	}
-	if (empty($form['CreateThumbnailOption']['createThumbnail'])) {
-	    return array(null, $errors, $warnings);
-	}
+    public function handleRequestAfterAdd($form, $items)
+    {
+        $errors = $warnings = $itemIds = array();
+        foreach ($items as $item) {
+            $itemIds[] = $item->getId();
+        }
+        if (empty($form['CreateThumbnailOption']['createThumbnail'])) {
+            return array(
+                null,
+                $errors,
+                $warnings
+            );
+        }
+        
+        list($ret, $thumbTable) = GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
+        if ($ret) {
+            return array(
+                $ret,
+                null,
+                null
+            );
+        }
+        
+        foreach ($items as $item) {
+            $itemId = $item->getId();
+            if (!empty($thumbTable[$itemId])) {
+                $thumbnail = $thumbTable[$item->getId()];
+                list($ret) = GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent($thumbnail->getId());
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null,
+                        null
+                    );
+                }
+            }
+        }
 
-	list ($ret, $thumbTable) = GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
-	if ($ret) {
-	    return array($ret, null, null);
-	}
-
-	foreach ($items as $item) {
-	    $itemId = $item->getId();
-	    if (!empty($thumbTable[$itemId])) {
-		$thumbnail = $thumbTable[$item->getId()];
-		list ($ret) =
-		    GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent($thumbnail->getId());
-		if ($ret) {
-		    return array($ret, null, null);
-		}
-	    }
-	}
-	return array(null, $errors, $warnings);
+        return array(
+            null,
+            $errors,
+            $warnings
+        );
     }
 }
-?>

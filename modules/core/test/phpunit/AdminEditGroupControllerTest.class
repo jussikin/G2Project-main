@@ -25,119 +25,156 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminEditGroupControllerTest extends GalleryControllerTestCase {
-
-    function AdminEditGroupControllerTest($methodName) {
-	$this->GalleryControllerTestCase($methodName, 'core.AdminEditGroup');
+class AdminEditGroupControllerTest extends GalleryControllerTestCase
+{
+    public function AdminEditGroupControllerTest($methodName)
+    {
+        $this->GalleryControllerTestCase($methodName, 'core.AdminEditGroup');
     }
 
-    function testCancel() {
-	list ($ret, $group) = $this->_createGroup();
-	if ($ret) {
-	    return $ret;
-	}
+    public function testCancel()
+    {
+        list($ret, $group) = $this->_createGroup();
+        if ($ret) {
+            return $ret;
+        }
 
-	GalleryUtilities::putRequestVariable('groupId', $group->getId());
-	GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
+        GalleryUtilities::putRequestVariable('groupId', $group->getId());
+        GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminGroups'),
-				  'status' => array(),
-				  'error' => array()),
-			    $results);
-	$this->_deleteGroup($group);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminGroups'
+            ),
+            'status' => array(),
+            'error' => array()
+        ), $results);
+        $this->_deleteGroup($group);
     }
 
-    function testUndo() {
-	list ($ret, $group) = $this->_createGroup();
-	if ($ret) {
-	    return $ret;
-	}
+    public function testUndo()
+    {
+        list($ret, $group) = $this->_createGroup();
+        if ($ret) {
+            return $ret;
+        }
 
-	GalleryUtilities::putRequestVariable('groupId', $group->getId());
-	GalleryUtilities::putRequestVariable('form[action][undo]', 1);
+        GalleryUtilities::putRequestVariable('groupId', $group->getId());
+        GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminEditGroup',
-						      'groupId' => $group->getId()),
-				  'status' => array(),
-				  'error' => array()),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminEditGroup',
+                'groupId' => $group->getId()
+            ),
+            'status' => array(),
+            'error' => array()
+        ), $results);
 
-	$this->_deleteGroup($group);
+        $this->_deleteGroup($group);
     }
 
-    function testEditGroup() {
-	list ($ret, $group) = $this->_createGroup();
-	if ($ret) {
-	    return $ret;
-	}
+    public function testEditGroup()
+    {
+        list($ret, $group) = $this->_createGroup();
+        if ($ret) {
+            return $ret;
+        }
 
-	$newGroupName = 'newname-'.rand();
-	GalleryUtilities::putRequestVariable('groupId', $group->getId());
-	GalleryUtilities::putRequestVariable('form[action][save]', 1);
-	GalleryUtilities::putRequestVariable('form[groupName]', $newGroupName);
+        $newGroupName = 'newname-' . rand();
+        GalleryUtilities::putRequestVariable('groupId', $group->getId());
+        GalleryUtilities::putRequestVariable('form[action][save]', 1);
+        GalleryUtilities::putRequestVariable('form[groupName]', $newGroupName);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminGroups'),
-				  'status' => array('modifiedGroup' => $newGroupName),
-				  'error' => array()),
-			    $results);
-	$this->_deleteGroup($group);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminGroups'
+            ),
+            'status' => array(
+                'modifiedGroup' => $newGroupName
+            ),
+            'error' => array()
+        ), $results);
+        $this->_deleteGroup($group);
     }
 
-    function testEditGroupMissingName() {
-	list ($ret, $group) = $this->_createGroup();
-	if ($ret) {
-	    return $ret;
-	}
+    public function testEditGroupMissingName()
+    {
+        list($ret, $group) = $this->_createGroup();
+        if ($ret) {
+            return $ret;
+        }
 
-	GalleryUtilities::putRequestVariable('groupId', $group->getId());
-	GalleryUtilities::putRequestVariable('form[action][save]', 1);
-	GalleryUtilities::putRequestVariable('form[groupName]', '');
+        GalleryUtilities::putRequestVariable('groupId', $group->getId());
+        GalleryUtilities::putRequestVariable('form[action][save]', 1);
+        GalleryUtilities::putRequestVariable('form[groupName]', '');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminEditGroup'),
-				  'status' => array(),
-				  'error' => array('form[error][groupName][missing]')),
-			    $results);
-	$this->_deleteGroup($group);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminEditGroup'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][groupName][missing]'
+            )
+        ), $results);
+        $this->_deleteGroup($group);
     }
 
-    function _createGroup() {
-	global $gallery;
+    public function _createGroup()
+    {
+        global $gallery;
 
-	list ($ret, $group) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryGroup');
-	if ($ret) {
-	    return array($ret, null);
-	}
+        list($ret, $group) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryGroup');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
 
-	if (!isset($group)) {
-	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT),
-			 null);
-	}
+        if (!isset($group)) {
+            return array(
+                GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+                null
+            );
+        }
 
-	$ret = $group->create('testgroup-'.rand());
-	if ($ret) {
-	    return array($ret, null);
-	}
-	$ret = $group->save();
-	if ($ret) {
-	    return array($ret, null);
-	}
-	return array(null, $group);
+        $ret = $group->create('testgroup-' . rand());
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        $ret = $group->save();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+
+        return array(
+            null,
+            $group
+        );
     }
 
-    function _deleteGroup($group) {
-	global $gallery;
-	$ret = GalleryCoreApi::deleteEntityById($group->getId(), 'GalleryGroup');
-	if ($ret) {
-	    return $ret;
-	}
+    public function _deleteGroup($group)
+    {
+        global $gallery;
+        $ret = GalleryCoreApi::deleteEntityById($group->getId(), 'GalleryGroup');
+        if ($ret) {
+            return $ret;
+        }
     }
 }
-?>

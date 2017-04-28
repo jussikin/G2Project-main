@@ -26,59 +26,72 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryEventHelper_simple {
-
+class GalleryEventHelper_simple
+{
     /**
      * @see GalleryCoreApi::newEvent
      */
-    static function newEvent($eventName) {
-	GalleryCoreApi::requireOnce('modules/core/classes/GalleryEvent.class');
-	$event = new GalleryEvent();
-	$event->setEventName($eventName);
-	return $event;
-    }
+    public static function newEvent($eventName)
+    {
+        GalleryCoreApi::requireOnce('modules/core/classes/GalleryEvent.class');
+        $event = new GalleryEvent();
+        $event->setEventName($eventName);
 
+        return $event;
+    }
+    
     /**
      * @see GalleryCoreApi::postEvent
      */
-    static function postEvent($event) {
-	list ($ret, $eventListeners) = GalleryCoreApi::getAllFactoryImplementationIdsWithHint(
-	    'GalleryEventListener', $event->getEventName());
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	$eventResults = array();
-	foreach ($eventListeners as $implId => $className) {
-	    list ($ret, $eventListener) = GalleryCoreApi::newFactoryInstance(
-		'GalleryEventListener', $className);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-
-	    list ($ret, $data) = $eventListener->handleEvent($event);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    if (isset($data)) {
-		$eventResults[] = $data;
-	    }
-	}
-
-	return array(null, $eventResults);
+    public static function postEvent($event)
+    {
+        list($ret, $eventListeners) = GalleryCoreApi::getAllFactoryImplementationIdsWithHint('GalleryEventListener', $event->getEventName());
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        $eventResults = array();
+        foreach ($eventListeners as $implId => $className) {
+            list($ret, $eventListener) = GalleryCoreApi::newFactoryInstance('GalleryEventListener', $className);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            
+            list($ret, $data) = $eventListener->handleEvent($event);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            if (isset($data)) {
+                $eventResults[] = $data;
+            }
+        }
+        
+        return array(
+            null,
+            $eventResults
+        );
     }
-
+    
     /**
      * @see GalleryCoreApi::registerEventListener
      * @todo Remove on next major API bump
      */
-    static function registerEventListener($eventName, &$eventListener, $disableForTests=false) {
-	if ($disableForTests && class_exists('GalleryTestCase')) {
-	    return;
-	}
-
-	$allListeners =& GalleryEventHelper_simple::_getEventListeners();
-	$allListeners[$eventName][] =& $eventListener;
+    public static function registerEventListener($eventName, &$eventListener, $disableForTests = false)
+    {
+        if ($disableForTests && class_exists('GalleryTestCase')) {
+            return;
+        }
+        
+        $allListeners =& self::_getEventListeners();
+        $allListeners[$eventName][] =& $eventListener;
     }
 }
-?>

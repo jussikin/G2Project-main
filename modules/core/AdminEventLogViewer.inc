@@ -26,23 +26,33 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminEventLogViewerView extends GalleryView {
+class AdminEventLogViewerView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public function loadTemplate(&$template, &$form)
+    {
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        $AdminEventLogViewer = array();
+        if ($form['formName'] != 'AdminEventLogViewer') {
+            $form['formName'] = 'AdminEventLogViewer';
+        }
+        
+        $template->javascript('lib/yui/utilities.js');
 
-	$AdminEventLogViewer = array();
-	if ($form['formName'] != 'AdminEventLogViewer') {
-	    $form['formName'] = 'AdminEventLogViewer';
-	}
-
-	$template->javascript('lib/yui/utilities.js');
-	return array(null, array('body' => 'modules/core/templates/AdminEventLogViewer.tpl'));
+        return array(
+            null,
+            array(
+                'body' => 'modules/core/templates/AdminEventLogViewer.tpl'
+            )
+        );
     }
 }
-?>

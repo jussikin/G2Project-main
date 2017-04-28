@@ -25,31 +25,48 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class MaintenanceModeView extends GalleryView {
-
+class MaintenanceModeView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-	if ($ret) {
-	    return array($ret, null);
-	}
+    public function loadTemplate(&$template, &$form)
+    {
+        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        $template->title($module->translate('Maintenance'));
 
-	$template->title($module->translate('Maintenance'));
-	return array(null, array('body' => 'modules/core/templates/MaintenanceMode.tpl',
-				 'useFullScreen' => true));
+        return array(
+            null,
+            array(
+                'body' => 'modules/core/templates/MaintenanceMode.tpl',
+                'useFullScreen' => true
+            )
+        );
     }
-
+    
     /**
      * @see GalleryView::getViewDescription
      */
-    function getViewDescription() {
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-	if ($ret) {
-	    return array($ret, null);
-	}
-	return array(null, $module->translate('Maintenance'));
+    public function getViewDescription()
+    {
+        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+
+        return array(
+            null,
+            $module->translate('Maintenance')
+        );
     }
 }
-?>

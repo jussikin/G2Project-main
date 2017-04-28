@@ -32,8 +32,8 @@
  * @version $Revision: 20940 $
  * @abstract
  */
-class GalleryToolkit {
-
+class GalleryToolkit
+{
     /**
      * Get a certain property of a file
      *
@@ -43,10 +43,14 @@ class GalleryToolkit {
      * @return array GalleryStatus a status code,
      *	       mixed the value of the property
      */
-    function getProperty($mimeType, $propertyName, $sourceFilename) {
-	return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null);
+    public function getProperty($mimeType, $propertyName, $sourceFilename)
+    {
+        return array(
+            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+            null
+        );
     }
-
+    
     /**
      * Perform a certain operation
      *
@@ -67,11 +71,15 @@ class GalleryToolkit {
      *               string the output mime type
      *               array context data
      */
-    function performOperation($mimeType, $operationName, $sourceFilename,
-			      $destFilename, $parameters, $context=array()) {
-	return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null, null);
+    public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
+    {
+        return array(
+            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+            null,
+            null
+        );
     }
-
+    
     /**
      * Apply the transform operation to the set of target operations.  The transform operation
      * will typically have happened upstream from the target operations, so we have to adjust
@@ -85,85 +93,79 @@ class GalleryToolkit {
      * @return array boolean success or failure
      *               string the new set of operations
      */
-    function applyTransform($transformOperation, $targetOperations, $reverse=false) {
-	$transformedOperations = $targetOperations;
-
-	/* Right now, only the rotate operation will cause issues */
-	if (!strncmp($transformOperation, 'rotate', 6)) {
-	    /* And it will only cause issues to the crop operation */
-	    if (strstr($targetOperations, 'crop|') !== false) {
-		$rotationAmount = substr($transformOperation, 7);
-		if ($reverse) {
-		    switch ($rotationAmount) {
-		    case '90':
-			$rotationAmount = '270';
-			break;
-
-		    case '-90':
-		    case '270':
-			$rotationAmount = '90';
-			break;
-		    }
-		}
-
-		$newOperations = array();
-		foreach (explode(';', $targetOperations) as $operation) {
-		    if (!strncmp($operation, 'crop', 4)) {
-			list ($x, $y, $width, $height) = explode(',', substr($operation, 5));
-
-			switch ($rotationAmount) {
-			case '90':
-			    $newX = GalleryUtilities::roundToString(
-				100.0 - GalleryUtilities::castToFloat($y)
-				      - GalleryUtilities::castToFloat($height), 3);
-			    $newY = $x;
-			    $newWidth = $height;
-			    $newHeight = $width;
-			    break;
-
-			case '-90':
-			case '270':
-			    $newX = $y;
-			    $newY = GalleryUtilities::roundToString(
-				100.0 - GalleryUtilities::castToFloat($x)
-				      - GalleryUtilities::castToFloat($width), 3);
-			    $newWidth = $height;
-			    $newHeight = $width;
-			    break;
-
-			case '180':
-			    $newX = GalleryUtilities::roundToString(
-				100.0 - GalleryUtilities::castToFloat($x)
-				      - GalleryUtilities::castToFloat($width), 3);
-			    $newY = GalleryUtilities::roundToString(
-				100.0 - GalleryUtilities::castToFloat($y)
-				      - GalleryUtilities::castToFloat($height), 3);
-			    $newWidth = $width;
-			    $newHeight = $height;
-			    break;
-
-			default:
-			    /* What do we do now?  Do nothing. */
-			    $newX = $x;
-			    $newY = $y;
-			    $newWidth = $width;
-			    $newHeight = $height;
-			}
-
-			$newOperations[] = sprintf('crop|%s,%s,%s,%s',
-						   $newX, $newY, $newWidth, $newHeight);
-		    } else {
-			$newOperations[] = $operation;
-		    }
-		}
-		$transformedOperations = join(';', $newOperations);
-	    }
-	}
-
-	return array(true, $transformedOperations);
+    public function applyTransform($transformOperation, $targetOperations, $reverse = false)
+    {
+        $transformedOperations = $targetOperations;
+        
+        /* Right now, only the rotate operation will cause issues */
+        if (!strncmp($transformOperation, 'rotate', 6)) {
+            /* And it will only cause issues to the crop operation */
+            if (strstr($targetOperations, 'crop|') !== false) {
+                $rotationAmount = substr($transformOperation, 7);
+                if ($reverse) {
+                    switch ($rotationAmount) {
+                        case '90':
+                            $rotationAmount = '270';
+                            break;
+                        
+                        case '-90':
+                        case '270':
+                            $rotationAmount = '90';
+                            break;
+                    }
+                }
+                
+                $newOperations = array();
+                foreach (explode(';', $targetOperations) as $operation) {
+                    if (!strncmp($operation, 'crop', 4)) {
+                        list($x, $y, $width, $height) = explode(',', substr($operation, 5));
+                        
+                        switch ($rotationAmount) {
+                            case '90':
+                                $newX = GalleryUtilities::roundToString(100.0 - GalleryUtilities::castToFloat($y) - GalleryUtilities::castToFloat($height), 3);
+                                $newY = $x;
+                                $newWidth = $height;
+                                $newHeight = $width;
+                                break;
+                            
+                            case '-90':
+                            case '270':
+                                $newX = $y;
+                                $newY = GalleryUtilities::roundToString(100.0 - GalleryUtilities::castToFloat($x) - GalleryUtilities::castToFloat($width), 3);
+                                $newWidth = $height;
+                                $newHeight = $width;
+                                break;
+                            
+                            case '180':
+                                $newX = GalleryUtilities::roundToString(100.0 - GalleryUtilities::castToFloat($x) - GalleryUtilities::castToFloat($width), 3);
+                                $newY = GalleryUtilities::roundToString(100.0 - GalleryUtilities::castToFloat($y) - GalleryUtilities::castToFloat($height), 3);
+                                $newWidth = $width;
+                                $newHeight = $height;
+                                break;
+                            
+                            default:
+                                /* What do we do now?  Do nothing. */
+                                $newX = $x;
+                                $newY = $y;
+                                $newWidth = $width;
+                                $newHeight = $height;
+                        }
+                        
+                        $newOperations[] = sprintf('crop|%s,%s,%s,%s', $newX, $newY, $newWidth, $newHeight);
+                    } else {
+                        $newOperations[] = $operation;
+                    }
+                }
+                $transformedOperations = join(';', $newOperations);
+            }
+        }
+        
+        return array(
+            true,
+            $transformedOperations
+        );
     }
-
-
+    
     /**
      * Merge two operations together in an intelligent way.  The end result of
      * the merge should be a new operation and arguments that would result if
@@ -180,45 +182,72 @@ class GalleryToolkit {
      *                $mergedOperation,
      *                $mergedArgs)
      */
-    function mergeOperations($operation1, $args1, $operation2, $args2) {
-	/* We can only merge like operations */
-	if ($operation1 != $operation2) {
-	    /* But not all like operations have the same name */
-	    $likeOperations = array('resize', 'scale', 'thumbnail');
-	    if (!(in_array($operation1, $likeOperations)
-		    && in_array($operation2, $likeOperations))) {
-		return array(false, null, null);
-	    }
-	}
+    public function mergeOperations($operation1, $args1, $operation2, $args2)
+    {
+        /* We can only merge like operations */
+        if ($operation1 != $operation2) {
+            /* But not all like operations have the same name */
+            $likeOperations = array(
+                'resize',
+                'scale',
+                'thumbnail'
+            );
+            if (!(in_array($operation1, $likeOperations) && in_array($operation2, $likeOperations))) {
+                return array(
+                    false,
+                    null,
+                    null
+                );
+            }
+        }
+        
+        switch ($operation1) {
+            case 'crop':
+            case 'resize':
+            case 'scale':
+            case 'thumbnail':
+                /* For like operations, the second operation takes precedence */
+                return array(
+                    true,
+                    $operation2,
+                    $args2
+                );
+                break;
+            
+            case 'rotate':
+                /* Rotation is additive */
+                $rotation = (360 + $args1[0] + $args2[0]) % 360;
+                
+                /* 0 rotation means the operation goes away */
+                if ($rotation == 0) {
+                    return array(
+                        true,
+                        null,
+                        null
+                    );
+                }
+                
+                if (abs($rotation) > 180) {
+                    $rotation = $rotation - 360;
+                }
 
-	switch ($operation1) {
-	case 'crop':
-	case 'resize':
-	case 'scale':
-	case 'thumbnail':
-	    /* For like operations, the second operation takes precedence */
-	    return array(true, $operation2, $args2);
-	    break;
-
-	case 'rotate':
-	    /* Rotation is additive */
-	    $rotation = (360 + $args1[0] + $args2[0]) % 360;
-
-	    /* 0 rotation means the operation goes away */
-	    if ($rotation == 0) {
-		return array(true, null, null);
-	    }
-
-	    if (abs($rotation) > 180) {
-		$rotation = $rotation - 360;
-	    }
-	    return array(true, $operation2, array($rotation));
-
-	default:
-	    return array(false, null, null);
-	}
+                return array(
+                    true,
+                    $operation2,
+                    array(
+                        $rotation
+                    )
+                );
+            
+            default:
+                return array(
+                    false,
+                    null,
+                    null
+                );
+        }
     }
-
+    
     /**
      * Estimate the dimensions of a GalleryDerivativeImage from its operations and its source.
      *
@@ -226,34 +255,32 @@ class GalleryToolkit {
      * @param GalleryEntity $source (probably a GalleryPhotoItem or GalleryMovieItem)
      * @static
      */
-    static function estimateDimensions(&$derivative, $source) {
-	if (method_exists($source, 'getwidth') && method_exists($source, 'getheight')) {
-	    $width = $source->getWidth();
-	    $height = $source->getHeight();
-	    if ($width && $height) {
-		$operations = $derivative->getDerivativeOperations();
-		if (preg_match('/^(?:thumbnail|scale)\|(\d+)$/', $operations, $matches)) {
-		    $target = $matches[1];
-		    if (!empty($target)) {
-			if (GalleryUtilities::isA($source, 'GalleryDerivativeImage')) {
-			    /*
-			     * If the source is also a derivative then assume the real source
-			     * is larger and allow upscaling in this estimate.  It's possible
-			     * the real source is actually smaller than our $target size, but
-			     * it will be corrected once the derivative is actually built.
-			     */
-			    list ($newWidth, $newHeight) =
-				GalleryUtilities::scaleDimensionsToFit($width, $height, $target);
-			} else {
-			    list ($newWidth, $newHeight) =
-				GalleryUtilities::shrinkDimensionsToFit($width, $height, $target);
-			}
-			$derivative->setWidth($newWidth);
-			$derivative->setHeight($newHeight);
-		    }
-		}
-	    }
-	}
+    public static function estimateDimensions(&$derivative, $source)
+    {
+        if (method_exists($source, 'getwidth') && method_exists($source, 'getheight')) {
+            $width = $source->getWidth();
+            $height = $source->getHeight();
+            if ($width && $height) {
+                $operations = $derivative->getDerivativeOperations();
+                if (preg_match('/^(?:thumbnail|scale)\|(\d+)$/', $operations, $matches)) {
+                    $target = $matches[1];
+                    if (!empty($target)) {
+                        if (GalleryUtilities::isA($source, 'GalleryDerivativeImage')) {
+                            /*
+                             * If the source is also a derivative then assume the real source
+                             * is larger and allow upscaling in this estimate.  It's possible
+                             * the real source is actually smaller than our $target size, but
+                             * it will be corrected once the derivative is actually built.
+                             */
+                            list($newWidth, $newHeight) = GalleryUtilities::scaleDimensionsToFit($width, $height, $target);
+                        } else {
+                            list($newWidth, $newHeight) = GalleryUtilities::shrinkDimensionsToFit($width, $height, $target);
+                        }
+                        $derivative->setWidth($newWidth);
+                        $derivative->setHeight($newHeight);
+                    }
+                }
+            }
+        }
     }
 }
-?>

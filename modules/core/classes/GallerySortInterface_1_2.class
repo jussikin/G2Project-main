@@ -26,8 +26,8 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GallerySortInterface_1_2 {
-
+class GallerySortInterface_1_2
+{
     /**
      * Return information about this sort
      *
@@ -35,10 +35,15 @@ class GallerySortInterface_1_2 {
      *               string localized name
      *               boolean true for presort
      */
-    function getSortInfo() {
-	return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null, null);
+    public function getSortInfo()
+    {
+        return array(
+            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+            null,
+            null
+        );
     }
-
+    
     /**
      * Get the query fragments used to perform this sort.
      * Order by clause may contain %1%, %2% or %3% to reference the corresponding
@@ -54,10 +59,17 @@ class GallerySortInterface_1_2 {
      *               string optional row matching condition
      *               string optional join clause
      */
-    function getSortOrder($direction) {
-	return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null, null, null, null);
+    public function getSortOrder($direction)
+    {
+        return array(
+            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+            null,
+            null,
+            null,
+            null
+        );
     }
-
+    
     /**
      * Get information about available sort orders
      *
@@ -68,60 +80,88 @@ class GallerySortInterface_1_2 {
      *               array of orderDirection => localized name for direction
      * @static
      */
-    static function getAllSortOrders($includeDefault=true) {
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-	if ($ret) {
-	    return array($ret, null, null, null);
-	}
-
-	$orderByList = array(  '' => $module->translate('&laquo; default sort order &raquo;'),
-		    'orderWeight' => $module->translate('Manual sort order'),
-			  'title' => $module->translate('Title'),
-			'summary' => $module->translate('Summary'),
-	   'originationTimestamp' => $module->translate('Origination Date'),
-	      'creationTimestamp' => $module->translate('Creation Date'),
-	  'modificationTimestamp' => $module->translate('Last Changed Date'),
-		    'description' => $module->translate('Description'),
-		       'keywords' => $module->translate('Keywords'),
-		  'pathComponent' => $module->translate('Name'),
-		      'viewCount' => $module->translate('View Count'),
-			 'random' => $module->translate('Random'));
-	if (!$includeDefault) {
-	    array_shift($orderByList);
-	}
-
-	$presortList = array(  '' => $module->translate('&laquo; no presort &raquo;'),
-		    'albumsFirst' => $module->translate('Albums First'),
-		    'viewedFirst' => $module->translate('Most Viewed First'));
-
-	list ($ret, $implIds) =
-	    GalleryCoreApi::getAllFactoryImplementationIds('GallerySortInterface_1_2');
-	if ($ret) {
-	    return array($ret, null, null, null);
-	}
-
-	foreach ($implIds as $sortId => $className) {
-	    list ($ret, $sort) =
-		GalleryCoreApi::newFactoryInstance('GallerySortInterface_1_2', $className);
-	    if ($ret) {
-		return array($ret, null, null, null);
-	    }
-	    list ($ret, $sortName, $isPresort) = $sort->getSortInfo();
-	    if ($ret) {
-		return array($ret, null, null, null);
-	    }
-	    if ($isPresort) {
-		$presortList[$sortId] = $sortName;
-	    } else {
-		$orderByList[$sortId] = $sortName;
-	    }
-	}
-
-	$orderDirectionList = array(
-	     ORDER_ASCENDING => $module->translate('Ascending'),
-	    ORDER_DESCENDING => $module->translate('Descending'));
-
-	return array(null, $orderByList, $presortList, $orderDirectionList);
+    public static function getAllSortOrders($includeDefault = true)
+    {
+        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+        if ($ret) {
+            return array(
+                $ret,
+                null,
+                null,
+                null
+            );
+        }
+        
+        $orderByList = array(
+            '' => $module->translate('&laquo; default sort order &raquo;'),
+            'orderWeight' => $module->translate('Manual sort order'),
+            'title' => $module->translate('Title'),
+            'summary' => $module->translate('Summary'),
+            'originationTimestamp' => $module->translate('Origination Date'),
+            'creationTimestamp' => $module->translate('Creation Date'),
+            'modificationTimestamp' => $module->translate('Last Changed Date'),
+            'description' => $module->translate('Description'),
+            'keywords' => $module->translate('Keywords'),
+            'pathComponent' => $module->translate('Name'),
+            'viewCount' => $module->translate('View Count'),
+            'random' => $module->translate('Random')
+        );
+        if (!$includeDefault) {
+            array_shift($orderByList);
+        }
+        
+        $presortList = array(
+            '' => $module->translate('&laquo; no presort &raquo;'),
+            'albumsFirst' => $module->translate('Albums First'),
+            'viewedFirst' => $module->translate('Most Viewed First')
+        );
+        
+        list($ret, $implIds) = GalleryCoreApi::getAllFactoryImplementationIds('GallerySortInterface_1_2');
+        if ($ret) {
+            return array(
+                $ret,
+                null,
+                null,
+                null
+            );
+        }
+        
+        foreach ($implIds as $sortId => $className) {
+            list($ret, $sort) = GalleryCoreApi::newFactoryInstance('GallerySortInterface_1_2', $className);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null,
+                    null,
+                    null
+                );
+            }
+            list($ret, $sortName, $isPresort) = $sort->getSortInfo();
+            if ($ret) {
+                return array(
+                    $ret,
+                    null,
+                    null,
+                    null
+                );
+            }
+            if ($isPresort) {
+                $presortList[$sortId] = $sortName;
+            } else {
+                $orderByList[$sortId] = $sortName;
+            }
+        }
+        
+        $orderDirectionList = array(
+            ORDER_ASCENDING => $module->translate('Ascending'),
+            ORDER_DESCENDING => $module->translate('Descending')
+        );
+        
+        return array(
+            null,
+            $orderByList,
+            $presortList,
+            $orderDirectionList
+        );
     }
 }
-?>

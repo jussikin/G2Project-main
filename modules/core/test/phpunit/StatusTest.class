@@ -27,21 +27,28 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStatus.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class StatusTest extends GalleryTestCase {
-
-    function StatusTest($methodName) {
-	$this->GalleryTestCase($methodName);
+class StatusTest extends GalleryTestCase
+{
+    public function StatusTest($methodName)
+    {
+        $this->GalleryTestCase($methodName);
     }
-
-    function testGetErrorCodeConstantsNoSpecificError() {
-	$codes = GalleryStatus::getErrorCodeConstants(GALLERY_ERROR);
-	$this->assertEquals(array('GALLERY_ERROR'), $codes);
+    
+    public function testGetErrorCodeConstantsNoSpecificError()
+    {
+        $codes = GalleryStatus::getErrorCodeConstants(GALLERY_ERROR);
+        $this->assertEquals(array(
+            'GALLERY_ERROR'
+        ), $codes);
     }
-
-    function testGetErrorCodeConstantsTwoErrors() {
-	$codes = GalleryStatus::getErrorCodeConstants(ERROR_COLLISION | ERROR_LOCK_IN_USE);
-	$expected = array('ERROR_COLLISION', 'ERROR_LOCK_IN_USE');
-	$this->assertEquals(sort($expected), sort($codes));
+    
+    public function testGetErrorCodeConstantsTwoErrors()
+    {
+        $codes = GalleryStatus::getErrorCodeConstants(ERROR_COLLISION | ERROR_LOCK_IN_USE);
+        $expected = array(
+            'ERROR_COLLISION',
+            'ERROR_LOCK_IN_USE'
+        );
+        $this->assertEquals(sort($expected), sort($codes));
     }
 }
-?>

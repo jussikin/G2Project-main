@@ -25,182 +25,239 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminUsersControllerTest extends GalleryControllerTestCase {
-
-    function AdminUsersControllerTest($methodName) {
-	$this->GalleryControllerTestCase($methodName, 'core.AdminUsers');
+class AdminUsersControllerTest extends GalleryControllerTestCase
+{
+    public function AdminUsersControllerTest($methodName)
+    {
+        $this->GalleryControllerTestCase($methodName, 'core.AdminUsers');
     }
 
-    function testFilterClear() {
-	GalleryUtilities::putRequestVariable('form[action][filterClear]', 1);
-	GalleryUtilities::putRequestVariable('form[list][filter]', 'foo');
+    public function testFilterClear()
+    {
+        GalleryUtilities::putRequestVariable('form[action][filterClear]', 1);
+        GalleryUtilities::putRequestVariable('form[list][filter]', 'foo');
 
-	$results = $this->handleRequest();
+        $results = $this->handleRequest();
 
-	$this->assertEquals('', GalleryUtilities::getRequestVariables('form[list][filter]'));
+        $this->assertEquals('', GalleryUtilities::getRequestVariables('form[list][filter]'));
     }
 
-    function testCreate() {
-	GalleryUtilities::putRequestVariable('form[action][create]', 1);
+    public function testCreate()
+    {
+        GalleryUtilities::putRequestVariable('form[action][create]', 1);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminCreateUser'),
-				  'status' => array(),
-				  'error' => array()),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminCreateUser'
+            ),
+            'status' => array(),
+            'error' => array()
+        ), $results);
     }
 
-    function testEditFromText() {
-	/* Normal */
-	list ($ret, $user) = $this->_createUser();
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_markForCleanup($user);
+    public function testEditFromText()
+    {
+        /* Normal */
+        list($ret, $user) = $this->_createUser();
+        if ($ret) {
+            return $ret;
+        }
+        $this->_markForCleanup($user);
 
-	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+        GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
+        GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminEditUser',
-						      'userId' => $user->getId()),
-				  'status' => array(),
-				  'error' => array()),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminEditUser',
+                'userId' => $user->getId()
+            ),
+            'status' => array(),
+            'error' => array()
+        ), $results);
 
-	/* Missing user name */
-	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
-	GalleryUtilities::removeRequestVariable('form[text][userName]');
+        /* Missing user name */
+        GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
+        GalleryUtilities::removeRequestVariable('form[text][userName]');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminUsers'),
-				  'status' => array(),
-				  'error' => array('form[error][text][noUserSpecified]')),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminUsers'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][text][noUserSpecified]'
+            )
+        ), $results);
 
-	/* Invalid user name */
-	GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]',
-					     'some-invalid-user-name-'.rand());
+        /* Invalid user name */
+        GalleryUtilities::putRequestVariable('form[action][editFromText]', 1);
+        GalleryUtilities::putRequestVariable('form[text][userName]', 'some-invalid-user-name-' . rand());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminUsers'),
-				  'status' => array(),
-				  'error' => array('form[error][text][noSuchUser]')),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminUsers'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][text][noSuchUser]'
+            )
+        ), $results);
     }
 
-    function testDeleteFromText() {
-	/* Normal */
-	list ($ret, $user) = $this->_createUser();
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_markForCleanup($user);
+    public function testDeleteFromText()
+    {
+        /* Normal */
+        list($ret, $user) = $this->_createUser();
+        if ($ret) {
+            return $ret;
+        }
+        $this->_markForCleanup($user);
 
-	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+        GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
+        GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminDeleteUser',
-						      'userId' => $user->getId()),
-				  'status' => array(),
-				  'error' => array()),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminDeleteUser',
+                'userId' => $user->getId()
+            ),
+            'status' => array(),
+            'error' => array()
+        ), $results);
 
-	/* Missing user name */
-	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
-	GalleryUtilities::removeRequestVariable('form[text][userName]');
+        /* Missing user name */
+        GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
+        GalleryUtilities::removeRequestVariable('form[text][userName]');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminUsers'),
-				  'status' => array(),
-				  'error' => array('form[error][text][noUserSpecified]')),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminUsers'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][text][noUserSpecified]'
+            )
+        ), $results);
 
-	/* Invalid user name */
-	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]',
-					     'some-invalid-user-name-'.rand());
+        /* Invalid user name */
+        GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
+        GalleryUtilities::putRequestVariable('form[text][userName]', 'some-invalid-user-name-' . rand());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminUsers'),
-				  'status' => array(),
-				  'error' => array('form[error][text][noSuchUser]')),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminUsers'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][text][noSuchUser]'
+            )
+        ), $results);
     }
 
-    function testDeleteAnonymous() {
-	global $gallery;
+    public function testDeleteAnonymous()
+    {
+        global $gallery;
 
-	list ($ret, $anonymousUserId) =
-	    GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
-	if ($ret) {
-	    return $ret;
-	}
+        list($ret, $anonymousUserId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
+        if ($ret) {
+            return $ret;
+        }
 
-	list ($ret, $anonymousUser) =
-	    GalleryCoreApi::loadEntitiesById($anonymousUserId, 'GalleryUser');
-	if ($ret) {
-	    return $ret;
-	}
+        list($ret, $anonymousUser) = GalleryCoreApi::loadEntitiesById($anonymousUserId, 'GalleryUser');
+        if ($ret) {
+            return $ret;
+        }
 
-	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $anonymousUser->getUserName());
+        GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
+        GalleryUtilities::putRequestVariable('form[text][userName]', $anonymousUser->getUserName());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminUsers'),
-				  'status' => array(),
-				  'error' => array('form[error][text][cantDeleteAnonymous]')),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminUsers'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][text][cantDeleteAnonymous]'
+            )
+        ), $results);
     }
 
-    function testDeleteSelf() {
-	global $gallery;
+    public function testDeleteSelf()
+    {
+        global $gallery;
 
-	$self = $gallery->getActiveUser();
+        $self = $gallery->getActiveUser();
 
-	GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $self->getUserName());
+        GalleryUtilities::putRequestVariable('form[action][deleteFromText]', 1);
+        GalleryUtilities::putRequestVariable('form[text][userName]', $self->getUserName());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminUsers'),
-				  'status' => array(),
-				  'error' => array('form[error][text][cantDeleteSelf]')),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'delegate' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminUsers'
+            ),
+            'status' => array(),
+            'error' => array(
+                'form[error][text][cantDeleteSelf]'
+            )
+        ), $results);
     }
 
-    function _createUser() {
-	global $gallery;
+    public function _createUser()
+    {
+        global $gallery;
 
-	list ($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
-	if ($ret) {
-	    return array($ret, null);
-	}
+        list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
 
-	if (!isset($user)) {
-	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT),
-			 null);
-	}
+        if (!isset($user)) {
+            return array(
+                GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+                null
+            );
+        }
 
-	$ret = $user->create('testuser-'.rand());
-	if ($ret) {
-	    return array($ret, null);
-	}
-	$ret = $user->save();
-	if ($ret) {
-	    return array($ret, null);
-	}
-	return array(null, $user);
+        $ret = $user->create('testuser-' . rand());
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        $ret = $user->save();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+
+        return array(
+            null,
+            $user
+        );
     }
 }
-?>

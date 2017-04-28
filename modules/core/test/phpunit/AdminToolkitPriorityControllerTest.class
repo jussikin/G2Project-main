@@ -25,68 +25,80 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase {
-
-    function AdminToolkitPriorityControllerTest($methodName) {
-	$this->GalleryControllerTestCase($methodName, 'core.AdminToolkitPriority');
+class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase
+{
+    public function AdminToolkitPriorityControllerTest($methodName)
+    {
+        $this->GalleryControllerTestCase($methodName, 'core.AdminToolkitPriority');
     }
 
-    function setUp() {
-	$ret = parent::setUp();
-	if ($ret) {
-	   return $ret;
-	}
+    public function setUp()
+    {
+        $ret = parent::setUp();
+        if ($ret) {
+            return $ret;
+        }
 
-	$ret = GalleryCoreApi::registerToolkitOperation('TestToolkitPriority',
-		array('test/type'), 'test-operation', array(),
-		'test-description', 'test/outputType', 30);
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_markToolkitForCleanup('TestToolkitPriority');
+        $ret = GalleryCoreApi::registerToolkitOperation('TestToolkitPriority', array(
+            'test/type'
+        ), 'test-operation', array(), 'test-description', 'test/outputType', 30);
+        if ($ret) {
+            return $ret;
+        }
+        $this->_markToolkitForCleanup('TestToolkitPriority');
 
-	$ret = GalleryCoreApi::registerToolkitOperation('TestToolkitPriority2',
-		array('test/type'), 'test-operation', array(),
-		'test-description', 'test/outputType', 27);
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_markToolkitForCleanup('TestToolkitPriority2');
+        $ret = GalleryCoreApi::registerToolkitOperation('TestToolkitPriority2', array(
+            'test/type'
+        ), 'test-operation', array(), 'test-description', 'test/outputType', 27);
+        if ($ret) {
+            return $ret;
+        }
+        $this->_markToolkitForCleanup('TestToolkitPriority2');
     }
 
-    function testReset() {
-	GalleryUtilities::putRequestVariable('form[action][reset]', 1);
+    public function testReset()
+    {
+        GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('return' => 0,
-				  'redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminToolkitPriority'),
-				  'status' => array(),
-				  'error' => array()),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'return' => 0,
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminToolkitPriority'
+            ),
+            'status' => array(),
+            'error' => array()
+        ), $results);
     }
 
-    function testSave() {
-	GalleryUtilities::putRequestVariable('form[action][save]', 1);
-	GalleryUtilities::putRequestVariable('form[priority][27]', 'TestToolkitPriority');
-	GalleryUtilities::putRequestVariable('form[priority][30]', 'TestToolkitPriority2');
+    public function testSave()
+    {
+        GalleryUtilities::putRequestVariable('form[action][save]', 1);
+        GalleryUtilities::putRequestVariable('form[priority][27]', 'TestToolkitPriority');
+        GalleryUtilities::putRequestVariable('form[priority][30]', 'TestToolkitPriority2');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('return' => 0,
-				  'redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'core.AdminToolkitPriority'),
-				  'status' => array('saved' => 1),
-				  'error' => array()),
-			    $results);
+        $results = $this->handleRequest();
+        $this->assertEquals(array(
+            'return' => 0,
+            'redirect' => array(
+                'view' => 'core.SiteAdmin',
+                'subView' => 'core.AdminToolkitPriority'
+            ),
+            'status' => array(
+                'saved' => 1
+            ),
+            'error' => array()
+        ), $results);
 
-	list ($ret, $list) = GalleryCoreApi::getRedundantToolkitPriorities();
-	if ($ret) {
-	    return $ret;
-	}
+        list($ret, $list) = GalleryCoreApi::getRedundantToolkitPriorities();
+        if ($ret) {
+            return $ret;
+        }
 
-	$this->assert(count($list) >= 2, 'count');
-	$this->assertEquals(27, $list['TestToolkitPriority'], 'TestToolkitPriority');
-	$this->assertEquals(30, $list['TestToolkitPriority2'], 'TestToolkitPriority2');
+        $this->assert(count($list) >= 2, 'count');
+        $this->assertEquals(27, $list['TestToolkitPriority'], 'TestToolkitPriority');
+        $this->assertEquals(30, $list['TestToolkitPriority2'], 'TestToolkitPriority2');
     }
 }
 
@@ -96,7 +108,9 @@ class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase {
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class TestToolkitPriority { }
+class TestToolkitPriority
+{
+}
 
 /**
  * Mock toolkit
@@ -104,5 +118,6 @@ class TestToolkitPriority { }
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class TestToolkitPriority2 { }
-?>
+class TestToolkitPriority2
+{
+}

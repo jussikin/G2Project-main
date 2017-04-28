@@ -25,108 +25,152 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditAnimation extends ItemEditPlugin {
-
+class ItemEditAnimation extends ItemEditPlugin
+{
     /**
      * @see ItemEditPlugin::handleRequest
      */
-    function handleRequest($form, &$item, &$preferred) {
-	global $gallery;
+    public function handleRequest($form, &$item, &$preferred)
+    {
+        global $gallery;
+        
+        $status = null;
+        $error = array();
+        
+        /* Figure out which command we're taking */
+        if (isset($form['action']['save'])) {
+            if (isset($form['width']) && $form['width'] < 0) {
+                $error[] = 'form[error][width][invalid]';
+            } else {
+                $form['width'] = (int) $form['width'];
+            }
+            
+            if (isset($form['height']) && $form['height'] < 0) {
+                $error[] = 'form[error][height][invalid]';
+            } else {
+                $form['height'] = (int) $form['height'];
+            }
+            
+            if (empty($error)) {
+                list($ret, $lock) = GalleryCoreApi::acquireWriteLock($item->getId());
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null,
+                        null,
+                        null
+                    );
+                }
+                
+                list($ret, $item) = $item->refresh();
+                if ($ret) {
+                    GalleryCoreApi::releaseLocks($lock);
 
-	$status = null;
-	$error = array();
+                    return array(
+                        $ret,
+                        null,
+                        null,
+                        null
+                    );
+                }
+                
+                $item->setWidth($form['width']);
+                $item->setHeight($form['height']);
+                $item->setSerialNumber($form['serialNumber']);
+                $ret = $item->save();
+                if ($ret) {
+                    GalleryCoreApi::releaseLocks($lock);
 
-	/* Figure out which command we're taking */
-	if (isset($form['action']['save'])) {
-
-	    if (isset($form['width']) && $form['width'] < 0) {
-		$error[] = 'form[error][width][invalid]';
-	    } else {
-		$form['width'] = (int)$form['width'];
-	    }
-
-	    if (isset($form['height']) && $form['height'] < 0) {
-		$error[] = 'form[error][height][invalid]';
-	    } else {
-		$form['height'] = (int)$form['height'];
-	    }
-
-	    if (empty($error)) {
-		list ($ret, $lock) = GalleryCoreApi::acquireWriteLock($item->getId());
-		if ($ret) {
-		    return array($ret, null, null, null);
-		}
-
-		list ($ret, $item) = $item->refresh();
-		if ($ret) {
-		    GalleryCoreApi::releaseLocks($lock);
-		    return array($ret, null, null, null);
-		}
-
-		$item->setWidth($form['width']);
-		$item->setHeight($form['height']);
-		$item->setSerialNumber($form['serialNumber']);
-		$ret = $item->save();
-		if ($ret) {
-		    GalleryCoreApi::releaseLocks($lock);
-		    return array($ret, null, null, null);
-		}
-
-		$ret = GalleryCoreApi::releaseLocks($lock);
-		if ($ret) {
-		    return array($ret, null, null, null);
-		}
-
-		/* Prepare our status message */
-		list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-		if ($ret) {
-		    return array($ret, null, null, null);
-		}
-
-		$status = $module->translate('Changes saved successfully');
-	    }
-	}
-
-	return array(null, $error, $status, false);
+                    return array(
+                        $ret,
+                        null,
+                        null,
+                        null
+                    );
+                }
+                
+                $ret = GalleryCoreApi::releaseLocks($lock);
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null,
+                        null,
+                        null
+                    );
+                }
+                
+                /* Prepare our status message */
+                list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null,
+                        null,
+                        null
+                    );
+                }
+                
+                $status = $module->translate('Changes saved successfully');
+            }
+        }
+        
+        return array(
+            null,
+            $error,
+            $status,
+            false
+        );
     }
-
+    
     /**
      * @see ItemEditPlugin::loadTemplate
      */
-    function loadTemplate(&$template, &$form, $item, $thumbnail) {
-	global $gallery;
+    public function loadTemplate(&$template, &$form, $item, $thumbnail)
+    {
+        global $gallery;
+        
+        if ($form['formName'] != 'ItemEditAnimation') {
+            /* First time around, load the form with item data */
+            $form['width'] = $item->getWidth();
+            $form['height'] = $item->getHeight();
+            $form['formName'] = 'ItemEditAnimation';
+        }
+        
+        $ItemEditAnimation = array();
+        $template->setVariable('ItemEditAnimation', $ItemEditAnimation);
+        $template->setVariable('controller', 'core.ItemEditAnimation');
 
-	if ($form['formName'] != 'ItemEditAnimation') {
-	    /* First time around, load the form with item data */
-	    $form['width'] = $item->getWidth();
-	    $form['height'] = $item->getHeight();
-	    $form['formName'] = 'ItemEditAnimation';
-	}
-
-	$ItemEditAnimation = array();
-	$template->setVariable('ItemEditAnimation', $ItemEditAnimation);
-	$template->setVariable('controller', 'core.ItemEditAnimation');
-	return array(null,
-		     'modules/core/templates/ItemEditAnimation.tpl', 'modules_core');
+        return array(
+            null,
+            'modules/core/templates/ItemEditAnimation.tpl',
+            'modules_core'
+        );
     }
-
+    
     /**
      * @see ItemEditPlugin::isSupported
      */
-    function isSupported($item, $thumbnail) {
-	return (GalleryUtilities::isA($item, 'GalleryAnimationItem'));
+    public function isSupported($item, $thumbnail)
+    {
+        return (GalleryUtilities::isA($item, 'GalleryAnimationItem'));
     }
-
+    
     /**
      * @see ItemEditPlugin::getTitle
      */
-    function getTitle() {
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	return array(null, $module->translate('Animation Size'));
+    public function getTitle()
+    {
+        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        return array(
+            null,
+            $module->translate('Animation Size')
+        );
     }
 }
-?>

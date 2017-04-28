@@ -29,8 +29,8 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryController {
-
+class GalleryController
+{
     /**
      * Take the appropriate action based on the user input provided.
      *
@@ -102,10 +102,14 @@ class GalleryController {
      * @return array GalleryStatus a status code
      *               return-array
      */
-    function handleRequest($form) {
-	return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null);
+    public function handleRequest($form)
+    {
+        return array(
+            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+            null
+        );
     }
-
+    
     /**
      * Load a controller
      *
@@ -116,77 +120,102 @@ class GalleryController {
      *               GalleryController a controller
      * @static
      */
-    static function loadController($controllerName) {
-	global $gallery;
-
-	/* Continue to support old style : separator for a while */
-	if (preg_match('/^(\w+)[.:](\w+)$/', $controllerName, $regs) == 1) {
-	    $module = $regs[1];
-	    $class = $regs[2];
-	} else {
-	    return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-					       "$controllerName can't be parsed"), null);
-	}
-
-	/* If the module is not active, only let site admins use the config controller */
-	list ($ret, $plugin) = GalleryCoreApi::loadPlugin('module', $module);
-	if ($ret) {
-	    return array($ret, null);
-	}
-	list ($ret, $isActive) = $plugin->isActive();
-	if ($ret) {
-	    return array($ret, null);
-	}
-	if (!$isActive) {
-	    if ($controllerName == $plugin->getConfigurationView()) {
-		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-		if ($ret) {
-		    return array($ret, null);
-		}
-	    } else {
-		return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
-	    }
-	}
-
-	$controllerClassName = $class . 'Controller';
-	if (!class_exists($controllerClassName)) {
-	    $moduleBaseDir = GalleryCoreApi::getCodeBasePath();
-	    $fileName = 'modules/' . $module . '/' . $class . '.inc';
-
-	    $platform =& $gallery->getPlatform();
-	    if (!$platform->file_exists($moduleBaseDir . $fileName)) {
-		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
-	    }
-
-	    GalleryCoreApi::requireOnce($fileName);
-
-	    if (!class_exists($controllerClassName)) {
-		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-			     "Class $controllerClassName not defined in $controllerName"), null);
-	    }
-	}
-
-	return array(null, new $controllerClassName);
+    public static function loadController($controllerName)
+    {
+        global $gallery;
+        
+        /* Continue to support old style : separator for a while */
+        if (preg_match('/^(\w+)[.:](\w+)$/', $controllerName, $regs) == 1) {
+            $module = $regs[1];
+            $class = $regs[2];
+        } else {
+            return array(
+                GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "$controllerName can't be parsed"),
+                null
+            );
+        }
+        
+        /* If the module is not active, only let site admins use the config controller */
+        list($ret, $plugin) = GalleryCoreApi::loadPlugin('module', $module);
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        list($ret, $isActive) = $plugin->isActive();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        if (!$isActive) {
+            if ($controllerName == $plugin->getConfigurationView()) {
+                $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null
+                    );
+                }
+            } else {
+                return array(
+                    GalleryCoreApi::error(ERROR_PERMISSION_DENIED),
+                    null
+                );
+            }
+        }
+        
+        $controllerClassName = $class . 'Controller';
+        if (!class_exists($controllerClassName)) {
+            $moduleBaseDir = GalleryCoreApi::getCodeBasePath();
+            $fileName = 'modules/' . $module . '/' . $class . '.inc';
+            
+            $platform =& $gallery->getPlatform();
+            if (!$platform->file_exists($moduleBaseDir . $fileName)) {
+                return array(
+                    GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+                    null
+                );
+            }
+            
+            GalleryCoreApi::requireOnce($fileName);
+            
+            if (!class_exists($controllerClassName)) {
+                return array(
+                    GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "Class $controllerClassName not defined in $controllerName"),
+                    null
+                );
+            }
+        }
+        
+        return array(
+            null,
+            new $controllerClassName()
+        );
     }
-
+    
     /**
      * Does this controller allow access to non-admins when site is in maintenance mode?
      *
      * @return boolean true if access always allowed
      */
-    function isAllowedInMaintenance() {
-	return false;
+    public function isAllowedInMaintenance()
+    {
+        return false;
     }
-
+    
     /**
      * Does this controller allow direct access even in embed-only mode?
      *
      * @return boolean true if access always allowed
      */
-    function isAllowedInEmbedOnly() {
-	return false;
+    public function isAllowedInEmbedOnly()
+    {
+        return false;
     }
-
+    
     /**
      * Whether the controller opts-out from the framework's auth token check.
      *
@@ -195,52 +224,55 @@ class GalleryController {
      *
      * @return boolean true if the controller opts-out from the auth token check
      */
-    function omitAuthTokenCheck() {
-	return false;
+    public function omitAuthTokenCheck()
+    {
+        return false;
     }
-
+    
     /**
      * Should session be saved and session cookie sent when this controller is used?
      *
      * @return boolean true to enable session
      */
-    function shouldSaveSession() {
-	return true;
+    public function shouldSaveSession()
+    {
+        return true;
     }
-
+    
     /**
      * Verifies the genuineness of the request
-     * 
+     *
      * All requests that modify data must be signed, except the request is by a guest.
-     * 
+     *
      * @return GalleryStatus a status code null on success, ERROR_REQUEST_FORGED on failure
      * @static
      */
-    static function assertIsGenuineRequest() {
-	global $gallery;
-	$session =& $gallery->getSession();
-
-	if (!$session->isPersistent()) {
-	    /*
-	     * Fake requests on behalf of guests is seen as a form of spam and spam protection
-	     * should take care of that.  Don't handle it here.
-	     */
-	    return null;
-	}
-
-	$authToken = GalleryUtilities::getRequestVariables('authToken');
-	if ($session->isCorrectAuthToken($authToken)) {
-	    return null;
-	} else {
-	    /* Omit check if we're in maintenance mode */
-	    if ($gallery->getConfig('mode.maintenance')) {
-		return null;
-	    } else {
-		return GalleryCoreApi::error(ERROR_REQUEST_FORGED);
-	    }
-	}
+    public static function assertIsGenuineRequest()
+    {
+        global $gallery;
+        $session =& $gallery->getSession();
+        
+        if (!$session->isPersistent()) {
+            /*
+             * Fake requests on behalf of guests is seen as a form of spam and spam protection
+             * should take care of that.  Don't handle it here.
+             */
+            return null;
+        }
+        
+        $authToken = GalleryUtilities::getRequestVariables('authToken');
+        if ($session->isCorrectAuthToken($authToken)) {
+            return null;
+        } else {
+            /* Omit check if we're in maintenance mode */
+            if ($gallery->getConfig('mode.maintenance')) {
+                return null;
+            } else {
+                return GalleryCoreApi::error(ERROR_REQUEST_FORGED);
+            }
+        }
     }
-
+    
     /**
      * Return the current item, as specified in the itemId request variable.
      *
@@ -250,44 +282,64 @@ class GalleryController {
      *               GalleryItem an item
      * @throws ERROR_MISSING_VALUE if there is no itemId in the request parameters.
      */
-    function getItem($checkPermissions=true) {
-	$itemId = (int)GalleryUtilities::getRequestVariables('itemId');
-
-	if (empty($itemId)) {
-	    return array(GalleryCoreApi::error(ERROR_MISSING_VALUE), null);
-	}
-
-	/* Load the item */
-	list ($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	if ($checkPermissions) {
-	    list ($ret, $hasPermission) = GalleryCoreApi::hasItemPermission($itemId, 'core.view');
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    if (!$hasPermission) {
-		/* Avoid information disclosure by treating this as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
-	    }
-	}
-
-	return array(null, $item);
+    public function getItem($checkPermissions = true)
+    {
+        $itemId = (int) GalleryUtilities::getRequestVariables('itemId');
+        
+        if (empty($itemId)) {
+            return array(
+                GalleryCoreApi::error(ERROR_MISSING_VALUE),
+                null
+            );
+        }
+        
+        /* Load the item */
+        list($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        if ($checkPermissions) {
+            list($ret, $hasPermission) = GalleryCoreApi::hasItemPermission($itemId, 'core.view');
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            if (!$hasPermission) {
+                /* Avoid information disclosure by treating this as if the item didn't exist. */
+                return array(
+                    GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+                    null
+                );
+            }
+        }
+        
+        return array(
+            null,
+            $item
+        );
     }
-
+    
     /**
      * @see GalleryView::_permissionCheck()
      */
-    function permissionCheck($ret) {
-	GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
-	$view = new GalleryView();
-	list ($ret, $results) = $view->_permissionCheck($ret);
-	if (!empty($results['redirect'])) {
-	    $results['status'] = $results['error'] = array();
-	}
-	return array($ret, $results);
+    public function permissionCheck($ret)
+    {
+        GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
+        $view = new GalleryView();
+        list($ret, $results) = $view->_permissionCheck($ret);
+        if (!empty($results['redirect'])) {
+            $results['status'] = $results['error'] = array();
+        }
+
+        return array(
+            $ret,
+            $results
+        );
     }
 }
-?>

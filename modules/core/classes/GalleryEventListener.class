@@ -26,8 +26,8 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryEventListener {
-
+class GalleryEventListener
+{
     /**
      * Handle the event
      *
@@ -35,8 +35,11 @@ class GalleryEventListener {
      * @return array GalleryStatus a status code
      *               mixed data to send back to event source, or null
      */
-    function handleEvent($event) {
-	return array(null, null);
+    public function handleEvent($event)
+    {
+        return array(
+            null,
+            null
+        );
     }
 }
-?>

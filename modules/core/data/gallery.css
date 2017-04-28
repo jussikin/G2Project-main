@@ -548,97 +548,97 @@ div.gbLink-Help {
 /*     Allows us to use classes in place of "style" for HTML 5      */
 /* ================================================================ */
 .width100pc {
-	width: 100%;
+    width: 100%;
 }
 
 .width90pc {
-	width: 90%;
+    width: 90%;
 }
 
 .width50pc {
-	width: 50%;
+    width: 50%;
 }
 
 .width75pc {
-	width: 75%;
+    width: 75%;
 }
 
 .width66pc {
-	width: 66%;
+    width: 66%;
 }
 
 .width30pc {
-	width: 30%;
+    width: 30%;
 }
 
 .width25pc {
-	width: 25%;
+    width: 25%;
 }
 
 .width20pc {
-	width: 20%;
+    width: 20%;
 }
 
 .height100pc {
-	height: 100%;
+    height: 100%;
 }
 
 .noSpacing {
-	cellspacing: 0px;
+    cellspacing: 0px;
 }
 
 .noPadding {
-	cellpadding: 0px;
+    cellpadding: 0px;
 }
 
 .noBorder {
-	border: 0px;
+    border: 0px;
 }
 
 .noDisplay {
-	display: none;
+    display: none;
 }
 
 .alignTop {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .alignMiddle {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 
 .alignLeft {
-	text-align: left;
+    text-align: left;
 }
 
 .alignRight {
-	text-align: right;
+    text-align: right;
 }
 
 .alignCenter {
-	text-align: center;
+    text-align: center;
 }
 
 .progressMemoryInfo {
-	position: absolute;
-	top: 0px;
-	right: 15px;
+    position: absolute;
+    top: 0px;
+    right: 15px;
 }
 
 .g2logo {
-	width: 107px;
-	height: 48px;
+    width: 107px;
+    height: 48px;
 }
 
 .logoButton {
-	border-style: none;
-	width: 80px;
-	height: 15px;
+    border-style: none;
+    width: 80px;
+    height: 15px;
 }
 
 .clearBoth {
-	clear: both;
+    clear: both;
 }
 
 .floatRight {

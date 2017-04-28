@@ -27,83 +27,91 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PluginCallbackView extends GalleryView {
+class PluginCallbackView extends GalleryView
+{
     /**
      * @see GalleryView::isImmediate
      */
-    function isImmediate() {
-	return true;
+    public function isImmediate()
+    {
+        return true;
     }
-
+    
     /**
      * @see GalleryView::isControllerLike
      */
-    function isControllerLike() {
-	return true;
+    public function isControllerLike()
+    {
+        return true;
     }
-
+    
     /**
      * @see GalleryView::renderImmediate
      */
-    function renderImmediate($status, $error) {
-	global $gallery;
-	$session =& $gallery->getSession();
-	$storage =& $gallery->getStorage();
+    public function renderImmediate($status, $error)
+    {
+        global $gallery;
+        $session =& $gallery->getSession();
+        $storage =& $gallery->getStorage();
+        
+        $command = GalleryUtilities::getRequestVariables('command');
+        if (!headers_sent()) {
+            header("Content-type: text/plain; charset=UTF-8");
+        }
+        
+        $result = array();
+        list($ret, $beforeStates) = $this->getPluginStates();
+        if ($ret) {
+            $result['status'] = 'error';
+            $storage->rollbackTransaction();
+            /* ignore errors here */
+            $ret->putInSession();
+        }
+        
+        if (!$ret) {
+            $ret = $this->handleCallback($command, $result);
+            if ($ret) {
+                $result['status'] = 'error';
+                $storage->rollbackTransaction();
+                /* ignore errors here */
+                $ret->putInSession();
+            } else {
+                /* Make sure this change is isolated from any potential failures we get below. */
+                $ret = $storage->checkPoint();
+                if ($ret) {
+                    $result['status'] = 'error';
+                    $ret->putInSession();
+                }
+            }
+            
+            if ($result['status'] == 'redirect') {
+                $urlGenerator =& $gallery->getUrlGenerator();
+                $result['redirect'] = $urlGenerator->generateUrl($result['redirect'], array(
+                    'htmlEntities' => 0,
+                    'forceServerRelativeUrl' => 1
+                ));
+            }
+        }
+        
+        if (!$ret) {
+            list($ret, $afterStates) = $this->getPluginStates();
+            if ($ret) {
+                $result['status'] = 'error';
+                $storage->rollbackTransaction();
+                /* ignore errors here */
+                $ret->putInSession();
+            } else {
+                $result = array_merge($result, $this->calculateStateChanges($beforeStates, $afterStates));
+            }
+        }
+        
+        GalleryCoreApi::requireOnce('lib/JSON/JSON.php');
+        $json = new Services_JSON();
+        echo $json->encode($result);
 
-	$command = GalleryUtilities::getRequestVariables('command');
-	if (!headers_sent()) {
-	    header("Content-type: text/plain; charset=UTF-8");
-	}
-
-	$result = array();
-	list ($ret, $beforeStates) = $this->getPluginStates();
-	if ($ret) {
-	    $result['status'] = 'error';
-	    $storage->rollbackTransaction();  /* ignore errors here */
-	    $ret->putInSession();
-	}
-
-	if (!$ret) {
-	    $ret = $this->handleCallback($command, $result);
-	    if ($ret) {
-		$result['status'] = 'error';
-		$storage->rollbackTransaction();  /* ignore errors here */
-		$ret->putInSession();
-	    } else {
-		/* Make sure this change is isolated from any potential failures we get below. */
-		$ret = $storage->checkPoint();
-		if ($ret) {
-		    $result['status'] = 'error';
-		    $ret->putInSession();
-		}
-	    }
-
-	    if ($result['status'] == 'redirect') {
-		$urlGenerator =& $gallery->getUrlGenerator();
-		$result['redirect'] =
-		    $urlGenerator->generateUrl($result['redirect'],
-			array('htmlEntities' => 0, 'forceServerRelativeUrl' => 1));
-	    }
-	}
-
-	if (!$ret) {
-	    list ($ret, $afterStates) = $this->getPluginStates();
-	    if ($ret) {
-		$result['status'] = 'error';
-		$storage->rollbackTransaction();  /* ignore errors here */
-		$ret->putInSession();
-	    } else {
-		$result = array_merge(
-		    $result, $this->calculateStateChanges($beforeStates, $afterStates));
-	    }
-	}
-
-	GalleryCoreApi::requireOnce('lib/JSON/JSON.php');
-	$json = new Services_JSON();
-	print $json->encode($result);
-	return null;
+        return null;
     }
-
+    
     /**
      * Given two sets of states, figure out what's changed from before to after.
      *
@@ -112,21 +120,29 @@ class PluginCallbackView extends GalleryView {
      * @return array changed states (moduleId => state, ...)
      * @static
      */
-    function calculateStateChanges($beforeStates, $afterStates) {
-	$states = array();
-	$deleted = array();
-	foreach (array('module', 'theme') as $type) {
-	    foreach ($beforeStates[$type] as $moduleId => $state) {
-		if (!isset($afterStates[$type][$moduleId])) {
-		    $deleted[$type][$moduleId] = 1;
-		} else if ($afterStates[$type][$moduleId] != $state) {
-		    $states[$type][$moduleId] = $afterStates[$type][$moduleId];
-		}
-	    }
-	}
-	return array('states' => $states, 'deleted' => $deleted);
-    }
+    public function calculateStateChanges($beforeStates, $afterStates)
+    {
+        $states = array();
+        $deleted = array();
+        foreach (array(
+            'module',
+            'theme'
+        ) as $type) {
+            foreach ($beforeStates[$type] as $moduleId => $state) {
+                if (!isset($afterStates[$type][$moduleId])) {
+                    $deleted[$type][$moduleId] = 1;
+                } elseif ($afterStates[$type][$moduleId] != $state) {
+                    $states[$type][$moduleId] = $afterStates[$type][$moduleId];
+                }
+            }
+        }
 
+        return array(
+            'states' => $states,
+            'deleted' => $deleted
+        );
+    }
+    
     /**
      * Handle the specific callback, and store its result in the given output array.
      *
@@ -135,186 +151,188 @@ class PluginCallbackView extends GalleryView {
      * @return GalleryStatus a status code
      * @static
      */
-    function handleCallback($command, &$result) {
-	global $gallery;
-	$platform =& $gallery->getPlatform();
+    public function handleCallback($command, &$result)
+    {
+        global $gallery;
+        $platform =& $gallery->getPlatform();
+        
+        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+        if ($ret) {
+            return $ret;
+        }
+        
+        $result = array();
+        list($pluginType, $pluginId) = GalleryUtilities::getRequestVariables('pluginType', 'pluginId');
+        
+        list($ret, $plugin) = GalleryCoreApi::loadPlugin($pluginType, $pluginId, true);
+        if ($ret) {
+            return $ret;
+        }
+        
+        list($ret, $isActive) = $plugin->isActive();
+        if ($ret) {
+            return $ret;
+        }
+        
+        switch ($command) {
+            case 'activate':
+                if ($pluginType == 'module') {
+                    list($ret, $needsConfiguration) = $plugin->needsConfiguration();
+                    if ($ret) {
+                        return $ret;
+                    }
+                } else {
+                    /* Themes don't need configuration */
+                    $needsConfiguration = false;
+                }
+                
+                if ($isActive || $needsConfiguration) {
+                    /* UI shouldn't let us come here anyway */
+                    $result['status'] = 'invalid';
 
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return $ret;
-	}
+                    return null;
+                }
+                
+                list($ret, $redirect) = $plugin->activate();
+                if ($ret) {
+                    return $ret;
+                }
+                
+                if ($redirect) {
+                    $result['status'] = 'redirect';
+                    $result['redirect'] = $redirect;
+                } else {
+                    $result['status'] = 'success';
+                }
+                break;
+            
+            case 'deactivate':
+                if (!$isActive) {
+                    /* UI shouldn't let us come here anyway */
+                    $result['status'] = 'invalid';
 
-	$result = array();
-	list ($pluginType, $pluginId) =
-	    GalleryUtilities::getRequestVariables('pluginType', 'pluginId');
-
-	list ($ret, $plugin) = GalleryCoreApi::loadPlugin($pluginType, $pluginId, true);
-	if ($ret) {
-	    return $ret;
-	}
-
-	list ($ret, $isActive) = $plugin->isActive();
-	if ($ret) {
-	    return $ret;
-	}
-
-	switch($command) {
-	case 'activate':
-
-	    if ($pluginType == 'module') {
-		list ($ret, $needsConfiguration) = $plugin->needsConfiguration();
-		if ($ret) {
-		    return $ret;
-		}
-	    } else {
-		/* Themes don't need configuration */
-		$needsConfiguration = false;
-	    }
-
-	    if ($isActive || $needsConfiguration) {
-		/* UI shouldn't let us come here anyway */
-		$result['status'] = 'invalid';
-		return null;
-	    }
-
-	    list ($ret, $redirect) = $plugin->activate();
-	    if ($ret) {
-		return $ret;
-	    }
-
-	    if ($redirect) {
-		$result['status'] = 'redirect';
-		$result['redirect'] = $redirect;
-	    } else {
-		$result['status'] = 'success';
-	    }
-	    break;
-
-	case 'deactivate':
-	    if (!$isActive) {
-		/* UI shouldn't let us come here anyway */
-		$result['status'] = 'invalid';
-		return null;
-	    }
-
-	    if ($pluginType == 'theme') {
-		list ($ret, $defaultThemeId) = GalleryCoreApi::getPluginParameter(
-		    'module', 'core', 'default.theme');
-		if ($ret) {
-		    return $ret;
-		}
-
-		if ($plugin->getId() == $defaultThemeId) {
-		    /* UI shouldn't let us come here anyway */
-		    $result['status'] = 'invalid';
-		}
-	    }
-
-	    if (empty($result['status'])) {
-		$ret = $plugin->deactivate();
-		if ($ret) {
-		    return $ret;
-		}
-		$result['status'] = 'success';
-		}
-		break;
-
-	case 'upgrade':
-	case 'install':
-	    $ret = $plugin->installOrUpgrade();
-	    if ($ret) {
-		return $ret;
-	    }
-
-	    if ($pluginType == 'module') {
-		list ($ret, $autoConfigured) = $plugin->autoConfigure();
-		if ($ret) {
-		    return $ret;
-		}
-	    } else {
-		/* Themes don't need this step */
-		$autoConfigured = true;
-	    }
-
-
-	    if ($autoConfigured) {
-		list ($ret, $redirect) = $plugin->activate();
-		if ($ret) {
-		    if ($ret->getErrorCode() & ERROR_CONFIGURATION_REQUIRED) {
-			/*
-			 * Some modules don't override autoConfigure which defaults to success.
-			 * Show the "Modules needs configuration" message.
-			 */
-		    } else {
-			return $ret;
-		    }
-		}
-
-		if ($redirect) {
-		    $result['status'] = 'redirect';
-		    $result['redirect'] = $redirect;
-		} else {
-		    $result['status'] = 'success';
-		}
-	    } else {
-		$result['status'] = 'success';
-	    }
-
-	    break;
-
-	case 'uninstall':
-	    if ($isActive) {
-	    	$ret = $plugin->deactivate();
-	    	if ($ret) {
-	    		return $ret;
-	    	}
-	    }
-		$ret = $plugin->uninstall();
-		if ($ret) {
-		    return $ret;
-		}
-		$result['status'] = 'success';
-	    break;
-
-	case 'delete':
-	    if ($isActive) {
-	    	$ret = $plugin->deactivate();
-	    	if ($ret) {
-	    		return $ret;
-	    	}
-	    }
-	    
-	    $ret = $plugin->uninstall();
-	    if ($ret) {
-	    	return $ret;
-	    }
-	    
-	    $path = sprintf(
-	    		"%s%ss/%s", GalleryCoreApi::getCodeBasePath(), $pluginType, $pluginId);
-	    $success = @$platform->recursiveRmdir($path);
-	    if (!$success) {
-	    	$result['status'] = 'fail';
-	    } else {
-	    	$ret = GalleryCoreApi::removeMapEntry(
-	    			'GalleryPluginPackageMap',
-	    			array('pluginType' => $pluginType, 'pluginId' => $pluginId));
-	    	if ($ret) {
-	    		return $ret;
-	    	}
-	    	$result['status'] = 'success';
-	    }
-	    break;
-
-	case 'configure':
-	    $result['status'] = 'redirect';
-	    $result['redirect'] = array('view' => 'core.SiteAdmin',
-					'subView' => $plugin->getConfigurationView());
-	    break;
-	}
-
-	return null;
+                    return null;
+                }
+                
+                if ($pluginType == 'theme') {
+                    list($ret, $defaultThemeId) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.theme');
+                    if ($ret) {
+                        return $ret;
+                    }
+                    
+                    if ($plugin->getId() == $defaultThemeId) {
+                        /* UI shouldn't let us come here anyway */
+                        $result['status'] = 'invalid';
+                    }
+                }
+                
+                if (empty($result['status'])) {
+                    $ret = $plugin->deactivate();
+                    if ($ret) {
+                        return $ret;
+                    }
+                    $result['status'] = 'success';
+                }
+                break;
+            
+            case 'upgrade':
+            case 'install':
+                $ret = $plugin->installOrUpgrade();
+                if ($ret) {
+                    return $ret;
+                }
+                
+                if ($pluginType == 'module') {
+                    list($ret, $autoConfigured) = $plugin->autoConfigure();
+                    if ($ret) {
+                        return $ret;
+                    }
+                } else {
+                    /* Themes don't need this step */
+                    $autoConfigured = true;
+                }
+                
+                
+                if ($autoConfigured) {
+                    list($ret, $redirect) = $plugin->activate();
+                    if ($ret) {
+                        if ($ret->getErrorCode() & ERROR_CONFIGURATION_REQUIRED) {
+                            /*
+                             * Some modules don't override autoConfigure which defaults to success.
+                             * Show the "Modules needs configuration" message.
+                             */
+                        } else {
+                            return $ret;
+                        }
+                    }
+                    
+                    if ($redirect) {
+                        $result['status'] = 'redirect';
+                        $result['redirect'] = $redirect;
+                    } else {
+                        $result['status'] = 'success';
+                    }
+                } else {
+                    $result['status'] = 'success';
+                }
+                
+                break;
+            
+            case 'uninstall':
+                if ($isActive) {
+                    $ret = $plugin->deactivate();
+                    if ($ret) {
+                        return $ret;
+                    }
+                }
+                $ret = $plugin->uninstall();
+                if ($ret) {
+                    return $ret;
+                }
+                $result['status'] = 'success';
+                break;
+            
+            case 'delete':
+                if ($isActive) {
+                    $ret = $plugin->deactivate();
+                    if ($ret) {
+                        return $ret;
+                    }
+                }
+                
+                $ret = $plugin->uninstall();
+                if ($ret) {
+                    return $ret;
+                }
+                
+                $path = sprintf("%s%ss/%s", GalleryCoreApi::getCodeBasePath(), $pluginType, $pluginId);
+                $success = @$platform->recursiveRmdir($path);
+                if (!$success) {
+                    $result['status'] = 'fail';
+                } else {
+                    $ret = GalleryCoreApi::removeMapEntry('GalleryPluginPackageMap', array(
+                        'pluginType' => $pluginType,
+                        'pluginId' => $pluginId
+                    ));
+                    if ($ret) {
+                        return $ret;
+                    }
+                    $result['status'] = 'success';
+                }
+                break;
+            
+            case 'configure':
+                $result['status'] = 'redirect';
+                $result['redirect'] = array(
+                    'view' => 'core.SiteAdmin',
+                    'subView' => $plugin->getConfigurationView()
+                );
+                break;
+        }
+        
+        return null;
     }
-
+    
     /**
      * Get the state ('active', 'inactive', 'uninstalled', etc) of all modules
      *
@@ -322,31 +340,46 @@ class PluginCallbackView extends GalleryView {
      *               array(moduleId => state, ...)
      * @static
      */
-    static function getPluginStates() {
-	$states = array();
-
-	foreach (array('module', 'theme') as $type) {
-	    list ($ret, $pluginStatus) = GalleryCoreApi::fetchPluginStatus($type, true);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    foreach ($pluginStatus as $pluginId => $status) {
-		list ($ret, $plugin) = GalleryCoreApi::loadPlugin($type, $pluginId, true);
-		if ($ret) {
-		    return array($ret, null);
-		}
-
-		list ($ret, $states[$type][$pluginId]) =
-		    PluginCallbackView::getPluginState($type, $plugin, $status);
-		if ($ret) {
-		    return array($ret, null);
-		}
-	    }
-	}
-
-	return array(null, $states);
+    public static function getPluginStates()
+    {
+        $states = array();
+        
+        foreach (array(
+            'module',
+            'theme'
+        ) as $type) {
+            list($ret, $pluginStatus) = GalleryCoreApi::fetchPluginStatus($type, true);
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            foreach ($pluginStatus as $pluginId => $status) {
+                list($ret, $plugin) = GalleryCoreApi::loadPlugin($type, $pluginId, true);
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null
+                    );
+                }
+                
+                list($ret, $states[$type][$pluginId]) = self::getPluginState($type, $plugin, $status);
+                if ($ret) {
+                    return array(
+                        $ret,
+                        null
+                    );
+                }
+            }
+        }
+        
+        return array(
+            null,
+            $states
+        );
     }
-
+    
     /**
      * Get the state ('active', 'inactive', 'uninstalled', etc) of a given module
      *
@@ -357,70 +390,76 @@ class PluginCallbackView extends GalleryView {
      *               string a state
      * @static
      */
-    static function getPluginState($type, $plugin, $status) {
-	if ($type == 'module' && $plugin->getId() == 'core') {
-	    return array(null, 'active');
-	}
-
-	$coreApiCompatible = GalleryUtilities::isCompatibleWithApi(
-	    $plugin->getRequiredCoreApi(), GalleryCoreApi::getApiVersion());
-
-	/* TODO: refactor this into type specific wrapper methods around getPluginState() */
-	switch ($type) {
-	case 'module':
-	    $pluginApiCompatible = GalleryUtilities::isCompatibleWithApi(
-		$plugin->getRequiredModuleApi(), GalleryModule::getApiVersion());
-	    break;
-
-	case 'theme':
-	    $pluginApiCompatible = GalleryUtilities::isCompatibleWithApi(
-		$plugin->getRequiredThemeApi(), GalleryTheme::getApiVersion());
-	    break;
-	}
-
-	if ($coreApiCompatible && $pluginApiCompatible) {
-	    if (empty($status['active'])) {
-		$version = $status['version'];
-		$state = 'inactive';
-
-		/*
-		 * If the database versions doesn't match the module
-		 * version, we need to get the user to install the module.
-		 */
-		if ($version != $plugin->getVersion()) {
-		    if (empty($version)) {
-			$state = 'uninstalled';
-		    } else {
-			$state = 'unupgraded';
-		    }
-		} else {
-		    if ($type == 'module') {
-			/*
-			 * The versions match, but the module can still demand
-			 * to be configured before being activated.
-			 */
-			list ($ret, $needsConfig) = $plugin->needsConfiguration();
-			if ($ret) {
-			    return array($ret, null);
-			}
-		    } else {
-			$needsConfig = false;
-		    }
-
-		    if ($needsConfig) {
-			$state = 'unconfigured';
-		    } else {
-			$state = 'inactive';
-		    }
-		}
-	    } else {
-		$state = 'active';
-	    }
-	} else {
-	    $state = 'incompatible';
-	}
-
-	return array(null, $state);
+    public static function getPluginState($type, $plugin, $status)
+    {
+        if ($type == 'module' && $plugin->getId() == 'core') {
+            return array(
+                null,
+                'active'
+            );
+        }
+        
+        $coreApiCompatible = GalleryUtilities::isCompatibleWithApi($plugin->getRequiredCoreApi(), GalleryCoreApi::getApiVersion());
+        
+        /* TODO: refactor this into type specific wrapper methods around getPluginState() */
+        switch ($type) {
+            case 'module':
+                $pluginApiCompatible = GalleryUtilities::isCompatibleWithApi($plugin->getRequiredModuleApi(), GalleryModule::getApiVersion());
+                break;
+            
+            case 'theme':
+                $pluginApiCompatible = GalleryUtilities::isCompatibleWithApi($plugin->getRequiredThemeApi(), GalleryTheme::getApiVersion());
+                break;
+        }
+        
+        if ($coreApiCompatible && $pluginApiCompatible) {
+            if (empty($status['active'])) {
+                $version = $status['version'];
+                $state = 'inactive';
+                
+                /*
+                 * If the database versions doesn't match the module
+                 * version, we need to get the user to install the module.
+                 */
+                if ($version != $plugin->getVersion()) {
+                    if (empty($version)) {
+                        $state = 'uninstalled';
+                    } else {
+                        $state = 'unupgraded';
+                    }
+                } else {
+                    if ($type == 'module') {
+                        /*
+                         * The versions match, but the module can still demand
+                         * to be configured before being activated.
+                         */
+                        list($ret, $needsConfig) = $plugin->needsConfiguration();
+                        if ($ret) {
+                            return array(
+                                $ret,
+                                null
+                            );
+                        }
+                    } else {
+                        $needsConfig = false;
+                    }
+                    
+                    if ($needsConfig) {
+                        $state = 'unconfigured';
+                    } else {
+                        $state = 'inactive';
+                    }
+                }
+            } else {
+                $state = 'active';
+            }
+        } else {
+            $state = 'incompatible';
+        }
+        
+        return array(
+            null,
+            $state
+        );
     }
 }
-?>
