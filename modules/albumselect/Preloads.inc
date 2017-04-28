@@ -23,27 +23,29 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AlbumSelectPreloads {
-    function preload(&$template, $preload, $paramSet) {
-	static $loaded;
+class AlbumSelectPreloads
+{
+    public function preload(&$template, $preload, $paramSet)
+    {
+        static $loaded;
+        
+        if (!empty($loaded[$preload])) {
+            return null;
+        }
+        
+        $loaded[$preload] = 1;
+        switch ($preload) {
+            case 'AlbumTree':
+                $template->style('modules/albumselect/dtree.css');
+                $template->javascript('modules/albumselect/dtree.js');
 
-	if (!empty($loaded[$preload])) {
-	    return null;
-	}
-
-	$loaded[$preload] = 1;
-	switch($preload) {
-	case 'AlbumTree':
-	    $template->style('modules/albumselect/dtree.css');
-	    $template->javascript('modules/albumselect/dtree.js');
-	    return null;
-
-	case 'AlbumSelect':
-	    /* Nothing to do */
-	    return null;
-	}
-
-	return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+                return null;
+            
+            case 'AlbumSelect':
+                /* Nothing to do */
+                return null;
+        }
+        
+        return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
     }
 }
-?>

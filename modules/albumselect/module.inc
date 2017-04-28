@@ -26,133 +26,171 @@
  * @author Jonas Forsberg <jonas@gargamel.nu> (Initial dTree integration)
  * @version $Revision: 18172 $
  */
-class AlbumSelectModule extends GalleryModule {
-
-    function __construct() {
-	$this->AlbumSelectModule();
+class AlbumSelectModule extends GalleryModule
+{
+    public function __construct()
+    {
+        $this->AlbumSelectModule();
     }
-
-    function AlbumSelectModule() {
-	global $gallery;
-	$this->setId('albumselect');
-	$this->setName($gallery->i18n('Album Select'));
-	$this->setDescription(
-	    $gallery->i18n('Jump directly to any album using a select box or tree view'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('blocks', $gallery->i18n('Blocks'));
-	$this->setCallbacks('getSiteAdminViews');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
+    
+    public function AlbumSelectModule()
+    {
+        global $gallery;
+        $this->setId('albumselect');
+        $this->setName($gallery->i18n('Album Select'));
+        $this->setDescription($gallery->i18n('Jump directly to any album using a select box or tree view'));
+        $this->setVersion('2.0.0');
+        $this->_templateVersion = 1;
+        $this->setGroup('blocks', $gallery->i18n('Blocks'));
+        $this->setCallbacks('getSiteAdminViews');
+        $this->setRequiredCoreApi(array(
+            8,
+            0
+        ));
+        $this->setRequiredModuleApi(array(
+            4,
+            0
+        ));
     }
-
+    
     /**
      * @see GalleryModule::performFactoryRegistrations
      */
-    function performFactoryRegistrations() {
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'GalleryEventListener', 'AlbumSelectModule', 'AlbumSelectModule', 
-	    'modules/albumselect/module.inc', 'albumselect', 
-	    array('Gallery::ViewableTreeChange', 'Gallery::ItemOrder', 'GalleryEntity::save'));
-	if ($ret) {
-	    return $ret;
-	}
+    public function performFactoryRegistrations()
+    {
+        $ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'AlbumSelectModule', 'AlbumSelectModule', 'modules/albumselect/module.inc', 'albumselect', array(
+            'Gallery::ViewableTreeChange',
+            'Gallery::ItemOrder',
+            'GalleryEntity::save'
+        ));
+        if ($ret) {
+            return $ret;
+        }
     }
-
+    
     /**
      * @see GalleryModule::upgrade
      */
-    function upgrade($currentVersion, $x1=null) {
-	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'albumselect');
-	if ($ret) {
-	    return $ret;
-	}
-
-	/* We removed the 'show' parameter in 0.9.8 and 'type' in 0.9.11 */
-	foreach (array('show', 'type') as $param) {
-	    if (isset($params[$param])) {
-		$ret = $this->removeParameter($param);
-		if ($ret) {
-		    return $ret;
-		}
-	    }
-	}
-
-	foreach (array('sort' => 'manual',
-		       'treeLines' => 1, 'treeIcons' => 0, 'treeCookies' => 0,
-		       'treeExpandCollapse' => 0, 'treeCloseSameLevel' => 0) as $key => $value) {
-	    if (!isset($params[$key])) {
-		$ret = $this->setParameter($key, $value);
-		if ($ret) {
-		    return $ret;
-		}
-	    } else if ($key == 'sort' && ($params[$key] == '0' || $params[$key] == '1')) {
-		/* v0.9.4 changed 'sort' param from 0/1 to manual/title */
-		$value = ($params[$key] == 1) ? 'title' : 'manual';
-		$ret = $this->setParameter($key, $value);
-		if ($ret) {
-		    return $ret;
-		}
-	    }
-	}
-
-	/* Changed cache keys to include language code in 0.9.13 */
-	if (!empty($currentVersion) && version_compare($currentVersion, '0.9.13', '<')) {
-	    GalleryDataCache::removeFromDisk(
-		array('type' => 'module-data', 'module' => 'albumselect'));
-	}
-
-	return null;
+    public function upgrade($currentVersion, $x1 = null)
+    {
+        list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'albumselect');
+        if ($ret) {
+            return $ret;
+        }
+        
+        /* We removed the 'show' parameter in 0.9.8 and 'type' in 0.9.11 */
+        foreach (array(
+            'show',
+            'type'
+        ) as $param) {
+            if (isset($params[$param])) {
+                $ret = $this->removeParameter($param);
+                if ($ret) {
+                    return $ret;
+                }
+            }
+        }
+        
+        foreach (array(
+            'sort' => 'manual',
+            'treeLines' => 1,
+            'treeIcons' => 0,
+            'treeCookies' => 0,
+            'treeExpandCollapse' => 0,
+            'treeCloseSameLevel' => 0
+        ) as $key => $value) {
+            if (!isset($params[$key])) {
+                $ret = $this->setParameter($key, $value);
+                if ($ret) {
+                    return $ret;
+                }
+            } elseif ($key == 'sort' && ($params[$key] == '0' || $params[$key] == '1')) {
+                /* v0.9.4 changed 'sort' param from 0/1 to manual/title */
+                $value = ($params[$key] == 1) ? 'title' : 'manual';
+                $ret = $this->setParameter($key, $value);
+                if ($ret) {
+                    return $ret;
+                }
+            }
+        }
+        
+        /* Changed cache keys to include language code in 0.9.13 */
+        if (!empty($currentVersion) && version_compare($currentVersion, '0.9.13', '<')) {
+            GalleryDataCache::removeFromDisk(array(
+                'type' => 'module-data',
+                'module' => 'albumselect'
+            ));
+        }
+        
+        return null;
     }
-
+    
     /**
      * @see GalleryModule::getSiteAdminViews
      */
-    function getSiteAdminViews() {
-	return array(null,
-		     array(array('name' => $this->translate('Album Select'),
-				 'view' => 'albumselect.AlbumSelectSiteAdmin')));
+    public function getSiteAdminViews()
+    {
+        return array(
+            null,
+            array(
+                array(
+                    'name' => $this->translate('Album Select'),
+                    'view' => 'albumselect.AlbumSelectSiteAdmin'
+                )
+            )
+        );
     }
-
+    
     /**
      * Event handler for Gallery::ViewableTreeChange
      * @see GalleryEventListener::handleEvent
      */
-    function handleEvent($event) {
-	$invalidateCache = false;
-	if ($event->getEventName() == 'Gallery::ViewableTreeChange') {
-	    $invalidateCache = true;
-	} else if ($event->getEventName() == 'Gallery::ItemOrder') {
-	    list ($ret, $sort) = $this->getParameter('sort');
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    if ($sort == 'manual') {
-		$invalidateCache = true;
-	    }
-	} else if ($event->getEventName() == 'GalleryEntity::save') {
-	    $entity = $event->getEntity();
-	    if ($entity->getEntityType() == 'GalleryAlbumItem') {
-		if ($entity->isModified('orderBy') || $entity->isModified('orderDirection')) {
-		    list ($ret, $sort) = $this->getParameter('sort');
-		    if ($ret) {
-			return array($ret, null);
-		    }
-		    if ($sort == 'album') {
-			$invalidateCache = true;
-		    }
-		} else if ($entity->isModified('title')) {
-		    $invalidateCache = true;
-		}
-	    }
-	}
-
-	if ($invalidateCache) {
-	    GalleryDataCache::removeFromDisk(array('type' => 'module-data',
-						   'module' => 'albumselect'));
-	}
-
-	return array(null, null);
+    public function handleEvent($event)
+    {
+        $invalidateCache = false;
+        if ($event->getEventName() == 'Gallery::ViewableTreeChange') {
+            $invalidateCache = true;
+        } elseif ($event->getEventName() == 'Gallery::ItemOrder') {
+            list($ret, $sort) = $this->getParameter('sort');
+            if ($ret) {
+                return array(
+                    $ret,
+                    null
+                );
+            }
+            if ($sort == 'manual') {
+                $invalidateCache = true;
+            }
+        } elseif ($event->getEventName() == 'GalleryEntity::save') {
+            $entity = $event->getEntity();
+            if ($entity->getEntityType() == 'GalleryAlbumItem') {
+                if ($entity->isModified('orderBy') || $entity->isModified('orderDirection')) {
+                    list($ret, $sort) = $this->getParameter('sort');
+                    if ($ret) {
+                        return array(
+                            $ret,
+                            null
+                        );
+                    }
+                    if ($sort == 'album') {
+                        $invalidateCache = true;
+                    }
+                } elseif ($entity->isModified('title')) {
+                    $invalidateCache = true;
+                }
+            }
+        }
+        
+        if ($invalidateCache) {
+            GalleryDataCache::removeFromDisk(array(
+                'type' => 'module-data',
+                'module' => 'albumselect'
+            ));
+        }
+        
+        return array(
+            null,
+            null
+        );
     }
 }
-?>
