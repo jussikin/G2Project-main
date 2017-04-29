@@ -6,3 +6,6 @@ README.mediawiki
 phpcs.xml
 .php_cs.cache
 .php_cs.dist
+.editorconfig
+.gitattributes
+.travis.yml

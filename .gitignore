@@ -12,8 +12,8 @@ Thumbs.db
 ##############
 **/.svn
 
-# phpcs Â#
-##########
+# phpcs #
+#########
 phpcs.xml
 
 # php cs fixer #
