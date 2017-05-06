@@ -27,29 +27,45 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthHelper.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class FinishLogoutView extends GalleryView {
-
+class FinishLogoutView extends GalleryView
+{
     /**
      * @see GalleryView::loadTemplate
      */
-    function loadTemplate(&$template, &$form) {
-	global $gallery;
-	$urlGenerator =& $gallery->getUrlGenerator();
-
-	list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	if ($isAnonymous) {
-	    /* Use an absolute return URI to remove user:pass again after the logout */
-	    $url = $urlGenerator->generateUrl(array('view' => GALLERY_DEFAULT_VIEW),
-						    array('forceFullUrl' => true));
-
-	    return array(null, array('redirectUrl' => HttpAuthHelper::stripHttpAuthFromUrl($url)));
-	}
-
-	return array(null, array('body' => 'modules/httpauth/templates/FinishLogout.tpl'));
+    public function loadTemplate(&$template, &$form)
+    {
+        global $gallery;
+        $urlGenerator =& $gallery->getUrlGenerator();
+        
+        list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
+        if ($ret) {
+            return array(
+                $ret,
+                null
+            );
+        }
+        
+        if ($isAnonymous) {
+            /* Use an absolute return URI to remove user:pass again after the logout */
+            $url = $urlGenerator->generateUrl(array(
+                'view' => GALLERY_DEFAULT_VIEW
+            ), array(
+                'forceFullUrl' => true
+            ));
+            
+            return array(
+                null,
+                array(
+                    'redirectUrl' => HttpAuthHelper::stripHttpAuthFromUrl($url)
+                )
+            );
+        }
+        
+        return array(
+            null,
+            array(
+                'body' => 'modules/httpauth/templates/FinishLogout.tpl'
+            )
+        );
     }
 }
-?>

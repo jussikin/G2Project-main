@@ -27,93 +27,102 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/ServerAuthPlugin.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class ServerAuthPluginTest extends GalleryTestCase {
-
-    function ServerAuthPluginTest($methodName) {
-	$this->GalleryTestCase($methodName);
+class ServerAuthPluginTest extends GalleryTestCase
+{
+    public function __construct($methodName)
+    {
+        $this->GalleryTestCase($methodName);
     }
-
-    function setUp() {
-	global $gallery;
-	$ret = parent::setUp();
-	if ($ret) {
-	   return $ret;
-	}
-
-	/* Create test user */
-	list ($ret, $this->_user) = $this->_createRandomUser();
-	if ($ret) {
-	    return $ret;
-	}
-	$this->_markForCleanup($this->_user);
-	$_SERVER['AUTH_TYPE'] = 'Test';
-
-	$this->_plugin = new ServerAuthPlugin();
-
-	$this->_saveSession = $gallery->_session;
-	$gallery->_session = new ServerAuthPluginTestSession();
+    
+    public function setUp()
+    {
+        global $gallery;
+        $ret = parent::setUp();
+        if ($ret) {
+            return $ret;
+        }
+        
+        /* Create test user */
+        list($ret, $this->_user) = $this->_createRandomUser();
+        if ($ret) {
+            return $ret;
+        }
+        $this->_markForCleanup($this->_user);
+        $_SERVER['AUTH_TYPE'] = 'Test';
+        
+        $this->_plugin = new ServerAuthPlugin();
+        
+        $this->_saveSession = $gallery->_session;
+        $gallery->_session = new ServerAuthPluginTestSession();
     }
-
-    function tearDown() {
-	global $gallery;
-	$gallery->_session = $this->_saveSession;
-
-	$ret = GalleryCoreApi::removeAllMapEntries('FailedLoginsMap');
-	if ($ret) {
-	    return $ret;
-	}
-
-	$ret = parent::tearDown();
-	if ($ret) {
-	   return $ret;
-	}
+    
+    public function tearDown()
+    {
+        global $gallery;
+        $gallery->_session = $this->_saveSession;
+        
+        $ret = GalleryCoreApi::removeAllMapEntries('FailedLoginsMap');
+        if ($ret) {
+            return $ret;
+        }
+        
+        $ret = parent::tearDown();
+        if ($ret) {
+            return $ret;
+        }
     }
-
-    function testValidUser() {
-	global $gallery;
-	$session =& $gallery->getSession();
-
-	$_SERVER['REMOTE_USER'] = $this->_user->getUserName();
-
-	list ($ret, $user) = $this->_plugin->getUser();
-	if ($ret) {
-	    return ($ret);
-	}
-
-	$this->assertEquals($this->_user, $user);
-	$this->assert($session->regenerateWasCalled(), 'Session has not been regenerated!');
+    
+    public function testValidUser()
+    {
+        global $gallery;
+        $session =& $gallery->getSession();
+        
+        $_SERVER['REMOTE_USER'] = $this->_user->getUserName();
+        
+        list($ret, $user) = $this->_plugin->getUser();
+        if ($ret) {
+            return ($ret);
+        }
+        
+        $this->assertEquals($this->_user, $user);
+        $this->assert($session->regenerateWasCalled(), 'Session has not been regenerated!');
     }
-
-    function testInvalidUser() {
-	$_SERVER['REMOTE_USER'] = 'bogusUser-' . rand();
-
-	list ($ret, $user) = $this->_plugin->getUser();
-	if ($ret) {
-	    return ($ret);
-	}
-
-	$this->assertEquals(null, $user);
+    
+    public function testInvalidUser()
+    {
+        $_SERVER['REMOTE_USER'] = 'bogusUser-' . rand();
+        
+        list($ret, $user) = $this->_plugin->getUser();
+        if ($ret) {
+            return ($ret);
+        }
+        
+        $this->assertEquals(null, $user);
     }
 }
 
 /**
  * Mock Session
  */
-class ServerAuthPluginTestSession {
-    function ServerAuthPluginTestSession() {
-	$this->_regenerateWasCalled = false;
+class ServerAuthPluginTestSession
+{
+    public function ServerAuthPluginTestSession()
+    {
+        $this->_regenerateWasCalled = false;
     }
-
-    function getUserId() {
-	return null;
+    
+    public function getUserId()
+    {
+        return null;
     }
-
-    function regenerate() {
-	$this->_regenerateWasCalled = true;
+    
+    public function regenerate()
+    {
+        $this->_regenerateWasCalled = true;
     }
-
-    function regenerateWasCalled() {
-	return $this->_regenerateWasCalled;
+    
+    public function regenerateWasCalled()
+    {
+        return $this->_regenerateWasCalled;
     }
 }
-?>
