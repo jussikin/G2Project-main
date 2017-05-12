@@ -26,72 +26,88 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20951 $
  */
-class ItemAddModule extends GalleryModule {
-
-    function __construct() {
-	$this->ItemAddModule();
+class ItemAddModule extends GalleryModule
+{
+    public function __construct()
+    {
+        $this->ItemAddModule();
     }
-
-    function ItemAddModule() {
-	global $gallery;
-	$this->setId('itemadd');
-	$this->setName($gallery->i18n('Add Items'));
-	$this->setDescription($gallery->i18n('Add items from local server or the web'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('import', $gallery->i18n('Import'));
-	$this->setCallbacks('getSiteAdminViews');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
+    
+    public function ItemAddModule()
+    {
+        global $gallery;
+        $this->setId('itemadd');
+        $this->setName($gallery->i18n('Add Items'));
+        $this->setDescription($gallery->i18n('Add items from local server or the web'));
+        $this->setVersion('2.0.0');
+        $this->_templateVersion = 1;
+        $this->setGroup('import', $gallery->i18n('Import'));
+        $this->setCallbacks('getSiteAdminViews');
+        $this->setRequiredCoreApi(array(
+            8,
+            0
+        ));
+        $this->setRequiredModuleApi(array(
+            4,
+            0
+        ));
     }
-
+    
     /**
      * @see GalleryModule::performFactoryRegistrations
      */
-    function performFactoryRegistrations() {
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'ItemAddPlugin', 'ItemAddFromWeb', 'ItemAddFromWeb',
-	    'modules/itemadd/ItemAddFromWeb.inc', 'itemadd', null, 3);
-	if ($ret) {
-	    return $ret;
-	}
-
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'ItemAddPlugin', 'ItemAddFromServer', 'ItemAddFromServer',
-	    'modules/itemadd/ItemAddFromServer.inc', 'itemadd', null, 4);
-	if ($ret) {
-	    return $ret;
-	}
-
-	return null;
+    public function performFactoryRegistrations()
+    {
+        $ret = GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddFromWeb', 'ItemAddFromWeb', 'modules/itemadd/ItemAddFromWeb.inc', 'itemadd', null, 3);
+        if ($ret) {
+            return $ret;
+        }
+        
+        $ret = GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddFromServer', 'ItemAddFromServer', 'modules/itemadd/ItemAddFromServer.inc', 'itemadd', null, 4);
+        if ($ret) {
+            return $ret;
+        }
+        
+        return null;
     }
-
+    
     /**
      * @see GalleryModule::getSiteAdminViews
      */
-    function getSiteAdminViews() {
-	return array(null, array(array('name' => $this->translate('Web/Server'),
-				       'view' => 'itemadd.ItemAddSiteAdmin')));
+    public function getSiteAdminViews()
+    {
+        return array(
+            null,
+            array(
+                array(
+                    'name' => $this->translate('Web/Server'),
+                    'view' => 'itemadd.ItemAddSiteAdmin'
+                )
+            )
+        );
     }
-
+    
     /**
      * @see GalleryModule::upgrade
      */
-    function upgrade($currentVersion, $x1=null) {
-	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'itemadd');
-	if ($ret) {
-	    return $ret;
-	}
-	foreach (array('fromserver' => 'on', 'fromweb' => 'admin') as $key => $value) {
-	    if (!isset($params[$key])) {
-		$ret = $this->setParameter($key, $value);
-		if ($ret) {
-		    return $ret;
-		}
-	    }
-	}
-
-	return null;
+    public function upgrade($currentVersion, $x1 = null)
+    {
+        list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'itemadd');
+        if ($ret) {
+            return $ret;
+        }
+        foreach (array(
+            'fromserver' => 'on',
+            'fromweb' => 'admin'
+        ) as $key => $value) {
+            if (!isset($params[$key])) {
+                $ret = $this->setParameter($key, $value);
+                if ($ret) {
+                    return $ret;
+                }
+            }
+        }
+        
+        return null;
     }
 }
-?>
