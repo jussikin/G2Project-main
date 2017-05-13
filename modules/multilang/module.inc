@@ -31,11 +31,11 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	{
 		$this->MultiLangModule();
 	}
-
+	
 	public function MultiLangModule()
 	{
 		global $gallery;
-
+		
 		$this->setId('multilang');
 		$this->setName($gallery->i18n('MultiLanguage'));
 		$this->setDescription($gallery->i18n('Support item captions in multiple languages'));
@@ -43,14 +43,20 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 		$this->_templateVersion = 1;
 		$this->setGroup('data', $gallery->i18n('Extra Data'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
+	public function upgrade($currentVersion, $x1 = null)
 	{
 		if (!isset($currentVersion)) {
 			$ret = $this->setParameter('languages', '');
@@ -58,80 +64,85 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations()
 	{
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemEditPlugin', 'MultiLangItemEdit', 'MultiLangItemEdit',
-		'modules/multilang/MultiLangItemEdit.inc', 'multilang', null);
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditPlugin', 'MultiLangItemEdit', 'MultiLangItemEdit', 'modules/multilang/MultiLangItemEdit.inc', 'multilang', null);
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GalleryOnLoadHandler', 'MultiLangModule', 'MultiLang',
-		'modules/multilang/module.inc', 'multilang', null);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryOnLoadHandler', 'MultiLangModule', 'MultiLang', 'modules/multilang/module.inc', 'multilang', null);
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GallerySearchInterface_1_0', 'MultiLangSearch', 'MultiLang',
-		'modules/multilang/classes/MultiLangSearch.class', 'multilang', null);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('GallerySearchInterface_1_0', 'MultiLangSearch', 'MultiLang', 'modules/multilang/classes/MultiLangSearch.class', 'multilang', null);
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GalleryEventListener', 'MultiLangModule', 'MultiLangModule',
-		'modules/multilang/module.inc', 'multilang', array('GalleryEntity::delete'));
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'MultiLangModule', 'MultiLangModule', 'modules/multilang/module.inc', 'multilang', array(
+			'GalleryEntity::delete'
+		));
 		if ($ret) {
 			return $ret;
 		}
-	
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getOnLoadHandlerIds
 	 */
 	public function getOnLoadHandlerIds()
 	{
-		return array('MultiLang');
+		return array(
+			'MultiLang'
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
 	public function autoConfigure()
 	{
 		/* This module requires gettext to be installed */
-	list($ret, $needsConfiguration) = $this->needsConfiguration();
+		list($ret, $needsConfiguration) = $this->needsConfiguration();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, !$needsConfiguration);
+		
+		return array(
+			null,
+			!$needsConfiguration
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
 	public function needsConfiguration()
 	{
 		/* This module requires gettext to be installed */
-	global $gallery;
+		global $gallery;
 		$translator =& $gallery->getTranslator();
-
-		return array(null, !$translator->canTranslate());
+		
+		return array(
+			null,
+			!$translator->canTranslate()
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
@@ -139,30 +150,36 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	{
 		return 'multilang.CantActivate';
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews()
 	{
-		return array(null,
-			 array(array('name' => $this->translate('MultiLanguage'),
-				 'view' => 'multilang.MultiLangSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('MultiLanguage'),
+					'view' => 'multilang.MultiLangSiteAdmin'
+				)
+			)
+		);
 	}
-
+	
 	/**
 	 * Load multilang data into this item..
 	 */
 	public function onLoad(&$entity, $duringUpgrade)
 	{
 		/*
-	 * Load in captions for active language.
-	 * However, skip this step for core.ItemAdmin or any controller (esp core.ItemEdit)
-	 * to avoid inadvertently saving multilang captions into the actual entity.
-	 * Also, skip this during core module upgrades (when no session/activate language is
-	 * available)
-	 */
-	list($view, $controller) = GalleryUtilities::getRequestVariables('view', 'controller');
+	     * Load in captions for active language.
+	     * However, skip this step for core.ItemAdmin or any controller (esp core.ItemEdit)
+	     * to avoid inadvertently saving multilang captions into the actual entity.
+	     * Also, skip this during core module upgrades (when no session/activate language is
+	     * available)
+	     */
+		list($view, $controller) = GalleryUtilities::getRequestVariables('view', 'controller');
 		if ($view != 'core.ItemAdmin' && empty($controller) && !$duringUpgrade) {
 			GalleryCoreApi::requireOnce('modules/multilang/classes/MultiLangHelper.class');
 			$ret = MultiLangHelper::onLoad($entity);
@@ -170,10 +187,10 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Delete MultiLang data for deleted items.
 	 * @see GalleryEventListener::handleEvent
@@ -182,13 +199,20 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	{
 		$entity = $event->getEntity();
 		if (GalleryUtilities::isA($entity, 'GalleryItem')) {
-			$ret = GalleryCoreApi::removeMapEntry(
-		'MultiLangItemMap', array('itemId' => $entity->getId()));
+			$ret = GalleryCoreApi::removeMapEntry('MultiLangItemMap', array(
+				'itemId' => $entity->getId()
+			));
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		return array(null, null);
+		
+		return array(
+			null,
+			null
+		);
 	}
 }

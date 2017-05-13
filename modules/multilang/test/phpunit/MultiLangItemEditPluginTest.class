@@ -33,87 +33,97 @@ class MultiLangItemEditPluginTest extends ItemEditPluginTestCase
 	{
 		$this->ItemEditPluginTestCase($methodName, 'multilang', 'MultiLangItemEdit');
 	}
-
+	
 	public function setUp()
 	{
 		global $gallery;
-
+		
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_registerEventListener('GalleryEntity::delete', new MultiLangModule());
-
-		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId(),
-		array('title' => 'title', 'summary' => 'summary', 'description' => 'description',
-		  'onLoadHandlers' => '|MultiLang|'));
+		
+		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId(), array(
+			'title' => 'title',
+			'summary' => 'summary',
+			'description' => 'description',
+			'onLoadHandlers' => '|MultiLang|'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_markForCleanup($this->_album);
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'multilang');
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::setPluginParameter('module', 'multilang',
-						  'languages', 'de_DE|he_IL|zh_CN');
+		
+		$ret = GalleryCoreApi::setPluginParameter('module', 'multilang', 'languages', 'de_DE|he_IL|zh_CN');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$session =& $gallery->getSession();
 		$this->_saveLanguage = $session->get('core.language');
 	}
-
+	
 	public function tearDown()
 	{
 		global $gallery;
-
+		
 		$session =& $gallery->getSession();
 		if (empty($this->_saveLanguage)) {
 			$session->remove('core.language');
 		} else {
 			$session->put('core.language', $this->_saveLanguage);
 		}
-
+		
 		$ret = parent::tearDown();
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testReset()
 	{
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		$results = $this->handleRequest($this->album, $this->_album);
-		$this->assertEquals(array(array(), null), $results);
+		$this->assertEquals(array(
+			array(),
+			null
+		), $results);
 	}
-
+	
 	public function testSaveAndDelete()
 	{
 		global $gallery;
-
+		
 		GalleryUtilities::putRequestVariable('form[language]', 'zh_CN');
 		GalleryUtilities::putRequestVariable('form[title]', 'cn title');
 		GalleryUtilities::putRequestVariable('form[summary]', 'cn summary');
 		GalleryUtilities::putRequestVariable('form[description]', '');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
-
-		list($ret, $this->_subAlbum) = $this->_createRandomAlbum($this->_album->getId(),
-		array('title' => 'title', 'summary' => 'summary', 'description' => 'description',
-		  'onLoadHandlers' => '|MultiLang|'));
+		
+		list($ret, $this->_subAlbum) = $this->_createRandomAlbum($this->_album->getId(), array(
+			'title' => 'title',
+			'summary' => 'summary',
+			'description' => 'description',
+			'onLoadHandlers' => '|MultiLang|'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$results = $this->handleRequest($this->_subAlbum, $this->_subAlbum);
-		$this->assertEquals(array(array(), $this->_translate('Changes saved successfully')),
-				$results);
-
+		$this->assertEquals(array(
+			array(),
+			$this->_translate('Changes saved successfully')
+		), $results);
+		
 		$gallery->setActiveLocale('en_US');
 		list($ret, $album) = $this->_subAlbum->refresh();
 		if ($ret) {
@@ -122,7 +132,7 @@ class MultiLangItemEditPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('title', $album->getTitle());
 		$this->assertEquals('summary', $album->getSummary());
 		$this->assertEquals('description', $album->getDescription());
-
+		
 		$gallery->setActiveLocale('zh_CN');
 		list($ret, $album) = $this->_subAlbum->refresh();
 		if ($ret) {
@@ -131,39 +141,41 @@ class MultiLangItemEditPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('cn title', $album->getTitle());
 		$this->assertEquals('cn summary', $album->getSummary());
 		$this->assertEquals('', $album->getDescription(), 'cn description');
-
+		
 		$ret = GalleryCoreApi::deleteEntityById($this->_subAlbum->getId(), 'GalleryAlbumItem');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $data) = MultiLangHelper::getItemData($this->_subAlbum->getId());
 		if ($ret) {
 			return ($ret);
 		}
 		$this->assertEquals(array(), $data, 'MultiLang data for test item not deleted!');
 	}
-
+	
 	public function testMissingRootTitle()
 	{
 		$rootAlbumId = $this->_getRootId();
-		$ret = GalleryCoreApi::setPluginParameter(
-		'module', 'core', 'id.rootAlbum', $this->_album->getId());
+		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'id.rootAlbum', $this->_album->getId());
 		if ($ret) {
 			return $ret;
 		}
 		GalleryUtilities::putRequestVariable('form[language]', 'zh_CN');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		$results = $this->handleRequest($this->_album, $this->_album);
-		$this->assertEquals(array(array('form[error][title][missingRootTitle]'), null),
-				$results);
-		$ret = GalleryCoreApi::setPluginParameter(
-		'module', 'core', 'id.rootAlbum', $rootAlbumId);
+		$this->assertEquals(array(
+			array(
+				'form[error][title][missingRootTitle]'
+			),
+			null
+		), $results);
+		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'id.rootAlbum', $rootAlbumId);
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testMaliciousMarkup()
 	{
 		global $gallery;
@@ -171,17 +183,19 @@ class MultiLangItemEditPluginTest extends ItemEditPluginTestCase
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryUtilities::putRequestVariable('form[language]', 'de_DE');
 		GalleryUtilities::putRequestVariable('form[title]', '<script>bad</script> title');
 		GalleryUtilities::putRequestVariable('form[summary]', 'summary <blink>fun</blink>');
 		GalleryUtilities::putRequestVariable('form[description]', '<applet class="bad"/>desc');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
-
+		
 		$results = $this->handleRequest($this->_album, $this->_album);
-		$this->assertEquals(array(array(), $this->_translate('Changes saved successfully')),
-				$results);
-
+		$this->assertEquals(array(
+			array(),
+			$this->_translate('Changes saved successfully')
+		), $results);
+		
 		$gallery->setActiveLocale('de_DE');
 		list($ret, $album) = $this->_album->refresh();
 		if ($ret) {

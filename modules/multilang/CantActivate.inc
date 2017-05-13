@@ -34,16 +34,22 @@ class CantActivateController extends GalleryController
 	{
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Figure out where to redirect upon success */
-	$results['redirect']['view'] = 'core.SiteAdmin';
+		
+		/* Figure out where to redirect upon success */
+		$results['redirect']['view'] = 'core.SiteAdmin';
 		$results['redirect']['subView'] = 'core.AdminPlugins';
 		$results['status'] = array();
 		$results['error'] = array();
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -59,15 +65,23 @@ class CantActivateView extends GalleryView
 	{
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($form['formName'] != 'CantActivate') {
 			$form['formName'] = 'CantActivate';
 		}
-
+		
 		$template->setVariable('controller', 'multilang.CantActivate');
-
-		return array(null, array('body' => 'modules/multilang/templates/CantActivate.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/multilang/templates/CantActivate.tpl'
+			)
+		);
 	}
 }

@@ -37,81 +37,131 @@ class MultiLangSearch extends GallerySearchInterface_1_0
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'multilang');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		$info = array('name' => $module->translate('MultiLanguage'),
-			  'description' => $module->translate('MultiLanguage Captions'));
-
+		
+		$info = array(
+			'name' => $module->translate('MultiLanguage'),
+			'description' => $module->translate('MultiLanguage Captions')
+		);
+		
 		list($ret, $locale) = $gallery->getActiveLocale();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		list($ret, $defaultLanguage) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
+		list($ret, $defaultLanguage) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if ($locale == $defaultLanguage) {
 			$info['options'] = array();
-
-			return array(null, $info);
+			
+			return array(
+				null,
+				$info
+			);
 		}
-
-	/* Get name for current language */
-	$supportedLanguages = GalleryCoreApi::getSupportedLanguages();
+		
+		/* Get name for current language */
+		$supportedLanguages = GalleryCoreApi::getSupportedLanguages();
 		list($language, $country) = preg_split('/[-_]/', "${locale}_");
 		if (empty($supportedLanguages[$language][$country]['description'])) {
-			return array(null, array('options' => array()));
+			return array(
+				null,
+				array(
+					'options' => array()
+				)
+			);
 		}
 		$languageName = $supportedLanguages[$language][$country]['description'];
-
+		
 		$info['options'] = array(
-		'title' => array(
-		'description' => $module->translate(
-			array('text' => 'Search titles (%s)', 'arg1' => $languageName)),
-		'enabled' => 1),
-		'summary' => array(
-		'description' => $module->translate(
-			array('text' => 'Search summaries (%s)', 'arg1' => $languageName)),
-		'enabled' => 1),
-		'description' => array(
-		'description' => $module->translate(
-			array('text' => 'Search descriptions (%s)', 'arg1' => $languageName)),
-		'enabled' => 1));
-
-		return array(null, $info);
+			'title' => array(
+				'description' => $module->translate(array(
+					'text' => 'Search titles (%s)',
+					'arg1' => $languageName
+				)),
+				'enabled' => 1
+			),
+			'summary' => array(
+				'description' => $module->translate(array(
+					'text' => 'Search summaries (%s)',
+					'arg1' => $languageName
+				)),
+				'enabled' => 1
+			),
+			'description' => array(
+				'description' => $module->translate(array(
+					'text' => 'Search descriptions (%s)',
+					'arg1' => $languageName
+				)),
+				'enabled' => 1
+			)
+		);
+		
+		return array(
+			null,
+			$info
+		);
 	}
-
+	
 	/**
 	 * @see GallerySearchInterface_1_0::search
 	 */
-	public function search($options, $criteria, $offset=0, $count=-1)
+	public function search($options, $criteria, $offset = 0, $count = -1)
 	{
 		global $gallery;
 		if (empty($options)) {
-			$data = array('start' => 0, 'end' => 0, 'count' => 0, 'results' => array());
-
-			return array(null, $data);
+			$data = array(
+				'start' => 0,
+				'end' => 0,
+				'count' => 0,
+				'results' => array()
+			);
+			
+			return array(
+				null,
+				$data
+			);
 		}
-
+		
 		list($ret, $locale) = $gallery->getActiveLocale();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $aclIds) =
-		GalleryCoreApi::fetchAccessListIds('core.view', $gallery->getActiveUserId());
+		
+		list($ret, $aclIds) = GalleryCoreApi::fetchAccessListIds('core.view', $gallery->getActiveUserId());
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (empty($aclIds)) {
-			return array(null,
-			 array('start' => 0, 'end' => '0',
-				   'count' => 0, 'results' => array()));
+			return array(
+				null,
+				array(
+					'start' => 0,
+					'end' => '0',
+					'count' => 0,
+					'results' => array()
+				)
+			);
 		}
 		$aclMarkers = GalleryUtilities::makeMarkers(count($aclIds));
-
+		
 		$searchClause = array();
 		if (isset($options['title'])) {
 			$searchClause[] = '[MultiLangItemMap::title] LIKE ?';
@@ -123,7 +173,7 @@ class MultiLangSearch extends GallerySearchInterface_1_0
 			$searchClause[] = '[MultiLangItemMap::description] LIKE ?';
 		}
 		$searchString = implode(' OR ', $searchClause);
-
+		
 		$countQuery = sprintf('
 	SELECT
 	  COUNT([MultiLangItemMap::itemId])
@@ -138,7 +188,7 @@ class MultiLangSearch extends GallerySearchInterface_1_0
 	  AND
 	  (' . $searchString . ')
 	', $aclMarkers);
-
+		
 		$query = sprintf('
 	SELECT
 	  [MultiLangItemMap::itemId],
@@ -158,49 +208,82 @@ class MultiLangSearch extends GallerySearchInterface_1_0
 	ORDER BY
 	  [MultiLangItemMap::itemId] DESC
 	', $aclMarkers);
-
+		
 		$data = $aclIds;
 		$data[] = $locale;
 		foreach ($searchClause as $tmp) {
 			$data[] = '%' . $criteria . '%';
 		}
-
-	/* Find the total */
-	list($ret, $results) = $gallery->search($countQuery, $data);
+		
+		/* Find the total */
+		list($ret, $results) = $gallery->search($countQuery, $data);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$result = $results->nextResult();
-		$numRows = (int)$result[0];
-
-		list($ret, $results) = $gallery->search(
-		$query, $data, array('limit' => array('offset' => $offset, 'count' => $count)));
+		$numRows = (int) $result[0];
+		
+		list($ret, $results) = $gallery->search($query, $data, array(
+			'limit' => array(
+				'offset' => $offset,
+				'count' => $count
+			)
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'multilang');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		$label = array($module->translate('Title'),
-			   $module->translate('Summary'),
-			   $module->translate('Description'));
-
+		
+		$label = array(
+			$module->translate('Title'),
+			$module->translate('Summary'),
+			$module->translate('Description')
+		);
+		
 		$searchResults = array();
 		while ($result = $results->nextResult()) {
-			$searchResults[] = array('itemId' => (int)$result[0], 'fields' => array(
-		array('key' => $label[0], 'value' => $result[1]),
-		array('key' => $label[1], 'value' => $result[2]),
-		array('key' => $label[2], 'value' => $result[3])));
+			$searchResults[] = array(
+				'itemId' => (int) $result[0],
+				'fields' => array(
+					array(
+						'key' => $label[0],
+						'value' => $result[1]
+					),
+					array(
+						'key' => $label[1],
+						'value' => $result[2]
+					),
+					array(
+						'key' => $label[2],
+						'value' => $result[3]
+					)
+				)
+			);
 		}
-
-		$data = array('start' => $numRows == 0 ? 0 : $offset+1,
-			  'end' => $numRows == 0 ? 0 : $offset + sizeof($searchResults),
-			  'count' => $numRows,
-			  'results' => $searchResults);
-
-		return array(null, $data);
+		
+		$data = array(
+			'start' => $numRows == 0 ? 0 : $offset + 1,
+			'end' => $numRows == 0 ? 0 : $offset + sizeof($searchResults),
+			'count' => $numRows,
+			'results' => $searchResults
+		);
+		
+		return array(
+			null,
+			$data
+		);
 	}
 }
