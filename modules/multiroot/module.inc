@@ -32,11 +32,11 @@ class MultirootModule extends GalleryModule
 	{
 		$this->MultirootModule();
 	}
-
+	
 	public function MultirootModule()
 	{
 		global $gallery;
-
+		
 		$this->setId('multiroot');
 		$this->setName($gallery->i18n('Multiroot'));
 		$this->setDescription($gallery->i18n('Define an alternate guest view of the Gallery'));
@@ -44,10 +44,16 @@ class MultirootModule extends GalleryModule
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $this->translate('Display'));
 		$this->setCallbacks('');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
@@ -55,20 +61,26 @@ class MultirootModule extends GalleryModule
 	{
 		return 'multiroot.ConfigureMultiroot';
 	}
-
+	
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
 	public function needsConfiguration()
 	{
-		return array(null, true);
+		return array(
+			null,
+			true
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
 	public function autoConfigure()
 	{
-		return array(null, false);
+		return array(
+			null,
+			false
+		);
 	}
 }
