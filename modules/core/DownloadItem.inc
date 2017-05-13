@@ -25,45 +25,39 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17657 $
  */
-class DownloadItemView extends GalleryView
-{
+class DownloadItemView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::shouldSaveSession
 	 */
-	public function shouldSaveSession()
-	{
+	public function shouldSaveSession() {
 		return false;
 	}
 	
 	/**
 	 * @see GalleryView::autoCacheControl
 	 */
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return false;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		/* Figure out which item we're talking about */
 		$itemId = (int) GalleryUtilities::getRequestVariables('itemId');
 		if (empty($itemId)) {
@@ -132,8 +126,7 @@ class DownloadItemView extends GalleryView
 		return null;
 	}
 	
-	public function _sendFile($data)
-	{
+	public function _sendFile($data) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
@@ -211,8 +204,7 @@ class DownloadItemView extends GalleryView
 	 * @param mixed $derivativeType
 	 * @return GalleryStatus
 	 */
-	public function _assertPermissions($item, $derivativeType)
-	{
+	public function _assertPermissions($item, $derivativeType) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

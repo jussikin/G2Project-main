@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class DynamicAlbumModule extends GalleryModule
-{
-	public function __construct()
-	{
+class DynamicAlbumModule extends GalleryModule {
+	public function __construct() {
 		$this->DynamicAlbumModule();
 	}
 
-	public function DynamicAlbumModule()
-	{
+	public function DynamicAlbumModule() {
 		global $gallery;
 		$this->setId('dynamicalbum');
 		$this->setName($gallery->i18n('Dynamic Albums'));
@@ -50,8 +47,7 @@ class DynamicAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'dynamicalbum');
 		if ($ret) {
 			return $ret;
@@ -98,8 +94,7 @@ class DynamicAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null, array(array('name' => $this->translate('Dynamic Albums'),
 					   'view' => 'dynamicalbum.DynamicAlbumSiteAdmin')));
 	}
@@ -107,8 +102,7 @@ class DynamicAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null) {
 		$links = array();
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'dynamicalbum');
 		if ($ret) {
@@ -148,8 +142,7 @@ class DynamicAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		return array(
 		array('comment' => $this->translate('Updates Album'),
 			  'match' => array('view' => 'dynamicalbum.UpdatesAlbum'),

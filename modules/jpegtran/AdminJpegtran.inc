@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/jpegtran/classes/JpegtranToolkitHelper.clas
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 20947 $
  */
-class AdminJpegtranController extends GalleryController
-{
+class AdminJpegtranController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
@@ -173,13 +171,11 @@ class AdminJpegtranController extends GalleryController
 /**
  * Settings for Jpegtran
  */
-class AdminJpegtranView extends GalleryView
-{
+class AdminJpegtranView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

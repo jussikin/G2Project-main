@@ -25,18 +25,15 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SelectGalleryControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class SelectGalleryControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'migrate.SelectGallery');
 	}
 	
 	/**
 	 * Test what the controller does when you enter a bad albums path
 	 */
-	public function testBadAlbumsPath()
-	{
+	public function testBadAlbumsPath() {
 		GalleryUtilities::putRequestVariable('form[albumsPath]', dirname(__FILE__));
 		GalleryUtilities::putRequestVariable('form[action][select]', 1);
 		
@@ -56,8 +53,7 @@ class SelectGalleryControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test what the controller does when you enter a valid albums path
 	 */
-	public function testGoodAlbumsPath()
-	{
+	public function testGoodAlbumsPath() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
@@ -81,8 +77,7 @@ class SelectGalleryControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test what the controller does when you enter a missing albums path
 	 */
-	public function testMissingAlbumsPath()
-	{
+	public function testMissingAlbumsPath() {
 		GalleryUtilities::putRequestVariable('form[albumsPath]', '');
 		GalleryUtilities::putRequestVariable('form[action][select]', 1);
 		

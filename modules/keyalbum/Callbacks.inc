@@ -23,10 +23,8 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class KeyAlbumCallbacks
-{
-	public function callback($params, $smarty, $callback, $userId)
-	{
+class KeyAlbumCallbacks {
+	public function callback($params, $smarty, $callback, $userId) {
 		switch ($callback) {
 			case 'LoadKeywords':
 				$onlyPublic = (bool) $params['onlyPublic'];
@@ -91,8 +89,7 @@ class KeyAlbumCallbacks
 	 * @return GalleryStatus a status code
 	 * @static
 	 */
-	public function _findAllKeywords($param, $onlyPublic, $sizeLimit, $maxWeight, $includeFrequency)
-	{
+	public function _findAllKeywords($param, $onlyPublic, $sizeLimit, $maxWeight, $includeFrequency) {
 		global $gallery;
 		
 		$query = '

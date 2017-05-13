@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ThumbnailSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ThumbnailSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'thumbnail.ThumbnailSiteAdmin');
 	}
 
-	public function testThumbnailSiteAdminControllerAddNoMime()
-	{
+	public function testThumbnailSiteAdminControllerAddNoMime() {
 		GalleryUtilities::putRequestVariable('form[action][add]', '1');
 
 		$results = $this->handleRequest();
@@ -48,8 +45,7 @@ class ThumbnailSiteAdminControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testThumbnailSiteAdminControllerAddNoFile()
-	{
+	public function testThumbnailSiteAdminControllerAddNoFile() {
 		GalleryUtilities::putRequestVariable('form[action][add]', '1');
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'test/fakemime');
 		GalleryUtilities::putRequestVariable('form[image]', 'new');
@@ -62,8 +58,7 @@ class ThumbnailSiteAdminControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testThumbnailSiteAdminControllerAddBadMime()
-	{
+	public function testThumbnailSiteAdminControllerAddBadMime() {
 		list($ret, $toolkit, $outputMimeType) =
 		GalleryCoreApi::getToolkitByOperation('image/gif', 'thumbnail');
 		if ($ret) {
@@ -108,8 +103,7 @@ class ThumbnailSiteAdminControllerTest extends GalleryControllerTestCase
 				$results, 'Add non-jpeg image');
 	}
 
-	public function testThumbnailSiteAdminControllerAddDelete()
-	{
+	public function testThumbnailSiteAdminControllerAddDelete() {
 		GalleryUtilities::putRequestVariable('form[action][add]', '1');
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'test/fakemime');
 		GalleryUtilities::putRequestVariable('form[image]', 'new');

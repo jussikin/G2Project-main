@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class MultiLangItemEdit extends ItemEditPlugin
-{
+class MultiLangItemEdit extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		global $gallery;
 		$status = null;
 		$error = array();
@@ -105,8 +103,7 @@ class MultiLangItemEdit extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -196,8 +193,7 @@ class MultiLangItemEdit extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		if (!GalleryUtilities::isA($item, 'GalleryItem')) {
 			return false;
 		}
@@ -212,8 +208,7 @@ class MultiLangItemEdit extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'multilang');
 		if ($ret) {
 			return array(

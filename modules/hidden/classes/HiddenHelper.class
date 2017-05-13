@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/hidden/classes/HiddenInterface_1_0.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class HiddenHelper extends HiddenInterface_1_0
-{
+class HiddenHelper extends HiddenInterface_1_0 {
 	/**
 	 * Hides an item.
 	 *
@@ -46,8 +45,7 @@ class HiddenHelper extends HiddenInterface_1_0
 	 * @param int $passwordAncestor used in recursive calls
 	 * @return GalleryStatus a status code
 	 */
-	public static function hideItem(&$item, $useProgressBar = false, $hideId = null, $hiddenAncestor = null, $passwordAncestor = null)
-	{
+	public static function hideItem(&$item, $useProgressBar = false, $hideId = null, $hiddenAncestor = null, $passwordAncestor = null) {
 		global $gallery;
 		
 		/* If item is already hidden, we're done */
@@ -235,8 +233,7 @@ class HiddenHelper extends HiddenInterface_1_0
 	 * @param int $passwordAncestor used in recursive calls
 	 * @return GalleryStatus a status code
 	 */
-	public static function unHideItem(&$item, $useProgressBar = false, $hideId = null, $hiddenAncestor = null, $passwordAncestor = null)
-	{
+	public static function unHideItem(&$item, $useProgressBar = false, $hideId = null, $hiddenAncestor = null, $passwordAncestor = null) {
 		global $gallery;
 		/* If given item is not hidden or subitem is hidden, we're done */
 		if ($item->hasOnLoadHandler('Hidden') == isset($hideId)) {
@@ -446,8 +443,7 @@ class HiddenHelper extends HiddenInterface_1_0
 	 *               mixed id of nearest password protected ancestor or false
 	 * @access private
 	 */
-	public function _checkAncestors($item, $passwordInterface)
-	{
+	public function _checkAncestors($item, $passwordInterface) {
 		list($ret, $ancestors) = GalleryCoreApi::fetchParents($item);
 		if ($ret) {
 			return array(
@@ -489,8 +485,7 @@ class HiddenHelper extends HiddenInterface_1_0
 	 * @param GalleryItem $item item that has moved
 	 * @return GalleryStatus a status code
 	 */
-	public static function handleMoveItem($item)
-	{
+	public static function handleMoveItem($item) {
 		global $gallery;
 		$oldParentId = $item->getOriginalValue('parentId');
 		$newParentId = $item->getParentId();
@@ -537,21 +532,18 @@ class HiddenHelper extends HiddenInterface_1_0
 	/**
 	 * @see HiddenInterface_1_0::isHidden
 	 */
-	public function isHidden($item)
-	{
+	public function isHidden($item) {
 		return array(
 			null,
 			$item->hasOnLoadHandler('Hidden')
 		);
 	}
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->HiddenHelper();
 	}
 	
-	public function HiddenHelper()
-	{
+	public function HiddenHelper() {
 		$this->_notEmpty = true;
 	}
 }

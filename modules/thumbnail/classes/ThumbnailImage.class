@@ -36,8 +36,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryFileSystemEntity.class'
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ThumbnailImage extends GalleryFileSystemEntity
-{
+class ThumbnailImage extends GalleryFileSystemEntity {
 	/**
 	 * The mime type of the image.
 	 *
@@ -115,8 +114,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 *
 	 * @return array(string mime type)
 	 */
-	public function getItemMimeTypesList()
-	{
+	public function getItemMimeTypesList() {
 		return explode('|', $this->getitemMimeTypes());
 	}
 
@@ -125,8 +123,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 *
 	 * @param array $mimeTypeList array(string mime type, ..)
 	 */
-	public function setItemMimeTypesList($mimeTypeList)
-	{
+	public function setItemMimeTypesList($mimeTypeList) {
 		$this->setitemMimeTypes(implode('|', $mimeTypeList));
 	}
 
@@ -139,8 +136,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 * @param int $parentId (optional) Id of the parent entity or null. Defaults to null.
 	 * @return GalleryStatus a status code
 	 */
-	public function create($inputFileName=null, $mimeType=null, $targetName=null, $parentId=null)
-	{
+	public function create($inputFileName=null, $mimeType=null, $targetName=null, $parentId=null) {
 		GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 		global $gallery;
 		$platform =& $gallery->getPlatform();
@@ -241,8 +237,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	/**
 	 * @see GalleryEntity::save
 	 */
-	public function save($postEvent=true)
-	{
+	public function save($postEvent=true) {
 		return parent::save($postEvent, 0);
 	}
 
@@ -251,8 +246,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 *
 	 * @see GalleryEntity::delete
 	 */
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 
 		list($ret, $path) = $this->fetchPath();
@@ -318,8 +312,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function _restoreItemThumbnails()
-	{
+	public function _restoreItemThumbnails() {
 		list($ret, $derivativesTable) =
 		GalleryCoreApi::fetchDerivativesBySourceIds(array($this->getId()),
 							array(DERIVATIVE_TYPE_IMAGE_THUMBNAIL));
@@ -411,8 +404,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 * @return array GalleryStatus a status code,
 	 *               string path
 	 */
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		global $gallery;
 
 		list($ret, $logicalPath) = $this->fetchLogicalPath();
@@ -432,8 +424,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 		return array(null, $this->getThumbnailDir() . $logicalPath);
 	}
 
-	public function fetchLogicalPath()
-	{
+	public function fetchLogicalPath() {
 		list($ret, $thumbnailContainerId) =
 		GalleryCoreApi::getPluginParameter('module', 'thumbnail', 'id.container');
 		if ($ret) {
@@ -442,7 +433,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 		if ($this->getParentId() != $thumbnailContainerId) {
 			/* Custom thumbnails are stored in a decimal tree, e.g. 7/75.jpg. */
 		$id = (string)$this->getId();
-			$path = $id{0} . '/' . $id . '.jpg';
+			$path = $id[0] . '/' . $id . '.jpg';
 		} else {
 			/* Mime-type thumbnails are right under the plugin_data/modules/thumbnail/ folder. */
 		$path = $this->getPathComponent();
@@ -456,8 +447,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 *
 	 * @return string Directory where thumbnail images are stored
 	 */
-	public function getThumbnailDir()
-	{
+	public function getThumbnailDir() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
@@ -467,8 +457,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	}
 
 	/** @see GalleryFileSystemEntity::move */
-	public function move($newParentId)
-	{
+	public function move($newParentId) {
 		return GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION);
 	}
 
@@ -478,8 +467,7 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	 * @see GalleryDataItem::render
 	 * @return string content
 	**/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		global $gallery;
 		
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -523,66 +511,54 @@ class ThumbnailImage extends GalleryFileSystemEntity
 	/**
 	 * So ThumbnailImage is displayable with {g->image}
 	 */
-	public function getRenderer()
-	{
+	public function getRenderer() {
 		return null;
 	}
 
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'ThumbnailImage';
 	}
 
-	public function getMimeType()
-	{
+	public function getMimeType() {
 		return $this->mimeType;
 	}
 
-	public function setMimeType($mimeType)
-	{
+	public function setMimeType($mimeType) {
 		$this->mimeType = $mimeType;
 	}
 
-	public function getSize()
-	{
+	public function getSize() {
 		return $this->size;
 	}
 
-	public function setSize($size)
-	{
+	public function setSize($size) {
 		$this->size = $size;
 	}
 
-	public function getWidth()
-	{
+	public function getWidth() {
 		return $this->width;
 	}
 
-	public function setWidth($width)
-	{
+	public function setWidth($width) {
 		$this->width = $width;
 	}
 
-	public function getHeight()
-	{
+	public function getHeight() {
 		return $this->height;
 	}
 
-	public function setHeight($height)
-	{
+	public function setHeight($height) {
 		$this->height = $height;
 	}
 
-	public function getItemMimeTypes()
-	{
+	public function getItemMimeTypes() {
 		return $this->itemMimeTypes;
 	}
 
-	public function setItemMimeTypes($itemMimeTypes)
-	{
+	public function setItemMimeTypes($itemMimeTypes) {
 		$this->itemMimeTypes = $itemMimeTypes;
 	}
 }

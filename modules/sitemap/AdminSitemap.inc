@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class AdminSitemapView extends GalleryView
-{
+class AdminSitemapView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -41,8 +39,10 @@ class AdminSitemapView extends GalleryView
 		if ($ret) {
 			return array($ret, null);
 		}
-		$template->setVariable('AdminSitemap',
-		array('canRewrite' => !empty($moduleStatus['rewrite']['active'])));
+		$template->setVariable(
+			'AdminSitemap',
+			array('canRewrite' => !empty($moduleStatus['rewrite']['active']))
+		);
 
 		return array(null, array('body' => 'modules/sitemap/templates/AdminSitemap.tpl'));
 	}

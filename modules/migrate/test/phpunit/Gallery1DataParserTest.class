@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/migrate/classes/Gallery1DataParser.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class Gallery1DataParserTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class Gallery1DataParserTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -49,8 +46,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		$this->_albumsDir = dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash;
 	}
 	
-	public function testGetFieldsFromAlbum()
-	{
+	public function testGetFieldsFromAlbum() {
 		list($ret, $albumFields) = Gallery1DataParser::loadAlbumFields($this->_albumsDir . 'album01' . $this->_slash);
 		if ($ret) {
 			return $ret;
@@ -176,8 +172,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		$this->assertEquals($expected, $albumFields);
 	}
 	
-	public function testGetPhotoCountFromAlbum()
-	{
+	public function testGetPhotoCountFromAlbum() {
 		list($ret, $countOfPhotos) = Gallery1DataParser::getPhotoCount($this->_albumsDir . 'album01/');
 		if ($ret) {
 			return $ret;
@@ -185,8 +180,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		$this->assertEquals(2, $countOfPhotos);
 	}
 	
-	public function testGetRootAlbums()
-	{
+	public function testGetRootAlbums() {
 		list($ret, $rootAlbums) = Gallery1DataParser::getRootAlbums($this->_albumsDir);
 		if ($ret) {
 			return $ret;
@@ -201,8 +195,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $rootAlbums);
 	}
 	
-	public function testGetParentAlbumList()
-	{
+	public function testGetParentAlbumList() {
 		list($ret, $parentAlbumList) = Gallery1DataParser::getParentAlbumList($this->_albumsDir);
 		if ($ret) {
 			return $ret;
@@ -220,8 +213,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $parentAlbumList);
 	}
 	
-	public function testGetAlbumList()
-	{
+	public function testGetAlbumList() {
 		list($ret, $albumList) = Gallery1DataParser::getAlbumList($this->_albumsDir);
 		if ($ret) {
 			return $ret;
@@ -239,8 +231,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), array_keys($albumList));
 	}
 	
-	public function testGetAlbumHierarchy()
-	{
+	public function testGetAlbumHierarchy() {
 		list($ret, $albumList) = Gallery1DataParser::getAlbumHierarchy($this->_albumsDir);
 		if ($ret) {
 			return $ret;
@@ -259,8 +250,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $albumList);
 	}
 	
-	public function testGetUserUids()
-	{
+	public function testGetUserUids() {
 		list($ret, $uids) = Gallery1DataParser::getUserUids($this->_albumsDir);
 		if ($ret) {
 			return $ret;
@@ -274,8 +264,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $uids);
 	}
 	
-	public function testGetUserFieldsByUsername()
-	{
+	public function testGetUserFieldsByUsername() {
 		/* monkey is the target username */
 		list($ret, $fields) = Gallery1DataParser::getUserFieldsByUsername($this->_albumsDir, 'monkey');
 		if ($ret) {
@@ -300,8 +289,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $fields);
 	}
 	
-	public function testGetUserFieldsByUid()
-	{
+	public function testGetUserFieldsByUid() {
 		/* monkey is the target username */
 		list($ret, $fields) = Gallery1DataParser::getUserFieldsByUid($this->_albumsDir, '1057837115_2072132305');
 		if ($ret) {
@@ -326,8 +314,7 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $fields);
 	}
 	
-	public function testGetUserFieldsByMissingUid()
-	{
+	public function testGetUserFieldsByMissingUid() {
 		/* monkey is the target username */
 		list($ret, $fields) = Gallery1DataParser::getUserFieldsByUid($this->_albumsDir, '1057837154_228147420');
 		if ($ret) {
@@ -352,32 +339,27 @@ class Gallery1DataParserTest extends GalleryControllerTestCase
 		), $fields);
 	}
 	
-	public function testGetUserFieldsByReallyMissingUid()
-	{
+	public function testGetUserFieldsByReallyMissingUid() {
 		list($ret, $fields) = Gallery1DataParser::getUserFieldsByUid($this->_albumsDir, '1054014347_123456789');
 		$this->assert($ret->getErrorCode() & ERROR_BAD_PARAMETER);
 	}
 	
-	public function testIsValidUid()
-	{
+	public function testIsValidUid() {
 		$valid = Gallery1DataParser::isValidUid($this->_albumsDir, '1057837115_2072132305');
 		$this->assertEquals($valid, true);
 	}
 	
-	public function testIsInvalidMissingUid()
-	{
+	public function testIsInvalidMissingUid() {
 		$valid = Gallery1DataParser::isValidUid($this->_albumsDir, '1057837115_20721323');
 		$this->assertEquals($valid, false);
 	}
 	
-	public function testIsInvalidUid1()
-	{
+	public function testIsInvalidUid1() {
 		$valid = Gallery1DataParser::isValidUid($this->_albumsDir, '5');
 		$this->assertEquals($valid, false);
 	}
 	
-	public function testIsInvalidUid2()
-	{
+	public function testIsInvalidUid2() {
 		$valid = Gallery1DataParser::isValidUid($this->_albumsDir, 'monkey');
 		$this->assertEquals($valid, false);
 	}

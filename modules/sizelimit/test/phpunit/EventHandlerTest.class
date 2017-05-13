@@ -25,15 +25,12 @@
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class EventHandlerTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class EventHandlerTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodname);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class EventHandlerTest extends GalleryTestCase
 		$this->_markForCleanup($this->_album);
 	}
 
-	public function testCopy()
-	{
+	public function testCopy() {
 		$event = GalleryCoreApi::newEvent('GalleryEntity::save');
 		foreach (array('width' => 768, 'height' => 1024, 'size' => 1000, 'keepOriginal' => 1)
 		as $key => $value) {

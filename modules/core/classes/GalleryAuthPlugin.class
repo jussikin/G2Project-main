@@ -30,16 +30,14 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryAuthPlugin
-{
+class GalleryAuthPlugin {
 	/**
 	 * Perform authentication & return a user object
 	 *
 	 * @return array GalleryStatus a status code
 	 *               GalleryUser the active user or null
 	 */
-	public function getUser()
-	{
+	public function getUser() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null

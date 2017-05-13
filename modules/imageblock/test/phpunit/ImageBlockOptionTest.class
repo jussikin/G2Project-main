@@ -25,15 +25,12 @@
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17580 $
  */
-class ImageBlockOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageBlockOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'imageblock', 'ImageBlockOption');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -53,8 +50,7 @@ class ImageBlockOptionTest extends ItemEditOptionTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		foreach (array_merge($this->_topItems, $this->_subItems) as $item) {
 			$ret = GalleryCoreApi::removeMapEntry('ImageBlockDisabledMap', array(
 				'itemId' => $item->getId()
@@ -84,8 +80,7 @@ class ImageBlockOptionTest extends ItemEditOptionTestCase
 		}
 	}
 	
-	public function _createSubAlbumWithItems($parentId)
-	{
+	public function _createSubAlbumWithItems($parentId) {
 		/* Create a new album and image, set thumbnail and highlight */
 		list($ret, $album) = $this->_createRandomAlbum($parentId);
 		if ($ret) {
@@ -115,8 +110,7 @@ class ImageBlockOptionTest extends ItemEditOptionTestCase
 		);
 	}
 	
-	public function testImageBlockOption()
-	{
+	public function testImageBlockOption() {
 		/* Enable the Option */
 		$form['ImageBlockOption']['setRecursive'] = 'off';
 		$form['ImageBlockOption']['setDisabled'] = 'on';
@@ -164,8 +158,7 @@ class ImageBlockOptionTest extends ItemEditOptionTestCase
 		$this->assert(!$disabledFlag, 'SubAlbum set disabled 2');
 	}
 	
-	public function testImageBlockOptionRecursive()
-	{
+	public function testImageBlockOptionRecursive() {
 		global $gallery;
 		$mockAdapter = new MockTemplateAdapter();
 		$gallery->_templateAdapter =& $mockAdapter;

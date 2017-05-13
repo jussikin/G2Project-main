@@ -25,15 +25,12 @@
  * @author Ross Shannon <ross.shannon@gmail.com>
  * @version $Revision: 18172 $
  */
-class AjaxianTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class AjaxianTheme extends GalleryTheme {
+	public function __construct() {
 		$this->AjaxianTheme();
 	}
 	
-	public function AjaxianTheme()
-	{
+	public function AjaxianTheme() {
 		global $gallery;
 		
 		$this->setId('ajaxian');
@@ -77,8 +74,7 @@ class AjaxianTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'owner',
 			'viewCount',
@@ -133,8 +129,7 @@ class AjaxianTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$dataTypes = array(
 			'owner',
 			'parents',
@@ -172,8 +167,7 @@ class AjaxianTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -201,8 +195,7 @@ class AjaxianTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -230,8 +223,7 @@ class AjaxianTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -241,8 +233,7 @@ class AjaxianTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -271,8 +262,7 @@ class AjaxianTheme extends GalleryTheme
 	 * Prepare data about items in this album.
 	 * @access private
 	 */
-	public function _buildItemList($childIds, &$children)
-	{
+	public function _buildItemList($childIds, &$children) {
 		$imageWidths = $imageHeights = $childItems = array();
 		if (!empty($childIds)) {
 			$ret = GalleryCoreApi::studyPermissions($childIds);

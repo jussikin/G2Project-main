@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20951 $
  */
-class ArchiveUploadModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ArchiveUploadModule extends GalleryModule {
+	public function __construct() {
 		$this->ArchiveUploadModule();
 	}
 	
-	public function ArchiveUploadModule()
-	{
+	public function ArchiveUploadModule() {
 		global $gallery;
 		
 		$this->setId('archiveupload');
@@ -57,8 +54,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'archiveupload');
 		if ($ret) {
 			return $ret;
@@ -81,8 +77,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'ArchiveExtractToolkit', 'ArchiveUpload', 'modules/archiveupload/classes/ArchiveExtractToolkit.class', 'archiveupload', null);
 		if ($ret) {
 			return $ret;
@@ -94,8 +89,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		/* This module requires exec() */
 		if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -144,8 +138,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires exec() */
 		if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -182,8 +175,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		$ret = GalleryCoreApi::registerToolkitOperation('ArchiveUpload', array(
 			'application/zip'
 		), 'extract', array(), 'extract files from an archive');
@@ -211,8 +203,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -227,8 +218,7 @@ class ArchiveUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'archiveupload.ArchiveUploadSiteAdmin';
 	}
 }

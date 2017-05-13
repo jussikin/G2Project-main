@@ -28,15 +28,12 @@
  */
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteSimpleHelper.class');
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class');
-class RewriteSimpleHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RewriteSimpleHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -48,8 +45,7 @@ class RewriteSimpleHelperTest extends GalleryTestCase
 		$gallery->setUrlGenerator($urlGenerator);
 	}
 
-	public function testParsePath()
-	{
+	public function testParsePath() {
 		list($ret, $testAlbum) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -79,8 +75,7 @@ class RewriteSimpleHelperTest extends GalleryTestCase
 		$this->assertEquals(array('view' => 'core.ShowItem'), $params, 'params');
 	}
 
-	public function testParseFileName()
-	{
+	public function testParseFileName() {
 		list($ret, $testAlbum) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -111,8 +106,7 @@ class RewriteSimpleHelperTest extends GalleryTestCase
 		$params, 'params');
 	}
 
-	public function testParseSerialNumber()
-	{
+	public function testParseSerialNumber() {
 		list($ret, $testAlbum) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -143,8 +137,7 @@ class RewriteSimpleHelperTest extends GalleryTestCase
 		$params, 'params');
 	}
 
-	public function testParseLanguage()
-	{
+	public function testParseLanguage() {
 		global $gallery;
 
 		list($ret, $language) = $gallery->getActiveLocale();
@@ -172,8 +165,7 @@ class RewriteSimpleHelperTest extends GalleryTestCase
 		$this->assertEquals(array('view' => 'core.ShowItem'), $params, 'params');
 	}
 
-	public function testLoadItemIdFromPath()
-	{
+	public function testLoadItemIdFromPath() {
 		/* Setup.. */
 	list($ret, $testAlbum) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {

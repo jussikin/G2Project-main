@@ -27,18 +27,15 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17952 $
  */
-class IndexDotPhpTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class IndexDotPhpTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
 	/**
 	 * Test if we redirect correctly to main.php
 	 */
-	public function testHttpRedirect()
-	{
+	public function testHttpRedirect() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$url = $urlGenerator->getCurrentUrl();

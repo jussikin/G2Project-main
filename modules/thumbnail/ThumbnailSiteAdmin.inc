@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ThumbnailSiteAdminController extends GalleryController
-{
+class ThumbnailSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -58,7 +56,12 @@ class ThumbnailSiteAdminController extends GalleryController
 				return array(null, $this->_exitStatus('file_error'));
 			}
 			list($ret) = ThumbnailHelper::addItem(
-		$form['mimeType'], null, $form['name'][1], $form['tmp_name'][1], $form['type'][1]);
+				$form['mimeType'],
+				null,
+				$form['name'][1],
+				$form['tmp_name'][1],
+				$form['type'][1]
+			);
 			if ($ret && ($ret->getErrorCode() & ERROR_UNSUPPORTED_FILE_TYPE)) {
 				$status = 'imagemime_error';
 			} elseif ($ret) {
@@ -67,7 +70,7 @@ class ThumbnailSiteAdminController extends GalleryController
 				$status = 'add';
 			}
 		} elseif (isset($form['action']['add'])) { /* $form['image']=='old' */
-		$ret = ThumbnailHelper::updateItem($form['oldimage'], $form['mimeType'], true);
+			$ret = ThumbnailHelper::updateItem($form['oldimage'], $form['mimeType'], true);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -75,25 +78,31 @@ class ThumbnailSiteAdminController extends GalleryController
 		} elseif (isset($form['action']['delete']) && isset($form['delete']['itemId'])) {
 			if (isset($form['delete']['mimeType'])) {
 				$ret = ThumbnailHelper::updateItem(
-			$form['delete']['itemId'], $form['delete']['mimeType'], false);
+					$form['delete']['itemId'],
+					$form['delete']['mimeType'],
+					false
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
 				$status = 'deleteMime';
 			} else {
 				list($ret, $item) =
-			GalleryCoreApi::loadEntitiesById($form['delete']['itemId'], 'ThumbnailImage');
+				GalleryCoreApi::loadEntitiesById($form['delete']['itemId'], 'ThumbnailImage');
 				if ($ret) {
 					return array($ret, null);
 				}
 				$itemMimeTypesList = $item->getItemMimeTypesList();
 				$ret =
-			GalleryCoreApi::deleteEntityById($form['delete']['itemId'], 'ThumbnailImage');
+				GalleryCoreApi::deleteEntityById($form['delete']['itemId'], 'ThumbnailImage');
 				if ($ret) {
 					return array($ret, null);
 				}
 				$ret = GalleryCoreApi::unregisterToolkitOperation(
-			'Thumbnail', 'thumbnail', $itemMimeTypesList);
+					'Thumbnail',
+					'thumbnail',
+					$itemMimeTypesList
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -104,8 +113,7 @@ class ThumbnailSiteAdminController extends GalleryController
 		return array(null, $this->_exitStatus($status));
 	}
 
-	public function _exitStatus($status)
-	{
+	public function _exitStatus($status) {
 		$results['redirect']['view'] = 'core.SiteAdmin';
 		$results['redirect']['subView'] = 'thumbnail.ThumbnailSiteAdmin';
 		$results['status'] = array($status => 1);
@@ -118,13 +126,11 @@ class ThumbnailSiteAdminController extends GalleryController
 /**
  * Thumbnail manager
  */
-class ThumbnailSiteAdminView extends GalleryView
-{
+class ThumbnailSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -148,7 +154,7 @@ class ThumbnailSiteAdminView extends GalleryView
 		$form['list'] = array();
 		if (!empty($list)) {
 			list($ret, $thumbs) =
-		GalleryCoreApi::loadEntitiesById(array_keys($list), 'ThumbnailImage');
+			GalleryCoreApi::loadEntitiesById(array_keys($list), 'ThumbnailImage');
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -168,13 +174,13 @@ class ThumbnailSiteAdminView extends GalleryView
 		$form['operationSupport'] = $toolkitMime;
 
 	/* Set the form's encoding type since we're uploading binary files */
-	if ($template->hasVariable('SiteAdmin')) {
-		$SiteAdmin =& $template->getVariableByReference('SiteAdmin');
-		$SiteAdmin['enctype'] = 'multipart/form-data';
-	} else {
-		$SiteAdmin['enctype'] = 'multipart/form-data';
-		$template->setVariable('SiteAdmin', $SiteAdmin);
-	}
+		if ($template->hasVariable('SiteAdmin')) {
+			$SiteAdmin =& $template->getVariableByReference('SiteAdmin');
+			$SiteAdmin['enctype'] = 'multipart/form-data';
+		} else {
+			$SiteAdmin['enctype'] = 'multipart/form-data';
+			$template->setVariable('SiteAdmin', $SiteAdmin);
+		}
 
 		$template->setVariable('controller', 'thumbnail.ThumbnailSiteAdmin');
 

@@ -27,66 +27,57 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryLockSystem.class');
  * @author Waldemar Schlackow <waldemar@opencodes.org>
  * @version $Revision: 17580 $
  */
-class MockLockSystem extends GalleryLockSystem
-{
-	public function FlockLockSystem()
-	{
+class MockLockSystem extends GalleryLockSystem {
+	public function FlockLockSystem() {
 		$this->_locks = array();
 	}
 
 	/**
 	 * @see GalleryLockSystem::acquireReadLock
 	 */
-	public function acquireReadLock($ids, $timeout=10)
-	{
+	public function acquireReadLock($ids, $timeout=10) {
 		return array(null, 1);
 	}
 
 	/**
 	 * @see GalleryLockSystem::isReadLocked
 	 */
-	public function isReadLocked($id)
-	{
+	public function isReadLocked($id) {
 		return true;
 	}
 
 	/**
 	 * @see GalleryLockSystem::acquireWriteLock
 	 */
-	public function acquireWriteLock($ids, $timeout=10)
-	{
+	public function acquireWriteLock($ids, $timeout=10) {
 		return array(null, 1);
 	}
 
 	/**
 	 * @see GalleryLockSystem::isWriteLocked
 	 */
-	public function isWriteLocked($id)
-	{
+	public function isWriteLocked($id) {
 		return true;
 	}
 
 	/**
 	 * @see GalleryLockSystem::releaseLocks
 	 */
-	public function releaseLocks($lockIds)
-	{
+	public function releaseLocks($lockIds) {
 		return null;
 	}
 
 	/**
 	 * @see GalleryLockSystem::refreshAllLocks
 	 */
-	public function releaseAllLocks()
-	{
+	public function releaseAllLocks() {
 		return null;
 	}
 
 	/**
 	 * @see GalleryLockSystem::refreshLocks
 	 */
-	public function refreshLocks($freshUntil)
-	{
+	public function refreshLocks($freshUntil) {
 		return null;
 	}
 
@@ -95,8 +86,7 @@ class MockLockSystem extends GalleryLockSystem
 	 *
 	 * @return array lock ids
 	 */
-	public function getLockIds()
-	{
+	public function getLockIds() {
 		return array();
 	}
 }

@@ -24,15 +24,12 @@ require_once dirname(__FILE__) . '/../../modules/core/classes/GalleryCoreApi.cla
  * Welcome screen
  * @package Install
  */
-class WelcomeStep extends InstallStep
-{
-	public function stepName()
-	{
+class WelcomeStep extends InstallStep {
+	public function stepName() {
 		return _('Welcome');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		if (!empty($_POST['language'])) {
 			global $translator, $gallery;
 			$gallery = new GalleryStub();
@@ -44,8 +41,7 @@ class WelcomeStep extends InstallStep
 		return true;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $translator;
 		
 		$templateData['totalSteps'] = count($GLOBALS['steps']) - 1;
@@ -62,8 +58,7 @@ class WelcomeStep extends InstallStep
 		}
 	}
 	
-	public function isOptional()
-	{
+	public function isOptional() {
 		return true;
 	}
 }

@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class AlbumSelectSiteAdminController extends GalleryController
-{
+class AlbumSelectSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -86,13 +84,11 @@ class AlbumSelectSiteAdminController extends GalleryController
 /**
  * Settings for Album Select
  */
-class AlbumSelectSiteAdminView extends GalleryView
-{
+class AlbumSelectSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

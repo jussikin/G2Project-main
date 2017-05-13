@@ -40,15 +40,12 @@ define('REWRITE_STATUS_EMBED_HTACCESS_CANT_WRITE', 18);
  * @version $Revision: 17580 $
  * @author Douglas Cau <douglas@cau.se>
  */
-class ModRewriteParser extends RewriteParser
-{
-	public function __construct()
-	{
+class ModRewriteParser extends RewriteParser {
+	public function __construct() {
 		$this->ModRewriteParser();
 	}
 
-	public function ModRewriteParser()
-	{
+	public function ModRewriteParser() {
 		$this->_setParserId('modrewrite');
 		$this->_setParserType('preGallery');
 		$this->_setUrlGeneratorId('ModRewriteUrlGenerator');
@@ -57,10 +54,10 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::saveActiveRules
 	 */
-	public function saveActiveRules($activeRules=null, $upgradeModule=null)
-	{
+	public function saveActiveRules($activeRules = null, $upgradeModule = null) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		return ModRewriteHelper::saveActiveRules($this, $activeRules, $upgradeModule);
 	}
@@ -68,10 +65,10 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::saveAccessList
 	 */
-	public function saveAccessList($accessList, $allowEmptyReferer)
-	{
+	public function saveAccessList($accessList, $allowEmptyReferer) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		return ModRewriteHelper::saveAccessList($accessList, $allowEmptyReferer);
 	}
@@ -79,10 +76,10 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		return ModRewriteHelper::needsConfiguration();
 	}
@@ -90,8 +87,7 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::getErrorMessage
 	 */
-	public function getErrorMessage($code, $rewriteModule=null)
-	{
+	public function getErrorMessage($code, $rewriteModule = null) {
 		if (!isset($rewriteModule)) {
 			list($ret, $rewriteModule) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 			if ($ret) {
@@ -106,29 +102,29 @@ class ModRewriteParser extends RewriteParser
 
 		if (!isset($message)) {
 			switch ($code) {
-		case REWRITE_STATUS_HTACCESS_CANT_READ:
-		$message = $rewriteModule->translate('Cannot read the .htaccess file');
-		break;
-		case REWRITE_STATUS_HTACCESS_CANT_WRITE:
-		$message = $rewriteModule->translate('Cannot write to the .htaccess file');
-		break;
-		case REWRITE_STATUS_HTACCESS_MISSING:
-		$message = $rewriteModule->translate('Cannot write to the .htaccess file, ' .
-			'please create it.');
-		break;
-		case REWRITE_STATUS_EMBED_HTACCESS_CANT_READ:
-		$message = $rewriteModule->translate('Cannot read the embedded .htaccess file');
-		break;
-		case REWRITE_STATUS_EMBED_HTACCESS_CANT_WRITE:
-		$message = $rewriteModule->translate('Cannot write to the embedded .htaccess file');
-		break;
-		case REWRITE_STATUS_EMBED_HTACCESS_MISSING:
-		$message = $rewriteModule->translate('Cannot write to the embedded .htaccess ' .
-			'file, please create it.');
-		break;
-		default:
-		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
-		}
+				case REWRITE_STATUS_HTACCESS_CANT_READ:
+						$message = $rewriteModule->translate('Cannot read the .htaccess file');
+		            break;
+				case REWRITE_STATUS_HTACCESS_CANT_WRITE:
+						$message = $rewriteModule->translate('Cannot write to the .htaccess file');
+		            break;
+				case REWRITE_STATUS_HTACCESS_MISSING:
+						$message = $rewriteModule->translate('Cannot write to the .htaccess file, ' .
+					'please create it.');
+		            break;
+				case REWRITE_STATUS_EMBED_HTACCESS_CANT_READ:
+						$message = $rewriteModule->translate('Cannot read the embedded .htaccess file');
+		            break;
+				case REWRITE_STATUS_EMBED_HTACCESS_CANT_WRITE:
+						$message = $rewriteModule->translate('Cannot write to the embedded .htaccess file');
+		            break;
+				case REWRITE_STATUS_EMBED_HTACCESS_MISSING:
+						$message = $rewriteModule->translate('Cannot write to the embedded .htaccess ' .
+					'file, please create it.');
+		            break;
+				default:
+		            return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+			}
 		}
 
 		return array(null, $message);
@@ -137,10 +133,10 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::loadTestResultsTemplate
 	 */
-	public function loadTestResultsTemplate(&$template, &$form)
-	{
+	public function loadTestResultsTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		return ModRewriteHelper::loadTestResultsTemplate($template, $form);
 	}
@@ -148,8 +144,7 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::handleTestResultsRequest
 	 */
-	public function handleTestResultsRequest($form)
-	{
+	public function handleTestResultsRequest($form) {
 		$error = $status = array();
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -158,16 +153,24 @@ class ModRewriteParser extends RewriteParser
 		}
 
 		if (isset($form['force']['test1'])) {
-			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite',
-		'modrewrite.status', serialize(array('needOptions' => false, 'forced' => 1)));
+			$ret = GalleryCoreApi::setPluginParameter(
+				'module',
+				'rewrite',
+				'modrewrite.status',
+				serialize(array('needOptions' => false, 'forced' => 1))
+			);
 			if ($ret) {
 				return array($ret, null, null);
 			}
 		}
 
 		if (isset($form['force']['test2'])) {
-			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite',
-		'modrewrite.status', serialize(array('needOptions' => true, 'forced' => 1)));
+			$ret = GalleryCoreApi::setPluginParameter(
+				'module',
+				'rewrite',
+				'modrewrite.status',
+				serialize(array('needOptions' => true, 'forced' => 1))
+			);
 			if ($ret) {
 				return array($ret, null, null);
 			}
@@ -181,10 +184,10 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::loadAdminParserTemplate
 	 */
-	public function loadAdminParserTemplate(&$template, &$form)
-	{
+	public function loadAdminParserTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		return ModRewriteHelper::loadAdminRewriteTemplate($template, $form);
 	}
@@ -192,12 +195,12 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::handleAdminParserRequest
 	 */
-	public function handleAdminParserRequest($form)
-	{
+	public function handleAdminParserRequest($form) {
 		$error = $status = array();
 
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
@@ -205,10 +208,10 @@ class ModRewriteParser extends RewriteParser
 		}
 
 	/* We can only save the embedded .htaccess in embedded mode */
-	if (!GalleryUtilities::isEmbedded()) {
-		return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION),
-		null, null);
-	}
+		if (!GalleryUtilities::isEmbedded()) {
+			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION),
+			null, null);
+		}
 
 		if (empty($form['embeddedLocation']) || empty($form['embeddedHtaccess'])) {
 			$error[] = 'form[error][' . REWRITE_STATUS_EMPTY_VALUE . ']';
@@ -217,10 +220,11 @@ class ModRewriteParser extends RewriteParser
 		}
 
 		list($ret, $code) = ModRewriteHelper::saveEmbedConfig(
-		array('embeddedLocation' => $form['embeddedLocation'],
-		  'embeddedHtaccess' => $form['embeddedHtaccess']),
-		$this,
-		GalleryUtilities::getRequestVariables('controller') != 'SetupRewriteController');
+			array('embeddedLocation' => $form['embeddedLocation'],
+			'embeddedHtaccess' => $form['embeddedHtaccess']),
+			$this,
+			GalleryUtilities::getRequestVariables('controller') != 'SetupRewriteController'
+		);
 		if ($ret) {
 			return array($ret, null, null);
 		}
@@ -237,11 +241,13 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::needsEmbedConfig
 	 */
-	public function needsEmbedConfig()
-	{
+	public function needsEmbedConfig() {
 		foreach (array('embeddedLocation', 'embeddedHtaccess') as $key) {
-			list($ret, $value) = GalleryCoreApi::getPluginParameter('module', 'rewrite',
-		'modrewrite.' . $key);
+			list($ret, $value) = GalleryCoreApi::getPluginParameter(
+				'module',
+				'rewrite',
+				'modrewrite.' . $key
+			);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -257,12 +263,14 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::fetchEmbedConfig
 	 */
-	public function fetchEmbedConfig()
-	{
+	public function fetchEmbedConfig() {
 		$config = array();
 		foreach (array('embeddedLocation', 'embeddedHtaccess') as $key) {
-			list($ret, $value) = GalleryCoreApi::getPluginParameter('module', 'rewrite',
-		'modrewrite.' . $key);
+			list($ret, $value) = GalleryCoreApi::getPluginParameter(
+				'module',
+				'rewrite',
+				'modrewrite.' . $key
+			);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -276,10 +284,10 @@ class ModRewriteParser extends RewriteParser
 	/**
 	 * @see RewriteParser::fetchEmbedConfig
 	 */
-	public function saveEmbedConfig($param)
-	{
+	public function saveEmbedConfig($param) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
+		);
 
 		list($ret, $code) = ModRewriteHelper::saveEmbedConfig($param, $this, true);
 		if ($ret) {

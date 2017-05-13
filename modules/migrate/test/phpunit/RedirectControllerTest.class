@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RedirectControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class RedirectControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'migrate.Redirect');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -99,8 +96,7 @@ class RedirectControllerTest extends GalleryControllerTestCase
 		$this->_headers = array();
 	}
 	
-	public function testRedirect()
-	{
+	public function testRedirect() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$href = $urlGenerator->generateUrl(array(
@@ -316,20 +312,16 @@ class RedirectControllerTest extends GalleryControllerTestCase
  * @package Migrate
  * @subpackage PHPUnit
  */
-class MockPhpVm extends GalleryPhpVm
-{
-	public function MockPhpVm(&$test)
-	{
+class MockPhpVm extends GalleryPhpVm {
+	public function MockPhpVm(&$test) {
 		$this->_test =& $test;
 	}
 	
-	public function header($header)
-	{
+	public function header($header) {
 		$this->_test->_headers[] = $header;
 	}
 	
-	public function exit_($status = null)
-	{
+	public function exit_($status = null) {
 		$this->_test->_exitCalls[] = $status;
 	}
 }

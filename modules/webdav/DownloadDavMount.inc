@@ -25,41 +25,42 @@
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class DownloadDavMountView extends GalleryView
-{
+class DownloadDavMountView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
 		GalleryUtilities::setResponseHeader(
-		'Content-Type: application/davmount+xml; charset=UTF-8');
+			'Content-Type: application/davmount+xml; charset=UTF-8'
+		);
 		GalleryUtilities::setResponseHeader(
-		'Content-Disposition: inline; filename="Gallery.davmount"');
+			'Content-Disposition: inline; filename="Gallery.davmount"'
+		);
 		echo "<dm:mount xmlns:dm=\"http://purl.org/NET/webdav/mount\">\n";
 
 	/*
 	 * I guess URL shouldn't include session id because a query string may break some clients
 	 * and reusing session id by another browser may be considdered session hijacking
 	 */
-	echo '  <dm:url>' . $urlGenerator->generateUrl(array('controller' => 'webdav.WebDav'),
-		array('forceFullUrl' => true, 'forceSessionId' => false)) . "</dm:url>\n";
+		echo '  <dm:url>' . $urlGenerator->generateUrl(
+			array('controller' => 'webdav.WebDav'),
+			array('forceFullUrl' => true, 'forceSessionId' => false)
+		) . "</dm:url>\n";
 
 		list($itemId, $path) = GalleryUtilities::getRequestVariables('itemId', 'path');
 		if (isset($itemId)) {
 			list($ret, $item) =
-		GalleryCoreApi::loadEntitiesById($itemId, 'GalleryFileSystemEntity');
+			GalleryCoreApi::loadEntitiesById($itemId, 'GalleryFileSystemEntity');
 			if ($ret) {
 				return $ret;
 			}

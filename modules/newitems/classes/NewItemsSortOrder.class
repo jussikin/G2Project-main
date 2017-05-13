@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySortInterface_1_2.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class NewItemsSortOrder extends GallerySortInterface_1_2
-{
+class NewItemsSortOrder extends GallerySortInterface_1_2 {
 	/**
 	 * @see GallerySortInterface_1_2::getSortInfo
 	 */
-	public function getSortInfo()
-	{
+	public function getSortInfo() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'newitems');
 		if ($ret) {
 			return array(
@@ -53,8 +51,7 @@ class NewItemsSortOrder extends GallerySortInterface_1_2
 	/**
 	 * @see GallerySortInterface_1_2::getSortOrder
 	 */
-	public function getSortOrder($direction)
-	{
+	public function getSortOrder($direction) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		

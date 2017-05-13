@@ -27,21 +27,18 @@ GalleryCoreApi::requireOnce('modules/permalinks/classes/PermalinksMapHelper.clas
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 17580 $
  */
-class RedirectController extends GalleryController
-{
+class RedirectController extends GalleryController {
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		$alias = GalleryUtilities::getRequestVariables('filename');
 		if (empty($alias)) {
 			return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
@@ -53,19 +50,19 @@ class RedirectController extends GalleryController
 		}
 
 	/* Avoid information disclosure, act as if the item didn't exist. */
-	if (isset($itemId)) {
-		list($ret, $hasPermission) =
-		GalleryCoreApi::hasItemPermission($itemId, 'core.view');
-		if ($ret) {
-			return array($ret, null);
+		if (isset($itemId)) {
+			list($ret, $hasPermission) =
+			GalleryCoreApi::hasItemPermission($itemId, 'core.view');
+			if ($ret) {
+				return array($ret, null);
+			}
 		}
-	}
 		if (empty($itemId) || !$hasPermission) {
 			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
 	/* Delegate to the ShowItem view */
-	GalleryUtilities::putRequestVariable('itemId', $itemId);
+		GalleryUtilities::putRequestVariable('itemId', $itemId);
 		GalleryUtilities::putRequestVariable('view', 'core.ShowItem');
 
 		$results = array('delegate' => array('view' => 'core.ShowItem'),

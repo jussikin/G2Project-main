@@ -33,14 +33,12 @@ GalleryCoreApi::requireOnce('lib/tools/repository/test/phpunit/RepositoryTestTem
  * @package RepositoryTools
  * @subpackage PHPUnit
  */
-class RepositoryToolsIndexTest extends GalleryTestCase
-{
+class RepositoryToolsIndexTest extends GalleryTestCase {
 	/**
 	 * Test that a valid index is being generated and a valid plugin info
 	 * structure is created based on the index.
 	 */
-	public function testIndexGeneration()
-	{
+	public function testIndexGeneration() {
 		global $gallery;
 		
 		$index = new RepositoryIndex();
@@ -107,14 +105,12 @@ class RepositoryToolsIndexTest extends GalleryTestCase
 	}
 }
 
-class RepositoryToolsIndexTestPlatform
-{
+class RepositoryToolsIndexTestPlatform {
 	public $_directories;
 	public $_directoryIndex;
 	public $_writtenData;
 	
-	public function RepositoryToolsIndexTestPlatform($directories, $fileData)
-	{
+	public function RepositoryToolsIndexTestPlatform($directories, $fileData) {
 		$this->_directories = $directories;
 		$this->_directoryIndex = -1;
 		
@@ -127,54 +123,45 @@ class RepositoryToolsIndexTestPlatform
 		$this->_writtenData['repositorydir/index'] = serialize($sampleIndex);
 	}
 	
-	public function setFileContents($path, $fileContents)
-	{
+	public function setFileContents($path, $fileContents) {
 		$this->_writtenData[$path] = $fileContents;
 	}
 	
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		return preg_match('/repositorydir\/[modules|themes]/', $path) ? $path : false;
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		return true;
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return preg_match('/\/$/', $path) ? substr($path, 0, strlen($path) - 1) : $path;
 	}
 	
-	public function readdir($path)
-	{
+	public function readdir($path) {
 		$this->_directoryIndex++;
 
 		return $this->_directories[$this->_directoryIndex];
 	}
 	
-	public function filesize($path)
-	{
+	public function filesize($path) {
 		return 10;
 	}
 	
-	public function file_get_contents($path)
-	{
+	public function file_get_contents($path) {
 		$data = isset($this->_writtenData[$path]) ? $this->_writtenData[$path] : false;
 
 		return $data;
 	}
 	
-	public function file_put_contents($path, $contents)
-	{
+	public function file_put_contents($path, $contents) {
 		$this->_writtenData[$path] = $contents;
 
 		return true;
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		return false;
 	}
 }

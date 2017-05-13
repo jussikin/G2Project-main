@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditPhotoThumbnail');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -139,8 +136,7 @@ class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 		}
 	}
 	
-	public function testEditThumbnail()
-	{
+	public function testEditThumbnail() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][crop]', 1);
 		GalleryUtilities::putRequestVariable('form[crop][x]', '50');
@@ -165,8 +161,7 @@ class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('crop|7.813,10.417,31.25,41.667;scale|200', $this->_derivative[1]->getDerivativeOperations());
 	}
 	
-	public function testEditThumbnail2()
-	{
+	public function testEditThumbnail2() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][crop]', 1);
 		GalleryUtilities::putRequestVariable('form[crop][x]', '0');
@@ -191,8 +186,7 @@ class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('crop|0,0,100,100;scale|200', $this->_derivative[1]->getDerivativeOperations());
 	}
 	
-	public function testEditThumbnail3()
-	{
+	public function testEditThumbnail3() {
 		/* Use inputs where cropper miscalculated a little bit (>100% height) */
 		GalleryUtilities::putRequestVariable('form[action][crop]', 1);
 		GalleryUtilities::putRequestVariable('form[crop][x]', '40');
@@ -217,8 +211,7 @@ class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('crop|6.25,0.417,62.5,100;scale|200', $this->_derivative[1]->getDerivativeOperations());
 	}
 	
-	public function testResetThumbnail()
-	{
+	public function testResetThumbnail() {
 		list($ret, $operations) = GalleryCoreApi::mergeDerivativeOperations('crop|0,0,100,100', $this->_derivative[2]->getDerivativeOperations());
 		
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_derivative[2]->getId());
@@ -265,8 +258,7 @@ class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('scale|200', $this->_derivative[2]->getDerivativeOperations(), 'Crop value not removed');
 	}
 	
-	public function testLocale()
-	{
+	public function testLocale() {
 		/*
 	     * Verify that percentages don't get written like 12,5 if the current locale
 	     * uses a comma for the fraction separator.
@@ -311,36 +303,30 @@ class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryUnknownItem.class');
 
-class ItemEditPhotoThumbnailTestItem extends GalleryUnknownItem
-{
+class ItemEditPhotoThumbnailTestItem extends GalleryUnknownItem {
 	public $width;
 	public $height;
 	
-	public function setWidth($width)
-	{
+	public function setWidth($width) {
 		$this->width = $width;
 	}
 	
-	public function getWidth()
-	{
+	public function getWidth() {
 		return $this->width;
 	}
 	
-	public function setHeight($height)
-	{
+	public function setHeight($height) {
 		$this->height = $height;
 	}
 	
-	public function getHeight()
-	{
+	public function getHeight() {
 		return $this->height;
 	}
 	
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'ItemEditPhotoThumbnailTestItem';
 	}
 }
@@ -350,14 +336,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
 /**
  * Test toolkitk
  */
-class ItemEditPhotoThumbnailPluginTestToolkit extends GalleryToolkit
-{
+class ItemEditPhotoThumbnailPluginTestToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 * Dummy operation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AlbumSelectPreloads
-{
-	public function preload(&$template, $preload, $paramSet)
-	{
+class AlbumSelectPreloads {
+	public function preload(&$template, $preload, $paramSet) {
 		static $loaded;
 		
 		if (!empty($loaded[$preload])) {

@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20886 $
  */
-class FfmpegToolkit extends GalleryToolkit
-{
+class FfmpegToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		list($ret, $width, $height, $duration, $frameRate, $sampleRate, $audioChannels) = $this->_getMovieDimensions($mimeType, $sourceFilename);
 		if ($ret) {
 			return array(
@@ -91,8 +89,7 @@ class FfmpegToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -324,8 +321,7 @@ class FfmpegToolkit extends GalleryToolkit
 	/**
 	 * @access private
 	 */
-	public function _getMovieDimensions($mimeType, $sourceFilename)
-	{
+	public function _getMovieDimensions($mimeType, $sourceFilename) {
 		global $gallery;
 		
 		list($ret, $results, $stderr) = $this->_ffmpeg($sourceFilename, array(
@@ -432,8 +428,7 @@ class FfmpegToolkit extends GalleryToolkit
 	 * @param array $args the command line arguments
 	 * @access private
 	 */
-	public function _ffmpeg($sourceFilename, $args)
-	{
+	public function _ffmpeg($sourceFilename, $args) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

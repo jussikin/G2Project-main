@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PrintPhotoControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class PrintPhotoControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'photoaccess.PrintPhoto');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -129,8 +126,7 @@ class PrintPhotoControllerTest extends GalleryControllerTestCase
 	$gallery->_urlGenerator = new PrintPhotoControllerTestUrlGenerator();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 	/* Restore session id */
@@ -147,8 +143,7 @@ class PrintPhotoControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function &_getTestPlatform($fragment, $requestUrl, $redirectUrl)
-	{
+	public function &_getTestPlatform($fragment, $requestUrl, $redirectUrl) {
 		$platform = new UnitTestPlatform();
 		$platform->setReply('fsockopen', array('www.photoworks.com', 80, '', '', 5), 'testFd');
 		$platform->setReply('fwrite',
@@ -166,8 +161,7 @@ class PrintPhotoControllerTest extends GalleryControllerTestCase
 		return $platform;
 	}
 
-	public function testPrintPhoto()
-	{
+	public function testPrintPhoto() {
 		global $gallery;
 		$gallery->setPlatform(
 		$this->_getTestPlatform('anonCartXML.jsp', '/REQUEST_URL', '/REDIRECT_URL'));
@@ -187,8 +181,7 @@ class PrintPhotoControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('/REQUEST_URL', $session->get('photoaccess.cartUrlFragment'));
 	}
 
-	public function testPrintSecondPhoto()
-	{
+	public function testPrintSecondPhoto() {
 		global $gallery;
 		$gallery->setPlatform($this->_getTestPlatform('EXISTING_FRAGMENT',
 		'/REQUEST_URL2?foo=1&#38;bar=2', '/REDIRECT_URL2?foo=1&#38;bar=2'));
@@ -211,8 +204,7 @@ class PrintPhotoControllerTest extends GalleryControllerTestCase
 				$session->get('photoaccess.cartUrlFragment'));
 	}
 
-	public function testPrintProtectedPhoto()
-	{
+	public function testPrintProtectedPhoto() {
 		global $gallery;
 
 		$itemId = $this->_photo->getId();
@@ -287,10 +279,8 @@ class PrintPhotoControllerTest extends GalleryControllerTestCase
  * @package PhotoAccess
  * @subpackage PHPUnit
  */
-class PrintPhotoControllerTestUrlGenerator extends GalleryUrlGenerator
-{
-	public function generateUrl($params=array(), $options=array())
-	{
+class PrintPhotoControllerTestUrlGenerator extends GalleryUrlGenerator {
+	public function generateUrl($params=array(), $options=array()) {
 		$lines = array();
 		foreach ($params as $key => $value) {
 			$lines[] = "$key=$value";

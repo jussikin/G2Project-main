@@ -25,15 +25,13 @@
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 18138 $
  */
-class ItemMoveController extends GalleryController
-{
+class ItemMoveController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 * @todo Scalability - Don't load all album-items into memory. Need a way to load the items
 	 *       incrementally, e.g. with an AJAX-powered tree widget.
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -317,13 +315,11 @@ class ItemMoveController extends GalleryController
 /**
  * This view will prompt for which items to move and where is the destination.
  */
-class ItemMoveView extends GalleryView
-{
+class ItemMoveView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		/* itemId is the album where we want to move items from */
@@ -523,8 +519,7 @@ class ItemMoveView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

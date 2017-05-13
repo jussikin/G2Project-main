@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class PanoramaOption extends ItemEditOption
-{
+class PanoramaOption extends ItemEditOption {
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		if (!GalleryUtilities::isA($item, 'GalleryPhotoItem')) {
 			return array(null, false);
 		}
@@ -57,8 +55,7 @@ class PanoramaOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		list($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
 		if ($ret) {
 			return array($ret, null, null);
@@ -71,8 +68,7 @@ class PanoramaOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		$isUsingPanoramaRenderer = $item->getRenderer() == 'PanoramaRenderer';
 		if ($isUsingPanoramaRenderer && !isset($form['PanoramaOption']['isPanorama'])) {
 			$item->setRenderer(null);

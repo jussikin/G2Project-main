@@ -22,27 +22,22 @@
  * Create config.php
  * @package Install
  */
-class CreateConfigFileStep extends InstallStep
-{
+class CreateConfigFileStep extends InstallStep {
 	public $_firstTime;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->CreateConfigFileStep();
 	}
 	
-	public function CreateConfigFileStep()
-	{
+	public function CreateConfigFileStep() {
 		$this->_firstTime = true;
 	}
 	
-	public function stepName()
-	{
+	public function stepName() {
 		return _('Create Config File');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		if (!empty($_GET['downloadConfig'])) {
 			GallerySetupUtilities::generateTextFileForDownload('config.php', $this->_getConfigContents());
 
@@ -52,8 +47,7 @@ class CreateConfigFileStep extends InstallStep
 		return true;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $galleryStub;
 		
 		$configDir = $_SESSION['configPath'];
@@ -139,8 +133,7 @@ class CreateConfigFileStep extends InstallStep
 		$this->_firstTime = false;
 	}
 	
-	public function _getConfigContents()
-	{
+	public function _getConfigContents() {
 		global $galleryStub;
 		$configDir = $_SESSION['configPath'];
 		$baseDir = dirname(dirname(dirname(__FILE__)));
@@ -209,8 +202,7 @@ class CreateConfigFileStep extends InstallStep
 	 * @return array (boolean versionsOk, boolean upgradeRecommended,
 	 *                array ('codebase' => string version, 'installed' => string version))
 	 */
-	public function _versionCheck()
-	{
+	public function _versionCheck() {
 		global $galleryStub;
 		
 		$freshInstall = $galleryStub->getConfig('freshInstall');

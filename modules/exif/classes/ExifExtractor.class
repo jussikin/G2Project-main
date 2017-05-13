@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/exif/classes/ExifInterface_1_0.class');
  * @author Georg Rehfeld <rehfeld@georg-rehfeld.de>
  * @version $Revision: 17580 $
  */
-class ExifExtractor extends ExifInterface_1_0
-{
+class ExifExtractor extends ExifInterface_1_0 {
 	/**
 	 * @see ExifInterface_1_0::getMetaData
 	 */
-	public static function getMetaData($itemIds, $properties = array())
-	{
+	public static function getMetaData($itemIds, $properties = array()) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/exif/lib/exifer/exif.inc');
 		

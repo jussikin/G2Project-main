@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/UserRecoverPasswordHel
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17580 $
  */
-class UserRecoverPasswordConfirmController extends GalleryController
-{
+class UserRecoverPasswordConfirmController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$status = $results = $error = array();
@@ -170,13 +168,11 @@ class UserRecoverPasswordConfirmController extends GalleryController
 /**
  * This view shows information about password recovery
  */
-class UserRecoverPasswordConfirmView extends GalleryView
-{
+class UserRecoverPasswordConfirmView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		if ($form['formName'] == 'UserRecoverPasswordConfirm') {

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CoreSearchTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CoreSearchTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -110,8 +107,7 @@ class CoreSearchTest extends GalleryTestCase
 		$this->_user = $gallery->getActiveUser();
 	}
 
-	public function testFetchSearchModuleInfo()
-	{
+	public function testFetchSearchModuleInfo() {
 		if (!isset($this->_coreSearch)) {
 			return;
 		}
@@ -139,8 +135,7 @@ class CoreSearchTest extends GalleryTestCase
 	/**
 	 * Search for all available fields
 	 */
-	public function testSearchAll()
-	{
+	public function testSearchAll() {
 		if (!isset($this->_coreSearch)) {
 			return;
 		}
@@ -253,8 +248,7 @@ class CoreSearchTest extends GalleryTestCase
 	/**
 	 * Search only in the title and keywords
 	 */
-	public function testSearchAllSomeFields()
-	{
+	public function testSearchAllSomeFields() {
 		if (!isset($this->_coreSearch)) {
 			return;
 		}
@@ -352,8 +346,7 @@ class CoreSearchTest extends GalleryTestCase
 	/**
 	 * Search for all available fields, but only request a subset of the total results
 	 */
-	public function testSearchLimited()
-	{
+	public function testSearchLimited() {
 		if (!isset($this->_coreSearch)) {
 			return;
 		}
@@ -438,8 +431,7 @@ class CoreSearchTest extends GalleryTestCase
 		), $results);
 	}
 
-	public function testEmptySearch()
-	{
+	public function testEmptySearch() {
 		if (!isset($this->_coreSearch)) {
 			return;
 		}
@@ -459,8 +451,7 @@ class CoreSearchTest extends GalleryTestCase
 		), $results);
 	}
 
-	public function testSearchLinks()
-	{
+	public function testSearchLinks() {
 		if (!isset($this->_coreSearch)) {
 			return;
 		}

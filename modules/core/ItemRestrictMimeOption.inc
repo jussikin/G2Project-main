@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemRestrictMimeOption extends ItemAddOption
-{
+class ItemRestrictMimeOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $allowMime) = GalleryCoreApi::getPluginParameter('module', 'core', 'allowMime');
 		if ($ret) {
 			return array(
@@ -49,8 +47,7 @@ class ItemRestrictMimeOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		global $gallery;
 		$errors = $warnings = array();
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');

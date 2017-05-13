@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryPluginHelper_medium
-{
+class GalleryPluginHelper_medium {
 	/**
 	 * @see GalleryCoreApi::activatePlugin
 	 */
-	public static function activate($pluginType, $pluginId)
-	{
+	public static function activate($pluginType, $pluginId) {
 		if (empty($pluginId) || empty($pluginType)) {
 			return array(
 				GalleryCoreApi::error(ERROR_BAD_PARAMETER),
@@ -65,8 +63,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::deactivatePlugin
 	 */
-	public static function deactivate($pluginType, $pluginId)
-	{
+	public static function deactivate($pluginType, $pluginId) {
 		if (empty($pluginId) || empty($pluginType)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -87,8 +84,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::removePlugin
 	 */
-	public static function removePlugin($pluginType, $pluginId)
-	{
+	public static function removePlugin($pluginType, $pluginId) {
 		if (empty($pluginId) || empty($pluginType)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -122,8 +118,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::getAllPluginIds
 	 */
-	public static function getAllPluginIds($pluginType)
-	{
+	public static function getAllPluginIds($pluginType) {
 		$cacheKey = "GalleryPluginHelper::getAllPluginIds($pluginType)";
 		if (GalleryDataCache::containsKey($cacheKey)) {
 			$pluginIds = GalleryDataCache::get($cacheKey);
@@ -169,8 +164,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::removePluginParametersForItemId
 	 */
-	public static function removeParametersForItemId($itemId)
-	{
+	public static function removeParametersForItemId($itemId) {
 		global $gallery;
 		
 		if (empty($itemId)) {
@@ -201,8 +195,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::removePluginParameter
 	 */
-	public static function removeParameter($pluginType, $pluginId, $parameterName, $itemIds = 0)
-	{
+	public static function removeParameter($pluginType, $pluginId, $parameterName, $itemIds = 0) {
 		global $gallery;
 		
 		if (empty($pluginType) || empty($pluginId) || empty($parameterName)) {
@@ -247,8 +240,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::removePluginParameterByValue
 	 */
-	public static function removeParameterByValue($pluginType, $pluginId, $parameterName, $parameterValue)
-	{
+	public static function removeParameterByValue($pluginType, $pluginId, $parameterName, $parameterValue) {
 		global $gallery;
 		
 		if (empty($pluginType) || empty($pluginId) || empty($parameterName) || !isset($parameterValue)) {
@@ -279,8 +271,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::removeAllPluginParameters
 	 */
-	public static function removeAllParameters($pluginType, $pluginId)
-	{
+	public static function removeAllParameters($pluginType, $pluginId) {
 		if (empty($pluginType) || empty($pluginId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -311,8 +302,7 @@ class GalleryPluginHelper_medium
 	/**
 	 * @see GalleryCoreApi::setPluginParameter
 	 */
-	public static function setParameter($pluginType, $pluginId, $parameterName, $parameterValue, $itemId = 0)
-	{
+	public static function setParameter($pluginType, $pluginId, $parameterName, $parameterValue, $itemId = 0) {
 		global $gallery;
 		
 		if ($gallery->getDebug()) {
@@ -384,8 +374,7 @@ class GalleryPluginHelper_medium
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public static function _addParameter($pluginType, $pluginId, $parameterName, $parameterValue, $itemId = 0)
-	{
+	public static function _addParameter($pluginType, $pluginId, $parameterName, $parameterValue, $itemId = 0) {
 		if (empty($pluginType) || empty($pluginId) || empty($parameterName)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -423,8 +412,7 @@ class GalleryPluginHelper_medium
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public static function _updateParameter($pluginType, $pluginId, $parameterName, $parameterValue, $itemId = 0)
-	{
+	public static function _updateParameter($pluginType, $pluginId, $parameterName, $parameterValue, $itemId = 0) {
 		if (empty($pluginType) || empty($pluginId) || empty($parameterName)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -461,8 +449,7 @@ class GalleryPluginHelper_medium
 	 * @param GalleryPlugin $instance
 	 * @access protected
 	 */
-	public function setPluginInstance($pluginType, $pluginId, &$instance)
-	{
+	public function setPluginInstance($pluginType, $pluginId, &$instance) {
 		GalleryDataCache::putByReference("GalleryPluginHelper::loadPlugin($pluginType, $pluginId)", $instance, true);
 	}
 }

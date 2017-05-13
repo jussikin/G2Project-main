@@ -27,13 +27,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryThemeHelper_medium
-{
+class GalleryThemeHelper_medium {
 	/**
 	 * @see GalleryCoreApi::loadThemeSettingsForm
 	 */
-	public static function loadThemeSettingsForm($themeId, $itemId, &$template, &$form)
-	{
+	public static function loadThemeSettingsForm($themeId, $itemId, &$template, &$form) {
 		$data = array();
 		if (empty($themeId)) {
 			list($ret, $themeId) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.theme');
@@ -113,8 +111,7 @@ class GalleryThemeHelper_medium
 	/**
 	 * @see GalleryCoreApi::loadAvailableBlocks
 	 */
-	public static function loadAvailableBlocks($getInactive = false)
-	{
+	public static function loadAvailableBlocks($getInactive = false) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -155,8 +152,7 @@ class GalleryThemeHelper_medium
 	/**
 	 * @see GalleryCoreApi::handleThemeSettingsRequest
 	 */
-	public static function handleThemeSettingsRequest($themeId, $itemId, $form)
-	{
+	public static function handleThemeSettingsRequest($themeId, $itemId, $form) {
 		if (empty($themeId)) {
 			list($ret, $themeId) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.theme');
 			if ($ret) {

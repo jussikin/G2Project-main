@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/imagemagick/classes/ImageMagickToolkitHelpe
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20886 $
  */
-class ImageMagickToolkit extends GalleryToolkit
-{
+class ImageMagickToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		switch ($propertyName) {
 			case 'dimensions':
 				list($ret, $width, $height) = $this->_getImageDimensions($mimeType, $sourceFilename);
@@ -93,8 +91,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		static $convertOps = array('thumbnail', 'scale', 'resize', 'rotate', 'crop', 'convert-to-image/jpeg', 'select-page');
 		
@@ -461,8 +458,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::getImageDimensions
 	 */
-	public function _getImageDimensions($mimeType, $filename)
-	{
+	public function _getImageDimensions($mimeType, $filename) {
 		global $gallery;
 		
 		/*
@@ -527,8 +523,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	 * Call 'identify' and count the pages
 	 * @access private
 	 */
-	public function _getPageCount($filename, $mimeType)
-	{
+	public function _getPageCount($filename, $mimeType) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -594,8 +589,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	 * Call 'identify' to determine the image colorspace
 	 * @access private
 	 */
-	public function _getColorspace($filename)
-	{
+	public function _getColorspace($filename) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -651,8 +645,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _transformImage($mimeType, $cmd, $args, $sourceFilename, $destFilename, $outputMimeType, $jpegQuality = null)
-	{
+	public function _transformImage($mimeType, $cmd, $args, $sourceFilename, $destFilename, $outputMimeType, $jpegQuality = null) {
 		global $gallery;
 		
 		/* Get a temp file name and figure out our convert-from-pnm command */
@@ -819,8 +812,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	 * @return mixed string/error?
 	 * @access private
 	 */
-	public function _imageMagickCmd($cmd)
-	{
+	public function _imageMagickCmd($cmd) {
 		list($ret, $imageMagickPath) = GalleryCoreApi::getPluginParameter('module', 'imagemagick', 'path');
 		if ($ret) {
 			return $ret;
@@ -839,8 +831,7 @@ class ImageMagickToolkit extends GalleryToolkit
 	 * @param int $h target height (optional)
 	 * @access private
 	 */
-	public function _addResizeParam(&$transform, $w, $h = null)
-	{
+	public function _addResizeParam(&$transform, $w, $h = null) {
 		$size = isset($h) ? ($w . 'x' . $h) : ($w . 'x' . $w);
 		$transform = array_merge($transform, empty($transform) ? array(
 			'-size',

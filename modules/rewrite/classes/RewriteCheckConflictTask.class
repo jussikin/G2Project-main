@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class RewriteCheckConflictTask extends MaintenanceTask
-{
+class RewriteCheckConflictTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 
 		return array(
@@ -49,8 +47,7 @@ class RewriteCheckConflictTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -119,8 +116,7 @@ class RewriteCheckConflictTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::requiresProgressBar
 	 */
-	public function requiresProgressBar()
-	{
+	public function requiresProgressBar() {
 		return true;
 	}
 }

@@ -26,8 +26,7 @@
  * @version $Revision: 18154 $
  * @static
  */
-class FfmpegToolkitHelper
-{
+class FfmpegToolkitHelper {
 	/**
 	 * Figure out what operations and properties are supported by the
 	 * FfmpegToolkit and return them.
@@ -35,8 +34,7 @@ class FfmpegToolkitHelper
 	 * @return GalleryStatus a status code
 	 *         array('operations' => ..., 'properties' => ...)
 	 */
-	public static function getOperationsAndProperties()
-	{
+	public static function getOperationsAndProperties() {
 		global $gallery;
 		
 		list($ret, $ffmpegPath) = GalleryCoreApi::getPluginParameter('module', 'ffmpeg', 'path');
@@ -197,8 +195,7 @@ class FfmpegToolkitHelper
 	 *         array of strings listing available audio codecs for encoding
 	 *         string containing the ffmpeg version
 	 */
-	public static function testBinary($ffmpegPath)
-	{
+	public static function testBinary($ffmpegPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

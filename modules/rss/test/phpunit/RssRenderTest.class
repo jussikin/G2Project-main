@@ -31,15 +31,12 @@ GalleryCoreApi::requireOnce('modules/rss/Render.inc');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 20940 $
  */
-class RssRenderTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class RssRenderTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -115,8 +112,7 @@ class RssRenderTest extends GalleryControllerTestCase
 		$this->_render = new RenderView();
 	}
 
-	public function testValidateRssSimple()
-	{
+	public function testValidateRssSimple() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -141,8 +137,7 @@ class RssRenderTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testValidateRss()
-	{
+	public function testValidateRss() {
 		global $gallery;
 
 	/* create a test feed */
@@ -192,8 +187,7 @@ class RssRenderTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testRssSimpleRenderAlbum()
-	{
+	public function testRssSimpleRenderAlbum() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('itemId', $this->_root->getId());
@@ -251,8 +245,7 @@ class RssRenderTest extends GalleryControllerTestCase
 		explode($platform->getLineEnding(), $results));
 	}
 
-	public function testRssSimpleRenderPhotos()
-	{
+	public function testRssSimpleRenderPhotos() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('itemId', $this->_root->getId());
@@ -311,31 +304,25 @@ class RssRenderTest extends GalleryControllerTestCase
 	}
 }
 
-class RenderViewTestUrlGenerator
-{
-	public function generateUrl($params)
-	{
+class RenderViewTestUrlGenerator {
+	public function generateUrl($params) {
 		return sprintf('url:%d', $params['itemId']);
 	}
 }
 
-class RssRenderTestVm
-{
-	public function header($string)
-	{
+class RssRenderTestVm {
+	public function header($string) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
 		echo 'Header: ' . $string . $platform->getLineEnding();
 	}
 
-	public function headers_sent()
-	{
+	public function headers_sent() {
 		return false;
 	}
 
-	public function time()
-	{
+	public function time() {
 		return 1234567890;
 	}
 }

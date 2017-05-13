@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditPhoto extends ItemEditPlugin
-{
+class ItemEditPhoto extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		global $gallery;
 		
 		$status = null;
@@ -238,8 +236,7 @@ class ItemEditPhoto extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		global $gallery;
 		
 		if ($form['formName'] != 'ItemEditPhoto') {
@@ -350,16 +347,14 @@ class ItemEditPhoto extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		return (GalleryUtilities::isA($item, 'GalleryPhotoItem'));
 	}
 	
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

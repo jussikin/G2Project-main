@@ -30,8 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @author Larry Menard <larry.menard@rogers.com>
  * @version $Revision: 17997 $
  */
-class MSSqlStorage extends GalleryStorage
-{
+class MSSqlStorage extends GalleryStorage {
 	/**
 	 * Version info of database server
 	 * @var string
@@ -39,13 +38,11 @@ class MSSqlStorage extends GalleryStorage
 	 */
 	public $_serverInfo;
 	
-	public function __construct($config)
-	{
+	public function __construct($config) {
 		$this->MSSqlStorage($config);
 	}
 	
-	public function MSSqlStorage($config)
-	{
+	public function MSSqlStorage($config) {
 		$this->GalleryStorage($config);
 		$this->_isTransactional = true;
 		$this->_isEmptyAllowedForNotNullColumn = true;
@@ -59,16 +56,14 @@ class MSSqlStorage extends GalleryStorage
 	 * Return the type of this database
 	 * @return string
 	 */
-	public function getType()
-	{
+	public function getType() {
 		return 'mssql';
 	}
 	
 	/**
 	 * @see GalleryStorage::_getSqlReplacements
 	 */
-	public function _getSqlReplacements()
-	{
+	public function _getSqlReplacements() {
 		/* For SQL Server versions pre-2005, use type NTEXT.  For 2005+, use NVARCHAR(MAX). */
 		if (!$this->_serverInfo) {
 			if (preg_match("/(\d+(\.\d+)+)/", $this->getVersion(), $matches)) {
@@ -90,8 +85,7 @@ class MSSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::getFunctionsSql
 	 */
-	public function getFunctionSql($functionName, $args)
-	{
+	public function getFunctionSql($functionName, $args) {
 		switch ($functionName) {
 			case 'CONCAT':
 				foreach ($args as $key => $value) {
@@ -184,8 +178,7 @@ class MSSqlStorage extends GalleryStorage
 	 * Get database version.
 	 * @return string version
 	 */
-	public function getVersion()
-	{
+	public function getVersion() {
 		list($ret, $tmpDb) = $this->_getConnection(true);
 		if ($ret) {
 			return $ret;
@@ -207,8 +200,7 @@ class MSSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::_getOptimizeStatements
 	 */
-	public function _getOptimizeStatements()
-	{
+	public function _getOptimizeStatements() {
 		return array(
 			'UPDATE STATISTICS %s'
 		);
@@ -217,16 +209,14 @@ class MSSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::encodeBlob
 	 */
-	public function encodeBlob($blob)
-	{
+	public function encodeBlob($blob) {
 		return addcslashes($blob, "\000..\037\047\134\177..\377");
 	}
 	
 	/**
 	 * @see GalleryStorage::decodeBlob
 	 */
-	public function decodeBlob($blob)
-	{
+	public function decodeBlob($blob) {
 		return stripcslashes($blob);
 	}
 }

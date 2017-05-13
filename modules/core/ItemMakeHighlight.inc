@@ -25,13 +25,11 @@
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 17580 $
  */
-class ItemMakeHighlightController extends GalleryController
-{
+class ItemMakeHighlightController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$status = array();
 		$error  = array();
 		
@@ -102,13 +100,11 @@ class ItemMakeHighlightController extends GalleryController
 /**
  * This view will prompt for which ancestor album to set the highlight
  */
-class ItemMakeHighlightView extends GalleryView
-{
+class ItemMakeHighlightView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return array(
@@ -164,8 +160,7 @@ class ItemMakeHighlightView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

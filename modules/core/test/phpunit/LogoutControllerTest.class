@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18040 $
  */
-class LogoutControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class LogoutControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.Logout');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -57,8 +54,7 @@ class LogoutControllerTest extends GalleryControllerTestCase
 		GalleryUtilities::removeRequestVariable('authorization');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		/* Restore the session */
@@ -69,8 +65,7 @@ class LogoutControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testLogout()
-	{
+	public function testLogout() {
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
 			'status' => array(),
@@ -83,8 +78,7 @@ class LogoutControllerTest extends GalleryControllerTestCase
 		$this->assertEquals((int) $this->_anonymousId, $this->_session->getUserId(), 'userId');
 	}
 	
-	public function testLogoutAlternateGuest()
-	{
+	public function testLogoutAlternateGuest() {
 		global $gallery;
 		$gallery->setConfig('anonymousUserId', $userId = $gallery->getActiveUserId());
 		
@@ -100,8 +94,7 @@ class LogoutControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($userId, $this->_session->getUserId(), 'userId');
 	}
 	
-	public function testLogoutEventDelegate()
-	{
+	public function testLogoutEventDelegate() {
 		$ret = GalleryCoreApi::registerEventListener('Gallery::Logout', new LogoutControllerTestEventListener());
 		if ($ret) {
 			return $ret;
@@ -120,47 +113,39 @@ class LogoutControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class LogoutControllerTestSession
-{
+class LogoutControllerTestSession {
 	public $_resetCallCount = 0;
 	public $_userId;
 	
-	public function reset()
-	{
+	public function reset() {
 		$this->_resetCallCount++;
 
 		return null;
 	}
 	
-	public function isUsingCookies()
-	{
+	public function isUsingCookies() {
 		return true;
 	}
 	
-	public function setUserId($userId)
-	{
+	public function setUserId($userId) {
 		$this->_userId = $userId;
 	}
 	
-	public function getUserId()
-	{
+	public function getUserId() {
 		return $this->_userId;
 	}
 	
-	public function put($key, $value)
-	{
+	public function put($key, $value) {
 	}
 	
-	public function exists($key)
-	{
+	public function exists($key) {
 		return false;
 	}
 }
 
 class LogoutControllerTestEventListener /* extends GalleryEventListener */
 {
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		return array(
 			null,
 			array(

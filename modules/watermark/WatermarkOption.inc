@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class WatermarkOption extends ItemAddOption
-{
+class WatermarkOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'watermark');
 		if ($ret) {
 			return array($ret, null, null);
@@ -67,12 +65,11 @@ class WatermarkOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 
 	/* Only appropriate if we've got some watermarks to show */
-	list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
+		list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -83,8 +80,7 @@ class WatermarkOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'watermark');
 		if ($ret) {
 			return array($ret, null, null);
@@ -95,13 +91,18 @@ class WatermarkOption extends ItemAddOption
 
 		if (!empty($form['WatermarkOption']['watermarkId'])) {
 			list($ret, $watermark) = GalleryCoreApi::loadEntitiesById(
-		$form['WatermarkOption']['watermarkId'], 'WatermarkImage');
+				$form['WatermarkOption']['watermarkId'],
+				'WatermarkImage'
+			);
 			if ($ret) {
 				if (!$ret->getErrorCode() & ERROR_MISSING_OBJECT) {
 					return array($ret, null, null);
 				}
-				$ret = GalleryCoreApi::addEventLogEntry('WATERMARK ERROR',
-			'Watermark doesn\'t exist', $form['WatermarkOption']['watermarkId']);
+				$ret = GalleryCoreApi::addEventLogEntry(
+					'WATERMARK ERROR',
+					'Watermark doesn\'t exist',
+					$form['WatermarkOption']['watermarkId']
+				);
 				if ($ret) {
 					return array($ret, null, null);
 				}
@@ -111,7 +112,7 @@ class WatermarkOption extends ItemAddOption
 					return array($ret, null, null);
 				}
 				$message =
-			$module->translate('Error: Missing watermark. Please see the Event Logs '
+				$module->translate('Error: Missing watermark. Please see the Event Logs '
 					   . 'page in the Site Admin.');
 
 				return array(null, array($message), array());
@@ -120,13 +121,16 @@ class WatermarkOption extends ItemAddOption
 			foreach ($items as $i => $item) {
 				if (GalleryUtilities::isA($item, 'GalleryPhotoItem')) {
 					$watermarkArray =
-			array(DERIVATIVE_TYPE_IMAGE_THUMBNAIL => $watermark->getApplyToThumbnail(),
-				  DERIVATIVE_TYPE_IMAGE_RESIZE => $watermark->getApplyToResizes(),
-				  DERIVATIVE_TYPE_IMAGE_PREFERRED => $watermark->getApplyToPreferred());
-					$ret = WatermarkHelper::watermarkItem($watermark, $item,
-							  $watermark->getXPercentage(),
-							  $watermark->getYPercentage(),
-							  $watermarkArray);
+					array(DERIVATIVE_TYPE_IMAGE_THUMBNAIL => $watermark->getApplyToThumbnail(),
+					DERIVATIVE_TYPE_IMAGE_RESIZE => $watermark->getApplyToResizes(),
+					DERIVATIVE_TYPE_IMAGE_PREFERRED => $watermark->getApplyToPreferred());
+					$ret = WatermarkHelper::watermarkItem(
+						$watermark,
+						$item,
+						$watermark->getXPercentage(),
+						$watermark->getYPercentage(),
+						$watermarkArray
+					);
 					if ($ret) {
 						return array($ret, null, null);
 					}

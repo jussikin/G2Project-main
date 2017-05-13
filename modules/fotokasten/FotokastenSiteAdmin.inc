@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class FotokastenSiteAdminController extends GalleryController
-{
+class FotokastenSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -96,13 +94,11 @@ class FotokastenSiteAdminController extends GalleryController
 /**
  * Settings for Fotokasten
  */
-class FotokastenSiteAdminView extends GalleryView
-{
+class FotokastenSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

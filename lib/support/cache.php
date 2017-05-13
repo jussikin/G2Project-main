@@ -4,8 +4,7 @@ if (!defined('G2_SUPPORT')) {
 	require_once dirname(__FILE__) . '/lib/support/defaultloc.inc';
 }
 
-function getCaches()
-{
+function getCaches() {
 	$dirs = array(
 		'cached_pages' => array(
 			true,
@@ -87,8 +86,7 @@ function getCaches()
 	return $dirs;
 }
 
-function recursiveRmdir($dirname, &$status)
-{
+function recursiveRmdir($dirname, &$status) {
 	$count = 0;
 	if (!file_exists($dirname)) {
 		return $count;
@@ -138,8 +136,7 @@ function recursiveRmdir($dirname, &$status)
 	return $count;
 }
 
-function clearPageCache()
-{
+function clearPageCache() {
 	global $gallery;
 	$storage =& $gallery->getStorage();
 	
@@ -170,8 +167,7 @@ function clearPageCache()
 	return $status;
 }
 
-function clearG2DataDir($dir)
-{
+function clearG2DataDir($dir) {
 	global $gallery;
 	$path = $gallery->getConfig('data.gallery.base') . $dir;
 	$status = array(
@@ -200,8 +196,7 @@ function clearG2DataDir($dir)
 	return $status;
 }
 
-function clearInstallUpgradeLogs()
-{
+function clearInstallUpgradeLogs() {
 	global $gallery;
 	$path = $gallery->getConfig('data.gallery.base');
 	$status = array();
@@ -268,44 +263,44 @@ if (isset($_REQUEST['clear']) && isset($_REQUEST['target'])) {
 }
 ?>
 <html lang="en">
-  <head>
-    <title>Gallery Support | Cache Maintenance</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>support.css">
-  </head>
-  <body>
-    <div id="content">
-      <div id="title">
-    <a href="../../">Gallery</a> &raquo;
-    <a href="<?php generateUrl('index.php'); ?>">Support</a> &raquo; Cache Maintenance
-      </div>
-      <h2>
-    Gallery caches data on disk to increase performance.
-    Occasionally these caches get out of date and need to be deleted.
-    Anything in the cache can be deleted safely!  Gallery will
-    rebuild anything it needs.
-      </h2>
+	<head>
+	<title>Gallery Support | Cache Maintenance</title>
+	<link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>support.css">
+	</head>
+	<body>
+	<div id="content">
+	  <div id="title">
+	<a href="../../">Gallery</a> &raquo;
+	<a href="<?php generateUrl('index.php'); ?>">Support</a> &raquo; Cache Maintenance
+	  </div>
+	  <h2>
+	Gallery caches data on disk to increase performance.
+	Occasionally these caches get out of date and need to be deleted.
+	Anything in the cache can be deleted safely!  Gallery will
+	rebuild anything it needs.
+	  </h2>
 
-        <?php if (!empty($status)) : ?>
-      <div class="success">
-    <?php foreach ($status as $line) : ?>
-    <pre class="<?php echo $line[0]; ?>"><?php echo $line[1]; ?></pre>
-    <?php endforeach; ?>
-      </div>
-        <?php endif; ?>
+		<?php if (!empty($status)) : ?>
+	  <div class="success">
+	<?php foreach ($status as $line) : ?>
+	<pre class="<?php echo $line[0]; ?>"><?php echo $line[1]; ?></pre>
+	<?php endforeach; ?>
+	  </div>
+		<?php endif; ?>
 
-        <?php startForm(); ?>
-        <p>
-        <?php $caches = getCaches(); ?>
-        <?php foreach ($caches as $key => $info) : ?>
-      <input type="checkbox" name="target[<?php echo $key; ?>]"
-            <?php if ($info[0]) :
+		<?php startForm(); ?>
+		<p>
+		<?php $caches = getCaches(); ?>
+		<?php foreach ($caches as $key => $info) : ?>
+	  <input type="checkbox" name="target[<?php echo $key; ?>]"
+			<?php if ($info[0]) :
 ?> checked="checked" <?php
 endif; ?>>
-        <?php echo $info[3]; ?> <br>
-        <?php endforeach; ?>
-      <input type="submit" name="clear" value="Clear Cache">
-    </p>
-      </form>
-    </div>
-  </body>
+		<?php echo $info[3]; ?> <br>
+		<?php endforeach; ?>
+	  <input type="submit" name="clear" value="Clear Cache">
+	</p>
+	  </form>
+	</div>
+	</body>
 </html>

@@ -26,15 +26,12 @@
  * @author Jonas Forsberg <jonas@gargamel.nu> (Initial dTree integration)
  * @version $Revision: 18172 $
  */
-class AlbumSelectModule extends GalleryModule
-{
-	public function __construct()
-	{
+class AlbumSelectModule extends GalleryModule {
+	public function __construct() {
 		$this->AlbumSelectModule();
 	}
 	
-	public function AlbumSelectModule()
-	{
+	public function AlbumSelectModule() {
 		global $gallery;
 		$this->setId('albumselect');
 		$this->setName($gallery->i18n('Album Select'));
@@ -56,8 +53,7 @@ class AlbumSelectModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'AlbumSelectModule', 'AlbumSelectModule', 'modules/albumselect/module.inc', 'albumselect', array(
 			'Gallery::ViewableTreeChange',
 			'Gallery::ItemOrder',
@@ -71,8 +67,7 @@ class AlbumSelectModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'albumselect');
 		if ($ret) {
 			return $ret;
@@ -128,8 +123,7 @@ class AlbumSelectModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -145,8 +139,7 @@ class AlbumSelectModule extends GalleryModule
 	 * Event handler for Gallery::ViewableTreeChange
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$invalidateCache = false;
 		if ($event->getEventName() == 'Gallery::ViewableTreeChange') {
 			$invalidateCache = true;

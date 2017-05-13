@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class')
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class RewriteUrlGeneratorTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RewriteUrlGeneratorTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -67,22 +64,19 @@ class RewriteUrlGeneratorTest extends GalleryTestCase
 		GalleryDataCache::reset();
 	}
 
-	public function testGetCurrentUrl()
-	{
+	public function testGetCurrentUrl() {
 		$expected = 'http://example.com/gallery2/phpunit_test.php?foo=1&bar=2';
 		$this->assertEquals($expected, $this->_urlGenerator->getCurrentUrl());
 		$this->assertEquals(false, $this->_urlGenerator->_error, 'error');
 	}
 
-	public function testGetCurrentUrlDir()
-	{
+	public function testGetCurrentUrlDir() {
 		$expected = 'http://example.com/gallery2/';
 		$this->assertEquals($expected, $this->_urlGenerator->getCurrentUrlDir());
 		$this->assertEquals(false, $this->_urlGenerator->_error, 'error');
 	}
 
-	public function testInit()
-	{
+	public function testInit() {
 		$urlGenerator = new RewriteUrlGenerator();
 		$ret = $urlGenerator->init('phpunit_test.php');
 		if ($ret) {
@@ -94,8 +88,7 @@ class RewriteUrlGeneratorTest extends GalleryTestCase
 				$urlGenerator->_shortUrls);
 	}
 
-	public function testParseShortUrl1()
-	{
+	public function testParseShortUrl1() {
 		$params = $options = $functions = array();
 		$url = 't/%phpunit%';
 		$params['phpunit'] = 'test';
@@ -106,8 +99,7 @@ class RewriteUrlGeneratorTest extends GalleryTestCase
 		$this->assertEquals(array(), $params, 'params');
 	}
 
-	public function testParseShortUrl2()
-	{
+	public function testParseShortUrl2() {
 		$params = $options = $functions = array();
 		$url = 't/%phpunit%';
 
@@ -115,8 +107,7 @@ class RewriteUrlGeneratorTest extends GalleryTestCase
 		$this->assert(!$ret, 'status');
 	}
 
-	public function testParseShortUrlNoUrlEncode()
-	{
+	public function testParseShortUrlNoUrlEncode() {
 		$params = $options = $functions = array();
 		$url = 't/%phpunit%';
 		$params['phpunit'] = 'The Quick!Brown#Fox';

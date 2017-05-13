@@ -22,15 +22,12 @@
  * Install plugins.
  * @package Install
  */
-class InstallOtherModulesStep extends InstallStep
-{
-	public function stepName()
-	{
+class InstallOtherModulesStep extends InstallStep {
+	public function stepName() {
 		return _('Install Plugins');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		$templateData = array();
 		$this->_init($templateData);
 		
@@ -145,8 +142,7 @@ class InstallOtherModulesStep extends InstallStep
 		return false;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		$this->_init($templateData);
 		$groupedModules = $groupLabel = $moduleInstalled = $moduleInvalid = array();
 		
@@ -212,8 +208,7 @@ class InstallOtherModulesStep extends InstallStep
 		}
 	}
 	
-	public function _init(&$templateData)
-	{
+	public function _init(&$templateData) {
 		require_once dirname(__FILE__) . '/../../modules/core/classes/GalleryDataCache.class';
 		$cacheKey = 'Installer::installOtherModulesStepInitialized';
 		if (!GalleryDataCache::containsKey($cacheKey)) {
@@ -249,13 +244,11 @@ class InstallOtherModulesStep extends InstallStep
 		}
 	}
 	
-	public function isRedoable()
-	{
+	public function isRedoable() {
 		return false;
 	}
 	
-	public function isOptional()
-	{
+	public function isOptional() {
 		return true;
 	}
 	
@@ -263,8 +256,7 @@ class InstallOtherModulesStep extends InstallStep
 	 * Find admin user and set as active user.
 	 * @return GalleryStatus a status code
 	 */
-	public function _selectAdminUser()
-	{
+	public function _selectAdminUser() {
 		global $gallery;
 		
 		list($ret, $siteAdminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
@@ -297,8 +289,7 @@ class InstallOtherModulesStep extends InstallStep
 	 *
 	 * Note: we do the same in the upgrader
 	 */
-	public function _sortModules($a, $b)
-	{
+	public function _sortModules($a, $b) {
 		if ($a == 'gd' && $b == 'gd') {
 			return 0;
 		} elseif ($a == 'gd') {

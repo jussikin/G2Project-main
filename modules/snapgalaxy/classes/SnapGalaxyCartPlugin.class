@@ -30,24 +30,21 @@ class SnapGalaxyCartPlugin /* implements CartPluginInterface_1_0 and CartPluginI
 	/**
 	 * @see CartPluginInterface_1_0::getSupportedItemTypes
 	 */
-	public function getSupportedItemTypes()
-	{
+	public function getSupportedItemTypes() {
 		return array('GalleryPhotoItem');
 	}
 
 	/**
 	 * @see CartPluginInterface_1_1::getRequiredPermissions
 	 */
-	public function getRequiredPermissions()
-	{
+	public function getRequiredPermissions() {
 		return array('snapgalaxy.print');
 	}
 
 	/**
 	 * @see CartPluginInterface_1_0::getActionDisplayName
 	 */
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'snapgalaxy');
 		if ($ret) {
 			return array($ret, null);
@@ -59,8 +56,7 @@ class SnapGalaxyCartPlugin /* implements CartPluginInterface_1_0 and CartPluginI
 	/**
 	 * @see CartPluginInterface_1_0::fulfillCart
 	 */
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 

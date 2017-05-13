@@ -25,13 +25,11 @@
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 17580 $
  */
-class Getid3DescriptionOption extends ItemAddOption
-{
+class Getid3DescriptionOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $addOption) = GalleryCoreApi::getPluginParameter('module', 'getid3', 'addOption');
 		if ($ret) {
 			return array(
@@ -49,8 +47,7 @@ class Getid3DescriptionOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		$errors = $warnings = array();
 		GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Extractor.class');
 		GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Helper.class');

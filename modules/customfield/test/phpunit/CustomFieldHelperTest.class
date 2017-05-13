@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class CustomFieldHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CustomFieldHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodname);
 	}
 	
-	public function testHandleAdminAction()
-	{
+	public function testHandleAdminAction() {
 		$form = GalleryUtilities::getFormVariables('form');
 		$form['action']['add']['common'] = 'Add';
 		$form['common']['newField'] = '';
@@ -51,8 +48,7 @@ class CustomFieldHelperTest extends GalleryTestCase
 		), $status, 'handleAdmin Action status');
 	}
 	
-	public function testFetchFieldValues()
-	{
+	public function testFetchFieldValues() {
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;

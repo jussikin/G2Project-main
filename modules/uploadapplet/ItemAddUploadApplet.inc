@@ -24,13 +24,11 @@
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 17580 $
  */
-class ItemAddUploadApplet extends ItemAddPlugin
-{
+class ItemAddUploadApplet extends ItemAddPlugin {
 	/**
 	 * @see ItemAdd:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		global $gallery;
 
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'uploadapplet');
@@ -53,7 +51,7 @@ class ItemAddUploadApplet extends ItemAddPlugin
 	     * Force the use of the G2 base for the url and the cookie path as the applet will
 	     * communicate to G2 directly, even when G2 is embedded
 	     */
-		$ItemAddUploadApplet['g2BaseUrl'] = $urlGenerator->getCurrentUrlDir(true);
+			$ItemAddUploadApplet['g2BaseUrl'] = $urlGenerator->getCurrentUrlDir(true);
 			list($ret, $cookiePath) = $urlGenerator->getCookiePath(true);
 			if ($ret) {
 				return array($ret, null, null);
@@ -79,7 +77,7 @@ class ItemAddUploadApplet extends ItemAddPlugin
 			$ItemAddUploadApplet['locale'] = $locale;
 
 			list($ret, $params) =
-		GalleryCoreApi::fetchAllPluginParameters('module', 'uploadapplet');
+			GalleryCoreApi::fetchAllPluginParameters('module', 'uploadapplet');
 			if ($ret) {
 				return array($ret, null, null);
 			}
@@ -105,8 +103,7 @@ class ItemAddUploadApplet extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'uploadapplet');
 		if ($ret) {
 			return array($ret, null);

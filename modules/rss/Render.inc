@@ -31,34 +31,31 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17657 $
  */
-class RenderView extends GalleryView
-{
+class RenderView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 
 	/* get all parameters */
-	list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 		if ($ret) {
 			return $ret;
 		}
 
 	/* retrieve request variables */
-	$name = GalleryUtilities::getRequestVariables('name');
+		$name = GalleryUtilities::getRequestVariables('name');
 
 	/* we're a configurable feed, load the parameters */
-	list($ret, $params1) = RssMapHelper::fetchFeed($name);
+		list($ret, $params1) = RssMapHelper::fetchFeed($name);
 		if ($ret) {
 			$this->handleError($gallery->i18n('This feed no longer exists!'));
 
@@ -91,23 +88,22 @@ class RenderView extends GalleryView
 		return null;
 	}
 
-	public function continueRender($params)
-	{
+	public function continueRender($params) {
 		global $gallery;
 
 	/* check permissions */
-	list($ret, $perm) = GalleryCoreApi::hasItemPermission($params['itemId'], 'core.view');
+		list($ret, $perm) = GalleryCoreApi::hasItemPermission($params['itemId'], 'core.view');
 		if ($ret) {
 			return $ret;
 		}
 
 		if (!$perm) {
 			/* Avoid information disclosure, act as if the item didn't exist. */
-		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
+			return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 		}
 
 	/* check render type */
-	$feedType = $params['feedType'];
+		$feedType = $params['feedType'];
 		if (!in_array($feedType, array('album',
 					'photos',
 					'photosRecursive',
@@ -122,36 +118,37 @@ class RenderView extends GalleryView
 		}
 
 	/* check if comments are active */
-	if (in_array($feedType, array('commentsAlbum', 'commentsPhoto', 'commentsRecursive'))) {
-		/* make sure that the comments module is active */
-		list($ret, $modulestatus) = GalleryCoreApi::fetchPluginStatus('module');
-		if ($ret) {
-			return $ret;
+		if (in_array($feedType, array('commentsAlbum', 'commentsPhoto', 'commentsRecursive'))) {
+			/* make sure that the comments module is active */
+			list($ret, $modulestatus) = GalleryCoreApi::fetchPluginStatus('module');
+			if ($ret) {
+				return $ret;
+			}
+
+			if ($modulestatus['comment']['active'] != '1') {
+				$this->handleError($gallery->i18n(
+					'Comments module is not active or comment feeds are not allowed!'
+				));
+
+				return null;
+			}
+
+			/* check the permissions */
+			list($ret, $perm) =
+			GalleryCoreApi::hasItemPermission($params['itemId'], 'comment.view');
+			if ($ret) {
+				return $ret;
+			}
+
+			if (!$perm) {
+				$this->handleError($gallery->i18n('Not permitted to view comments for this item'));
+
+				return null;
+			}
 		}
-
-		if ($modulestatus['comment']['active'] != '1') {
-			$this->handleError($gallery->i18n(
-			'Comments module is not active or comment feeds are not allowed!'));
-
-			return null;
-		}
-
-		/* check the permissions */
-		list($ret, $perm) =
-		GalleryCoreApi::hasItemPermission($params['itemId'], 'comment.view');
-		if ($ret) {
-			return $ret;
-		}
-
-		if (!$perm) {
-			$this->handleError($gallery->i18n('Not permitted to view comments for this item'));
-
-			return null;
-		}
-	}
 
 	/* check if count is set, if not, retrieve default values */
-	$maxcount = $params['maxCount'];
+		$maxcount = $params['maxCount'];
 		$count = $params['count'];
 		if (empty($count)) {
 			$count = $params['defaultCount'];
@@ -162,7 +159,7 @@ class RenderView extends GalleryView
 		$params['count'] = $count;
 
 	/* create an instance of the rss data generator */
-	$generator = new RssGenerator();
+		$generator = new RssGenerator();
 
 		$ret = RssHelper::getFeed($generator, $params['itemId'], $params);
 		if ($ret) {
@@ -184,14 +181,13 @@ class RenderView extends GalleryView
 		return null;
 	}
 
-	public function handleError($message)
-	{
+	public function handleError($message) {
 		header('HTTP/1.0 500 Internal Server Error');
 
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
 		if ($ret) {
 			/* swallow the error and just print the untranslated message */
-		echo($message);
+			echo($message);
 		} else {
 			echo($module->translate($message));
 		}

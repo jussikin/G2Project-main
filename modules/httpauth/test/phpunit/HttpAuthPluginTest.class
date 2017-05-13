@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthPlugin.class');
  * @author Jack Bates<ms419@freezone.co.uk>
  * @version $Revision: 17627 $
  */
-class HttpAuthPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class HttpAuthPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -61,8 +58,7 @@ class HttpAuthPluginTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		
@@ -77,8 +73,7 @@ class HttpAuthPluginTest extends GalleryTestCase
 		}
 	}
 	
-	public function testValidUser()
-	{
+	public function testValidUser() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -95,8 +90,7 @@ class HttpAuthPluginTest extends GalleryTestCase
 		$this->assert($session->regenerateWasCalled(), 'Session has not been regenerated!');
 	}
 	
-	public function testInvalidUser()
-	{
+	public function testInvalidUser() {
 		$_SERVER['PHP_AUTH_USER'] = 'bogusUser-' . rand();
 		$_SERVER['PHP_AUTH_PW'] = 'password';
 		
@@ -112,8 +106,7 @@ class HttpAuthPluginTest extends GalleryTestCase
 		));
 	}
 	
-	public function testValidUserInvalidPassword()
-	{
+	public function testValidUserInvalidPassword() {
 		$_SERVER['PHP_AUTH_USER'] = $this->_user->getUserName();
 		$_SERVER['PHP_AUTH_PW'] = 'wrongPassword';
 		
@@ -129,8 +122,7 @@ class HttpAuthPluginTest extends GalleryTestCase
 		));
 	}
 	
-	public function testNoFailedLoginEventForSpecialLogoutUsername()
-	{
+	public function testNoFailedLoginEventForSpecialLogoutUsername() {
 		$_SERVER['PHP_AUTH_USER'] = '__LOGOUT__' . rand();
 		$_SERVER['PHP_AUTH_PW'] = 'somepassword';
 		
@@ -147,25 +139,20 @@ class HttpAuthPluginTest extends GalleryTestCase
 /**
  * Mock Session
  */
-class HttpAuthPluginTestSession
-{
-	public function HttpAuthPluginTestSession()
-	{
+class HttpAuthPluginTestSession {
+	public function HttpAuthPluginTestSession() {
 		$this->_regenerateWasCalled = false;
 	}
 	
-	public function getUserId()
-	{
+	public function getUserId() {
 		return null;
 	}
 	
-	public function regenerate()
-	{
+	public function regenerate() {
 		$this->_regenerateWasCalled = true;
 	}
 	
-	public function regenerateWasCalled()
-	{
+	public function regenerateWasCalled() {
 		return $this->_regenerateWasCalled;
 	}
 }

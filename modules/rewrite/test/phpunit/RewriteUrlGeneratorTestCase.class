@@ -25,10 +25,8 @@
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class RewriteUrlGeneratorTestCase extends GalleryTestCase
-{
-	public function setUp()
-	{
+class RewriteUrlGeneratorTestCase extends GalleryTestCase {
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -107,8 +105,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		GalleryDataCache::reset();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_savedSession;
 
@@ -127,8 +124,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 	}
 
 	/* Prepare a test album / item / derivative which is needed for real short URLs */
-	public function _prepareTestItems()
-	{
+	public function _prepareTestItems() {
 		list($ret, $this->_testAlbum) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -163,8 +159,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		return null;
 	}
 
-	public function _urlGeneratorInit($urlGeneratorName)
-	{
+	public function _urlGeneratorInit($urlGeneratorName) {
 		$this->_urlGeneratorName = $urlGeneratorName;
 		$this->_urlGenerator = new $urlGeneratorName();
 		GalleryDataCache::reset();
@@ -176,8 +171,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		return null;
 	}
 
-	public function testGetCurrentUrl()
-	{
+	public function testGetCurrentUrl() {
 		$this->_urlGenerator = new $this->_urlGeneratorName();
 		$ret = $this->_urlGenerator->init();
 		if ($ret) {
@@ -189,8 +183,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		$this->assertEquals(false, $this->_urlGenerator->_error, 'error');
 	}
 
-	public function testGetCurrentUrlEmbedded()
-	{
+	public function testGetCurrentUrlEmbedded() {
 		GalleryDataCache::put('G2_EMBED', 1, true);
 		$_SERVER['REQUEST_URI'] = '/cms/index.php?mod=gallery2';
 		unset($_SERVER['QUERY_STRING']);
@@ -204,8 +197,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		$this->assertEquals(false, $this->_urlGenerator->_error, 'error');
 	}
 
-	public function testGetCurrentUrlDir()
-	{
+	public function testGetCurrentUrlDir() {
 		$this->_urlGenerator = new $this->_urlGeneratorName();
 		$ret = $this->_urlGenerator->init();
 		if ($ret) {
@@ -216,8 +208,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		$this->assertEquals(false, $this->_urlGenerator->_error, 'error');
 	}
 
-	public function testGetCurrentUrlDirEmbedded()
-	{
+	public function testGetCurrentUrlDirEmbedded() {
 		GalleryDataCache::put('G2_EMBED', 1, true);
 		$_SERVER['REQUEST_URI'] = '/cms/index.php?mod=gallery2';
 		$expectedUrl = 'http://example.com/cms/';
@@ -234,8 +225,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 				'no forceDirect');
 	}
 
-	public function testGetBaseUrl()
-	{
+	public function testGetBaseUrl() {
 		$_SERVER['REQUEST_URI'] = '/gallery2/phpunit_test.php?foo=1&bar=2';
 		$urlGenerator = new $this->_urlGeneratorName();
 		$ret = $urlGenerator->init('phpunit_test.php');
@@ -258,8 +248,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 				'baseParams no forceDirect');
 	}
 
-	public function testGetBaseUrlEmbedded()
-	{
+	public function testGetBaseUrlEmbedded() {
 		GalleryDataCache::put('G2_EMBED', 1, true);
 		$urlGenerator = new $this->_urlGeneratorName();
 		$ret = $urlGenerator->init('/cms/index.php', 'https://direct/gallery2/');
@@ -282,8 +271,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 				'baseParams no forceDirect');
 	}
 
-	public function testInitAndOnLoad()
-	{
+	public function testInitAndOnLoad() {
 		/* Set something up that the _onLoad() function should handle */
 	GalleryUtilities::removeRequestVariable('itemId');
 		GalleryUtilities::putRequestVariable('view', 'core.ShowItem');
@@ -321,8 +309,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 	 * @param array $options generation options
 	 * @return GalleryStatus
 	 */
-	public function _runGenerateUrlTest($env, $expectedUrl, $params=null, $options=null)
-	{
+	public function _runGenerateUrlTest($env, $expectedUrl, $params=null, $options=null) {
 		global $gallery;
 		GalleryDataCache::reset();
 
@@ -421,8 +408,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		return null;
 	}
 
-	public function _getTestUrlParams()
-	{
+	public function _getTestUrlParams() {
 		/*
 	 * These are 17 test URLs that should give a good test coverage
 	 *  0. rand164.NonShort (normal module view URL)
@@ -488,8 +474,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 	 * Make sure that we can generate first a URL that goes to embedded Gallery and then another URL
 	 * that goes to Gallery directly (2 base URLs)
 	 */
-	public function testGenerateUrlEmbeddedThenDirect()
-	{
+	public function testGenerateUrlEmbeddedThenDirect() {
 		$env = array('REQUEST_URI' => '/cms/otherpage/?foo=bar',
 			 'G2_EMBED' => 1,
 			 'baseUri' => '/cms/',
@@ -513,8 +498,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlNonShortUrl()
-	{
+	public function testGenerateUrlNonShortUrl() {
 		/* A normal long URL */
 	$expectedUrl = '/gallery2/main.php?g2_view=random3734.NoShortUrl&amp;g2_foo=bar';
 		$params = array('view' => 'random3734.NoShortUrl', 'foo' => 'bar');
@@ -551,8 +535,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 	 *  7. forceServerRelativeUrl => (implicitly tested with normal URLs)
 	 *  8. useAuthToken => boolean; to force auth token to be in/not in the URL
 	 */
-	public function testGenerateUrl()
-	{
+	public function testGenerateUrl() {
 		$params = $this->_getTestUrlParams();
 
 		$expectedUrl[0] = '/gallery2/' . GALLERY_MAIN_PHP
@@ -585,8 +568,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlForceFullUrl()
-	{
+	public function testGenerateUrlForceFullUrl() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -629,8 +611,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlForceSessionId()
-	{
+	public function testGenerateUrlForceSessionId() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -675,8 +656,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlNoHtmlEntities()
-	{
+	public function testGenerateUrlNoHtmlEntities() {
 		$params = $this->_getTestUrlParams();
 		$options = array('htmlEntities' => false);
 
@@ -710,8 +690,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlNoUrlEncode()
-	{
+	public function testGenerateUrlNoUrlEncode() {
 		$params = $this->_getTestUrlParams();
 		$options = array('urlEncode' => false);
 
@@ -746,8 +725,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlEmbeddedCookieless()
-	{
+	public function testGenerateUrlEmbeddedCookieless() {
 		$env = array('REQUEST_URI' => '/cms/otherpage/?foo=bar',
 			 'G2_EMBED' => true,
 			 'baseUri' => '/cms/index.php?mod=gallery2',
@@ -795,8 +773,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlEmbedded()
-	{
+	public function testGenerateUrlEmbedded() {
 		$env = array('REQUEST_URI' => '/cms/otherpage/?foo=bar',
 			 'G2_EMBED' => true,
 			 'baseUri' => '/cms/index.php?mod=gallery2',
@@ -835,8 +812,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlMultisite()
-	{
+	public function testGenerateUrlMultisite() {
 		$env = array('galleryBaseUrl' => 'codebase/rep/');
 		$params = $this->_getTestUrlParams();
 
@@ -868,8 +844,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlEmbeddedMultisite()
-	{
+	public function testGenerateUrlEmbeddedMultisite() {
 		$env = array('REQUEST_URI' => '/cms/otherpage/?foo=bar',
 			 'G2_EMBED' => true,
 			 'baseUri' => '/cms/index.php?mod=gallery2',
@@ -908,8 +883,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlEmbeddedCookiePathNotSet()
-	{
+	public function testGenerateUrlEmbeddedCookiePathNotSet() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -952,8 +926,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlEmbeddedForceFullUrl()
-	{
+	public function testGenerateUrlEmbeddedForceFullUrl() {
 		$env = array('REQUEST_URI' => '/cms/otherpage/?foo=bar',
 			 'G2_EMBED' => true,
 			 'baseUri' => 'https://cms.com/cms/index.php?mod=gallery2',
@@ -993,8 +966,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlEmbeddedForceSessionIdToFalse()
-	{
+	public function testGenerateUrlEmbeddedForceSessionIdToFalse() {
 		/* Verify that all URLs are free of session ids when forceSessionId is set to false */
 	$env = array('REQUEST_URI' => '/cms/otherpage/?foo=bar',
 			 'G2_EMBED' => true,
@@ -1034,8 +1006,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlOverrideBaseUri()
-	{
+	public function testGenerateUrlOverrideBaseUri() {
 		$env = array('baseUri' => 'index.php?page=photos',
 			 'REQUEST_URI' => '/gallery2/index.php?page=photos');
 		$params = $this->_getTestUrlParams();
@@ -1071,8 +1042,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlRewriteErrorFallback()
-	{
+	public function testGenerateUrlRewriteErrorFallback() {
 		$params = $this->_getTestUrlParams();
 	/*
 	 * Simulate an error during RewriteUrlGenerator operations, but help it to fallback
@@ -1114,8 +1084,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlUseAuthTokenTrue()
-	{
+	public function testGenerateUrlUseAuthTokenTrue() {
 		$params = $this->_getTestUrlParams();
 		$options = array('useAuthToken' => true);
 
@@ -1152,8 +1121,7 @@ class RewriteUrlGeneratorTestCase extends GalleryTestCase
 		}
 	}
 
-	public function testGenerateUrlUseAuthTokenFalse()
-	{
+	public function testGenerateUrlUseAuthTokenFalse() {
 		$params = $this->_getTestUrlParams();
 		$options = array('useAuthToken' => false);
 

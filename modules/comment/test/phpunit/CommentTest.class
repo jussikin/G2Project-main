@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17990 $
  */
-class CommentTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CommentTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -88,8 +85,7 @@ class CommentTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFetchComments()
-	{
+	public function testFetchComments() {
 		list($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId(), 2, ORDER_ASCENDING);
 		if ($ret) {
 			return $ret;
@@ -101,8 +97,7 @@ class CommentTest extends GalleryTestCase
 		), $comments);
 	}
 	
-	public function testFetchCommentCounts()
-	{
+	public function testFetchCommentCounts() {
 		list($ret, $counts) = GalleryCommentHelper::fetchCommentCounts(array(
 			$this->_item->getId()
 		));
@@ -113,8 +108,7 @@ class CommentTest extends GalleryTestCase
 		$this->assertEquals(3, $counts[$this->_item->getId()], 'Count is wrong');
 	}
 	
-	public function testFetchAllComments()
-	{
+	public function testFetchAllComments() {
 		global $gallery;
 		list($ret, $item2) = $this->_createRandomDataItem($this->_album->getId());
 		if ($ret) {
@@ -207,8 +201,7 @@ class CommentTest extends GalleryTestCase
 		), $comments, 'multiroot');
 	}
 	
-	public function testGetItemSummaries()
-	{
+	public function testGetItemSummaries() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'comment');
 		if ($ret) {
 			return $ret;
@@ -239,8 +232,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert(!isset($content[$itemId]), 'got an item summary');
 	}
 	
-	public function testCreateModifyAndDeleteComment()
-	{
+	public function testCreateModifyAndDeleteComment() {
 		global $gallery;
 		
 		/* Create a comment */
@@ -284,8 +276,7 @@ class CommentTest extends GalleryTestCase
 	}
 	
 	/* Verify that the comments are deleted if the commenter is deleted */
-	public function testDeleteCommentsOnDeleteUserEvent()
-	{
+	public function testDeleteCommentsOnDeleteUserEvent() {
 		global $gallery;
 		
 		/* Create a user that we can delete */
@@ -353,8 +344,7 @@ class CommentTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFetchCommentsWithPublishStatus()
-	{
+	public function testFetchCommentsWithPublishStatus() {
 		list($ret, $comments) = GalleryCommentHelper::fetchComments($this->_item->getId(), 2, ORDER_ASCENDING, COMMENT_PUBLISH_STATUS_UNPUBLISHED);
 		if ($ret) {
 			return $ret;
@@ -365,8 +355,7 @@ class CommentTest extends GalleryTestCase
 		), $comments);
 	}
 	
-	public function testFetchAllCommentsWithPublishStatus()
-	{
+	public function testFetchAllCommentsWithPublishStatus() {
 		list($ret, $comments) = GalleryCommentHelper::fetchAllComments($this->_album->getId(), 3, null, ORDER_DESCENDING, COMMENT_PUBLISH_STATUS_UNPUBLISHED);
 		if ($ret) {
 			return $ret;
@@ -376,8 +365,7 @@ class CommentTest extends GalleryTestCase
 		), $comments);
 	}
 	
-	public function testFetchAllCommentsWithPublishStatuses()
-	{
+	public function testFetchAllCommentsWithPublishStatuses() {
 		list($ret, $comments) = GalleryCommentHelper::fetchAllComments($this->_item->getId(), null, null, ORDER_ASCENDING, array(
 			COMMENT_PUBLISH_STATUS_UNPUBLISHED,
 			COMMENT_PUBLISH_STATUS_SPAM
@@ -392,8 +380,7 @@ class CommentTest extends GalleryTestCase
 		), $comments);
 	}
 	
-	public function testSaveCommentWithCommentsModerateActive()
-	{
+	public function testSaveCommentWithCommentsModerateActive() {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::setPluginParameter('module', 'comment', 'comments.moderate', 1);
@@ -424,8 +411,7 @@ class CommentTest extends GalleryTestCase
 		$this->assertEquals($comment->getPublishStatus(), COMMENT_PUBLISH_STATUS_UNPUBLISHED);
 	}
 	
-	public function testSaveCommentWithCommentsModerateIsInactive()
-	{
+	public function testSaveCommentWithCommentsModerateIsInactive() {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::setPluginParameter('module', 'comment', 'comments.moderate', 0);
@@ -456,8 +442,7 @@ class CommentTest extends GalleryTestCase
 		$this->assertEquals($comment->getPublishStatus(), COMMENT_PUBLISH_STATUS_PUBLISHED);
 	}
 	
-	public function testSaveCommentChecksWithAkismetWhenAkismetActive()
-	{
+	public function testSaveCommentChecksWithAkismetWhenAkismetActive() {
 		list($ret, $akismetActive) = GalleryCoreApi::setPluginParameter('module', 'comment', 'akismet.active', 1);
 		if ($ret) {
 			return $ret;
@@ -472,8 +457,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert($helper->wasCalled('checkWithAkismet'));
 	}
 	
-	public function testSaveCommentDoesntCheckWithAkismetWhenAkismetIsInactive()
-	{
+	public function testSaveCommentDoesntCheckWithAkismetWhenAkismetIsInactive() {
 		list($ret, $akismetActive) = GalleryCoreApi::setPluginParameter('module', 'comment', 'akismet.active', 0);
 		if ($ret) {
 			return $ret;
@@ -488,8 +472,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert(!$helper->wasCalled('checkWithAkismet'));
 	}
 	
-	public function testSaveCommentDoesntCheckWithAkismetWhenListenerIsDisabled()
-	{
+	public function testSaveCommentDoesntCheckWithAkismetWhenListenerIsDisabled() {
 		list($ret, $akismetActive) = GalleryCoreApi::setPluginParameter('module', 'comment', 'akismet.active', 0);
 		if ($ret) {
 			return $ret;
@@ -508,8 +491,7 @@ class CommentTest extends GalleryTestCase
 		GalleryCommentHelper::setAkismetSaveListenerSwitch(true);
 	}
 	
-	public function testCheckWithAkismet_NewSpamComment()
-	{
+	public function testCheckWithAkismet_NewSpamComment() {
 		$comment = new GalleryComment();
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
 		$comment->setPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
@@ -527,8 +509,7 @@ class CommentTest extends GalleryTestCase
 		$this->assertEquals(COMMENT_PUBLISH_STATUS_SPAM, $comment->getPublishStatus());
 	}
 	
-	public function testCheckWithAkismet_NewNonSpamComment_AkismetError()
-	{
+	public function testCheckWithAkismet_NewNonSpamComment_AkismetError() {
 		$comment = new GalleryComment();
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
 		$comment->setPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
@@ -546,8 +527,7 @@ class CommentTest extends GalleryTestCase
 		$this->assertEquals(COMMENT_PUBLISH_STATUS_UNPUBLISHED, $comment->getPublishStatus());
 	}
 	
-	public function testCheckWithAkismet_NewNonSpamComment()
-	{
+	public function testCheckWithAkismet_NewNonSpamComment() {
 		$comment = new GalleryComment();
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
 		$comment->setPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
@@ -565,8 +545,7 @@ class CommentTest extends GalleryTestCase
 		$this->assertEquals(COMMENT_PUBLISH_STATUS_PUBLISHED, $comment->getPublishStatus());
 	}
 	
-	public function testCheckWithAkismet_MarkedAsSpam()
-	{
+	public function testCheckWithAkismet_MarkedAsSpam() {
 		$comment = new GalleryComment();
 		$comment->_persistentStatus['originalValue']['publishStatus'] = COMMENT_PUBLISH_STATUS_PUBLISHED;
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_SPAM);
@@ -580,8 +559,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert($akismet->wasCalled('submitSpam'));
 	}
 	
-	public function testCheckWithAkismet_MarkedAsHam()
-	{
+	public function testCheckWithAkismet_MarkedAsHam() {
 		$comment = new GalleryComment();
 		$comment->_persistentStatus['originalValue']['publishStatus'] = COMMENT_PUBLISH_STATUS_SPAM;
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
@@ -595,8 +573,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert($akismet->wasCalled('submitHam'));
 	}
 	
-	public function testCheckWithAkismet_MarkedAsHam_AkismetError()
-	{
+	public function testCheckWithAkismet_MarkedAsHam_AkismetError() {
 		$comment = new GalleryComment();
 		$comment->_persistentStatus['originalValue']['publishStatus'] = COMMENT_PUBLISH_STATUS_SPAM;
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_PUBLISHED);
@@ -610,8 +587,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert($akismet->wasCalled('submitHam'));
 	}
 	
-	public function testCheckWithAkismet_MarkedAsSpam_AkismetError()
-	{
+	public function testCheckWithAkismet_MarkedAsSpam_AkismetError() {
 		$comment = new GalleryComment();
 		$comment->_persistentStatus['originalValue']['publishStatus'] = COMMENT_PUBLISH_STATUS_PUBLISHED;
 		$comment->setPublishStatus(COMMENT_PUBLISH_STATUS_SPAM);
@@ -625,8 +601,7 @@ class CommentTest extends GalleryTestCase
 		$this->assert($akismet->wasCalled('submitSpam'));
 	}
 	
-	public function testGetLatestCommentTime()
-	{
+	public function testGetLatestCommentTime() {
 		list($ret, $commentTime) = GalleryCommentHelper::getLatestCommentTime('301.302.303.304');
 		if ($ret) {
 			return $ret;
@@ -641,54 +616,44 @@ class CommentTest extends GalleryTestCase
 	}
 }
 
-class CommentTest_MockAkismetApi
-{
-	public function checkComment($comment)
-	{
+class CommentTest_MockAkismetApi {
+	public function checkComment($comment) {
 		$_GET['mock']['called']['checkComment'] = true;
 
 		return $_GET['mock']['returnFor']['checkComment'];
 	}
 	
-	public function submitSpam($comment)
-	{
+	public function submitSpam($comment) {
 		$_GET['mock']['called']['submitSpam'] = true;
 
 		return $_GET['mock']['returnFor']['submitSpam'];
 	}
 	
-	public function submitHam($comment)
-	{
+	public function submitHam($comment) {
 		$_GET['mock']['called']['submitHam'] = true;
 
 		return $_GET['mock']['returnFor']['submitHam'];
 	}
 	
-	public function setReturnFor($function, $return)
-	{
+	public function setReturnFor($function, $return) {
 		$_GET['mock']['returnFor'][$function] = $return;
 	}
 	
-	public function wasCalled($function)
-	{
+	public function wasCalled($function) {
 		return !empty($_GET['mock']['called'][$function]);
 	}
 }
 
-class CommentTest_GalleryCommentHelper_MockCheckWithAkismet extends GalleryCommentHelper
-{
-	public function GalleryCommentHelper_MockCheckWithAkismet()
-	{
+class CommentTest_GalleryCommentHelper_MockCheckWithAkismet extends GalleryCommentHelper {
+	public function GalleryCommentHelper_MockCheckWithAkismet() {
 		$this->_checkWithAkismetCalled = false;
 	}
 	
-	public function wasCalled($function)
-	{
+	public function wasCalled($function) {
 		return !empty($this->_calls[$function]);
 	}
 	
-	public function checkWithAkismet()
-	{
+	public function checkWithAkismet() {
 		$this->_calls['checkWithAkismet'] = true;
 
 		return null;

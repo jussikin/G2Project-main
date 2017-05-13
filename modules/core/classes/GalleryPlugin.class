@@ -27,8 +27,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryPlugin
-{
+class GalleryPlugin {
 	/**
 	 * The id of this plugin
 	 * @var string
@@ -117,8 +116,7 @@ class GalleryPlugin
 	 * @see GalleryTranslator::translateDomain
 	 * @see Gallery::i18n
 	 */
-	public function translate($params)
-	{
+	public function translate($params) {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		if (!isset($translator)) {
@@ -146,8 +144,7 @@ class GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array redirect info for error page (empty for success)
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -241,8 +238,7 @@ class GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array redirect info for error page (empty for success)
 	 */
-	public function deactivate($postDeactivationEvent = true)
-	{
+	public function deactivate($postDeactivationEvent = true) {
 		$pluginType = $this->getPluginType();
 		$pluginId = $this->getId();
 		
@@ -277,8 +273,7 @@ class GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array redirect info for error page (empty for success)
 	 */
-	public function reactivate()
-	{
+	public function reactivate() {
 		global $gallery;
 		
 		if ($gallery->getDebug()) {
@@ -352,8 +347,7 @@ class GalleryPlugin
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _postDeactivationEvent()
-	{
+	public function _postDeactivationEvent() {
 		$event = GalleryCoreApi::newEvent('Gallery::DeactivatePlugin');
 		$event->setData(array(
 			'pluginType' => $this->getPluginType(),
@@ -372,8 +366,7 @@ class GalleryPlugin
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		global $gallery;
 		
 		/* Remove this plugin */
@@ -421,8 +414,7 @@ class GalleryPlugin
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function installOrUpgrade()
-	{
+	public function installOrUpgrade() {
 		global $gallery;
 		
 		/**
@@ -502,8 +494,7 @@ class GalleryPlugin
 	/**
 	 * Flush plugin-related caches.
 	 */
-	public function _flushPluginCache()
-	{
+	public function _flushPluginCache() {
 		/* Flush the cache */
 		$pluginType = $this->getPluginType();
 		GalleryDataCache::remove("GalleryPluginHelper::fetchPluginStatus($pluginType)");
@@ -521,8 +512,7 @@ class GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               boolean true if active
 	 */
-	public function isActive()
-	{
+	public function isActive() {
 		global $gallery;
 		
 		list($ret, $pluginStatus) = GalleryCoreApi::fetchPluginStatus($this->getPluginType());
@@ -554,8 +544,7 @@ class GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               mixed value
 	 */
-	public function getParameter($parameterName, $itemId = 0)
-	{
+	public function getParameter($parameterName, $itemId = 0) {
 		list($ret, $value) = GalleryCoreApi::getPluginParameter($this->getPluginType(), $this->getId(), $parameterName, $itemId);
 		if ($ret) {
 			return array(
@@ -578,8 +567,7 @@ class GalleryPlugin
 	 * @param int $itemId (optional)
 	 * @return GalleryStatus a status code
 	 */
-	public function setParameter($parameterName, $parameterValue, $itemId = 0)
-	{
+	public function setParameter($parameterName, $parameterValue, $itemId = 0) {
 		$ret = GalleryCoreApi::setPluginParameter($this->getPluginType(), $this->getId(), $parameterName, $parameterValue, $itemId);
 		if ($ret) {
 			return $ret;
@@ -595,8 +583,7 @@ class GalleryPlugin
 	 * @param int $itemId (optional)
 	 * @return GalleryStatus a status code
 	 */
-	public function removeParameter($parameterName, $itemId = 0)
-	{
+	public function removeParameter($parameterName, $itemId = 0) {
 		$ret = GalleryCoreApi::removePluginParameter($this->getPluginType(), $this->getId(), $parameterName, $itemId);
 		if ($ret) {
 			return $ret;
@@ -614,8 +601,7 @@ class GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array parameters in key => value form
 	 */
-	public function fetchParameters($itemId = null)
-	{
+	public function fetchParameters($itemId = null) {
 		$order = array(
 			null
 		);
@@ -656,73 +642,60 @@ class GalleryPlugin
 	 * @return GalleryStatus a status code
 	 * @access protected
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		return null;
 	}
 	
 	/* Getters and setters below */
 	
-	public function setId($id)
-	{
+	public function setId($id) {
 		$this->_id = $id;
 	}
 	
-	public function getId()
-	{
+	public function getId() {
 		return $this->_id;
 	}
 	
-	public function setName($name)
-	{
+	public function setName($name) {
 		$this->_name = $name;
 	}
 	
-	public function getName()
-	{
+	public function getName() {
 		return $this->_name;
 	}
 	
-	public function setDescription($description)
-	{
+	public function setDescription($description) {
 		$this->_description = $description;
 	}
 	
-	public function getDescription()
-	{
+	public function getDescription() {
 		return $this->_description;
 	}
 	
-	public function setVersion($version)
-	{
+	public function setVersion($version) {
 		$this->_version = $version;
 	}
 	
-	public function getVersion()
-	{
+	public function getVersion() {
 		return $this->_version;
 	}
 	
-	public function getL10Domain()
-	{
+	public function getL10Domain() {
 		return $this->getPluginType() . 's_' . $this->getId();
 	}
 	
-	public function setRequiredCoreApi($requirement)
-	{
+	public function setRequiredCoreApi($requirement) {
 		$this->_requiredCoreApi = $requirement;
 	}
 	
-	public function getRequiredCoreApi()
-	{
+	public function getRequiredCoreApi() {
 		return $this->_requiredCoreApi;
 	}
 	
 	/**
 	 * @access protected
 	 */
-	public function getPluginType()
-	{
+	public function getPluginType() {
 		return null;
 	}
 }

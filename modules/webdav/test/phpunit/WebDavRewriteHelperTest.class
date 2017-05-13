@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class')
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class WebDavRewriteHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class WebDavRewriteHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -48,8 +45,7 @@ class WebDavRewriteHelperTest extends GalleryTestCase
 		$gallery->setUrlGenerator($urlGenerator);
 	}
 
-	public function testParsePath()
-	{
+	public function testParsePath() {
 		/* Create test items */
 	list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {

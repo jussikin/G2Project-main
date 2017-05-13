@@ -22,15 +22,12 @@
  * Install complete
  * @package Install
  */
-class FinishedStep extends InstallStep
-{
-	public function stepName()
-	{
+class FinishedStep extends InstallStep {
+	public function stepName() {
 		return _('Finish Installation');
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $galleryStub;
 		
 		$templateData['baseUri'] = $_SESSION['baseUri'];

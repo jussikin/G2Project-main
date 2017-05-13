@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 20957 $
  */
-class DatabaseImportTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DatabaseImportTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -53,8 +50,7 @@ class DatabaseImportTest extends GalleryTestCase
 		$storage->_columnPrefix = 'g_';
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$this->_xmlParser->release();
 
@@ -69,12 +65,10 @@ class DatabaseImportTest extends GalleryTestCase
 	 * parent to the various GalleryXxxImport classes under test.  When they follow the parent chain
 	 * they expect to find this method.
 	 */
-	public function updateStatus($progress = 1, $total = 0)
-	{
+	public function updateStatus($progress = 1, $total = 0) {
 	}
 
-	public function testVerifyVersions()
-	{
+	public function testVerifyVersions() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$storage =& $gallery->getStorage();
@@ -325,8 +319,7 @@ class DatabaseImportTest extends GalleryTestCase
 		$this->assertEquals($expected, $errors, 'Verify Versions test failed.');
 	}
 
-	public function testVersionsDat()
-	{
+	public function testVersionsDat() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -350,8 +343,7 @@ class DatabaseImportTest extends GalleryTestCase
 		$this->_testObj = new _GalleryExportTag($this, $attributes);
 	}
 
-	public function testImportSequence()
-	{
+	public function testImportSequence() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -370,8 +362,7 @@ class DatabaseImportTest extends GalleryTestCase
 		}
 	}
 
-	public function testCreateTableSql()
-	{
+	public function testCreateTableSql() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -408,8 +399,7 @@ class DatabaseImportTest extends GalleryTestCase
 		}
 	}
 
-	public function testDataImport()
-	{
+	public function testDataImport() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -547,8 +537,7 @@ class DatabaseImportTest extends GalleryTestCase
 	/**
 	 * XML Callback to process start elements
 	 */
-	public function _processStartElement($tag, $attributes)
-	{
+	public function _processStartElement($tag, $attributes) {
 		if ($tag == 'export') {
 			return new _GalleryExportTag($this, $attributes);
 		} elseif ($tag == 'config') {
@@ -568,23 +557,19 @@ class DatabaseImportTest extends GalleryTestCase
 	 * XML Callback to process end elements
 	 * @access protected
 	 */
-	public function _processEndElement($tag)
-	{
+	public function _processEndElement($tag) {
 	}
 
 	/**
 	 * This callback processes the child as it is popped off the stack
 	 * @access protected
 	 */
-	public function _processChildElement($childElement)
-	{
+	public function _processChildElement($childElement) {
 	}
 }
 
-class DatabaseImportTest1Module extends GalleryModule
-{
-	public function DatabaseImportTest1Module()
-	{
+class DatabaseImportTest1Module extends GalleryModule {
+	public function DatabaseImportTest1Module() {
 		$this->setId('DatabaseImportTest1');
 		$this->setName('Database Import Test Module1 Module');
 		$this->setDescription('Unit test module');
@@ -596,10 +581,8 @@ class DatabaseImportTest1Module extends GalleryModule
 	}
 }
 
-class DatabaseImportTest2Module extends GalleryModule
-{
-	public function DatabaseImportTest2Module()
-	{
+class DatabaseImportTest2Module extends GalleryModule {
+	public function DatabaseImportTest2Module() {
 		$this->setId('DatabaseImportTest2');
 		$this->setName('Database Import Test Module2 Module');
 		$this->setDescription('Unit test module');
@@ -611,10 +594,8 @@ class DatabaseImportTest2Module extends GalleryModule
 	}
 }
 
-class DatabaseImportTest3Module extends GalleryModule
-{
-	public function DatabaseImportTest3Module()
-	{
+class DatabaseImportTest3Module extends GalleryModule {
+	public function DatabaseImportTest3Module() {
 		$this->setId('DatabaseImportTest3');
 		$this->setName('Database Import Test Module3 Module');
 		$this->setDescription('Unit test module');
@@ -626,10 +607,8 @@ class DatabaseImportTest3Module extends GalleryModule
 	}
 }
 
-class DatabaseImportTest4Module extends GalleryModule
-{
-	public function DatabaseImportTest4Module()
-	{
+class DatabaseImportTest4Module extends GalleryModule {
+	public function DatabaseImportTest4Module() {
 		$this->setId('DatabaseImportTest4');
 		$this->setName('Database Import Test Module4 Module');
 		$this->setDescription('Unit test module');

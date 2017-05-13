@@ -24,13 +24,11 @@
  * @author Dariush Molavi <dari@nukedgallery.net>
  * @version $Revision: 17580 $
  */
-class EcardCaptchaAdminOption extends CaptchaAdminOption
-{
+class EcardCaptchaAdminOption extends CaptchaAdminOption {
 	/**
 	 * @see CaptchaAdminOption::getOptionData
 	 */
-	public function getOptionData()
-	{
+	public function getOptionData() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'ecard');
 		if ($ret) {
 			return array($ret, null, null, null);

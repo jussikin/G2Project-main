@@ -27,20 +27,22 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class WatermarkSiteAdminEditController extends GalleryController
-{
+class WatermarkSiteAdminEditController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
 		}
 
-		list($ret, $results) = WatermarkHelper::handleEditRequest($form,
-		'core.SiteAdmin', 'watermark.WatermarkSiteAdmin', 'watermark.WatermarkSiteAdminEdit');
+		list($ret, $results) = WatermarkHelper::handleEditRequest(
+			$form,
+			'core.SiteAdmin',
+			'watermark.WatermarkSiteAdmin',
+			'watermark.WatermarkSiteAdminEdit'
+		);
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -52,20 +54,22 @@ class WatermarkSiteAdminEditController extends GalleryController
 /**
  * Edit default placement and settings for a watermark image
  */
-class WatermarkSiteAdminEditView extends GalleryView
-{
+class WatermarkSiteAdminEditView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
 		}
 
-		$ret = WatermarkHelper::loadEditTemplate($template, $form,
-						 'WatermarkSiteAdminEdit', 'SiteAdmin');
+		$ret = WatermarkHelper::loadEditTemplate(
+			$template,
+			$form,
+			'WatermarkSiteAdminEdit',
+			'SiteAdmin'
+		);
 		if ($ret) {
 			return array($ret, null);
 		}

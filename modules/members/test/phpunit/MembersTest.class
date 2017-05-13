@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/members/classes/GalleryMembersHelper.class'
  * @author Robert Balousek <rbalousek@hotmail.com>
  * @version $Revision: 17580 $
  */
-class MembersTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MembersTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -63,8 +60,7 @@ class MembersTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFetchUserItemCount()
-	{
+	public function testFetchUserItemCount() {
 		/* Initial check, should be zero */
 		list($ret, $itemCount) = GalleryMembersHelper::fetchUserItemCount($this->_user->getId());
 		if ($ret) {
@@ -98,8 +94,7 @@ class MembersTest extends GalleryTestCase
 		$this->assertEquals($numItems, $itemCount);
 	}
 	
-	public function testFetchLastUserItems()
-	{
+	public function testFetchLastUserItems() {
 		/*
 	     * Create some random items so that there's something for the API method to work with.
 	     * Set the timestamp to bogus (but well known) values and set the owner to our test user.
@@ -123,8 +118,7 @@ class MembersTest extends GalleryTestCase
 		), $items);
 	}
 	
-	public function testCanViewMembersModule()
-	{
+	public function testCanViewMembersModule() {
 		global $gallery;
 		
 		list($ret, $adminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
@@ -155,8 +149,7 @@ class MembersTest extends GalleryTestCase
 		$this->assertEquals(true, $result);
 	}
 	
-	public function testCanViewProfileEmail()
-	{
+	public function testCanViewProfileEmail() {
 		global $gallery;
 		
 		/* not admin, view emails off */
@@ -223,8 +216,7 @@ class MembersTest extends GalleryTestCase
 		$this->assertEquals(true, $result);
 	}
 	
-	public function testDaysSinceCreation()
-	{
+	public function testDaysSinceCreation() {
 		global $gallery;
 		
 		list($ret, $result) = GalleryMembersHelper::daysSinceCreation($this->_user->getId());

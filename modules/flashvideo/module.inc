@@ -25,15 +25,12 @@
  * @author Flash Video player: Wayne Patterson <suprsidr@gmail.com>
  * @version $Revision: 18172 $
  */
-class FlashVideoModule extends GalleryModule
-{
-	public function __construct()
-	{
+class FlashVideoModule extends GalleryModule {
+	public function __construct() {
 		$this->FlashVideoModule();
 	}
 	
-	public function FlashVideoModule()
-	{
+	public function FlashVideoModule() {
 		global $gallery;
 		$this->setId('flashvideo');
 		$this->setName($gallery->i18n('Flash Video'));
@@ -55,8 +52,7 @@ class FlashVideoModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryRenderer', 'FlashVideoRenderer', 'FlashVideoRenderer', 'modules/flashvideo/classes/FlashVideoRenderer.class', 'flashvideo', null);
 		if ($ret) {
 			return $ret;
@@ -73,8 +69,7 @@ class FlashVideoModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -170,8 +165,7 @@ class FlashVideoModule extends GalleryModule
 	/**
 	 * @see GalleryPlugin::uninstall
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		$ret = GalleryCoreApi::deleteRenderer('FlashVideoRenderer');
 		if ($ret) {
 			return $ret;

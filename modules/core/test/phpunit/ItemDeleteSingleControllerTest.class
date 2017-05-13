@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/ItemDeleteSingle.inc');
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemDeleteSingleControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemDeleteSingle');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -53,8 +50,7 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create a random item and verify that we can delete it and stay on the same page
 	 */
-	public function testDeleteItem()
-	{
+	public function testDeleteItem() {
 		global $gallery;
 		
 		/* Create a random item */
@@ -88,8 +84,7 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create a random item and verify that we can delete it and move to the parent page
 	 */
-	public function testDeletePageItem()
-	{
+	public function testDeletePageItem() {
 		/* Create a random item */
 		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
 		if ($ret) {
@@ -121,8 +116,7 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create a random album and verify that we can delete it.
 	 */
-	public function testDeleteAlbum()
-	{
+	public function testDeleteAlbum() {
 		global $gallery;
 		
 		/* Create a random sub album */
@@ -156,8 +150,7 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Verify that we can't delete items without the right permissions
 	 */
-	public function testDeleteItemWithoutPermission()
-	{
+	public function testDeleteItemWithoutPermission() {
 		global $gallery;
 		
 		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
@@ -189,8 +182,7 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test deleting the root album. We should get a bad parameter error
 	 */
-	public function testDeleteRootAlbum()
-	{
+	public function testDeleteRootAlbum() {
 		global $gallery;
 		
 		/* Use invalid inputs */
@@ -205,8 +197,7 @@ class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 	 * permission denied (since the permission check happens before we even
 	 * verify that it's a valid item to prevent information leakage)
 	 */
-	public function testDeleteBogusItem()
-	{
+	public function testDeleteBogusItem() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', 1234567890);
 		

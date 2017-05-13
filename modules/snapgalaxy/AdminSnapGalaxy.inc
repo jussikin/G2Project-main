@@ -27,13 +27,11 @@
  * @author Bhavin Suthar <bhavin.suthar@snapgalaxy.com>
  * @author Bharat Mediratta <bharat@menalto.com>
  */
-class AdminSnapGalaxyController extends GalleryController
-{
+class AdminSnapGalaxyController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -48,7 +46,11 @@ class AdminSnapGalaxyController extends GalleryController
 			if (empty($error)) {
 				foreach (array('snapgalaxyPartnerId') as $key) {
 					$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'snapgalaxy', $key, trim($form[$key]));
+						'module',
+						'snapgalaxy',
+						$key,
+						trim($form[$key])
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -78,13 +80,11 @@ class AdminSnapGalaxyController extends GalleryController
 /**
  * Settings for SnapGalaxy
  */
-class AdminSnapGalaxyView extends GalleryView
-{
+class AdminSnapGalaxyView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -93,7 +93,7 @@ class AdminSnapGalaxyView extends GalleryView
 		if ($form['formName'] != 'AdminSnapGalaxy') {
 			foreach (array('snapgalaxyPartnerId') as $key) {
 				list($ret, $form[$key]) =
-			GalleryCoreApi::getPluginParameter('module', 'snapgalaxy', $key);
+				GalleryCoreApi::getPluginParameter('module', 'snapgalaxy', $key);
 				if ($ret) {
 					return array($ret, null);
 				}

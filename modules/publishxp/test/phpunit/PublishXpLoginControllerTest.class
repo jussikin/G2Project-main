@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17627 $
  */
-class PublishXpLoginControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class PublishXpLoginControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'publishxp.PublishXpLogin');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -47,8 +44,7 @@ class PublishXpLoginControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_user);
 	}
 
-	public function testLogin()
-	{
+	public function testLogin() {
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'password');
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
@@ -69,8 +65,7 @@ class PublishXpLoginControllerTest extends GalleryControllerTestCase
 	$this->assertEventFired('Gallery::Login', $this->_user);
 	}
 
-	public function testLoginDisabledUser()
-	{
+	public function testLoginDisabledUser() {
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'password');
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);

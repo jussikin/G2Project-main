@@ -22,15 +22,12 @@
  * Setup Database.
  * @package Install
  */
-class DatabaseSetupStep extends InstallStep
-{
-	public function stepName()
-	{
+class DatabaseSetupStep extends InstallStep {
+	public function stepName() {
 		return _('Database Setup');
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $galleryStub;
 		
 		$firstConfig = false;
@@ -320,13 +317,11 @@ class DatabaseSetupStep extends InstallStep
 		unset($this->_db);
 	}
 	
-	public function _captureStart()
-	{
+	public function _captureStart() {
 		ob_start();
 	}
 	
-	public function _captureEnd()
-	{
+	public function _captureEnd() {
 		if (!isset($this->_debugContents)) {
 			$this->_debugContents = '';
 		}
@@ -334,8 +329,7 @@ class DatabaseSetupStep extends InstallStep
 		ob_end_clean();
 	}
 	
-	public function _getCaptured()
-	{
+	public function _getCaptured() {
 		if (empty($this->_debugContents)) {
 			return "";
 		}
@@ -346,8 +340,7 @@ class DatabaseSetupStep extends InstallStep
 		return $contents;
 	}
 	
-	public function isRedoable()
-	{
+	public function isRedoable() {
 		return true;
 	}
 	
@@ -362,8 +355,7 @@ class DatabaseSetupStep extends InstallStep
 	 * @param array $metatables (string tableName)
 	 * @return array (boolean success, string errors)
 	 */
-	public function _testPrivileges($dbType, $metatables)
-	{
+	public function _testPrivileges($dbType, $metatables) {
 		global $gallery;
 		
 		if (!is_array($metatables) || empty($dbType)) {
@@ -449,8 +441,7 @@ class DatabaseSetupStep extends InstallStep
 	 * @param string $tablePrefix prefix for table names
 	 * @return array(boolean success, string error message)
 	 */
-	public function _executeSql($buffer, $tablePrefix)
-	{
+	public function _executeSql($buffer, $tablePrefix) {
 		if (empty($buffer)) {
 			return array(
 				false,
@@ -500,8 +491,7 @@ class DatabaseSetupStep extends InstallStep
 	 * @return array ('installed' => string the storage versions.dat version,
 	 *                'codebase'  => string the codebase version)
 	 */
-	public function _getVersions()
-	{
+	public function _getVersions() {
 		global $galleryStub;
 		
 		$versions['installed'] = $versions['codebase'] = '';
@@ -528,8 +518,7 @@ class DatabaseSetupStep extends InstallStep
 	 * @param array $metaTables the meta tables info array from the database
 	 * @return string the db version
 	 */
-	public function _getDbVersion($metaTables)
-	{
+	public function _getDbVersion($metaTables) {
 		$dbVersion = '';
 		if ($this->in_array_cin($this->_config['tablePrefix'] . 'Schema', $metaTables)) {
 			/*
@@ -565,8 +554,7 @@ class DatabaseSetupStep extends InstallStep
 	 * @param int $level (optional) which level to load
 	 * @return boolean success
 	 */
-	public function _loadG2Api($level = 1)
-	{
+	public function _loadG2Api($level = 1) {
 		global $galleryStub;
 		/*
 	     * levels: 0 = off, 1 = basic, 2 = platform, 3 = initfirstpass / db
@@ -590,7 +578,7 @@ class DatabaseSetupStep extends InstallStep
 	         * all cases
 	         */
 			$configPath = $galleryStub->getConfig('data.gallery.base');
-			if ($configPath{strlen($configPath) - 1} != DIRECTORY_SEPARATOR) {
+			if ($configPath[strlen($configPath) - 1] != DIRECTORY_SEPARATOR) {
 				$configPath .= DIRECTORY_SEPARATOR;
 			}
 			$GLOBALS['gallery']->setConfig('data.gallery.base', $configPath);
@@ -648,15 +636,14 @@ class DatabaseSetupStep extends InstallStep
 	 * Deletes everything in the storage directory and then rebuilds the initial folder structure
 	 * @return boolean success
 	 */
-	public function _emptyGalleryStorageDirectory()
-	{
+	public function _emptyGalleryStorageDirectory() {
 		global $gallery;
 		
 		/* Make sure that all the required paths exist. */
 		$baseDir = $gallery->getConfig('data.gallery.base');
 		$platform =& $gallery->getPlatform();
 		
-		if ($baseDir{strlen($baseDir) - 1} != $platform->getDirectorySeparator()) {
+		if ($baseDir[strlen($baseDir) - 1] != $platform->getDirectorySeparator()) {
 			$baseDir .= $platform->getDirectorySeparator();
 		}
 		
@@ -691,8 +678,7 @@ class DatabaseSetupStep extends InstallStep
 	 * Drop all Gallery database tables that are listed in the Gallery schema table
 	 * @return array GalleryStatus a status code
 	 */
-	public function _cleanDatabase()
-	{
+	public function _cleanDatabase() {
 		global $gallery;
 		
 		$storage =& $gallery->getStorage();
@@ -725,8 +711,7 @@ class DatabaseSetupStep extends InstallStep
 	 * @param array $arItems vars to search in
 	 * @return bool success status
 	 */
-	public function in_array_cin($strItem, $arItems)
-	{
+	public function in_array_cin($strItem, $arItems) {
 		$strItem = GalleryUtilities::strToUpper($strItem);
 		foreach ($arItems as $strValue) {
 			if ($strItem == GalleryUtilities::strToUpper($strValue)) {

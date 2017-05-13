@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DataItemTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DataItemTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -53,8 +50,7 @@ class DataItemTest extends GalleryTestCase
 	 * Verify that creating a second dataitem entity with the same path as
 	 * an existing one throws a collision error.
 	 */
-	public function testCreateCollision()
-	{
+	public function testCreateCollision() {
 		global $gallery;
 
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_album->getId());
@@ -103,8 +99,7 @@ class DataItemTest extends GalleryTestCase
 		}
 	}
 
-	public function testMoveCollision()
-	{
+	public function testMoveCollision() {
 		global $gallery;
 
 		list($ret, $subAlbum) = $this->_createRandomAlbum($this->_album->getId());
@@ -179,8 +174,7 @@ class DataItemTest extends GalleryTestCase
 	/**
 	 * Create an data item being a symlink to an existing file
 	 */
-	public function testCreateSymlink()
-	{
+	public function testCreateSymlink() {
 		global $gallery;
 
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_album->getId());
@@ -229,8 +223,7 @@ class DataItemTest extends GalleryTestCase
 		}
 	}
 
-	public function testRescan()
-	{
+	public function testRescan() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 

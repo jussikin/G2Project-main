@@ -41,8 +41,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryChildEntity.class');
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryFileSystemEntity extends GalleryChildEntity
-{
+class GalleryFileSystemEntity extends GalleryChildEntity {
 	/**
 	 * The path component of this item (eg. "image1").  This value, when combined with the paths
 	 * of all the parent objects (say, "rootAlbum", "album01") will form the complete path to the
@@ -69,8 +68,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 *        Defaults to false.
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId = null, $pathComponent = null, $isDirectory = false)
-	{
+	public function create($parentId = null, $pathComponent = null, $isDirectory = false) {
 		if (empty($pathComponent)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -106,8 +104,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function createRoot()
-	{
+	public function createRoot() {
 		$ret = parent::createRoot();
 		if ($ret) {
 			return $ret;
@@ -122,8 +119,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	/**
 	 * @see GalleryEntity::createLink
 	 */
-	public function createLink($entity, $parentId = null)
-	{
+	public function createLink($entity, $parentId = null) {
 		$ret = parent::createLink($entity, $parentId);
 		if ($ret) {
 			return $ret;
@@ -146,8 +142,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 * @param string $newPathComponent the path component
 	 * @return GalleryStatus a status code
 	 */
-	public function rename($newPathComponent)
-	{
+	public function rename($newPathComponent) {
 		if (!$this->getParentId() || empty($newPathComponent)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -176,8 +171,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 * @todo Make sure that 'order' stuff is maintained, so that the moved
 	 *       items become the last in order in the new album if that album is marked as unordered
 	 */
-	public function move($newParentId)
-	{
+	public function move($newParentId) {
 		global $gallery;
 		
 		/* No need to do anything if moving to same parent */
@@ -239,8 +233,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 * Delete this GalleryFileSystemEntity
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		/*
 	     * The parent must be read or write locked at this point to make sure
 	     * that it's not going to be moved around while we're deleting stuff
@@ -268,8 +261,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 * @return array GalleryStatus a status code,
 	 *               string a path where children can store their data files
 	 */
-	public function fetchContainerPath()
-	{
+	public function fetchContainerPath() {
 		if ($this->isContainer()) {
 			list($ret, $path) = $this->fetchPath();
 			if ($ret) {
@@ -318,8 +310,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 * Can this item contain other file system items?
 	 * @return boolean
 	 */
-	public function isContainer()
-	{
+	public function isContainer() {
 		return false;
 	}
 	
@@ -330,8 +321,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 * @return array GalleryStatus a status code,
 	 *         array path component names
 	 */
-	public function fetchLogicalPath()
-	{
+	public function fetchLogicalPath() {
 		$parentId = $this->getParentId();
 		if (!empty($parentId)) {
 			list($ret, $parent) = $this->fetchParent();
@@ -370,8 +360,7 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	 *
 	 * @return array a GalleryStatus status, string a path
 	 */
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		global $gallery;
 		$absolutePath = $gallery->getConfig('data.gallery.albums');
 		
@@ -418,18 +407,15 @@ class GalleryFileSystemEntity extends GalleryChildEntity
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryFileSystemEntity';
 	}
 	
-	public function getPathComponent()
-	{
+	public function getPathComponent() {
 		return $this->pathComponent;
 	}
 	
-	public function setPathComponent($pathComponent)
-	{
+	public function setPathComponent($pathComponent) {
 		$this->pathComponent = $pathComponent;
 	}
 }

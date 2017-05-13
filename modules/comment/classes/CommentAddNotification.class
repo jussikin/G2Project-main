@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/notification/classes/NotificationEvent_1_0.
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 18120 $
  */
-class CommentAddNotification extends NotificationEvent_1_0
-{
+class CommentAddNotification extends NotificationEvent_1_0 {
 	/**
 	 * @see NotificationEvent_1_0::getDescription
 	 */
-	public function getDescription()
-	{
+	public function getDescription() {
 		global $gallery;
 
 		return $this->_translateText('comment', $gallery->i18n('Comment Added'));
@@ -43,8 +41,7 @@ class CommentAddNotification extends NotificationEvent_1_0
 	/**
 	 * @see NotificationEvent_1_0::getNotificationMessage
 	 */
-	public function getNotificationMessage()
-	{
+	public function getNotificationMessage() {
 		global $gallery;
 		
 		list($ret, $item) = GalleryCoreApi::loadEntitiesById($this->getItemId(), 'GalleryItem');
@@ -68,8 +65,7 @@ class CommentAddNotification extends NotificationEvent_1_0
 	/**
 	 * @see NotificationEvent_1_0::getItemId
 	 */
-	public function getItemId()
-	{
+	public function getItemId() {
 		$entity = $this->_event->getEntity();
 
 		return $entity->getParentId();
@@ -78,24 +74,21 @@ class CommentAddNotification extends NotificationEvent_1_0
 	/**
 	 * @see NotificationEvent_1_0::getPermission
 	 */
-	public function getPermission()
-	{
+	public function getPermission() {
 		return 'comment.view';
 	}
 	
 	/**
 	 * @see NotificationEvent_1_0::isAppropriateForItem
 	 */
-	public function isAppropriateForItem($item)
-	{
+	public function isAppropriateForItem($item) {
 		return true;
 	}
 	
 	/**
 	 * @see NotificationEvent_1_0::getEventSpecs
 	 */
-	public function getEventSpecs()
-	{
+	public function getEventSpecs() {
 		return array(
 			'eventName' => 'GalleryEntity::save',
 			'entityType' => 'GalleryComment',
@@ -107,8 +100,7 @@ class CommentAddNotification extends NotificationEvent_1_0
 	 * Get the comment text
 	 * @return string Comment text
 	 */
-	public function getComment()
-	{
+	public function getComment() {
 		$entity = $this->_event->getEntity();
 
 		return $entity->getComment();
@@ -120,8 +112,7 @@ class CommentAddNotification extends NotificationEvent_1_0
 	 * @param GalleryEvent A Comment Added Event
 	 * @return string The url of the item
 	 */
-	public function getItemUrl()
-	{
+	public function getItemUrl() {
 		global $gallery;
 		
 		$urlGenerator =& $gallery->getUrlGenerator();

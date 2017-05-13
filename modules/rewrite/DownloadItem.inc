@@ -28,37 +28,32 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class DownloadItemView extends GalleryView
-{
+class DownloadItemView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::shouldSaveSession
 	 */
-	public function shouldSaveSession()
-	{
+	public function shouldSaveSession() {
 		return false;
 	}
 
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		$itemId = GalleryUtilities::getRequestVariables('itemId');
 		if (empty($itemId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
@@ -70,7 +65,7 @@ class DownloadItemView extends GalleryView
 
 		if (!method_exists($image, 'fetchPath') || !method_exists($image, 'getMimeType')) {
 			/* Avoid information disclosure for bogus entities by acting as if it didn't exist */
-		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
+			return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 		}
 
 		$derivativeType = null;
@@ -85,7 +80,7 @@ class DownloadItemView extends GalleryView
 
 		if (GalleryUtilities::isA($image, 'GalleryDerivative')) {
 			list($ret, $item) =
-		GalleryCoreApi::loadEntitiesById($image->getParentId(), 'GalleryItem');
+			GalleryCoreApi::loadEntitiesById($image->getParentId(), 'GalleryItem');
 			if ($ret) {
 				return $ret;
 			}
@@ -137,8 +132,7 @@ class DownloadItemView extends GalleryView
 	 * @param mixed $derivativeType
 	 * @return GalleryStatus
 	 */
-	public function _assertPermissions($item, $derivativeType)
-	{
+	public function _assertPermissions($item, $derivativeType) {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -148,40 +142,40 @@ class DownloadItemView extends GalleryView
 		}
 
 	/* Make sure we have permission */
-	if (($ids = $session->get('core.isPrintService')) && in_array($item->getId(), $ids)) {
-		/* Print services only need core.view to get access to full size version of photos */
-		$permission = 'core.view';
-	} else {
-		$permission = 'core.viewSource';
-		switch ($derivativeType) {
-		case DERIVATIVE_TYPE_IMAGE_THUMBNAIL:
-		$permission = 'core.view';
-		break;
+		if (($ids = $session->get('core.isPrintService')) && in_array($item->getId(), $ids)) {
+			/* Print services only need core.view to get access to full size version of photos */
+			$permission = 'core.view';
+		} else {
+			$permission = 'core.viewSource';
+			switch ($derivativeType) {
+				case DERIVATIVE_TYPE_IMAGE_THUMBNAIL:
+					$permission = 'core.view';
+			        break;
 
-		case DERIVATIVE_TYPE_IMAGE_RESIZE:
-		$permission = 'core.viewResizes';
-		break;
+				case DERIVATIVE_TYPE_IMAGE_RESIZE:
+					$permission = 'core.viewResizes';
+			        break;
 
-		/* DERIVATIVE_TYPE_IMAGE_PREFERRED uses core.viewSource */
+			/* DERIVATIVE_TYPE_IMAGE_PREFERRED uses core.viewSource */
+			}
 		}
-	}
 		$ret = GalleryCoreApi::assertHasItemPermission($itemIdForPermission, $permission);
 		if ($ret) {
 			/* Avoid information disclosure */
-		if ($ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
-			if ($permission != 'core.view') {
-				list($ret2, $hasPermission) =
-			GalleryCoreApi::hasItemPermission($item->getId(), 'core.view');
-				if ($ret2) {
-					return $ret2;
+			if ($ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
+				if ($permission != 'core.view') {
+					list($ret2, $hasPermission) =
+					GalleryCoreApi::hasItemPermission($item->getId(), 'core.view');
+					if ($ret2) {
+						return $ret2;
+					}
+				}
+				if ($permission == 'core.view' || empty($hasPermission)) {
+					$ret->addErrorCode(ERROR_MISSING_OBJECT);
+
+					return $ret;
 				}
 			}
-			if ($permission == 'core.view' || empty($hasPermission)) {
-				$ret->addErrorCode(ERROR_MISSING_OBJECT);
-
-				return $ret;
-			}
-		}
 
 			return $ret;
 		}

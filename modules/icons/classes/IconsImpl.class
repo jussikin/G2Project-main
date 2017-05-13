@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/icons/classes/IconsInterface_1_0.class');
  * @author Jesse Mullan <jmullan@visi.com>
  * @version $Revision: 17580 $
  */
-class IconsImpl extends IconsInterface_1_0
-{
+class IconsImpl extends IconsInterface_1_0 {
 	/**
 	 * @see IconsInterface_1_0::getIconPacks
 	 */
-	public function getIconPacks()
-	{
+	public function getIconPacks() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -74,8 +72,7 @@ class IconsImpl extends IconsInterface_1_0
 	/**
 	 * @see IconsInterface_1_0::init
 	 */
-	public function init(&$template)
-	{
+	public function init(&$template) {
 		list($ret, $iconpack) = GalleryCoreApi::getPluginParameter('module', 'icons', 'iconpack');
 		if ($ret) {
 			return $ret;

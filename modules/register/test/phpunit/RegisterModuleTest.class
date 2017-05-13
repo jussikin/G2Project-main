@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RegisterModuleTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RegisterModuleTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -45,8 +42,7 @@ class RegisterModuleTest extends GalleryTestCase
 		}
 	}
 
-	public function testSystemLinks()
-	{
+	public function testSystemLinks() {
 		global $gallery;
 		$label = $this->_module->translate('Register');
 

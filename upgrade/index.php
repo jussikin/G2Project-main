@@ -55,8 +55,7 @@ require_once $g2Base . 'lib/support/GallerySetupUtilities.class';
  * and just pass the string on through in English
  */
 if (!function_exists('_')) {
-	function _($s)
-	{
+	function _($s) {
 		return $s;
 	}
 }
@@ -206,8 +205,7 @@ if ($currentStep->processRequest()) {
  *             API to load the admin user object fails
  * @return GalleryStatus a status code
  */
-function selectAdminUser($fallback = false)
-{
+function selectAdminUser($fallback = false) {
 	global $gallery;
 	
 	list($ret, $siteAdminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
@@ -247,8 +245,7 @@ function selectAdminUser($fallback = false)
 /**
  * Mini url generator for upgrader
  */
-function generateUrl($uri, $print = true)
-{
+function generateUrl($uri, $print = true) {
 	if (strncmp($uri, 'index.php', 9) && strncmp($uri, '../' . GALLERY_MAIN_PHP, 11)) {
 		/* upgrade/images/*, upgrade/styles/*, ... URLs */
 		global $gallery;

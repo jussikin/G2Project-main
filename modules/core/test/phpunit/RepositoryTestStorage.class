@@ -26,8 +26,7 @@
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17580 $
  */
-class RepositoryTestStorage
-{
+class RepositoryTestStorage {
 	/** @todo Convert this to use UnitTestStorage */
 	public $_addedMapData;
 	public $_updatedMapData;
@@ -35,13 +34,11 @@ class RepositoryTestStorage
 	public $_searches;
 	public $_removedMapData;
 	
-	public function RepositoryTestStorage()
-	{
+	public function RepositoryTestStorage() {
 		$this->reset();
 	}
 	
-	public function reset()
-	{
+	public function reset() {
 		$this->_searches = array();
 		$this->_searchResults = array();
 		$this->_addedMapData = array();
@@ -49,8 +46,7 @@ class RepositoryTestStorage
 		$this->_removedMapData = array();
 	}
 	
-	public function search($query, $args)
-	{
+	public function search($query, $args) {
 		$this->_searches[] = array(
 			'query' => $query,
 			'arguments' => $args
@@ -62,25 +58,21 @@ class RepositoryTestStorage
 		);
 	}
 	
-	public function setSearchResults($results)
-	{
+	public function setSearchResults($results) {
 		$this->_searchResults = $results;
 	}
 	
-	public function getSearches()
-	{
+	public function getSearches() {
 		return $this->_searches;
 	}
 	
-	public function addMapEntry($map, $data)
-	{
+	public function addMapEntry($map, $data) {
 		$this->_addedMapData[$map][] = $data;
 
 		return null;
 	}
 	
-	public function getMapEntry($map, $data, $match)
-	{
+	public function getMapEntry($map, $data, $match) {
 		$this->_searches[] = array(
 			'map' => $map,
 			'select' => $data,
@@ -93,13 +85,11 @@ class RepositoryTestStorage
 		);
 	}
 	
-	public function getAddedMapData()
-	{
+	public function getAddedMapData() {
 		return $this->_addedMapData;
 	}
 	
-	public function updateMapEntry($map, $match, $change)
-	{
+	public function updateMapEntry($map, $match, $change) {
 		$this->_updatedMapData[$map][] = array(
 			'match' => $match,
 			'change' => $change
@@ -108,8 +98,7 @@ class RepositoryTestStorage
 		return null;
 	}
 	
-	public function removeMapEntry($map, $match)
-	{
+	public function removeMapEntry($map, $match) {
 		$this->_removedMapData[$map][] = array(
 			'match' => $match
 		);
@@ -117,49 +106,40 @@ class RepositoryTestStorage
 		return null;
 	}
 	
-	public function getUpdatedMapData()
-	{
+	public function getUpdatedMapData() {
 		return $this->_updatedMapData;
 	}
 	
-	public function getRemovedMapData()
-	{
+	public function getRemovedMapData() {
 		return $this->_removedMapData;
 	}
 	
-	public function rollbackTransaction()
-	{
+	public function rollbackTransaction() {
 	}
 	
-	public function getUniqueId($sequence)
-	{
+	public function getUniqueId($sequence) {
 		return 1;
 	}
 	
-	public function getAffectedRows($useNonTransactionalConnection)
-	{
+	public function getAffectedRows($useNonTransactionalConnection) {
 		return 1;
 	}
 }
 
-class RepositoryTestSearchResults
-{
+class RepositoryTestSearchResults {
 	public $_results;
 	public $_resultIndex;
 	
-	public function RepositoryTestSearchResults($results)
-	{
+	public function RepositoryTestSearchResults($results) {
 		$this->_results = $results;
 		$this->_resultIndex = 0;
 	}
 	
-	public function resultCount()
-	{
+	public function resultCount() {
 		return count($this->_results);
 	}
 	
-	public function nextResult()
-	{
+	public function nextResult() {
 		$result = $this->_resultIndex < $this->resultCount() ? $this->_results[$this->_resultIndex] : false;
 		$this->_resultIndex++;
 

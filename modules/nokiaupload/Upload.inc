@@ -26,13 +26,11 @@ GalleryCoreApi::requireOnce('modules/nokiaupload/classes/ImageUploadHelper.class
  * @author Jerome Rannikko <jeromer@hotpop.com>
  * @version $Revision: 17580 $
  */
-class UploadController extends GalleryController
-{
+class UploadController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		ImageUploadHelper::logRequest('UploadController');
 		
 		/* Request forgery protection */
@@ -59,8 +57,7 @@ class UploadController extends GalleryController
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		return true;
 	}
 }
@@ -68,13 +65,11 @@ class UploadController extends GalleryController
 /**
  * This view implements the Nokia Image Uploader API's 'Upload' command.
  */
-class UploadView extends GalleryView
-{
+class UploadView extends GalleryView {
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
@@ -82,8 +77,7 @@ class UploadView extends GalleryView
 	 * API defines the output very specifically so we can't allow any global templating to be used.
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$gallery->debug("##### UploadView #####\n\$status = ");
 		$gallery->debug_r($status);

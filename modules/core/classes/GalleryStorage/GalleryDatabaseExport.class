@@ -38,8 +38,7 @@
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 18153 $
  */
-class GalleryDatabaseExport
-{
+class GalleryDatabaseExport {
 	/**
 	 * Defines the number of rows to be read before letting the user know that we are still working.
 	 */
@@ -81,8 +80,7 @@ class GalleryDatabaseExport
 	 * @todo When the progress bar handling is standardized for both upgrades and maintenance
 	 * 	     screens, then replace the call back function with a StatusMonitor object.
 	 */
-	public function exportToXmlFile($progressCallback, $fileName = null)
-	{
+	public function exportToXmlFile($progressCallback, $fileName = null) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$storage =& $gallery->getStorage();
@@ -278,8 +276,7 @@ class GalleryDatabaseExport
 	 * @param array $warnings An array of warning messages to be updated.
 	 * @return GalleryStatus object
 	 */
-	public function _exportPluginStatus($handle, $pluginType, $plugins, &$warnings)
-	{
+	public function _exportPluginStatus($handle, $pluginType, $plugins, &$warnings) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -332,8 +329,7 @@ class GalleryDatabaseExport
 	 * @return string The escaped string.
 	 * @todo Move this routine to GalleryUtilities as a common function.
 	 */
-	public function _encodeHtmlSpecialChars($valueToConvert)
-	{
+	public function _encodeHtmlSpecialChars($valueToConvert) {
 		return str_replace(array(
 			'&',
 			'"',
@@ -354,8 +350,7 @@ class GalleryDatabaseExport
 	 * @param array $warnings An array of warning messages to be updated.
 	 * @return GalleryStatus A status code.
 	 */
-	public function _exportModule($handle, $pluginId, &$warnings)
-	{
+	public function _exportModule($handle, $pluginId, &$warnings) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$storage =& $gallery->getStorage();
@@ -428,8 +423,7 @@ class GalleryDatabaseExport
 	 * @param string $sequenceId The sequence Id to export.
 	 * @return GalleryStatus A status code.
 	 */
-	public function _exportSequence($handle, $sequenceId)
-	{
+	public function _exportSequence($handle, $sequenceId) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -457,8 +451,7 @@ class GalleryDatabaseExport
 	 * @param array $warnings An array of warning messages to be updated.
 	 * @return GalleryStatus A status code.
 	 */
-	public function _exportTable($handle, $table, &$warnings)
-	{
+	public function _exportTable($handle, $table, &$warnings) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -553,8 +546,7 @@ class GalleryDatabaseExport
 	 * @param array $warnings An array of warning messages to be updated.
 	 * @return GalleryStatus A status code.
 	 */
-	public function _exportData($handle, $table, &$warnings)
-	{
+	public function _exportData($handle, $table, &$warnings) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -702,8 +694,7 @@ class GalleryDatabaseExport
 	 * @todo When the various progress bar methods are standardized, change this call to call the
 	 *       update progress bar of a common status notifier.
 	 */
-	public function updateStatus()
-	{
+	public function updateStatus() {
 		global $gallery;
 		
 		$this->_callBack['progress']++;
@@ -724,8 +715,7 @@ class GalleryDatabaseExport
 	 *               fileHandle file handle to the open file
 	 *               string path name of the backup file
 	 */
-	public function _openBackupFileForWriting($fileName = null)
-	{
+	public function _openBackupFileForWriting($fileName = null) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$storage =& $gallery->getStorage();

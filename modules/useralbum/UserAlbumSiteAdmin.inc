@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class UserAlbumSiteAdminController extends GalleryController
-{
+class UserAlbumSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -46,8 +44,12 @@ class UserAlbumSiteAdminController extends GalleryController
 				}
 			}
 			foreach (array('loginRedirect', 'homeLink') as $key) {
-				$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', $key,
-							  isset($form[$key]) ? 1 : 0);
+				$ret = GalleryCoreApi::setPluginParameter(
+					'module',
+					'useralbum',
+					$key,
+					isset($form[$key]) ? 1 : 0
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -56,7 +58,7 @@ class UserAlbumSiteAdminController extends GalleryController
 		} /* else $form['action']['reset'] */
 
 	/* Figure out where to redirect upon success */
-	$results['redirect']['view'] = 'core.SiteAdmin';
+		$results['redirect']['view'] = 'core.SiteAdmin';
 		$results['redirect']['subView'] = 'useralbum.UserAlbumSiteAdmin';
 		$results['status'] = $status;
 		$results['error'] = array();
@@ -68,13 +70,11 @@ class UserAlbumSiteAdminController extends GalleryController
 /**
  * Settings for User Albums
  */
-class UserAlbumSiteAdminView extends GalleryView
-{
+class UserAlbumSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -85,7 +85,7 @@ class UserAlbumSiteAdminView extends GalleryView
 			foreach (array('create', 'view', 'fullSize', 'targetLocation',
 			   'loginRedirect', 'homeLink') as $key) {
 				list($ret, $form[$key]) =
-			GalleryCoreApi::getPluginParameter('module', 'useralbum', $key);
+				GalleryCoreApi::getPluginParameter('module', 'useralbum', $key);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -96,14 +96,14 @@ class UserAlbumSiteAdminView extends GalleryView
 			return array($ret, null);
 		}
 	/* Get ids of all all albums where we can add new album items */
-	list($ret, $albumIds) =
+		list($ret, $albumIds) =
 		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* Load all the album entities */
-	list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
+		list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -118,7 +118,7 @@ class UserAlbumSiteAdminView extends GalleryView
 		'sizeList' => array('1' => $module->translate('Yes'),
 				'0' => $module->translate('No')),
 		'targetLocation' => $g2AlbumTree
-	);
+		);
 
 		$template->setVariable('UserAlbumSiteAdmin', $UserAlbumSiteAdmin);
 		$template->setVariable('controller', 'useralbum.UserAlbumSiteAdmin');

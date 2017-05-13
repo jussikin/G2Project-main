@@ -27,15 +27,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class SearchModule extends GalleryModule
-{
-	public function __construct()
-	{
+class SearchModule extends GalleryModule {
+	public function __construct() {
 		$this->SearchModule();
 	}
 
-	public function SearchModule()
-	{
+	public function SearchModule() {
 		global $gallery;
 
 		$this->setId('search');

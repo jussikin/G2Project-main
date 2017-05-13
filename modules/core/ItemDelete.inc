@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18138 $
  */
-class ItemDeleteController extends GalleryController
-{
+class ItemDeleteController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$status = $error = array();
@@ -174,13 +172,11 @@ class ItemDeleteController extends GalleryController
 /**
  * This view will prompt for selecting items to delete
  */
-class ItemDeleteView extends GalleryView
-{
+class ItemDeleteView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -331,8 +327,7 @@ class ItemDeleteView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

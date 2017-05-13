@@ -27,29 +27,25 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SimpleCallbackView extends GalleryView
-{
+class SimpleCallbackView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		list($command, $prefix) = GalleryUtilities::getRequestVariables('command', 'prefix');
 		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
 		if ($ret) {
@@ -102,8 +98,7 @@ class SimpleCallbackView extends GalleryView
 		return null;
 	}
 	
-	public function _getDirectoryListing($path, $getFiles = true)
-	{
+	public function _getDirectoryListing($path, $getFiles = true) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -124,7 +119,7 @@ class SimpleCallbackView extends GalleryView
 		$dirList = $fileList = array();
 		if ($dir = $platform->opendir($path)) {
 			$slash = $platform->getDirectorySeparator();
-			if ($path{strlen($path) - 1} != $slash) {
+			if ($path[strlen($path) - 1] != $slash) {
 				$path .= $slash;
 			}
 			while (($file = $platform->readdir($dir)) !== false) {

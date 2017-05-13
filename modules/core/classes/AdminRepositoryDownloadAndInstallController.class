@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryRepositoryUtilities.cla
  * @author Tim Almdal <tnalmdal@shaw.ca
  * @version $Revision: 17582 $
  */
-class AdminRepositoryDownloadAndInstallController extends GalleryController
-{
+class AdminRepositoryDownloadAndInstallController extends GalleryController {
 	/**
 	 * Download specified packages to the local repository cache and perform installation.
 	 *
@@ -40,8 +39,7 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController
 	 * @param array an array of GalleryRepository
 	 * @return GalleryStatus a status code
 	 */
-	public function performDownloadAndInstallation($installPackages, $repositories)
-	{
+	public function performDownloadAndInstallation($installPackages, $repositories) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$platform =& $gallery->getPlatform();
@@ -216,8 +214,7 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController
 	 * @return array GalleryStatus a status code
 	 * 		     array list of corresponding files for the specified packages
 	 */
-	public function _createDownloadFileList($installPackages, $repositories)
-	{
+	public function _createDownloadFileList($installPackages, $repositories) {
 		/* Create download file list. */
 		$sourcedFiles = array();
 		foreach ($installPackages as $source => $packages) {
@@ -246,8 +243,7 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController
 	 * @param array $sourcedFiles list of files that were downloaded
 	 * @return int number of actions
 	 */
-	public function _countInstallActions($sourcedFiles)
-	{
+	public function _countInstallActions($sourcedFiles) {
 		$totalActions = 0;
 		foreach ($sourcedFiles as $source => $files) {
 			foreach ($files as $pluginType => $plugins) {
@@ -273,8 +269,7 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController
 	 * @param array $callback progress notification callback
 	 * @return GalleryStatus a status code
 	 */
-	public function _synchronizeLanguages($sourcedFiles, &$callback)
-	{
+	public function _synchronizeLanguages($sourcedFiles, &$callback) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return $ret;
@@ -310,8 +305,7 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController
 	 * @see GalleryCoreApi::fetchPluginStatus
 	 * @access protected
 	 */
-	public function _fetchPluginStatus($pluginType, $ignoreCache)
-	{
+	public function _fetchPluginStatus($pluginType, $ignoreCache) {
 		return GalleryCoreApi::fetchPluginStatus($pluginType, $ignoreCache);
 	}
 	
@@ -327,8 +321,7 @@ class AdminRepositoryDownloadAndInstallController extends GalleryController
 	 * @param array $redirect generateUrl params defining the view to return to
 	 * @return GalleryStatus a status code
 	 */
-	public function updatePluginStatus($pluginStatus, $repositories, $redirect)
-	{
+	public function updatePluginStatus($pluginStatus, $repositories, $redirect) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$platform =& $gallery->getPlatform();

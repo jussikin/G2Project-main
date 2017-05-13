@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/MaintenanceHelper_simp
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminMaintenanceController extends GalleryController
-{
+class AdminMaintenanceController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -151,8 +149,7 @@ class AdminMaintenanceController extends GalleryController
 		);
 	}
 	
-	public function runTask($taskId, $task, $useProgressBar)
-	{
+	public function runTask($taskId, $task, $useProgressBar) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -194,13 +191,11 @@ class AdminMaintenanceController extends GalleryController
 /**
  * This view will show available maintenance tasks
  */
-class AdminMaintenanceView extends GalleryView
-{
+class AdminMaintenanceView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -285,14 +280,12 @@ class AdminMaintenanceView extends GalleryView
  * Base class for all maintenance tasks
  * @abstract
  */
-class MaintenanceTask
-{
+class MaintenanceTask {
 	/**
 	 * Return internationalized text about this task
 	 * @return array('title' => ..., 'description' => ..., 'l10Domain' => ...)
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		return array();
 	}
 	
@@ -302,8 +295,7 @@ class MaintenanceTask
 	 *               boolean success or failure
 	 *               array string output text
 	 */
-	public function run()
-	{
+	public function run() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -315,8 +307,7 @@ class MaintenanceTask
 	 * Will this task run so long that it requires a progress bar?
 	 * @return true or false
 	 */
-	public function requiresProgressBar()
-	{
+	public function requiresProgressBar() {
 		return false;
 	}
 	
@@ -324,8 +315,7 @@ class MaintenanceTask
 	 * This task requires that the administrator sets Gallery into maintenance mode.
 	 * @return true or false
 	 */
-	public function requiresMaintenanceMode()
-	{
+	public function requiresMaintenanceMode() {
 		return false;
 	}
 }

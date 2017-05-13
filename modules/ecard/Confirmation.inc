@@ -26,13 +26,11 @@
  * @author Dariush Molavi <dari@nukedgallery.net>
  * @version $Revision: 17580 $
  */
-class ConfirmationView extends GalleryView
-{
+class ConfirmationView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return array($ret, null);

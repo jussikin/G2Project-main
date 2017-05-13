@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18064 $
  */
-class UserAlbumTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class UserAlbumTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -92,8 +89,7 @@ class UserAlbumTest extends GalleryTestCase
 		}
 	}
 
-	public function testUserAlbum()
-	{
+	public function testUserAlbum() {
 		global $gallery;
 
 	/* Create new user.. */
@@ -208,8 +204,7 @@ class UserAlbumTest extends GalleryTestCase
 		$this->assertEquals(array(), $links, 'no system link');
 	}
 
-	public function testUserAlbumDeleteTarget()
-	{
+	public function testUserAlbumDeleteTarget() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_parentAlbum->getId());
 		if ($ret) {
 			return $ret;
@@ -242,8 +237,7 @@ class UserAlbumTest extends GalleryTestCase
 			  'useralbum.targetLocation should equal core.id.rootAlbum');
 	}
 
-	public function testUserAlbumDeleteUserAlbum()
-	{
+	public function testUserAlbumDeleteUserAlbum() {
 		/*
 	 *  Verify that when an album is deleted, references to that album are
 	 *  removed from the PluginParameterMap
@@ -274,8 +268,7 @@ class UserAlbumTest extends GalleryTestCase
 		$this->assert(!isset($userAlbum), 'User album should be empty');
 	}
 
-	public function testUserAlbumCollision()
-	{
+	public function testUserAlbumCollision() {
 		$userString = 'useralbum-' . rand();
 		$userName = 'testuser-' . $userString;
 

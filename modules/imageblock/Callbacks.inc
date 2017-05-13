@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ImageBlockCallbacks
-{
-	public function callback($params, $smarty, $callback, $userId = null)
-	{
+class ImageBlockCallbacks {
+	public function callback($params, $smarty, $callback, $userId = null) {
 		GalleryCoreApi::requireOnce('modules/imageblock/classes/ImageBlockHelper.class');
 		
 		switch ($callback) {

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminDcrawControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminDcrawControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'dcraw.AdminDcraw');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -50,8 +47,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		$gallery->setPlatform($this->_platform);
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 		$ret = parent::tearDown();
 		if ($ret) {
@@ -59,8 +55,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _getParam($param)
-	{
+	public function _getParam($param) {
 		list($ret, $path) = GalleryCoreApi::getPluginParameter('module', 'dcraw', $param);
 		if ($ret) {
 			return ($ret);
@@ -71,8 +66,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		return $path;
 	}
 	
-	public function testSaveV562()
-	{
+	public function testSaveV562() {
 		GalleryUtilities::putRequestVariable('form[path]', '/path/to/dcraw');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
@@ -112,8 +106,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('5.62', $this->_getParam('version'));
 	}
 	
-	public function testSaveV6()
-	{
+	public function testSaveV6() {
 		GalleryUtilities::putRequestVariable('form[path]', '/path/to/dcraw');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
@@ -153,8 +146,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('6.35', $this->_getParam('version'));
 	}
 	
-	public function testSaveV7()
-	{
+	public function testSaveV7() {
 		GalleryUtilities::putRequestVariable('form[path]', '/path/to/dcraw');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
@@ -194,8 +186,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('7.17', $this->_getParam('version'));
 	}
 	
-	public function testSaveV773()
-	{
+	public function testSaveV773() {
 		GalleryUtilities::putRequestVariable('form[path]', '/path/to/dcraw');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
@@ -235,8 +226,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('7.73', $this->_getParam('version'));
 	}
 	
-	public function testSaveMissingPath()
-	{
+	public function testSaveMissingPath() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
 		$results = $this->handleRequest();
@@ -252,8 +242,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveBadPath()
-	{
+	public function testSaveBadPath() {
 		GalleryUtilities::putRequestVariable('form[path]', '/bad/path');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
@@ -277,8 +266,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveFailedTests()
-	{
+	public function testSaveFailedTests() {
 		GalleryUtilities::putRequestVariable('form[path]', '/path/to/dcraw');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		
@@ -318,8 +306,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 		
 		$results = $this->handleRequest();
@@ -333,8 +320,7 @@ class AdminDcrawControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
 		$results = $this->handleRequest();

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/ServerAuthPlugin.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class ServerAuthPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ServerAuthPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -56,8 +53,7 @@ class ServerAuthPluginTest extends GalleryTestCase
 		$gallery->_session = new ServerAuthPluginTestSession();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		
@@ -72,8 +68,7 @@ class ServerAuthPluginTest extends GalleryTestCase
 		}
 	}
 	
-	public function testValidUser()
-	{
+	public function testValidUser() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -88,8 +83,7 @@ class ServerAuthPluginTest extends GalleryTestCase
 		$this->assert($session->regenerateWasCalled(), 'Session has not been regenerated!');
 	}
 	
-	public function testInvalidUser()
-	{
+	public function testInvalidUser() {
 		$_SERVER['REMOTE_USER'] = 'bogusUser-' . rand();
 		
 		list($ret, $user) = $this->_plugin->getUser();
@@ -104,25 +98,20 @@ class ServerAuthPluginTest extends GalleryTestCase
 /**
  * Mock Session
  */
-class ServerAuthPluginTestSession
-{
-	public function ServerAuthPluginTestSession()
-	{
+class ServerAuthPluginTestSession {
+	public function ServerAuthPluginTestSession() {
 		$this->_regenerateWasCalled = false;
 	}
 	
-	public function getUserId()
-	{
+	public function getUserId() {
 		return null;
 	}
 	
-	public function regenerate()
-	{
+	public function regenerate() {
 		$this->_regenerateWasCalled = true;
 	}
 	
-	public function regenerateWasCalled()
-	{
+	public function regenerateWasCalled() {
 		return $this->_regenerateWasCalled;
 	}
 }

@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/jpegtran/classes/JpegtranToolkit.class');
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class JpegtranToolkitTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class JpegtranToolkitTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -56,8 +53,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->_toolkit = new JpegtranToolkit();
 	}
 	
-	public function testGoodBinary()
-	{
+	public function testGoodBinary() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $results) = JpegtranToolkitHelper::testBinary($this->_jpegtranPath);
 		if ($ret) {
@@ -70,8 +66,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals(true, $results[1]['success'], 'crop should succeed');
 	}
 	
-	public function testRotateOnlyBinary()
-	{
+	public function testRotateOnlyBinary() {
 		$this->_platform->setTestEnvironment('rotateOnly');
 		list($ret, $results) = JpegtranToolkitHelper::testBinary($this->_jpegtranPath);
 		if ($ret) {
@@ -84,8 +79,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals(false, $results[1]['success'], 'crop should fail');
 	}
 	
-	public function testTestBinaryBadPath()
-	{
+	public function testTestBinaryBadPath() {
 		list($ret, $results) = JpegtranToolkitHelper::testBinary('/invalidPath/jpegtran');
 		if ($ret) {
 			$this->assert($ret->getErrorCode() & ERROR_BAD_PATH, 'expect ERROR_BAD_PATH');
@@ -94,8 +88,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testBadBinary()
-	{
+	public function testBadBinary() {
 		$this->_platform->setTestEnvironment('badBinary');
 		list($ret, $results) = JpegtranToolkitHelper::testBinary($this->_jpegtranPath);
 		if ($ret) {
@@ -108,8 +101,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals(false, $results[1]['success'], 'crop should fail');
 	}
 	
-	public function testGetOperations()
-	{
+	public function testGetOperations() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $results) = JpegtranToolkitHelper::getOperations();
 		if ($ret) {
@@ -156,8 +148,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		), $results['operations'], 'operations');
 	}
 	
-	public function testGetOperationsRotateOnly()
-	{
+	public function testGetOperationsRotateOnly() {
 		$this->_platform->setTestEnvironment('rotateOnly');
 		list($ret, $results) = JpegtranToolkitHelper::getOperations();
 		if ($ret) {
@@ -182,8 +173,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		), $results['operations'], 'operations');
 	}
 	
-	public function testGetOperationsBadBinary()
-	{
+	public function testGetOperationsBadBinary() {
 		$this->_platform->setTestEnvironment('badBinary');
 		list($ret, $results) = JpegtranToolkitHelper::getOperations();
 		if ($ret) {
@@ -197,8 +187,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals(array(), $results['operations'], 'operations');
 	}
 	
-	public function testPerformOperationCrop()
-	{
+	public function testPerformOperationCrop() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/jpeg', 'crop', 'SOURCE', 'DEST', array(
 			'10',
@@ -217,8 +206,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals('image/jpeg', $mimeType, 'output mimetype != input mimetype');
 	}
 	
-	public function testPerformOperationCropWithContext()
-	{
+	public function testPerformOperationCropWithContext() {
 		$this->_platform->setTestEnvironment('hasGetImageSize');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/jpeg', 'crop', 'SOURCE', 'DEST', array(
 			'10',
@@ -240,8 +228,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals('image/jpeg', $mimeType, 'output mimetype != input mimetype');
 	}
 	
-	public function testPerformOperationRotate()
-	{
+	public function testPerformOperationRotate() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/pjpeg', 'rotate', 'SOURCE', 'DEST', array(
 			'-90'
@@ -258,8 +245,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals('image/pjpeg', $mimeType, 'output mimetype != input mimetype');
 	}
 	
-	public function testPerformOperationRotateWithContext()
-	{
+	public function testPerformOperationRotateWithContext() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/pjpeg', 'rotate', 'SOURCE', 'DEST', array(
 			'-90'
@@ -278,8 +264,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals('image/pjpeg', $mimeType, 'output mimetype != input mimetype');
 	}
 	
-	public function testPerformOperationChangesWorkingDirectory()
-	{
+	public function testPerformOperationChangesWorkingDirectory() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/jpeg', 'crop', 'SOURCE', 'DEST', array(
 			'10',
@@ -298,8 +283,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		$this->assertEquals(4, $this->_platform->getChdirCount(), 'crop should trigger 4 changes');
 	}
 	
-	public function testPerformOperationForUnsupportedOperation()
-	{
+	public function testPerformOperationForUnsupportedOperation() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/pjpeg', 'thumbnail', 'SOURCE', 'DEST', array(), array(
 			'IGNORE'
@@ -311,8 +295,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPerformOperationForUnsupportedMimetype()
-	{
+	public function testPerformOperationForUnsupportedMimetype() {
 		$this->_platform->setTestEnvironment('normal');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/gif', 'rotate', 'SOURCE', 'DEST', array(
 			'-90'
@@ -326,8 +309,7 @@ class JpegtranToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPerformOperationUsesPhpGetImagesize()
-	{
+	public function testPerformOperationUsesPhpGetImagesize() {
 		$this->_platform->setTestEnvironment('hasGetImageSize');
 		list($ret, $mimeType, $context) = $this->_toolkit->performOperation('image/jpeg', 'crop', 'SOURCE', 'DEST', array(
 			'10',
@@ -351,33 +333,27 @@ class JpegtranToolkitTest extends GalleryTestCase
  * @package Jpegtran
  * @subpackage PHPUnit
  */
-class JpegtranToolkitTestPlatform
-{
-	public function JpegtranToolkitTestPlatform(&$test, $jpegtranPath)
-	{
+class JpegtranToolkitTestPlatform {
+	public function JpegtranToolkitTestPlatform(&$test, $jpegtranPath) {
 		$this->_test =& $test;
 		$this->_testFile = dirname(dirname(dirname(__FILE__))) . "/data/test.jpg";
 		$this->_jpegtranPath = $jpegtranPath;
 		$this->_chdirCount = 0;
 	}
 	
-	public function setTestEnvironment($envId)
-	{
+	public function setTestEnvironment($envId) {
 		$this->_envId = $envId;
 	}
 	
-	public function getChdirCount()
-	{
+	public function getChdirCount() {
 		return $this->_chdirCount;
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 	
-	public function exec($cmd)
-	{
+	public function exec($cmd) {
 		$results = array();
 		$stderr = array();
 		switch (serialize($cmd)) {
@@ -558,23 +534,19 @@ class JpegtranToolkitTestPlatform
 		);
 	}
 	
-	public function rename($oldName, $newName)
-	{
+	public function rename($oldName, $newName) {
 		return 1;
 	}
 	
-	public function copy($oldFile, $newFile)
-	{
+	public function copy($oldFile, $newFile) {
 		return 1;
 	}
 	
-	public function isRestrictedByOpenBaseDir($path)
-	{
+	public function isRestrictedByOpenBaseDir($path) {
 		return false;
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		switch ($path) {
 			case $this->_jpegtranPath:
 			case '/validPath/jpegtran':
@@ -592,8 +564,7 @@ class JpegtranToolkitTestPlatform
 		return false;
 	}
 	
-	public function is_file($path)
-	{
+	public function is_file($path) {
 		switch ($path) {
 			case $this->_jpegtranPath:
 			case '/validPath/jpegtran':
@@ -604,8 +575,7 @@ class JpegtranToolkitTestPlatform
 		return false;
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		switch ($path) {
 			case '/validPath/':
 				return true;
@@ -614,30 +584,25 @@ class JpegtranToolkitTestPlatform
 		return false;
 	}
 	
-	public function unlink($path)
-	{
+	public function unlink($path) {
 		/* we don't create any files, so no need to unlink any */
 	}
 	
-	public function tempnam($dir, $prefix)
-	{
+	public function tempnam($dir, $prefix) {
 		return 'TEMPFILE';
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return $path;
 	}
 	
-	public function chmod($path, $mode = null)
-	{
+	public function chmod($path, $mode = null) {
 		$this->_test->_chmodWasCalled = true;
 
 		return true;
 	}
 	
-	public function getimagesize($filename)
-	{
+	public function getimagesize($filename) {
 		if ($this->_envId == 'hasGetImageSize') {
 			$result = array(
 				200,
@@ -650,15 +615,13 @@ class JpegtranToolkitTestPlatform
 		return $result;
 	}
 	
-	public function chdir($path)
-	{
+	public function chdir($path) {
 		$this->_chdirCount++;
 
 		return true;
 	}
 	
-	public function getcwd()
-	{
+	public function getcwd() {
 		return 'DIR';
 	}
 }

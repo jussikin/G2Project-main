@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class OptimizeDatabaseTask extends MaintenanceTask
-{
+class OptimizeDatabaseTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		$info['l10Domain'] = 'modules_core';
@@ -47,8 +45,7 @@ class OptimizeDatabaseTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		
 		$storage =& $gallery->getStorage();

@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18136 $
  */
-class SessionTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SessionTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -99,8 +96,7 @@ class SessionTest extends GalleryTestCase
 		$headers = array();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		$gallery->_storage = $this->_saveStorage;
@@ -124,15 +120,13 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function _markSessionForCleanup($session)
-	{
+	public function _markSessionForCleanup($session) {
 		if (!empty($session->_sessionId)) {
 			$this->_sessionIds[] = $session->_sessionId;
 		}
 	}
 	
-	public function testGetAndPut()
-	{
+	public function testGetAndPut() {
 		global $gallery;
 		
 		$key = 'test-key';
@@ -151,8 +145,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($value, $session->get($key));
 	}
 	
-	public function testRemove()
-	{
+	public function testRemove() {
 		global $gallery;
 		
 		$key = 'test-key';
@@ -188,8 +181,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert(!$exists, "key $key should not exist!");
 	}
 	
-	public function testStatus()
-	{
+	public function testStatus() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -214,8 +206,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(null, $session->getStatus(), 'Second');
 	}
 	
-	public function testIsUsingCookies()
-	{
+	public function testIsUsingCookies() {
 		foreach (array(
 			'with-cookies',
 			'without-cookies'
@@ -247,8 +238,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testInitWithFixCookieVars()
-	{
+	public function testInitWithFixCookieVars() {
 		global $gallery;
 		$session = $gallery->_session;
 		$isUsingCookies = $session->isUsingCookies();
@@ -297,8 +287,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($sessionId, $_COOKIE[SESSION_ID_PARAMETER], 'multiple cookies, not the right one was set/fixed');
 	}
 	
-	public function testNewSessionCollision()
-	{
+	public function testNewSessionCollision() {
 		/* Ensure we don't randomly pick a new sessionid for an existing session */
 		global $gallery;
 		
@@ -333,8 +322,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(array(), $session->_sessionData, 'data');
 	}
 	
-	public function testSessionSaveLoad()
-	{
+	public function testSessionSaveLoad() {
 		global $gallery;
 		$session = $gallery->_session;
 		$isUsingCookies = $session->isUsingCookies();
@@ -417,8 +405,7 @@ class SessionTest extends GalleryTestCase
 	}
 	
 	/* Test session hijack */
-	public function testSameSessionDifferentRemoteIdentifier()
-	{
+	public function testSameSessionDifferentRemoteIdentifier() {
 		global $gallery;
 		
 		foreach (array(
@@ -568,8 +555,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testInit()
-	{
+	public function testInit() {
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
 		$session = new GallerySession();
 		$ret = $session->init();
@@ -587,8 +573,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert(!empty($session->_remoteIdentifier), 'remote id');
 	}
 	
-	public function testInitEmptySecure()
-	{
+	public function testInitEmptySecure() {
 		global $gallery;
 		
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -606,8 +591,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session->isPersistent(), 'is persistent');
 	}
 	
-	public function testInitSwitchToSecure()
-	{
+	public function testInitSwitchToSecure() {
 		global $gallery;
 		
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -642,8 +626,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session2->isPersistent(), 'is persistent');
 	}
 	
-	public function testInitSwitchToUnsecure()
-	{
+	public function testInitSwitchToUnsecure() {
 		global $gallery;
 		
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -677,8 +660,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session2->isPersistent(), 'is persistent');
 	}
 	
-	public function testInitInvalidSessionId()
-	{
+	public function testInitInvalidSessionId() {
 		global $gallery;
 		$session = $gallery->_session;
 		$isUsingCookies = $session->isUsingCookies();
@@ -717,8 +699,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testInitForExistingSession()
-	{
+	public function testInitForExistingSession() {
 		global $gallery;
 		
 		/* Create a persistent session */
@@ -761,8 +742,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(false, $newSession->_forceSaveSession, 'force session save');
 	}
 	
-	public function testStart()
-	{
+	public function testStart() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -838,8 +818,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetId()
-	{
+	public function testGetId() {
 		$session = new GallerySession();
 		$this->assertEquals(SESSION_TEMP_ID, $session->getId(), 'temp id');
 		$session->_sessionId = '1234';
@@ -854,8 +833,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals('1234', $session->getId(), 'session id set 2');
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		$session = new GallerySession();
@@ -912,8 +890,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(0, $results->resultCount(), 'Persistent cookie should be removed');
 	}
 	
-	public function testSaveNewSession()
-	{
+	public function testSaveNewSession() {
 		global $gallery;
 		
 		$now = time();
@@ -958,8 +935,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session->_isPersistentSessionNew, 'new persistent session');
 	}
 	
-	public function testSaveResaveExistingSessionDataChanged()
-	{
+	public function testSaveResaveExistingSessionDataChanged() {
 		global $gallery;
 		
 		$now = time();
@@ -1006,8 +982,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session->_isPersistentSessionNew, 'is new persisting session (still same request');
 	}
 	
-	public function testSaveResaveExistingSessionNoDataChangedDoNotTouch()
-	{
+	public function testSaveResaveExistingSessionNoDataChangedDoNotTouch() {
 		global $gallery;
 		
 		$now = time();
@@ -1039,8 +1014,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session->_isPersistentSessionNew, 'is persistent session new');
 	}
 	
-	public function testSaveResaveExistingSessionNoDataChangedTouch()
-	{
+	public function testSaveResaveExistingSessionNoDataChangedTouch() {
 		global $gallery;
 		
 		$now = time();
@@ -1085,8 +1059,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(false, $session->_isPersistentSessionNew, 'existing persistent session');
 	}
 	
-	public function testSaveDoNotSaveIfSessionIdEmpty()
-	{
+	public function testSaveDoNotSaveIfSessionIdEmpty() {
 		global $gallery;
 		
 		$now = time();
@@ -1119,8 +1092,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(false, $session->_isPersistentSessionNew, 'existing persistent session');
 	}
 	
-	public function testSaveReturnsErrorOnMissingUserId()
-	{
+	public function testSaveReturnsErrorOnMissingUserId() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -1143,8 +1115,7 @@ class SessionTest extends GalleryTestCase
 	/**
 	 * Test if save() actually doesn't save if the current request is in the exclude list.
 	 */
-	public function testSaveSessionShouldNotSave()
-	{
+	public function testSaveSessionShouldNotSave() {
 		global $gallery;
 		$sid = md5(rand());
 		
@@ -1202,8 +1173,7 @@ class SessionTest extends GalleryTestCase
 		$this->_markSessionForCleanup($gallery->_session);
 	}
 	
-	public function testSaveCallsExpireSessions()
-	{
+	public function testSaveCallsExpireSessions() {
 		global $gallery;
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
 		$session = new GallerySession();
@@ -1302,8 +1272,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(array(), $gallery->_storage->_query, '3rd save call should not trigger expireSessions() (not a new persistent session)');
 	}
 	
-	public function testRegenerateSessionId()
-	{
+	public function testRegenerateSessionId() {
 		/* Verify that our original session has not been nuked */
 		$_SERVER['HTTP_USER_AGENT'] = 'TEST_USER_AGENT';
 		$_SERVER['REMOTE_ADDR'] = '1.1.1.1';
@@ -1356,8 +1325,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($sessionUrl . $session->getId(), GalleryUtilities::getRequestVariables('return'), 'session id in return url not mapped to new session id');
 	}
 	
-	public function testRegenerateFromGuestToGuest()
-	{
+	public function testRegenerateFromGuestToGuest() {
 		/* Verify that our original session has not been nuked */
 		$_SERVER['HTTP_USER_AGENT'] = 'TEST_USER_AGENT';
 		$_SERVER['REMOTE_ADDR'] = '1.1.1.1';
@@ -1395,8 +1363,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($this->_anonymousUserId, $session->getUserId(), 'userid unchanged after regenerate');
 	}
 	
-	public function testRegenerateFromGuestToLoggedIn()
-	{
+	public function testRegenerateFromGuestToLoggedIn() {
 		/* Verify that our original session has not been nuked */
 		$_SERVER['HTTP_USER_AGENT'] = 'TEST_USER_AGENT';
 		$_SERVER['REMOTE_ADDR'] = '1.1.1.1';
@@ -1437,8 +1404,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(99, $session->getUserId(), 'userid unchanged after regenerate');
 	}
 	
-	public function testAcquireNewPersistentSession()
-	{
+	public function testAcquireNewPersistentSession() {
 		global $gallery;
 		
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -1492,8 +1458,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAcquireNewPersistentSessionRetryOnCollision()
-	{
+	public function testAcquireNewPersistentSessionRetryOnCollision() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		/* Use our own error handler to allow suppressing PostgreSQL insert errors on collision */
@@ -1544,8 +1509,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAcquireNewPersistentSessionWithGivenSessionId()
-	{
+	public function testAcquireNewPersistentSessionWithGivenSessionId() {
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
 		$session = new GallerySession();
 		$ret = $session->init();
@@ -1565,8 +1529,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session->isPersistent(), 'is persistent');
 	}
 	
-	public function testExpireSessions()
-	{
+	public function testExpireSessions() {
 		global $gallery;
 		
 		/* Prepare by removing all but the current admin session from the map */
@@ -1747,8 +1710,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testReplaceTempSessionIdIfNecessaryDoNothing()
-	{
+	public function testReplaceTempSessionIdIfNecessaryDoNothing() {
 		$session = new GallerySession();
 		$session->_isPersistentSessionNew = false;
 		$session->_sessionId = md5(rand());
@@ -1756,8 +1718,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($html, $session->replaceTempSessionIdIfNecessary($html));
 	}
 	
-	public function testReplaceTempSessionIdIfNecessaryRemove()
-	{
+	public function testReplaceTempSessionIdIfNecessaryRemove() {
 		$session = new GallerySession();
 		$session->_isPersistentSessionNew = false;
 		$session->_sessionId = '';
@@ -1768,8 +1729,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($expected, $session->replaceTempSessionIdIfNecessary($html));
 	}
 	
-	public function testReplaceSessionIdInDataDoStringReplaceOnNestedArray()
-	{
+	public function testReplaceSessionIdInDataDoStringReplaceOnNestedArray() {
 		$session = new GallerySession();
 		$search = 'OLD_SESSION_ID';
 		$replace = 'NEW_SESSION_ID';
@@ -1816,8 +1776,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($expected, $session->replaceSessionIdInData($data, $search, $replace));
 	}
 	
-	public function testReplaceSessionIdInDataDoReplaceSessionIdIfNecessaryOnNestedObject()
-	{
+	public function testReplaceSessionIdInDataDoReplaceSessionIdIfNecessaryOnNestedObject() {
 		$session = new GallerySession();
 		$session->_isPersistentSessionNew = false;
 		$session->_sessionId = '';
@@ -1860,8 +1819,7 @@ class SessionTest extends GalleryTestCase
 	 * Our replaceTempSessionIdIfNecessary() code and the page caching assume that the session key
 	 * and the temp session string have no characters that change when HTML or URL encoded.
 	 */
-	public function testSessionKeyAndTempSessionHaveNoSpecialCharacters()
-	{
+	public function testSessionKeyAndTempSessionHaveNoSpecialCharacters() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$this->assertEquals($session->getKey(), urlencode($session->getKey()), 'url encoded session key');
@@ -1870,8 +1828,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(SESSION_TEMP_ID, htmlentities(SESSION_TEMP_ID), 'HTML entities of temp id');
 	}
 	
-	public function testReplaceTempSessionIdIfNecessaryReplace()
-	{
+	public function testReplaceTempSessionIdIfNecessaryReplace() {
 		$session = new GallerySession();
 		$session->_isPersistentSessionNew = true;
 		$session->_sessionId = '12345';
@@ -1884,8 +1841,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($expected, $session->replaceTempSessionIdIfNecessary($html));
 	}
 	
-	public function testReplaceTempSessionIdIfNecessaryRemovesTrailingQueryStringSeparator()
-	{
+	public function testReplaceTempSessionIdIfNecessaryRemovesTrailingQueryStringSeparator() {
 		$session = new GallerySession();
 		$session->_isPersistentSessionNew = false;
 		$session->_sessionId = '';
@@ -1906,8 +1862,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testIsPersistentSessionRequired()
-	{
+	public function testIsPersistentSessionRequired() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -2015,8 +1970,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(false, $required, 'empty userId');
 	}
 	
-	public function testSetCookie()
-	{
+	public function testSetCookie() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -2075,8 +2029,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testSetCookieSecure()
-	{
+	public function testSetCookieSecure() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -2127,8 +2080,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testSetCookieNoExpirationDate()
-	{
+	public function testSetCookieNoExpirationDate() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -2175,8 +2127,7 @@ class SessionTest extends GalleryTestCase
 	}
 	
 	/* Send a Delete cookie (expiration date in the past, value = empty) */
-	public function testSetCookieDeleteCookie()
-	{
+	public function testSetCookieDeleteCookie() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -2236,8 +2187,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testLoadSessionData()
-	{
+	public function testLoadSessionData() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -2315,8 +2265,7 @@ class SessionTest extends GalleryTestCase
 	 * Gallery should not blindly load the session data for a given sessionId, but first check if
 	 * the session already expired.
 	 */
-	public function testLoadSessionDataExpiredSession()
-	{
+	public function testLoadSessionDataExpiredSession() {
 		global $gallery;
 		$now = time();
 		$gallery->_phpVm = new SessionTestPhpVm(array(), $now);
@@ -2430,8 +2379,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testLoadSessionDataLoadMiss()
-	{
+	public function testLoadSessionDataLoadMiss() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -2473,8 +2421,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert(!isset($headers['set-cookie']), 'Set-Cookie header is sent.  These are the headers: ' . $debugHeaders);
 	}
 	
-	public function testEmptySessionData()
-	{
+	public function testEmptySessionData() {
 		global $gallery;
 		
 		$session = new GallerySession();
@@ -2505,8 +2452,7 @@ class SessionTest extends GalleryTestCase
 	}
 	
 	/* Search engines don't get a persistent session in Gallery */
-	public function testSearchEngineCrawlerSessions()
-	{
+	public function testSearchEngineCrawlerSessions() {
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
 		$_SERVER['HTTP_COOKIE'] = '';
 		$_SERVER['HTTP_USER_AGENT'] = 'Googlebot/2.1 (+http://www.google.com/bot.html)';
@@ -2530,8 +2476,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert($session->_isSearchEngineSession, 'SE session');
 	}
 	
-	public function testSearchEngineCrawlerSessionsAsExplicitGuestUser()
-	{
+	public function testSearchEngineCrawlerSessionsAsExplicitGuestUser() {
 		global $gallery;
 		
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -2559,8 +2504,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert($session->_isSearchEngineSession, 'SE session');
 	}
 	
-	public function testMisidentifiedSearchEngineSessionBecomesRegisteredUser()
-	{
+	public function testMisidentifiedSearchEngineSessionBecomesRegisteredUser() {
 		global $gallery;
 		
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -2596,8 +2540,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert(!$session->_isSearchEngineSession, 'SE session');
 	}
 	
-	public function testResumeMisidentifiedSearchEngineSessionAsRegisteredUser()
-	{
+	public function testResumeMisidentifiedSearchEngineSessionAsRegisteredUser() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -2644,8 +2587,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($user->getId(), $newSession->getUserId(), 'user id');
 	}
 	
-	public function testCompareIdentifiers()
-	{
+	public function testCompareIdentifiers() {
 		$this->assertEquals(1, GallerySession::compareIdentifiers(array(
 			0
 		), array(
@@ -2686,8 +2628,7 @@ class SessionTest extends GalleryTestCase
 	}
 	
 	/* Test if Gallery creates cookies with the correct domain/path and name */
-	public function testSessionCookieHeaderAndPersistence()
-	{
+	public function testSessionCookieHeaderAndPersistence() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -2814,8 +2755,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testSessionInitializesIsUsingCookies()
-	{
+	public function testSessionInitializesIsUsingCookies() {
 		$session = new GallerySession();
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
 		$ret = $session->init();
@@ -2828,8 +2768,7 @@ class SessionTest extends GalleryTestCase
 	}
 	
 	/* Test configured cookie domain vs. not configured cookie domain */
-	public function testSessionCookieDomain()
-	{
+	public function testSessionCookieDomain() {
 		/* First check if the configured value is taken if available */
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'cookie.domain', 'bad');
 		if ($ret) {
@@ -2896,8 +2835,7 @@ class SessionTest extends GalleryTestCase
 	/**
 	 * Check that we don't save sessions for core.DownloadItem, migrate.Redirect and CSS requests.
 	 */
-	public function testIsPersistentSessionAllowedForRequest()
-	{
+	public function testIsPersistentSessionAllowedForRequest() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -2956,8 +2894,7 @@ class SessionTest extends GalleryTestCase
 		}
 	}
 	
-	public function testIsPersistentSessionAllowedForRequestCachesResult()
-	{
+	public function testIsPersistentSessionAllowedForRequestCachesResult() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryUtilities::removeRequestVariable('view');
@@ -2968,8 +2905,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(true, $session->_isPersistentSessionAllowedForRequest(), '2. call');
 	}
 	
-	public function testInitEmpty()
-	{
+	public function testInitEmpty() {
 		global $gallery;
 		
 		$session = new GallerySession();
@@ -3008,8 +2944,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($this->_anonymousUserId, $newSession->getUserId(), 'user id of new session');
 	}
 	
-	public function testInitEmptyEmptyRemoteId()
-	{
+	public function testInitEmptyEmptyRemoteId() {
 		$session = new GallerySession();
 		$ret = $session->initEmpty(true);
 		if ($ret) {
@@ -3027,8 +2962,7 @@ class SessionTest extends GalleryTestCase
 		$this->_markSessionForCleanup($session);
 	}
 	
-	public function testInitEmptyWithUserId()
-	{
+	public function testInitEmptyWithUserId() {
 		$session = new GallerySession();
 		$ret = $session->initEmpty(false, -1);
 		if ($ret) {
@@ -3041,8 +2975,7 @@ class SessionTest extends GalleryTestCase
 		$this->_markSessionForCleanup($session);
 	}
 	
-	public function testInitEmptyVerifyNoCookieIsSet()
-	{
+	public function testInitEmptyVerifyNoCookieIsSet() {
 		global $gallery;
 		$gallery->_phpVm = new SessionTestPhpVm();
 		
@@ -3069,8 +3002,7 @@ class SessionTest extends GalleryTestCase
 	 * to access) we initialize with empty remoteIdentifier.  In this case the first init() call
 	 * should allow access and set the remoteIdentifier based on this request.
 	 */
-	public function testInitRemoteIdentifier()
-	{
+	public function testInitRemoteIdentifier() {
 		$session = new GallerySession();
 		$ret = $session->initEmpty(true);
 		if ($ret) {
@@ -3111,8 +3043,7 @@ class SessionTest extends GalleryTestCase
 		$this->_markSessionForCleanup($session);
 	}
 	
-	public function testGetCreationAndModificationDate()
-	{
+	public function testGetCreationAndModificationDate() {
 		global $gallery;
 		
 		$now = time();
@@ -3128,8 +3059,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($now, $session->getModificationTime(), 'modification time');
 	}
 	
-	public function testIsPersistent()
-	{
+	public function testIsPersistent() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3145,8 +3075,7 @@ class SessionTest extends GalleryTestCase
 		$this->_markSessionForCleanup($session);
 	}
 	
-	public function testIsHttps()
-	{
+	public function testIsHttps() {
 		$session = new GallerySession();
 		unset($_SERVER['HTTPS']);
 		$this->assert(!$session->_isHttps(), '$_SERVER[HTTPS] is empty, should be false');
@@ -3166,8 +3095,7 @@ class SessionTest extends GalleryTestCase
 		$this->_markSessionForCleanup($session);
 	}
 	
-	public function testGetSerializedSession()
-	{
+	public function testGetSerializedSession() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3193,8 +3121,7 @@ class SessionTest extends GalleryTestCase
 		)), $session->_getSerializedSession());
 	}
 	
-	public function testLoadedSessionData()
-	{
+	public function testLoadedSessionData() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3210,8 +3137,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($session->_loadedSessionData, $session->_getSerializedSession());
 	}
 	
-	public function testInitAndStartDoNotGenerateAuthToken()
-	{
+	public function testInitAndStartDoNotGenerateAuthToken() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3226,8 +3152,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals('', $session->_authToken, 'auth token generated too early');
 	}
 	
-	public function testGetAuthToken()
-	{
+	public function testGetAuthToken() {
 		global $gallery;
 		
 		$session = new GallerySession();
@@ -3252,8 +3177,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert(substr($md5[1], 0, 12), $session->getAuthToken(), 'new auth token');
 	}
 	
-	public function testIsCorrectAuthTokenForSessionWithoutAuthToken()
-	{
+	public function testIsCorrectAuthTokenForSessionWithoutAuthToken() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3264,8 +3188,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(null, $session->get('core.authToken'), 'auth token not empty');
 	}
 	
-	public function testIsCorrectAuthToken()
-	{
+	public function testIsCorrectAuthToken() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3278,8 +3201,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($authToken, $session->getAuthToken(), 'auth token has changed');
 	}
 	
-	public function testIsCorrectAuthTokenForForgedAuthToken()
-	{
+	public function testIsCorrectAuthTokenForForgedAuthToken() {
 		global $gallery;
 		
 		$session = new GallerySession();
@@ -3299,8 +3221,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(substr($md5[0], 0, 12), $session->getAuthToken(), 'auth token not regenerated');
 	}
 	
-	public function testAuthTokenRoundtrip()
-	{
+	public function testAuthTokenRoundtrip() {
 		global $gallery;
 		
 		$session = new GallerySession();
@@ -3361,8 +3282,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals(substr($md5[1], 0, 12), $loadedSession->getAuthToken(), 'wrong new auth token');
 	}
 	
-	public function testIsCorrectAuthTokenCanHandleNull()
-	{
+	public function testIsCorrectAuthTokenCanHandleNull() {
 		$session = new GallerySession();
 		$ret = $session->init();
 		if ($ret) {
@@ -3373,8 +3293,7 @@ class SessionTest extends GalleryTestCase
 		$this->assert(!$session->isCorrectAuthToken(null), 'null token');
 	}
 	
-	public function testSessionIdInUrlOverridesCookie()
-	{
+	public function testSessionIdInUrlOverridesCookie() {
 		global $gallery;
 		
 		foreach (array(
@@ -3415,8 +3334,7 @@ class SessionTest extends GalleryTestCase
 		$this->assertEquals($sessions['from_url']->getId(), $session->getId());
 	}
 	
-	public function testHasSiteAdminSessionExpired()
-	{
+	public function testHasSiteAdminSessionExpired() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -3435,27 +3353,22 @@ class SessionTest extends GalleryTestCase
 	}
 }
 
-class SessionTestPhpVm extends GalleryPhpVm
-{
-	public function SessionTestPhpVm($md5Override = array(), $timeValue = null, $randValue = null)
-	{
+class SessionTestPhpVm extends GalleryPhpVm {
+	public function SessionTestPhpVm($md5Override = array(), $timeValue = null, $randValue = null) {
 		$_REQUEST['md5Override'] = $md5Override;
 		$this->_randValue = $randValue;
 		$this->_timeValue = $timeValue;
 	}
 	
-	public function header($header, $replace = null)
-	{
+	public function header($header, $replace = null) {
 		/* Avoid modifying actual header information */
 	}
 	
-	public function headers_sent()
-	{
+	public function headers_sent() {
 		return GalleryUtilities::_getResponseHeaders() != array();
 	}
 	
-	public function md5($string)
-	{
+	public function md5($string) {
 		if (!empty($_REQUEST['md5Override'])) {
 			return array_shift($_REQUEST['md5Override']);
 		}
@@ -3463,8 +3376,7 @@ class SessionTestPhpVm extends GalleryPhpVm
 		return md5($string);
 	}
 	
-	public function genRandInt($min = null, $max = null)
-	{
+	public function genRandInt($min = null, $max = null) {
 		if (isset($this->_randValue)) {
 			return $this->_randValue;
 		}
@@ -3472,8 +3384,7 @@ class SessionTestPhpVm extends GalleryPhpVm
 		parent::genRandInt($min, $max);
 	}
 	
-	public function time()
-	{
+	public function time() {
 		if (isset($this->_timeValue)) {
 			return $this->_timeValue;
 		}
@@ -3482,10 +3393,8 @@ class SessionTestPhpVm extends GalleryPhpVm
 	}
 }
 
-class SessionTestStorage
-{
-	public function SessionTestStorage($collisions = 0, $results = array(), $type = 'foo')
-	{
+class SessionTestStorage {
+	public function SessionTestStorage($collisions = 0, $results = array(), $type = 'foo') {
 		$this->_query = array();
 		$this->_data = array();
 		$this->_options = array();
@@ -3497,8 +3406,7 @@ class SessionTestStorage
 		$this->_searchResults = new SessionTestRecordSet($results);
 	}
 	
-	public function search($query, $data = array(), $options = array())
-	{
+	public function search($query, $data = array(), $options = array()) {
 		$this->_query[] = $query;
 		$this->_data[] = $data;
 		$this->_options[] = $options;
@@ -3509,8 +3417,7 @@ class SessionTestStorage
 		);
 	}
 	
-	public function addMapEntry($mapName, $entry)
-	{
+	public function addMapEntry($mapName, $entry) {
 		$this->_addMapEntry[] = array(
 			$mapName,
 			$entry
@@ -3524,8 +3431,7 @@ class SessionTestStorage
 		}
 	}
 	
-	public function updateMapEntry($mapName, $match, $change)
-	{
+	public function updateMapEntry($mapName, $match, $change) {
 		$this->_updateMapEntry[] = array(
 			$mapName,
 			$match,
@@ -3535,40 +3441,33 @@ class SessionTestStorage
 		return null;
 	}
 	
-	public function checkPoint()
-	{
+	public function checkPoint() {
 		return null;
 	}
 	
-	public function execute($query, $data)
-	{
+	public function execute($query, $data) {
 		$this->_execute[] = array(
 			$query,
 			$data
 		);
 	}
 	
-	public function getType()
-	{
+	public function getType() {
 		return $this->_type;
 	}
 }
 
-class SessionTestRecordSet
-{
-	public function SessionTestRecordSet($results = array())
-	{
+class SessionTestRecordSet {
+	public function SessionTestRecordSet($results = array()) {
 		$this->_results = $results;
 		$this->_i = 0;
 	}
 	
-	public function resultCount()
-	{
+	public function resultCount() {
 		return count($this->_results);
 	}
 	
-	public function nextResult()
-	{
+	public function nextResult() {
 		if ($i < count($this->_results)) {
 			return $this->_results[$i++];
 		} else {
@@ -3582,8 +3481,7 @@ class SessionTestRecordSet
  * maybe other DB driver too create a PHP warning when a insert fails due to a PK collision and we
  * need to suppress that PHP warning for the test
  */
-function SessionTest_error_handler($errno, $errstr, $errfile, $errline)
-{
+function SessionTest_error_handler($errno, $errstr, $errfile, $errline) {
 	if ($errno == 2) {
 		global $gallery;
 		$storage =& $gallery->getStorage();

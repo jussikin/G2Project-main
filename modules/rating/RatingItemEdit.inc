@@ -25,13 +25,11 @@
  * @author Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingItemEdit extends ItemEditOption
-{
+class RatingItemEdit extends ItemEditOption {
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		global $gallery;
 
 		if (isset($form['changeInDescendents']['rating'])) {
@@ -45,8 +43,13 @@ class RatingItemEdit extends ItemEditOption
 		}
 
 		foreach ($subAlbumIds as $id) {
-			$ret = GalleryCoreApi::setPluginParameter('module', 'rating',
-			'enabled', (empty($form['rating']['enabled']) ? 0 : 1), $id);
+			$ret = GalleryCoreApi::setPluginParameter(
+				'module',
+				'rating',
+				'enabled',
+				(empty($form['rating']['enabled']) ? 0 : 1),
+				$id
+			);
 			if ($ret) {
 				return array($ret, null, null);
 			}
@@ -58,11 +61,10 @@ class RatingItemEdit extends ItemEditOption
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		if (empty($form['error'])) {
 			list($ret, $form['rating']['enabled']) =
-		GalleryCoreApi::getPluginParameter('module', 'rating', 'enabled', $item->getId());
+			GalleryCoreApi::getPluginParameter('module', 'rating', 'enabled', $item->getId());
 			if ($ret) {
 				return array($ret, null, null);
 			}
@@ -74,8 +76,7 @@ class RatingItemEdit extends ItemEditOption
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		return array(null, true);
 	}
 }

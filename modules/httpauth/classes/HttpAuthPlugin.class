@@ -36,8 +36,7 @@ class HttpAuthPlugin /* extends GalleryAuthPlugin */
 	/**
 	 * @see GalleryAuthPlugin::getUser
 	 */
-	public function getUser()
-	{
+	public function getUser() {
 		list($authtype, $username, $password) = HttpAuthHelper::getHttpAuth();
 		
 		list($ret, $user) = HttpAuthHelper::getUser($authtype, $username);

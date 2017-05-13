@@ -23,10 +23,8 @@
  * @author  Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class QuotasPreloads
-{
-	public function preload(&$template, $preload, $paramSet)
-	{
+class QuotasPreloads {
+	public function preload(&$template, $preload, $paramSet) {
 		static $loaded;
 
 		if (!empty($loaded[$preload])) {

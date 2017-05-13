@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
  * @version $Revision: 20951 $
  * @static
  */
-class RewriteModuleExtras
-{
+class RewriteModuleExtras {
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public static function upgrade($module, $currentVersion)
-	{
+	public static function upgrade($module, $currentVersion) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -392,8 +390,7 @@ class RewriteModuleExtras
 	/**
 	 * @see GalleryModule::handleEvent
 	 */
-	public function handleDeactivatePlugin($module, $pluginId)
-	{
+	public function handleDeactivatePlugin($module, $pluginId) {
 		list($ret, $activeRules) = $module->getParameter('activeRules');
 		if ($ret) {
 			return $ret;
@@ -427,8 +424,7 @@ class RewriteModuleExtras
 	/**
 	 * @see GalleryModule::handleEvent
 	 */
-	public function handleUninstallPlugin($module, $pluginId)
-	{
+	public function handleUninstallPlugin($module, $pluginId) {
 		$ret = RewriteHelper::setHistoryForModule($pluginId, array());
 		if ($ret) {
 			return $ret;
@@ -440,8 +436,7 @@ class RewriteModuleExtras
 	/**
 	 * @see GalleryModule::handleEvent
 	 */
-	public function handleActivatePlugin($module, $pluginId)
-	{
+	public function handleActivatePlugin($module, $pluginId) {
 		/* Get saved patterns */
 	list($ret, $plugin) = GalleryCoreApi::loadPlugin('module', $pluginId);
 		if ($ret) {

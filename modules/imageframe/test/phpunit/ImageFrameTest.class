@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ImageFrameTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageFrameTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -53,8 +50,7 @@ class ImageFrameTest extends GalleryTestCase
 		}
 	}
 	
-	public function _resetIFCounter()
-	{
+	public function _resetIFCounter() {
 		if (!function_exists('smarty_function_counter')) {
 			GalleryCoreApi::requireOnce('lib/smarty/plugins/modifier.counter.php');
 		}
@@ -69,8 +65,7 @@ class ImageFrameTest extends GalleryTestCase
 		$this->assertEquals(0, smarty_function_counter($params, $smarty));
 	}
 	
-	public function testImageFrameList()
-	{
+	public function testImageFrameList() {
 		list($ret, $list) = $this->_imageframe->getImageFrameList();
 		if ($ret) {
 			return $ret;
@@ -78,8 +73,7 @@ class ImageFrameTest extends GalleryTestCase
 		$this->assert(isset($list['none']) && isset($list['dots']) && isset($list['wood']));
 	}
 	
-	public function testImageFrameInit()
-	{
+	public function testImageFrameInit() {
 		$template = new ImageFrameDummyGalleryTemplate();
 		$ret = $this->_imageframe->init($template, array(
 			'none',
@@ -120,8 +114,7 @@ class ImageFrameTest extends GalleryTestCase
 		$this->assertEquals('none|dots|wood|solid', $data['idList'], 'Id list 2');
 	}
 	
-	public function testImageFrameSample()
-	{
+	public function testImageFrameSample() {
 		list($ret, $url) = $this->_imageframe->getSampleUrl();
 		if ($ret) {
 			return $ret;
@@ -134,8 +127,7 @@ class ImageFrameTest extends GalleryTestCase
 		$this->assert(strpos($url, 'itemId=12345'), 'url2 id');
 	}
 	
-	public function testSmartyCounter()
-	{
+	public function testSmartyCounter() {
 		/*
 	     * Each imageframe is rendered in a separate {g->container} call which does
 	     * not pass $smarty by reference.  Hence we cannot store a counter in $smarty
@@ -174,40 +166,32 @@ class ImageFrameTest extends GalleryTestCase
  * @package ImageFrame
  * @subpackage PHPUnit
  */
-class ImageFrameDummyGalleryTemplate
-{
+class ImageFrameDummyGalleryTemplate {
 	public $data = array();
 
-	public function hasVariable($key)
-	{
+	public function hasVariable($key) {
 		return isset($this->data[$key]);
 	}
 
-	public function setVariable($key, $value)
-	{
+	public function setVariable($key, $value) {
 		$this->data[$key] = $value;
 	}
 
-	public function &getVariableByReference($key)
-	{
+	public function &getVariableByReference($key) {
 		return $this->data[$key];
 	}
 
-	public function &_getSmarty($trimWhitespace)
-	{
+	public function &_getSmarty($trimWhitespace) {
 		return $this;
 	}
 
-	public function register_block()
-	{
+	public function register_block() {
 	}
 
-	public function register_function()
-	{
+	public function register_function() {
 	}
 
-	public function head($tpl)
-	{
+	public function head($tpl) {
 		$this->data['head'][] = $tpl;
 	}
 }

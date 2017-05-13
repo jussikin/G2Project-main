@@ -27,17 +27,14 @@ GalleryCoreApi::requireOnce('modules/migrate/classes/G1MigrateHelper.class');
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17580 $
  */
-class MigrateEventHandlerTest extends GalleryControllerTestCase
-{
+class MigrateEventHandlerTest extends GalleryControllerTestCase {
 	public $_temporaryAlbumId;
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName, 'migrate.ConfirmImport');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -60,8 +57,7 @@ class MigrateEventHandlerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		list($ret, $mapCount) = G1MigrateHelper::fetchMapCount();
@@ -76,8 +72,7 @@ class MigrateEventHandlerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testMigrateDeleteEventHandler()
-	{
+	public function testMigrateDeleteEventHandler() {
 		// Create random album
 		list($ret, $g1MapHandlerAlbum) = $this->_createRandomAlbum($this->_temporaryAlbumId);
 		if ($ret) {

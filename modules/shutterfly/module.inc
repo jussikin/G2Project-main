@@ -25,22 +25,19 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ShutterflyModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ShutterflyModule extends GalleryModule {
+	public function __construct() {
 		$this->ShutterflyModule();
 	}
 
-	public function ShutterflyModule()
-	{
+	public function ShutterflyModule() {
 		global $gallery;
 
 		$this->setId('shutterfly');
 		$this->setName($gallery->i18n('Shutterfly'));
 		$this->setDescription($gallery->i18n('Shutterfly Photo Printing Module'));
 		$this->setVersion('2.0.0'); /* Update upgrade() too */
-	$this->_templateVersion = 1;
+		$this->_templateVersion = 1;
 		$this->setGroup('commerce', $gallery->i18n('Commerce'));
 		$this->setCallbacks('getItemLinks');
 		$this->setRequiredCoreApi(array(8, 0));
@@ -50,14 +47,13 @@ class ShutterflyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		if (!isset($currentVersion)) {
 			$currentVersion = '0';
 		} elseif (version_compare($currentVersion, '1.0.0', '<')) {
 			/* Instead of enumerating all previous versions... */
-		$currentVersion = '1.0.0';
+			$currentVersion = '1.0.0';
 		}
 		list($ret, $coreParams) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
 		if ($ret) {
@@ -65,64 +61,80 @@ class ShutterflyModule extends GalleryModule
 		}
 
 		switch ($currentVersion) {
-	case '0':
-		/* Register our permission */
-		$ret = GalleryCoreApi::registerPermission($this->getId(), 'shutterfly.print',
-							  $gallery->i18n('[shutterfly] Print'));
-		if ($ret) {
-			return $ret;
-		}
-		/* Give everybody print permission by default */
-		$gallery->guaranteeTimeLimit(300);
-		$ret = GalleryCoreApi::addGroupPermission(
-		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
-		'shutterfly.print', true);
-		if ($ret) {
-			return $ret;
-		}
-		break;
+			case '0':
+				/* Register our permission */
+				$ret = GalleryCoreApi::registerPermission(
+					$this->getId(),
+					'shutterfly.print',
+					$gallery->i18n('[shutterfly] Print')
+				);
+				if ($ret) {
+					return $ret;
+				}
+						/* Give everybody print permission by default */
+						$gallery->guaranteeTimeLimit(300);
+						$ret = GalleryCoreApi::addGroupPermission(
+							$coreParams['id.rootAlbum'],
+							$coreParams['id.everybodyGroup'],
+							'shutterfly.print',
+							true
+						);
+				if ($ret) {
+					return $ret;
+				}
+		        break;
 
-	case '1.0.0':
-		$ret = GalleryCoreApi::registerPermission($this->getId(), 'shutterfly.print',
-							  $gallery->i18n('[shutterfly] Print'));
-		if ($ret) {
-			return $ret;
+			case '1.0.0':
+				$ret = GalleryCoreApi::registerPermission(
+					$this->getId(),
+					'shutterfly.print',
+					$gallery->i18n('[shutterfly] Print')
+				);
+				if ($ret) {
+					return $ret;
+				}
+						$gallery->guaranteeTimeLimit(300);
+						$ret = GalleryCoreApi::addGroupPermission(
+							$coreParams['id.rootAlbum'],
+							$coreParams['id.everybodyGroup'],
+							'shutterfly.print',
+							true
+						);
+				if ($ret) {
+					return $ret;
+				}
+
+			case '1.0.1':
+			case '1.0.2':
+			case '1.0.3':
+			case '1.0.4':
+			case '1.0.5':
+			case '1.0.6':
+			case '1.0.7':
+			case '1.0.7.1':
+			case '1.0.7.2':
+				/* .mo file migration */
+			case '1.0.8':
+			case '1.0.9':
+			case '1.0.10':
+				/* Implementing new version of the cart plugin interface */
+			case '1.0.11':
+			case '1.0.12':
+			case '1.0.13':
+			case '1.0.14':
+				/* Core API 8.0 & Module API 4.0 */
+
+			case 'end of upgrade path':
+		        break;
+
+			default:
+		        return GalleryCoreApi::error(
+					ERROR_BAD_PLUGIN,
+					__FILE__,
+					__LINE__,
+					sprintf('Unknown module version %s', $currentVersion)
+				);
 		}
-		$gallery->guaranteeTimeLimit(300);
-		$ret = GalleryCoreApi::addGroupPermission(
-		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
-		'shutterfly.print', true);
-		if ($ret) {
-			return $ret;
-		}
-
-	case '1.0.1':
-	case '1.0.2':
-	case '1.0.3':
-	case '1.0.4':
-	case '1.0.5':
-	case '1.0.6':
-	case '1.0.7':
-	case '1.0.7.1':
-	case '1.0.7.2':
-		/* .mo file migration */
-	case '1.0.8':
-	case '1.0.9':
-	case '1.0.10':
-		/* Implementing new version of the cart plugin interface */
-	case '1.0.11':
-	case '1.0.12':
-	case '1.0.13':
-	case '1.0.14':
-		/* Core API 8.0 & Module API 4.0 */
-
-	case 'end of upgrade path':
-		break;
-
-	default:
-		return GalleryCoreApi::error(ERROR_BAD_PLUGIN, __FILE__, __LINE__,
-					 sprintf('Unknown module version %s', $currentVersion));
-	}
 
 		return null;
 	}
@@ -130,12 +142,16 @@ class ShutterflyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		foreach (array('1_0', '1_1') as $version) {
 			$ret = GalleryCoreApi::registerFactoryImplementation(
-		'CartPluginInterface_' . $version, 'ShutterflyCartPlugin', 'shutterfly',
-		'modules/shutterfly/classes/ShutterflyCartPlugin.class', 'shutterfly', null);
+				'CartPluginInterface_' . $version,
+				'ShutterflyCartPlugin',
+				'shutterfly',
+				'modules/shutterfly/classes/ShutterflyCartPlugin.class',
+				'shutterfly',
+				null
+			);
 			if ($ret) {
 				return $ret;
 			}
@@ -147,8 +163,7 @@ class ShutterflyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -159,8 +174,8 @@ class ShutterflyModule extends GalleryModule
 			isset($permissions[$itemId]['shutterfly.print']) &&
 			GalleryUtilities::isA($item, 'GalleryPhotoItem')) {
 				$links[$itemId][] =
-			array('text' => $this->translate('Print on Shutterfly.com'),
-			  'params' => array('view' => 'shutterfly.PrintPhotos', 'itemId' => $itemId,
+				array('text' => $this->translate('Print on Shutterfly.com'),
+				'params' => array('view' => 'shutterfly.PrintPhotos', 'itemId' => $itemId,
 						'returnUrl' => '%CURRENT_URL%',
 						'authToken' => $session->getAuthToken()));
 			}

@@ -25,29 +25,25 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class DigibugPrintPhotosView extends GalleryView
-{
+class DigibugPrintPhotosView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmedate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		

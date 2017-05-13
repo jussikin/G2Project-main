@@ -28,17 +28,14 @@ GalleryCoreApi::requireOnce('modules/permalinks/classes/PermalinksMapHelper.clas
 * @author Pierre-Luc Paour <paour@users.sf.net>
 * @version $Revision: 17580 $
 */
-class PermalinksOptionTest extends ItemEditOptionTestCase
-{
+class PermalinksOptionTest extends ItemEditOptionTestCase {
 	public $_aliasNamesToDelete;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'permalinks', 'PermalinksOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -69,8 +66,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase
 		$this->_markForCleanup($this->_item1);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		if (!empty($this->_aliasNamesToDelete)) {
 			foreach ($this->_aliasNamesToDelete as $name) {
 				$ret =
@@ -87,8 +83,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase
 		}
 	}
 
-	public function testPermalinksOptionCreate()
-	{
+	public function testPermalinksOptionCreate() {
 		$form['PermalinksOption']['aliasName'] = 'newAlias';
 
 		$result = $this->_handleRequestAfterEdit($form, $this->_item);
@@ -99,8 +94,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals($this->_item->getId(), $destId);
 	}
 
-	public function testPermalinksOptionCollision()
-	{
+	public function testPermalinksOptionCollision() {
 		/*
 	 * Collisions cause foreign key constraints in Postgres which invalidates the transaction.
 	 * That's hard to recover from.  Don't run this test on Postgres for now.
@@ -131,8 +125,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals($this->_item1->getId(), $destId);
 	}
 
-	public function testPermalinksOptionDelete()
-	{
+	public function testPermalinksOptionDelete() {
 		$form['PermalinksOption']['aliasName'] = 'newAlias';
 
 		$result = $this->_handleRequestAfterEdit($form, $this->_item);

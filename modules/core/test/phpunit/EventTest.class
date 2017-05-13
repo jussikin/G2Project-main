@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class EventTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class EventTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -51,8 +48,7 @@ class EventTest extends GalleryTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		/* If a test fails it might not deactivate / uninstall the mock module */
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'EventTest');
 		if ($ret) {
@@ -87,8 +83,7 @@ class EventTest extends GalleryTestCase
 		}
 	}
 
-	public function testPostEvent()
-	{
+	public function testPostEvent() {
 		$eventName = 'EventTest::test';
 
 		$listener = new EventTestEventListener($this);
@@ -106,8 +101,7 @@ class EventTest extends GalleryTestCase
 		$this->assertEquals(array(), $result);
 	}
 
-	public function testPostEventReturnData()
-	{
+	public function testPostEventReturnData() {
 		$eventName = 'EventTest::test2';
 
 		$listener = new EventTestEventListener($this);
@@ -127,8 +121,7 @@ class EventTest extends GalleryTestCase
 		), $result);
 	}
 
-	public function testChangePermissions()
-	{
+	public function testChangePermissions() {
 		/* Verify that a GalleryEntity::save event handler can modify permissions of a new item */
 		global $gallery;
 
@@ -156,8 +149,7 @@ class EventTest extends GalleryTestCase
 		), $permissions);
 	}
 
-	public function testFactoryRegistrationsBeforeActivateEvent()
-	{
+	public function testFactoryRegistrationsBeforeActivateEvent() {
 		/*
 	     * Verify that Gallery::ActivatePlugin event listeners can use the activated module's
 	     * factory implementations
@@ -183,8 +175,7 @@ class EventTest extends GalleryTestCase
 		$this->assert($listener->_factory !== null, 'null factory');
 	}
 
-	public function testEmbeddedEntityIsAReference()
-	{
+	public function testEmbeddedEntityIsAReference() {
 		$event = new GalleryEvent();
 		$entity = new GalleryEntity();
 		$event->setEntity($entity);
@@ -211,8 +202,7 @@ class EventTestEventListener /* extends GalleryEventListener */
 	public $_event;
 	public $_factory;
 
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$this->_event = $event;
 		$data = $event->getData();
 		$result = ($data == 'send result') ? 'result' : null;
@@ -263,8 +253,7 @@ class EventTestEventListener /* extends GalleryEventListener */
 		);
 	}
 
-	public function getEvent()
-	{
+	public function getEvent() {
 		return $this->_event;
 	}
 }
@@ -272,10 +261,8 @@ class EventTestEventListener /* extends GalleryEventListener */
 /**
  * Mock platform.
  */
-class EventTestPlatform extends GalleryPlatform
-{
-	public function opendir($path)
-	{
+class EventTestPlatform extends GalleryPlatform {
+	public function opendir($path) {
 		if (substr($path, -8) == 'modules/') {
 			$this->_list = array();
 			if (($handle = parent::opendir($path)) !== false) {
@@ -291,8 +278,7 @@ class EventTestPlatform extends GalleryPlatform
 		return parent::opendir($path);
 	}
 
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		global $gallery;
 		static $ignorePath;
 		$ignorePath = $gallery->getConfig('data.gallery.plugins_data') . 'modules/eventtest';
@@ -303,8 +289,7 @@ class EventTestPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 
-	public function readdir($handle)
-	{
+	public function readdir($handle) {
 		if ($handle == 'eventtest') {
 			return array_shift($this->_list);
 		}
@@ -312,8 +297,7 @@ class EventTestPlatform extends GalleryPlatform
 		return parent::readdir($handle);
 	}
 
-	public function closedir($handle)
-	{
+	public function closedir($handle) {
 		if ($handle == 'eventtest') {
 			unset($this->_list);
 
@@ -323,8 +307,7 @@ class EventTestPlatform extends GalleryPlatform
 		return parent::closedir($handle);
 	}
 
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		if (substr($path, -28) == 'modules/eventtest/module.inc') {
 			return true;
 		}
@@ -332,8 +315,7 @@ class EventTestPlatform extends GalleryPlatform
 		return parent::file_exists($path);
 	}
 
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 }
@@ -341,10 +323,8 @@ class EventTestPlatform extends GalleryPlatform
 /**
  * Mock module.
  */
-class EventTestModule extends GalleryModule
-{
-	public function EventTestModule()
-	{
+class EventTestModule extends GalleryModule {
+	public function EventTestModule() {
 		global $gallery;
 
 		$this->setId('eventtest');
@@ -356,8 +336,7 @@ class EventTestModule extends GalleryModule
 		$this->setRequiredModuleApi(GalleryModule::getApiVersion());
 	}
 
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('MockFactory', 'EventTestFactory', 'EventTestFactory', '/modules/core/test/phpunit/EventTest.class', 'eventtest', null);
 		if ($ret) {
 			return $ret;
@@ -367,6 +346,5 @@ class EventTestModule extends GalleryModule
 	}
 }
 
-class EventTestFactory
-{
+class EventTestFactory {
 }

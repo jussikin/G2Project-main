@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ImageBlockPreloads
-{
-	public function preload(&$template, $preload, $paramSet)
-	{
+class ImageBlockPreloads {
+	public function preload(&$template, $preload, $paramSet) {
 		global $gallery;
 		
 		switch ($preload) {

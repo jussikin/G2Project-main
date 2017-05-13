@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/OptimizeDatabaseTask.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class OptimizeDatabaseTaskTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class OptimizeDatabaseTaskTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$this->_task = new OptimizeDatabaseTask();
@@ -45,8 +42,7 @@ class OptimizeDatabaseTaskTest extends GalleryTestCase
 		}
 	}
 	
-	public function testRun()
-	{
+	public function testRun() {
 		global $gallery;
 		
 		$gallery->_storage = new OptimizeDatabaseTaskTestStorage();
@@ -70,22 +66,18 @@ class OptimizeDatabaseTaskTest extends GalleryTestCase
 	}
 }
 
-class OptimizeDatabaseTaskTestStorage
-{
-	public function OptimizeDatabaseTaskTestStorage()
-	{
+class OptimizeDatabaseTaskTestStorage {
+	public function OptimizeDatabaseTaskTestStorage() {
 		$this->_optimizeWasCalled = false;
 	}
 	
-	public function optimize()
-	{
+	public function optimize() {
 		$this->_optimizeWasCalled = true;
 
 		return null;
 	}
 	
-	public function optimizeWasCalled()
-	{
+	public function optimizeWasCalled() {
 		return $this->_optimizeWasCalled;
 	}
 }

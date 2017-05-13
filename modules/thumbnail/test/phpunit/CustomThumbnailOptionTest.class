@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomThumbnailOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class CustomThumbnailOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'thumbnail', 'CustomThumbnailOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -102,8 +99,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 		GalleryDataCache::setMemoryCachingEnabled(true);
 	}
 
-	public function testAddBadMime()
-	{
+	public function testAddBadMime() {
 		$form = array('name' => array(1 => 'test.gif'),
 			  'type' => array(1 => 'image/gif'),
 			  'tmp_name' => array(1 =>
@@ -114,8 +110,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(array(), $warning);
 	}
 
-	public function testAddRemoveThumbnail()
-	{
+	public function testAddRemoveThumbnail() {
 		/* Add custom thumbnail to item with no thumbnail.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 			  'type' => array(1 => 'image/jpeg'),
@@ -160,8 +155,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 		$this->assert(empty($thumbnails[$this->_item->getId()]), 'removed thumbnail');
 	}
 
-	public function testAddDeleteThumbnail()
-	{
+	public function testAddDeleteThumbnail() {
 		/* Add custom thumbnail to item with no thumbnail.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 			  'type' => array(1 => 'image/jpeg'),
@@ -215,8 +209,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 		$this->assert(empty($thumbnails), 'item still has a thumbnail');
 	}
 
-	public function testChangeRestoreThumbnail()
-	{
+	public function testChangeRestoreThumbnail() {
 		/* Add custom thumbnail to image that has a thumbnail.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 			  'type' => array(1 => 'image/jpeg'),
@@ -274,8 +267,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 		}
 	}
 
-	public function testAlbumHighlight()
-	{
+	public function testAlbumHighlight() {
 		/* Add custom thumbnail to album (also test browser not sending mime type in form data) */
 	$form = array('name' => array(1 => 'test.jpg'),
 			  'type' => array(1 => 'application/unknown'),
@@ -328,8 +320,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 				'source is derivative of first photo in album');
 	}
 
-	public function testEmptyAlbumHighlight()
-	{
+	public function testEmptyAlbumHighlight() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;
@@ -378,8 +369,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 	}
 
 	/* Test that guaranteeAlbumHasThumbnail won't remove a custom thumbnail */
-	public function testGuarantee()
-	{
+	public function testGuarantee() {
 		/* Add custom thumbnail to album.. */
 	$form = array('name' => array(1 => 'test.jpg'),
 			  'type' => array(1 => 'image/jpeg'),
@@ -413,8 +403,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 				$thumbnail->getDerivativeSourceId(), 'source');
 	}
 
-	public function testLongFilename()
-	{
+	public function testLongFilename() {
 		/* Verify filename is truncated to fit in db column; don't want db/filesystem mismatch */
 	$filename = '1234567891123456789212345678931234567894123456789512345678961234567897'
 		. '123456789812345678991234567890123456789112345678921234567893.jpg';
@@ -434,8 +423,7 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 	}
 
 	/* Regression test: Verify that the collision between test.jpg and TEST.jpg is detected. */
-	public function testFilenameCollision()
-	{
+	public function testFilenameCollision() {
 		/* Add custom thumbnail to item with no thumbnail. */
 	$form = array('name' => array(1 => 'test.jpg'),
 			  'type' => array(1 => 'image/jpeg'),
@@ -473,6 +461,5 @@ class CustomThumbnailOptionTest extends ItemEditOptionTestCase
  * @package Thumbnail
  * @subpackage PHPUnit
  */
-class CustomThumbnailOptionTestToolkit extends GalleryToolkit
-{
+class CustomThumbnailOptionTestToolkit extends GalleryToolkit {
 }

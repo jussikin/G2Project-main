@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CoreCallbacks
-{
-	public function callback($params, $smarty, $callback, $userId = null)
-	{
+class CoreCallbacks {
+	public function callback($params, $smarty, $callback, $userId = null) {
 		global $gallery;
 		
 		$block = $smarty->getTemplateVars('block');

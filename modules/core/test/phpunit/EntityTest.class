@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class EntityTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class EntityTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -68,8 +65,7 @@ class EntityTest extends GalleryTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_savedSession;
 
@@ -79,8 +75,7 @@ class EntityTest extends GalleryTestCase
 		}
 	}
 
-	public function testOnLoad()
-	{
+	public function testOnLoad() {
 		/*
 	     * Ensure GalleryEntity::onLoad() is called whether entity is
 	     * loaded from database or disk cache.. also called for refresh()
@@ -137,8 +132,7 @@ class EntityTest extends GalleryTestCase
 		$this->assert($newEntity->_wasOnLoadCalled(), 'onLoad for refresh');
 	}
 
-	public function testOnLoadHandler()
-	{
+	public function testOnLoadHandler() {
 		global $gallery;
 		$entity = new EntityTestEntity();
 		$ret = $entity->create();
@@ -197,8 +191,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals('onLoadHandler was called during upgrade', $newEntity->getLinkedEntity(), 'handler not called during upgrade');
 	}
 
-	public function testSetSameValueDifferentType()
-	{
+	public function testSetSameValueDifferentType() {
 		/*
 	     * Ensure modified flag is not set if we assign a value that once casted
 	     * to the right type is the same as the old value..
@@ -211,8 +204,7 @@ class EntityTest extends GalleryTestCase
 		$this->assert(!$this->_entity->isModified(), 'is not modified');
 	}
 
-	public function testSetBackToOldValue()
-	{
+	public function testSetBackToOldValue() {
 		/*
 	     * Ensure modified flag is cleared if we change an attribute and then
 	     * change it back to its original value..
@@ -226,8 +218,7 @@ class EntityTest extends GalleryTestCase
 		$this->assert(!$this->_entity->isModified(), 'is not modified');
 	}
 
-	public function testSetSetSet()
-	{
+	public function testSetSetSet() {
 		/*
 	     * Ensure modified flag stays set if value goes null->A->B->A (ie first set of A
 	     * doesn't become the "original value" when it should stay as null)
@@ -252,8 +243,7 @@ class EntityTest extends GalleryTestCase
 		$this->assert($entity->isModified(), 'is modified');
 	}
 
-	public function testIsModifiedMember()
-	{
+	public function testIsModifiedMember() {
 		$entity = new EntityTestEntity();
 		$ret = $entity->create();
 		if ($ret) {
@@ -265,8 +255,7 @@ class EntityTest extends GalleryTestCase
 		$this->assert($entity->isModified('onLoadHandlers'));
 	}
 
-	public function testEmptyVsNull()
-	{
+	public function testEmptyVsNull() {
 		/* Ensure we can save and reset empty string without triggering modified flag */
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
 		$entity = new GalleryEntity();
@@ -291,8 +280,7 @@ class EntityTest extends GalleryTestCase
 		$this->assert(!$entity->isModified('onLoadHandlers'), 'should not be modified');
 	}
 
-	public function testSaveWithoutEvent()
-	{
+	public function testSaveWithoutEvent() {
 		$listener = new EntityTestEventListener($this);
 		GalleryCoreApi::registerEventListener('GalleryEntity::save', $listener);
 
@@ -328,8 +316,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals($entity->getId(), $newEntity->getId());
 	}
 
-	public function _createLinkedPhotos()
-	{
+	public function _createLinkedPhotos() {
 		list($ret, $photo1) = $this->_createRandomDataItem($this->_getRootId(), 'application/unknown', array(
 			'width' => 100,
 			'height' => 200
@@ -361,8 +348,7 @@ class EntityTest extends GalleryTestCase
 		);
 	}
 
-	public function testLinkedMembers()
-	{
+	public function testLinkedMembers() {
 		list($ret, $photo1, $photo2) = $this->_createLinkedPhotos();
 		if ($ret) {
 			return $ret;
@@ -385,8 +371,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals('application/unknown', $photo2->getMimeType());
 	}
 
-	public function testDetachLink()
-	{
+	public function testDetachLink() {
 		list($ret, $photo1, $photo2) = $this->_createLinkedPhotos();
 		if ($ret) {
 			return $ret;
@@ -416,8 +401,7 @@ class EntityTest extends GalleryTestCase
 		GalleryDataCache::reset();
 	}
 
-	public function testGetExternalAccessMemberList()
-	{
+	public function testGetExternalAccessMemberList() {
 		list($ret, $memberInfo) = GalleryCoreApi::getExternalAccessMemberList('GalleryUser');
 		if ($ret) {
 			return $ret;
@@ -430,8 +414,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals(true, $memberInfo['fullName']['write'], 'write access for the full name of a user ');
 	}
 
-	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeExactMatch()
-	{
+	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeExactMatch() {
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($this->_getRootId(), 'GalleryAlbumItem');
 		if ($ret) {
 			return $ret;
@@ -439,8 +422,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals($this->_getRootId(), $entity->getId());
 	}
 
-	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeSubclassMatch()
-	{
+	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeSubclassMatch() {
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($this->_getRootId(), 'GalleryChildEntity');
 		if ($ret) {
 			return $ret;
@@ -448,8 +430,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals($this->_getRootId(), $entity->getId());
 	}
 
-	public function testLoadEntitiesByIdEntityTypeParameterIsOptional()
-	{
+	public function testLoadEntitiesByIdEntityTypeParameterIsOptional() {
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -457,8 +438,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals($this->_getRootId(), $entity->getId());
 	}
 
-	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeNoMatch()
-	{
+	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeNoMatch() {
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($this->_getRootId(), 'GalleryDerivative');
 		if ($ret) {
 			if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
@@ -474,8 +454,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals(null, $entity);
 	}
 
-	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeForMultipleEntities()
-	{
+	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeForMultipleEntities() {
 		list($ret, $dataItem) = $this->_createRandomDataItem($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -498,8 +477,7 @@ class EntityTest extends GalleryTestCase
 		}
 	}
 
-	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeMismatchForMultipleEntities()
-	{
+	public function testLoadEntitiesByIdAssertsTheRequestedEntityTypeMismatchForMultipleEntities() {
 		list($ret, $dataItem) = $this->_createRandomDataItem($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -525,8 +503,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals(null, $entities);
 	}
 
-	public function testLoadEntitiesByIdAssertsTheMultipleRequestedEntityTypes()
-	{
+	public function testLoadEntitiesByIdAssertsTheMultipleRequestedEntityTypes() {
 		/* Any of the entity-types has to match (boolean OR) */
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($this->_getRootId(), array(
 			'GalleryDerivative',
@@ -538,8 +515,7 @@ class EntityTest extends GalleryTestCase
 		$this->assertEquals($this->_getRootId(), $entity->getId());
 	}
 
-	public function deleteEntityByIdAssertsTheRequestedEntityTypeSubclassMatch()
-	{
+	public function deleteEntityByIdAssertsTheRequestedEntityTypeSubclassMatch() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 		$this->_markForCleanup($album);
 		if ($ret) {
@@ -552,8 +528,7 @@ class EntityTest extends GalleryTestCase
 		}
 	}
 
-	public function deleteEntityByIdAssertsTheRequestedEntityTypeNoMatch()
-	{
+	public function deleteEntityByIdAssertsTheRequestedEntityTypeNoMatch() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -579,10 +554,8 @@ class EntityTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class EntityTestEntity extends GalleryEntity
-{
-	public function create()
-	{
+class EntityTestEntity extends GalleryEntity {
+	public function create() {
 		$ret = parent::create();
 		if ($ret) {
 			return $ret;
@@ -592,8 +565,7 @@ class EntityTestEntity extends GalleryEntity
 		return null;
 	}
 
-	public function onLoad()
-	{
+	public function onLoad() {
 		$this->_wasOnLoadCalled(true);
 		$ret = parent::onLoad();
 		if ($ret) {
@@ -603,8 +575,7 @@ class EntityTestEntity extends GalleryEntity
 		return null;
 	}
 
-	public function _wasOnLoadCalled($set = null)
-	{
+	public function _wasOnLoadCalled($set = null) {
 		static $wasCalled;
 		if (!isset($wasCalled)) {
 			$wasCalled = false;
@@ -622,13 +593,11 @@ class EntityTestEntity extends GalleryEntity
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'EntityTestEntity';
 	}
 
-	public function getClassFile()
-	{
+	public function getClassFile() {
 		return array(
 			null,
 			'modules/core/test/phpunit/EntityTest.class'
@@ -636,10 +605,8 @@ class EntityTestEntity extends GalleryEntity
 	}
 }
 
-class EntityTestOnLoadHandler
-{
-	public function onLoad(&$entity, $duringUpgrade)
-	{
+class EntityTestOnLoadHandler {
+	public function onLoad(&$entity, $duringUpgrade) {
 		if (!$duringUpgrade) {
 			$entity->setLinkedEntity('onLoadHandler was called');
 		} else {
@@ -655,12 +622,10 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEventListener.class');
 /**
  * Dummy event listener
  */
-class EntityTestEventListener extends GalleryEventListener
-{
+class EntityTestEventListener extends GalleryEventListener {
 	public $_event = null;
 
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$this->_event = $event;
 		$data = $event->getData();
 
@@ -670,8 +635,7 @@ class EntityTestEventListener extends GalleryEventListener
 		);
 	}
 
-	public function getEvent()
-	{
+	public function getEvent() {
 		return $this->_event;
 	}
 }

@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class DeleteSessionsTask extends MaintenanceTask
-{
+class DeleteSessionsTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		return array(
@@ -46,8 +44,7 @@ class DeleteSessionsTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$session =& $gallery->getSession();
@@ -159,8 +156,7 @@ class DeleteSessionsTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::requiresProgressBar
 	 */
-	public function requiresProgressBar()
-	{
+	public function requiresProgressBar() {
 		return true;
 	}
 }

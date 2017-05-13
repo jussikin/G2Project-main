@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/gd/classes/GdToolkitHelper.class');
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 20957 $
  */
-class GdToolkit extends GalleryToolkit
-{
+class GdToolkit extends GalleryToolkit {
 	/**
 	 * Our private GdFunctionality instance
 	 * @var $_gdFunctionality
@@ -58,8 +57,7 @@ class GdToolkit extends GalleryToolkit
 	 * @return object implementation of GdFunctionality
 	 * @access private
 	 */
-	public function &_getGdFunctionality()
-	{
+	public function &_getGdFunctionality() {
 		if (!isset($this->_gdFunctionality)) {
 			GalleryCoreApi::requireOnce('modules/gd/classes/GdFunctionality.class');
 			$gd = new GdFunctionality();
@@ -75,8 +73,7 @@ class GdToolkit extends GalleryToolkit
 	 * use a pseudo-gd-implementation that simulates different PHP versions.
 	 * @return nothing
 	 */
-	public function setGdFunctionality(&$obj)
-	{
+	public function setGdFunctionality(&$obj) {
 		$this->_gdFunctionality =& $obj;
 		unset($this->_hasImageCreateTrueColor);
 	}
@@ -88,8 +85,7 @@ class GdToolkit extends GalleryToolkit
 	 *	       boolean true if this function should work
 	 * @access private
 	 */
-	private function _hasImageCreateTrueColor()
-	{
+	private function _hasImageCreateTrueColor() {
 		if (!isset($this->_hasImageCreateTrueColor)) {
 			$gd =& $this->_getGdFunctionality();
 			/* Remember the info for later calls */
@@ -111,8 +107,7 @@ class GdToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		switch ($propertyName) {
 			case 'dimensions':
 				list($ret, $width, $height) = $this->_getImageDimensions($mimeType, $sourceFilename);
@@ -144,8 +139,7 @@ class GdToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		$gd =& $this->_getGdFunctionality();
 		
 		global $gallery;
@@ -554,8 +548,7 @@ class GdToolkit extends GalleryToolkit
 	 *	       resource the GD resource
 	 * @access private
 	 */
-	private function _getImageResource($mimeType, $filename)
-	{
+	private function _getImageResource($mimeType, $filename) {
 		$gd =& $this->_getGdFunctionality();
 		
 		$res = null;
@@ -612,8 +605,7 @@ class GdToolkit extends GalleryToolkit
 	 *	       resource the GD resource
 	 * @access private
 	 */
-	private function _getTrueColorImageRes($width, $height, $prepareAlpha = false)
-	{
+	private function _getTrueColorImageRes($width, $height, $prepareAlpha = false) {
 		$gd =& $this->_getGdFunctionality();
 		list($ret, $hasImageCreateTrueColor) = $this->_hasImageCreateTrueColor();
 		if ($ret) {
@@ -689,8 +681,7 @@ class GdToolkit extends GalleryToolkit
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	private function _saveImageResourceToFile($res, $filename, $mimeType, $hasTransparency = true, $jpegQuality = null)
-	{
+	private function _saveImageResourceToFile($res, $filename, $mimeType, $hasTransparency = true, $jpegQuality = null) {
 		$gd =& $this->_getGdFunctionality();
 		
 		if ($hasTransparency) {
@@ -745,8 +736,7 @@ class GdToolkit extends GalleryToolkit
 	 *	       resource the destination GD-resource
 	 * @access private
 	 */
-	private function _resizeImageResource($sourceRes, $destWidth, $destHeight, $hasAlpha = false)
-	{
+	private function _resizeImageResource($sourceRes, $destWidth, $destHeight, $hasAlpha = false) {
 		$gd =& $this->_getGdFunctionality();
 		
 		list($ret, $sourceWidth) = $gd->imageSX($sourceRes);
@@ -790,8 +780,7 @@ class GdToolkit extends GalleryToolkit
 	 * @see GalleryGraphics::getImageDimensions
 	 * @access private
 	 */
-	private function _getImageDimensions($mimeType, $filename)
-	{
+	private function _getImageDimensions($mimeType, $filename) {
 		$gd =& $this->_getGdFunctionality();
 		
 		/*
@@ -841,8 +830,7 @@ class GdToolkit extends GalleryToolkit
 	 *	       int height
 	 * @access private
 	 */
-	private function _getImageDimensionsForResource($res)
-	{
+	private function _getImageDimensionsForResource($res) {
 		$gd =& $this->_getGdFunctionality();
 		list($ret, $x) = $gd->imageSx($res);
 		if ($ret) {
@@ -884,8 +872,7 @@ class GdToolkit extends GalleryToolkit
 	 * @return GalleryStatus
 	 * @access private
 	 */
-	private function _imageCopyResampled($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH)
-	{
+	private function _imageCopyResampled($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
 		$gd =& $this->_getGdFunctionality();
 		if ($gd->functionExists('imageCopyResampled')) {
 			$ret = $gd->imageCopyResampled($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH);
@@ -913,8 +900,7 @@ class GdToolkit extends GalleryToolkit
 	 * @param int $height
 	 * @return GalleryStatus
 	 */
-	private function _prepareResourceForAlphaChannel(&$res)
-	{
+	private function _prepareResourceForAlphaChannel(&$res) {
 		$gd =& $this->_getGdFunctionality();
 		
 		list($ret, $success) = $gd->imagesavealpha($res, true);
@@ -962,8 +948,7 @@ class GdToolkit extends GalleryToolkit
 	 * @param string $outputMimeType
 	 * @return GalleryStatus
 	 */
-	private function _flattenAlphaChannel($res, $outputMimeType)
-	{
+	private function _flattenAlphaChannel($res, $outputMimeType) {
 		$gd =& $this->_getGdFunctionality();
 		if ($this->_canHaveAlphaChannel($outputMimeType)) {
 			/* Input and output have transparency, no need to flatten. */
@@ -1067,8 +1052,7 @@ class GdToolkit extends GalleryToolkit
 	/**
 	 * @see GdFunctionality::imagedestroy
 	 */
-	private function _free($resource)
-	{
+	private function _free($resource) {
 		if ($resource) {
 			$gd =& $this->_getGdFunctionality();
 			$gd->imagedestroy($resource);
@@ -1081,8 +1065,7 @@ class GdToolkit extends GalleryToolkit
 	 * @param resource $res (optional) If specified, additional checks are executed
 	 * @return bool
 	 */
-	private function _canHaveTransparency($mimeType, $res = null)
-	{
+	private function _canHaveTransparency($mimeType, $res = null) {
 		$canHaveTransparency = in_array($mimeType, array(
 			'image/gif',
 			'image/png',
@@ -1104,8 +1087,7 @@ class GdToolkit extends GalleryToolkit
 	 * @param string $mimeType
 	 * @return bool
 	 */
-	private function _canHaveAlphaChannel($mimeType)
-	{
+	private function _canHaveAlphaChannel($mimeType) {
 		return in_array($mimeType, array(
 			'image/png',
 			'image/tiff',

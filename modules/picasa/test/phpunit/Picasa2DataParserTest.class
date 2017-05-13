@@ -27,18 +27,15 @@ GalleryCoreApi::requireOnce('modules/picasa/classes/Picasa2DataParser.class');
  * @author Waldemar Schlackow <gallery@schlackow.de>
  * @version $Revision: 17580 $
  */
-class Picasa2DataParserTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class Picasa2DataParserTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
 	/**
 	 * Test whether a wrong XML without a version gives the right error
 	 */
-	public function testGetBadXmlArray_noversion()
-	{
+	public function testGetBadXmlArray_noversion() {
 		/*No XML version*/
 	$testRawXml = '<?xml encoding="utf-8" ?>';
 		list($ret, $picasaXmlArray) = Picasa2DataParser::getXmlArray($testRawXml);
@@ -51,8 +48,7 @@ class Picasa2DataParserTest extends GalleryControllerTestCase
 	/**
 	 * Test an XML without a closing tag
 	 */
-	public function testGetBadXmlArray_notag()
-	{
+	public function testGetBadXmlArray_notag() {
 		$testRawXml = '<?xml version="1.0" encoding="utf-8" ?>' .
 		'<album><albumName>GalleryTest' .
 		'<albumItemCount>2</albumItemCount></album></albumName>';
@@ -68,8 +64,7 @@ class Picasa2DataParserTest extends GalleryControllerTestCase
 	/**
 	 * Test whether the XML-File is parsed correctly
 	 */
-	public function testGetGoodXmlArray()
-	{
+	public function testGetGoodXmlArray() {
 		$testRawXml = '<?xml version="1.0" encoding="utf-8" ?>' .
 		'<album><albumName>GalleryTest</albumName>' .
 		'<albumItemCount>2</albumItemCount>' .
@@ -143,8 +138,7 @@ class Picasa2DataParserTest extends GalleryControllerTestCase
 	/**
 	 * Test whether a picasa export is parsed correctly into a PHP array
 	 */
-	public function testGetAlbumFromArray()
-	{
+	public function testGetAlbumFromArray() {
 		$testPicasaXmlArray = array('album' =>
 		array(
 		'albumName' => 'GalleryTest',

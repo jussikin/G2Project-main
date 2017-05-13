@@ -44,8 +44,7 @@ $smarty->debugging = true;
 $smarty->use_sub_dirs = false;
 $smarty->template_dir = dirname(__FILE__);
 
-function generateEntityDbXml()
-{
+function generateEntityDbXml() {
 	global $smarty;
 
 	$entityXmlFiles = glob('tmp/classxml/*.xml');
@@ -194,8 +193,7 @@ function generateEntityDbXml()
 	}
 }
 
-function generateMapDbXml()
-{
+function generateMapDbXml() {
 	global $smarty;
 
 	$xmlFile = '../Maps.xml';

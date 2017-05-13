@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17923 $
  */
-class ModifyCartController extends GalleryController
-{
+class ModifyCartController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		list($ret, $cartItemIds) = CartHelper::fetchCartItemCounts();
 		if ($ret) {
 			return array(

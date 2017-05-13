@@ -26,29 +26,25 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CaptchaImageView extends GalleryView
-{
+class CaptchaImageView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public static function isImmediate()
-	{
+	public static function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInMaintenance
 	 */
-	public static function isAllowedInMaintenance()
-	{
+	public static function isAllowedInMaintenance() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public static function renderImmediate($status, $error)
-	{
+	public static function renderImmediate($status, $error) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$code = $session->get('captcha.key');

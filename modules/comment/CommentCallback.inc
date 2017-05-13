@@ -24,29 +24,25 @@
  * @author  Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CommentCallbackView extends GalleryView
-{
+class CommentCallbackView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		
 		$result = array();
@@ -88,8 +84,7 @@ class CommentCallbackView extends GalleryView
 	 * Delete the comment with the given id.
 	 * @param $id int the id
 	 */
-	public function deleteComment($commentId)
-	{
+	public function deleteComment($commentId) {
 		if (empty($commentId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -121,8 +116,7 @@ class CommentCallbackView extends GalleryView
 	 * @param $commentId int the id
 	 * @param $newPublishStatus the new publish status
 	 */
-	public function changePublishStatus($commentId, $newPublishStatus)
-	{
+	public function changePublishStatus($commentId, $newPublishStatus) {
 		if (empty($commentId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}

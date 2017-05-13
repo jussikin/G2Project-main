@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17631 $
  */
-class UserAlbumControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UserAlbumControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'useralbum.UserAlbum');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -81,8 +78,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_userWithoutAlbum);
 	}
 
-	public function testExistingAlbum()
-	{
+	public function testExistingAlbum() {
 		global $gallery;
 		$gallery->setActiveUser($this->_userWithAlbum);
 
@@ -94,8 +90,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testCreateAlbumOnAccess()
-	{
+	public function testCreateAlbumOnAccess() {
 		global $gallery;
 		$gallery->setActiveUser($this->_userWithoutAlbum);
 
@@ -142,8 +137,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testUserIdParameter()
-	{
+	public function testUserIdParameter() {
 		GalleryUtilities::putRequestVariable('userId', $this->_userWithAlbum->getId());
 
 		$results = $this->handleRequest();
@@ -154,8 +148,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testNotForAnonymous()
-	{
+	public function testNotForAnonymous() {
 		global $gallery;
 		list($ret, $anonymousUserId) = GalleryCoreApi::getAnonymousUserId();
 		if ($ret) {
@@ -171,8 +164,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 
-	public function testNotForAlternateAnonymous()
-	{
+	public function testNotForAlternateAnonymous() {
 		global $gallery;
 		$gallery->setConfig('anonymousUserId', $this->_userWithAlbum->getId());
 		GalleryUtilities::putRequestVariable('userId', $this->_userWithAlbum->getId());
@@ -180,8 +172,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 
-	public function testSystemLinks()
-	{
+	public function testSystemLinks() {
 		global $gallery;
 
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'useralbum');
@@ -261,8 +252,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(array(), $links, 'Link displayed, but homeLink off');
 	}
 
-	public function testUserAlbumTitle()
-	{
+	public function testUserAlbumTitle() {
 		/* Check that album title is set from user fullname, or username if no fullname */
 	list($ret, $album) =
 		GalleryCoreApi::loadEntitiesById($this->_userAlbumId, 'GalleryAlbumItem');
@@ -304,8 +294,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 				$album->getTitle(), 'username');
 	}
 
-	public function testPermissionsEverybody()
-	{
+	public function testPermissionsEverybody() {
 		global $gallery;
 		$gallery->setActiveUser($this->_userWithoutAlbum);
 		list($ret, $core) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
@@ -380,8 +369,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 			$permissions[$albumId]), 'Parent user');
 	}
 
-	public function testPermissionsRegistered()
-	{
+	public function testPermissionsRegistered() {
 		global $gallery;
 		$gallery->setActiveUser($this->_userWithoutAlbum);
 		list($ret, $core) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
@@ -459,8 +447,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 		array_intersect_assoc($secArray, $permissions[$albumId]), 'Parent user');
 	}
 
-	public function testPermissionsUser()
-	{
+	public function testPermissionsUser() {
 		global $gallery;
 		$gallery->setActiveUser($this->_userWithoutAlbum);
 		list($ret, $core) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
@@ -533,8 +520,7 @@ class UserAlbumControllerTest extends GalleryControllerTestCase
 			$permissions[$albumId]), 'Specific user Permissions');
 	}
 
-	public function _setParameters($params)
-	{
+	public function _setParameters($params) {
 		foreach ($params as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'useralbum', $key, $value);
 			if ($ret) {

@@ -28,15 +28,12 @@ define('FOTOKASTEN_GALLERY_AFFILIATE_PASSWORD', 'f12a65d90445f95b90e5fd30c75ee74
  * @author Ioana Ciocanescu <service@fotokasten.de>
  * @version $Revision: 20958 $
  */
-class FotokastenModule extends GalleryModule
-{
-	public function __construct()
-	{
+class FotokastenModule extends GalleryModule {
+	public function __construct() {
 		$this->FotokastenModule();
 	}
 	
-	public function FotokastenModule()
-	{
+	public function FotokastenModule() {
 		global $gallery;
 		
 		$this->setId('fotokasten');
@@ -59,8 +56,7 @@ class FotokastenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'fotokasten');
@@ -104,8 +100,7 @@ class FotokastenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		foreach (array(
 			'1_0',
 			'1_1'
@@ -122,8 +117,7 @@ class FotokastenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -138,8 +132,7 @@ class FotokastenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class CartModule extends GalleryModule
-{
-	public function __construct()
-	{
+class CartModule extends GalleryModule {
+	public function __construct() {
 		$this->CartModule();
 	}
 	
-	public function CartModule()
-	{
+	public function CartModule() {
 		global $gallery;
 		
 		$this->setId('cart');
@@ -57,8 +54,7 @@ class CartModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		
 		if (empty($currentVersion)) {
@@ -156,8 +152,7 @@ class CartModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		$links = array();
 		foreach ($items as $item) {
 			if (isset($permissions[$item->getId()]['cart.add'])) {

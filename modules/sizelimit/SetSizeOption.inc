@@ -27,21 +27,18 @@ GalleryCoreApi::requireOnce('modules/sizelimit/classes/SizeLimitHelper.class');
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class SetSizeOption extends ItemAddOption
-{
+class SetSizeOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		return array(null, true);
 	}
 
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		$errors = array();
 		$warnings = array();
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'sizelimit');
@@ -55,12 +52,17 @@ class SetSizeOption extends ItemAddOption
 			}
 
 			list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters(
-		'module', 'sizelimit', $item->getParentId());
+				'module',
+				'sizelimit',
+				$item->getParentId()
+			);
 			if ($ret) {
 				return array($ret, null, null);
 			}
 			$param = array_merge(
-		array('keepOriginal' => 0, 'width' => 0, 'height' => 0, 'size' => 0), $param);
+				array('keepOriginal' => 0, 'width' => 0, 'height' => 0, 'size' => 0),
+				$param
+			);
 
 			if ($param['width'] && $param['height'] && method_exists($item, 'getwidth') &&
 			method_exists($item, 'getheight') &&
@@ -75,8 +77,9 @@ class SetSizeOption extends ItemAddOption
 				if ($ret) {
 					if ($ret->getErrorCode() & ERROR_UNSUPPORTED_FILE_TYPE) {
 						$warnings[$i][] = $module->translate(
-				array('text' => 'WARNING: Cannot resize mime type %s',
-				  'arg1' => $item->getMimeType()));
+							array('text' => 'WARNING: Cannot resize mime type %s',
+							'arg1' => $item->getMimeType())
+						);
 					} else {
 						return array($ret, null, null);
 					}
@@ -87,16 +90,20 @@ class SetSizeOption extends ItemAddOption
 			($item->getSize() >> 10) > $param['size']) {
 				$args = array($param['size']);
 				if ($param['keepOriginal']) {
-					$ret = SizeLimitHelper::buildDerivativeWithLimits($item, 'compress',
-									  $args);
+					$ret = SizeLimitHelper::buildDerivativeWithLimits(
+						$item,
+						'compress',
+						$args
+					);
 				} else {
 					$ret = SizeLimitHelper::applyLimits($item, 'compress', $args);
 				}
 				if ($ret) {
 					if ($ret->getErrorCode() & ERROR_UNSUPPORTED_FILE_TYPE) {
 						$warnings[$i][] = $module->translate(
-				array('text' => 'WARNING: Cannot compress mime type %s',
-				  'arg1' => $item->getMimeType()));
+							array('text' => 'WARNING: Cannot compress mime type %s',
+							'arg1' => $item->getMimeType())
+						);
 					} else {
 						return array($ret, null, null);
 					}

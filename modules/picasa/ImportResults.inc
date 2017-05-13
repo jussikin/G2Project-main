@@ -25,13 +25,11 @@
  * @author Waldemar Schlackow <gallery@schlackow.de> based on code by
  * @version $Revision: 17580 $
  */
-class ImportResultsView extends GalleryView
-{
+class ImportResultsView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

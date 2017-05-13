@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/test/phpunit/UserLoginControllerTest.c
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SessionAuthPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SessionAuthPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -57,8 +54,7 @@ class SessionAuthPluginTest extends GalleryTestCase
 		$gallery->_session =& $this->_mockSession;
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		
@@ -68,8 +64,7 @@ class SessionAuthPluginTest extends GalleryTestCase
 		}
 	}
 	
-	public function testSessionAuthValidUser()
-	{
+	public function testSessionAuthValidUser() {
 		$this->_mockSession->setUserId($this->_user->getId());
 		
 		$plugin = new SessionAuthPlugin();
@@ -81,8 +76,7 @@ class SessionAuthPluginTest extends GalleryTestCase
 		$this->assertEquals($this->_user, $user);
 	}
 	
-	public function testSessionAuthInvalidUser()
-	{
+	public function testSessionAuthInvalidUser() {
 		list($ret, $userId) = $this->_getUnusedId();
 		if ($ret) {
 			return ($ret);
@@ -99,8 +93,7 @@ class SessionAuthPluginTest extends GalleryTestCase
 		$this->assert(!isset($user));
 	}
 	
-	public function testSessionAuthLoadInvalidEntity()
-	{
+	public function testSessionAuthLoadInvalidEntity() {
 		/* Assume an invalid userId ended up in our session data and attempt to load it */
 		list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {

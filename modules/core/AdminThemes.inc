@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17674 $
  */
-class AdminThemesController extends GalleryController
-{
+class AdminThemesController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -251,13 +249,11 @@ class AdminThemesController extends GalleryController
 /**
  * This view will show administration options for available themes
  */
-class AdminThemesView extends GalleryView
-{
+class AdminThemesView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

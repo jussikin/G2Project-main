@@ -38,8 +38,7 @@ class ServerAuthPlugin /* extends GalleryAuthPlugin */
 	/**
 	 * @see GalleryAuthPlugin::getUser
 	 */
-	public function getUser()
-	{
+	public function getUser() {
 		$authtype = GalleryUtilities::getServerVar('AUTH_TYPE');
 		$username = GalleryUtilities::getServerVar('REMOTE_USER');
 		

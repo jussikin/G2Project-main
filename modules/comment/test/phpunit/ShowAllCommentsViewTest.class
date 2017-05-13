@@ -26,15 +26,12 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17679 $
  */
-class ShowAllCommentsViewTest extends GalleryViewTestCase
-{
-	public function __construct($methodName)
-	{
+class ShowAllCommentsViewTest extends GalleryViewTestCase {
+	public function __construct($methodName) {
 		$this->GalleryViewTestCase($methodName, 'comment.ShowAllComments');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -109,8 +106,7 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase
 		}
 	}
 	
-	public function testShowAllComments()
-	{
+	public function testShowAllComments() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		
 		$results = $this->loadTemplate();
@@ -143,8 +139,7 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase
 		$this->assertEquals(sort($can), sort($data['can']), 'permissions');
 	}
 	
-	public function testShowAllCommentsFailsWithoutViewItemPermission()
-	{
+	public function testShowAllCommentsFailsWithoutViewItemPermission() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
@@ -157,8 +152,7 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase
 		$results = $this->loadTemplate(ERROR_MISSING_OBJECT);
 	}
 	
-	public function testShowAllCommentsRequiresViewItemPermissionForComments()
-	{
+	public function testShowAllCommentsRequiresViewItemPermissionForComments() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
@@ -185,8 +179,7 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase
 		$this->assertEquals((array) $this->_album, $data['item'], 'item');
 	}
 	
-	public function testShowAllCommentsAddsNoCacheWithoutViewPermission()
-	{
+	public function testShowAllCommentsAddsNoCacheWithoutViewPermission() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -238,8 +231,7 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testShowAllCommentsAddsNoCacheWithoutCoreViewPermission()
-	{
+	public function testShowAllCommentsAddsNoCacheWithoutCoreViewPermission() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -301,8 +293,7 @@ class ShowAllCommentsViewTest extends GalleryViewTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testShowAllCommentsDoesNotAddNoCacheWithViewPermission()
-	{
+	public function testShowAllCommentsDoesNotAddNoCacheWithViewPermission() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());

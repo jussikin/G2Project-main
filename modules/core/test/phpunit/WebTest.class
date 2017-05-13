@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20940 $
  */
-class WebTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class WebTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -46,8 +43,7 @@ class WebTest extends GalleryTestCase
 		$gallery->_platform = new WebTestPlatform($this);
 	}
 	
-	public function testFetchWebPage()
-	{
+	public function testFetchWebPage() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchWebPage');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -71,8 +67,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server/testFetchWebPage', $actualUrl);
 	}
 	
-	public function testFetchWebPageError404()
-	{
+	public function testFetchWebPageError404() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchWebPageNotExists');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -96,8 +91,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server/testFetchWebPageNotExists', $actualUrl);
 	}
 	
-	public function testFetchWebPageError500()
-	{
+	public function testFetchWebPageError500() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchWebPageBadConfiguration');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -121,8 +115,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server/testFetchWebPageBadConfiguration', $actualUrl);
 	}
 	
-	public function testFetchWebPageWithSpaces()
-	{
+	public function testFetchWebPageWithSpaces() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchWebPage With Spaces');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -148,8 +141,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server/testFetchWebPage%20With%20Spaces', $actualUrl);
 	}
 	
-	public function testFetchWebPageExtraHeaders()
-	{
+	public function testFetchWebPageExtraHeaders() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchWebPageExtraHeaders', array(
 			'ExtraHeader' => 'ExtraValue'
 		));
@@ -177,8 +169,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server/testFetchWebPageExtraHeaders', $actualUrl);
 	}
 	
-	public function testFetchWebPageAlternatePort()
-	{
+	public function testFetchWebPageAlternatePort() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server2:8080/testFetchWebPage');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -204,8 +195,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server2:8080/testFetchWebPage', $actualUrl);
 	}
 	
-	public function testFetchWebPageWithQueryString()
-	{
+	public function testFetchWebPageWithQueryString() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchWebPage?foo=bar&baz=blat&amp;hoho=blah');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -231,8 +221,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('http://www.test.server/testFetchWebPage?foo=bar&baz=blat&hoho=blah', $actualUrl, 'url; &amp; should be converted to & too');
 	}
 	
-	public function testFetchRedirectedWebPage()
-	{
+	public function testFetchRedirectedWebPage() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchRedirectedWebPage');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -258,8 +247,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals($actualUrl, 'http://www.test.server/testFetchWebPage');
 	}
 	
-	public function testFetchRedirectedWebPageRelativeRedirect()
-	{
+	public function testFetchRedirectedWebPageRelativeRedirect() {
 		/* Make sure we redirect ok if Location header isn't absolute */
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://my.test.server:81/testFetchRelativeRedirect');
 		
@@ -286,8 +274,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals($actualUrl, 'http://www.test.server/testFetchWebPage');
 	}
 	
-	public function testFetchWebPageTooManyRedirects()
-	{
+	public function testFetchWebPageTooManyRedirects() {
 		GalleryCoreApi::requireOnce('modules/core/classes/helpers/WebHelper_simple.class');
 		list($success, $body, $response, $headers, $actualUrl) = WebHelper_simple::fetchWebPage('http://www.test.server/testFetchRedirectedWebPage', array(), 6);
 		$this->assert(!$success);
@@ -297,8 +284,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals(null, $actualUrl);
 	}
 	
-	public function testFetchRedirectedDoubleLocation()
-	{
+	public function testFetchRedirectedDoubleLocation() {
 		/* Make sure we redirect ok if bad http response sends 2 Location headers */
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchRedirectedWebPage2');
 		
@@ -325,8 +311,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals($actualUrl, 'http://www.test.server/testFetchWebPage');
 	}
 	
-	public function testFetchRepeatedHeader()
-	{
+	public function testFetchRepeatedHeader() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('http://www.test.server/testFetchCookieWebPage');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -356,8 +341,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals($actualUrl, 'http://www.test.server/testFetchCookieWebPage');
 	}
 	
-	public function testPostToWebPage()
-	{
+	public function testPostToWebPage() {
 		list($body, $response, $headers) = GalleryCoreApi::postToWebPage('http://www.test.server/testPostToWebPage', array(
 			'key1' => 'value1',
 			'key2' => 'value 2',
@@ -385,8 +369,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals(join("\n", $expectedBody), $body);
 	}
 	
-	public function testFetchWebFilePostData()
-	{
+	public function testFetchWebFilePostData() {
 		list($return, $response, $headers) = GalleryCoreApi::fetchWebFile('http://www.test.server/testFetchWebFile' . '?coreApi=1.1&moduleApi=1.2s&themeApi=1.3', 'testFetchWebFile.tmp', array(), array(
 			'files[0]' => 'modules/test-11111-22222-base.package'
 		));
@@ -412,8 +395,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals("test\n", $this->_outputFile['testFetchWebFile.tmp']);
 	}
 	
-	public function testFetchWebFile()
-	{
+	public function testFetchWebFile() {
 		list($return, $response, $headers) = GalleryCoreApi::fetchWebFile('http://www.test.server/testFetchWebFile?a=b&amp;c=d', 'testFetchWebFile.tmp');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -434,8 +416,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals("test\n", $this->_outputFile['testFetchWebFile.tmp']);
 	}
 	
-	public function testFetchWebFileExtraHeaders()
-	{
+	public function testFetchWebFileExtraHeaders() {
 		list($return, $response, $headers) = GalleryCoreApi::fetchWebFile('http://www.test.server/testFetchWebFileExtraHeaders', 'testFetchWebFile.tmp', array(
 			'ExtraHeader' => 'ExtraValue'
 		));
@@ -457,8 +438,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals("test\n", $this->_outputFile['testFetchWebFile.tmp']);
 	}
 	
-	public function testRequestWebPage()
-	{
+	public function testRequestWebPage() {
 		list($status, $headers, $body) = GalleryCoreApi::requestWebPage('http://www.test.server/testRequestWebPage', 'OPTIONS', array(
 			'ExtraHeader' => 'ExtraValue'
 		), 'request body');
@@ -484,8 +464,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals(join("\n", $expectedBody), $body);
 	}
 	
-	public function testRequestWebPageWithBadChars()
-	{
+	public function testRequestWebPageWithBadChars() {
 		/* Verify requestWebPage translates spaces and &amp; (previously only fetch* did this) */
 		list($status, $headers, $body) = GalleryCoreApi::requestWebPage('http://www.test.server/testFetchWebPage With Spaces?a=b&amp;c=d');
 		
@@ -506,8 +485,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals("test\n", $body);
 	}
 	
-	public function testFetchHttpsWebPage()
-	{
+	public function testFetchHttpsWebPage() {
 		list($success, $body, $response, $headers, $actualUrl) = GalleryCoreApi::fetchWebPage('https://secure.test.server/testFetchHttpsWebPage');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -529,8 +507,7 @@ class WebTest extends GalleryTestCase
 		$this->assertEquals('https://secure.test.server/testFetchHttpsWebPage', $actualUrl);
 	}
 	
-	public function testFetchHttpsWebFile()
-	{
+	public function testFetchHttpsWebFile() {
 		list($return, $response, $headers) = GalleryCoreApi::fetchWebFile('https://secure.nice.server:83/testFetchHttpsWebFile', 'testFetchHttpsWebFile.tmp');
 		
 		$expectedHeaders['Connection'] = 'close';
@@ -554,16 +531,13 @@ class WebTest extends GalleryTestCase
 /**
  * Mock platform
  */
-class WebTestPlatform
-{
-	public function WebTestPlatform(&$testCase)
-	{
+class WebTestPlatform {
+	public function WebTestPlatform(&$testCase) {
 		$this->_testCase =& $testCase;
 		$this->_readBuffer = array();
 	}
 	
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		if ($target == 'www.test.server' && $port == '80' || $target == 'www.test.server2' && $port == '8080' || $target == 'my.test.server' && $port == '81' || $target == 'ssl://secure.test.server' && $port == '443' || $target == 'ssl://secure.nice.server' && $port == '83') {
 			return 'test-resource-1';
 		}
@@ -572,8 +546,7 @@ class WebTestPlatform
 		$errstring = 'test failure';
 	}
 	
-	public function fwrite($handle, $string, $length = 0)
-	{
+	public function fwrite($handle, $string, $length = 0) {
 		if ($handle == 'test-resource-1') {
 			switch ($string) {
 				case "POST /testFetchWebFile?coreApi=1.1&moduleApi=1.2s&themeApi=1.3 HTTP/1.0\r\n" . "Host: www.test.server\r\n" . "Content-Type: application/x-www-form-urlencoded\r\n" . "Content-Length: 52\r\n" . "\r\n" . "files%5B0%5D=modules%2Ftest-11111-22222-base.package":
@@ -797,13 +770,11 @@ class WebTestPlatform
 		return 0;
 	}
 	
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		return (empty($this->_readBuffer[$handle]));
 	}
 	
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if (empty($this->_readBuffer[$handle])) {
 			return null;
 		}
@@ -811,8 +782,7 @@ class WebTestPlatform
 		return array_shift($this->_readBuffer[$handle]) . "\n";
 	}
 	
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if (empty($this->_readBuffer[$handle])) {
 			return null;
 		}
@@ -835,8 +805,7 @@ class WebTestPlatform
 		}
 	}
 	
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		switch ($handle) {
 			case 'test-resource-1':
 				unset($this->_readBuffer[$handle]);
@@ -848,8 +817,7 @@ class WebTestPlatform
 		}
 	}
 	
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		switch ($handle) {
 			case 'test-resource-1':
 				return true;
@@ -859,18 +827,15 @@ class WebTestPlatform
 		}
 	}
 	
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		return filesize($file);
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		switch (realpath($path)) {
 			case __FILE__:
 			case realpath(dirname(__FILE__) . '/../../classes/GalleryAlbumItem.class'):
@@ -881,8 +846,7 @@ class WebTestPlatform
 		}
 	}
 	
-	public function fopen($filename, $modes)
-	{
+	public function fopen($filename, $modes) {
 		if (in_array($filename, array(
 			'testFetchWebFile.tmp',
 			'testFetchHttpsWebFile.tmp'
@@ -893,8 +857,7 @@ class WebTestPlatform
 		}
 	}
 	
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		/* These are used in testIsPathInList */
 		switch ($file) {
 			case '/foo/bar':

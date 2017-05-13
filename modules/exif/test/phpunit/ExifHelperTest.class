@@ -46,17 +46,14 @@ GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');
  * @author Georg Rehfeld <rehfeld@georg-rehfeld.de>
  * @version $Revision: 17580 $
  */
-class ExifHelperTest extends GalleryTestCase
-{
+class ExifHelperTest extends GalleryTestCase {
 	public $_save = array();
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -88,8 +85,7 @@ class ExifHelperTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'format.datetime', $this->_saveFormat);
 		if ($ret) {
 			return $ret;
@@ -114,8 +110,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Test getting EXIF data from a test file.
 	 */
-	public function testGetExifData()
-	{
+	public function testGetExifData() {
 		list($ret, $exifData) = ExifHelper::getExifData(dirname(__FILE__) . '/../data/CanonS30.small.jpg', EXIF_SUMMARY);
 		if ($ret) {
 			return ($ret);
@@ -152,8 +147,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Make sure that we sanitize EXIF data as if it were any other input data
 	 */
-	public function testGetExifDataWithEmbeddedScript()
-	{
+	public function testGetExifDataWithEmbeddedScript() {
 		$ret = ExifHelper::setProperties(EXIF_SUMMARY, array(
 			'Copyright'
 		));
@@ -173,8 +167,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Test getting all the EXIF keys
 	 */
-	public function testGetExifKeys()
-	{
+	public function testGetExifKeys() {
 		/* There are a bajillion keys.  Do a quick sanity check */
 		$exifKeys = ExifHelper::getExifKeys();
 		$this->assertEquals(199, sizeof($exifKeys));
@@ -187,8 +180,7 @@ class ExifHelperTest extends GalleryTestCase
 	 * Test getting IPTC data from an Adobe test file, actually having real IPTC data (as opposed
 	 * to only XMP data, which is not distinguishable in current Adobe products).
 	 */
-	public function testGetRawIptcDataAdobe()
-	{
+	public function testGetRawIptcDataAdobe() {
 		list($ret, $iptcObj) = ExifHelper::getIptcObject(dirname(__FILE__) . '/../data/exif-iptc-xmp-ps.jpg');
 		if ($ret) {
 			return $ret;
@@ -328,8 +320,7 @@ class ExifHelperTest extends GalleryTestCase
 	 * (http://www.exifer.friedemann.info/) which does not know about XMP data. The author reports
 	 * problems with some PHP software, so let's make sure, we are doing things right.
 	 */
-	public function testGetRawIptcDataExifer()
-	{
+	public function testGetRawIptcDataExifer() {
 		list($ret, $iptcObj) = ExifHelper::getIptcObject(dirname(__FILE__) . '/../data/iptc-exifer.jpg');
 		if ($ret) {
 			return $ret;
@@ -377,8 +368,7 @@ class ExifHelperTest extends GalleryTestCase
 	 * Test getting IPTC data from an IrfanView test file, see (http://www.irfanview.com/)
 	 * which does not know about XMP data.
 	 */
-	public function testGetRawIptcDataIrfanView()
-	{
+	public function testGetRawIptcDataIrfanView() {
 		list($ret, $iptcObj) = ExifHelper::getIptcObject(dirname(__FILE__) . '/../data/iptc-irfanview.jpg');
 		if ($ret) {
 			return $ret;
@@ -463,8 +453,7 @@ class ExifHelperTest extends GalleryTestCase
 	 * Test getting IPTC data from a test file with ISO-8859-1 german umlauts inside. These must be
 	 * converted to UTF-8.
 	 */
-	public function testGetRawIptcDataISO_8859_1()
-	{
+	public function testGetRawIptcDataISO_8859_1() {
 		list($ret, $iptcObj) = ExifHelper::getIptcObject(dirname(__FILE__) . '/../data/iptc-iso-8859-1.jpg');
 		if ($ret) {
 			return $ret;
@@ -481,8 +470,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Make sure that we sanitize IPTC data as if it were any other input data
 	 */
-	public function testGetIptcDataWithEmbeddedScript()
-	{
+	public function testGetIptcDataWithEmbeddedScript() {
 		$ret = ExifHelper::setProperties(EXIF_SUMMARY, array(
 			'IPTC/Keywords'
 		));
@@ -502,8 +490,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Check post processing code.
 	 */
-	public function testPostProcessKeys()
-	{
+	public function testPostProcessKeys() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -545,8 +532,7 @@ class ExifHelperTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPostProcessValueDoesSanitize()
-	{
+	public function testPostProcessValueDoesSanitize() {
 		$originalValue = 'A text with \ some backslashes \\.';
 		$this->assertEquals($originalValue, ExifHelper::postProcessValue('SomeValue', $originalValue), 'backslash');
 		
@@ -556,8 +542,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Test adding default summary IPTC properties, as used on upgrade.
 	 */
-	public function testAddDefaultIptcPropertiesSummary()
-	{
+	public function testAddDefaultIptcPropertiesSummary() {
 		list($ret, $properties) = ExifHelper::getProperties(EXIF_SUMMARY);
 		if ($ret) {
 			return $ret;
@@ -598,8 +583,7 @@ class ExifHelperTest extends GalleryTestCase
 	/**
 	 * Test adding default detailed IPTC properties, as used on upgrade.
 	 */
-	public function testAddDefaultIptcPropertiesDetailed()
-	{
+	public function testAddDefaultIptcPropertiesDetailed() {
 		list($ret, $properties) = ExifHelper::getProperties(EXIF_DETAILED);
 		if ($ret) {
 			return $ret;

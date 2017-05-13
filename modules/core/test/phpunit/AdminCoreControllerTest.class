@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17630 $
  */
-class AdminCoreControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminCoreControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminCore');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -76,8 +73,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		$gallery->setUrlGenerator(new AdminCoreControllerTestUrlGenerator());
 	}
 	
-	public function _setFormFromValues($valueMap)
-	{
+	public function _setFormFromValues($valueMap) {
 		/* Change the defaults to something meaningless */
 		foreach ($valueMap as $key => $value) {
 			list($outer, $inner) = explode('.', $key);
@@ -85,8 +81,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testChangeValues()
-	{
+	public function testChangeValues() {
 		$valueMap = $this->_valueMap;
 		
 		$this->_setFormFromValues($valueMap);
@@ -116,8 +111,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testChangeEmailPasswordWithStars()
-	{
+	public function testChangeEmailPasswordWithStars() {
 		$valueMap = $this->_valueMap;
 		
 		/* Set the password to a 3-letter value (it should be b64 encoded, but this is a dummy) */
@@ -153,8 +147,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('abc', $storedPass, "matching number of stars shouldn't change the password");
 	}
 	
-	public function testChangeEmailPasswordWithWrongNumberOfStars()
-	{
+	public function testChangeEmailPasswordWithWrongNumberOfStars() {
 		$valueMap = $this->_valueMap;
 		
 		/* Set the password to a 3-letter value (it should be b64 encoded, but this is a dummy) */
@@ -190,8 +183,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('abc', $storedPass, "mismatched number of stars shouldn't change the password");
 	}
 	
-	public function testSaveEmailPasswordWithHtmlEntity()
-	{
+	public function testSaveEmailPasswordWithHtmlEntity() {
 		$valueMap = $this->_valueMap;
 		
 		$valueMap['smtp.password'] = 'pass&word';
@@ -222,8 +214,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* Test that we don't accept just any cookie path */
-	public function testChangeCookiePath()
-	{
+	public function testChangeCookiePath() {
 		/*
 	     * AdminCore expects all the form vars, even if we test here only the cookie path.  Don't
 	     * set session.inactivityTimeout or session.siteAdministrationTimeout as the tests will fail
@@ -324,8 +315,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* Test that we don't accept just any cookie domain */
-	public function testChangeCookieDomain()
-	{
+	public function testChangeCookieDomain() {
 		/*
 	     * AdminCore expects all the form vars, even if we test here only the cookie path.  Don't
 	     * set session.inactivityTimeout or session.siteAdministrationTimeout as the tests will fail
@@ -426,8 +416,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testInvalidSmtpFrom()
-	{
+	public function testInvalidSmtpFrom() {
 		GalleryUtilities::putRequestVariable('form[smtp][server]', 'smtp.example.com');
 		GalleryUtilities::putRequestVariable('form[smtp][from]', 'bad address@fun.com');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -445,8 +434,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEmailTestMissingEmail()
-	{
+	public function testEmailTestMissingEmail() {
 		GalleryUtilities::putRequestVariable('form[emailTest][to]', '');
 		GalleryUtilities::putRequestVariable('form[action][emailTest]', 1);
 		
@@ -463,8 +451,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEmailTestInvalidEmail()
-	{
+	public function testEmailTestInvalidEmail() {
 		GalleryUtilities::putRequestVariable('form[emailTest][to]', 'abc');
 		GalleryUtilities::putRequestVariable('form[action][emailTest]', 1);
 		
@@ -481,8 +468,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEmailTestSuccess()
-	{
+	public function testEmailTestSuccess() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		if (GalleryUtilities::isA($platform, 'WinNtPlatform')) {
@@ -508,8 +494,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEmailTestFailure()
-	{
+	public function testEmailTestFailure() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		if (GalleryUtilities::isA($platform, 'WinNtPlatform')) {
@@ -537,8 +522,7 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(array(), $results['error'], 'error');
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		/* Set the default language to a value such that we can ensure that it hasn't changed */
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'default.language', 'de');
 		if ($ret) {
@@ -564,27 +548,21 @@ class AdminCoreControllerTest extends GalleryControllerTestCase
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/UnixPlatform.class');
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/WinNtPlatform.class');
-class AdminCoreControllerTestUnixPlatform extends UnixPlatform
-{
-	public function AdminCoreControllerTestUnixPlatform($succeed)
-	{
+class AdminCoreControllerTestUnixPlatform extends UnixPlatform {
+	public function AdminCoreControllerTestUnixPlatform($succeed) {
 		$this->_succeed = $succeed;
 	}
 	
-	public function mail()
-	{
+	public function mail() {
 		return $this->_succeed;
 	}
 }
-class AdminCoreControllerTestWinNtPlatform extends WinNtPlatform
-{
-	public function AdminCoreControllerTestWinNtPlatform($succeed)
-	{
+class AdminCoreControllerTestWinNtPlatform extends WinNtPlatform {
+	public function AdminCoreControllerTestWinNtPlatform($succeed) {
 		$this->_succeed = $succeed;
 	}
 	
-	public function mail()
-	{
+	public function mail() {
 		return $this->_succeed;
 	}
 }
@@ -592,10 +570,8 @@ class AdminCoreControllerTestWinNtPlatform extends WinNtPlatform
 /**
  * Small mock url generator for the cookie path test
  */
-class AdminCoreControllerTestUrlGenerator
-{
-	public function getCurrentUrlDir($forceG2Base = false)
-	{
+class AdminCoreControllerTestUrlGenerator {
+	public function getCurrentUrlDir($forceG2Base = false) {
 		if ($forceG2Base) {
 			return 'http://www.example.com/sub/gallery2/';
 		} else {

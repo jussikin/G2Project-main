@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class PrintPhotosControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class PrintPhotosControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'fotokasten.PrintPhotos');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -90,8 +87,7 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase
 		$session->remove('fotokasten.endpoint');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		/* Restore session id */
@@ -115,8 +111,7 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testPrintSingle()
-	{
+	public function testPrintSingle() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_items[2]->getId());
 		
 		$result = $this->handleRequest();
@@ -139,8 +134,7 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase
 		$this->assert(strpos($basket['item1']['photo_url'], 'itemId=' . $this->_items[2]->getId()), 'item id');
 	}
 	
-	public function testPrintProtectedPhoto()
-	{
+	public function testPrintProtectedPhoto() {
 		global $gallery;
 		
 		$itemId = $this->_items[2]->getId();
@@ -199,8 +193,7 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase
 		), $fotokastenSession->get('core.isPrintService'), 'Fotokasten session missing item id');
 	}
 	
-	public function testPrintCart()
-	{
+	public function testPrintCart() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->put('fotokasten.cart', array(
@@ -246,16 +239,13 @@ class PrintPhotosControllerTest extends GalleryControllerTestCase
  * @package Fotokasten
  * @subpackage PHPUnit
  */
-class FotokastenTestSoapClient
-{
-	public function FotokastenTestSoapClient($endpoint)
-	{
+class FotokastenTestSoapClient {
+	public function FotokastenTestSoapClient($endpoint) {
 		$this->endpoint = $endpoint;
 		$this->fault = false;
 	}
 	
-	public function call($method, $params, $namespace, $action)
-	{
+	public function call($method, $params, $namespace, $action) {
 		switch ($method) {
 			case 'registerSession':
 				return array(
@@ -281,15 +271,13 @@ class FotokastenTestSoapClient
 		}
 	}
 	
-	public function &getTest()
-	{
+	public function &getTest() {
 		static $test = array();
 
 		return $test;
 	}
 
-	public function setTest(&$set)
-	{
+	public function setTest(&$set) {
 		$test =& self::getTest();
 		$test['test'] =& $set;
 	}

@@ -27,13 +27,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CaptchaSiteAdminController extends GalleryController
-{
+class CaptchaSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public static function handleRequest($form)
-	{
+	public static function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -129,13 +127,11 @@ class CaptchaSiteAdminController extends GalleryController
 /**
  * Settings for Captcha
  */
-class CaptchaSiteAdminView extends GalleryView
-{
+class CaptchaSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public static function loadTemplate(&$template, &$form)
-	{
+	public static function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -209,8 +205,7 @@ class CaptchaSiteAdminView extends GalleryView
  * @package Captcha
  * @subpackage UserInterface
  */
-class CaptchaAdminOption
-{
+class CaptchaAdminOption {
 	/**
 	 * Return all available options.
 	 *
@@ -218,8 +213,7 @@ class CaptchaAdminOption
 	 *               array of string optionId => CaptchaAdminOption instance
 	 * @static
 	 */
-	public static function getAllOptions()
-	{
+	public static function getAllOptions() {
 		$testOptions = self::testOptions();
 		if (isset($testOptions)) {
 			return array(
@@ -260,8 +254,7 @@ class CaptchaAdminOption
 	 * @return null or array of string optionId => CaptchaAdminOption test instance
 	 * @static
 	 */
-	public static function testOptions($options = null)
-	{
+	public static function testOptions($options = null) {
 		static $testOptions = null;
 		if (isset($options)) {
 			$testOptions = $options;
@@ -278,8 +271,7 @@ class CaptchaAdminOption
 	 *               array(pluginType, pluginId, parameterName) to configure
 	 *               array of string choices (any of HIGH, MEDIUM, LOW, OFF)
 	 */
-	public static function getOptionData()
-	{
+	public static function getOptionData() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,

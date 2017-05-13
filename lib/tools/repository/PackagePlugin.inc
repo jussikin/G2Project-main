@@ -32,15 +32,13 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryPackage.clas
  * @subpackage Controllers
  * @module PackagePluginController
  */
-class PackagePluginControllerAndView extends RepositoryControllerAndView
-{
+class PackagePluginControllerAndView extends RepositoryControllerAndView {
 	/**
 	 * Displays the available plugins that can be packaged.
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function showAvailablePlugins()
-	{
+	public function showAvailablePlugins() {
 		list($ret, $plugins) = $this->getAvailablePluginList(array(
 			'package' => array(
 				'controller' => 'PackagePlugin',
@@ -67,8 +65,7 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function packagePlugin()
-	{
+	public function packagePlugin() {
 		list($pluginId, $pluginType) = GalleryUtilities::getRequestVariables('pluginId', 'pluginType');
 		
 		if (empty($pluginId) || empty($pluginType)) {
@@ -97,8 +94,7 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function packagePlugins()
-	{
+	public function packagePlugins() {
 		global $gallery;
 		$pluginsPackaged = 0;
 		
@@ -139,8 +135,7 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView
 	 *               array('pluginId' => ..., 'outputDir' => ...,
 	 *                     'packageInfo' => ..., 'errors' => ...)
 	 */
-	public function doPackagePlugin($pluginType, $pluginId)
-	{
+	public function doPackagePlugin($pluginType, $pluginId) {
 		global $gallery;
 		$outputDir = $gallery->getConfig('repository.path');
 		
@@ -228,8 +223,7 @@ class PackagePluginControllerAndView extends RepositoryControllerAndView
 	 * @return array GalleryStatus a status code
 	 *           array plugin list
 	 */
-	public function getAvailablePluginList($links)
-	{
+	public function getAvailablePluginList($links) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$data = array();

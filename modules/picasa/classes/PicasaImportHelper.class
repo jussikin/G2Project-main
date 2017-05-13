@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @static
  */
-class PicasaImportHelper
-{
+class PicasaImportHelper {
 	/**
 	 * Convert html according to given markup type
 	 * @param string $markupType markup type (none, bbcode, html)
@@ -35,8 +34,7 @@ class PicasaImportHelper
 	 * @param string $sourceEncoding (optional; default='UTF-8')
 	 * @return string
 	 */
-	public static function convertHtml($markupType, $item, $sourceEncoding='UTF-8')
-	{
+	public static function convertHtml($markupType, $item, $sourceEncoding='UTF-8') {
 		$item = GalleryCoreApi::convertToUtf8($item, $sourceEncoding);
 		switch ($markupType) {
 		case 'bbcode':
@@ -61,8 +59,7 @@ class PicasaImportHelper
 	 * @param string $item item to convert
 	 * @return string
 	 */
-	public function convertHtmlToBbcode($item)
-	{
+	public function convertHtmlToBbcode($item) {
 		static $patterns, $match, $replace;
 		if (!isset($patterns)) {
 			$patterns = array(

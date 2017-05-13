@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @subpackage Storage
  * @version $Revision: 17580 $
  */
-class Db2Storage extends GalleryStorage
-{
-	public function __construct($config)
-	{
+class Db2Storage extends GalleryStorage {
+	public function __construct($config) {
 		$this->Db2Storage($config);
 	}
 	
-	public function Db2Storage($config)
-	{
+	public function Db2Storage($config) {
 		$this->GalleryStorage($config);
 		$this->_isTransactional = true;
 	}
@@ -46,16 +43,14 @@ class Db2Storage extends GalleryStorage
 	 * Return the type of this database
 	 * @return string
 	 */
-	public function getType()
-	{
+	public function getType() {
 		return 'db2';
 	}
 	
 	/**
 	 * @see GalleryStorage::cleanStore
 	 */
-	public function cleanStore()
-	{
+	public function cleanStore() {
 		$ret = parent::cleanStore();
 		if ($ret) {
 			return $ret;
@@ -93,8 +88,7 @@ class Db2Storage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::configureStore
 	 */
-	public function configureStore($moduleId, $upgradeInfo = array())
-	{
+	public function configureStore($moduleId, $upgradeInfo = array()) {
 		if ($moduleId == 'core') {
 			global $gallery;
 			
@@ -153,24 +147,21 @@ class Db2Storage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::convertIntToBits
 	 */
-	public function convertIntToBits($intVal)
-	{
+	public function convertIntToBits($intVal) {
 		return sprintf("%032b", $intVal);
 	}
 	
 	/**
 	 * @see GalleryStorage::convertBitsToInt
 	 */
-	public function convertBitsToInt($bitsVal)
-	{
+	public function convertBitsToInt($bitsVal) {
 		return bindec($bitsVal);
 	}
 	
 	/**
 	 * @see GalleryStorage::removeAllMapEntries
 	 */
-	public function removeAllMapEntries($mapName, $useNonTransactionalConnection = false)
-	{
+	public function removeAllMapEntries($mapName, $useNonTransactionalConnection = false) {
 		$extras =& $this->_getExtras();
 		/* DB2 does not support TRUNCATE */
 		return $extras->removeAllMapEntries($mapName, $useNonTransactionalConnection, false);
@@ -179,8 +170,7 @@ class Db2Storage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::getFunctionsSql
 	 */
-	public function getFunctionSql($functionName, $args)
-	{
+	public function getFunctionSql($functionName, $args) {
 		switch ($functionName) {
 			case 'CONCAT':
 				/*
@@ -290,8 +280,7 @@ class Db2Storage extends GalleryStorage
 	 * Get database version.
 	 * @return string version
 	 */
-	public function getVersion()
-	{
+	public function getVersion() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -310,8 +299,7 @@ class Db2Storage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::_getOptimizeStatements
 	 */
-	public function _getOptimizeStatements()
-	{
+	public function _getOptimizeStatements() {
 		return array(
 			'CALL ADMIN_CMD (\'REORG TABLE ' . $this->_username . '.%s\')',
 			'CALL ADMIN_CMD (\'RUNSTATS ON TABLE ' . $this->_username . '.%s WITH DISTRIBUTION ON ALL COLUMNS AND INDEXES ALL\')'
@@ -323,24 +311,21 @@ class Db2Storage extends GalleryStorage
 	 * string lengths in bytes.
 	 * @see GalleryStorage::_truncateString
 	 */
-	public function _truncateString($value, $size, $lengthInBytes = false)
-	{
+	public function _truncateString($value, $size, $lengthInBytes = false) {
 		return parent::_truncateString($value, $size, true);
 	}
 	
 	/**
 	 * @see GalleryStorage::encodeBlob
 	 */
-	public function encodeBlob($blob)
-	{
+	public function encodeBlob($blob) {
 		return addcslashes($blob, "\000\134\377");
 	}
 	
 	/**
 	 * @see GalleryStorage::decodeBlob
 	 */
-	public function decodeBlob($blob)
-	{
+	public function decodeBlob($blob) {
 		return stripcslashes($blob);
 	}
 }

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldInterfaceTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CustomFieldInterfaceTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -84,8 +81,7 @@ class CustomFieldInterfaceTest extends GalleryTestCase
 		}
 	}
 	
-	public function testInterface()
-	{
+	public function testInterface() {
 		
 		// Create global fields..
 		list($ret, $duplicates) = $this->_interface->createCustomFields(array(

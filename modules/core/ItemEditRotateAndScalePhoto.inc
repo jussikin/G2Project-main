@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20940 $
  */
-class ItemEditRotateAndScalePhoto extends ItemEditPlugin
-{
+class ItemEditRotateAndScalePhoto extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(
@@ -217,8 +215,7 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		$ItemEditRotateAndScalePhoto = array();
 		
 		list($ret, $ItemEditRotateAndScalePhoto['isAdmin']) = GalleryCoreApi::isUserInSiteAdminGroup();
@@ -338,16 +335,14 @@ class ItemEditRotateAndScalePhoto extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		return (GalleryUtilities::isA($item, 'GalleryPhotoItem'));
 	}
 	
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

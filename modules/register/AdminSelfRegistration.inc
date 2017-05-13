@@ -25,13 +25,11 @@
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 17580 $
  */
-class AdminSelfRegistrationController extends GalleryController
-{
+class AdminSelfRegistrationController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -45,7 +43,11 @@ class AdminSelfRegistrationController extends GalleryController
 			   'emailusers', 'usersubject') as $key) {
 				if (isset($form[$key])) {
 					$ret = GalleryCoreApi::setPluginParameter(
-					   'module', 'register', $key, trim($form[$key]));
+						'module',
+						'register',
+						$key,
+						trim($form[$key])
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -55,9 +57,10 @@ class AdminSelfRegistrationController extends GalleryController
 			$status['saved'] = 1;
 		} elseif (isset($form['action']['activate'])) {
 			GalleryCoreApi::requireOnce(
-		'modules/register/classes/GalleryPendingUserHelper.class');
+				'modules/register/classes/GalleryPendingUserHelper.class'
+			);
 			list($ret, $pendingUser) =
-		GalleryCoreApi::loadEntitiesById($form['userId'], 'GalleryPendingUser');
+			GalleryCoreApi::loadEntitiesById($form['userId'], 'GalleryPendingUser');
 			if ($ret) {
 				if (!($ret->getErrorCode() &  ERROR_MISSING_OBJECT)) {
 					return array($ret, null);
@@ -72,7 +75,7 @@ class AdminSelfRegistrationController extends GalleryController
 			}
 		} elseif (isset($form['action']['delete'])) {
 			list($ret, $pendingUser) =
-		GalleryCoreApi::loadEntitiesById($form['userId'], 'GalleryPendingUser');
+			GalleryCoreApi::loadEntitiesById($form['userId'], 'GalleryPendingUser');
 			if ($ret) {
 				if (!($ret->getErrorCode() &  ERROR_MISSING_OBJECT)) {
 					return array($ret, null);
@@ -95,13 +98,13 @@ class AdminSelfRegistrationController extends GalleryController
 			}
 		} /* else $form['action']['cancel'] */
 
-	if (empty($error)) {
-		$results['redirect'] = array('view' => 'core.SiteAdmin',
+		if (empty($error)) {
+			$results['redirect'] = array('view' => 'core.SiteAdmin',
 					 'subView' => 'register.AdminSelfRegistration');
-	} else {
-		$results['delegate']['view'] = 'core.SiteAdmin';
-		$results['delegate']['subView'] = 'register.AdminSelfRegistration';
-	}
+		} else {
+			$results['delegate']['view'] = 'core.SiteAdmin';
+			$results['delegate']['subView'] = 'register.AdminSelfRegistration';
+		}
 		$results['status'] = $status;
 		$results['error'] = $error;
 
@@ -112,13 +115,11 @@ class AdminSelfRegistrationController extends GalleryController
 /**
  * Settings for Registration
  */
-class AdminSelfRegistrationView extends GalleryView
-{
+class AdminSelfRegistrationView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/register/classes/GalleryPendingUserHelper.class');
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -132,17 +133,17 @@ class AdminSelfRegistrationView extends GalleryView
 		}
 
 	/* Load our default values if we didn't just come from this form. */
-	if ($form['formName'] != 'AdminSelfRegistration') {
-		foreach (array('confirmation', 'emailadmins', 'adminsubject', 'subject', 'from',
+		if ($form['formName'] != 'AdminSelfRegistration') {
+			foreach (array('confirmation', 'emailadmins', 'adminsubject', 'subject', 'from',
 			   'emailusers', 'usersubject') as $key) {
-			list($ret, $form[$key]) =
-			GalleryCoreApi::getPluginParameter('module', 'register', $key);
-			if ($ret) {
-				return array($ret, null);
+					list($ret, $form[$key]) =
+					GalleryCoreApi::getPluginParameter('module', 'register', $key);
+				if ($ret) {
+					return array($ret, null);
+				}
 			}
+			$form['formName'] = 'AdminSelfRegistration';
 		}
-		$form['formName'] = 'AdminSelfRegistration';
-	}
 
 		if (!isset($form['list']['page']) || $form['list']['page'] < 1) {
 			$form['list']['page'] = 1;
@@ -162,7 +163,9 @@ class AdminSelfRegistrationView extends GalleryView
 			$form['list']['backPage'] = max(1, $form['list']['page']-1);
 
 			list($ret, $form['list']['userNames']) = GalleryPendingUserHelper::fetchUserData(
-		$form['list']['pageSize'], ($form['list']['page'] - 1) * $form['list']['pageSize']);
+				$form['list']['pageSize'],
+				($form['list']['page'] - 1) * $form['list']['pageSize']
+			);
 			if ($ret) {
 				return array($ret, null);
 			}

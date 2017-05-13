@@ -25,13 +25,11 @@
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 17580 $
  */
-class ActivationWarningView extends GalleryView
-{
+class ActivationWarningView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);

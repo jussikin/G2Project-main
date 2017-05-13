@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ConfigureController extends GalleryController
-{
+class ConfigureController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		GalleryCoreApi::requireOnce('modules/nokiaupload/classes/ImageUploadHelper.class');
 		global $gallery;
 		
@@ -113,13 +111,11 @@ class ConfigureController extends GalleryController
 /**
  * Initial setup for NokiaUpload
  */
-class ConfigureView extends GalleryView
-{
+class ConfigureView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

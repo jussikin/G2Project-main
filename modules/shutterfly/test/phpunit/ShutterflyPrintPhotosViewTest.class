@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/shutterfly/PrintPhotos.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ShutterflyPrintPhotosViewTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ShutterflyPrintPhotosViewTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -73,8 +70,7 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase
 		}
 	}
 
-	public function testShutterflySesssionHasPrintServiceIds()
-	{
+	public function testShutterflySesssionHasPrintServiceIds() {
 		global $gallery;
 
 		$itemId = $this->_item->getId();
@@ -124,8 +120,7 @@ class ShutterflyPrintPhotosViewTest extends GalleryTestCase
 				'Shutterfly session missing item id');
 	}
 
-	public function testShutterflySessionPermissionsForSessionBasedPermissions()
-	{
+	public function testShutterflySessionPermissionsForSessionBasedPermissions() {
 		/* See bug 1706657 */
 	global $gallery;
 		$session =& $gallery->getSession();

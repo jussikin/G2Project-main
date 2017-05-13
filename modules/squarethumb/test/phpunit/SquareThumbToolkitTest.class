@@ -30,15 +30,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDerivativeImage.class')
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SquareThumbToolkitTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SquareThumbToolkitTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -104,24 +101,21 @@ class SquareThumbToolkitTest extends GalleryTestCase
 	$this->_toolkit = new SquareThumbToolkit();
 	}
 
-	public function testWrongOperation()
-	{
+	public function testWrongOperation() {
 		list($ret, $mimeType) = $this->_toolkit->performOperation('test/image', 'crop',
 		  'wrongOpSrc', 'wrongOpDest', array());
 		$this->assertEquals(GALLERY_ERROR | ERROR_UNSUPPORTED_OPERATION, $ret->getErrorCode(),
 				'Error expected for bad operation');
 	}
 
-	public function testNoDimensions()
-	{
+	public function testNoDimensions() {
 		list($ret, $mimeType) = $this->_toolkit->performOperation('test/nothing', 'thumbnail',
 		  'noDimSrc', 'noDimDest', array(150));
 		$this->assertEquals(GALLERY_ERROR | ERROR_UNSUPPORTED_OPERATION, $ret->getErrorCode(),
 				'Error expected due to missing dimensions toolkit');
 	}
 
-	public function testNoCropOrComposite()
-	{
+	public function testNoCropOrComposite() {
 		list($ret, $mimeType) = $this->_toolkit->performOperation('test/dim', 'thumbnail',
 		  'noCCSrc', 'noCCDest', array(150));
 		$this->assertEquals(GALLERY_ERROR | ERROR_UNSUPPORTED_OPERATION, $ret->getErrorCode(),
@@ -138,8 +132,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 				'Error expected due to missing composite toolkit');
 	}
 
-	public function testNoThumbnail()
-	{
+	public function testNoThumbnail() {
 		list($ret, $mimeType) = $this->_toolkit->performOperation('test/crop', 'thumbnail',
 		  'noThumbnailSrc', 'noThumbnailDest', array(150));
 		$this->assertEquals(GALLERY_ERROR | ERROR_UNSUPPORTED_OPERATION, $ret->getErrorCode(),
@@ -156,8 +149,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 				'Error expected due to missing thumbnail toolkit 2');
 	}
 
-	public function testAlreadySquare()
-	{
+	public function testAlreadySquare() {
 		/* Already square */
 	list($ret, $mimeType) = $this->_toolkit->performOperation('test/thumbnail', 'thumbnail',
 		  'squareSrc', 'squareDest', array(150));
@@ -167,8 +159,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		$this->assertEquals('test/thumbnail', $mimeType, 'Output mime type');
 	}
 
-	public function testCrop()
-	{
+	public function testCrop() {
 		global $gallery;
 
 	/* Valid operation */
@@ -194,8 +185,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		unset($gallery->_squareQueue);
 	}
 
-	public function testFit()
-	{
+	public function testFit() {
 		global $gallery;
 		$platform = GalleryUtilities::isA($gallery->getPlatform(), 'WinNtPlatform')
 		? new SquareThumbTestWinNtPlatform() : new SquareThumbTestUnixPlatform();
@@ -232,8 +222,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		unset($gallery->_squareQueue);
 	}
 
-	public function testFallbackToComposite()
-	{
+	public function testFallbackToComposite() {
 		/* Want to crop, but no toolkit support */
 	global $gallery;
 		$platform = GalleryUtilities::isA($gallery->getPlatform(), 'WinNtPlatform')
@@ -254,8 +243,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		unset($gallery->_squareQueue);
 	}
 
-	public function testFallbackToCrop()
-	{
+	public function testFallbackToCrop() {
 		/* Want to fit, but no toolkit support */
 	global $gallery;
 
@@ -276,8 +264,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		unset($gallery->_squareQueue);
 	}
 
-	public function testEstimateDimensions1()
-	{
+	public function testEstimateDimensions1() {
 		$item = new GalleryPhotoItem();
 		$item->setWidth(100);
 		$item->setHeight(300);
@@ -296,8 +283,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		$this->assertEquals(50, $derivative->getHeight());
 	}
 
-	public function testEstimateDimensions2()
-	{
+	public function testEstimateDimensions2() {
 		$item = new GalleryPhotoItem();
 		$item->setWidth(100);
 		$item->setHeight(300);
@@ -316,8 +302,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		$this->assertEquals(100, $derivative->getHeight());
 	}
 
-	public function testEstimateDimensions3()
-	{
+	public function testEstimateDimensions3() {
 		$item = new GalleryPhotoItem();
 		$item->setWidth(100);
 		$item->setHeight(300);
@@ -336,8 +321,7 @@ class SquareThumbToolkitTest extends GalleryTestCase
 		$this->assertEquals(100, $derivative->getHeight());
 	}
 
-	public function testEstimateDimensions4()
-	{
+	public function testEstimateDimensions4() {
 		$source = new GalleryDerivativeImage();
 		$source->setWidth(100);
 		$source->setHeight(150);
@@ -362,10 +346,8 @@ class SquareThumbToolkitTest extends GalleryTestCase
  * @package SquareThumb
  * @subpackage PHPUnit
  */
-class SquareThumbTestToolkit extends GalleryToolkit
-{
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+class SquareThumbTestToolkit extends GalleryToolkit {
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		if ($propertyName != 'dimensions') {
 			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION),
 			 null);
@@ -388,8 +370,7 @@ class SquareThumbTestToolkit extends GalleryToolkit
 	}
 
 	public function performOperation($mimeType, $operationName, $sourceFilename,
-				  $destFilename, $parameters, $context=array())
-	{
+				  $destFilename, $parameters, $context=array()) {
 		global $gallery;
 		if (isset($context['next.toolkit']) && $context['next.toolkit'] == $this) {
 			$gallery->_squareQueue[] = 'queue:' . $operationName;
@@ -433,10 +414,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/UnixPlatform.c
  * @package SquareThumb
  * @subpackage PHPUnit
  */
-class SquareThumbTestWinNtPlatform extends WinNtPlatform
-{
-	public function copy($src, $dest)
-	{
+class SquareThumbTestWinNtPlatform extends WinNtPlatform {
+	public function copy($src, $dest) {
 		if ($src == 'smallCompositeSrc' || basename($src) == 'squareThumbTestFit') {
 			return true;
 		}
@@ -445,10 +424,8 @@ class SquareThumbTestWinNtPlatform extends WinNtPlatform
 	}
 }
 
-class SquareThumbTestUnixPlatform extends UnixPlatform
-{
-	public function copy($src, $dest)
-	{
+class SquareThumbTestUnixPlatform extends UnixPlatform {
+	public function copy($src, $dest) {
 		if ($src == 'smallCompositeSrc' || basename($src) == 'squareThumbTestFit') {
 			return true;
 		}

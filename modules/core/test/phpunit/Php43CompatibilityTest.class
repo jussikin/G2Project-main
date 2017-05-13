@@ -26,10 +26,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class Php43CompatibilityTest extends CodeAuditTestCase
-{
-	public function __construct($methodName)
-	{
+class Php43CompatibilityTest extends CodeAuditTestCase {
+	public function __construct($methodName) {
 		$this->CodeAuditTestCase($methodName);
 		
 		include dirname(__FILE__) . '/Php43IllegalFunctions.inc';
@@ -52,8 +50,7 @@ class Php43CompatibilityTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::shouldCheckFile
 	 */
-	public function shouldCheckFile($fileName)
-	{
+	public function shouldCheckFile($fileName) {
 		/* Skip files we don't care about */
 		if ($fileName == 'Php43IllegalFunctions.inc' || substr($fileName, -10) == 'Test.class' || substr($fileName, -4) == '.tpl' || !parent::shouldCheckFile($fileName)) {
 			return false;
@@ -65,8 +62,7 @@ class Php43CompatibilityTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::checkFile
 	 */
-	public function checkFile($fileName, $buffer)
-	{
+	public function checkFile($fileName, $buffer) {
 		/* Quick check */
 		$longCheckRequired = false;
 		if (preg_match_all($this->_illegalRegexp, $buffer, $matches)) {

@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/imageframe/classes/ImageFrameInterface_1_1.
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ImageFrameImpl extends ImageFrameInterface_1_1
-{
+class ImageFrameImpl extends ImageFrameInterface_1_1 {
 	/**
 	 * @see ImageFrameInterface_1_1::getImageFrameList
 	 */
-	public function getImageFrameList()
-	{
+	public function getImageFrameList() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -78,8 +76,7 @@ class ImageFrameImpl extends ImageFrameInterface_1_1
 	/**
 	 * @see ImageFrameInterface_1_1::init
 	 */
-	public function init(&$template, $frameIds)
-	{
+	public function init(&$template, $frameIds) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		static $simpleFrames;
@@ -160,8 +157,7 @@ class ImageFrameImpl extends ImageFrameInterface_1_1
 	/**
 	 * Smarty callback to render an ImageFrame
 	 */
-	public function renderImageFrame($params, $content, $smarty)
-	{
+	public function renderImageFrame($params, $content, $smarty) {
 		
 		// Create a new template, a child of $smarty
 		$tp = $smarty->createTemplate('gallery:modules/imageframe/templates/ImageFrame.tpl', $smarty);
@@ -175,8 +171,7 @@ class ImageFrameImpl extends ImageFrameInterface_1_1
 	/**
 	 * @see ImageFrameInterface_1_1::getSampleUrl
 	 */
-	public function getSampleUrl($itemId = null)
-	{
+	public function getSampleUrl($itemId = null) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$params = array(

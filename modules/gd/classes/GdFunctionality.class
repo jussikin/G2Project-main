@@ -30,14 +30,12 @@
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 17580 $
  */
-class GdFunctionality
-{
+class GdFunctionality {
 	/**
 	 * @return array GalleryStatus
 	 *	       string phpinfo output
 	 */
-	public function phpinfo($section = null)
-	{
+	public function phpinfo($section = null) {
 		ob_start();
 		phpinfo($section);
 		$phpinfo = ob_get_contents();
@@ -53,8 +51,7 @@ class GdFunctionality
 	 * The tempnam method from the GalleryPlatform we will need to overwrite in our testcases
 	 * @return string
 	 */
-	public function tempnam($tmpDir, $prefix)
-	{
+	public function tempnam($tmpDir, $prefix) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -65,8 +62,7 @@ class GdFunctionality
 	 * The copy method from GalleryPlatform, which we need to be able to overwrite in tests
 	 * @return string
 	 */
-	public function copy($src, $dest)
-	{
+	public function copy($src, $dest) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -77,8 +73,7 @@ class GdFunctionality
 	 * The unlink method from GalleryPlatform, which we need to be able to overwrite in tests
 	 * @return string
 	 */
-	public function unlink($file)
-	{
+	public function unlink($file) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -89,8 +84,7 @@ class GdFunctionality
 	 * The filesize method from GalleryPlatform, which we need to be able to overwrite in tests
 	 * @return int
 	 */
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -102,8 +96,7 @@ class GdFunctionality
 	 * @param string $file file path
 	 * @return boolean true on success
 	 */
-	public function chmod($file)
-	{
+	public function chmod($file) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -116,8 +109,7 @@ class GdFunctionality
 	 *
 	 * @return boolean true if exists
 	 */
-	public function functionExists($fct)
-	{
+	public function functionExists($fct) {
 		return function_exists($fct);
 	}
 	
@@ -125,8 +117,7 @@ class GdFunctionality
 	 * Return an integer representing the known imageTypes
 	 * @return int
 	 */
-	public function imageTypes()
-	{
+	public function imageTypes() {
 		return imagetypes();
 	}
 	
@@ -139,8 +130,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       array the output of gd_info
 	 */
-	public function gd_info()
-	{
+	public function gd_info() {
 		if (!function_exists('gd_info')) {
 			return array(
 				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE),
@@ -159,8 +149,7 @@ class GdFunctionality
 	 * Return the size (width, height) of an image file.
 	 * @return array (x, y)
 	 */
-	public function getImageSize($filename)
-	{
+	public function getImageSize($filename) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -176,8 +165,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreate($width, $height)
-	{
+	public function imageCreate($width, $height) {
 		$res = @imagecreate($width, $height);
 		if (!$res) {
 			return array(
@@ -209,8 +197,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateTruecolor($width, $height)
-	{
+	public function imageCreateTruecolor($width, $height) {
 		if (!function_exists('imageCreateTruecolor')) {
 			return array(
 				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION),
@@ -235,8 +222,7 @@ class GdFunctionality
 	 * Helper functionality to see if a filename is readable
 	 * @return boolean
 	 */
-	public function isValidFile($filename)
-	{
+	public function isValidFile($filename) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		if (!$platform->file_exists($filename) || !$platform->is_file($filename) || !$platform->is_readable($filename)) {
@@ -252,8 +238,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       resource GD resource
 	 */
-	public function checkResource($res, $filename)
-	{
+	public function checkResource($res, $filename) {
 		if (!$res) {
 			if (!$this->isValidFile($filename)) {
 				return array(
@@ -284,8 +269,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateFromGif($filename)
-	{
+	public function imageCreateFromGif($filename) {
 		if (!function_exists('imageCreateFromGif')) {
 			return array(
 				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION),
@@ -317,8 +301,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateFromJpeg($filename)
-	{
+	public function imageCreateFromJpeg($filename) {
 		$res = @imagecreatefromjpeg($filename);
 
 		return $this->checkResource($res, $filename);
@@ -334,8 +317,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateFromPng($filename)
-	{
+	public function imageCreateFromPng($filename) {
 		$res = @imagecreatefrompng($filename);
 
 		return $this->checkResource($res, $filename);
@@ -351,8 +333,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateFromWbmp($filename)
-	{
+	public function imageCreateFromWbmp($filename) {
 		$res = @imagecreatefromwbmp($filename);
 
 		return $this->checkResource($res, $filename);
@@ -368,8 +349,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateFromXbm($filename)
-	{
+	public function imageCreateFromXbm($filename) {
 		$res = @imagecreatefromxbm($filename);
 
 		return $this->checkResource($res, $filename);
@@ -385,8 +365,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       res GD-resource
 	 */
-	public function imageCreateFromXpm($filename)
-	{
+	public function imageCreateFromXpm($filename) {
 		$res = @imageCreateFromXpm($filename);
 
 		return $this->checkResource($res, $filename);
@@ -401,8 +380,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageGif($res, $filename)
-	{
+	public function imageGif($res, $filename) {
 		if (!function_exists('imageGif')) {
 			return GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION);
 		}
@@ -423,8 +401,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageJpeg($res, $filename, $quality)
-	{
+	public function imageJpeg($res, $filename, $quality) {
 		if (!function_exists('imageJpeg')) {
 			return GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION);
 		}
@@ -445,8 +422,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imagePng($res, $filename)
-	{
+	public function imagePng($res, $filename) {
 		if (!function_exists('imagePng')) {
 			return GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION);
 		}
@@ -467,8 +443,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageWbmp($res, $filename)
-	{
+	public function imageWbmp($res, $filename) {
 		if (!function_exists('imageWbmp')) {
 			return GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION);
 		}
@@ -488,8 +463,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageXbm($res, $filename)
-	{
+	public function imageXbm($res, $filename) {
 		if (!function_exists('imageXbm')) {
 			return GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION);
 		}
@@ -510,8 +484,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageCopyResampled($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH)
-	{
+	public function imageCopyResampled($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
 		if (!function_exists('imageCopyResampled')) {
 			return GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION);
 		}
@@ -531,8 +504,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageCopyResized($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH)
-	{
+	public function imageCopyResized($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH) {
 		$result = @imagecopyresized($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH);
 		if ($result) {
 			return null;
@@ -549,8 +521,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageCopyMerge($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH, $pct)
-	{
+	public function imageCopyMerge($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH, $pct) {
 		$result = @imagecopymerge($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH, $pct);
 		if ($result) {
 			return null;
@@ -567,8 +538,7 @@ class GdFunctionality
 	 *
 	 * @return GalleryStatus
 	 */
-	public function imageCopy($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH)
-	{
+	public function imageCopy($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH) {
 		$result = @imagecopy($dstRes, $srcRes, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH);
 		if ($result) {
 			return null;
@@ -582,8 +552,7 @@ class GdFunctionality
 	 *
 	 * @return int the width of the image
 	 */
-	public function imageSx($res)
-	{
+	public function imageSx($res) {
 		return array(
 			null,
 			@imagesx($res)
@@ -595,8 +564,7 @@ class GdFunctionality
 	 *
 	 * @return int the height of the image
 	 */
-	public function imageSy($res)
-	{
+	public function imageSy($res) {
 		return array(
 			null,
 			@imagesy($res)
@@ -612,8 +580,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	       resource new gd resource
 	 */
-	public function imageRotate($srcRes, $angle, $bgdColor)
-	{
+	public function imageRotate($srcRes, $angle, $bgdColor) {
 		if (!function_exists('imageRotate')) {
 			return array(
 				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION),
@@ -638,8 +605,7 @@ class GdFunctionality
 	 * Destroy an image
 	 * @param object $res image resource
 	 */
-	public function imagedestroy($res)
-	{
+	public function imagedestroy($res) {
 		@imagedestroy($res);
 	}
 	
@@ -655,8 +621,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	             bool true on success, false on failure
 	 */
-	public function imagesavealpha($res, $saveflag)
-	{
+	public function imagesavealpha($res, $saveflag) {
 		if (!function_exists('imagesavealpha')) {
 			return array(
 				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION),
@@ -677,8 +642,7 @@ class GdFunctionality
 	 * @param bool $blendmode
 	 * @return bool true on success, false on failure
 	 */
-	public function imagealphablending($res, $blendmode)
-	{
+	public function imagealphablending($res, $blendmode) {
 		return @imagealphablending($res, $blendmode);
 	}
 	
@@ -696,8 +660,7 @@ class GdFunctionality
 	 * @return array GalleryStatus
 	 *	             int a color identifier, false on failure
 	 */
-	public function imagecolorallocatealpha($res, $red, $green, $blue, $alpha)
-	{
+	public function imagecolorallocatealpha($res, $red, $green, $blue, $alpha) {
 		if (!function_exists('imagecolorallocatealpha')) {
 			return array(
 				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE | ERROR_UNSUPPORTED_OPERATION),
@@ -720,8 +683,7 @@ class GdFunctionality
 	 * @param int $blue
 	 * @return int a color identifier, false on failure
 	 */
-	public function imagecolorallocate($res, $red, $green, $blue)
-	{
+	public function imagecolorallocate($res, $red, $green, $blue) {
 		return @imagecolorallocate($res, $red, $green, $blue);
 	}
 	
@@ -735,8 +697,7 @@ class GdFunctionality
 	 * @param int $y2 y coordinate of point 2
 	 * @return bool true on success, false on failure
 	 */
-	public function imagefilledrectangle($res, $x1, $y1, $x2, $y2, $color)
-	{
+	public function imagefilledrectangle($res, $x1, $y1, $x2, $y2, $color) {
 		return @imagefilledrectangle($res, $x1, $y1, $x2, $y2, $color);
 	}
 	
@@ -747,8 +708,7 @@ class GdFunctionality
 	 * @param int $color (optional) A color identifier
 	 * @return The identifier of the new (or current, if none is specified) transparent color.
 	 */
-	public function imagecolortransparent($res, $color = null)
-	{
+	public function imagecolortransparent($res, $color = null) {
 		if ($color !== null) {
 			return @imagecolortransparent($res, $color);
 		} else {
@@ -763,8 +723,7 @@ class GdFunctionality
 	 * @param int $ncolors
 	 * @return true on success, false on failure
 	 */
-	public function imagetruecolortopalette($res, $dither, $ncolors)
-	{
+	public function imagetruecolortopalette($res, $dither, $ncolors) {
 		return @imagetruecolortopalette($res, $dither, $ncolors);
 	}
 	
@@ -775,8 +734,7 @@ class GdFunctionality
 	 * @param int $y
 	 * @return int The index of the color
 	 */
-	public function imagecolorat($res, $x, $y)
-	{
+	public function imagecolorat($res, $x, $y) {
 		return @imagecolorat($res, $x, $y);
 	}
 	
@@ -788,8 +746,7 @@ class GdFunctionality
 	 * @param int $color A color identifier
 	 * @return bool true on success, false on failure
 	 */
-	public function imagesetpixel($res, $x, $y, $color)
-	{
+	public function imagesetpixel($res, $x, $y, $color) {
 		return @imagesetpixel($res, $x, $y, $color);
 	}
 	
@@ -799,8 +756,7 @@ class GdFunctionality
 	 * @param int $index
 	 * @return array('red' => int, 'green' => int, 'blue' => int, 'alpha' => int)
 	 */
-	public function imagecolorsforindex($res, $index)
-	{
+	public function imagecolorsforindex($res, $index) {
 		return @imagecolorsforindex($res, $index);
 	}
 }

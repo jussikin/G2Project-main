@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemAddLinkItemTest extends ItemAddPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAddLinkItemTest extends ItemAddPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddPluginTestCase($methodName, 'linkitem', 'ItemAddLinkItem');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -65,8 +62,7 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::releaseLocks($this->_lockId);
 		if ($ret) {
 			return $ret;
@@ -78,8 +74,7 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddAlbumLink()
-	{
+	public function testAddAlbumLink() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'linkitem', 'arrowWatermark', '0');
 		if ($ret) {
 			return $ret;
@@ -139,8 +134,7 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase
 		)), 'postfilter');
 	}
 	
-	public function testAddEmptyAlbumLink()
-	{
+	public function testAddEmptyAlbumLink() {
 		/* Link to empty album (no highlight) falls back to using linkitem as thumbnail source */
 		GalleryUtilities::putRequestVariable('form[action][addLinkItem]', 1);
 		GalleryUtilities::putRequestVariable('form[linkType]', 'album');
@@ -174,8 +168,7 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddLinkItemAlbumNotFound()
-	{
+	public function testAddLinkItemAlbumNotFound() {
 		GalleryUtilities::putRequestVariable('form[action][addLinkItem]', 1);
 		GalleryUtilities::putRequestVariable('form[linkType]', 'album');
 		GalleryUtilities::putRequestVariable('form[linkedAlbumId]', -123);
@@ -187,8 +180,7 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase
 		$this->assertEquals(array(), $results[1], 'status');
 	}
 	
-	public function testAddLinkItemURL()
-	{
+	public function testAddLinkItemURL() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'linkitem', 'arrowWatermark', '1');
 		if ($ret) {
 			return $ret;
@@ -243,8 +235,7 @@ class ItemAddLinkItemTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddLinkItemURLMissing()
-	{
+	public function testAddLinkItemURLMissing() {
 		GalleryUtilities::putRequestVariable('form[action][addLinkItem]', 1);
 		GalleryUtilities::putRequestVariable('form[linkType]', 'url');
 		GalleryUtilities::putRequestVariable('form[linkUrl]', '');

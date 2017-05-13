@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20940 $
  */
-class ArchiveUploadSiteAdminController extends GalleryController
-{
+class ArchiveUploadSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -56,7 +54,7 @@ class ArchiveUploadSiteAdminController extends GalleryController
 					$platform =& $gallery->getPlatform();
 					$slash	 = $platform->getDirectorySeparator();
 					$retryPath = $form['unzipPath'];
-					if ($retryPath{strlen($retryPath) - 1} != $slash) {
+					if ($retryPath[strlen($retryPath) - 1] != $slash) {
 						$retryPath .= $slash;
 					}
 					$retryPath .= 'unzip';
@@ -138,13 +136,11 @@ class ArchiveUploadSiteAdminController extends GalleryController
 /**
  * Settings for Archive Upload
  */
-class ArchiveUploadSiteAdminView extends GalleryView
-{
+class ArchiveUploadSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SampleView extends GalleryView
-{
+class SampleView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($ret, $imageframe) = GalleryCoreApi::newFactoryInstance('ImageFrameInterface_1_1');
 		if ($ret) {
 			return array(
@@ -118,8 +116,7 @@ class SampleView extends GalleryView
 	/**
 	 * @see GalleryView::loadThemeAndParameters
 	 */
-	public function loadThemeAndParameters()
-	{
+	public function loadThemeAndParameters() {
 		list($ret, $theme, $params, $item) = parent::loadThemeAndParameters();
 		if ($ret) {
 			if (!($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
@@ -154,8 +151,7 @@ class SampleView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'imageframe');
 		if ($ret) {
 			return array(

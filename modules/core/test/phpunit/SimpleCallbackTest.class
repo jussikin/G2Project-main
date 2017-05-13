@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18157 $
  */
-class SimpleCallbackTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SimpleCallbackTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -48,8 +45,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		GalleryDataCache::reset();
 	}
 	
-	public function _createUser()
-	{
+	public function _createUser() {
 		list($ret, $user) = $this->_createRandomUser($this->_tag . '-' . count($this->_userNames));
 		if ($ret) {
 			return $ret;
@@ -59,8 +55,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->_userNames[] = $user->getUsername();
 	}
 	
-	public function _createGroup()
-	{
+	public function _createGroup() {
 		list($ret, $group) = $this->_createRandomGroup($this->_tag . '-' . count($this->_groupNames));
 		if ($ret) {
 			return $ret;
@@ -69,8 +64,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->_groupNames[] = $group->getGroupName();
 	}
 	
-	public function _runCallback()
-	{
+	public function _runCallback() {
 		ob_start();
 		$ret = $this->_view->renderImmediate(array(), array());
 		$results = ob_get_contents();
@@ -82,8 +76,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		return $results;
 	}
 	
-	public function testLookupUsername()
-	{
+	public function testLookupUsername() {
 		$this->_createUser();
 		$this->_createUser();
 		$this->_createUser();
@@ -96,8 +89,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals(join("\n", $this->_userNames), $results);
 	}
 	
-	public function testLookupUsernameAsGuestUser()
-	{
+	public function testLookupUsernameAsGuestUser() {
 		$this->_createUser();
 		$this->_createUser();
 		$this->_createUser();
@@ -111,8 +103,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals("", $results);
 	}
 	
-	public function testLookupUsernameAlternateGuestUser()
-	{
+	public function testLookupUsernameAlternateGuestUser() {
 		global $gallery;
 		$this->_createUser();
 		$this->_createUser();
@@ -124,8 +115,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals("", $results);
 	}
 	
-	public function testLookupUsernameWithEntity()
-	{
+	public function testLookupUsernameWithEntity() {
 		/* We expect user/group names in db to be entitized.. search for < should match &lt; */
 		$search = $this->_tag . '<t';
 		$this->_tag .= '&lt;t';
@@ -140,8 +130,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals(join("\n", $this->_userNames), $results);
 	}
 	
-	public function testLookupGroupname()
-	{
+	public function testLookupGroupname() {
 		$this->_createGroup();
 		$this->_createGroup();
 		$this->_createGroup();
@@ -154,8 +143,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals(join("\n", $this->_groupNames), $results);
 	}
 	
-	public function testLookupGroupnameAsGuestUser()
-	{
+	public function testLookupGroupnameAsGuestUser() {
 		$this->_createGroup();
 		$this->_createGroup();
 		$this->_createGroup();
@@ -169,8 +157,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals('', $results);
 	}
 	
-	public function testLookupGroupnameWithEntity()
-	{
+	public function testLookupGroupnameWithEntity() {
 		/* We expect user/group names in db to be entitized.. search for " should match &quot; */
 		$search = $this->_tag . '"test';
 		$this->_tag .= '&quot;test';
@@ -185,8 +172,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals(join("\n", $this->_groupNames), $results);
 	}
 	
-	public function testLookupDirectories()
-	{
+	public function testLookupDirectories() {
 		GalleryUtilities::putRequestVariable('command', 'lookupDirectories');
 		GalleryUtilities::putRequestVariable('prefix', dirname(dirname(__FILE__)));
 		$results = $this->_runCallback();
@@ -194,8 +180,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert(strstr($results, dirname(__FILE__)), 'Missing result');
 	}
 	
-	public function testLookupDirectoriesWithPattern()
-	{
+	public function testLookupDirectoriesWithPattern() {
 		GalleryUtilities::putRequestVariable('command', 'lookupDirectories');
 		GalleryUtilities::putRequestVariable('prefix', dirname(dirname(dirname(__FILE__))) . '/c');
 		$results = $this->_runCallback();
@@ -204,8 +189,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert(!strstr($results, 'templates'), 'Should not have templates in: ' . $results);
 	}
 	
-	public function testLookupDirectoriesWithEntity()
-	{
+	public function testLookupDirectoriesWithEntity() {
 		/* Filesystem isn't entitized.. search for < should match literal < */
 		global $gallery;
 		$platform = new SimpleCallbackTestPlatform();
@@ -238,8 +222,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testLookupDirectoriesWithUmlauts()
-	{
+	public function testLookupDirectoriesWithUmlauts() {
 		/* Filesystem doesn't accept / return UTF-8 characters */
 		global $gallery;
 		$gallery->_phpVm = new SimpleCallbackTestPhpVm();
@@ -279,8 +262,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testLookupDirectoriesAsNonSiteAdmin()
-	{
+	public function testLookupDirectoriesAsNonSiteAdmin() {
 		global $gallery;
 		
 		$this->_createUser();
@@ -294,8 +276,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals('', $results);
 	}
 	
-	public function testLookupDirectoriesAsGuestUser()
-	{
+	public function testLookupDirectoriesAsGuestUser() {
 		$this->_becomeGuestUser();
 		
 		GalleryUtilities::putRequestVariable('command', 'lookupDirectories');
@@ -306,8 +287,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals('', $results);
 	}
 	
-	public function testLookupFiles()
-	{
+	public function testLookupFiles() {
 		GalleryUtilities::putRequestVariable('command', 'lookupFiles');
 		GalleryUtilities::putRequestVariable('prefix', dirname(__FILE__));
 		$results = $this->_runCallback();
@@ -315,8 +295,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert(strstr($results, __FILE__), 'Missing result');
 	}
 	
-	public function testLookupFilesWithPattern()
-	{
+	public function testLookupFilesWithPattern() {
 		GalleryUtilities::putRequestVariable('command', 'lookupFiles');
 		GalleryUtilities::putRequestVariable('prefix', dirname(__FILE__) . '/Si');
 		$results = $this->_runCallback();
@@ -325,8 +304,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert(!strstr($results, 'CoreModuleTest'), 'Should not have CoreModuleTest in: ' . $results);
 	}
 	
-	public function testLookupFilesWithEntity()
-	{
+	public function testLookupFilesWithEntity() {
 		/* Filesystem isn't entitized.. search for & should match literal & */
 		global $gallery;
 		$platform = new SimpleCallbackTestPlatform();
@@ -369,8 +347,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testLookupFilesWithUmlauts()
-	{
+	public function testLookupFilesWithUmlauts() {
 		/* Filesystem doesn't accepts / return UTF-8 characters */
 		global $gallery;
 		$gallery->_phpVm = new SimpleCallbackTestPhpVm();
@@ -420,8 +397,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testLookupFilesAsNonSiteAdmin()
-	{
+	public function testLookupFilesAsNonSiteAdmin() {
 		global $gallery;
 		
 		$this->_createUser();
@@ -435,8 +411,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		$this->assertEquals('', $results);
 	}
 	
-	public function testLookupFilesAsGuestUser()
-	{
+	public function testLookupFilesAsGuestUser() {
 		$this->_becomeGuestUser();
 		
 		GalleryUtilities::putRequestVariable('command', 'lookupFiles!');
@@ -451,10 +426,8 @@ class SimpleCallbackTest extends GalleryTestCase
 /**
  * For the directory listing tests, we need a mock PHP VM
  */
-class SimpleCallbackTestPhpVm
-{
-	public function function_exists($functionName)
-	{
+class SimpleCallbackTestPhpVm {
+	public function function_exists($functionName) {
 		/* make it use our charset tables, they work on all platforms */
 		switch ($functionName) {
 			case 'iconv':
@@ -469,19 +442,16 @@ class SimpleCallbackTestPhpVm
 	}
 }
 
-class SimpleCallbackTestPlatform extends UnitTestPlatform
-{
+class SimpleCallbackTestPlatform extends UnitTestPlatform {
 	public $_originalPlatform;
 	
-	public function SimpleCallbackTestPlatform()
-	{
+	public function SimpleCallbackTestPlatform() {
 		global $gallery;
 		$this->_originalPlatform =& $gallery->getPlatform();
 		parent::UnitTestPlatform();
 	}
 	
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		if (strpos($path, 'module')) {
 			return $this->_originalPlatform->opendir($path);
 		} else {
@@ -491,8 +461,7 @@ class SimpleCallbackTestPlatform extends UnitTestPlatform
 		}
 	}
 	
-	public function closedir($resource)
-	{
+	public function closedir($resource) {
 		if (!is_string($resource)) {
 			return $this->_originalPlatform->closedir($resource);
 		} else {
@@ -502,8 +471,7 @@ class SimpleCallbackTestPlatform extends UnitTestPlatform
 		}
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if (strpos($path, 'module')) {
 			return $this->_originalPlatform->is_dir($path);
 		} else {
@@ -513,8 +481,7 @@ class SimpleCallbackTestPlatform extends UnitTestPlatform
 		}
 	}
 	
-	public function readdir($resource)
-	{
+	public function readdir($resource) {
 		if (!is_string($resource)) {
 			return $this->_originalPlatform->readdir($resource);
 		} else {
@@ -524,8 +491,7 @@ class SimpleCallbackTestPlatform extends UnitTestPlatform
 		}
 	}
 	
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		if (strpos($filename, 'module')) {
 			return $this->_originalPlatform->file_exists($filename);
 		} else {

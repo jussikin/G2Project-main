@@ -41,17 +41,14 @@ if (!class_exists("GallerySession")) {
 /**
  * Stub equivalent of Gallery.class that we use to extract data from config.php
  */
-class GallerySetupUtilitiesStub
-{
+class GallerySetupUtilitiesStub {
 	public $config;
 
-	public function setConfig($key, $value)
-	{
+	public function setConfig($key, $value) {
 		$this->config[$key] = $value;
 	}
 	
-	public function getConfig($key)
-	{
+	public function getConfig($key) {
 		if (isset($this->config[$key])) {
 			return $this->config[$key];
 		}
@@ -59,29 +56,24 @@ class GallerySetupUtilitiesStub
 		return null;
 	}
 	
-	public function setDebug()
-	{
+	public function setDebug() {
 	}
 
-	public function setDebugLogFile()
-	{
+	public function setDebugLogFile() {
 	}
 
-	public function setProfile()
-	{
+	public function setProfile() {
 	}
 }
 
-class GallerySetupUtilities
-{
+class GallerySetupUtilities {
 	/**
 	 * Regenerate the session id to prevent session fixation attacks
 	 * Must be called before starting to output any data since it tries to send a cookie
 	 *
 	 * @static
 	 */
-	public static function regenerateSession()
-	{
+	public static function regenerateSession() {
 		/* 1. Generate a new session id */
 		$newSessionId = md5(uniqid(substr(rand() . serialize($_REQUEST), 0, 114)));
 		$sessionData = array();
@@ -116,8 +108,7 @@ class GallerySetupUtilities
 	 *
 	 * @static
 	 */
-	public static function areCookiesSupported()
-	{
+	public static function areCookiesSupported() {
 		static $areCookiesSupported;
 		
 		/* Remember the state since we might unset $_COOKIE */
@@ -134,8 +125,7 @@ class GallerySetupUtilities
 	 * @return int the number of attempts or false if there was an error
 	 * @static
 	 */
-	public static function getLoginAttempts()
-	{
+	public static function getLoginAttempts() {
 		/* Init if needed (like from lib/support; upgrader already init'ed) */
 		global $gallery;
 		if (!isset($gallery)) {
@@ -174,8 +164,7 @@ class GallerySetupUtilities
 	 * @return true on success, false on error
 	 * @static
 	 */
-	public static function setLoginAttempts($attempts)
-	{
+	public static function setLoginAttempts($attempts) {
 		/* Init if needed (like from lib/support; upgrader already init'ed) */
 		global $gallery;
 		if (!isset($gallery)) {
@@ -219,8 +208,7 @@ class GallerySetupUtilities
 	 * @param bool $updateDatabase true if you want to also reset the login attempts (default: true)
 	 * @static
 	 */
-	public static function authenticateThisSession($resetLoginAttempts = true)
-	{
+	public static function authenticateThisSession($resetLoginAttempts = true) {
 		$_SESSION['authenticated'] = true;
 		if ($resetLoginAttempts) {
 			self::setLoginAttempts(0);
@@ -234,8 +222,7 @@ class GallerySetupUtilities
 	 * @return true if this session is authenticated
 	 * @static
 	 */
-	public static function isSessionAuthenticated()
-	{
+	public static function isSessionAuthenticated() {
 		return !empty($_SESSION['authenticated']);
 	}
 	
@@ -244,8 +231,7 @@ class GallerySetupUtilities
 	 *
 	 * @static
 	 */
-	public static function redirectBackToSelf()
-	{
+	public static function redirectBackToSelf() {
 		require_once dirname(__FILE__) . '/../../modules/core/classes/GalleryUrlGenerator.class';
 		$urlGenerator = new GalleryUrlGenerator();
 		$url = $urlGenerator->getCurrentUrl();
@@ -264,8 +250,7 @@ class GallerySetupUtilities
 	 * @return string the path to the config dir
 	 * @static
 	 */
-	public static function getConfigDir()
-	{
+	public static function getConfigDir() {
 		if (defined('GALLERY_CONFIG_DIR')) {
 			return GALLERY_CONFIG_DIR;
 		}
@@ -279,8 +264,7 @@ class GallerySetupUtilities
 	 * @return array the config values from config.php
 	 * @static
 	 */
-	public static function getGalleryConfig()
-	{
+	public static function getGalleryConfig() {
 		$gallery = new GallerySetupUtilitiesStub();
 		
 		/* Load config.php */
@@ -299,8 +283,7 @@ class GallerySetupUtilities
 	 * @return string the authentication key
 	 * @static
 	 */
-	public static function getAuthenticationKey()
-	{
+	public static function getAuthenticationKey() {
 		return isset($_SESSION['authKey']) ? $_SESSION['authKey'] : null;
 	}
 	
@@ -309,8 +292,7 @@ class GallerySetupUtilities
 	 * @param string $key the authentication key
 	 * @static
 	 */
-	public static function setAuthenticationKey($key)
-	{
+	public static function setAuthenticationKey($key) {
 		$_SESSION['authKey'] = $key;
 	}
 	
@@ -319,8 +301,7 @@ class GallerySetupUtilities
 	 * @param string a random value
 	 * @static
 	 */
-	public static function generateAuthenticationKey()
-	{
+	public static function generateAuthenticationKey() {
 		for ($len = 64, $rand = ''; strlen($rand) < $len; $rand .= chr(!mt_rand(0, 2) ? mt_rand(48, 57) : (!mt_rand(0, 1) ? mt_rand(65, 90) : mt_rand(97, 122))));
 
 		return md5($rand);
@@ -333,8 +314,7 @@ class GallerySetupUtilities
 	 * @param string $name the file's name
 	 * @param string $contents the file's contents
 	 */
-	public static function generateTextFileForDownload($name, $contents)
-	{
+	public static function generateTextFileForDownload($name, $contents) {
 		header('Content-Type: text/plain');
 		header('Content-Length: ' . strlen($contents));
 		header("Content-Description: Download $name to your computer.");
@@ -352,8 +332,7 @@ class GallerySetupUtilities
 	 *
 	 * @static
 	 */
-	public static function startSession()
-	{
+	public static function startSession() {
 		/* Set our own session name */
 		if (@ini_get('session.auto_start')) {
 			session_unset();
@@ -434,8 +413,7 @@ class GallerySetupUtilities
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public static function notifySiteAdministrator()
-	{
+	public static function notifySiteAdministrator() {
 		global $gallery;
 		
 		/*

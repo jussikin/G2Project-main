@@ -25,13 +25,11 @@
  * @author Waldemar Schlackow <waldemar@opencodes.org>
  * @version $Revision: 18150 $
  */
-class ItemAddFromPicasa extends ItemAddPlugin
-{
+class ItemAddFromPicasa extends ItemAddPlugin {
 	/**
 	 * @see ItemAddPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item)
-	{
+	public function handleRequest($form, &$item) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/picasa/classes/Picasa2DataParser.class');
 		GalleryCoreApi::requireOnce('modules/picasa/classes/PicasaImportHelper.class');
@@ -125,8 +123,7 @@ class ItemAddFromPicasa extends ItemAddPlugin
 	 *        array the form variables
 	 * @return GalleryStatus a status code
 	 */
-	public function performImport($picasaXmlPath, $destinationAlbumId, $form)
-	{
+	public function performImport($picasaXmlPath, $destinationAlbumId, $form) {
 		global $gallery;
 		$storage = $gallery->getStorage();
 
@@ -327,8 +324,7 @@ class ItemAddFromPicasa extends ItemAddPlugin
 	/**
 	 * @see ItemAdd:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		$matches = array();
 		$fileUploadsBool = GalleryUtilities::getPhpIniBool('file_uploads');
 		$totalUploadSize = ini_get('post_max_size');
@@ -391,8 +387,7 @@ class ItemAddFromPicasa extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'picasa');
 		if ($ret) {
 			return array($ret, null);

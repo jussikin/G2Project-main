@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UnixPlatform extends GalleryPlatform
-{
+class UnixPlatform extends GalleryPlatform {
 	/**
 	 * @see GalleryPlatform::exec
 	 */
-	public function exec($cmdArray)
-	{
+	public function exec($cmdArray) {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(5);
 		
@@ -137,16 +135,14 @@ class UnixPlatform extends GalleryPlatform
 	/**
 	 * @see GalleryPlatform::isRestrictedByOpenBaseDir
 	 */
-	public function isRestrictedByOpenBaseDir($path)
-	{
+	public function isRestrictedByOpenBaseDir($path) {
 		return $this->_isRestrictedByOpenBaseDir($path, ':', true);
 	}
 	
 	/**
 	 * @see GalleryPlatform::splitPath
 	 */
-	public function splitPath($path)
-	{
+	public function splitPath($path) {
 		$slash = $this->getDirectorySeparator();
 		$list = array();
 		foreach (explode($slash, $path) as $element) {
@@ -164,16 +160,14 @@ class UnixPlatform extends GalleryPlatform
 	 * @see GalleryPlatform::isSymlinkSupported
 	 * symlink may have been disabled so make sure it still exists
 	 */
-	public function isSymlinkSupported()
-	{
+	public function isSymlinkSupported() {
 		return function_exists('symlink');
 	}
 	
 	/**
 	 * @see GalleryPlatform::getLineEnding
 	 */
-	public function getLineEnding()
-	{
+	public function getLineEnding() {
 		return "\n";
 	}
 }

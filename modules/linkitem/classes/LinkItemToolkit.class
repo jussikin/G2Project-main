@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class LinkItemToolkit extends GalleryToolkit
-{
+class LinkItemToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -149,8 +147,7 @@ class LinkItemToolkit extends GalleryToolkit
 	 * @return string command line parameters with %URL% %WIDTH% %HEIGHT% %OUTFILE% tokens
 	 * @static
 	 */
-	public static function getSnapshotParams()
-	{
+	public static function getSnapshotParams() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$paramFile = dirname(dirname(__FILE__)) . $platform->getDirectorySeparator() . 'params.txt';

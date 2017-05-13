@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class CaptchaModule extends GalleryModule
-{
-	public function __construct()
-	{
+class CaptchaModule extends GalleryModule {
+	public function __construct() {
 		$this->CaptchaModule();
 	}
 
-	public static function CaptchaModule()
-	{
+	public static function CaptchaModule() {
 		global $gallery;
 		$this->setId('captcha');
 		$this->setName($gallery->i18n('Captcha'));
@@ -51,8 +48,7 @@ class CaptchaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public static function performFactoryRegistrations()
-	{
+	public static function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
 			'GalleryValidationPlugin',
 			'CaptchaValidationPlugin',
@@ -82,8 +78,7 @@ class CaptchaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public static function upgrade($currentVersion, $x1 = null)
-	{
+	public static function upgrade($currentVersion, $x1 = null) {
 		switch ($currentVersion) {
 			case '':
 				/* Set some reasonable defaults */
@@ -142,8 +137,7 @@ class CaptchaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public static function autoConfigure()
-	{
+	public static function autoConfigure() {
 		/* We need to perform a test before activating */
 		list($ret, $needsConfiguration) = $this->needsConfiguration();
 		if ($ret) {
@@ -156,8 +150,7 @@ class CaptchaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public static function needsConfiguration()
-	{
+	public static function needsConfiguration() {
 		GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
 		$gdReport = CaptchaHelper::testRequiredGdFunctions();
 
@@ -167,8 +160,7 @@ class CaptchaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public static function getSiteAdminViews()
-	{
+	public static function getSiteAdminViews() {
 		return array(null,
 			 array(array('name' => $this->translate('Captcha'),
 				 'view' => 'captcha.CaptchaSiteAdmin')));
@@ -177,8 +169,7 @@ class CaptchaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public static function getConfigurationView()
-	{
+	public static function getConfigurationView() {
 		return 'captcha.CaptchaConfigAdmin';
 	}
 }

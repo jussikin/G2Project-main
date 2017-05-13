@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/migrate/classes/G1MigrateHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ConfirmImportControllerTest extends GalleryControllerTestCase
-{
+class ConfirmImportControllerTest extends GalleryControllerTestCase {
 	/**
 	 * The id of the album to which all sub-items will be added - this is
 	 * deleted in the teardown
@@ -42,13 +41,11 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 	 */
 	public $_mapCount;
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'migrate.ConfirmImport');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -172,8 +169,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->_slash = $platform->getDirectorySeparator();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'misc.markup', $this->_origMarkup);
@@ -222,8 +218,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _runBackgroundTask($expectedProgressBarDump)
-	{
+	public function _runBackgroundTask($expectedProgressBarDump) {
 		global $gallery;
 		
 		$mockAdapter = new MockTemplateAdapter();
@@ -266,8 +261,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		);
 	}
 	
-	public function testImportUserSuccessful()
-	{
+	public function testImportUserSuccessful() {
 		$slash = $this->_slash;
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
 		GalleryUtilities::putRequestVariable('form[migrateUser][1057837154_228147420]', 1);
@@ -305,8 +299,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testImportMissingUserFullname()
-	{
+	public function testImportMissingUserFullname() {
 		$slash = $this->_slash;
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
 		GalleryUtilities::putRequestVariable('form[migrateUser][1111214688_22997786]', 1);
@@ -345,8 +338,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('phpunitfoo002', $user->getFullName());
 	}
 	
-	public function testImportUserFailure()
-	{
+	public function testImportUserFailure() {
 		/* Try importing user with username 'admin' which should fail */
 		$slash = $this->_slash;
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
@@ -379,8 +371,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		), $status);
 	}
 	
-	public function testCancelImport()
-	{
+	public function testCancelImport() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
@@ -396,8 +387,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* Import an album with comments and a user. */
-	public function testImportAlbumSuccessful()
-	{
+	public function testImportAlbumSuccessful() {
 		$slash = $this->_slash;
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
 		GalleryUtilities::putRequestVariable('form[sourceAlbums][album03]', 1);
@@ -882,8 +872,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('chile [b]negro[/b]', $testItem->getTitle(), 'bbcode in title, other html stripped out');
 	}
 	
-	public function testImportAlbumAndGenerateThumbnailsNoMarkup()
-	{
+	public function testImportAlbumAndGenerateThumbnailsNoMarkup() {
 		$slash = $this->_slash;
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
 		GalleryUtilities::putRequestVariable('form[sourceAlbums][album04]', 1);
@@ -1014,8 +1003,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($expectedPermissions, $permissions, 'permissions on item in hidden album');
 	}
 	
-	public function testG1MigrateMap()
-	{
+	public function testG1MigrateMap() {
 		$slash = $this->_slash;
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
 		/* Verify that controller accepts urlencoded album names: */
@@ -1161,8 +1149,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 	 *
 	 */
 	
-	public function testImportAlbumPermissionsHtmlMarkup()
-	{
+	public function testImportAlbumPermissionsHtmlMarkup() {
 		global $gallery;
 		$slash = $this->_slash;
 		
@@ -1318,8 +1305,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($gallery->getActiveUserId(), $testItem->getownerId(), 'item 6');
 	}
 	
-	public function testImportAlbumPermissions2()
-	{
+	public function testImportAlbumPermissions2() {
 		$slash = $this->_slash;
 		
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . $slash . '..' . $slash . 'data' . $slash . 'albums' . $slash);
@@ -1399,8 +1385,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($testPerms, $testPermsResult);
 	}
 	
-	public function testImportno_NO()
-	{
+	public function testImportno_NO() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -1535,8 +1520,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		));
 	}
 	
-	public function testImportfr_FR()
-	{
+	public function testImportfr_FR() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -1669,8 +1653,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		));
 	}
 	
-	public function testImportKOI_8()
-	{
+	public function testImportKOI_8() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$slash = $this->_slash;
@@ -1831,8 +1814,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testImportNonAsciiCustomFieldIntoDescription()
-	{
+	public function testImportNonAsciiCustomFieldIntoDescription() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$slash = $this->_slash;
@@ -1882,8 +1864,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('value', $testItem->getDescription(), 'Custom field value not placed into the description field');
 	}
 	
-	public function testConvertHtmlToBbcode()
-	{
+	public function testConvertHtmlToBbcode() {
 		/* UTF8 characters are ignored */
 		$this->assertEquals("\xc3\xb1o\nthis", ConfirmImportController::convertHtmlToBbcode("\xc3\xb1o\nthis"));
 		
@@ -1932,8 +1913,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('foo', ConfirmImportController::convertHtmlToBbcode('<hr><h1 title="foo">foo</h1>'));
 	}
 	
-	public function _sortByPermission($a, $b)
-	{
+	public function _sortByPermission($a, $b) {
 		if ($cmp = strcmp($a['permission'], $b['permission'])) {
 			return $cmp;
 		}
@@ -1947,8 +1927,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* Verify that we set the perPage size correctly. */
-	public function testAlbumThemeWithPerPage()
-	{
+	public function testAlbumThemeWithPerPage() {
 		/* Assign our test theme */
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_temporaryAlbum->getId());
 		if ($ret) {
@@ -2026,10 +2005,8 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class ConfirmImportControllerTestUrlGenerator
-{
-	public function generateUrl($params = array(), $options = array())
-	{
+class ConfirmImportControllerTestUrlGenerator {
+	public function generateUrl($params = array(), $options = array()) {
 		$buf = array();
 		foreach ($params as $key => $value) {
 			$buf[] = "$key=$value";
@@ -2044,10 +2021,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
 /**
  * Test theme
  */
-class ConfirmImportControllerTestTheme extends GalleryTheme
-{
-	public function ConfirmImportControllerTestTheme()
-	{
+class ConfirmImportControllerTestTheme extends GalleryTheme {
+	public function ConfirmImportControllerTestTheme() {
 		$this->setId('confirmimportcontrollertest');
 		$this->setStandardSettings(array(
 			'perPage' => 9

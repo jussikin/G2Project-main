@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class KeywordAlbumTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class KeywordAlbumTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -77,8 +74,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		$this->_template = new GalleryTemplate(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 	}
 	
-	public function testLoadThemeAndSettingsForAlbum()
-	{
+	public function testLoadThemeAndSettingsForAlbum() {
 		$ret = $this->_markPluginParametersForCleanup('module', 'keyalbum');
 		if ($ret) {
 			return $ret;
@@ -102,8 +98,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		$this->assertEquals('desc', $item->getDescription(), 'description');
 	}
 	
-	public function testLoadThemeAndSettingsForItem()
-	{
+	public function testLoadThemeAndSettingsForItem() {
 		GalleryUtilities::putRequestVariable('keyword', 'testkey');
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		
@@ -123,8 +118,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		), $item->parent->getChildrenFunction, 'get children function');
 	}
 	
-	public function testLoadTemplateForAlbum()
-	{
+	public function testLoadTemplateForAlbum() {
 		global $gallery;
 		$theme =& $this->_template->getVariableByReference('theme');
 		$theme['actingUserId'] = $gallery->getActiveUserId();
@@ -145,8 +139,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		$this->assert(in_array($this->_item->getId(), $theme['allChildIds']), 'item id');
 	}
 	
-	public function testLoadTemplateForAlbumMultiKeyword()
-	{
+	public function testLoadTemplateForAlbumMultiKeyword() {
 		global $gallery;
 		$theme =& $this->_template->getVariableByReference('theme');
 		$theme['actingUserId'] = $gallery->getActiveUserId();
@@ -167,8 +160,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		$this->assert(in_array($this->_item->getId(), $theme['allChildIds']), 'item id');
 	}
 	
-	public function testLoadTemplateForItem()
-	{
+	public function testLoadTemplateForItem() {
 		list($ret, $count) = GalleryCoreApi::fetchItemViewCount($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -196,8 +188,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		$this->assertEquals(1, $count, 'count after');
 	}
 	
-	public function testLoadTemplateForItemNoPermission()
-	{
+	public function testLoadTemplateForItemNoPermission() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -221,8 +212,7 @@ class KeywordAlbumTest extends GalleryTestCase
 		}
 	}
 	
-	public function testItemSummaries()
-	{
+	public function testItemSummaries() {
 		$itemList = array(
 			$this->_album,
 			$this->_item

@@ -26,8 +26,7 @@
  * @version $Revision: 20950 $
  * @static
  */
-class GdToolkitHelper
-{
+class GdToolkitHelper {
 	/**
 	 * Figure out what operations and properties are supported by the
 	 * image* functions in the PHP installation and return them.
@@ -37,8 +36,7 @@ class GdToolkitHelper
 	 *	 array('operations' => ...
 	 *	       'properties' => ...)
 	 */
-	public static function getOperationsAndProperties($gd = null)
-	{
+	public static function getOperationsAndProperties($gd = null) {
 		global $gallery;
 		
 		if (!isset($gd)) {
@@ -234,8 +232,7 @@ class GdToolkitHelper
 	 * Checks if a certain operation is supported by this GD library
 	 * @return boolean
 	 */
-	public function isOperationSupported($operation, $gd = null)
-	{
+	public function isOperationSupported($operation, $gd = null) {
 		if (!isset($gd)) {
 			$gd =& self::getGdFunctionality();
 		}
@@ -265,8 +262,7 @@ class GdToolkitHelper
 	 * The minimal version of GD that this module supports
 	 * @return string A version string
 	 */
-	public static function minGdVersion()
-	{
+	public static function minGdVersion() {
 		return '2.0';
 	}
 	
@@ -285,8 +281,7 @@ class GdToolkitHelper
 	 *         string the GD version number or '0' if there is no GD support
 	 *                Prefixed with '>' if PHP says "or higher"
 	 */
-	public static function discoverGdVersion($gd = null)
-	{
+	public static function discoverGdVersion($gd = null) {
 		/*
 	     * Caching this result breaks our unit tests, which checks against a variety of
 	     * dummy GdFunctionality instances.
@@ -337,8 +332,7 @@ class GdToolkitHelper
 	 * @return array GalleryStatus
 	 *	       boolean true if supported, false otherwise
 	 */
-	public static function isGdVersionSupported($gdVersion = null, $gd = null)
-	{
+	public static function isGdVersionSupported($gdVersion = null, $gd = null) {
 		if (!isset($gdVersion)) {
 			/* Find out current GD version */
 			if (!isset($gd)) {
@@ -375,8 +369,7 @@ class GdToolkitHelper
 	 * @return array GalleryStatus
 	 *	       boolean true if it is the bundled library, false otherwise
 	 */
-	public static function isBundled($gd = null)
-	{
+	public static function isBundled($gd = null) {
 		if (!isset($gd)) {
 			$gd =& self::getGdFunctionality();
 		}
@@ -399,8 +392,7 @@ class GdToolkitHelper
 	 * @return array GalleryStatus
 	 *	       array supported mime-types
 	 */
-	public static function discoverMimeTypes($gd = null)
-	{
+	public static function discoverMimeTypes($gd = null) {
 		if (!isset($gd)) {
 			$gd =& self::getGdFunctionality();
 		}
@@ -456,8 +448,7 @@ class GdToolkitHelper
 	 *
 	 * @return boolean
 	 */
-	public static function hasImageCreateTrueColor($gd = null)
-	{
+	public static function hasImageCreateTrueColor($gd = null) {
 		if (!isset($gd)) {
 			$gd =& self::getGdFunctionality();
 		}
@@ -485,8 +476,7 @@ class GdToolkitHelper
 	 * Factory to get a new GdFunctionality object.
 	 * @return GdFunctionality
 	 */
-	public static function &getGdFunctionality()
-	{
+	public static function &getGdFunctionality() {
 		static $gdFunctionality;
 		if (!isset($gdFunctionality)) {
 			GalleryCoreApi::requireOnce('modules/gd/classes/GdFunctionality.class');

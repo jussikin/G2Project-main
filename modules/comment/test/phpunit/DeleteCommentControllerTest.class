@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DeleteCommentControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class DeleteCommentControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'comment.DeleteComment');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -68,8 +65,7 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testDeleteComment()
-	{
+	public function testDeleteComment() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][delete]', 1);
@@ -90,8 +86,7 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase
 	/**
 	 * Use a bogus comment id
 	 */
-	public function testMaliciousDeleteComment1()
-	{
+	public function testMaliciousDeleteComment1() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', 123123123);
 		GalleryUtilities::putRequestVariable('form[action][delete]', 1);
@@ -102,8 +97,7 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase
 	/**
 	 * Use mismatched item id and comment id
 	 */
-	public function testMaliciousDeleteComment2()
-	{
+	public function testMaliciousDeleteComment2() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[1]->getId());
 		GalleryUtilities::putRequestVariable('form[action][delete]', 1);
@@ -111,8 +105,7 @@ class DeleteCommentControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
 	
-	public function testCancelDelete()
-	{
+	public function testCancelDelete() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[1]->getId());

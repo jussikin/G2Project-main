@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17589 $
  */
-class ItemAddAlbumController extends GalleryController
-{
+class ItemAddAlbumController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -157,13 +155,11 @@ class ItemAddAlbumController extends GalleryController
 /**
  * This view will prompt for the data for a new album to be created
  */
-class ItemAddAlbumView extends GalleryView
-{
+class ItemAddAlbumView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -210,8 +206,7 @@ class ItemAddAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

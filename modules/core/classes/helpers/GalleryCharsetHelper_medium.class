@@ -26,14 +26,12 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryCharsetHelper_medium
-{
+class GalleryCharsetHelper_medium {
 	/**
 	 * Return a mapping for the given character set.
 	 * @return array(int => character, ...)
 	 */
-	public static function &getCharsetTable($desired)
-	{
+	public static function &getCharsetTable($desired) {
 		static $charset;
 		
 		$desired = str_replace('Windows-', 'CP', $desired);
@@ -2740,8 +2738,7 @@ class GalleryCharsetHelper_medium
 	 *
 	 * @see GalleryCoreApi::utf8Substring
 	 */
-	public static function phpUtf8Substring($string, $start, $length)
-	{
+	public static function phpUtf8Substring($string, $start, $length) {
 		$strLenBytes = strlen($string);
 		$string = (string) $string;
 		if ($start >= $strLenBytes || $strLenBytes == 0 || $length == 0) {
@@ -2803,8 +2800,7 @@ class GalleryCharsetHelper_medium
 	 *
 	 * @see GalleryCoreApi::utf8Strcut
 	 */
-	public static function phpUtf8Strcut($string, $start, $length)
-	{
+	public static function phpUtf8Strcut($string, $start, $length) {
 		$strLength = strlen($string);
 		$start = $start < 0 ? $strLength + $start : $start;
 		$start = $start < 0 ? 0 : $start;

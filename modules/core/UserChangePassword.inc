@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UserChangePasswordController extends GalleryController
-{
+class UserChangePasswordController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$user = $gallery->getActiveUser();
 		
@@ -170,13 +168,11 @@ class UserChangePasswordController extends GalleryController
 /**
  * This view will show a form to change a password
  */
-class UserChangePasswordView extends GalleryView
-{
+class UserChangePasswordView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		/* Load the form with user data the first time around. */
@@ -208,8 +204,7 @@ class UserChangePasswordView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

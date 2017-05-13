@@ -28,10 +28,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryCharsetHelper_m
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CharsetTest extends GalleryTestCase
-{
-	public function setUp()
-	{
+class CharsetTest extends GalleryTestCase {
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -40,15 +38,13 @@ class CharsetTest extends GalleryTestCase
 		GalleryDataCache::reset();
 	}
 
-	public function testAssertMbFunctionOverloadingDisabled()
-	{
+	public function testAssertMbFunctionOverloadingDisabled() {
 		/* Assert that we're not accidentaly using mb_ functions in our fallback */
 		$mbFuncOverload = (int) ini_get('mbstring.func_overload');
 		$this->assert(!($mbFuncOverload & 2), 'mb function overload str functions. ' . 'Please disable mbstring.func_overload to test PHP fallback.');
 	}
 
-	public function testConvertToUtf8UsingIconv()
-	{
+	public function testConvertToUtf8UsingIconv() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -65,8 +61,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('success', GalleryCoreApi::convertToUtf8('foo', 'ISO-8859-1'));
 	}
 
-	public function testConvertFromUtf8UsingIconv()
-	{
+	public function testConvertFromUtf8UsingIconv() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -83,8 +78,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('success', GalleryCoreApi::convertFromUtf8('foo', 'ISO-8859-1'));
 	}
 
-	public function testConvertToUtf8UsingMbConvertEncoding()
-	{
+	public function testConvertToUtf8UsingMbConvertEncoding() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -101,8 +95,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('success', GalleryCoreApi::convertToUtf8('foo', 'ISO-8859-1'));
 	}
 
-	public function testConvertFromUtf8UsingMbConvertEncoding()
-	{
+	public function testConvertFromUtf8UsingMbConvertEncoding() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -119,8 +112,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('success', GalleryCoreApi::convertFromUtf8('foo', 'ISO-8859-1'));
 	}
 
-	public function testConvertToUtf8UsingRecodeString()
-	{
+	public function testConvertToUtf8UsingRecodeString() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -136,8 +128,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('success', GalleryCoreApi::convertToUtf8('foo', 'ISO-8859-1'));
 	}
 
-	public function testConvertFromUtf8UsingRecodeString()
-	{
+	public function testConvertFromUtf8UsingRecodeString() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -153,8 +144,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('success', GalleryCoreApi::convertFromUtf8('foo', 'ISO-8859-1'));
 	}
 
-	public function testConvertToUtf8UsingPurePhp()
-	{
+	public function testConvertToUtf8UsingPurePhp() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -166,8 +156,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals(chr(195) . chr(181), GalleryCoreApi::convertToUtf8(chr(245), 'ISO-8859-1'));
 	}
 
-	public function testConvertFromUtf8UsingPurePhp()
-	{
+	public function testConvertFromUtf8UsingPurePhp() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -179,8 +168,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals(chr(245), GalleryCoreApi::convertFromUtf8(chr(195) . chr(181), 'ISO-8859-1'));
 	}
 
-	public function testWindowsAndCodePageAreSynonyms()
-	{
+	public function testWindowsAndCodePageAreSynonyms() {
 		global $gallery;
 
 		/* Force it to use our PHP charset tables */
@@ -195,8 +183,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Iconv fails, so we use mb_convert_encoding instead */
-	public function testConvertToUtf8UsingIconvFallback1()
-	{
+	public function testConvertToUtf8UsingIconvFallback1() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -219,8 +206,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Iconv fails, so we use mb_convert_encoding instead */
-	public function testConvertFromUtf8UsingIconvFallback1()
-	{
+	public function testConvertFromUtf8UsingIconvFallback1() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -243,8 +229,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Iconv fails, so we use recode_string instead */
-	public function testConvertToUtf8UsingIconvFallback2()
-	{
+	public function testConvertToUtf8UsingIconvFallback2() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -266,8 +251,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Iconv fails, so we use recode_string instead */
-	public function testConvertFromUtf8UsingIconvFallback2()
-	{
+	public function testConvertFromUtf8UsingIconvFallback2() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -289,8 +273,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Iconv fails, so we use PHP instead */
-	public function testConvertToUtf8UsingIconvFallback3()
-	{
+	public function testConvertToUtf8UsingIconvFallback3() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -308,8 +291,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Iconv fails, so we use PHP instead */
-	public function testConvertFromUtf8UsingIconvFallback3()
-	{
+	public function testConvertFromUtf8UsingIconvFallback3() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -327,8 +309,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Unknown source encoding; pure php punts and returns original string */
-	public function testConvertToUtf8UsingPurePhpUnknownSourceEncoding()
-	{
+	public function testConvertToUtf8UsingPurePhpUnknownSourceEncoding() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -341,8 +322,7 @@ class CharsetTest extends GalleryTestCase
 	}
 
 	/* Unknown source encoding; pure php punts and returns original string */
-	public function testConvertFromUtf8UsingPurePhpUnknownSourceEncoding()
-	{
+	public function testConvertFromUtf8UsingPurePhpUnknownSourceEncoding() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -354,8 +334,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals(chr(245), GalleryCoreApi::convertFromUtf8(chr(245), 'ISO-BOGO-9000'));
 	}
 
-	public function testDetectSourceEncodingWithNlLangInfo()
-	{
+	public function testDetectSourceEncodingWithNlLangInfo() {
 		global $gallery;
 
 		/* On windows boxes, we don't have the CODESET constant, so fake it */
@@ -408,8 +387,7 @@ class CharsetTest extends GalleryTestCase
 		$gallery->setConfig('systemCharset', null);
 	}
 
-	public function testDetectSourceEncodingWithoutNlLangInfo()
-	{
+	public function testDetectSourceEncodingWithoutNlLangInfo() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -495,8 +473,7 @@ class CharsetTest extends GalleryTestCase
 		$gallery->setConfig('systemCharset', null);
 	}
 
-	public function testDetectSourceEncodingWithOpenBSDBug()
-	{
+	public function testDetectSourceEncodingWithOpenBSDBug() {
 		/* nl_langinfo(CODESET) on OpenBSD 3.7 returns the wrong value (D_T_FMT value instead) */
 		global $gallery;
 
@@ -524,8 +501,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('UTF-8', GalleryCharsetHelper_simple::detectSystemCharset());
 	}
 
-	public function testConvertToUtf8SystemCharset()
-	{
+	public function testConvertToUtf8SystemCharset() {
 		global $gallery;
 
 		/* On windows boxes, we don't have the CODESET constant, so fake it */
@@ -549,8 +525,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('bar', GalleryCoreApi::convertToUtf8('foo'));
 	}
 
-	public function testConvertFromUtf8SystemCharset()
-	{
+	public function testConvertFromUtf8SystemCharset() {
 		global $gallery;
 
 		/* On windows boxes, we don't have the CODESET constant, so fake it */
@@ -574,8 +549,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('bar', GalleryCoreApi::convertFromUtf8('foo'));
 	}
 
-	public function testConvertToUtf8UnknownSystemCharset()
-	{
+	public function testConvertToUtf8UnknownSystemCharset() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -595,8 +569,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('foo', GalleryCoreApi::convertToUtf8('foo'));
 	}
 
-	public function testConvertFromUtf8UnknownSystemCharset()
-	{
+	public function testConvertFromUtf8UnknownSystemCharset() {
 		global $gallery;
 
 		$phpVm = new CharsetTestPhpVm();
@@ -616,8 +589,7 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('foo', GalleryCoreApi::convertFromUtf8('foo'));
 	}
 
-	public function testUtf8Substring()
-	{
+	public function testUtf8Substring() {
 		/* Russian */
 		$utf8 = ("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba\xd0" . "\xb8\xd0\xb9\xd0\x97\xd0\xb4\xd1\x80\xd0\xb0" . "\xd0\xb2\xd1\x81\xd1\x82\xd0\xb2\xd1\x83");
 		$this->assertEquals("\xd0\xa0", GalleryCoreApi::utf8Substring($utf8, 0, 1), '1 char (ru), standard version');
@@ -645,20 +617,17 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('67890- ', GalleryCoreApi::utf8Substring($utf8, 5, 9), 'entity');
 	}
 
-	public function testUtf8SubstringOfOneCharacter()
-	{
+	public function testUtf8SubstringOfOneCharacter() {
 		$this->assertEquals('t', GalleryCoreApi::utf8Substring('t', 0, 24), 'standard version');
 		$this->assertEquals('t', GalleryCharsetHelper_medium::phpUtf8Substring('t', 0, 24), 'php version');
 	}
 
-	public function testUtf8SubstringOfNumber()
-	{
+	public function testUtf8SubstringOfNumber() {
 		$this->assertEquals('15', GalleryCoreApi::utf8Substring(15, 0, 24), 'standard version');
 		$this->assertEquals('15', GalleryCharsetHelper_medium::phpUtf8Substring(15, 0, 24), 'php version');
 	}
 
-	public function testUtf8Strcut()
-	{
+	public function testUtf8Strcut() {
 		/* Russian */
 		$utf8 = ("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba\xd0" . "\xb8\xd0\xb9\xd0\x97\xd0\xb4\xd1\x80\xd0\xb0" . "\xd0\xb2\xd1\x81\xd1\x82\xd0\xb2\xd1\x83");
 		$this->assertEquals("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba", $result = GalleryCoreApi::utf8Strcut($utf8, 0, 10), 'standard version');
@@ -690,38 +659,31 @@ class CharsetTest extends GalleryTestCase
 		$this->assertEquals('67890- ', GalleryCoreApi::utf8Strcut($utf8, 5, 9), 'entity');
 	}
 
-	public function testUtf8StrcutOfOneCharacter()
-	{
+	public function testUtf8StrcutOfOneCharacter() {
 		$this->assertEquals('t', GalleryCoreApi::utf8Strcut('t', 0, 24), 'standard version');
 		$this->assertEquals('t', GalleryCharsetHelper_medium::phpUtf8Strcut('t', 0, 24), 'php version');
 	}
 
-	public function testUtf8StrcutOfNumber()
-	{
+	public function testUtf8StrcutOfNumber() {
 		$this->assertEquals('15', GalleryCoreApi::utf8Strcut(15, 0, 24), 'standard version');
 		$this->assertEquals('15', GalleryCharsetHelper_medium::phpUtf8Strcut(15, 0, 24), 'php version');
 	}
 }
 
-class CharsetTestPhpVm
-{
-	public function setFunctionExists($functionName, $bool)
-	{
+class CharsetTestPhpVm {
+	public function setFunctionExists($functionName, $bool) {
 		$this->_function_exists[$functionName] = $bool;
 	}
 
-	public function function_exists($functionName)
-	{
+	public function function_exists($functionName) {
 		return $this->_function_exists[$functionName];
 	}
 
-	public function setReturn($function, $args, $return)
-	{
+	public function setReturn($function, $args, $return) {
 		$this->_returns[$function][implode(',', $args)] = $return;
 	}
 
-	public function iconv($arg1, $arg2, $arg3)
-	{
+	public function iconv($arg1, $arg2, $arg3) {
 		if (isset($this->_returns['iconv']["$arg1,$arg2,$arg3"])) {
 			return $this->_returns['iconv']["$arg1,$arg2,$arg3"];
 		}
@@ -729,29 +691,25 @@ class CharsetTestPhpVm
 		return false;
 	}
 
-	public function mb_convert_encoding($arg1, $arg2, $arg3)
-	{
+	public function mb_convert_encoding($arg1, $arg2, $arg3) {
 		if (isset($this->_returns['mb_convert_encoding']["$arg1,$arg2,$arg3"])) {
 			return $this->_returns['mb_convert_encoding']["$arg1,$arg2,$arg3"];
 		}
 	}
 
-	public function recode_string($arg1, $arg2)
-	{
+	public function recode_string($arg1, $arg2) {
 		if (isset($this->_returns['recode_string']["$arg1,$arg2"])) {
 			return $this->_returns['recode_string']["$arg1,$arg2"];
 		}
 	}
 
-	public function nl_langinfo($item)
-	{
+	public function nl_langinfo($item) {
 		if (isset($this->_returns['nl_langinfo'][$item])) {
 			return $this->_returns['nl_langinfo'][$item];
 		}
 	}
 
-	public function setlocale($category, $locale)
-	{
+	public function setlocale($category, $locale) {
 		if (isset($this->_returns['setlocale']["$category,$locale"])) {
 			return $this->_returns['setlocale']["$category,$locale"];
 		}

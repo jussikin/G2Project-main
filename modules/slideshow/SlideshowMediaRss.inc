@@ -28,29 +28,25 @@ GalleryCoreApi::requireOnce('modules/slideshow/classes/SlideshowHelper.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17785 $
  */
-class SlideshowMediaRssView extends GalleryView
-{
+class SlideshowMediaRssView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 
@@ -84,7 +80,7 @@ class SlideshowMediaRssView extends GalleryView
 			$itemId = $item->getId();
 
 			list($ret, $items, $start, $prevOffset, $nextOffset) =
-		SlideshowHelper::buildAlbumSlideshow($item, $startId, $offset);
+			SlideshowHelper::buildAlbumSlideshow($item, $startId, $offset);
 			if ($ret) {
 				return $ret;
 			}

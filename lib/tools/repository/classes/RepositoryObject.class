@@ -33,8 +33,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  * @version $Revision: 17580 $
  * @abstract
  */
-class RepositoryObject
-{
+class RepositoryObject {
 	/**
 	 * Output directory for the object's data.
 	 *
@@ -87,8 +86,7 @@ class RepositoryObject
 	/**
 	 * Initializes the repository template and utilities.
 	 */
-	public function init()
-	{
+	public function init() {
 		$this->_utilities = new GalleryRepositoryUtilities();
 		$this->_template = new GalleryTemplate(dirname(__FILE__) . '/../../../..');
 		$this->_template->setVariable('l10Domain', 'lib_repository');
@@ -102,8 +100,7 @@ class RepositoryObject
 	 * @param string $outputDir object output directory
 	 * @return GalleryStatus a status code
 	 */
-	public function setOutputDir($outputDir)
-	{
+	public function setOutputDir($outputDir) {
 		global $gallery;
 		
 		$platform =& $gallery->getPlatform();
@@ -127,8 +124,7 @@ class RepositoryObject
 	 * @return array GalleryStatus a status code
 	 *		     boolean whether the file was written to disk
 	 */
-	public function writeToDisk($overwriteFile = false, $compressToo = false)
-	{
+	public function writeToDisk($overwriteFile = false, $compressToo = false) {
 		global $gallery;
 		
 		$outputFilePath = $this->_outputDir . $this->_fileName;
@@ -173,8 +169,7 @@ class RepositoryObject
 	 * @param string $manifestContents the original manifest as a single string
 	 * @return string the filtered version as a single string
 	 */
-	public function filterManifestForBasePackage($manifestContents)
-	{
+	public function filterManifestForBasePackage($manifestContents) {
 		$result = array();
 		foreach (explode("\n", $manifestContents) as $line) {
 			if (!strncmp($line, "R\t", 2)) {
@@ -196,32 +191,28 @@ class RepositoryObject
 	 *
 	 * @return string directory
 	 */
-	public function getOutputDir()
-	{
+	public function getOutputDir() {
 		return $this->_outputDir;
 	}
 	
 	/**
 	 * Sets the template used by RepositoryObject.
 	 */
-	public function setTemplate($template)
-	{
+	public function setTemplate($template) {
 		$this->_template = $template;
 	}
 	
 	/**
 	 * Sets the repository utilities used by RepositoryObject.
 	 */
-	public function setUtilities($utilities)
-	{
+	public function setUtilities($utilities) {
 		$this->_utilities = $utilities;
 	}
 	
 	/**
 	 * Sets the output file name for serializing this object.
 	 */
-	public function setOutputFile($fileName)
-	{
+	public function setOutputFile($fileName) {
 		$this->_fileName = $fileName;
 	}
 	
@@ -230,16 +221,14 @@ class RepositoryObject
 	 *
 	 * @return string file name
 	 */
-	public function getOutputFile()
-	{
+	public function getOutputFile() {
 		return $this->_fileName;
 	}
 	
 	/**
 	 * Sets the template file that contains the logic for formatting this object's contents.
 	 */
-	public function setTemplateFile($fileName)
-	{
+	public function setTemplateFile($fileName) {
 		$this->_templateFile = $fileName;
 	}
 	
@@ -250,8 +239,7 @@ class RepositoryObject
 	 *
 	 * @return boolean
 	 */
-	public function wasFileWritten()
-	{
+	public function wasFileWritten() {
 		return $this->_wasFileWritten;
 	}
 }

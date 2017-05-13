@@ -28,15 +28,12 @@
  * @author Vallimar <vallimar@sexorcisto.com>
  * @version $Revision: 20951 $
  */
-class ImageMagickModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ImageMagickModule extends GalleryModule {
+	public function __construct() {
 		$this->ImageMagickModule();
 	}
 	
-	public function ImageMagickModule()
-	{
+	public function ImageMagickModule() {
 		global $gallery;
 		
 		$this->setId('imagemagick');
@@ -59,8 +56,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'imagemagick');
 		if ($ret) {
 			return $ret;
@@ -106,8 +102,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our graphics class with the factory */
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'ImageMagickToolkit', 'ImageMagick', 'modules/imagemagick/classes/ImageMagickToolkit.class', 'imagemagick', null);
 		if ($ret) {
@@ -120,8 +115,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		/* Load any classes we require */
 		GalleryCoreApi::requireOnce('modules/imagemagick/classes/ImageMagickToolkitHelper.class');
 		
@@ -230,8 +224,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires exec() */
 		if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -271,8 +264,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		global $gallery;
 		
 		/* This module requires exec() */
@@ -312,7 +304,7 @@ class ImageMagickModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path;
@@ -333,7 +325,7 @@ class ImageMagickModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path;
@@ -409,8 +401,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -425,8 +416,7 @@ class ImageMagickModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'imagemagick.AdminImageMagick';
 	}
 }

@@ -25,15 +25,14 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class MultiLangModule extends GalleryModule /* and GalleryEventListener */
-{
-	public function __construct()
-	{
+class MultiLangModule extends GalleryModule {
+	/* and GalleryEventListener */
+
+	public function __construct() {
 		$this->MultiLangModule();
 	}
 	
-	public function MultiLangModule()
-	{
+	public function MultiLangModule() {
 		global $gallery;
 		
 		$this->setId('multilang');
@@ -56,8 +55,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		if (!isset($currentVersion)) {
 			$ret = $this->setParameter('languages', '');
 			if ($ret) {
@@ -71,8 +69,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditPlugin', 'MultiLangItemEdit', 'MultiLangItemEdit', 'modules/multilang/MultiLangItemEdit.inc', 'multilang', null);
 		if ($ret) {
 			return $ret;
@@ -101,8 +98,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::getOnLoadHandlerIds
 	 */
-	public function getOnLoadHandlerIds()
-	{
+	public function getOnLoadHandlerIds() {
 		return array(
 			'MultiLang'
 		);
@@ -111,8 +107,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		/* This module requires gettext to be installed */
 		list($ret, $needsConfiguration) = $this->needsConfiguration();
 		if ($ret) {
@@ -131,8 +126,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires gettext to be installed */
 		global $gallery;
 		$translator =& $gallery->getTranslator();
@@ -146,16 +140,14 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'multilang.CantActivate';
 	}
 	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -170,8 +162,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * Load multilang data into this item..
 	 */
-	public function onLoad(&$entity, $duringUpgrade)
-	{
+	public function onLoad(&$entity, $duringUpgrade) {
 		/*
 	     * Load in captions for active language.
 	     * However, skip this step for core.ItemAdmin or any controller (esp core.ItemEdit)
@@ -195,8 +186,7 @@ class MultiLangModule extends GalleryModule /* and GalleryEventListener */
 	 * Delete MultiLang data for deleted items.
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$entity = $event->getEntity();
 		if (GalleryUtilities::isA($entity, 'GalleryItem')) {
 			$ret = GalleryCoreApi::removeMapEntry('MultiLangItemMap', array(

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PhotoTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PhotoTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -57,8 +54,7 @@ class PhotoTest extends GalleryTestCase
 		}
 	}
 	
-	public function testCreateAndDeletePhoto()
-	{
+	public function testCreateAndDeletePhoto() {
 		global $gallery;
 		
 		/*
@@ -110,8 +106,7 @@ class PhotoTest extends GalleryTestCase
 		}
 	}
 	
-	public function testCMYKPhoto()
-	{
+	public function testCMYKPhoto() {
 		/* Test that mime type gets -cmyk appended if toolkit says it uses CMYK colorspace */
 		list($ret, $photo) = GalleryCoreApi::newItemByMimeType('image/test');
 		if ($ret) {
@@ -142,8 +137,7 @@ class PhotoTest extends GalleryTestCase
 		$this->assertEquals('image/test-cmyk', $photo->getMimeType(), 'cmyk mime type');
 	}
 	
-	public function testRGBPhoto()
-	{
+	public function testRGBPhoto() {
 		/* Test that mime type is not affected if toolkit says it uses RGB colorspace */
 		list($ret, $photo) = GalleryCoreApi::newItemByMimeType('image/test');
 		if ($ret) {
@@ -181,10 +175,8 @@ class PhotoTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class PhotoTestToolkit extends GalleryToolkit
-{
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+class PhotoTestToolkit extends GalleryToolkit {
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		/* This will be called by GalleryPhotoItem::create */
 		if ($propertyName == 'colorspace' && $mimeType == 'image/test') {
 			$colorspace = (basename($sourceFilename) == basename(__FILE__)) ? 'CMYK' : 'RGB';

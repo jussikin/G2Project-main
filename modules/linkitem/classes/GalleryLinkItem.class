@@ -36,8 +36,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryItem.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class GalleryLinkItem extends GalleryItem
-{
+class GalleryLinkItem extends GalleryItem {
 	/**
 	 * The id of the linked album or text of external link.
 	 *
@@ -62,8 +61,7 @@ class GalleryLinkItem extends GalleryItem
 	 * @param mixed $link the link target: either string url or int id of a GalleryAlbumItem
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId, $link)
-	{
+	public function create($parentId, $link) {
 		if (!isset($parentId) || empty($link)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -96,8 +94,7 @@ class GalleryLinkItem extends GalleryItem
 	/**
 	 * @see GalleryFileSystemEntity::move
 	 */
-	public function move($newParentId)
-	{
+	public function move($newParentId) {
 		/*
 	     * We don't really have anything in the filesystem to move.
 	     * Pretend to be a linked entity during the move to avoid platform rename.
@@ -117,8 +114,7 @@ class GalleryLinkItem extends GalleryItem
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		if ($localized) {
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'linkitem');
 			if (!$ret) {
@@ -138,8 +134,7 @@ class GalleryLinkItem extends GalleryItem
 	/**
 	 * @see GalleryEntity::onLoad
 	 */
-	public function onLoad()
-	{
+	public function onLoad() {
 		$ret = parent::onLoad();
 		if ($ret) {
 			return $ret;
@@ -175,44 +170,37 @@ class GalleryLinkItem extends GalleryItem
 	}
 	
 	/* Add functions to make this entity thumbnail-able */
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		return array(
 			null,
 			$this->getLink()
 		);
 	}
 	
-	public function getMimeType()
-	{
+	public function getMimeType() {
 		return 'gallery/linkitem';
 	}
 	
-	public function getWidth()
-	{
+	public function getWidth() {
 		return 0;
 	}
 	
-	public function getHeight()
-	{
+	public function getHeight() {
 		return 0;
 	}
 	
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryLinkItem';
 	}
 	
-	public function getLink()
-	{
+	public function getLink() {
 		return $this->link;
 	}
 	
-	public function setLink($link)
-	{
+	public function setLink($link) {
 		$this->link = $link;
 	}
 }

@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'imageblock.ImageBlockSiteAdmin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testImageBlockSiteAdminControllerReset()
-	{
+	public function testImageBlockSiteAdminControllerReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		
 		/* Perform the request and verify that we succeeded */
@@ -62,8 +58,7 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testImageBlockSiteAdminControllerSaveNone()
-	{
+	public function testImageBlockSiteAdminControllerSaveNone() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		
 		/* Perform the request and verify that we succeeded */
@@ -80,8 +75,7 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testImageBlockSiteAdminControllerSaveOne()
-	{
+	public function testImageBlockSiteAdminControllerSaveOne() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[date]', '1');
 		
@@ -105,8 +99,7 @@ class ImageBlockSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('date', $params['show']);
 	}
 	
-	public function testImageBlockSiteAdminControllerSaveMultiple()
-	{
+	public function testImageBlockSiteAdminControllerSaveMultiple() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[title]', '1');
 		GalleryUtilities::putRequestVariable('form[views]', '1');

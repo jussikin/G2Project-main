@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryItem.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class GalleryDynamicAlbum extends GalleryItem
-{
+class GalleryDynamicAlbum extends GalleryItem {
 	/**
 	 * Type name info for this dynamic album
 	 * @var array
@@ -43,8 +42,7 @@ class GalleryDynamicAlbum extends GalleryItem
 	 * @param string $title localized title
 	 * @param array $itemTypeNameData itemTypeName data, eg. array(Photo, photo), array(Foto, foto)
 	 */
-	public function create($title, $itemTypeNameData = null)
-	{
+	public function create($title, $itemTypeNameData = null) {
 		global $gallery;
 		
 		$this->setId(null);
@@ -93,48 +91,42 @@ class GalleryDynamicAlbum extends GalleryItem
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		return $this->_itemTypeName[$localized ? 1 : 0];
 	}
 	
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryDynamicAlbum';
 	}
 	
 	/**
 	 * @see GalleryEntity::delete
 	 */
-	public function delete()
-	{
+	public function delete() {
 		return GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION);
 	}
 	
 	/**
 	 * @see GalleryItem::move
 	 */
-	public function move($newParentId)
-	{
+	public function move($newParentId) {
 		return GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION);
 	}
 	
 	/**
 	 * @see GalleryEntity::save
 	 */
-	public function save($postEvent = true)
-	{
+	public function save($postEvent = true) {
 		return GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION);
 	}
 	
 	/**
 	 * @see GalleryEntity::refresh
 	 */
-	public function refresh()
-	{
+	public function refresh() {
 		return array(
 			null,
 			$this

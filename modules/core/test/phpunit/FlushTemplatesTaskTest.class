@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlushTemplatesTask.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class FlushTemplatesTaskTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class FlushTemplatesTaskTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function testRunSuccess()
-	{
+	public function testRunSuccess() {
 		global $gallery;
 
 		list($ret, $dirPerms) = GalleryCoreApi::getPluginParameter('module', 'core', 'permissions.directory');
@@ -68,8 +65,7 @@ class FlushTemplatesTaskTest extends GalleryTestCase
 		), $mockPlatform->getCalls());
 	}
 
-	public function testRunFail()
-	{
+	public function testRunFail() {
 		global $gallery;
 
 		$gallery->setConfig('data.smarty.templates_c', '/templates_c');
@@ -105,16 +101,13 @@ class FlushTemplatesTaskTest extends GalleryTestCase
 	}
 }
 
-class FlushTemplatesTaskTestPlatform
-{
-	public function FlushTemplatesTaskTestPlatform($failedCalls)
-	{
+class FlushTemplatesTaskTestPlatform {
+	public function FlushTemplatesTaskTestPlatform($failedCalls) {
 		GalleryUtilities::putRequestVariable('calls', array());
 		$this->_failedCalls = $failedCalls;
 	}
 
-	public function _addCall($call)
-	{
+	public function _addCall($call) {
 		$calls = GalleryUtilities::getRequestVariables('calls');
 		$calls[] = $call;
 		GalleryUtilities::putRequestVariable('calls', $calls);
@@ -122,28 +115,23 @@ class FlushTemplatesTaskTestPlatform
 		return !in_array($call, $this->_failedCalls);
 	}
 
-	public function getCalls()
-	{
+	public function getCalls() {
 		return GalleryUtilities::getRequestVariables('calls');
 	}
 
-	public function file_exists($dir)
-	{
+	public function file_exists($dir) {
 		return $this->_addCall("file_exists($dir)");
 	}
 
-	public function mkdir($dir, $stringPerms = '123')
-	{
+	public function mkdir($dir, $stringPerms = '123') {
 		return $this->_addCall("mkdir($dir,$stringPerms)");
 	}
 
-	public function recursiveRmdir($dir)
-	{
+	public function recursiveRmdir($dir) {
 		return $this->_addCall("recursiveRmdir($dir)");
 	}
 
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return $path;
 	}
 }

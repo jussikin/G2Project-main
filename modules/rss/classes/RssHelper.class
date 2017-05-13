@@ -38,8 +38,7 @@ if (GalleryPlatform::file_exists(dirname(__FILE__)
  * @version $Revision: 17580 $
  * @static
  */
-class RssHelper
-{
+class RssHelper {
 	/**
 	 * This function takes an RssGenerator as a pass-by-reference variable and adds gallery item
 	 * data to it, so that an rss feed can be generated.
@@ -49,8 +48,7 @@ class RssHelper
 	 * @param array $params Additional parameters.
 	 * @return GalleryStatus
 	 */
-	public static function getFeed(&$generator, $id, $param)
-	{
+	public static function getFeed(&$generator, $id, $param) {
 		global $gallery;
 
 	/* get gallery entity by id */
@@ -263,8 +261,7 @@ class RssHelper
 	 * @param array $param feed parameters
 	 * @return GalleryStatus
 	 */
-	public function addItem(&$generator, $item, $param)
-	{
+	public function addItem(&$generator, $item, $param) {
 		if (GalleryUtilities::isA($item, 'GalleryDataItem')
 		|| GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 			return self::addPhotoOrAlbum($generator, $item, $param);
@@ -283,8 +280,7 @@ class RssHelper
 	 * @param array $param feed parameters
 	 * @return GalleryStatus
 	 */
-	public function addPhotoOrAlbum(&$generator, $item, $param)
-	{
+	public function addPhotoOrAlbum(&$generator, $item, $param) {
 		global $gallery;
 
 	/* generate url to the images */
@@ -434,8 +430,7 @@ class RssHelper
 	 * @param array $param feed parameters
 	 * @return GalleryStatus
 	 */
-	public function addComment(&$generator, $item, $param)
-	{
+	public function addComment(&$generator, $item, $param) {
 		global $gallery;
 
 	/* generate url to the images */
@@ -473,8 +468,7 @@ class RssHelper
 	 * @return array GalleryStatus
 	 *               array  creationTimeStamp => GalleryItem
 	 */
-	public function getPhotoFeed($entity, $newOnly, $random)
-	{
+	public function getPhotoFeed($entity, $newOnly, $random) {
 		/* retrieve subitems' ids */
 	list($ret, $subIds) = GalleryCoreApi::fetchChildItemIds($entity);
 		if ($ret) {
@@ -521,8 +515,7 @@ class RssHelper
 	 * copied and modified from GalleryItemHelper_simple
 	 */
 	public function fetchAlbumTree($itemId, $limit, $newOnly, $allowPhotos, $perAlbumLimit = 0,
-		$random = false)
-	{
+		$random = false) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$userId = $gallery->getActiveUserId();
@@ -664,8 +657,7 @@ class RssHelper
 	 * @return array GalleryStatus
 	 *               array of feedType => translation
 	 */
-	public static function getFeedTypeTranslation()
-	{
+	public static function getFeedTypeTranslation() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
 		if ($ret) {
 			return array($ret, null);

@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PrintPhotoController extends GalleryController
-{
+class PrintPhotoController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -54,7 +52,7 @@ class PrintPhotoController extends GalleryController
 		}
 
 	/* Prepare our results */
-	$results['redirect']['href'] = $cartUrl;
+		$results['redirect']['href'] = $cartUrl;
 		$results['status'] = array();
 		$results['error'] = array();
 

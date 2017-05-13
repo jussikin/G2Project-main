@@ -25,8 +25,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17589 $
  */
-class ItemAddController extends GalleryController
-{
+class ItemAddController extends GalleryController {
 	/**
 	 * ItemAddOption instances to use when handling this request.  Only used by test code.
 	 *
@@ -42,16 +41,14 @@ class ItemAddController extends GalleryController
 	 *
 	 * @param array $optionInstances (optionId => ItemAddOption, ...)
 	 */
-	public function setOptionInstances($optionInstances)
-	{
+	public function setOptionInstances($optionInstances) {
 		$this->_optionInstances = $optionInstances;
 	}
 	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		
@@ -127,8 +124,7 @@ class ItemAddController extends GalleryController
 	 * @param ItemAddPlugin $addPlugin The plugin that handles this add item request
 	 * @return GalleryStatus
 	 */
-	public function handleRequestWithProgressBar($form, $item, $addPlugin)
-	{
+	public function handleRequestWithProgressBar($form, $item, $addPlugin) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -239,8 +235,7 @@ class ItemAddController extends GalleryController
 	 * @return array GalleryStatus
 	 *               array $error request parameter errors
 	 */
-	public function postprocessItems($form, &$status)
-	{
+	public function postprocessItems($form, &$status) {
 		global $gallery;
 		$this->_templateAdapter =& $gallery->getTemplateAdapter();
 		$this->_storage =& $gallery->getStorage();
@@ -433,8 +428,7 @@ class ItemAddController extends GalleryController
 	 *               array of array('fileName' => '..', 'id' => ##, 'warnings' => array of string)
 	 * @access private
 	 */
-	public function _extractAndAddFiles($archiveItem, $toolkit)
-	{
+	public function _extractAndAddFiles($archiveItem, $toolkit) {
 		global $gallery;
 		$this->_platform =& $gallery->getPlatform();
 		
@@ -521,8 +515,7 @@ class ItemAddController extends GalleryController
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _recursiveAddDir($dir, $parentId, &$addedFiles, &$archiveItem, $titleMode, $canAddAlbums)
-	{
+	public function _recursiveAddDir($dir, $parentId, &$addedFiles, &$archiveItem, $titleMode, $canAddAlbums) {
 		global $gallery;
 		
 		$list = array();
@@ -617,13 +610,11 @@ class ItemAddController extends GalleryController
 /**
  * This view will show the selected plugin for adding items to the gallery
  */
-class ItemAddView extends GalleryView
-{
+class ItemAddView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -797,8 +788,7 @@ class ItemAddView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(
@@ -819,8 +809,7 @@ class ItemAddView extends GalleryView
  * Plugins provide alternate ways to add items into Gallery.
  * @abstract
  */
-class ItemAddPlugin
-{
+class ItemAddPlugin {
 	/**
 	 * Load the template with data from this plugin
 	 * @see GalleryView::loadTemplate
@@ -832,8 +821,7 @@ class ItemAddPlugin
 	 *               string the path to a template file to include
 	 *               string localization domain for the template file
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -855,8 +843,7 @@ class ItemAddPlugin
 	 *                                   array(array('fileName' => '...', 'id' => ##,
 	 *                                               'warnings' => array of strings), ...)
 	 */
-	public function handleRequest($form, &$item, &$addController)
-	{
+	public function handleRequest($form, &$item, &$addController) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -870,8 +857,7 @@ class ItemAddPlugin
 	 * @return array GalleryStatus a status code
 	 *               return-array (same as GalleryController::handleRequest)
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -884,8 +870,7 @@ class ItemAddPlugin
 	 * @return array GalleryStatus a status code
 	 *               boolean true or false
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		return array(
 			null,
 			true
@@ -899,8 +884,7 @@ class ItemAddPlugin
  * that we can add new functionality like watermarking, quotas, etc to every ItemAddPlugin
  * @abstract
  */
-class ItemAddOption
-{
+class ItemAddOption {
 	/**
 	 * Return all the available option plugins
 	 *
@@ -908,8 +892,7 @@ class ItemAddOption
 	 *               array ItemAddOption instances
 	 * @static
 	 */
-	public static function getAllAddOptions()
-	{
+	public static function getAllAddOptions() {
 		/* Get all the option plugins */
 		list($ret, $allOptionIds) = GalleryCoreApi::getAllFactoryImplementationIds('ItemAddOption');
 		if ($ret) {
@@ -959,8 +942,7 @@ class ItemAddOption
 	 *               string the path to a template file to include
 	 *               string localization domain for the template file
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		return array(
 			null,
 			null,
@@ -979,8 +961,7 @@ class ItemAddOption
 	 *                     the items have already been added and post-processing will continue.
 	 *               array localized warning messages
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -994,8 +975,7 @@ class ItemAddOption
 	 * @return array GalleryStatus a status code
 	 *               boolean true or false
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		return array(
 			null,
 			false

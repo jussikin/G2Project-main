@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/picasa/test/phpunit/MockLockSystem.class');
  * @author Waldemar Schlackow <gallery@schlackow.de> based on code by Bharat Mediratta
  * @version $Revision: 17580 $
  */
-class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
-{
+class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase {
 	/**
 	 * The id of the album to which all sub-items will be added - this is
 	 * deleted in the teardown
@@ -42,13 +41,11 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 	 */
 	public $_platform;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'picasa.ConfirmPicasaImport');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -73,8 +70,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 		$gallery->_lockSystem = new MockLockSystem();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
@@ -84,8 +80,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _runBackgroundTask($expectedProgressBarDump)
-	{
+	public function _runBackgroundTask($expectedProgressBarDump) {
 		global $gallery;
 
 		$mockAdapter = new MockTemplateAdapter();
@@ -121,8 +116,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test what the controller does when you cancel the Import
 	 */
-	public function testCancelImport()
-	{
+	public function testCancelImport() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
@@ -135,8 +129,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test whether the actual importing works successfully
 	 */
-	public function testImportAlbumSuccessful()
-	{
+	public function testImportAlbumSuccessful() {
 		global $gallery;
 
 	/* Test with the loosest markup type */
@@ -314,10 +307,8 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class ConfirmPicasaImportControllerTestUrlGenerator
-{
-	public function generateUrl($args)
-	{
+class ConfirmPicasaImportControllerTestUrlGenerator {
+	public function generateUrl($args) {
 		$buf = array();
 		foreach ($args as $key => $value) {
 			$buf[] = "$key=$value";

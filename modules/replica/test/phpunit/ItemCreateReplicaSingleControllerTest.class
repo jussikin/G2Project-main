@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'replica.ItemCreateReplicaSingle');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -63,8 +60,7 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an album
 	 */
-	public function testReplica()
-	{
+	public function testReplica() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[action][link]', 1);
@@ -83,8 +79,7 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an album (shouldn't succeeed)
 	 */
-	public function testAlbumReplica()
-	{
+	public function testAlbumReplica() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_rootAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[action][link]', 1);
@@ -97,8 +92,7 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an item with no read perms
 	 */
-	public function testReplicaWithNoViewPermissions()
-	{
+	public function testReplicaWithNoViewPermissions() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -116,8 +110,7 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item to a bogus destination
 	 */
-	public function testReplicaIntoEmptyDestination()
-	{
+	public function testReplicaIntoEmptyDestination() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[action][link]', 1);
@@ -133,8 +126,7 @@ class ItemCreateReplicaSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an item into a container where we have no add permissions
 	 */
-	public function testReplicaIntoAlbumWithNoPermissions()
-	{
+	public function testReplicaIntoAlbumWithNoPermissions() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[action][link]', 1);

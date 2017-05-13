@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditThemePluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditThemePluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditTheme');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -74,8 +71,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		ItemEditThemeControllerTestTheme::reset();
 	}
 	
-	public function _setTheme(&$item, $themeId)
-	{
+	public function _setTheme(&$item, $themeId) {
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($item->getId());
 		if ($ret) {
 			return $ret;
@@ -93,8 +89,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		}
 	}
 	
-	public function testUndo()
-	{
+	public function testUndo() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 		
@@ -106,8 +101,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		), $results);
 	}
 	
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[key][rows]', 3);
 		GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -126,8 +120,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		), ItemEditThemeControllerTestTheme::getMap());
 	}
 	
-	public function testInvalidSave()
-	{
+	public function testInvalidSave() {
 		GalleryUtilities::putRequestVariable('form[key][rows]', '3x');
 		GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -148,8 +141,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('You must enter a number greater than 0', $errorMessage['rows']);
 	}
 	
-	public function testSaveWithGlobal()
-	{
+	public function testSaveWithGlobal() {
 		GalleryUtilities::putRequestVariable('form[key][rows]', 3);
 		GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 		GalleryUtilities::putRequestVariable('form[useGlobal][columns]', 'on');
@@ -172,8 +164,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 	/**
 	 * Test applying options from 'Theme' tab to sub-albums
 	 */
-	public function testChangeInDescendents()
-	{
+	public function testChangeInDescendents() {
 		GalleryUtilities::putRequestVariable('form[key][rows]', 3);
 		GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -199,8 +190,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 	/**
 	 * Test applying options from 'Theme' tab to sub-albums with no subalbum
 	 */
-	public function testChangeInDescendentsLeaf()
-	{
+	public function testChangeInDescendentsLeaf() {
 		GalleryUtilities::putRequestVariable('form[key][rows]', 3);
 		GalleryUtilities::putRequestVariable('form[key][columns]', 4);
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -220,8 +210,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		), ItemEditThemeControllerTestTheme::getMap());
 	}
 	
-	public function testChooseTheme()
-	{
+	public function testChooseTheme() {
 		$this->_setTheme($this->_album, null);
 		
 		GalleryUtilities::putRequestVariable('form[theme]', 'ItemEditThemeControllerTest');
@@ -242,8 +231,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		$this->assertEquals('ItemEditThemeControllerTest', $this->_album->getTheme());
 	}
 	
-	public function testChooseDefaultTheme()
-	{
+	public function testChooseDefaultTheme() {
 		$this->_setTheme($this->_album, 'ItemEditThemeControllerTest');
 		
 		GalleryUtilities::putRequestVariable('form[action][chooseTheme]', 1);
@@ -264,16 +252,14 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		$this->assert(empty($themeId));
 	}
 	
-	public function testChooseBogusTheme()
-	{
+	public function testChooseBogusTheme() {
 		GalleryUtilities::putRequestVariable('form[theme]', 'BogusBogus!');
 		GalleryUtilities::putRequestVariable('form[action][chooseTheme]', 1);
 		
 		$results = $this->handleRequest($this->_album, $this->_preferred, ERROR_BAD_PARAMETER);
 	}
 	
-	public function testChooseThemeInvalidSerialNumber()
-	{
+	public function testChooseThemeInvalidSerialNumber() {
 		GalleryUtilities::putRequestVariable('form[theme]', 'ItemEditThemeControllerTest');
 		GalleryUtilities::putRequestVariable('form[action][chooseTheme]', 1);
 		GalleryUtilities::putRequestVariable('form[serialNumber]', -1);
@@ -281,8 +267,7 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 		$results = $this->handleRequest($this->_album, $this->_preferred, ERROR_OBSOLETE_DATA);
 	}
 	
-	public function testChooseThemeInDescendents()
-	{
+	public function testChooseThemeInDescendents() {
 		$this->_setTheme($this->_album, null);
 		$this->_setTheme($this->_childAlbum, null);
 		$this->_setTheme($this->_grandchildAlbum, null);
@@ -321,18 +306,15 @@ class ItemEditThemePluginTest extends ItemEditPluginTestCase
 /**
  * Test theme
  */
-class ItemEditThemeControllerTestTheme
-{
-	public function getId()
-	{
+class ItemEditThemeControllerTestTheme {
+	public function getId() {
 		return 'ItemEditThemeControllerTest';
 	}
 	
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = 0)
-	{
+	public function getSettings($itemId = 0) {
 		$settings = array();
 		$settings[] = array(
 			'key' => 'rows',
@@ -362,8 +344,7 @@ class ItemEditThemeControllerTestTheme
 	/**
 	 * @see GalleryTheme::validateSettings
 	 */
-	public function validateSettings($settings)
-	{
+	public function validateSettings($settings) {
 		$error = array();
 		if (empty($settings['rows']) || !is_numeric($settings['rows'])) {
 			$error['rows'] = $this->translate('You must enter a number greater than 0');
@@ -379,26 +360,22 @@ class ItemEditThemeControllerTestTheme
 	/**
 	 * @see GalleryTheme::isAdvancedSettings
 	 */
-	public function isAdvancedSettings()
-	{
+	public function isAdvancedSettings() {
 		return false;
 	}
 	
-	public function isActive()
-	{
+	public function isActive() {
 		return array(
 			null,
 			true
 		);
 	}
 	
-	public function translate($text)
-	{
+	public function translate($text) {
 		return $text;
 	}
 	
-	public function removeParameter($key, $itemIds)
-	{
+	public function removeParameter($key, $itemIds) {
 		$map =& $this->getMap();
 		foreach ($itemIds as $id) {
 			$map[] = "removeParameter($key, $id)";
@@ -407,8 +384,7 @@ class ItemEditThemeControllerTestTheme
 		return null;
 	}
 	
-	public function setParameter($key, $value, $itemIds)
-	{
+	public function setParameter($key, $value, $itemIds) {
 		$map =& $this->getMap();
 		foreach ($itemIds as $id) {
 			$map[] = "setParameter($key, $value)";
@@ -417,8 +393,7 @@ class ItemEditThemeControllerTestTheme
 		return null;
 	}
 	
-	public function &getMap()
-	{
+	public function &getMap() {
 		static $map;
 		if (!isset($map)) {
 			$map = array();
@@ -427,19 +402,16 @@ class ItemEditThemeControllerTestTheme
 		return $map;
 	}
 	
-	public function init()
-	{
+	public function init() {
 		return null;
 	}
 	
-	public function reset()
-	{
+	public function reset() {
 		$map =& self::getMap();
 		$map = array();
 	}
 	
-	public function getName()
-	{
+	public function getName() {
 		return 'ItemEditThemeControllerTest';
 	}
 }
@@ -447,15 +419,12 @@ class ItemEditThemeControllerTestTheme
 /**
  * Test platform
  */
-class ItemEditThemeTestPlatform
-{
-	public function ItemEditThemeTestPlatform($originalPlatform)
-	{
+class ItemEditThemeTestPlatform {
+	public function ItemEditThemeTestPlatform($originalPlatform) {
 		$this->_savedPlatform = $originalPlatform;
 	}
 	
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		if ($path == dirname(__FILE__) . '/../../../../themes/') {
 			return 'TEST_VALID_RESOURCE';
 		} else {
@@ -463,8 +432,7 @@ class ItemEditThemeTestPlatform
 		}
 	}
 	
-	public function readdir($path)
-	{
+	public function readdir($path) {
 		static $paths;
 		if (!isset($paths)) {
 			$paths = array(
@@ -485,8 +453,7 @@ class ItemEditThemeTestPlatform
 		}
 	}
 	
-	public function fopen($filename, $modes)
-	{
+	public function fopen($filename, $modes) {
 		/* Pass lock requests */
 		if (preg_match("|\blocks\b|", $filename)) {
 			return fopen($filename, $modes);
@@ -497,34 +464,28 @@ class ItemEditThemeTestPlatform
 		return null;
 	}
 	
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		return fclose($handle);
 		/* needed to release locks */
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return DIRECTORY_SEPARATOR;
 	}
 	
-	public function unlink($path)
-	{
+	public function unlink($path) {
 		return unlink($path);
 		/* needed to release locks */
 	}
 	
-	public function closedir($path)
-	{
+	public function closedir($path) {
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return realpath($path);
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		$base = dirname(__FILE__) . '/../../../../themes/';
 		switch ($path) {
 			case $base . 'ItemEditThemeControllerTest/theme.inc':
@@ -535,8 +496,7 @@ class ItemEditThemeTestPlatform
 		}
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		$base = dirname(__FILE__) . '/../../../../themes/';
 		switch ($path) {
 			case $base . 'ItemEditThemeControllerTest':
@@ -547,8 +507,7 @@ class ItemEditThemeTestPlatform
 		}
 	}
 	
-	public function flock($fd, $lockType, $flag)
-	{
+	public function flock($fd, $lockType, $flag) {
 		return $this->_savedPlatform->flock($fd, $lockType, $flag);
 	}
 }

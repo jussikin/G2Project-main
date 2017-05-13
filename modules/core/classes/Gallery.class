@@ -28,8 +28,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20956 $
  */
-class Gallery
-{
+class Gallery {
 	/**
 	 * The active GalleryUser instance
 	 * @var GalleryUser
@@ -167,13 +166,11 @@ class Gallery
 	 */
 	public $_phpVm = null;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->Gallery();
 	}
 	
-	public function Gallery()
-	{
+	public function Gallery() {
 		$this->_activeUser = null;
 		
 		/* Default config settings (can be overridden via config.php or embedded environment) */
@@ -207,8 +204,7 @@ class Gallery
 	 * This used to be done in the constructor, but moved here to avoid php4 vs php5 issue
 	 * ($gallery =& new Gallery() needed for php4, but this is deprecated in php5.3).
 	 */
-	public function init()
-	{
+	public function init() {
 		/* Set up a shutdown function to release any hanging locks */
 		register_shutdown_function(array(
 			&$this,
@@ -219,8 +215,7 @@ class Gallery
 	/**
 	 * @see GalleryStorage::search
 	 */
-	public function search($query, $data = array(), $options = array())
-	{
+	public function search($query, $data = array(), $options = array()) {
 		$storage =& $this->getStorage();
 		list($ret, $results) = $storage->search($query, $data, $options);
 		if ($ret) {
@@ -241,8 +236,7 @@ class Gallery
 	 *
 	 * @param GalleryUser $user the current user
 	 */
-	public function setActiveUser($user)
-	{
+	public function setActiveUser($user) {
 		$this->_activeUser = $user;
 		
 		/* It's possible for the session not to exist during bootstrap time */
@@ -265,8 +259,7 @@ class Gallery
 	 *
 	 * @return int the id of the current user
 	 */
-	public function getActiveUserId()
-	{
+	public function getActiveUserId() {
 		if (isset($this->_activeUser)) {
 			return (int) $this->_activeUser->getId();
 		} else {
@@ -282,8 +275,7 @@ class Gallery
 	 *
 	 * @return GalleryUser the active user
 	 */
-	public function getActiveUser()
-	{
+	public function getActiveUser() {
 		return $this->_activeUser;
 	}
 	
@@ -293,8 +285,7 @@ class Gallery
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setConfig($key, $value)
-	{
+	public function setConfig($key, $value) {
 		assert('!empty($key)');
 		$this->_config[$key] = $value;
 	}
@@ -304,8 +295,7 @@ class Gallery
 	 *
 	 * @return mixed an arbitrary value
 	 */
-	public function getConfig($key)
-	{
+	public function getConfig($key) {
 		assert('!empty($key)');
 
 		return $this->_config[$key];
@@ -316,8 +306,7 @@ class Gallery
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function initSession()
-	{
+	public function initSession() {
 		GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
 		if (empty($this->_session)) {
 			$this->_session = new GallerySession();
@@ -333,8 +322,7 @@ class Gallery
 	/**
 	 * Initialize an empty session.
 	 */
-	public function initEmptySession()
-	{
+	public function initEmptySession() {
 		GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
 		$this->_session = new GallerySession();
 	}
@@ -346,8 +334,7 @@ class Gallery
 	 *
 	 * @return GallerySession a session instance
 	 */
-	public function &getSession()
-	{
+	public function &getSession() {
 		return $this->_session;
 	}
 	
@@ -356,8 +343,7 @@ class Gallery
 	 *
 	 * @param GalleryPlatform $platform the Gallery platform object
 	 */
-	public function setPlatform(&$platform)
-	{
+	public function setPlatform(&$platform) {
 		unset($this->_platform);
 		$this->_platform =& $platform;
 	}
@@ -368,8 +354,7 @@ class Gallery
 	 *
 	 * @return GalleryPlatform the Gallery platform object
 	 */
-	public function &getPlatform()
-	{
+	public function &getPlatform() {
 		return $this->_platform;
 	}
 	
@@ -380,8 +365,7 @@ class Gallery
 	 * @return array GalleryStatus a status code
 	 *               GalleryLockSystem the lock implementation (reference)
 	 */
-	public function &getLockSystem($canInit = true)
-	{
+	public function &getLockSystem($canInit = true) {
 		if (!isset($this->_lockSystem)) {
 			if ($canInit) {
 				list($ret, $which) = GalleryCoreApi::getPluginParameter('module', 'core', 'lock.system');
@@ -436,8 +420,7 @@ class Gallery
 	 *
 	 * @access private
 	 */
-	public function _shutdown()
-	{
+	public function _shutdown() {
 		if (isset($this->_lockSystem)) {
 			/* Bitch about open locks */
 			$lockIds = $this->_lockSystem->getLockIds();
@@ -463,8 +446,7 @@ class Gallery
 	 *
 	 * @return GalleryStorage a storage instance
 	 */
-	public function &getStorage()
-	{
+	public function &getStorage() {
 		if (!isset($this->_storage)) {
 			$config = $this->getConfig('storage.config');
 			switch ($config['type']) {
@@ -520,8 +502,7 @@ class Gallery
 	 *
 	 * @return boolean
 	 */
-	public function isStorageInitialized()
-	{
+	public function isStorageInitialized() {
 		return isset($this->_storage);
 	}
 	
@@ -530,8 +511,7 @@ class Gallery
 	 *
 	 * @param GalleryUrlGenerator $urlGenerator
 	 */
-	public function setUrlGenerator(&$urlGenerator)
-	{
+	public function setUrlGenerator(&$urlGenerator) {
 		unset($this->_urlGenerator);
 		$this->_urlGenerator =& $urlGenerator;
 	}
@@ -541,8 +521,7 @@ class Gallery
 	 *
 	 * @return GalleryUrlGenerator
 	 */
-	public function &getUrlGenerator()
-	{
+	public function &getUrlGenerator() {
 		return $this->_urlGenerator;
 	}
 	
@@ -551,8 +530,7 @@ class Gallery
 	 *
 	 * @param string $view the view name
 	 */
-	public function setCurrentView($view)
-	{
+	public function setCurrentView($view) {
 		$this->_currentView = $view;
 	}
 	
@@ -561,8 +539,7 @@ class Gallery
 	 *
 	 * @return string the current view name
 	 */
-	public function getCurrentView()
-	{
+	public function getCurrentView() {
 		return $this->_currentView;
 	}
 	
@@ -571,8 +548,7 @@ class Gallery
 	 *
 	 * @return GalleryTranslator
 	 */
-	public function &getTranslator()
-	{
+	public function &getTranslator() {
 		return $this->_translator;
 	}
 	
@@ -582,8 +558,7 @@ class Gallery
 	 * @param boolean $dontUseDatabase (optional) true if we should not use the database
 	 * @return GalleryStatus a status code
 	 */
-	public function initTranslator($dontUseDatabase = false)
-	{
+	public function initTranslator($dontUseDatabase = false) {
 		if (empty($this->_translator)) {
 			/* Load the translator class */
 			GalleryCoreApi::requireOnce('modules/core/classes/GalleryTranslator.class');
@@ -614,8 +589,7 @@ class Gallery
 	 * @return array GalleryStatus a status code
 	 *               string language code
 	 */
-	public function getActiveLocale()
-	{
+	public function getActiveLocale() {
 		$session =& $this->getSession();
 		/* During installation, we don't have a session yet */
 		if (!empty($session)) {
@@ -636,8 +610,7 @@ class Gallery
 	 * @param string $language language code
 	 * @return GalleryStatus a status code
 	 */
-	public function setActiveLocale($language)
-	{
+	public function setActiveLocale($language) {
 		$session =& $this->getSession();
 		/* During installation, we don't have a session yet */
 		if (!empty($session)) {
@@ -654,8 +627,7 @@ class Gallery
 	 *
 	 * @param int $limit a time interval in seconds, must be greater than 0
 	 */
-	public function guaranteeTimeLimit($limit)
-	{
+	public function guaranteeTimeLimit($limit) {
 		if ($limit <= 0) {
 			$limit = 30;
 		}
@@ -689,8 +661,7 @@ class Gallery
 	 *
 	 * @param mixed $profile array of profiling modes or boolean false
 	 */
-	public function setProfile($profile = array())
-	{
+	public function setProfile($profile = array()) {
 		if ($profile === false) {
 			$this->_profile = array();
 		} else {
@@ -704,8 +675,7 @@ class Gallery
 	 * @param string $type profiling type
 	 * @return boolean
 	 */
-	public function isProfiling($type)
-	{
+	public function isProfiling($type) {
 		return in_array($type, $this->_profile);
 	}
 	
@@ -714,8 +684,7 @@ class Gallery
 	 *
 	 * @param mixed $debug one of 'buffered', 'logged', 'immediate' or false
 	 */
-	public function setDebug($debug = false)
-	{
+	public function setDebug($debug = false) {
 		
 		/* Try to do the right thing in the face of bogus input */
 		if ($debug === true) {
@@ -743,8 +712,7 @@ class Gallery
 	 * Set the location of debugging output
 	 * @param string $debugLogFile a filename
 	 */
-	public function setDebugLogFile($debugLogFile)
-	{
+	public function setDebugLogFile($debugLogFile) {
 		$this->_debugLogFile = $debugLogFile;
 	}
 	
@@ -752,8 +720,7 @@ class Gallery
 	 * Get the debug state
 	 * @return mixed the debug state
 	 */
-	public function getDebug()
-	{
+	public function getDebug() {
 		if ($this->_debug) {
 			return $this->_debug;
 		}
@@ -768,24 +735,21 @@ class Gallery
 	 * Get any buffered debug output
 	 * @return string the debug state
 	 */
-	public function getDebugBuffer()
-	{
+	public function getDebugBuffer() {
 		return $this->_debugBuffer;
 	}
 	
 	/**
 	 * Clear any buffered debug output
 	 */
-	public function clearDebugBuffer()
-	{
+	public function clearDebugBuffer() {
 		$this->_debugBuffer = '';
 	}
 	
 	/**
 	 * Start recording a debug snippet
 	 */
-	public function startRecordingDebugSnippet()
-	{
+	public function startRecordingDebugSnippet() {
 		$this->_debugSnippetActive = true;
 		$this->_debugSnippet = '';
 		if (isset($this->_storage) && !$this->_debug) {
@@ -797,8 +761,7 @@ class Gallery
 	 * Stop recording the debug snippet and return whatever got recorded.
 	 * @return string the snippet
 	 */
-	public function stopRecordingDebugSnippet()
-	{
+	public function stopRecordingDebugSnippet() {
 		$this->_debugSnippetActive = false;
 		$tmp = $this->_debugSnippet;
 		$this->_debugSnippet = '';
@@ -813,8 +776,7 @@ class Gallery
 	 * Output a debug message
 	 * @param string $msg a message
 	 */
-	public function debug($msg)
-	{
+	public function debug($msg) {
 		if (empty($msg)) {
 			return;
 		}
@@ -851,8 +813,7 @@ class Gallery
 	 * @param mixed $object any object or value
 	 * @param boolean $escapeHtmlEntities true if the output should be run through htmlentities()
 	 */
-	public function debug_r($object, $escapeHtmlEntities = false)
-	{
+	public function debug_r($object, $escapeHtmlEntities = false) {
 		if (!empty($this->_debug)) {
 			$buf = print_r($object, true);
 			if ($escapeHtmlEntities) {
@@ -867,8 +828,7 @@ class Gallery
 	 *
 	 * @return GalleryTemplateAdapter
 	 */
-	public function &getTemplateAdapter()
-	{
+	public function &getTemplateAdapter() {
 		if (!isset($this->_templateAdapter)) {
 			GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplateAdapter.class');
 			$this->_templateAdapter = new GalleryTemplateAdapter();
@@ -900,8 +860,7 @@ class Gallery
 	 * @return string the text value
 	 * @see GalleryPlugin::translate
 	 */
-	public function i18n($value)
-	{
+	public function i18n($value) {
 		return is_array($value) ? $value['text'] : $value;
 		/* Just pass the text through */
 	}
@@ -916,8 +875,7 @@ class Gallery
 	 * @param int $contentLength the size of the file (used for the Content-length header)
 	 * @return boolean true if we transferred the file successfully
 	 */
-	public function fastDownload($relativePath, $filename, $lastModified, $mimeType, $contentLength)
-	{
+	public function fastDownload($relativePath, $filename, $lastModified, $mimeType, $contentLength) {
 		global $gallery;
 		
 		/**
@@ -1082,8 +1040,7 @@ class Gallery
 	 *                empty if we want the current time
 	 * @return string a date-string conformant to the RFC 2616
 	 */
-	public function getHttpDate($time = '')
-	{
+	public function getHttpDate($time = '') {
 		if ($time == '') {
 			$time = time();
 		}
@@ -1123,8 +1080,7 @@ class Gallery
 	 *
 	 * @return boolean true if Gallery is in embedded mode, false otherwise
 	 */
-	public function isEmbedded()
-	{
+	public function isEmbedded() {
 		return GalleryDataCache::containsKey('G2_EMBED') && GalleryDataCache::get('G2_EMBED');
 	}
 	
@@ -1134,8 +1090,7 @@ class Gallery
 	 * @param callback $callback
 	 * @param array $parameters
 	 */
-	public function addShutdownAction($callback, $parameters)
-	{
+	public function addShutdownAction($callback, $parameters) {
 		if (!isset($this->_shutdownActions)) {
 			$this->_shutdownActions = array();
 		}
@@ -1158,8 +1113,7 @@ class Gallery
 	/**
 	 * Process registered shutdown actions.
 	 */
-	public function performShutdownActions()
-	{
+	public function performShutdownActions() {
 		if (isset($this->_shutdownActions)) {
 			foreach ($this->_shutdownActions as $action) {
 				$ret = @call_user_func_array($action[0], $action[1]);
@@ -1185,8 +1139,7 @@ class Gallery
 	 *
 	 * @return GalleryPhpVm
 	 */
-	public function getPhpVm()
-	{
+	public function getPhpVm() {
 		if (!isset($this->_phpVm)) {
 			GalleryCoreApi::requireOnce('modules/core/classes/GalleryPhpVm.class');
 			$this->_phpVm = new GalleryPhpVm();

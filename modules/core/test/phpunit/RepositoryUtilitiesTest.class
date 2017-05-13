@@ -31,10 +31,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17666 $
  */
-class RepositoryUtilitiesTest extends GalleryTestCase
-{
-	public function setUp()
-	{
+class RepositoryUtilitiesTest extends GalleryTestCase {
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -47,8 +45,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->_apis = sprintf('coreApi=%s&moduleApi=%s&themeApi=%s', join('.', GalleryCoreApi::getApiVersion()), join('.', GalleryModule::getApiVersion()), join('.', GalleryTheme::getApiVersion()));
 	}
 	
-	public function testCompareVersions()
-	{
+	public function testCompareVersions() {
 		$utilities = new GalleryRepositoryUtilities();
 		
 		$testCases = array(
@@ -119,8 +116,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testCompareRevisions()
-	{
+	public function testCompareRevisions() {
 		$utilities = new GalleryRepositoryUtilities();
 		
 		$testCases = array(
@@ -147,8 +143,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testExtractRevision()
-	{
+	public function testExtractRevision() {
 		$utilities = new GalleryRepositoryUtilities();
 		
 		$testCases = array(
@@ -165,8 +160,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetFirstBytesFromFile()
-	{
+	public function testGetFirstBytesFromFile() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		$gallery->setPlatform($platform);
@@ -203,8 +197,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetLanguageDescription()
-	{
+	public function testGetLanguageDescription() {
 		$utilities = new GalleryRepositoryUtilities();
 		
 		$testCases = array(
@@ -221,8 +214,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetLanguageBaseRevision()
-	{
+	public function testGetLanguageBaseRevision() {
 		global $gallery;
 		
 		$stringsPath = GalleryCoreApi::getCodeBasePath('testPlugins/testModule/po/strings.raw');
@@ -254,8 +246,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assertEquals('13933', $revision, 'Incorrect revision returned.');
 	}
 	
-	public function testIsPluginAvailable()
-	{
+	public function testIsPluginAvailable() {
 		global $gallery;
 		
 		$testCases = array(
@@ -301,8 +292,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testIsPluginCompatible()
-	{
+	public function testIsPluginCompatible() {
 		$utilities = new GalleryRepositoryUtilities();
 		
 		$coreApi = implode('.', GalleryCoreApi::getApiVersion());
@@ -402,8 +392,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetProvidedApis()
-	{
+	public function testGetProvidedApis() {
 		$utilities = new GalleryRepositoryUtilities();
 		
 		$coreApi = implode('.', GalleryCoreApi::getApiVersion());
@@ -464,8 +453,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetPluginPackages()
-	{
+	public function testGetPluginPackages() {
 		$this->_testStorage->setSearchResults(array(
 			array(
 				0,
@@ -520,8 +508,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedQuery, $searches[0]);
 	}
 	
-	public function testGetPluginVersion()
-	{
+	public function testGetPluginVersion() {
 		/* Since we can't mock the core API, we'll use the cache to store our mock plugin. */
 		GalleryDataCache::put('GalleryPluginHelper::loadPlugin(module, testModule)', new RepositoryUtilitiesTestPlugin());
 		GalleryDataCache::put('GalleryPluginHelper::fetchPluginStatus(module)', array(
@@ -539,8 +526,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assertEquals('someVersion', $version);
 	}
 	
-	public function testDownloadFileWithoutGzinflate()
-	{
+	public function testDownloadFileWithoutGzinflate() {
 		global $gallery;
 		$gallery->_phpVm = new RepositoryUtilitiesTestPhpVm(false);
 		$utilities = new GalleryRepositoryUtilities();
@@ -598,8 +584,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testDownloadFileWithGzinflate()
-	{
+	public function testDownloadFileWithGzinflate() {
 		global $gallery;
 		$gallery->_phpVm = new RepositoryUtilitiesTestPhpVm(true);
 		$utilities = new GalleryRepositoryUtilities();
@@ -657,8 +642,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testDownloadFileWithGzinflateButIgnoringCompression()
-	{
+	public function testDownloadFileWithGzinflateButIgnoringCompression() {
 		global $gallery;
 		$gallery->_phpVm = new RepositoryUtilitiesTestPhpVm(true);
 		$utilities = new GalleryRepositoryUtilities();
@@ -716,8 +700,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testUpdatePackageMetaData()
-	{
+	public function testUpdatePackageMetaData() {
 		/* Test initial map entry add scenario. */
 		$this->_testStorage->setSearchResults(array());
 		
@@ -795,8 +778,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		), $searches[1], 'Unexpected query on map update.');
 	}
 	
-	public function testPreVerifyPackageModuleNotInstalled()
-	{
+	public function testPreVerifyPackageModuleNotInstalled() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -815,8 +797,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testPreVerifyPackageModuleAlreadyInstalledAndWriteable()
-	{
+	public function testPreVerifyPackageModuleAlreadyInstalledAndWriteable() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -853,8 +834,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testPreVerifyPackageModuleNotOverwriteable()
-	{
+	public function testPreVerifyPackageModuleNotOverwriteable() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -896,8 +876,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function _getDescriptorForPreVerifyPackageTests()
-	{
+	public function _getDescriptorForPreVerifyPackageTests() {
 		return array(
 			'pluginId' => 'testplugin',
 			'pluginType' => 'module',
@@ -929,8 +908,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		);
 	}
 	
-	public function testPreVerifyPackageMissingOneDirectory()
-	{
+	public function testPreVerifyPackageMissingOneDirectory() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -968,8 +946,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testPreVerifyPackageMissingOneFile()
-	{
+	public function testPreVerifyPackageMissingOneFile() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -1012,8 +989,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testPreVerifyPackageModuleContainsFileInPlaceOfADirectory()
-	{
+	public function testPreVerifyPackageModuleContainsFileInPlaceOfADirectory() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -1059,8 +1035,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testPreVerifyPackageNonWriteableModuleDir()
-	{
+	public function testPreVerifyPackageNonWriteableModuleDir() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -1086,8 +1061,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testVerifyPackageIntegrity()
-	{
+	public function testVerifyPackageIntegrity() {
 		global $gallery;
 		
 		$modules = GalleryCoreApi::getCodeBasePath('modules');
@@ -1149,8 +1123,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function _setSplitPackagesResponses($file, $rawData, $error = array())
-	{
+	public function _setSplitPackagesResponses($file, $rawData, $error = array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
@@ -1199,8 +1172,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testSplitAggregatePackage()
-	{
+	public function testSplitAggregatePackage() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -1295,8 +1267,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testSplitAggregatePackageInvalidInput()
-	{
+	public function testSplitAggregatePackageInvalidInput() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -1333,8 +1304,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testSplitAggregatePackageUnexpectedGzipFile()
-	{
+	public function testSplitAggregatePackageUnexpectedGzipFile() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -1376,8 +1346,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function _setDownloadHeaders($handle, $failed = null)
-	{
+	public function _setDownloadHeaders($handle, $failed = null) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -1418,8 +1387,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function _setAggregrateDownloadResponses($files, $errors = array())
-	{
+	public function _setAggregrateDownloadResponses($files, $errors = array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -1511,8 +1479,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testDownloadAggregatePackages()
-	{
+	public function testDownloadAggregatePackages() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -1541,8 +1508,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($phpVm->isComplete(), $phpVm->getRemaining());
 	}
 	
-	public function testDownloadAggregatePackagesFailedDownload()
-	{
+	public function testDownloadAggregatePackagesFailedDownload() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -1571,8 +1537,7 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 		$this->assert($phpVm->isComplete(), $phpVm->getRemaining());
 	}
 	
-	public function testDownloadAggregatePackagesTempDirectoryMissing()
-	{
+	public function testDownloadAggregatePackagesTempDirectoryMissing() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -1598,15 +1563,12 @@ class RepositoryUtilitiesTest extends GalleryTestCase
 	}
 }
 
-class RepositoryUtilitiesTestPhpVm extends GalleryPhpVm
-{
-	public function RepositoryUtilitiesTestPhpVm($gzinflateExists)
-	{
+class RepositoryUtilitiesTestPhpVm extends GalleryPhpVm {
+	public function RepositoryUtilitiesTestPhpVm($gzinflateExists) {
 		$this->_gzinflateExists = $gzinflateExists;
 	}
 	
-	public function function_exists($func)
-	{
+	public function function_exists($func) {
 		if ($func == 'gzinflate') {
 			return $this->_gzinflateExists;
 		}
@@ -1614,16 +1576,13 @@ class RepositoryUtilitiesTestPhpVm extends GalleryPhpVm
 		return function_exists($func);
 	}
 	
-	public function gzinflate($data)
-	{
+	public function gzinflate($data) {
 		return "uncompressed-$data";
 	}
 }
 
-class RepositoryUtilitiesTestPlugin
-{
-	public function getVersion()
-	{
+class RepositoryUtilitiesTestPlugin {
+	public function getVersion() {
 		return 'someVersion';
 	}
 }

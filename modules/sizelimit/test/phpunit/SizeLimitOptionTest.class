@@ -27,16 +27,13 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class SizeLimitOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class SizeLimitOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase(
 		$methodName, 'sizelimit', 'SizeLimitOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -53,8 +50,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->_markForCleanup($this->_album);
 	}
 
-	public function testAppropriate()
-	{
+	public function testAppropriate() {
 		list($ret, $appropriate) = $this->_option->isAppropriate($this->_album, null);
 		if ($ret) {
 			return $ret;
@@ -62,8 +58,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assert($appropriate, 'appropriate');
 	}
 
-	public function testNone()
-	{
+	public function testNone() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'unlimited';
 		$form['SizeLimitOption']['sizeChoice'] = 'unlimited';
 		list($error, $warning) = $this->_handleRequestAfterEdit($form, $this->_album);
@@ -77,8 +72,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assert(empty($params), 'Params not empty:');
 	}
 
-	public function testDimWidth()
-	{
+	public function testDimWidth() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'explicit';
 		$form['SizeLimitOption']['dimensions']['width'] = 1024;
 		$form['SizeLimitOption']['dimensions']['height'] = '';
@@ -94,8 +88,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(array('height' => 1024, 'width' => 1024, 'keepOriginal' => 0), $params);
 	}
 
-	public function testDimHeight()
-	{
+	public function testDimHeight() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'explicit';
 		$form['SizeLimitOption']['dimensions']['width'] = '';
 		$form['SizeLimitOption']['dimensions']['height'] = 768;
@@ -112,8 +105,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(array('height' => 768, 'width' => 768, 'keepOriginal' => 1), $params);
 	}
 
-	public function testDimXY()
-	{
+	public function testDimXY() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'explicit';
 		$form['SizeLimitOption']['dimensions']['width'] = 1024;
 		$form['SizeLimitOption']['dimensions']['height'] = 768;
@@ -130,8 +122,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		'width' => '1024', 'height' => '768'), $params);
 	}
 
-	public function testSize()
-	{
+	public function testSize() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'unlimited';
 		$form['SizeLimitOption']['sizeChoice'] = 'explicit';
 		$form['SizeLimitOption']['filesize'] = 2000;
@@ -146,8 +137,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(array('keepOriginal' => 0, 'size' => 2000), $params);
 	}
 
-	public function testBadSize()
-	{
+	public function testBadSize() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'unlimited';
 		$form['SizeLimitOption']['sizeChoice'] = 'explicit';
 		$form['SizeLimitOption']['filesize'] = 'bad';
@@ -162,8 +152,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assert(empty($params));
 	}
 
-	public function test0Size()
-	{
+	public function test0Size() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'unlimited';
 		$form['SizeLimitOption']['sizeChoice'] = 'explicit';
 		$form['SizeLimitOption']['filesize'] = '0';
@@ -179,8 +168,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assert(empty($params));
 	}
 
-	public function testApplyToDescendents()
-	{
+	public function testApplyToDescendents() {
 		global $gallery;
 		$mockAdapter = new MockTemplateAdapter();
 		$gallery->_templateAdapter =& $mockAdapter;
@@ -211,8 +199,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(1000, $this->_item->getSize(), 'Size');
 	}
 
-	public function testChangeInDescendents()
-	{
+	public function testChangeInDescendents() {
 		$form['SizeLimitOption']['dimensionChoice'] = 'unlimited';
 		$form['SizeLimitOption']['sizeChoice'] = 'explicit';
 		$form['SizeLimitOption']['filesize'] = 2000;
@@ -245,8 +232,7 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
 	/**
 	 * Register dummy toolkit and operations
 	 */
-	public function _registerToolkit()
-	{
+	public function _registerToolkit() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
 		'GalleryToolkit', 'SizeLimitOptionTestToolkit', 'SizeLimitOptionTestToolkit',
 		'modules/sizelimit/test/phpunit/SizeLimitOptionTest.class', 'sizelimitTest', null);
@@ -300,17 +286,14 @@ class SizeLimitOptionTest extends ItemEditOptionTestCase
  * @package SizeLimit
  * @subpackage PHPUnit
  */
-class SizeLimitOptionTestPlatform extends GalleryPlatform
-{
-	public function SizeLimitOptionTestPlatform($originalPlatform)
-	{
+class SizeLimitOptionTestPlatform extends GalleryPlatform {
+	public function SizeLimitOptionTestPlatform($originalPlatform) {
 		$this->_savedPlatform = $originalPlatform;
 		GalleryUtilities::putRequestVariable('resizePerformed', false);
 		GalleryUtilities::putRequestVariable('compressPerformed', false);
 	}
 
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		$size = GalleryUtilities::getRequestVariables('size_' . basename($file));
 		if ($size) {
 			return $size;
@@ -319,8 +302,7 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform
 		return 26031966;
 	}
 
-	public function getimagesize($file)
-	{
+	public function getimagesize($file) {
 		$imagesize = GalleryUtilities::getRequestVariables('imagesize_' . basename($file));
 		if ($imagesize) {
 			/* doing it this way keeps CodeAudit happy */
@@ -330,8 +312,7 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform
 		return array(1728, 2304);
 	}
 
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		$compressPerformed = GalleryUtilities::getRequestVariables('compressPerformed');
 		$resizePerformed = GalleryUtilities::getRequestVariables('resizePerformed');
 
@@ -343,8 +324,7 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform
 	}
 	}
 
-	public function unlink($filename)
-	{
+	public function unlink($filename) {
 		/* if it is a derivative - we didn't really create it */
 	if ($this->_savedPlatform->file_exists($filename)) {
 		return $this->_savedPlatform->unlink($filename);
@@ -357,14 +337,12 @@ class SizeLimitOptionTestPlatform extends GalleryPlatform
 /**
  * Test toolkit
  */
-class SizeLimitOptionTestToolkit extends GalleryToolkit
-{
+class SizeLimitOptionTestToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
 	public function performOperation($mimeType, $operationName, $sourceFilename,
-				  $destFilename, $parameters, $context=array())
-	{
+				  $destFilename, $parameters, $context=array()) {
 		/* Here we are pretending that conversion happened by setting the flag */
 	switch ($operationName) {
 	case 'compress':
@@ -397,8 +375,7 @@ class SizeLimitOptionTestToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $file)
-	{
+	public function getProperty($mimeType, $propertyName, $file) {
 		global $gallery;
 
 	/* Our 'mime type' has to support dimensions */

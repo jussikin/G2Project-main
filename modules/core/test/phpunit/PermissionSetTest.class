@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PermissionSetTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PermissionSetTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -76,8 +73,7 @@ class PermissionSetTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::unregisterModulePermissions('testModule');
 		if ($ret) {
 			return $ret;
@@ -89,8 +85,7 @@ class PermissionSetTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetPermissionIds()
-	{
+	public function testGetPermissionIds() {
 		/* Four defined perms */
 		list($ret, $ids) = GalleryCoreApi::getPermissionIds();
 		$this->assertEquals($ids['test.test1'], 'regular permission', $ids);
@@ -106,8 +101,7 @@ class PermissionSetTest extends GalleryTestCase
 		$this->assertEquals($ids['test.test4'], 'all access permission', $ids);
 	}
 	
-	public function testGetSubPermissions()
-	{
+	public function testGetSubPermissions() {
 		/* test.test3 is a composite of tests 1 and 2 */
 		list($ret, $ids) = GalleryCoreApi::getSubPermissions('test.test3');
 		
@@ -135,8 +129,7 @@ class PermissionSetTest extends GalleryTestCase
 	 * We don't know what the exact bits are so don't try to assert on them.
 	 * Instead, make sure our round trip works
 	 */
-	public function testConvertRoundTrip1()
-	{
+	public function testConvertRoundTrip1() {
 		list($ret, $bits) = GalleryCoreApi::convertPermissionIdsToBits(array(
 			'test.test1'
 		));
@@ -162,8 +155,7 @@ class PermissionSetTest extends GalleryTestCase
 	 * We don't know what the exact bits are so don't try to assert on them.
 	 * Instead, make sure our round trip works
 	 */
-	public function testConvertRoundTrip2()
-	{
+	public function testConvertRoundTrip2() {
 		list($ret, $bits) = GalleryCoreApi::convertPermissionIdsToBits(array(
 			'test.test3'
 		));
@@ -195,8 +187,7 @@ class PermissionSetTest extends GalleryTestCase
 		), $ids);
 	}
 	
-	public function testConvertBitsToIdsWithoutCompress()
-	{
+	public function testConvertBitsToIdsWithoutCompress() {
 		list($ret, $bits) = GalleryCoreApi::convertPermissionIdsToBits(array(
 			'test.test1',
 			'test.test2',
@@ -240,8 +231,7 @@ class PermissionSetTest extends GalleryTestCase
 		), $ids);
 	}
 	
-	public function testConvertBitsToIdsWithCompress()
-	{
+	public function testConvertBitsToIdsWithCompress() {
 		list($ret, $bits) = GalleryCoreApi::convertPermissionIdsToBits(array(
 			'test.test1',
 			'test.test2',
@@ -270,8 +260,7 @@ class PermissionSetTest extends GalleryTestCase
 		), $ids);
 	}
 	
-	public function testConvertBitsToIdsWithCompressAndAllAccess()
-	{
+	public function testConvertBitsToIdsWithCompressAndAllAccess() {
 		list($ret, $bits) = GalleryCoreApi::convertPermissionIdsToBits(array(
 			'test.test1',
 			'test.test2',

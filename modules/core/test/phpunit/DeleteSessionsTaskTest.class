@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/DeleteSessionsTask.class');
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class DeleteSessionsTaskTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DeleteSessionsTaskTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -53,16 +50,14 @@ class DeleteSessionsTaskTest extends GalleryTestCase
 		$this->_origSession = $gallery->_session;
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_origSession;
 
 		return parent::tearDown();
 	}
 
-	public function testRun()
-	{
+	public function testRun() {
 		global $gallery;
 		$gallery->_templateAdapter = new MockTemplateAdapter();
 		$mockAdapter =& $gallery->_templateAdapter;
@@ -135,19 +130,16 @@ class DeleteSessionsTaskTest extends GalleryTestCase
 	}
 }
 
-class DeleteSessionsTaskTestSession extends GallerySession
-{
+class DeleteSessionsTaskTestSession extends GallerySession {
 	public $callCount = 0;
 
-	public function _expireSessions()
-	{
+	public function _expireSessions() {
 		$this->callCount++;
 
 		return null;
 	}
 
-	public function save($useNonTransactionalConnection = false)
-	{
+	public function save($useNonTransactionalConnection = false) {
 		return null;
 	}
 }

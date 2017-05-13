@@ -28,13 +28,11 @@
  * @author James Andrews <jandrews@digibug.com>
  * @author Bharat Mediratta <bharat@menalto.com>
  */
-class AdminDigibugController extends GalleryController
-{
+class AdminDigibugController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -143,13 +141,11 @@ class AdminDigibugController extends GalleryController
 /**
  * Settings for Digibug
  */
-class AdminDigibugView extends GalleryView
-{
+class AdminDigibugView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

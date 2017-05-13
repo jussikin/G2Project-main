@@ -23,10 +23,8 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17739 $
  */
-class AlbumSelectCallbacks
-{
-	public function callback($callbackParams, $smarty, $callback, $userId)
-	{
+class AlbumSelectCallbacks {
+	public function callback($callbackParams, $smarty, $callback, $userId) {
 		global $gallery;
 		static $idCount = '';
 		switch ($callback) {
@@ -237,8 +235,7 @@ class AlbumSelectCallbacks
 	 * Build template data for subalbum tree (manual and title sorting)
 	 * @access private
 	 */
-	public function _parseTree($tree, &$treeList, &$sorter, &$nodeId, $parentNode, $depth, &$callbackParams, &$titles)
-	{
+	public function _parseTree($tree, &$treeList, &$sorter, &$nodeId, $parentNode, $depth, &$callbackParams, &$titles) {
 		if (isset($sorter)) {
 			uksort($tree, array(
 				$sorter,
@@ -266,8 +263,7 @@ class AlbumSelectCallbacks
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _buildTree($album, &$treeList, &$titles, &$nodeId, $userId, $parentNode, $depth, &$callbackParams)
-	{
+	public function _buildTree($album, &$treeList, &$titles, &$nodeId, $userId, $parentNode, $depth, &$callbackParams) {
 		list($ret, $subAlbumIds) = GalleryCoreApi::fetchChildAlbumItemIds($album, null, null, $userId);
 		if ($ret) {
 			return $ret;
@@ -310,22 +306,18 @@ class AlbumSelectCallbacks
 /**
  * Sort albums on a specific field
  */
-class AlbumSelectTreeSorter
-{
+class AlbumSelectTreeSorter {
 	public $_titles;
 
-	public function __construct(&$titles)
-	{
+	public function __construct(&$titles) {
 		$this->AlbumSelectTreeSorter($titles);
 	}
 	
-	public function AlbumSelectTreeSorter(&$titles)
-	{
+	public function AlbumSelectTreeSorter(&$titles) {
 		$this->_titles =& $titles;
 	}
 
-	public function sort($a, $b)
-	{
+	public function sort($a, $b) {
 		return strcasecmp($this->_titles[$a], $this->_titles[$b]);
 	}
 }

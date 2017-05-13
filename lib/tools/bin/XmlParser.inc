@@ -20,21 +20,18 @@
  * XmlParser class adapted from a version by Monte Ohrt (monte at NOT-SP-AM dot ohrt dot com)
  * published at http://php.net/xml
  */
-class XmlParser
-{
+class XmlParser {
 	public $_xmlObject = null;
 	public $_output = array();
 
-	public function XmlParser()
-	{
+	public function XmlParser() {
 		$this->_xmlObject = xml_parser_create();
 		xml_set_object($this->_xmlObject, $this);
 		xml_set_character_data_handler($this->_xmlObject, 'dataHandler');
 		xml_set_element_handler($this->_xmlObject, 'startHandler', 'endHandler');
 	}
 
-	public function parse($path)
-	{
+	public function parse($path) {
 		$data = file_get_contents($path);
 
 		if ($data === false) {
@@ -53,8 +50,7 @@ class XmlParser
 		return $this->_output;
 	}
 
-	public function startHandler($parser, $name, $attribs)
-	{
+	public function startHandler($parser, $name, $attribs) {
 		$content = array('name' => $name);
 		if (!empty($attribs)) {
 			$content['attrs'] = $attribs;
@@ -62,16 +58,14 @@ class XmlParser
 		array_push($this->_output, $content);
 	}
 
-	public function dataHandler($parser, $data)
-	{
+	public function dataHandler($parser, $data) {
 		if (isset($data)) {
 			$outputIndex = count($this->_output) - 1;
 			$this->_output[$outputIndex]['content'] = $data;
 		}
 	}
 
-	public function endHandler($parser, $name)
-	{
+	public function endHandler($parser, $name) {
 		if (count($this->_output) > 1) {
 			$data = array_pop($this->_output);
 			$outputIndex = count($this->_output) - 1;
@@ -79,8 +73,7 @@ class XmlParser
 		}
 	}
 
-	public function cleanUp()
-	{
+	public function cleanUp() {
 		xml_parser_free($this->_xmlObject);
 	}
 }

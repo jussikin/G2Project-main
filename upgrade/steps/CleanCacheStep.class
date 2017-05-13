@@ -22,15 +22,12 @@
  * Clear caches
  * @package Upgrade
  */
-class CleanCacheStep extends UpgradeStep
-{
-	public function stepName()
-	{
+class CleanCacheStep extends UpgradeStep {
+	public function stepName() {
 		return _('Empty Cache');
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$cacheBaseDir = $gallery->getConfig('data.gallery.cache');

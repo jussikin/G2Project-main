@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CaptchaHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CaptchaHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function testTestRequiredGdFunctionsAllPresent()
-	{
+	public function testTestRequiredGdFunctionsAllPresent() {
 		global $gallery;
 		
 		$phpVm = new CaptchaHelperTestPhpVm();
@@ -61,8 +58,7 @@ class CaptchaHelperTest extends GalleryTestCase
 		), $report);
 	}
 	
-	public function testTestRequiredGdFunctionsSomeMissing()
-	{
+	public function testTestRequiredGdFunctionsSomeMissing() {
 		global $gallery;
 		
 		$phpVm = new CaptchaHelperTestPhpVm();
@@ -89,8 +85,7 @@ class CaptchaHelperTest extends GalleryTestCase
 		), $report);
 	}
 	
-	public function testTestRequiredGdFunctionsAllMissing()
-	{
+	public function testTestRequiredGdFunctionsAllMissing() {
 		global $gallery;
 		$phpVm = new CaptchaHelperTestPhpVm();
 		$phpVm->setFunctionExists('ImageCreateFromJPEG', false);
@@ -116,15 +111,12 @@ class CaptchaHelperTest extends GalleryTestCase
 	}
 }
 
-class CaptchaHelperTestPhpVm
-{
-	public function setFunctionExists($functionName, $bool)
-	{
+class CaptchaHelperTestPhpVm {
+	public function setFunctionExists($functionName, $bool) {
 		$this->_function_exists[$functionName] = $bool;
 	}
 	
-	public function function_exists($functionName)
-	{
+	public function function_exists($functionName) {
 		return $this->_function_exists[$functionName];
 	}
 }

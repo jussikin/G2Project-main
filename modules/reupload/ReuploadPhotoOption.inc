@@ -25,13 +25,11 @@
  * @author Piotr P. Karwasz <piotr.karwasz@ens.fr>
  * @version $Revision: 17580 $
  */
-class ReuploadPhotoOption extends ItemEditOption
-{
+class ReuploadPhotoOption extends ItemEditOption {
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -56,7 +54,7 @@ class ReuploadPhotoOption extends ItemEditOption
 			}
 			if ($hasLinkedEntity) {
 				/* UI does not allow this */
-		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null, null);
+				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null, null);
 			}
 
 			list($ret, $path) = $item->fetchPath();
@@ -68,7 +66,7 @@ class ReuploadPhotoOption extends ItemEditOption
 	     * The parent must be read locked at this point to make sure that it's
 	     * not going to be moved around while we're copying a file to its directory.
 	     */
-		list($ret, $lockIds[]) = GalleryCoreApi::acquireReadLockParents($item->getId());
+			list($ret, $lockIds[]) = GalleryCoreApi::acquireReadLockParents($item->getId());
 			if ($ret) {
 				return array($ret, null, null);
 			}
@@ -84,7 +82,7 @@ class ReuploadPhotoOption extends ItemEditOption
 			}
 
 		/* take backup first */
-		$tmpfname = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'tmp_');
+			$tmpfname = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'tmp_');
 			if (!$tmpfname) {
 				GalleryCoreApi::releaseLocks($lockIds);
 
@@ -107,7 +105,7 @@ class ReuploadPhotoOption extends ItemEditOption
 			if ($ret) {
 				if ($gallery->getDebug()) {
 					$gallery->debug('Failed to rescan item after reupload. ' .
-			'This is the error stack trace: ' . $ret->getAsText());
+					'This is the error stack trace: ' . $ret->getAsText());
 				}
 				$platform->copy($tmpfname, $path);
 				$platform->unlink($tmpfname);
@@ -133,7 +131,8 @@ class ReuploadPhotoOption extends ItemEditOption
 			}
 
 			$ret = GalleryCoreApi::invalidateDerivativeDimensionsBySourceIds(
-		array($item->getId()));
+				array($item->getId())
+			);
 			if ($ret) {
 				return array($ret, null, null);
 			}
@@ -144,10 +143,10 @@ class ReuploadPhotoOption extends ItemEditOption
 	     * The only way to reupload the file is through the browser,
 	     * which leaves out those who wants to reupload larger files
 	     */
-		if (!empty($form['name']['reupload'])) {
-			/* if we tried and failed to upload the file */
-		$error[] = 'form[error][reupload][failure]';
-		}
+			if (!empty($form['name']['reupload'])) {
+				/* if we tried and failed to upload the file */
+				$error[] = 'form[error][reupload][failure]';
+			}
 		}
 
 		return array(null, $error, $status);
@@ -156,8 +155,7 @@ class ReuploadPhotoOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'reupload');
 		if ($ret) {
 			return array($ret, null, null);
@@ -195,10 +193,12 @@ class ReuploadPhotoOption extends ItemEditOption
 			return array($ret, null, null);
 		}
 
-		$template->setVariable('ReuploadPhotoOption',
-		array('maxFileSize' => $maxFileSize,
+		$template->setVariable(
+			'ReuploadPhotoOption',
+			array('maxFileSize' => $maxFileSize,
 			  'uploadsPermitted' => $fileUploadsBool,
-			  'hasLinkedEntity' => $hasLinkedEntity));
+			'hasLinkedEntity' => $hasLinkedEntity)
+		);
 
 		return array(null, 'modules/reupload/templates/ReuploadPhotoOption.tpl',
 			   'modules_reupload');
@@ -207,8 +207,7 @@ class ReuploadPhotoOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		return array(null, GalleryUtilities::isA($item, 'GalleryPhotoItem'));
 	}
 
@@ -219,8 +218,7 @@ class ReuploadPhotoOption extends ItemEditOption
 	 *               bool true if linked
 	 * @access private
 	 */
-	public function _hasLinkedEntity($item)
-	{
+	public function _hasLinkedEntity($item) {
 		$hasLink = $item->isLinked();
 		if (!$hasLink) {
 			list($ret, $linkedIds) = GalleryCoreApi::fetchEntitiesLinkedTo($item->getId());

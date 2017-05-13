@@ -29,36 +29,34 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-class SelectAlbumController extends GalleryController
-{
+class SelectAlbumController extends GalleryController {
 	/**
 	 * @see GalleryController:handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$results = $error = $status = array();
 
 	/*
 	 * We merely provide a redirection service here.  Permission checks will be
 	 * handled by the target views.
 	 */
-	if (isset($form['action']['newAlbum'])) {
-		/* Redirect to the new album page. */
-		if (isset($form['albumId'])) {
-			$redirect['view'] = 'publishxp.NewAlbum';
-			$redirect['parentId'] = $form['albumId'];
-		} else {
-			$error[] = 'form[error][albumId][missing]';
+		if (isset($form['action']['newAlbum'])) {
+			/* Redirect to the new album page. */
+			if (isset($form['albumId'])) {
+				$redirect['view'] = 'publishxp.NewAlbum';
+				$redirect['parentId'] = $form['albumId'];
+			} else {
+				$error[] = 'form[error][albumId][missing]';
+			}
+		} elseif (isset($form['action']['select'])) {
+			/* Redirect to the options page */
+			if (isset($form['albumId'])) {
+				$redirect['view'] = 'publishxp.Options';
+				$redirect['albumId'] = $form['albumId'];
+			} else {
+				$error[] = 'form[error][albumId][missing]';
+			}
 		}
-	} elseif (isset($form['action']['select'])) {
-		/* Redirect to the options page */
-		if (isset($form['albumId'])) {
-			$redirect['view'] = 'publishxp.Options';
-			$redirect['albumId'] = $form['albumId'];
-		} else {
-			$error[] = 'form[error][albumId][missing]';
-		}
-	}
 
 		$results['status'] = $status;
 		$results['error'] = $error;
@@ -78,15 +76,13 @@ class SelectAlbumController extends GalleryController
  * user select a parent album and go to the new album page should the user wish to first create a
  * new album.
  */
-class SelectAlbumView extends GalleryView
-{
+class SelectAlbumView extends GalleryView {
 	/**
 	 * Prepares any additional data before rendering the template.
 	 *
 	 * @see GalleryController:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		if ($form['formName'] != 'SelectAlbum') {
 			$form['formName'] = 'SelectAlbum';
 			$form['albumId'] = GalleryUtilities::getRequestVariables('albumId');
@@ -95,33 +91,33 @@ class SelectAlbumView extends GalleryView
 	     * In case they didn't select an album in the prior page (they're going
 	     * to get an error message, but we require form[albumId] to be set in the template).
 	     */
-		if (!isset($form['albumId'])) {
-			$form['albumId'] = null;
-		}
+			if (!isset($form['albumId'])) {
+				$form['albumId'] = null;
+			}
 		}
 
 	/* Get ids of all all albums where we can add new data items */
-	list($ret, $albumIds['addDataItem']) =
+		list($ret, $albumIds['addDataItem']) =
 		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addDataItem');
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* Get ids of all all albums where we can add new album items */
-	list($ret, $albumIds['addAlbumItem']) =
+		list($ret, $albumIds['addAlbumItem']) =
 		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* Merge them together to get the master list of ids */
-	$albumIds['allIds'] =
+		$albumIds['allIds'] =
 		array_unique(array_merge($albumIds['addDataItem'], $albumIds['addAlbumItem']));
 
 		if (!empty($albumIds['allIds'])) {
 			/** @todo Use fetchAllItemIds with multiple permissions once the API is available */
-		list($ret, $permissions) =
-		GalleryCoreApi::fetchPermissionsForItems($albumIds['allIds']);
+			list($ret, $permissions) =
+			GalleryCoreApi::fetchPermissionsForItems($albumIds['allIds']);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -137,8 +133,8 @@ class SelectAlbumView extends GalleryView
 		$albums = array();
 		if (!empty($albumIds['allIds'])) {
 			/* Load all the album entities */
-		list($ret, $albums) =
-		GalleryCoreApi::loadEntitiesById($albumIds['allIds'], 'GalleryAlbumItem');
+			list($ret, $albums) =
+			GalleryCoreApi::loadEntitiesById($albumIds['allIds'], 'GalleryAlbumItem');
 			if ($ret) {
 				return array($ret, null);
 			}

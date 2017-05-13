@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ExifCallbacks
-{
-	public function callback($params, &$smarty, $callback, $userId = null)
-	{
+class ExifCallbacks {
+	public function callback($params, &$smarty, $callback, $userId = null) {
 		global $gallery;
 		static $blockNum = 0;
 		

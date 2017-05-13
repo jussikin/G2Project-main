@@ -24,15 +24,14 @@
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 20958 $
  */
-class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
-{
-	public function __construct()
-	{
+class HttpAuthModule extends GalleryModule {
+	/* and GalleryEventListener */
+
+	public function __construct() {
 		$this->HttpAuthModule();
 	}
 	
-	public function HttpAuthModule()
-	{
+	public function HttpAuthModule() {
 		global $gallery;
 		
 		$this->setId('httpauth');
@@ -56,8 +55,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		list($ret, $redirect) = parent::activate($postActivationEvent);
 		if ($ret) {
 			return array(
@@ -75,8 +73,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		list($ret, $params) = $this->fetchParameters();
 		if ($ret) {
 			return $ret;
@@ -114,8 +111,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		switch ($currentVersion) {
 			case null:
 				/* Initial install */
@@ -226,8 +222,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -242,8 +237,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		global $gallery;
 		
 		$rules = array();
@@ -337,8 +331,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		switch ($event->getEventName()) {
 			case 'Gallery::ActivatePlugin':
 				$data = $event->getData();
@@ -417,8 +410,7 @@ class HttpAuthModule extends GalleryModule /* and GalleryEventListener */
 	 * Activate essential rewrite rules.
 	 * @return GalleryStatus a status code
 	 */
-	public function _activateRewriteRules()
-	{
+	public function _activateRewriteRules() {
 		list($ret, $rewriteApi) = GalleryCoreApi::newFactoryInstance('RewriteApi');
 		if ($ret) {
 			return $ret;

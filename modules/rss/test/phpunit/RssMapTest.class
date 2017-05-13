@@ -28,17 +28,14 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  * @author Pierre-Luc Paour
  * @version $Revision: 17580 $
  */
-class RssMapTest extends GalleryTestCase
-{
+class RssMapTest extends GalleryTestCase {
 	public $_feedsToDelete;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -70,8 +67,7 @@ class RssMapTest extends GalleryTestCase
 		$this->_feedsToDelete[] = $this->_name;
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		if (!empty($this->_feedsToDelete)) {
 			foreach ($this->_feedsToDelete as $name) {
 				$ret = RssMapHelper::deleteFeed($name);
@@ -87,8 +83,7 @@ class RssMapTest extends GalleryTestCase
 		}
 	}
 
-	public function testCollision()
-	{
+	public function testCollision() {
 		$params = array('itemId' => $this->_root);
 		$ret = RssMapHelper::createFeed($this->_name, $params);
 	/* we expect an error */
@@ -99,8 +94,7 @@ class RssMapTest extends GalleryTestCase
 		'No collision reported, but expected one');
 	}
 
-	public function testDelete()
-	{
+	public function testDelete() {
 		$ret = RssMapHelper::deleteFeed($this->_name);
 		if ($ret) {
 			return $ret;
@@ -115,8 +109,7 @@ class RssMapTest extends GalleryTestCase
 		'No missing object reported, but expected it to be missing');
 	}
 
-	public function testFetchFeedsForId()
-	{
+	public function testFetchFeedsForId() {
 		global $gallery;
 
 		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem($this->_root->getId());
@@ -132,8 +125,7 @@ class RssMapTest extends GalleryTestCase
 		'itemId' => $this->_root->getId()))));
 	}
 
-	public function testFetchFeedNames()
-	{
+	public function testFetchFeedNames() {
 		global $gallery;
 
 		list($ret, $names) = RssMapHelper::fetchFeedNames();

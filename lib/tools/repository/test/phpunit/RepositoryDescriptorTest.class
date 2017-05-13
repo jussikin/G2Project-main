@@ -34,12 +34,10 @@ GalleryCoreApi::requireOnce('lib/tools/repository/test/phpunit/RepositoryTestTem
  * @package RepositoryTools
  * @subpackage PHPUnit
  */
-class RepositoryDescriptorTest extends GalleryTestCase
-{
+class RepositoryDescriptorTest extends GalleryTestCase {
 	public $_testModule;
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -158,8 +156,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		), true);
 	}
 	
-	public function _getDescriptorWithFakeFileMetadata()
-	{
+	public function _getDescriptorWithFakeFileMetadata() {
 		$data = array();
 		$utils = new RepositoryDescriptorTestUtilities();
 		$utils->setGetFileRevision('/MANIFEST', '14604');
@@ -175,8 +172,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 	/**
 	 * Test that a valid descriptor is being generated.
 	 */
-	public function testDescriptorGeneration()
-	{
+	public function testDescriptorGeneration() {
 		$descriptor = $this->_getDescriptorWithFakeFileMetadata();
 		$ret = $descriptor->generate(new RepositoryDescriptorTestPlugin());
 		if ($ret) {
@@ -311,8 +307,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		), $descriptor->_data, 'Descriptor does not match expected data.');
 	}
 	
-	public function testDescriptorGenerationWithNoManifest()
-	{
+	public function testDescriptorGenerationWithNoManifest() {
 		global $gallery;
 		
 		$gallery->_platform = new UnitTestPlatform();
@@ -328,8 +323,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		$this->assertEquals(array(), $descriptor->_data, 'Descriptor does not match expected data.');
 	}
 	
-	public function testGetFileMetaData()
-	{
+	public function testGetFileMetaData() {
 		global $gallery;
 		
 		$testDataDir = dirname(dirname(__FILE__)) . '/data/';
@@ -357,8 +351,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		$this->assertEquals($this->_canonicalFileMetaData, $data);
 	}
 	
-	public function testGetDirectoriesInPackage()
-	{
+	public function testGetDirectoriesInPackage() {
 		$descriptor = $this->_getDescriptorWithFakeFileMetadata();
 		$ret = $descriptor->generate(new RepositoryDescriptorTestPlugin());
 		if ($ret) {
@@ -380,8 +373,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		), $descriptor->getDirectoriesInPackage('lang-aa'));
 	}
 	
-	public function testGetFilesInPackage()
-	{
+	public function testGetFilesInPackage() {
 		$descriptor = $this->_getDescriptorWithFakeFileMetadata();
 		$ret = $descriptor->generate(new RepositoryDescriptorTestPlugin());
 		if ($ret) {
@@ -402,8 +394,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		), $descriptor->getFilesInPackage('lang-aa'));
 	}
 	
-	public function testGetPackages()
-	{
+	public function testGetPackages() {
 		$descriptor = $this->_getDescriptorWithFakeFileMetadata();
 		$ret = $descriptor->generate(new RepositoryDescriptorTestPlugin());
 		if ($ret) {
@@ -416,8 +407,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 		), $descriptor->getPackages());
 	}
 	
-	public function testCheckIntegrityMissingManifest()
-	{
+	public function testCheckIntegrityMissingManifest() {
 		global $gallery;
 		$descriptor = $this->_getDescriptorWithFakeFileMetadata();
 		$ret = $descriptor->generate(new RepositoryDescriptorTestPlugin());
@@ -443,8 +433,7 @@ class RepositoryDescriptorTest extends GalleryTestCase
 	 * in such a way that it's hard to get data into it easily, so it's easiest to just test our
 	 * whole test MANIFEST at once.
 	 */
-	public function testCheckIntegrity()
-	{
+	public function testCheckIntegrity() {
 		global $gallery;
 		$descriptor = $this->_getDescriptorWithFakeFileMetadata();
 		$ret = $descriptor->generate(new RepositoryDescriptorTestPlugin());
@@ -569,79 +558,64 @@ class RepositoryDescriptorTest extends GalleryTestCase
 	}
 }
 
-class RepositoryDescriptorTestPhpVm extends GalleryPhpVm
-{
-	public function setCrc32($contents, $crc32)
-	{
+class RepositoryDescriptorTestPhpVm extends GalleryPhpVm {
+	public function setCrc32($contents, $crc32) {
 		$this->_crc32[$contents] = $crc32;
 	}
 	
-	public function crc32($contents)
-	{
+	public function crc32($contents) {
 		return $this->_crc32[$contents];
 	}
 }
 
-class RepositoryDescriptor_FakeFileMetaDataTest extends RepositoryDescriptor
-{
-	public function RepositoryDescriptor_FakeFileMetaDataTest($metaData)
-	{
+class RepositoryDescriptor_FakeFileMetaDataTest extends RepositoryDescriptor {
+	public function RepositoryDescriptor_FakeFileMetaDataTest($metaData) {
 		$this->_metaData = $metaData;
 	}
 	
-	public function getFileMetaData($pluginDir, &$data)
-	{
+	public function getFileMetaData($pluginDir, &$data) {
 		$data = array_merge($data, $this->_metaData);
 
 		return null;
 	}
 }
 
-class RepositoryDescriptorTestPlugin
-{
-	public function getId()
-	{
+class RepositoryDescriptorTestPlugin {
+	public function getId() {
 		return 'testModule';
 	}
 	
-	public function getName()
-	{
+	public function getName() {
 		return 'Test Module';
 	}
 	
-	public function getDescription()
-	{
+	public function getDescription() {
 		return 'This is a test module.';
 	}
 	
-	public function getVersion()
-	{
+	public function getVersion() {
 		return '1.0.0';
 	}
 	
-	public function getPluginType()
-	{
+	public function getPluginType() {
 		return 'module';
 	}
 	
-	public function getRequiredModuleApi()
-	{
+	public function getRequiredModuleApi() {
 		return array(
 			3,
 			4
 		);
 	}
 	
-	public function getRequiredCoreApi()
-	{
+	public function getRequiredCoreApi() {
 		return array(
 			1,
 			2
 		);
 	}
 	
-	public function getGroup()
-	{
+	public function getGroup() {
 		return array(
 			'group' => 'testGroup',
 			'groupLabel' => 'Test Group'
@@ -649,17 +623,14 @@ class RepositoryDescriptorTestPlugin
 	}
 }
 
-class RepositoryDescriptorTestTranslator
-{
+class RepositoryDescriptorTestTranslator {
 	public $_locale;
 	
-	public function init($locale)
-	{
+	public function init($locale) {
 		$this->_locale = $locale;
 	}
 	
-	public function getLanguageData()
-	{
+	public function getLanguageData() {
 		return array(
 			array(
 				'pt' => array(
@@ -671,8 +642,7 @@ class RepositoryDescriptorTestTranslator
 		);
 	}
 	
-	public function translateDomain($domain, $string)
-	{
+	public function translateDomain($domain, $string) {
 		return array(
 			null,
 			sprintf('%s-%s-%s', $this->_locale, $domain, $string['text'])
@@ -680,15 +650,12 @@ class RepositoryDescriptorTestTranslator
 	}
 }
 
-class RepositoryDescriptorTestUtilities
-{
-	public function setGetFileRevision($expected, $reply)
-	{
+class RepositoryDescriptorTestUtilities {
+	public function setGetFileRevision($expected, $reply) {
 		$this->_matches[$expected] = $reply;
 	}
 	
-	public function getFileRevision($file)
-	{
+	public function getFileRevision($file) {
 		return array(
 			null,
 			$this->_matches[$file]

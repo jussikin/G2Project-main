@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17679 $
  */
-class CommentCallbacks
-{
-	public function callback($params, $template, $callback, $userId)
-	{
+class CommentCallbacks {
+	public function callback($params, $template, $callback, $userId) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 		

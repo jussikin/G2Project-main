@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/picasa/classes/PicasaImportHelper.class');
  * @author Waldemar Schlackow <gallery@schlackow.de>
  * @version $Revision: 17580 $
  */
-class PicasaImportHelperTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class PicasaImportHelperTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function testConvertHtmlToBbcode()
-	{
+	public function testConvertHtmlToBbcode() {
 		/* UTF8 characters are ignored */
 	$this->assertEquals('\xc3\xb1o\nthis',
 		PicasaImportHelper::convertHtmlToBbcode('\xc3\xb1o\nthis'));

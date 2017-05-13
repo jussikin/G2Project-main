@@ -30,8 +30,7 @@ class DigibugCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInte
 	/**
 	 * @see CartPluginInterface_1_0::getSupportedItemTypes
 	 */
-	public function getSupportedItemTypes()
-	{
+	public function getSupportedItemTypes() {
 		return array(
 			'GalleryPhotoItem'
 		);
@@ -40,8 +39,7 @@ class DigibugCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInte
 	/**
 	 * @see CartPluginInterface_1_1::getRequiredPermissions
 	 */
-	public function getRequiredPermissions()
-	{
+	public function getRequiredPermissions() {
 		return array(
 			'digibug.print'
 		);
@@ -50,8 +48,7 @@ class DigibugCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInte
 	/**
 	 * @see CartPluginInterface_1_0::getActionDisplayName
 	 */
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'digibug');
 		if ($ret) {
 			return array(
@@ -69,8 +66,7 @@ class DigibugCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInte
 	/**
 	 * @see CartPluginInterface_1_0::fulfillCart
 	 */
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->put('digibug.cart', $cartItemIds);

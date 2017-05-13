@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17678 $
  */
-class AdminCoreController extends GalleryController
-{
+class AdminCoreController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -72,10 +70,10 @@ class AdminCoreController extends GalleryController
 					$urlComponents	   = parse_url($urlGenerator->getCurrentUrlDir(false));
 					$paths['embedded']   = $urlComponents['path'];
 					foreach ($paths as $key => $value) {
-						if ($value{strlen($value) - 1} != '/') {
+						if ($value[strlen($value) - 1] != '/') {
 							$value .= '/';
 						}
-						if ($value{0} != '/') {
+						if ($value[0] != '/') {
 							$value = '/' . $value;
 						}
 						$paths[$key] = $value;
@@ -93,7 +91,7 @@ class AdminCoreController extends GalleryController
 				/* It should either be empty or a substring of the request-host */
 				if (!empty($form['cookie']['domain'])) {
 					$cookieDomain = $form['cookie']['domain'];
-					if ($cookieDomain{0} != '.') {
+					if ($cookieDomain[0] != '.') {
 						$cookieDomain = '.' . $cookieDomain;
 					}
 					$urlComponents = parse_url($urlGenerator->getCurrentUrlDir());
@@ -217,13 +215,11 @@ class AdminCoreController extends GalleryController
 /**
  * This view will prompt for general Gallery settings
  */
-class AdminCoreView extends GalleryView
-{
+class AdminCoreView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

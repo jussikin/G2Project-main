@@ -25,8 +25,7 @@
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class SetupRewriteController extends GalleryController
-{
+class SetupRewriteController extends GalleryController {
 	/**
 	 * Rewrite parser ids
 	 * @var array
@@ -36,8 +35,7 @@ class SetupRewriteController extends GalleryController
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 		global $gallery;
 		$platform =& $gallery->getPlatform();
@@ -75,8 +73,12 @@ class SetupRewriteController extends GalleryController
 				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
 			}
 
-			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite',
-							  'parserId', $form['parser']);
+			$ret = GalleryCoreApi::setPluginParameter(
+				'module',
+				'rewrite',
+				'parserId',
+				$form['parser']
+			);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -120,13 +122,11 @@ class SetupRewriteController extends GalleryController
 /**
  * Initial setup for URL Rewrite
  */
-class SetupRewriteView extends GalleryView
-{
+class SetupRewriteView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$SetupRewrite = array();
@@ -137,7 +137,7 @@ class SetupRewriteView extends GalleryView
 		}
 
 	/* Make sure the module is not yet active */
-	list($ret, $rewrite) = GalleryCoreApi::loadPlugin('module', 'rewrite');
+		list($ret, $rewrite) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -146,8 +146,12 @@ class SetupRewriteView extends GalleryView
 			return array($ret, null);
 		}
 		if ($isActive) {
-			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__,
-		'rewrite module is active'), null);
+			return array(GalleryCoreApi::error(
+				ERROR_UNSUPPORTED_OPERATION,
+				__FILE__,
+				__LINE__,
+				'rewrite module is active'
+			), null);
 		}
 
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
@@ -158,7 +162,7 @@ class SetupRewriteView extends GalleryView
 
 		if (isset($rewriteParser)) {
 			/* Error handeling for defined (numeric) REWRITE_STATUS_* errors */
-		$errors = array();
+			$errors = array();
 			if (isset($form['error'])) {
 				foreach ($form['error'] as $errno => $tmp) {
 					if (is_numeric($errno)) {

@@ -23,10 +23,8 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldCallbacks
-{
-	public function callback($params, $smarty, $callback, $userId = null)
-	{
+class CustomFieldCallbacks {
+	public function callback($params, $smarty, $callback, $userId = null) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class');
 		

@@ -25,21 +25,18 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class LogoutController extends GalleryController
-{
+class LogoutController extends GalleryController {
 	/**
 	 * @see GalleryController::isAllowedInMaintenance
 	 */
-	public function isAllowedInMaintenance()
-	{
+	public function isAllowedInMaintenance() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$event = GalleryCoreApi::newEvent('Gallery::Logout');

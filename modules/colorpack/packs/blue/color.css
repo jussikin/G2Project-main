@@ -1,10 +1,10 @@
-/* <?php $colorpackName = $gallery->i18n('Blue'); ?>
+/* ^PHPCS_CSS_T_OPEN_TAG^ $colorpackName = $gallery->i18n('Blue'); ^PHPCS_CSS_T_CLOSE_TAG^
  * $Revision: 15342 $
  */
 
 #gallery {
-  color: #000 !important;
-  background-color: #babaf8 !important;
+	color: #000 !important;
+	background-color: #babaf8 !important;
 }
 body.gallery { background-color: #babaf8 !important; }
 

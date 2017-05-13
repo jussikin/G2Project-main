@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17999 $
  */
-class ArchiveExtractToolkit extends GalleryToolkit
-{
+class ArchiveExtractToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -129,8 +127,7 @@ class ArchiveExtractToolkit extends GalleryToolkit
 	 * @return bool true for success
 	 * @access private
 	 */
-	public function _pruneDirectory($dir, $prune, $removeMeta)
-	{
+	public function _pruneDirectory($dir, $prune, $removeMeta) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

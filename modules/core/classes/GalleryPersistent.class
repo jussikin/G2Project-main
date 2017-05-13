@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryPersistent
-{
+class GalleryPersistent {
 	/**
 	 * Keep track of which internal values are persistant and which ones aren't
 	 * so that we'll know when and what to save to the database.
@@ -36,13 +35,11 @@ class GalleryPersistent
 	 */
 	public $_persistentStatus;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->GalleryPersistent();
 	}
 	
-	public function GalleryPersistent()
-	{
+	public function GalleryPersistent() {
 		/* Initialize our persistent info tracker */
 		$this->_persistentStatus['flags'] = 0;
 		$this->_persistentStatus['originalValue'] = array();
@@ -53,8 +50,7 @@ class GalleryPersistent
 	 * @param string $member (optional) check just this field
 	 * @return boolean true if modified, false if not.
 	 */
-	public function isModified($member = null)
-	{
+	public function isModified($member = null) {
 		if ($member) {
 			return $this->_persistentStatus['originalValue'][$member] !== $this->$member;
 		} else {
@@ -73,8 +69,7 @@ class GalleryPersistent
 	 * Return the original value of the given member.
 	 * @return mixed the value, or null if it was not defined.
 	 */
-	public function getOriginalValue($member)
-	{
+	public function getOriginalValue($member) {
 		if (!isset($this->_persistentStatus['originalValue'][$member])) {
 			return null;
 		}
@@ -88,8 +83,7 @@ class GalleryPersistent
 	 * @param boolean $resetToNull (optional) reset all original values to null if true
 	 * @return GalleryStatus a status code
 	 */
-	public function resetOriginalValues($resetToNull = false)
-	{
+	public function resetOriginalValues($resetToNull = false) {
 		list($ret, $data) = GalleryCoreApi::describeEntity($this->entityType);
 		if ($ret) {
 			return null;
@@ -117,8 +111,7 @@ class GalleryPersistent
 	 *
 	 * @param int $flag a bit flag to set
 	 */
-	public function setPersistentFlag($flag)
-	{
+	public function setPersistentFlag($flag) {
 		$this->_persistentStatus['flags'] |= $flag;
 	}
 	
@@ -128,8 +121,7 @@ class GalleryPersistent
 	 *
 	 * @param int $flag a bit flag to clear
 	 */
-	public function clearPersistentFlag($flag)
-	{
+	public function clearPersistentFlag($flag) {
 		$this->_persistentStatus['flags'] &= ~$flag;
 	}
 	
@@ -140,8 +132,7 @@ class GalleryPersistent
 	 * @param int $flag a bit flag to test
 	 * @return bool true if the bit is on, false otherwise
 	 */
-	public function testPersistentFlag($flag)
-	{
+	public function testPersistentFlag($flag) {
 		return $this->_persistentStatus['flags'] & $flag;
 	}
 	
@@ -151,8 +142,7 @@ class GalleryPersistent
 	 * @return array GalleryStatus a status code
 	 *               string a path like modules/core/classes/GalleryUser.class
 	 */
-	public function getClassFile()
-	{
+	public function getClassFile() {
 		list($ret, $data) = GalleryCoreApi::describeEntity($this->entityType);
 		if ($ret) {
 			return array(

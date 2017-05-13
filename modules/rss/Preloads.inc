@@ -25,18 +25,16 @@
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17580 $
  */
-class RssPreloads
-{
-	public function preload(&$template, $preload, $paramSet)
-	{
+class RssPreloads {
+	public function preload(&$template, $preload, $paramSet) {
 		global $gallery;
 
 		switch ($preload) {
-	case 'RssBlock':
-		$template->head('modules/rss/templates/RssBlockHead.tpl');
+			case 'RssBlock':
+				$template->head('modules/rss/templates/RssBlockHead.tpl');
 
-		return null;
-	}
+		        return null;
+		}
 
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}

@@ -25,8 +25,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17924 $
  */
-class UserLoginController extends GalleryController
-{
+class UserLoginController extends GalleryController {
 	/**
 	 * ValidationPlugin instances to use when handling this request.  Only used by test code.
 	 *
@@ -42,24 +41,21 @@ class UserLoginController extends GalleryController
 	 *
 	 * @param array $pluginInstances of GalleryValidationPlugin
 	 */
-	public function setPluginInstances($pluginInstances)
-	{
+	public function setPluginInstances($pluginInstances) {
 		$this->_pluginInstances = $pluginInstances;
 	}
 	
 	/**
 	 * @see GalleryController::isAllowedInMaintenance
 	 */
-	public function isAllowedInMaintenance()
-	{
+	public function isAllowedInMaintenance() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$results = array();
@@ -213,13 +209,11 @@ class UserLoginController extends GalleryController
 /**
  * This view prompts for login information
  */
-class UserLoginView extends GalleryView
-{
+class UserLoginView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

@@ -39,8 +39,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryGroup extends GalleryEntity
-{
+class GalleryGroup extends GalleryEntity {
 	/**
 	 * The group type
 	 * @var int
@@ -74,8 +73,7 @@ class GalleryGroup extends GalleryEntity
 	 * @param int $groupType the type of group
 	 * @return GalleryStatus a status code
 	 */
-	public function create($groupName = null, $groupType = GROUP_NORMAL, $x1 = null)
-	{
+	public function create($groupName = null, $groupType = GROUP_NORMAL, $x1 = null) {
 		global $gallery;
 		
 		/* Check to see if we have a collision */
@@ -120,8 +118,7 @@ class GalleryGroup extends GalleryEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		/* Don't allow to delete the special groups (admin, registered, everybody) */
 		if ($this->getGroupType() != GROUP_NORMAL) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, 'Special groups cannot be deleted!');
@@ -151,8 +148,7 @@ class GalleryGroup extends GalleryEntity
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		if ($localized) {
 			list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 			if (!$ret) {
@@ -172,28 +168,23 @@ class GalleryGroup extends GalleryEntity
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryGroup';
 	}
 	
-	public function getGroupType()
-	{
+	public function getGroupType() {
 		return $this->groupType;
 	}
 	
-	public function setGroupType($groupType)
-	{
+	public function setGroupType($groupType) {
 		$this->groupType = $groupType;
 	}
 	
-	public function getGroupName()
-	{
+	public function getGroupName() {
 		return $this->groupName;
 	}
 	
-	public function setGroupName($groupName)
-	{
+	public function setGroupName($groupName) {
 		$this->groupName = $groupName;
 	}
 }

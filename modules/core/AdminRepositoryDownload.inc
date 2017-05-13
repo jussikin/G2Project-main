@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/AdminRepositoryDownloadAndInst
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17580 $
  */
-class AdminRepositoryDownloadController extends AdminRepositoryDownloadAndInstallController
-{
+class AdminRepositoryDownloadController extends AdminRepositoryDownloadAndInstallController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		
@@ -155,13 +153,11 @@ class AdminRepositoryDownloadController extends AdminRepositoryDownloadAndInstal
 /**
  * This view will show all repository-related features.
  */
-class AdminRepositoryDownloadView extends GalleryView
-{
+class AdminRepositoryDownloadView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		
@@ -316,8 +312,7 @@ class AdminRepositoryDownloadView extends GalleryView
 		);
 	}
 	
-	public function versionComparator($a, $b)
-	{
+	public function versionComparator($a, $b) {
 		$result = version_compare($a['base']['newVersion'], $b['base']['newVersion']);
 		if (!$result) {
 			$result = version_compare($a['base']['newBuild'], $b['base']['newBuild']);

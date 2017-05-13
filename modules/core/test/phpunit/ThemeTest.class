@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ThemeTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ThemeTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -66,8 +63,7 @@ class ThemeTest extends GalleryTestCase
 		$this->_markForCleanup($this->_item);
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		/* If a unit test fails it might not deactivate/uninstall the mock theme properly */
 		list($ret, $isActive) = $this->_theme->isActive();
 		if ($ret) {
@@ -96,8 +92,7 @@ class ThemeTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPackSettingBlockList1()
-	{
+	public function testPackSettingBlockList1() {
 		$this->assertEquals(array(
 			true,
 			serialize(array(
@@ -111,8 +106,7 @@ class ThemeTest extends GalleryTestCase
 		), $this->_theme->packSetting('block-list', '[["module.BlockName",{"param1":"value1"}]]'));
 	}
 	
-	public function testPackSettingBlockList2()
-	{
+	public function testPackSettingBlockList2() {
 		$this->assertEquals(array(
 			true,
 			serialize(array(
@@ -137,8 +131,7 @@ class ThemeTest extends GalleryTestCase
 		), $this->_theme->packSetting('block-list', '[["module.BlockName", {"param1":"value1"}],' . ' ["module2.Block2"],' . ' ["module.BlockName",{"param1":"value1","param2":"value2"}]]'));
 	}
 	
-	public function testPackSettingBlockListTrueFalse()
-	{
+	public function testPackSettingBlockListTrueFalse() {
 		$this->assertEquals(array(
 			true,
 			serialize(array(
@@ -153,8 +146,7 @@ class ThemeTest extends GalleryTestCase
 		), $this->_theme->packSetting('block-list', '[["module.BlockName",{"param1":false,"param2":true}]]'));
 	}
 	
-	public function testPackSettingBlockListWhitespace1()
-	{
+	public function testPackSettingBlockListWhitespace1() {
 		$this->assertEquals(array(
 			true,
 			serialize(array(
@@ -172,8 +164,7 @@ class ThemeTest extends GalleryTestCase
 		), $this->_theme->packSetting('block-list', '[["a.B",{"x":"y"}],    ["b.c"]]'));
 	}
 	
-	public function testPackSettingBlockListWhitespace2()
-	{
+	public function testPackSettingBlockListWhitespace2() {
 		$this->assertEquals(array(
 			true,
 			serialize(array(
@@ -191,8 +182,7 @@ class ThemeTest extends GalleryTestCase
 		), $this->_theme->packSetting('block-list', '[["a.B",{"x":"y \n y"}],["b.c"]]'));
 	}
 	
-	public function testPackSettingBlockListQuotedValue()
-	{
+	public function testPackSettingBlockListQuotedValue() {
 		$this->assertEquals(array(
 			true,
 			serialize(array(
@@ -206,56 +196,49 @@ class ThemeTest extends GalleryTestCase
 		), $this->_theme->packSetting('block-list', '[["a.B",{"x":"foo \"bar\" baz"}]]'));
 	}
 	
-	public function testPackSettingBlockListEmpty()
-	{
+	public function testPackSettingBlockListEmpty() {
 		$this->assertEquals(array(
 			true,
 			serialize(array())
 		), $this->_theme->packSetting('block-list', ''));
 	}
 	
-	public function testPackSettingBlockListMissingBlockName()
-	{
+	public function testPackSettingBlockListMissingBlockName() {
 		$this->assertEquals(array(
 			false,
 			serialize(array())
 		), $this->_theme->packSetting('block-list', '[foo]'));
 	}
 	
-	public function testPackSettingBlockListMissingRightBracket()
-	{
+	public function testPackSettingBlockListMissingRightBracket() {
 		$this->assertEquals(array(
 			false,
 			serialize(array())
 		), $this->_theme->packSetting('block-list', '[foo.Bar'));
 	}
 	
-	public function testPackSettingBlockListMissingRightBracket2()
-	{
+	public function testPackSettingBlockListMissingRightBracket2() {
 		$this->assertEquals(array(
 			false,
 			serialize(array())
 		), $this->_theme->packSetting('block-list', '[foo.Bar a=b [foo.Baz b=c]'));
 	}
 	
-	public function testPackSettingBlockListMissingLeftBracket()
-	{
+	public function testPackSettingBlockListMissingLeftBracket() {
 		$this->assertEquals(array(
 			false,
 			serialize(array())
 		), $this->_theme->packSetting('block-list', 'foo.Bar]'));
 	}
 	
-	public function testPackSettingBlockListMissingBothBrackets()
-	{
+	public function testPackSettingBlockListMissingBothBrackets() {
 		$this->assertEquals(array(
 			false,
 			serialize(array())
 		), $this->_theme->packSetting('block-list', 'foo.Bar'));
 	}
 	
-	public function testPackSettingBlockListVeryLongList()
-	{
+	public function testPackSettingBlockListVeryLongList() {
 		$count = 3;
 		$data_pattern = '["a.b",{"c":"d"}]';
 		$expected_pattern = array(
@@ -286,8 +269,7 @@ class ThemeTest extends GalleryTestCase
 		));
 	}
 	
-	public function testUnpackSettingBlockList1()
-	{
+	public function testUnpackSettingBlockList1() {
 		$this->assertEquals(array(
 			true,
 			'[["a.B",{"foo":"bar"}]]'
@@ -301,8 +283,7 @@ class ThemeTest extends GalleryTestCase
 		))));
 	}
 	
-	public function testUnpackSettingBlockList2()
-	{
+	public function testUnpackSettingBlockList2() {
 		$this->assertEquals(array(
 			true,
 			'[["a.B",{"foo":"bar"}],["c.D",{}]]'
@@ -319,8 +300,7 @@ class ThemeTest extends GalleryTestCase
 		))));
 	}
 	
-	public function testUnpackSettingBlockListTrueFalse()
-	{
+	public function testUnpackSettingBlockListTrueFalse() {
 		$this->assertEquals(array(
 			true,
 			'[["a.B",{"foo":true,"bar":false}]]'
@@ -335,16 +315,14 @@ class ThemeTest extends GalleryTestCase
 		))));
 	}
 	
-	public function testUnpackSettingBlockListEmpty()
-	{
+	public function testUnpackSettingBlockListEmpty() {
 		$this->assertEquals(array(
 			true,
 			'[]'
 		), $this->_theme->unpackSetting('block-list', serialize(array())));
 	}
 	
-	public function testUnpackSettingBlockListMalformed1()
-	{
+	public function testUnpackSettingBlockListMalformed1() {
 		$this->assertEquals(array(
 			false,
 			''
@@ -353,8 +331,7 @@ class ThemeTest extends GalleryTestCase
 		))));
 	}
 	
-	public function testUnpackSettingBlockListMalformed2()
-	{
+	public function testUnpackSettingBlockListMalformed2() {
 		$this->assertEquals(array(
 			false,
 			''
@@ -363,8 +340,7 @@ class ThemeTest extends GalleryTestCase
 		))));
 	}
 	
-	public function testInstallBadThemeApi()
-	{
+	public function testInstallBadThemeApi() {
 		list($major, $minor) = $this->_theme->getRequiredThemeApi();
 		$this->_theme->setRequiredThemeApi(array(
 			$major - 1,
@@ -378,8 +354,7 @@ class ThemeTest extends GalleryTestCase
 		$this->assert($ret && ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH), 'success?');
 	}
 	
-	public function testActivateBadThemeApiActivate()
-	{
+	public function testActivateBadThemeApiActivate() {
 		$ret = $this->_theme->installOrUpgrade();
 		if ($ret) {
 			return $ret;
@@ -404,8 +379,7 @@ class ThemeTest extends GalleryTestCase
 		$this->assert(!$isActive, 'is active');
 	}
 	
-	public function testInstallBadCoreApi()
-	{
+	public function testInstallBadCoreApi() {
 		list($major, $minor) = $this->_theme->getRequiredCoreApi();
 		$this->_theme->setRequiredCoreApi(array(
 			$major - 1,
@@ -419,8 +393,7 @@ class ThemeTest extends GalleryTestCase
 		$this->assert($ret && ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH), 'success?');
 	}
 	
-	public function testActivateBadCoreApiActivate()
-	{
+	public function testActivateBadCoreApiActivate() {
 		$ret = $this->_theme->installOrUpgrade();
 		if ($ret) {
 			return $ret;
@@ -445,8 +418,7 @@ class ThemeTest extends GalleryTestCase
 		$this->assert(!$isActive, 'is active');
 	}
 	
-	public function testDeactivateDefaultTheme()
-	{
+	public function testDeactivateDefaultTheme() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'default.theme', 'themetest');
 		if ($ret) {
 			return $ret;
@@ -462,8 +434,7 @@ class ThemeTest extends GalleryTestCase
 		), $redirect);
 	}
 	
-	public function testVariableReferenceAcrossLoadCommonTemplateData()
-	{
+	public function testVariableReferenceAcrossLoadCommonTemplateData() {
 		$template = new GalleryTemplate('/path/to/fake/templatedir');
 		$theme =& $template->getVariableByReference('theme');
 		
@@ -477,8 +448,7 @@ class ThemeTest extends GalleryTestCase
 		$this->assertEquals('bar', $theme['foo']);
 	}
 	
-	public function testBlockPreloads()
-	{
+	public function testBlockPreloads() {
 		/* Used to hardcode just sidebar/album/photoBlocks, now all *Blocks parameters */
 		$template = new GalleryTemplate('/path/to/fake/templatedir');
 		$view = new ThemeTestView();
@@ -507,8 +477,7 @@ class ThemeTest extends GalleryTestCase
 		), array_keys($this->_theme->_preloadedBlocks));
 	}
 	
-	public function testSplitHtml()
-	{
+	public function testSplitHtml() {
 		$html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" ...>
 	    <html lang="de-DE" xmlns="...">
 	    <head>
@@ -536,8 +505,7 @@ class ThemeTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testSplitHtmlWorksWithDefaultBacktraceLimit()
-	{
+	public function testSplitHtmlWorksWithDefaultBacktraceLimit() {
 		/*
 	     * Feed splitHtml with far over 100k characters to test whether it runs into
 	     * PHP 5.2.0's default pcre.backtrack_limit.
@@ -586,10 +554,8 @@ class ThemeTest extends GalleryTestCase
 /**
  * Test theme
  */
-class ThemeTestTheme extends GalleryTheme
-{
-	public function ThemeTestTheme()
-	{
+class ThemeTestTheme extends GalleryTheme {
+	public function ThemeTestTheme() {
 		global $gallery;
 		$this->setId('themetest');
 		$this->setName('ThemeTest Theme');
@@ -600,8 +566,7 @@ class ThemeTestTheme extends GalleryTheme
 		$this->_preloadedBlocks = array();
 	}
 	
-	public function preloadBlock(&$template, $blockId, $blockParams = array())
-	{
+	public function preloadBlock(&$template, $blockId, $blockParams = array()) {
 		$this->_preloadedBlocks[$blockId] = true;
 
 		return null;
@@ -611,17 +576,14 @@ class ThemeTestTheme extends GalleryTheme
 /**
  * Test view
  */
-class ThemeTestView extends GalleryView
-{
+class ThemeTestView extends GalleryView {
 }
 
 /**
  * Test platform for this test
  */
-class ThemeTestPlatform extends GalleryPlatform
-{
-	public function opendir($path)
-	{
+class ThemeTestPlatform extends GalleryPlatform {
+	public function opendir($path) {
 		if (strpos($path, 'themes/') !== false) {
 			$this->_list = array();
 			if ($dir = parent::opendir($path)) {
@@ -637,8 +599,7 @@ class ThemeTestPlatform extends GalleryPlatform
 		return parent::opendir($path);
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if (strpos($path, 'themes/themetest') !== false) {
 			return true;
 		}
@@ -646,8 +607,7 @@ class ThemeTestPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 	
-	public function readdir($handle)
-	{
+	public function readdir($handle) {
 		if ($handle == 'themetest') {
 			return array_shift($this->_list);
 		}
@@ -655,8 +615,7 @@ class ThemeTestPlatform extends GalleryPlatform
 		return parent::readdir($handle);
 	}
 	
-	public function closedir($handle)
-	{
+	public function closedir($handle) {
 		if ($handle == 'themetest') {
 			unset($this->_list);
 
@@ -666,8 +625,7 @@ class ThemeTestPlatform extends GalleryPlatform
 		return parent::closedir($handle);
 	}
 	
-	public function file_exists($file)
-	{
+	public function file_exists($file) {
 		if (strpos($file, 'themes/themetest/theme.inc') !== false) {
 			return true;
 		}
@@ -675,8 +633,7 @@ class ThemeTestPlatform extends GalleryPlatform
 		return parent::file_exists($file);
 	}
 	
-	public function recursiveRmdir($path)
-	{
+	public function recursiveRmdir($path) {
 		return true;
 	}
 }

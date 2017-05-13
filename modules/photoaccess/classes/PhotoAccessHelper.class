@@ -26,16 +26,14 @@
  * @version $Revision: 17580 $
  * @static
  */
-class PhotoAccessHelper
-{
+class PhotoAccessHelper {
 	/**
 	 * Print the items on photoworks.com and provide them with the given return url
 	 *
 	 * @return array GalleryStatus a status code
 	 *               string the url to the photoworks.com cart
 	 */
-	public static function printPhotos($cartItemIds, $returnUrl)
-	{
+	public static function printPhotos($cartItemIds, $returnUrl) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$itemIds = array_keys($cartItemIds);

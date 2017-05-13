@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemCreateReplicaSingleController extends GalleryController
-{
+class ItemCreateReplicaSingleController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 		list($ret, $item) = $this->getItem();
@@ -50,15 +48,15 @@ class ItemCreateReplicaSingleController extends GalleryController
 				$destinationId = $form['destination'];
 
 		/* Make sure we can write to the destination */
-		list($ret, $permissions) =
-			GalleryCoreApi::fetchPermissionsForItems(array($itemId, $destinationId));
+				list($ret, $permissions) =
+				GalleryCoreApi::fetchPermissionsForItems(array($itemId, $destinationId));
 				if ($ret) {
 					return array($ret, null);
 				}
 
 				if (!isset($permissions[$destinationId])) {
 					/* Avoid information disclosure, act as if the item didn't exist. */
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+					return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 				}
 
 				if (!isset($permissions[$destinationId]['core.addDataItem'])) {
@@ -70,17 +68,17 @@ class ItemCreateReplicaSingleController extends GalleryController
 				}
 
 		/* Look out for monkey business */
-		if (!$item->getIsLinkable()) {
-			return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
-		}
+				if (!$item->getIsLinkable()) {
+					return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+				}
 
 		/*
 	     * Ok we've got a linkable item and a legal destination album.
 	     * Lock everything up and start linkin'.  We need to read lock
 	     * the source ids, source hierarchy and destination hierarchy.
 	     */
-		list($ret, $locks[]) =
-			GalleryCoreApi::acquireReadLock(array($itemId, $destinationId));
+				list($ret, $locks[]) =
+				GalleryCoreApi::acquireReadLock(array($itemId, $destinationId));
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -100,19 +98,19 @@ class ItemCreateReplicaSingleController extends GalleryController
 				}
 
 		/* Create all our links */
-		$classType = get_class($item);
+				$classType = get_class($item);
 				$linkedItem = new $classType();
 
 		/*
 	     * If we're linking to an item that's already a link,
 	     * then link to its source instead.
 	     */
-		if ($item->isLinked()) {
-			$linkedEntity = $item->getLinkedEntity();
-			$ret = $linkedItem->createLink($linkedEntity, $destinationId);
-		} else {
-			$ret = $linkedItem->createLink($item, $destinationId);
-		}
+				if ($item->isLinked()) {
+					$linkedEntity = $item->getLinkedEntity();
+					$ret = $linkedItem->createLink($linkedEntity, $destinationId);
+				} else {
+					$ret = $linkedItem->createLink($item, $destinationId);
+				}
 				if ($ret) {
 					GalleryCoreApi::releaseLocks($locks);
 
@@ -136,13 +134,13 @@ class ItemCreateReplicaSingleController extends GalleryController
 				$status['linked'] = 1;
 
 		/* Release the locks */
-		$ret = GalleryCoreApi::releaseLocks($locks);
+				$ret = GalleryCoreApi::releaseLocks($locks);
 				if ($ret) {
 					return array($ret, null);
 				}
 
 		/* Figure out where to redirect upon success */
-		$redirect['view'] = 'core.ItemAdmin';
+				$redirect['view'] = 'core.ItemAdmin';
 				$redirect['subView'] = 'replica.ItemCreateReplicaSingle';
 				$redirect['itemId'] = $itemId;
 			}
@@ -164,13 +162,11 @@ class ItemCreateReplicaSingleController extends GalleryController
 /**
  * This view lets you choose where you want to put the new replica
  */
-class ItemCreateReplicaSingleView extends GalleryView
-{
+class ItemCreateReplicaSingleView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 		list($ret, $item) = $this->getItem();
@@ -180,19 +176,21 @@ class ItemCreateReplicaSingleView extends GalleryView
 
 		if ($form['formName'] != 'ItemCreateReplicaSingle') {
 			/* First time around, load the form with item data */
-		$form['destination'] = '';
+			$form['destination'] = '';
 			$form['formName'] = 'ItemCreateReplicaSingle';
 		}
 
 	/* Find all the possible locations where this item can be linked. */
-	list($ret, $albumIds) = GalleryCoreApi::fetchAllItemIds(
-		'GalleryAlbumItem', array('core.addDataItem', 'core.view'));
+		list($ret, $albumIds) = GalleryCoreApi::fetchAllItemIds(
+			'GalleryAlbumItem',
+			array('core.addDataItem', 'core.view')
+		);
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* Load all the album entities */
-	list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
+		list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -215,8 +213,7 @@ class ItemCreateReplicaSingleView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'replica');
 		if ($ret) {
 			return array($ret, null);

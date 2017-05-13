@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class WebCamSiteAdminController extends GalleryController
-{
+class WebCamSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -46,18 +44,26 @@ class WebCamSiteAdminController extends GalleryController
 
 			if (isset($form['duration'])) {
 				/* Accept input for locales that use comma as fraction separator */
-		$form['duration'] = str_replace(',', '.', $form['duration']);
+				$form['duration'] = str_replace(',', '.', $form['duration']);
 			}
 			if (!isset($form['duration']) || !is_numeric($form['duration'])) {
 				$error[] = 'form[error][duration]';
 			} else {
 				$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'webcam', 'duration', round($form['duration'] * 60));
+					'module',
+					'webcam',
+					'duration',
+					round($form['duration'] * 60)
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
 				$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'webcam', 'fromweb', $form['fromweb']);
+					'module',
+					'webcam',
+					'fromweb',
+					$form['fromweb']
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -78,13 +84,11 @@ class WebCamSiteAdminController extends GalleryController
 /**
  * Settings for Webcam images
  */
-class WebCamSiteAdminView extends GalleryView
-{
+class WebCamSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -104,7 +108,7 @@ class WebCamSiteAdminView extends GalleryView
 				}
 			}
 		/* String conversion here may use comma as fraction separator, based on locale */
-		$form['duration'] = (string)round($form['duration'] / 60, 2);
+			$form['duration'] = (string)round($form['duration'] / 60, 2);
 		}
 
 		$WebCamSiteAdmin = array(

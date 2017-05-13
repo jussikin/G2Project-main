@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ConfigureMultirootController extends GalleryController
-{
+class ConfigureMultirootController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -69,13 +67,11 @@ class ConfigureMultirootController extends GalleryController
 /**
  * Multiroot setup assistant
  */
-class ConfigureMultirootView extends GalleryView
-{
+class ConfigureMultirootView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -174,8 +170,7 @@ class ConfigureMultirootView extends GalleryView
 	 * Helper function to create an alternate guest user.
 	 * @access private
 	 */
-	public function _newGuestUser($userName, $albumId)
-	{
+	public function _newGuestUser($userName, $albumId) {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return array(

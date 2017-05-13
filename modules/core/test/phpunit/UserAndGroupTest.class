@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17949 $
  */
-class UserAndGroupTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class UserAndGroupTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -45,8 +42,7 @@ class UserAndGroupTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'id.adminGroup', $this->_siteAdminGroupId);
 		if ($ret) {
 			return $ret;
@@ -61,8 +57,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create user, delete user
 	 */
-	public function testCreateUser()
-	{
+	public function testCreateUser() {
 		global $gallery;
 		
 		/* Create a new user */
@@ -91,8 +86,7 @@ class UserAndGroupTest extends GalleryTestCase
 	 * permission to user, add item to user, delete user. check if permission
 	 * and group maps are gone, check if item still exists with correct owner, delete group
 	 */
-	public function testDeleteUser()
-	{
+	public function testDeleteUser() {
 		global $gallery;
 		
 		/* Create a new group */
@@ -262,8 +256,7 @@ class UserAndGroupTest extends GalleryTestCase
 	}
 	
 	/* Verify we can't delete the active user */
-	public function testDeleteSelf()
-	{
+	public function testDeleteSelf() {
 		global $gallery;
 		
 		list($ret, $user) = $this->_createRandomUser();
@@ -278,8 +271,7 @@ class UserAndGroupTest extends GalleryTestCase
 	}
 	
 	/* Verify we can't delete the anonymous user */
-	public function testDeleteAnonymousUser()
-	{
+	public function testDeleteAnonymousUser() {
 		list($ret, $anonymousUserId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 		
 		$ret = GalleryCoreApi::deleteEntityById($anonymousUserId, 'GalleryUser');
@@ -289,8 +281,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Verify we can't delete the last site admin.
 	 */
-	public function testDeleteLastAdmin()
-	{
+	public function testDeleteLastAdmin() {
 		/* Create a new user in a new group, and make that the Site Admins group */
 		list($ret, $user) = $this->_createRandomUser();
 		if ($ret) {
@@ -322,8 +313,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Verify item owners are remapped ok if we delete a site admin.
 	 */
-	public function testDeleteAdmin()
-	{
+	public function testDeleteAdmin() {
 		/* Create 2 new users in a new group, and make that the Site Admins group */
 		list($ret, $user) = $this->_createRandomUser();
 		if ($ret) {
@@ -411,8 +401,7 @@ class UserAndGroupTest extends GalleryTestCase
 	}
 	
 	/* Try to delete the all users group (this will fail) */
-	public function testDeleteSpecialGroups()
-	{
+	public function testDeleteSpecialGroups() {
 		foreach (array(
 			'id.allUserGroup',
 			'id.everybodyGroup',
@@ -443,8 +432,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create user, modify user, delete user
 	 */
-	public function testCreateAndModifyUser()
-	{
+	public function testCreateAndModifyUser() {
 		global $gallery;
 		
 		/* Create a new user */
@@ -495,8 +483,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create user, fetch user names, make sure it's in there, delete user
 	 */
-	public function testFetchUserNames()
-	{
+	public function testFetchUserNames() {
 		global $gallery;
 		
 		list($ret, $user) = $this->_createRandomUser();
@@ -525,8 +512,7 @@ class UserAndGroupTest extends GalleryTestCase
 	 * create another user2, add an item of user2 in user1's item tree
 	 * delete user1, check if the right items were deleted, clean up
 	 */
-	public function testDeleteUserItems()
-	{
+	public function testDeleteUserItems() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$phpVm = $gallery->getPhpVm();
@@ -784,8 +770,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Count users, Create user, count users again, delete user
 	 */
-	public function testFetchUserCount()
-	{
+	public function testFetchUserCount() {
 		global $gallery;
 		
 		list($ret, $countBefore) = GalleryCoreApi::fetchUserCount();
@@ -817,8 +802,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Verify that we can fetch all users with a given substring in their username
 	 */
-	public function testFetchUserCountBySubstring()
-	{
+	public function testFetchUserCountBySubstring() {
 		global $gallery;
 		
 		$unique = rand(0, 65535);
@@ -855,8 +839,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/*
 	 * Verify that we can fetch a count of the users from any particular group
 	 */
-	public function testFetchUserCountByGroupId()
-	{
+	public function testFetchUserCountByGroupId() {
 		global $gallery;
 		
 		/* Create a user */
@@ -907,8 +890,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Verify that we can fetch all users from a group with a given substring in their username
 	 */
-	public function testFetchUserCountBySubstringAndGroupId()
-	{
+	public function testFetchUserCountBySubstringAndGroupId() {
 		global $gallery;
 		
 		$strSearch = 'rand';
@@ -981,8 +963,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Verify that we can fetch all users from a group with a given substring in their username
 	 */
-	public function testFetchUsersFromGroupBySubstringAndGroupId()
-	{
+	public function testFetchUsersFromGroupBySubstringAndGroupId() {
 		global $gallery;
 		
 		$strSearch = 'rand';
@@ -1055,8 +1036,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create user, fetch it by name, delete user
 	 */
-	public function testFetchUserByName()
-	{
+	public function testFetchUserByName() {
 		global $gallery;
 		
 		list($ret, $user) = $this->_createRandomUser();
@@ -1083,8 +1063,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create group, delete group
 	 */
-	public function testCreateGroup()
-	{
+	public function testCreateGroup() {
 		global $gallery;
 		
 		list($ret, $group) = $this->_createRandomGroup();
@@ -1110,8 +1089,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create duplicate group
 	 */
-	public function testCreateDuplicateGroup()
-	{
+	public function testCreateDuplicateGroup() {
 		global $gallery;
 		
 		$groupTag = rand();
@@ -1146,8 +1124,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create duplicate user
 	 */
-	public function testCreateDuplicateUser()
-	{
+	public function testCreateDuplicateUser() {
 		global $gallery;
 		
 		$userTag = rand();
@@ -1182,8 +1159,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create group, modify group, delete group
 	 */
-	public function testCreateAndModifyGroup()
-	{
+	public function testCreateAndModifyGroup() {
 		global $gallery;
 		
 		/* Create a new group */
@@ -1235,8 +1211,7 @@ class UserAndGroupTest extends GalleryTestCase
 	 * Create user, create group, add user to group, remove user from group,
 	 * delete user, delete group
 	 */
-	public function testAddAndRemoveUserFromGroup()
-	{
+	public function testAddAndRemoveUserFromGroup() {
 		global $gallery;
 		
 		/* Create a user */
@@ -1293,8 +1268,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create group, fetch group names, make sure it's in there, delete group
 	 */
-	public function testFetchGroupNames()
-	{
+	public function testFetchGroupNames() {
 		global $gallery;
 		
 		list($ret, $group) = $this->_createRandomGroup();
@@ -1321,8 +1295,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Count groups, Create group, count groups again, delete group
 	 */
-	public function testFetchGroupCount()
-	{
+	public function testFetchGroupCount() {
 		global $gallery;
 		
 		list($ret, $countBefore) = GalleryCoreApi::fetchGroupCount();
@@ -1354,8 +1327,7 @@ class UserAndGroupTest extends GalleryTestCase
 	/**
 	 * Create group, fetch it by name, delete group
 	 */
-	public function testFetchGroupByName()
-	{
+	public function testFetchGroupByName() {
 		global $gallery;
 		
 		list($ret, $group) = $this->_createRandomGroup();
@@ -1379,8 +1351,7 @@ class UserAndGroupTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAssertSiteAdministrator()
-	{
+	public function testAssertSiteAdministrator() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$phpVm = $gallery->getPhpVm();
@@ -1393,16 +1364,14 @@ class UserAndGroupTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAssertHasItemPermission()
-	{
+	public function testAssertHasItemPermission() {
 		$ret = GalleryCoreApi::assertHasItemPermission($this->_getRootId(), 'core.view');
 		if ($ret) {
 			return $ret;
 		}
 	}
 	
-	public function testHasItemPermission()
-	{
+	public function testHasItemPermission() {
 		global $gallery;
 		
 		GalleryDataCache::clearPermissionCache();
@@ -1458,8 +1427,7 @@ class UserAndGroupTest extends GalleryTestCase
 		$this->assert(!$hasPermission, 'guest user shouldn\'t have core.view on item');
 	}
 	
-	public function testAddDuplicateUserToGroup()
-	{
+	public function testAddDuplicateUserToGroup() {
 		global $gallery;
 		
 		/* Create a new group */
@@ -1506,8 +1474,7 @@ class UserAndGroupTest extends GalleryTestCase
 		$this->assertEquals(1, $count, 'second');
 	}
 	
-	public function testCheckUserPassword()
-	{
+	public function testCheckUserPassword() {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return $ret;
@@ -1522,8 +1489,7 @@ class UserAndGroupTest extends GalleryTestCase
 		$this->assert($user->isCorrectPassword('pass&word>'), 'pass&word>');
 	}
 	
-	public function testCheckUserPasswordSimpleMd5Legacy()
-	{
+	public function testCheckUserPasswordSimpleMd5Legacy() {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return $ret;
@@ -1535,8 +1501,7 @@ class UserAndGroupTest extends GalleryTestCase
 		$this->assert($user->isCorrectPassword('password'), 'password');
 	}
 	
-	public function testCheckUserPasswordEntitiesLegacy()
-	{
+	public function testCheckUserPasswordEntitiesLegacy() {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return $ret;
@@ -1558,8 +1523,7 @@ class UserAndGroupTest extends GalleryTestCase
 		$this->assert($user->isCorrectPassword($password), 'check password original');
 	}
 	
-	public function testCheckUserPasswordPhpassFallback()
-	{
+	public function testCheckUserPasswordPhpassFallback() {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return $ret;
@@ -1595,8 +1559,7 @@ class UserAndGroupTest extends GalleryTestCase
 /*
  * Allow the suppression of expected errors.
  */
-function UserAndGroupTest_error_handler($errno, $errstr, $errfile, $errline)
-{
+function UserAndGroupTest_error_handler($errno, $errstr, $errfile, $errline) {
 	if (error_reporting() == 0 && strpos($errstr, 'fopen(/dev/urandom)') !== false) {
 		/* The @ error suppression operator was used, so don't log this error. */
 		return false;

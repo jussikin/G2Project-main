@@ -27,15 +27,12 @@
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 20951 $
  */
-class GdModule extends GalleryModule
-{
-	public function __construct()
-	{
+class GdModule extends GalleryModule {
+	public function __construct() {
 		$this->GdModule();
 	}
 	
-	public function GdModule()
-	{
+	public function GdModule() {
 		global $gallery;
 		
 		$this->setId('gd');
@@ -58,8 +55,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		if (!isset($currentVersion)) {
 			/* Initial install */
 			$ret = $this->setParameter('jpegQuality', '75');
@@ -74,8 +70,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our graphics class with the factory */
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'GdToolkit', 'Gd', 'modules/gd/classes/GdToolkit.class', 'gd', null);
 		if ($ret) {
@@ -88,8 +83,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		/* Load any classes we require */
 		GalleryCoreApi::requireOnce('modules/gd/classes/GdToolkitHelper.class');
 		
@@ -159,8 +153,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires all fields to be filled out before it can be activated. */
 		list($ret, $value) = $this->getParameter('jpegQuality');
 		if ($ret) {
@@ -205,8 +198,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		list($ret, $needsConfiguration) = $this->needsConfiguration();
 		if ($ret) {
 			return array(
@@ -224,8 +216,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -240,8 +231,7 @@ class GdModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'gd.AdminGd';
 	}
 }

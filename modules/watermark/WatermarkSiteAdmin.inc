@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class WatermarkSiteAdminController extends GalleryController
-{
+class WatermarkSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
@@ -53,7 +51,7 @@ class WatermarkSiteAdminController extends GalleryController
 			$status['addError'] = 1;
 		} elseif (isset($form['action']['delete']) && isset($form['delete']['watermarkId'])) {
 			list($ret, $wasDeleted) =
-		WatermarkHelper::deleteWatermarkImageById($form['delete']['watermarkId']);
+			WatermarkHelper::deleteWatermarkImageById($form['delete']['watermarkId']);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -62,23 +60,31 @@ class WatermarkSiteAdminController extends GalleryController
 				$status['delete'] = 1;
 			} else {
 				/* Watermark is in use.. redirect to confirm page */
-		$results['redirect'] = array('view' => 'core.SiteAdmin',
+				$results['redirect'] = array('view' => 'core.SiteAdmin',
 						 'subView' => 'watermark.ConfirmDelete',
 						 'watermarkId' => $form['delete']['watermarkId'],
 						 'fromAdmin' => 1);
 			}
 		} elseif (isset($form['action']['save'])) {
 			foreach (array('allowUserWatermarks', 'forceDefaultWatermark') as $key) {
-				$ret = GalleryCoreApi::setPluginParameter('module', 'watermark',
-							  $key, empty($form[$key]) ? 0 : 1);
+				$ret = GalleryCoreApi::setPluginParameter(
+					'module',
+					'watermark',
+					$key,
+					empty($form[$key]) ? 0 : 1
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
 			}
 			foreach (array('hotlinkWatermarkId', 'defaultWatermarkId') as $key) {
 				if (!empty($form[$key])) {
-					$ret = GalleryCoreApi::setPluginParameter('module', 'watermark',
-								  $key, $form[$key]);
+					$ret = GalleryCoreApi::setPluginParameter(
+						'module',
+						'watermark',
+						$key,
+						$form[$key]
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -104,13 +110,11 @@ class WatermarkSiteAdminController extends GalleryController
 /**
  * Manage watermarks available for all users
  */
-class WatermarkSiteAdminView extends GalleryView
-{
+class WatermarkSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -123,7 +127,7 @@ class WatermarkSiteAdminView extends GalleryView
 			foreach (array('allowUserWatermarks', 'forceDefaultWatermark',
 			   'hotlinkWatermarkId', 'defaultWatermarkId') as $key) {
 				list($ret, $form[$key]) =
-			GalleryCoreApi::getPluginParameter('module', 'watermark', $key);
+				GalleryCoreApi::getPluginParameter('module', 'watermark', $key);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -153,13 +157,13 @@ class WatermarkSiteAdminView extends GalleryView
 		}
 
 	/* Set the form's encoding type since we're uploading binary files */
-	if ($template->hasVariable('SiteAdmin')) {
-		$SiteAdmin =& $template->getVariableByReference('SiteAdmin');
-		$SiteAdmin['enctype'] = 'multipart/form-data';
-	} else {
-		$SiteAdmin['enctype'] = 'multipart/form-data';
-		$template->setVariable('SiteAdmin', $SiteAdmin);
-	}
+		if ($template->hasVariable('SiteAdmin')) {
+			$SiteAdmin =& $template->getVariableByReference('SiteAdmin');
+			$SiteAdmin['enctype'] = 'multipart/form-data';
+		} else {
+			$SiteAdmin['enctype'] = 'multipart/form-data';
+			$template->setVariable('SiteAdmin', $SiteAdmin);
+		}
 
 		$WatermarkSiteAdmin = array('owners' => $owners);
 

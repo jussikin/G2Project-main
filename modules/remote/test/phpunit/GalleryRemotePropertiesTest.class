@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/remote/classes/GalleryRemoteProperties.clas
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryRemotePropertiesTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class GalleryRemotePropertiesTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function testSetAndListProperties()
-	{
+	public function testSetAndListProperties() {
 		$props = new GalleryRemoteProperties();
 		$props->setProperty('test.1', 'bar');
 		$props->setProperty('test.2', 'baz');
@@ -59,16 +56,14 @@ class GalleryRemotePropertiesTest extends GalleryControllerTestCase
 				$props->listProperties());
 	}
 
-	public function testHasProperty()
-	{
+	public function testHasProperty() {
 		$props = new GalleryRemoteProperties();
 		$props->setProperty('test.1', 'bar');
 		$this->assert($props->hasProperty('test.1'));
 		$this->assert(!$props->hasProperty('test.2'));
 	}
 
-	public function testGetProperty()
-	{
+	public function testGetProperty() {
 		$props = new GalleryRemoteProperties();
 		$props->setProperty('test.1', 'bar');
 		$this->assertEquals('bar', $props->getProperty('test.1'));

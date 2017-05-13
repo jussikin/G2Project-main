@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryItemHelper_simple
-{
+class GalleryItemHelper_simple {
 	/**
 	 * @see GalleryCoreApi::fetchThemeId
 	 */
-	public static function fetchThemeId($item)
-	{
+	public static function fetchThemeId($item) {
 		global $gallery;
 		
 		/* Find the right theme for this item */
@@ -77,8 +75,7 @@ class GalleryItemHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchChildCounts
 	 */
-	public static function fetchChildCounts($itemIds, $userId = null)
-	{
+	public static function fetchChildCounts($itemIds, $userId = null) {
 		global $gallery;
 		if (!isset($userId)) {
 			$userId = $gallery->getActiveUserId();
@@ -160,8 +157,7 @@ class GalleryItemHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchDescendentCounts
 	 */
-	public static function fetchDescendentCounts($itemIds, $userId = null)
-	{
+	public static function fetchDescendentCounts($itemIds, $userId = null) {
 		global $gallery;
 		if (!isset($userId)) {
 			$userId = $gallery->getActiveUserId();
@@ -244,8 +240,7 @@ class GalleryItemHelper_simple
 	 * @return array GalleryStatus a status code
 	 *               array(id => ##, id => ##)
 	 */
-	public function fetchUncachedDescendentCounts($itemIds, $userId)
-	{
+	public function fetchUncachedDescendentCounts($itemIds, $userId) {
 		global $gallery;
 		
 		if (!isset($userId)) {
@@ -345,8 +340,7 @@ class GalleryItemHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchItemIdCount
 	 */
-	public static function fetchItemIdCount($itemType, $permission = 'core.view', $userId = null)
-	{
+	public static function fetchItemIdCount($itemType, $permission = 'core.view', $userId = null) {
 		global $gallery;
 		if (!isset($userId)) {
 			$userId = $gallery->getActiveUserId();
@@ -424,8 +418,7 @@ class GalleryItemHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchAlbumTree
 	 */
-	public static function fetchAlbumTree($itemId = null, $depth = null, $userId = null, $IgnorePerms = false)
-	{
+	public static function fetchAlbumTree($itemId = null, $depth = null, $userId = null, $IgnorePerms = false) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		if (!isset($userId)) {

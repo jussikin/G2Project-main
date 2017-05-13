@@ -25,17 +25,14 @@
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17580 $
  */
-class AdminRepositoryControllerTest extends GalleryControllerTestCase
-{
+class AdminRepositoryControllerTest extends GalleryControllerTestCase {
 	public $_galleryTemplateAdapter;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminRepository');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 		$this->_galleryTemplateAdapter =& $gallery->getTemplateAdapter();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_templateAdapter =& $this->_galleryTemplateAdapter;
 		$gallery->_session = $this->_originalSession;
@@ -58,8 +54,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testUpdateIndex()
-	{
+	public function testUpdateIndex() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('form[action][update]', 1);
 
@@ -85,8 +80,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 		), $callback[0]);
 	}
 
-	public function testSaveRepositories()
-	{
+	public function testSaveRepositories() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('form[repositories][released]', 1);
 		GalleryUtilities::putRequestVariable('form[repositories][experimental]', '<script>something malicious</script>');
@@ -125,8 +119,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 		), unserialize($data));
 	}
 
-	public function testUpgradeAllNoUpgradeAvailable()
-	{
+	public function testUpgradeAllNoUpgradeAvailable() {
 		GalleryUtilities::putRequestVariable('form[action][upgradeAll]', 1);
 
 		$repository = new UnitTestRepository();
@@ -150,8 +143,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testUpgradeAll()
-	{
+	public function testUpgradeAll() {
 		GalleryUtilities::putRequestVariable('form[action][upgradeAll]', 1);
 
 		$packages = array(
@@ -187,10 +179,8 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class AdminRepositoryControllerTestUrlGenerator
-{
-	public function generateUrl($params = array(), $options = array())
-	{
+class AdminRepositoryControllerTestUrlGenerator {
+	public function generateUrl($params = array(), $options = array()) {
 		$buf = array();
 		foreach ($params as $key => $value) {
 			$buf[] = "$key=$value";
@@ -200,17 +190,14 @@ class AdminRepositoryControllerTestUrlGenerator
 	}
 }
 
-class AdminRepositoryControllerTestSession extends GallerySession
-{
+class AdminRepositoryControllerTestSession extends GallerySession {
 	public $_testStatus;
 
-	public function putStatus($statusData)
-	{
+	public function putStatus($statusData) {
 		$this->_testStatus = $statusData;
 	}
 
-	public function getStatus($remove = true)
-	{
+	public function getStatus($remove = true) {
 		return empty($this->_testStatus) ? false : array_pop($this->_testStatus);
 	}
 }

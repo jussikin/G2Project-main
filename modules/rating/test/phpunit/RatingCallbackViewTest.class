@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/rating/RatingCallback.inc');
  * @author Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingCallbackViewTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RatingCallbackViewTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -68,8 +65,7 @@ class RatingCallbackViewTest extends GalleryTestCase
 		}
 	}
 
-	public function testRenderImmediate()
-	{
+	public function testRenderImmediate() {
 		$rating = rand(1, 5);
 
 		GalleryUtilities::putRequestVariable('command', 'rate');
@@ -103,8 +99,7 @@ class RatingCallbackViewTest extends GalleryTestCase
 		$this->assertEquals($votesString, $results[2]);
 	}
 
-	public function testNoRatingPermissions()
-	{
+	public function testNoRatingPermissions() {
 		$rating = rand(1, 5);
 
 		GalleryUtilities::putRequestVariable('command', 'rate');
@@ -176,8 +171,7 @@ class RatingCallbackViewTest extends GalleryTestCase
 	$this->assert(!isset($results[1]));
 	}
 
-	public function testRatingPermissions()
-	{
+	public function testRatingPermissions() {
 		$rating = rand(1, 5);
 
 		GalleryUtilities::putRequestVariable('command', 'rate');

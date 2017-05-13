@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryRepositoryUtilities.cla
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17582 $
  */
-class GalleryRepository
-{
+class GalleryRepository {
 	/**
 	 * Repository utilities.
 	 * @var GalleryRepositoryUtilities
@@ -66,8 +65,7 @@ class GalleryRepository
 	 *               int error count (repositories that failed to load for some reason)
 	 * @static
 	 */
-	public static function getRepositories($sources = array(), $repositoryClassName = 'GalleryRepository')
-	{
+	public static function getRepositories($sources = array(), $repositoryClassName = 'GalleryRepository') {
 		$cacheKey = 'GalleryRepository::getRepositories(' . join('|', $sources) . ",$repositoryClassName)";
 		if (!GalleryDataCache::containsKey($cacheKey)) {
 			if (empty($sources)) {
@@ -120,8 +118,7 @@ class GalleryRepository
 	 *
 	 * @static
 	 */
-	public static function clearRepositoryCache($sources = array(), $repositoryClassName = 'GalleryRepository')
-	{
+	public static function clearRepositoryCache($sources = array(), $repositoryClassName = 'GalleryRepository') {
 		$cacheKey = 'GalleryRepository::getRepositories(' . join('|', $sources) . ",$repositoryClassName)";
 		GalleryDataCache::remove($cacheKey);
 	}
@@ -131,8 +128,7 @@ class GalleryRepository
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function init($source)
-	{
+	public function init($source) {
 		$this->_source = $source;
 		$this->_index = new GalleryRepositoryIndex($source);
 		$this->_utilities = new GalleryRepositoryUtilities();
@@ -154,8 +150,7 @@ class GalleryRepository
 	 *		     boolean availability
 	 *		     array repository core and plugin api versions
 	 */
-	public function isCoreUpgradeAvailable()
-	{
+	public function isCoreUpgradeAvailable() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(
@@ -228,8 +223,7 @@ class GalleryRepository
 	 * @return array GalleryStatus a status code
 	 *		     array package list
 	 */
-	public function getPluginUpgradeInfo($pluginType, $pluginId, $forBasePackageUpgrade = true)
-	{
+	public function getPluginUpgradeInfo($pluginType, $pluginId, $forBasePackageUpgrade = true) {
 		global $gallery;
 		$upgradeInfo = array(
 			'upgradeable' => false
@@ -359,8 +353,7 @@ class GalleryRepository
 	 * @return array GalleryStatus a status code
 	 *		     array plugin list
 	 */
-	public function getRepositoryPluginList($pluginType, $showAllPlugins = false, $coreApis = null)
-	{
+	public function getRepositoryPluginList($pluginType, $showAllPlugins = false, $coreApis = null) {
 		global $gallery;
 		
 		list($ret, $repositoryPluginList) = $this->_index->getPlugins($pluginType, $showAllPlugins, $coreApis);
@@ -483,8 +476,7 @@ class GalleryRepository
 	 * @param array $plugin2 second plugin list entry
 	 * @return boolean see strcmp()
 	 */
-	public function comparePluginListEntries($plugin1, $plugin2)
-	{
+	public function comparePluginListEntries($plugin1, $plugin2) {
 		global $gallery;
 		
 		if (isset($plugin1['groupLabel'])) {
@@ -510,8 +502,7 @@ class GalleryRepository
 	 * @return array GalleryStatus a status code
 	 *		     array package list
 	 */
-	public function getAllUpgradeablePackages()
-	{
+	public function getAllUpgradeablePackages() {
 		$packages = array();
 		foreach (array(
 			'module',
@@ -570,8 +561,7 @@ class GalleryRepository
 	 * @see GalleryRepositoryUtilities::updatePackageMetaData
 	 * @deprecated Only called from this class so remove on next major api bump.
 	 */
-	public function updatePackageMetaData($pluginType, $pluginId, $packageName, $packageVersion, $packageBuild, $locked)
-	{
+	public function updatePackageMetaData($pluginType, $pluginId, $packageName, $packageVersion, $packageBuild, $locked) {
 		return $this->_utilities->updatePackageMetaData($pluginType, $pluginId, $packageName, $packageVersion, $packageBuild, $locked);
 	}
 	
@@ -582,8 +572,7 @@ class GalleryRepository
 	 *	       string user-friendly error message
 	 * @todo Delete on the next major API bump as it is not referenced.
 	 */
-	public function createPluginsDirectory()
-	{
+	public function createPluginsDirectory() {
 		global $gallery;
 		
 		/* Create repository cache directory if it doesn't exist. */
@@ -625,8 +614,7 @@ class GalleryRepository
 	 * @return array GalleryStatus a status code
 	 *		     array list of packages with corresponding URLs
 	 */
-	public function getDownloadFileList($pluginData)
-	{
+	public function getDownloadFileList($pluginData) {
 		$files = array();
 		foreach ($pluginData as $pluginType => $plugin) {
 			foreach ($plugin as $pluginId => $packages) {
@@ -689,8 +677,7 @@ class GalleryRepository
 	 * @return array GalleryStatus a status code
 	 *		     array descriptor
 	 */
-	public function downloadAndUnpack($pluginType, $pluginId, $packageName, $relativePackageUrl)
-	{
+	public function downloadAndUnpack($pluginType, $pluginId, $packageName, $relativePackageUrl) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
@@ -753,8 +740,7 @@ class GalleryRepository
 	 * 		  boolean a flag indicating the plugin should be re-activated
 	 * 		  array string status messages indicating problems encounterd
 	 */
-	public function downloadPackagesForPlugin($pluginType, $pluginId, $pluginDownloadData, &$callback)
-	{
+	public function downloadPackagesForPlugin($pluginType, $pluginId, $pluginDownloadData, &$callback) {
 		global $gallery;
 		
 		$status = array();
@@ -913,8 +899,7 @@ class GalleryRepository
 	 * @param array $descriptor descriptor of the plugin the package belongs to
 	 * @return array of files that can't be overwritten (empty array if everything is ok)
 	 */
-	public function preVerifyPackage($packageName, $descriptor)
-	{
+	public function preVerifyPackage($packageName, $descriptor) {
 		return $this->_utilities->preVerifyPackage($descriptor['pluginType'], $descriptor['pluginId'], $packageName, $descriptor);
 	}
 	
@@ -925,8 +910,7 @@ class GalleryRepository
 	 * @param array $descriptor descriptor of the plugin the package belongs to
 	 * @return GalleryStatus a status code
 	 */
-	public function verifyPackageIntegrity($packageName, $descriptor)
-	{
+	public function verifyPackageIntegrity($packageName, $descriptor) {
 		return $this->_utilities->verifyPackageIntegrity($descriptor['pluginType'], $descriptor['pluginId'], $packageName, $descriptor['contents']);
 	}
 	
@@ -937,8 +921,7 @@ class GalleryRepository
 	 * @param $pluginId the plugin id (eg 'albumselect' or 'cart')
 	 * @return GalleryStatus a status code
 	 */
-	public function scanPlugin($pluginType, $pluginId)
-	{
+	public function scanPlugin($pluginType, $pluginId) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -1028,8 +1011,7 @@ class GalleryRepository
 	 * @static
 	 * @public
 	 */
-	public static function translateRepositoryName($source)
-	{
+	public static function translateRepositoryName($source) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(
@@ -1068,56 +1050,49 @@ class GalleryRepository
 	/**
 	 * @see GalleryRepositoryIndex::existsInCache
 	 */
-	public function localIndexExists()
-	{
+	public function localIndexExists() {
 		return $this->_index->existsInCache();
 	}
 	
 	/**
 	 * @see GalleryRepositoryIndex::update
 	 */
-	public function downloadIndex()
-	{
+	public function downloadIndex() {
 		return $this->_index->update();
 	}
 	
 	/**
 	 * @see GalleryRepositoryIndex::containsPlugin
 	 */
-	public function pluginExistsInIndex($pluginType, $pluginId)
-	{
+	public function pluginExistsInIndex($pluginType, $pluginId) {
 		return $this->_index->containsPlugin($pluginType, $pluginId);
 	}
 	
 	/**
 	 * @see GalleryRepositoryIndex::getMetaData
 	 */
-	public function getIndexMetaData()
-	{
+	public function getIndexMetaData() {
 		return $this->_index->getMetaData();
 	}
 	
 	/**
 	 * @see GalleryRepositoryIndex::getPackageVersionAndBuild
 	 */
-	public function getPackageVersionAndBuild($pluginType, $pluginId, $packageName)
-	{
+	public function getPackageVersionAndBuild($pluginType, $pluginId, $packageName) {
 		return $this->_index->getPackageVersionAndBuild($pluginType, $pluginId, $packageName);
 	}
 	
 	/**
 	 * @see GalleryRepositoryIndex::getPluginName
 	 */
-	public function getPluginName($pluginType, $pluginId)
-	{
+	public function getPluginName($pluginType, $pluginId) {
 		return $this->_index->getPluginName($pluginType, $pluginId);
 	}
 	
 	/**
 	 * @see GalleryRepositoryIndex::getLanguagePackageFiles
 	 */
-	public function getLanguagePackageFiles($locales)
-	{
+	public function getLanguagePackageFiles($locales) {
 		return $this->_index->getLanguagePackageFiles($locales);
 	}
 	
@@ -1130,8 +1105,7 @@ class GalleryRepository
 	 * 		     array string status messages indicating problems encounterd
 	 * 		     int count of packages installed
 	 */
-	public function downloadAndUnpackPackages($filesToDownload, &$callback)
-	{
+	public function downloadAndUnpackPackages($filesToDownload, &$callback) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 		$platform =& $gallery->getPlatform();
@@ -1233,8 +1207,7 @@ class GalleryRepository
 	 * @return array GalleryStatus a status code
 	 *  	     array string status messages indicating problems encounterd
 	 */
-	public function _preverifyAggregatePackages($packages, &$callback)
-	{
+	public function _preverifyAggregatePackages($packages, &$callback) {
 		global $gallery;
 		
 		$status = array();
@@ -1287,8 +1260,7 @@ class GalleryRepository
 	 * @param string $pluginId A plugin id
 	 * @access public
 	 */
-	public function removeObsoleteFiles($pluginType, $pluginId)
-	{
+	public function removeObsoleteFiles($pluginType, $pluginId) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

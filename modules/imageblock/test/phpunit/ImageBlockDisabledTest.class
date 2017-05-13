@@ -30,18 +30,15 @@ GalleryCoreApi::requireOnce('modules/imageblock/classes/ImageBlockHelper.class')
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17580 $
  */
-class ImageBlockDisabledTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageBlockDisabledTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
 	/**
 	 * Create an album for testing
 	 */
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -108,8 +105,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 	/**
 	 * Delete the album that was used for testing
 	 */
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removePluginParameter($this->_module->getPluginType(), $this->_module->getId(), 'itemId');
 		if ($ret) {
 			return $ret;
@@ -127,8 +123,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 		}
 	}
 	
-	public function _createSubAlbumWithItems($parentId)
-	{
+	public function _createSubAlbumWithItems($parentId) {
 		/* Create a new album and image, set thumbnail and highlight */
 		list($ret, $album) = $this->_createRandomAlbum($parentId);
 		if ($ret) {
@@ -184,8 +179,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 		);
 	}
 	
-	public function _addPhoto($parentId, $imagePath)
-	{
+	public function _addPhoto($parentId, $imagePath) {
 		list($ret, $photo) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPhotoItem');
 		if ($ret) {
 			return array(
@@ -236,8 +230,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 		);
 	}
 	
-	public function _addDerivative(&$item, &$src, $derivativeType, $size)
-	{
+	public function _addDerivative(&$item, &$src, $derivativeType, $size) {
 		list($ret, $derivative) = GalleryCoreApi::newFactoryInstanceByHint('GalleryDerivative', $item->getEntityType());
 		if ($ret) {
 			return array(
@@ -294,8 +287,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 		);
 	}
 	
-	public function assertBlock($block)
-	{
+	public function assertBlock($block) {
 		$this->assert(isset($block['id']), 'Missing id');
 		$this->assert(isset($block['viewCount']), 'Missing viewCount');
 		$this->assert(isset($block['title']), 'Missing title');
@@ -303,8 +295,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 		$this->assert(isset($block['thumb']), 'Missing thumb');
 	}
 	
-	public function testImageBlockDisabledNoItemsReturned()
-	{
+	public function testImageBlockDisabledNoItemsReturned() {
 		$smarty = new GallerySmarty();
 		$callbacks = new ImageBlockCallbacks();
 		$ret = $callbacks->callback(array(
@@ -317,8 +308,7 @@ class ImageBlockDisabledTest extends GalleryTestCase
 		$this->assert(!isset($data['ImageBlockData']['blocks']), 'Block should not exist');
 	}
 	
-	public function testImageBlockDisabledOneItemReturned()
-	{
+	public function testImageBlockDisabledOneItemReturned() {
 		/* Unset the ImageBlockDisabled flag on the subAlbum */
 		$ret = ImageBlockHelper::setDisabledFlag($this->_subAlbum, true, false);
 		if ($ret) {

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/PluginCallback.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PluginCallbackTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PluginCallbackTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -54,8 +51,7 @@ class PluginCallbackTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$this->_testPlugin->reset();
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 		
@@ -70,8 +66,7 @@ class PluginCallbackTest extends GalleryTestCase
 		}
 	}
 	
-	public function _handleCallback($command)
-	{
+	public function _handleCallback($command) {
 		$result = array();
 		$ret = $this->_callback->handleCallback($command, $result);
 		if ($ret) {
@@ -81,8 +76,7 @@ class PluginCallbackTest extends GalleryTestCase
 		return $result;
 	}
 	
-	public function testInstallModule()
-	{
+	public function testInstallModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -109,8 +103,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('activate'), 'activate not called');
 	}
 	
-	public function testInstallTheme()
-	{
+	public function testInstallTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -132,8 +125,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('activate'), 'activate not called');
 	}
 	
-	public function testInstallModuleNeedsConfiguration()
-	{
+	public function testInstallModuleNeedsConfiguration() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -155,8 +147,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('autoConfigure'), 'autoConfigure not called');
 	}
 	
-	public function testInstallModuleThatReportsWrongAutoConfigureResult()
-	{
+	public function testInstallModuleThatReportsWrongAutoConfigureResult() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -187,8 +178,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('activate'), 'activate not called');
 	}
 	
-	public function testUpgradeModule()
-	{
+	public function testUpgradeModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -215,8 +205,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('activate'), 'activate not called');
 	}
 	
-	public function testUpgradeTheme()
-	{
+	public function testUpgradeTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -241,8 +230,7 @@ class PluginCallbackTest extends GalleryTestCase
 	/**
 	 * Activate a module that doesn't require configuration (this should succeed)
 	 */
-	public function testActivateModule()
-	{
+	public function testActivateModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -269,8 +257,7 @@ class PluginCallbackTest extends GalleryTestCase
 	/**
 	 * Activate a theme.
 	 */
-	public function testActivateTheme()
-	{
+	public function testActivateTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -293,8 +280,7 @@ class PluginCallbackTest extends GalleryTestCase
 	/**
 	 * Activate a module that sends back a redirect
 	 */
-	public function testActivateModuleWithRedirect()
-	{
+	public function testActivateModuleWithRedirect() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -326,8 +312,7 @@ class PluginCallbackTest extends GalleryTestCase
 	/**
 	 * Activate a theme that sends back a redirect
 	 */
-	public function testActivateThemeWithRedirect()
-	{
+	public function testActivateThemeWithRedirect() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -355,8 +340,7 @@ class PluginCallbackTest extends GalleryTestCase
 	/**
 	 * Activate a module that requires configuration (this should fail)
 	 */
-	public function testActivateModuleNeedsConfiguration()
-	{
+	public function testActivateModuleNeedsConfiguration() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -377,8 +361,7 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Deactivate a module that is active (should succeed) */
-	public function testDeactivateModule()
-	{
+	public function testDeactivateModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -399,8 +382,7 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Deactivate a theme that is active (should succeed) */
-	public function testDeactivateTheme()
-	{
+	public function testDeactivateTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -424,8 +406,7 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Deactivate the default theme -- should redirect to an error page */
-	public function testDeactivateDefaultTheme()
-	{
+	public function testDeactivateDefaultTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -447,8 +428,7 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Deactivate a module that is inactive (should succeed silently) */
-	public function testDeactivateAlreadyDeactivatedModule()
-	{
+	public function testDeactivateAlreadyDeactivatedModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -465,8 +445,7 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Deactivate a theme that is inactive (should succeed silently) */
-	public function testDeactivateAlreadyDeactivatedTheme()
-	{
+	public function testDeactivateAlreadyDeactivatedTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -482,8 +461,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert(!$this->_testPlugin->wasCalled('deactivate'), 'deactivate was called');
 	}
 	
-	public function testUninstallActiveModule()
-	{
+	public function testUninstallActiveModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		$this->_testPlugin->setResult('isActive', array(
@@ -501,8 +479,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('uninstall'), 'uninstall was called');
 	}
 	
-	public function testUninstallInactiveModule()
-	{
+	public function testUninstallInactiveModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		$this->_testPlugin->setResult('isActive', array(
@@ -519,8 +496,7 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Uninstall a theme that is inactive */
-	public function testUninstallTheme()
-	{
+	public function testUninstallTheme() {
 		GalleryUtilities::putRequestVariable('pluginType', 'theme');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -537,8 +513,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('uninstall'), 'uninstall was not called');
 	}
 	
-	public function testDeleteActiveModule()
-	{
+	public function testDeleteActiveModule() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -586,8 +561,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('uninstall'), 'uninstall was not called');
 	}
 	
-	public function testDeleteModuleFailsToRmdir()
-	{
+	public function testDeleteModuleFailsToRmdir() {
 		GalleryUtilities::putRequestVariable('pluginType', 'module');
 		GalleryUtilities::putRequestVariable('pluginId', 'PluginCallbackControllerTest');
 		
@@ -608,8 +582,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$this->assert($this->_testPlugin->wasCalled('uninstall'), 'uninstall was not called');
 	}
 	
-	public function _getPluginState($type, $status)
-	{
+	public function _getPluginState($type, $status) {
 		list($ret, $state) = $this->_callback->getPluginState($type, $this->_testPlugin, $status);
 		if ($ret) {
 			return $ret;
@@ -619,14 +592,12 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 	
 	/* Core module is always active */
-	public function testGetPluginStateCore()
-	{
+	public function testGetPluginStateCore() {
 		$this->_testPlugin->setResult('getId', 'core');
 		$this->assertEquals('active', $this->_getPluginState('module', array()));
 	}
 	
-	public function testGetPluginStateActive()
-	{
+	public function testGetPluginStateActive() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getRequiredCoreApi', GalleryCoreApi::getApiVersion());
 		$this->_testPlugin->setResult('getRequiredModuleApi', GalleryModule::getApiVersion());
@@ -635,8 +606,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testGetPluginStateIncompatibleCoreApi()
-	{
+	public function testGetPluginStateIncompatibleCoreApi() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getRequiredCoreApi', array(
 			0,
@@ -648,8 +618,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testGetPluginStateIncompatibleModuleApi()
-	{
+	public function testGetPluginStateIncompatibleModuleApi() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getRequiredCoreApi', GalleryCoreApi::getApiVersion());
 		$this->_testPlugin->setResult('getRequiredModuleApi', array(
@@ -661,8 +630,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testGetPluginStateUninstalled()
-	{
+	public function testGetPluginStateUninstalled() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getVersion', '1.0');
 		$this->_testPlugin->setResult('getRequiredCoreApi', GalleryCoreApi::getApiVersion());
@@ -673,8 +641,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testGetPluginStateUnupgraded()
-	{
+	public function testGetPluginStateUnupgraded() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getVersion', '2.0');
 		$this->_testPlugin->setResult('getRequiredCoreApi', GalleryCoreApi::getApiVersion());
@@ -685,8 +652,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testGetPluginStateUnconfigured()
-	{
+	public function testGetPluginStateUnconfigured() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getVersion', '1.0');
 		$this->_testPlugin->setResult('needsConfiguration', array(
@@ -701,8 +667,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testGetPluginStateInactive()
-	{
+	public function testGetPluginStateInactive() {
 		$this->_testPlugin->setResult('getId', 'anything');
 		$this->_testPlugin->setResult('getVersion', '1.0');
 		$this->_testPlugin->setResult('needsConfiguration', array(
@@ -717,8 +682,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testCalculateStateChangesNoChange()
-	{
+	public function testCalculateStateChangesNoChange() {
 		$this->assertEquals(array(
 			'states' => array(),
 			'deleted' => array()
@@ -739,8 +703,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testCalculateStateChangesIdsDontConflict()
-	{
+	public function testCalculateStateChangesIdsDontConflict() {
 		$this->assertEquals(array(
 			'states' => array(),
 			'deleted' => array()
@@ -763,8 +726,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testCalculateStateChangesIds()
-	{
+	public function testCalculateStateChangesIds() {
 		$this->assertEquals(array(
 			'states' => array(
 				'theme' => array(
@@ -794,8 +756,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testCalculateStateChangesPluginDeleted()
-	{
+	public function testCalculateStateChangesPluginDeleted() {
 		$this->assertEquals(array(
 			'states' => array(),
 			'deleted' => array(
@@ -821,8 +782,7 @@ class PluginCallbackTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testFailureInPluginStatesBeforeHandlingRequestTriggersRollback()
-	{
+	public function testFailureInPluginStatesBeforeHandlingRequestTriggersRollback() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('command', 'test');
 		$saveStorage = $gallery->_storage;
@@ -848,8 +808,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$gallery->_storage = $saveStorage;
 	}
 	
-	public function testFailureInCallbackTriggersRollback()
-	{
+	public function testFailureInCallbackTriggersRollback() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('command', 'test');
 		$saveStorage = $gallery->_storage;
@@ -876,8 +835,7 @@ class PluginCallbackTest extends GalleryTestCase
 		$gallery->_storage = $saveStorage;
 	}
 	
-	public function testFailureInPluginStatesAfterHandlingRequestTriggersRollback()
-	{
+	public function testFailureInPluginStatesAfterHandlingRequestTriggersRollback() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('command', 'test');
 		$saveStorage = $gallery->_storage;
@@ -910,63 +868,51 @@ class PluginCallbackTest extends GalleryTestCase
 	}
 }
 
-class MockGalleryStatus
-{
-	public function MockGalleryStatus()
-	{
+class MockGalleryStatus {
+	public function MockGalleryStatus() {
 		/* Put something in here so that empty($this) won't return true */
 		$this->something = 1;
 	}
 	
-	public function putInSession()
-	{
+	public function putInSession() {
 		$_GET['putInSession'] = 1;
 	}
 	
-	public function wasPutInSession()
-	{
+	public function wasPutInSession() {
 		return !empty($_GET['putInSession']);
 	}
 }
 
-class PluginCallbackMockStorage
-{
-	public function rollbackTransaction()
-	{
+class PluginCallbackMockStorage {
+	public function rollbackTransaction() {
 		$this->rolledBack = 1;
 
 		return null;
 	}
 	
-	public function checkPoint()
-	{
+	public function checkPoint() {
 		$this->checkPointed = 1;
 
 		return null;
 	}
 }
 
-class PluginCallbackWithFakeHandler extends PluginCallbackView
-{
-	public function setReply($call, $reply)
-	{
+class PluginCallbackWithFakeHandler extends PluginCallbackView {
+	public function setReply($call, $reply) {
 		$this->_replies[$call][] = $reply;
 	}
 	
-	public function getPluginStates()
-	{
+	public function getPluginStates() {
 		return array_shift($this->_replies['getPluginStates']);
 	}
 	
-	public function handleCallback($command, &$result)
-	{
+	public function handleCallback($command, &$result) {
 		$result['status'] = 'success';
 
 		return array_shift($this->_replies['handleCallback']);
 	}
 	
-	public function calculateStateChanges($beforeStates, $afterStates)
-	{
+	public function calculateStateChanges($beforeStates, $afterStates) {
 		return array_shift($this->_replies['calculateStateChanges']);
 	}
 }
@@ -977,15 +923,12 @@ class PluginCallbackWithFakeHandler extends PluginCallbackView
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class PluginCallbackControllerTestPlugin
-{
-	public function setResult($func, $result)
-	{
+class PluginCallbackControllerTestPlugin {
+	public function setResult($func, $result) {
 		$_GET['test']['returnMap'][$func][] = $result;
 	}
 	
-	public function _call($func)
-	{
+	public function _call($func) {
 		$_GET['test']['callMap'][$func] = 1;
 		
 		if (!isset($_GET['test']['returnMap'][$func])) {
@@ -995,90 +938,72 @@ class PluginCallbackControllerTestPlugin
 		return array_pop($_GET['test']['returnMap'][$func]);
 	}
 	
-	public function wasCalled($function)
-	{
+	public function wasCalled($function) {
 		return isset($_GET['test']['callMap'][$function]);
 	}
 	
-	public function reset()
-	{
+	public function reset() {
 		unset($_GET['test']);
 	}
 	
-	public function getId()
-	{
+	public function getId() {
 		return $this->_call('getId');
 	}
 	
-	public function getVersion()
-	{
+	public function getVersion() {
 		return $this->_call('getVersion');
 	}
 	
-	public function getRequiredCoreApi()
-	{
+	public function getRequiredCoreApi() {
 		return $this->_call('getRequiredCoreApi');
 	}
 	
-	public function getRequiredModuleApi()
-	{
+	public function getRequiredModuleApi() {
 		return $this->_call('getRequiredModuleApi');
 	}
 	
-	public function getName()
-	{
+	public function getName() {
 		return 'PluginCallback Controller Test';
 	}
 	
-	public function init()
-	{
+	public function init() {
 		return $this->_call('init');
 	}
 	
-	public function installOrUpgrade()
-	{
+	public function installOrUpgrade() {
 		return $this->_call('installOrUpgrade');
 	}
 	
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		return $this->_call('autoConfigure');
 	}
 	
-	public function activate()
-	{
+	public function activate() {
 		return $this->_call('activate');
 	}
 	
-	public function deactivate()
-	{
+	public function deactivate() {
 		return $this->_call('deactivate');
 	}
 	
-	public function isActive()
-	{
+	public function isActive() {
 		return $this->_call('isActive');
 	}
 	
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		return $this->_call('needsConfiguration');
 	}
 	
-	public function uninstall()
-	{
+	public function uninstall() {
 		return $this->_call('uninstall');
 	}
 	
-	public function translate($string)
-	{
+	public function translate($string) {
 		return $string;
 	}
 }
 
-class PluginCallbackControllerTestModule extends PluginCallbackControllerTestPlugin
-{
+class PluginCallbackControllerTestModule extends PluginCallbackControllerTestPlugin {
 }
-class PluginCallbackControllerTestTheme extends PluginCallbackControllerTestPlugin
-{
+class PluginCallbackControllerTestTheme extends PluginCallbackControllerTestPlugin {
 }

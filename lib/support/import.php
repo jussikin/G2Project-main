@@ -131,8 +131,7 @@ if ($renderFullPage) {
  * @param string $importFile The file to be verified.
  * @return boolean true if there are no verification messages to display.
  */
-function verifyVersions(&$templateData, $importFile)
-{
+function verifyVersions(&$templateData, $importFile) {
 	global $gallery;
 	global $template;
 	$storage =& $gallery->getStorage();
@@ -168,8 +167,7 @@ function verifyVersions(&$templateData, $importFile)
  * Retrieve the list of available backup files from the backup directory
  * @param array $templateData The information to be displayed on the import page.
  */
-function getBackupFiles(&$templateData)
-{
+function getBackupFiles(&$templateData) {
 	global $gallery;
 	$platform =& $gallery->getPlatform();
 	
@@ -191,8 +189,7 @@ function getBackupFiles(&$templateData)
  * Update the progress bar with the current percent completion
  * @param float $percentage The current completion percentage.
  */
-function importProgressCallback($percentage)
-{
+function importProgressCallback($percentage) {
 	global $template;
 	$template->renderStatusMessage('Importing Gallery Database', '', $percentage);
 }

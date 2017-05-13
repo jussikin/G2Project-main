@@ -27,17 +27,14 @@ GalleryCoreApi::requireOnce("modules/core/AdminLanguageManager.inc");
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class AdminLanguageManagerViewTest extends GalleryViewTestCase
-{
+class AdminLanguageManagerViewTest extends GalleryViewTestCase {
 	public $_galleryTemplateAdapter;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryViewTestCase($methodName, 'core.AdminLanguageManager');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -85,8 +82,7 @@ class AdminLanguageManagerViewTest extends GalleryViewTestCase
 		$storage =& $gallery->getStorage();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$storage =& $gallery->getStorage();
@@ -101,8 +97,7 @@ class AdminLanguageManagerViewTest extends GalleryViewTestCase
 		}
 	}
 
-	public function testGetAllLanguagesCompatible()
-	{
+	public function testGetAllLanguagesCompatible() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -212,8 +207,7 @@ class AdminLanguageManagerViewTest extends GalleryViewTestCase
 		), $enableAllFlags, 'Enable all flags incorrect');
 	}
 
-	public function testGetAllLanguagesNotCompatible()
-	{
+	public function testGetAllLanguagesNotCompatible() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -309,8 +303,7 @@ class AdminLanguageManagerViewTest extends GalleryViewTestCase
 		), $enableAllFlags, 'Enable all flags incorrect');
 	}
 
-	public function testGetAllLanguagesNoPackages()
-	{
+	public function testGetAllLanguagesNoPackages() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -407,10 +400,8 @@ class AdminLanguageManagerViewTest extends GalleryViewTestCase
 	}
 }
 
-class AdminLanguagesViewTestTranslator extends GalleryTranslator
-{
-	public function getLanguageData()
-	{
+class AdminLanguagesViewTestTranslator extends GalleryTranslator {
+	public function getLanguageData() {
 		$supportedLanguages = array();
 		$defaultCountry = array();
 
@@ -439,8 +430,7 @@ class AdminLanguagesViewTestTranslator extends GalleryTranslator
 		);
 	}
 
-	public function canTranslate()
-	{
+	public function canTranslate() {
 		return true;
 	}
 }

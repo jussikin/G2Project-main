@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17714 $
  */
-class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
-{
-	public function __construct($methodName)
-	{
+class DownloadPicLensViewTest extends GalleryImmediateViewTestCase {
+	public function __construct($methodName) {
 		$this->GalleryImmediateViewTestCase($methodName, 'slideshow.DownloadPicLens');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -47,8 +44,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		$gallery->setConfig('apacheSetenvBroken', 0);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 		$this->assert($gallery->_platform->isComplete(), $gallery->_platform->getRemaining());
@@ -57,8 +53,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		return parent::tearDown();
 	}
 
-	public function testDownloadBogusFile()
-	{
+	public function testDownloadBogusFile() {
 		GalleryUtilities::putRequestVariable('file', 'bogus!');
 
 		list($ret, $results) = $this->_renderImmediate(array(), array());
@@ -66,8 +61,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testDownloadJavascript()
-	{
+	public function testDownloadJavascript() {
 		global $gallery;
 
 	/*
@@ -119,8 +113,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('DATA', $results);
 	}
 
-	public function testHeadJavascript()
-	{
+	public function testHeadJavascript() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('file', 'js');
@@ -155,8 +148,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testDownloadShockwaveFlash()
-	{
+	public function testDownloadShockwaveFlash() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('file', 'swf');
@@ -198,8 +190,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('DATA', $results);
 	}
 
-	public function testHeadShockwaveFlash()
-	{
+	public function testHeadShockwaveFlash() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('file', 'swf');
@@ -234,8 +225,7 @@ class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testDownloadMissingFile()
-	{
+	public function testDownloadMissingFile() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('file', 'js');

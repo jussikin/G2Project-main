@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/webdav/classes/WebDavHelper.class');
  * @author Andy Staudacher <ast@gmx>
  * @version $Revision: 17580 $
  */
-class WebDavControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class WebDavControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'webdav.WebDav');
 	}
 
-	public function testRequireAuthForAllRequestsByWindowsWebfolders()
-	{
+	public function testRequireAuthForAllRequestsByWindowsWebfolders() {
 		/* See bug 1645834 */
 	$this->_becomeGuestUser();
 
@@ -54,8 +51,7 @@ class WebDavControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testNoAuthRequestForLoggedInUsersForRequestsByWindowsWebfolders()
-	{
+	public function testNoAuthRequestForLoggedInUsersForRequestsByWindowsWebfolders() {
 		$_SERVER['REQUEST_METHOD'] = 'propfind';
 		$_SERVER['HTTP_USER_AGENT'] =
 		'Microsoft Data Access Internet Publishing Provider DAV foo bar';
@@ -67,8 +63,7 @@ class WebDavControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testNoAuthRequiredForOtherClients()
-	{
+	public function testNoAuthRequiredForOtherClients() {
 		$_SERVER['REQUEST_METHOD'] = 'propfind';
 		$_SERVER['HTTP_USER_AGENT'] = 'SOME USER AGENT STRING';
 		$this->_becomeGuestUser();
@@ -80,8 +75,7 @@ class WebDavControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testSpecialCharactersInFileName()
-	{
+	public function testSpecialCharactersInFileName() {
 		$_SERVER['REQUEST_METHOD'] = 'propfind';
 		$_SERVER['HTTP_USER_AGENT'] = 'SOME USER AGENT STRING';
 

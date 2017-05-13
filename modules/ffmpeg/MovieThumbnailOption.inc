@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class MovieThumbnailOption extends ItemAddOption
-{
+class MovieThumbnailOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $useWatermark) = GalleryCoreApi::getPluginParameter('module', 'ffmpeg', 'useWatermark');
 		if ($ret) {
 			return array(
@@ -56,8 +54,7 @@ class MovieThumbnailOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		$errors = $warnings = $movieIds = $thumbIds = array();
 		foreach ($items as $item) {
 			if (GalleryUtilities::isA($item, 'GalleryMovieItem')) {

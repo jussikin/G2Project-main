@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18160 $
  */
-class OracleStorage extends GalleryStorage
-{
-	public function __construct($config)
-	{
+class OracleStorage extends GalleryStorage {
+	public function __construct($config) {
 		$this->OracleStorage($config);
 	}
 	
-	public function OracleStorage($config)
-	{
+	public function OracleStorage($config) {
 		$this->GalleryStorage($config);
 		$this->_isTransactional = true;
 		$this->_isEmptyAllowedForNotNullColumn = false;
@@ -47,16 +44,14 @@ class OracleStorage extends GalleryStorage
 	 * Return the type of this database
 	 * @return string
 	 */
-	public function getType()
-	{
+	public function getType() {
 		return 'oracle';
 	}
 	
 	/**
 	 * @see GalleryStorage::_setConnectionSettings
 	 */
-	public function _setConnectionSettings(&$db)
-	{
+	public function _setConnectionSettings(&$db) {
 		/* May cause "ORA-12705: Cannot access NLS data files or invalid environment specified" */
 		/* @putenv("NLS_LANG=UTF8"); */
 		
@@ -66,8 +61,7 @@ class OracleStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::getFunctionsSql
 	 */
-	public function getFunctionSql($functionName, $args)
-	{
+	public function getFunctionSql($functionName, $args) {
 		switch ($functionName) {
 			case 'CONCAT':
 				$sql = implode(' || ', $args);
@@ -163,8 +157,7 @@ class OracleStorage extends GalleryStorage
 	 * Get database version.
 	 * @return string version
 	 */
-	public function getVersion()
-	{
+	public function getVersion() {
 		if (function_exists('oci_server_version')) {
 			if (!isset($this->_db)) {
 				list($ret, $this->_db) = $this->_getConnection();
@@ -183,8 +176,7 @@ class OracleStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::_getOptimizeStatements
 	 */
-	public function _getOptimizeStatements()
-	{
+	public function _getOptimizeStatements() {
 		/* Is this the right command to use? */
 		return array(
 			'ANALYZE TABLE %s COMPUTE STATISTICS'
@@ -194,8 +186,7 @@ class OracleStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::_normalizeValue
 	 */
-	public function _normalizeValue($value, $memberData, $fromDb = false)
-	{
+	public function _normalizeValue($value, $memberData, $fromDb = false) {
 		if ($fromDb && is_null($value) && ($memberData['type'] == STORAGE_TYPE_STRING || $memberData['type'] == STORAGE_TYPE_TEXT)) {
 			return '';
 		} else {
@@ -207,8 +198,7 @@ class OracleStorage extends GalleryStorage
 	 * Derived from PostgreSqlStorage::encodeBlob and adjusted for Oracle (based on experiments).
 	 * @see GalleryStorage::decodeBlob
 	 */
-	public function encodeBlob($blob)
-	{
+	public function encodeBlob($blob) {
 		/* See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html */
 		return addcslashes($blob, "\000..\037\134\177..\377");
 	}
@@ -216,8 +206,7 @@ class OracleStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::decodeBlob
 	 */
-	public function decodeBlob($blob)
-	{
+	public function decodeBlob($blob) {
 		return stripcslashes($blob);
 	}
 }

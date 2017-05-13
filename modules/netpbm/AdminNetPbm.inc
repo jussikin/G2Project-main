@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/netpbm/classes/NetPbmToolkitHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20947 $
  */
-class AdminNetPbmController extends GalleryController
-{
+class AdminNetPbmController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -54,7 +52,7 @@ class AdminNetPbmController extends GalleryController
 				$slash = $platform->getDirectorySeparator();
 				$form['path'] = trim($form['path']);
 				if (!empty($form['path'])) {
-					if ($form['path']{strlen($form['path']) - 1} != $slash) {
+					if ($form['path'][strlen($form['path']) - 1] != $slash) {
 						$form['path'] .= $slash;
 					}
 				}
@@ -185,13 +183,11 @@ class AdminNetPbmController extends GalleryController
 /**
  * Settings for NetPbm
  */
-class AdminNetPbmView extends GalleryView
-{
+class AdminNetPbmView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -229,7 +225,7 @@ class AdminNetPbmView extends GalleryView
 		) as $key) {
 			$form[$key] = trim($form[$key]);
 			if (!empty($form[$key])) {
-				if ($form[$key]{strlen($form[$key]) - 1} != $slash) {
+				if ($form[$key][strlen($form[$key]) - 1] != $slash) {
 					$form[$key] .= $slash;
 				}
 			}

@@ -26,8 +26,7 @@
  */
 require_once dirname(__FILE__) . '/modules/core/classes/GalleryUtilities.class';
 
-function GalleryInitFirstPass($params = array( ))
-{
+function GalleryInitFirstPass($params = array( )) {
 	global $gallery;
 	
 	ini_set('magic_quotes_runtime', 0);
@@ -81,7 +80,7 @@ function GalleryInitFirstPass($params = array( ))
 	
 	/* Sanitize the data path */
 	$dataBase = $gallery->getConfig('data.gallery.base');
-	if ($dataBase{strlen($dataBase) - 1} != $slash) {
+	if ($dataBase[strlen($dataBase) - 1] != $slash) {
 		$dataBase .= $slash;
 		$gallery->setConfig('data.gallery.base', $dataBase);
 	}
@@ -159,8 +158,7 @@ function GalleryInitFirstPass($params = array( ))
 	return null;
 }
 
-function GalleryInitSecondPass()
-{
+function GalleryInitSecondPass() {
 	global $gallery;
 	$session =& $gallery->getSession();
 	$urlGenerator =& $gallery->getUrlGenerator();
@@ -225,8 +223,7 @@ function GalleryInitSecondPass()
  * @param mixed $context the complete context at the time of the error
  * @return boolean true if we should skip the regular PHP error handler
  */
-function GalleryPhpErrorHandler($errorNumber, $errorString, $file, $line, $context)
-{
+function GalleryPhpErrorHandler($errorNumber, $errorString, $file, $line, $context) {
 	if (error_reporting() == 0) {
 		/* The @ error suppression operator was used, so don't log this error. */
 		return false;

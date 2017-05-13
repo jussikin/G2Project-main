@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/dcraw/classes/DcrawToolkitHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DcrawToolkit extends GalleryToolkit
-{
+class DcrawToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		global $gallery;
 		
 		if (!in_array($mimeType, array(
@@ -109,8 +107,7 @@ class DcrawToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		
 		if (!in_array($mimeType, array(

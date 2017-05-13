@@ -24,15 +24,12 @@
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemMimeEditControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemMimeEditControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMimeEdit');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMimeType(array(
 			'mimeType' => array(
 				'test/test',
@@ -49,8 +46,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testApplyNotViewable()
-	{
+	public function testApplyNotViewable() {
 		GalleryUtilities::putRequestVariable('form[action][apply]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'test/test');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(
@@ -79,8 +75,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		$this->assert(!$isViewable);
 	}
 	
-	public function testApplyViewable()
-	{
+	public function testApplyViewable() {
 		GalleryUtilities::putRequestVariable('form[action][apply]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'test/test');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(
@@ -110,8 +105,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		$this->assert($isViewable);
 	}
 	
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'test/test');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(
@@ -142,8 +136,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		$this->assert(!$isViewable, 'viewable');
 	}
 	
-	public function testMissingType()
-	{
+	public function testMissingType() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', '');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(
@@ -162,8 +155,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		), $results, 'Add new');
 	}
 	
-	public function testMissingExtension()
-	{
+	public function testMissingExtension() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'test/test');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(
@@ -182,8 +174,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		), $results, 'Add new');
 	}
 	
-	public function testMissingEverything()
-	{
+	public function testMissingEverything() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', '');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(
@@ -203,8 +194,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		), $results, 'Add new');
 	}
 	
-	public function testReuseExtension()
-	{
+	public function testReuseExtension() {
 		$extension = 'test-' . rand(111, 999);
 		$ret = GalleryCoreApi::addMimeType($extension, 'test/test2', false);
 		if ($ret) {
@@ -229,8 +219,7 @@ class ItemMimeEditControllerTest extends GalleryControllerTestCase
 		), $results, 'Add new');
 	}
 	
-	public function testSaveUppercase()
-	{
+	public function testSaveUppercase() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[mimeType]', 'Test/Test');
 		GalleryUtilities::putRequestVariable('form[extensions]', array(

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/register/classes/GalleryPendingUserHelper.c
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 17580 $
  */
-class GalleryPendingUserTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class GalleryPendingUserTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -48,8 +45,7 @@ class GalleryPendingUserTest extends GalleryTestCase
 		}
 	}
 
-	public function testPendingUserCreation()
-	{
+	public function testPendingUserCreation() {
 		global $gallery;
 
 	/* Create a new pending user */
@@ -73,8 +69,7 @@ class GalleryPendingUserTest extends GalleryTestCase
 		}
 	}
 
-	public function testPendingUserPassword()
-	{
+	public function testPendingUserPassword() {
 		/* Verify hashed password is created as GalleryUser would */
 	list($ret, $pendingUser) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
@@ -99,8 +94,7 @@ class GalleryPendingUserTest extends GalleryTestCase
 		$this->assert($user->isCorrectPassword($password), 'check password');
 	}
 
-	public function _createRandomPendingUser()
-	{
+	public function _createRandomPendingUser() {
 		list($ret, $user) =
 		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
 		if ($ret) {

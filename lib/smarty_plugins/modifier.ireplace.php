@@ -29,8 +29,7 @@
  *           in the replacement)
  * -------------------------------------------------------------
  */
-function smarty_modifier_ireplace($string, $search, $replace)
-{
+function smarty_modifier_ireplace($string, $search, $replace) {
 	$search = preg_quote($search, '/');
 
 	return preg_replace("/($search)/i", $replace, $string);

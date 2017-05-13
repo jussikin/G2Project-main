@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemEditThumbPage extends ItemEditPlugin
-{
+class ItemEditThumbPage extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		$status = null;
 		$error = array();
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'thumbpage');
@@ -41,7 +39,7 @@ class ItemEditThumbPage extends ItemEditPlugin
 
 		if (isset($form['action']['save'])) {
 			list($ret, $thumbnails) =
-		GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
+			GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 			if ($ret) {
 				return array($ret, null, null, null);
 			}
@@ -73,19 +71,21 @@ class ItemEditThumbPage extends ItemEditPlugin
 			$status = $module->translate('Changes saved successfully');
 		} /* else $form['action']['reset']) */
 
-	return array(null, $error, $status, false);
+		return array(null, $error, $status, false);
 	}
 
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		if ($form['formName'] != 'ItemEditThumbPage') {
 			$form['formName'] = 'ItemEditThumbPage';
 			$form['page'] = 1;
-			if (preg_match('/(^|;)select-page\|(\d+)/',
-			   $thumbnail->getDerivativeOperations(), $regs)) {
+			if (preg_match(
+				'/(^|;)select-page\|(\d+)/',
+				$thumbnail->getDerivativeOperations(),
+				$regs
+			)) {
 				$form['page'] = $regs[2];
 			}
 		}
@@ -107,11 +107,10 @@ class ItemEditThumbPage extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		if (GalleryUtilities::isA($item, 'GalleryDataItem') && isset($thumbnail)) {
 			list($ret, $mimeTypes) =
-		GalleryCoreApi::getPluginParameter('module', 'thumbpage', 'pageTypes');
+			GalleryCoreApi::getPluginParameter('module', 'thumbpage', 'pageTypes');
 			if (!$ret) {
 				$list = explode('|', $mimeTypes);
 				if (in_array($item->getMimeType(), $list)) {
@@ -128,8 +127,7 @@ class ItemEditThumbPage extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'thumbpage');
 		if ($ret) {
 			return array($ret, null);
@@ -145,8 +143,7 @@ class ItemEditThumbPage extends ItemEditPlugin
 	 *               int page count
 	 * @access private
 	 */
-	public function _getPageCount(&$item)
-	{
+	public function _getPageCount(&$item) {
 		list($ret, $path) = $item->fetchPath();
 		if ($ret) {
 			return array($ret, null);

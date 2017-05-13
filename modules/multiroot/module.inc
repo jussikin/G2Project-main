@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class MultirootModule extends GalleryModule
-{
-	public function __construct()
-	{
+class MultirootModule extends GalleryModule {
+	public function __construct() {
 		$this->MultirootModule();
 	}
 	
-	public function MultirootModule()
-	{
+	public function MultirootModule() {
 		global $gallery;
 		
 		$this->setId('multiroot');
@@ -57,16 +54,14 @@ class MultirootModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'multiroot.ConfigureMultiroot';
 	}
 	
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		return array(
 			null,
 			true
@@ -76,8 +71,7 @@ class MultirootModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		return array(
 			null,
 			false

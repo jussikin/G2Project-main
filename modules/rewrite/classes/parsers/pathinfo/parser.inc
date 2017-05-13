@@ -31,15 +31,12 @@ define('REWRITE_STATUS_NO_PATH_INFO', 21);
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class PathInfoParser extends RewriteParser
-{
-	public function __construct()
-	{
+class PathInfoParser extends RewriteParser {
+	public function __construct() {
 		$this->PathInfoParser();
 	}
 
-	public function PathInfoParser()
-	{
+	public function PathInfoParser() {
 		$this->_setParserId('pathinfo');
 		$this->_setParserType('inGallery');
 		$this->_setUrlGeneratorId('PathInfoUrlGenerator');
@@ -48,10 +45,10 @@ class PathInfoParser extends RewriteParser
 	/**
 	 * @see RewriteParser::saveActiveRules
 	 */
-	public function saveActiveRules($activeRules=null, $upgradeModule=null)
-	{
+	public function saveActiveRules($activeRules = null, $upgradeModule = null) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
+			'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class'
+		);
 
 		return PathInfoHelper::saveActiveRules($this, $activeRules, $upgradeModule);
 	}
@@ -59,10 +56,10 @@ class PathInfoParser extends RewriteParser
 	/**
 	 * @see RewriteParser::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
+			'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class'
+		);
 
 		list($ret, $code) = PathInfoHelper::checkPathInfo();
 		if ($ret) {
@@ -75,10 +72,10 @@ class PathInfoParser extends RewriteParser
 	/**
 	 * @see RewriteParser::loadTestResultsTemplate
 	 */
-	public function loadTestResultsTemplate(&$template, &$form)
-	{
+	public function loadTestResultsTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce(
-		'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
+			'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class'
+		);
 
 		return PathInfoHelper::loadTestResultsTemplate($template, $form);
 	}
@@ -86,8 +83,7 @@ class PathInfoParser extends RewriteParser
 	/**
 	 * @see RewriteParser::handleTestResultsRequest
 	 */
-	public function handleTestResultsRequest($form)
-	{
+	public function handleTestResultsRequest($form) {
 		$error = $status = array();
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

@@ -28,8 +28,7 @@
  *           raw html)
  * -------------------------------------------------------------
  */
-function smarty_modifier_markup($text)
-{
+function smarty_modifier_markup($text) {
 	static $parsers = array();
 	static $cacheKey = 'smarty_modifier_markup';
 	
@@ -77,33 +76,26 @@ function smarty_modifier_markup($text)
 	return $stripTags ? strip_tags($text) : $text;
 }
 
-class GalleryNoMarkupParser
-{
-	public function parse($text)
-	{
+class GalleryNoMarkupParser {
+	public function parse($text) {
 		return $text;
 	}
 }
 
-class GalleryHtmlMarkupParser
-{
-	public function parse($text)
-	{
+class GalleryHtmlMarkupParser {
+	public function parse($text) {
 		return GalleryUtilities::htmlSafe(html_entity_decode($text));
 	}
 }
 
-class GalleryBbcodeMarkupParser
-{
+class GalleryBbcodeMarkupParser {
 	public $_bbcode;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->GalleryBbcodeMarkupParser();
 	}
 	
-	public function GalleryBbcodeMarkupParser()
-	{
+	public function GalleryBbcodeMarkupParser() {
 		if (!class_exists('StringParser_BBCode')) {
 			GalleryCoreApi::requireOnce('lib/bbcode/stringparser_bbcode.class.php');
 		}
@@ -230,13 +222,11 @@ class GalleryBbcodeMarkupParser
 		$this->_bbcode->setCodeFlag('*', 'closetag', BBCODE_CLOSETAG_OPTIONAL);
 	}
 	
-	public function parse($text)
-	{
+	public function parse($text) {
 		return $this->_bbcode->parse($text);
 	}
 	
-	public function url($action, $attributes, $content, $params, &$node_object)
-	{
+	public function url($action, $attributes, $content, $params, &$node_object) {
 		if ($action == 'validate') {
 			/* The code is like [url]http://.../[/url] */
 			if (!isset($attributes['default'])) {
@@ -256,8 +246,7 @@ class GalleryBbcodeMarkupParser
 		}
 	}
 	
-	public function image($action, $attrs, $content, $params, &$node_object)
-	{
+	public function image($action, $attrs, $content, $params, &$node_object) {
 		if ($action == 'validate') {
 			return preg_match('#^(https?|ftp|mailto):|^/#', $content);
 		} else {
@@ -268,8 +257,7 @@ class GalleryBbcodeMarkupParser
 		}
 	}
 	
-	public function color($action, $attrs, $content, $params, &$node_object)
-	{
+	public function color($action, $attrs, $content, $params, &$node_object) {
 		if ($action == 'validate') {
 			return !empty($attrs['default']);
 		} else {
@@ -280,18 +268,15 @@ class GalleryBbcodeMarkupParser
 		}
 	}
 	
-	public function convertLineBreaks($text)
-	{
+	public function convertLineBreaks($text) {
 		return preg_replace("/\015\012|\015|\012/", "\n", $text);
 	}
 	
-	public function stripContents($text)
-	{
+	public function stripContents($text) {
 		return preg_replace("/[^\n]/", '', $text);
 	}
 	
-	public function stripLastLineBreak($text)
-	{
+	public function stripLastLineBreak($text) {
 		return preg_replace("/\n( +)?$/", '$1', $text);
 	}
 }

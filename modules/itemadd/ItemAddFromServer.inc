@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17589 $
  */
-class ItemAddFromServer extends ItemAddPlugin
-{
+class ItemAddFromServer extends ItemAddPlugin {
 	/**
 	 * @see ItemAddPlugin::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $param) = GalleryCoreApi::getPluginParameter('module', 'itemadd', 'fromserver');
 		if ($ret) {
 			return array(
@@ -59,8 +57,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$addController)
-	{
+	public function handleRequest($form, &$item, &$addController) {
 		global $gallery;
 		$this->_platform =& $gallery->getPlatform();
 		$this->_dirSep = $this->_platform->getDirectorySeparator();
@@ -118,7 +115,7 @@ class ItemAddFromServer extends ItemAddPlugin
 					null
 				);
 			}
-			if ($dir{strlen($dir) - 1} != $this->_dirSep) {
+			if ($dir[strlen($dir) - 1] != $this->_dirSep) {
 				$dir .= $this->_dirSep;
 			}
 			
@@ -349,8 +346,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	 * @param array $error An array of template error codes.
 	 * @return GalleryStatus
 	 */
-	public function addItem($parentId, $file, $useSymlink, $textFields, &$status, &$error)
-	{
+	public function addItem($parentId, $file, $useSymlink, $textFields, &$status, &$error) {
 		$fileName = basename($file);
 		$base = GalleryUtilities::getFileBase($fileName);
 		list($ret, $mimeType) = GalleryCoreApi::getMimeType($fileName);
@@ -381,8 +377,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	}
 	
 	/** @return array GalleryStatus, mixed id of new album or false */
-	public function addDirectory($parentId, $path, $useSymlink, $textFields, &$status, &$error)
-	{
+	public function addDirectory($parentId, $path, $useSymlink, $textFields, &$status, &$error) {
 		global $gallery;
 		
 		if (!GalleryUtilities::isPathInList($path, $this->_localServerDirList) || GalleryUtilities::isPathInList($path, array(
@@ -448,8 +443,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	 * @param array $error An array of template error codes.
 	 * @return GalleryStatus
 	 */
-	public function processDirectory($albumId, $path, $useSymlink, $textFields, $form, &$status, &$error)
-	{
+	public function processDirectory($albumId, $path, $useSymlink, $textFields, $form, &$status, &$error) {
 		global $gallery;
 		
 		list($ret, $lockId) = GalleryCoreApi::acquireReadLock($albumId);
@@ -558,8 +552,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	 * @param int $progressCount
 	 * @return int the number of files with this sub-tree of the filesystem
 	 */
-	public function _getFileCountForDirectory($dirName, &$progressCount)
-	{
+	public function _getFileCountForDirectory($dirName, &$progressCount) {
 		global $gallery;
 		
 		/* Breadth-first to keep the file-handle count low */
@@ -598,8 +591,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	 *               array of UTF-8 strings localServerDirList,
 	 *               array of system charset strings localServerDirList
 	 */
-	public function fetchLocalServerDirList()
-	{
+	public function fetchLocalServerDirList() {
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'itemadd');
 		if ($ret) {
 			return array(
@@ -626,8 +618,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	 * @see ItemAdd:loadTemplate
 	 * @todo Don't let the user select folders if the user is missing the core.addAlbum permission.
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		global $gallery;
 		
 		if ($form['formName'] != 'ItemAddFromServer') {
@@ -858,8 +849,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'itemadd');
 		if ($ret) {
 			return array(
@@ -878,8 +868,7 @@ class ItemAddFromServer extends ItemAddPlugin
 	 * Sort directory listing.. directory, known types, unknowns.
 	 * @access private
 	 */
-	public function _sortFiles($a, $b)
-	{
+	public function _sortFiles($a, $b) {
 		if (($a['type'] == 'directory' || $b['type'] == 'directory') && $a['type'] != $b['type']) {
 			return ($a['type'] == 'directory') ? -1 : 1;
 		}

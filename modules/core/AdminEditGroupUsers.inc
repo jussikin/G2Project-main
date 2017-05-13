@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminEditGroupUsersController extends GalleryController
-{
+class AdminEditGroupUsersController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -169,13 +167,11 @@ class AdminEditGroupUsersController extends GalleryController
 /**
  * This view will show the possibilities of user-group mappings for a specified group.
  */
-class AdminEditGroupUsersView extends GalleryView
-{
+class AdminEditGroupUsersView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

@@ -25,8 +25,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AddCommentController extends GalleryController
-{
+class AddCommentController extends GalleryController {
 	/**
 	 * ValidationPlugin instances to use when handling this request.  Only used by test code.
 	 *
@@ -38,8 +37,7 @@ class AddCommentController extends GalleryController
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -243,13 +241,11 @@ class AddCommentController extends GalleryController
 /**
  * This view will show a form to add a new comment to an item
  */
-class AddCommentView extends GalleryView
-{
+class AddCommentView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class');
 		
 		/* Load our item */
@@ -293,8 +289,7 @@ class AddCommentView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'comment');
 		if ($ret) {
 			return array(

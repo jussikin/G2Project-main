@@ -25,15 +25,12 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class AdminJpegtranControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminJpegtranControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'jpegtran.AdminJpegtran');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -49,8 +46,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		$gallery->setPlatform(new AdminJpegtranControllerTestPlatform());
 	}
 	
-	public function testSaveGoodPath()
-	{
+	public function testSaveGoodPath() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[path]', '/validPath/jpegtran');
@@ -76,8 +72,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('/validPath/jpegtran', $params['path'], 'wrong path stored in DB');
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 		
 		$results = $this->handleRequest();
@@ -91,8 +86,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
 		$results = $this->handleRequest();
@@ -106,8 +100,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveTestErrorPath()
-	{
+	public function testSaveTestErrorPath() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[path]', '/validPathBadBinary/jpegtran');
@@ -126,8 +119,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveBadPath()
-	{
+	public function testSaveBadPath() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[path]', '/invalidPath/jpegtran');
@@ -146,8 +138,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testNotExecutablePath()
-	{
+	public function testNotExecutablePath() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[path]', '/notExecutablePath/jpegtran');
@@ -166,8 +157,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveIncompletePath()
-	{
+	public function testSaveIncompletePath() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[path]', '/incompletePath/');
@@ -193,8 +183,7 @@ class AdminJpegtranControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('/incompletePath/jpegtran.exe', $path);
 	}
 	
-	public function testSaveMissingPath()
-	{
+	public function testSaveMissingPath() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[path]', '');
@@ -222,15 +211,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/WinNtPlatform.
  * @package Jpegtran
  * @subpackage PHPUnit
  */
-class AdminJpegtranControllerTestPlatform extends WinNtPlatform
-{
-	public function getDirectorySeparator()
-	{
+class AdminJpegtranControllerTestPlatform extends WinNtPlatform {
+	public function getDirectorySeparator() {
 		return '/';
 	}
 	
-	public function is_dir($dir)
-	{
+	public function is_dir($dir) {
 		switch ($dir) {
 			case '/validPath/':
 			case '/validPathBadBinary/':
@@ -242,13 +228,11 @@ class AdminJpegtranControllerTestPlatform extends WinNtPlatform
 		return false;
 	}
 	
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		return $file;
 	}
 	
-	public function is_file($path)
-	{
+	public function is_file($path) {
 		switch ($path) {
 			case '/validPath/jpegtran':
 			case '/validPathBadBinary/jpegtran':
@@ -260,8 +244,7 @@ class AdminJpegtranControllerTestPlatform extends WinNtPlatform
 		return false;
 	}
 	
-	public function is_executable($path)
-	{
+	public function is_executable($path) {
 		switch ($path) {
 			case '/validPath/jpegtran':
 			case '/validPathBadBinary/jpegtran':
@@ -272,28 +255,23 @@ class AdminJpegtranControllerTestPlatform extends WinNtPlatform
 		return false;
 	}
 	
-	public function tempnam($dir, $prefix)
-	{
+	public function tempnam($dir, $prefix) {
 		return 'tmp_123';
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		return true;
 	}
 	
-	public function unlink($args)
-	{
+	public function unlink($args) {
 		/* do nothing */
 	}
 	
-	public function isRestrictedByOpenBaseDir($path)
-	{
+	public function isRestrictedByOpenBaseDir($path) {
 		return false;
 	}
 	
-	public function exec($args)
-	{
+	public function exec($args) {
 		switch ($args[0][0]) {
 			case '/incompletePath/jpegtran.exe':
 			case '/validPath/jpegtran':

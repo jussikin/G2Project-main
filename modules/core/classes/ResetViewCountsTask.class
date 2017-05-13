@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlushDatabaseCacheTask.class')
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ResetViewCountsTask extends FlushDatabaseCacheTask
-{
+class ResetViewCountsTask extends FlushDatabaseCacheTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		$info['l10Domain'] = 'modules_core';
@@ -48,8 +46,7 @@ class ResetViewCountsTask extends FlushDatabaseCacheTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		

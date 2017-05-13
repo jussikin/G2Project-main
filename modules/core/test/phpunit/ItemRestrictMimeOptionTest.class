@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('lib/tools/phpunit/ItemAddOptionTestCase.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddOptionTestCase($methodName, 'quotas', 'ItemRestrictMimeOption');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -76,8 +73,7 @@ class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMimeType(array(
 			'mimeType' => array(
 				'test/file',
@@ -94,8 +90,7 @@ class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 		}
 	}
 	
-	public function testAllowAll()
-	{
+	public function testAllowAll() {
 		$ret = $this->_module->setParameter('allowMime', 'all');
 		if ($ret) {
 			return $ret;
@@ -108,8 +103,7 @@ class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 		$this->assert(!$isAppropriate);
 	}
 	
-	public function testAllow()
-	{
+	public function testAllow() {
 		global $gallery;
 		
 		$ret = $this->_module->setParameter('allowMime', 'allow');
@@ -156,8 +150,7 @@ class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 		}
 	}
 	
-	public function testBlock()
-	{
+	public function testBlock() {
 		global $gallery;
 		
 		$ret = $this->_module->setParameter('allowMime', 'block');
@@ -204,8 +197,7 @@ class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 		}
 	}
 	
-	public function testBlockByFileExtension()
-	{
+	public function testBlockByFileExtension() {
 		global $gallery;
 		
 		$ret = $this->_module->setParameter('allowMime', 'block');
@@ -260,8 +252,7 @@ class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 		}
 	}
 	
-	public function testAllowWithDisallowedFileExtension()
-	{
+	public function testAllowWithDisallowedFileExtension() {
 		global $gallery;
 		
 		$ret = $this->_module->setParameter('allowMime', 'allow');

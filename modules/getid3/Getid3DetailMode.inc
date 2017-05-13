@@ -25,13 +25,11 @@
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 17580 $
  */
-class Getid3DetailModeController extends GalleryController
-{
+class Getid3DetailModeController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest()
-	{
+	public function handleRequest() {
 		global $gallery;
 		
 		$mode = GalleryUtilities::getRequestVariables('mode');

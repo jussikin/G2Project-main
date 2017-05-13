@@ -35,10 +35,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class MockObject
-{
-	public function MockObject()
-	{
+class MockObject {
+	public function MockObject() {
 		$this->_className = get_class($this);
 		$_GET[$this->_className] = array(
 			'replies' => array(),
@@ -46,8 +44,7 @@ class MockObject
 		);
 	}
 	
-	public function setReply($function, $inputs, $outputs, $optional = false)
-	{
+	public function setReply($function, $inputs, $outputs, $optional = false) {
 		$_GET[$this->_className]['replies'][] = array(
 			$function,
 			$inputs,
@@ -56,8 +53,7 @@ class MockObject
 		);
 	}
 	
-	public function isComplete()
-	{
+	public function isComplete() {
 		foreach ($_GET[$this->_className]['replies'] as $reply) {
 			if (!$reply[3]) {
 				/* ignore optional replies */
@@ -69,13 +65,11 @@ class MockObject
 		return empty($incomplete) && !$_GET[$this->_className]['errorCount'];
 	}
 	
-	public function getRemaining()
-	{
+	public function getRemaining() {
 		return 'Error count: ' . $_GET[$this->_className]['errorCount'] . "\nRemaining requests: " . print_r($_GET[$this->_className]['replies'], true);
 	}
 	
-	public function _makeReply($function, $request)
-	{
+	public function _makeReply($function, $request) {
 		while ($expected = array_shift($_GET[$this->_className]['replies'])) {
 			if ($expected[0] == $function && $this->_parametersMatch($expected[1], $request)) {
 				$this->_called[$function][] = $request;
@@ -98,13 +92,11 @@ class MockObject
 		echo $ret->getAsHtml();
 	}
 	
-	public function getCalled($function)
-	{
+	public function getCalled($function) {
 		return $this->_called[$function];
 	}
 	
-	public function _parametersMatch($expected, $actual)
-	{
+	public function _parametersMatch($expected, $actual) {
 		if ($expected === '*') {
 			return 1;
 		}

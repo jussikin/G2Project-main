@@ -25,64 +25,58 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17785 $
  */
-class DownloadPicLensView extends GalleryView
-{
+class DownloadPicLensView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::shouldSaveSession
 	 */
-	public function shouldSaveSession()
-	{
+	public function shouldSaveSession() {
 		return false;
 	}
 
 	/**
 	 * @see GalleryView::autoCacheControl
 	 */
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return false;
 	}
 
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 
 	/* Figure out which file we're talking about */
-	$file = GalleryUtilities::getRequestVariables('file');
+		$file = GalleryUtilities::getRequestVariables('file');
 
 		$codeDir = $gallery->getConfig('data.gallery.plugins_data') . 'modules/slideshow/';
 		switch ($file) {
-	case 'js':
-		return $this->_sendFile(array('path' => "${codeDir}piclens.js",
+			case 'js':
+		        return $this->_sendFile(array('path' => "${codeDir}piclens.js",
 					  'mimeType' => 'application/x-javascript',
 					  'pseudoFileName' => 'piclens.js'));
 
-	case 'swf':
-		return $this->_sendFile(array('path' => "${codeDir}PicLensLite.swf",
+			case 'swf':
+		        return $this->_sendFile(array('path' => "${codeDir}PicLensLite.swf",
 					  'mimeType' => 'application/x-shockwave-flash',
 					  'pseudoFileName' => 'PicLensLite.swf'));
 
-	default:
-		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
-	}
+			default:
+		        return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+		}
 	}
 
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 
@@ -90,8 +84,7 @@ class DownloadPicLensView extends GalleryView
 	 * Copied from modules/core/DownloadItem.inc
 	 * @todo refactor all the various _sendFile() implementations into an API call
 	 */
-	public function _sendFile($data)
-	{
+	public function _sendFile($data) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
@@ -100,9 +93,9 @@ class DownloadPicLensView extends GalleryView
 	 * Try to prevent Apache's mod_deflate from gzipping the output since it's likely already
 	 * a binary file and broken versions of mod_deflate sometimes get the byte count wrong.
 	 */
-	if (function_exists('apache_setenv') && !@$gallery->getConfig('apacheSetenvBroken')) {
-		@apache_setenv('no-gzip', '1');
-	}
+		if (function_exists('apache_setenv') && !@$gallery->getConfig('apacheSetenvBroken')) {
+			@apache_setenv('no-gzip', '1');
+		}
 
 		$requestMethod =
 		GalleryUtilities::strtolower(GalleryUtilities::getServerVar('REQUEST_METHOD'));
@@ -119,29 +112,29 @@ class DownloadPicLensView extends GalleryView
 		$phpVm->header('Cache-Control: public');
 
 	/* If the request method is HEAD, don't send back the body */
-	if ($requestMethod == 'head') {
-		$phpVm->header('Content-length: 0');
-	} else {
-		if ($stats[7] > 0) {
-			$phpVm->header('Content-length: ' . $stats[7]);
-		}
-		/*
-	     * Don't use readfile() because it buffers the entire file in memory.  Profiling shows
-	     * that this approach is as efficient as fpassthru() but we get to call
-	     * guaranteeTimeLimit which prevents it from failing on very large files
-	     */
-		if ($fd = $platform->fopen($data['path'], 'rb')) {
-			while (true) {
-				$bytes = $platform->fread($fd, 65535);
-				if (strlen($bytes) == 0) {
-					break;
-				}
-				echo $bytes;
-				$gallery->guaranteeTimeLimit(30);
+		if ($requestMethod == 'head') {
+			$phpVm->header('Content-length: 0');
+		} else {
+			if ($stats[7] > 0) {
+				$phpVm->header('Content-length: ' . $stats[7]);
 			}
-			$platform->fclose($fd);
+			/*
+			 * Don't use readfile() because it buffers the entire file in memory.  Profiling shows
+			 * that this approach is as efficient as fpassthru() but we get to call
+			 * guaranteeTimeLimit which prevents it from failing on very large files
+			 */
+			if ($fd = $platform->fopen($data['path'], 'rb')) {
+				while (true) {
+					$bytes = $platform->fread($fd, 65535);
+					if (strlen($bytes) == 0) {
+						break;
+					}
+					echo $bytes;
+					$gallery->guaranteeTimeLimit(30);
+				}
+				$platform->fclose($fd);
+			}
 		}
-	}
 
 		return null;
 	}

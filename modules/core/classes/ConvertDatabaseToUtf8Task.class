@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ConvertDatabaseToUtf8Task extends MaintenanceTask
-{
+class ConvertDatabaseToUtf8Task extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		$info['l10Domain'] = 'modules_core';
@@ -47,8 +45,7 @@ class ConvertDatabaseToUtf8Task extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -93,9 +90,7 @@ class ConvertDatabaseToUtf8Task extends MaintenanceTask
  *
  * @todo use the real progress bar when we unify the two implementations.
  */
-class MockStatusMonitor
-{
-	public function renderStatusMessage()
-	{
+class MockStatusMonitor {
+	public function renderStatusMessage() {
 	}
 }

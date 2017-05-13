@@ -30,15 +30,12 @@ GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteUrlGeneratorTes
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
-{
-	public function __construct($methodName)
-	{
+class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -72,8 +69,7 @@ class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 	 * gallery2/v/foobar/randomAlbum/ -> isapi_rewrite changes REQUEST_URI so we'd still assume that
 	 * a relative URL is alright.  But it isn't, we should use server-relative URLs in this case.
 	 */
-	public function testGenerateUrlMustBeServerRelative()
-	{
+	public function testGenerateUrlMustBeServerRelative() {
 		$env = array('REQUEST_URI' => '/gallery2/' . GALLERY_MAIN_PHP .
 			 '?g2_view=core.ShowItem&g2_itemId=17');
 		$params = $this->_getTestUrlParams();
@@ -87,8 +83,7 @@ class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 		}
 	}
 
-	public function testDisablesShortUrlsInEmbeddedModeWhenNotConfigured()
-	{
+	public function testDisablesShortUrlsInEmbeddedModeWhenNotConfigured() {
 		$ret = GalleryCoreApi::removePluginParameter(
 		'module', 'rewrite', 'isapirewrite.embeddedLocation');
 		if ($ret) {
@@ -112,8 +107,7 @@ class IsapiRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 		$this->assert($this->_urlGenerator->_error, 'no init error when embedded');
 	}
 
-	public function testDisablesShortUrlsInStandaloneModeWhenNotConfigured()
-	{
+	public function testDisablesShortUrlsInStandaloneModeWhenNotConfigured() {
 		$ret = GalleryCoreApi::removePluginParameter(
 		'module', 'rewrite', 'isapirewrite.galleryLocation');
 		if ($ret) {

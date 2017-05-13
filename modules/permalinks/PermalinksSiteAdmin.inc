@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/permalinks/classes/PermalinksMapHelper.clas
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 17580 $
  */
-class PermalinksSiteAdminController extends GalleryController
-{
+class PermalinksSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -54,7 +52,7 @@ class PermalinksSiteAdminController extends GalleryController
 				}
 			}
 			$status['PermalinksSiteAdmin']['success'] =
-		$module->translate('Permalink(s) deleted successfully');
+			$module->translate('Permalink(s) deleted successfully');
 		}
 
 		list($ret, $autoPermalink) =
@@ -67,15 +65,19 @@ class PermalinksSiteAdminController extends GalleryController
 		$newAutoPermalink = isset($form['PermalinksSiteAdmin']['autoPermalink']) ? 1 : 0;
 
 		if ($autoPermalink != $newAutoPermalink) {
-			$ret = GalleryCoreApi::setPluginParameter('module', 'permalinks',
-							  'autoPermalink', $newAutoPermalink);
+			$ret = GalleryCoreApi::setPluginParameter(
+				'module',
+				'permalinks',
+				'autoPermalink',
+				$newAutoPermalink
+			);
 			if ($ret) {
 				return array($ret, null);
 			}
 		}
 
 	/* Figure out where to redirect upon success */
-	$method = empty($error) ? 'redirect' : 'delegate';
+		$method = empty($error) ? 'redirect' : 'delegate';
 		$results[$method]['view'] = 'core.SiteAdmin';
 		$results[$method]['subView'] = 'permalinks.PermalinksSiteAdmin';
 		$results['status'] = $status;
@@ -88,13 +90,11 @@ class PermalinksSiteAdminController extends GalleryController
 /**
  * Settings for Permalinks
  */
-class PermalinksSiteAdminView extends GalleryView
-{
+class PermalinksSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);

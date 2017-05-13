@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class KeyAlbumModule extends GalleryModule
-{
-	public function __construct()
-	{
+class KeyAlbumModule extends GalleryModule {
+	public function __construct() {
 		$this->KeyAlbumModule();
 	}
 	
-	public function KeyAlbumModule()
-	{
+	public function KeyAlbumModule() {
 		global $gallery;
 		$this->setId('keyalbum');
 		$this->setName($gallery->i18n('Keyword Albums'));
@@ -55,8 +52,7 @@ class KeyAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'keyalbum');
 		if ($ret) {
 			return $ret;
@@ -115,8 +111,7 @@ class KeyAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -131,8 +126,7 @@ class KeyAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemSummaries
 	 */
-	public function getItemSummaries($items, $permissions, &$template)
-	{
+	public function getItemSummaries($items, $permissions, &$template) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -185,8 +179,7 @@ class KeyAlbumModule extends GalleryModule
 	 * @param string $split characters that separate keywords
 	 * @return array of keywords (unsanitized string => sanitized string)
 	 */
-	public function splitKeywords($keywords, $split)
-	{
+	public function splitKeywords($keywords, $split) {
 		$result = array();
 		GalleryUtilities::unsanitizeInputValues($keywords, false);
 		foreach (preg_split('/[' . $split . ']+/u', $keywords) as $keyword) {
@@ -203,8 +196,7 @@ class KeyAlbumModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		return array(
 			array(
 				'comment' => $this->translate('Keyword Album'),

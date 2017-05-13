@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 20886 $
  */
-class RewriteHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RewriteHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -95,8 +92,7 @@ class RewriteHelperTest extends GalleryTestCase
 					   'urlEncode' => false, 'useAuthToken' => false);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = $this->_module->deactivate(false);
 		if ($ret) {
 			return $ret;
@@ -113,8 +109,7 @@ class RewriteHelperTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetRewriteParser()
-	{
+	public function testGetRewriteParser() {
 		list($ret, $parser) = RewriteHelper::getRewriteParser();
 		if ($ret) {
 			return $ret;
@@ -140,8 +135,7 @@ class RewriteHelperTest extends GalleryTestCase
 		$this->assert(ERROR_MISSING_VALUE & $ret->getErrorCode());
 	}
 
-	public function testParseActiveRules()
-	{
+	public function testParseActiveRules() {
 		$tests = array();
 		$serverName = GalleryUtilities::getServerVar('HTTP_HOST');
 
@@ -379,8 +373,7 @@ class RewriteHelperTest extends GalleryTestCase
 		}
 	}
 
-	public function testParseBadKeyword()
-	{
+	public function testParseBadKeyword() {
 		$activeRules = array();
 		$activeRules['rewritehelpermock'][0] = array('pattern' => 'p/%badKeyword%');
 		$expectedActiveRules = $activeRules;
@@ -398,8 +391,7 @@ class RewriteHelperTest extends GalleryTestCase
 		$this->assertEquals($expectedActiveRules, $activeRules, 'active rules');
 	}
 
-	public function testParseBadParser()
-	{
+	public function testParseBadParser() {
 		$activeRules = array();
 		$activeRules['rewritehelpermock'][8] = array('pattern' => 'phpunit');
 		$expectedActiveRules = $activeRules;
@@ -417,8 +409,7 @@ class RewriteHelperTest extends GalleryTestCase
 		$this->assertEquals($expectedActiveRules, $activeRules, 'active rules');
 	}
 
-	public function testParseDupeMatch()
-	{
+	public function testParseDupeMatch() {
 		/* It might be desirable to activate two rules for one Gallery view */
 	$activeRules = array();
 		$activeRules['rewritehelpermock'][2] = array('pattern' => 'phpunit1');
@@ -456,8 +447,7 @@ class RewriteHelperTest extends GalleryTestCase
 		$this->assertEquals($expectedActiveRules, $activeRules, 'active rules');
 	}
 
-	public function testSortRules()
-	{
+	public function testSortRules() {
 		$serverName = GalleryUtilities::getServerVar('HTTP_HOST');
 
 	/* Initialize active rules in reverse order */
@@ -559,8 +549,7 @@ class RewriteHelperTest extends GalleryTestCase
 		$this->assertEquals($expectedActiveRules, $activeRules, 'active rules');
 	}
 
-	public function testParseQuoteMetaChars()
-	{
+	public function testParseQuoteMetaChars() {
 		$activeRules = array();
 		$activeRules['rewritehelpermock'][1] = array('pattern' => 'php.-/%unit%');
 		$expectedActiveRules = $activeRules;
@@ -586,8 +575,7 @@ class RewriteHelperTest extends GalleryTestCase
 		$this->assertEquals($expectedActiveRules, $activeRules, 'active rules');
 	}
 
-	public function testSetAndGetHistoryForModule()
-	{
+	public function testSetAndGetHistoryForModule() {
 		$moduleId = 'test-' . rand();
 		$expected = array('r1' => 'abc', 1 => '.*');
 		$ret = RewriteHelper::setHistoryForModule($moduleId, $expected);
@@ -618,19 +606,15 @@ class RewriteHelperTest extends GalleryTestCase
 
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteParser.class');
 
-class RewriteHelperMockParser extends RewriteParser
-{
-	public function RewriteHelperMockParser()
-	{
+class RewriteHelperMockParser extends RewriteParser {
+	public function RewriteHelperMockParser() {
 		$this->_setParserId('rewritehelpermock');
 		$this->_setParserType('preGallery');
 	}
 }
 
-class RewriteHelperMockModule extends GalleryModule
-{
-	public function RewriteHelperMockModule()
-	{
+class RewriteHelperMockModule extends GalleryModule {
+	public function RewriteHelperMockModule() {
 		global $gallery;
 
 		$this->setId('rewritehelpermock');
@@ -642,8 +626,7 @@ class RewriteHelperMockModule extends GalleryModule
 		$this->setRequiredModuleApi(GalleryModule::getApiVersion());
 	}
 
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		$rules = array();
 
 	/* Rule 0: Without keyword */
@@ -714,10 +697,8 @@ class RewriteHelperMockModule extends GalleryModule
 	}
 }
 
-class RewriteHelperMockPlatform extends GalleryPlatform
-{
-	public function file_exists($file)
-	{
+class RewriteHelperMockPlatform extends GalleryPlatform {
+	public function file_exists($file) {
 		if (strpos($file, 'modules/rewritehelpermock/module.inc') !== false) {
 			return true;
 		}
@@ -725,8 +706,7 @@ class RewriteHelperMockPlatform extends GalleryPlatform
 		return parent::file_exists($file);
 	}
 
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		if (strpos($path, 'modules/') !== false) {
 			$this->_list = array();
 			if ($dir = parent::opendir($path)) {
@@ -742,8 +722,7 @@ class RewriteHelperMockPlatform extends GalleryPlatform
 		return parent::opendir($path);
 	}
 
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if (strpos($path, 'modules/rewritehelpermock') !== false) {
 			return true;
 		}
@@ -751,8 +730,7 @@ class RewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 
-	public function readdir($handle)
-	{
+	public function readdir($handle) {
 		if ($handle == 'rewritehelpermock') {
 			return array_shift($this->_list);
 		}
@@ -760,8 +738,7 @@ class RewriteHelperMockPlatform extends GalleryPlatform
 		return parent::readdir($handle);
 	}
 
-	public function closedir($handle)
-	{
+	public function closedir($handle) {
 		if ($handle == 'rewritehelpermock') {
 			unset($this->_list);
 
@@ -771,8 +748,7 @@ class RewriteHelperMockPlatform extends GalleryPlatform
 		return parent::closedir($handle);
 	}
 
-	public function recursiveRmdir($path)
-	{
+	public function recursiveRmdir($path) {
 		return true;
 	}
 }

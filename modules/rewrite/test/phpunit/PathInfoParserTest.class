@@ -29,15 +29,12 @@
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/pathinfo/parser.inc');
 GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteParserTestCase.class');
-class PathInfoParserTest extends RewriteParserTestCase
-{
-	public function __construct($methodName)
-	{
+class PathInfoParserTest extends RewriteParserTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp('PathInfoParser');
 		if ($ret) {
@@ -47,8 +44,7 @@ class PathInfoParserTest extends RewriteParserTestCase
 		$this->_testPassString = 'PASS_PATH_INFO';
 	}
 
-	public function testHandleTestResultsRequest1()
-	{
+	public function testHandleTestResultsRequest1() {
 		$form  = array();
 
 		$form['force']['test'] = 1;
@@ -68,8 +64,7 @@ class PathInfoParserTest extends RewriteParserTestCase
 		$this->assertEquals(array(), $error);
 	}
 
-	public function testHandleTestResultsRequest2()
-	{
+	public function testHandleTestResultsRequest2() {
 		$form = array();
 
 		list($ret, $error, $status) = $this->_parser->handleTestResultsRequest($form);
@@ -88,8 +83,7 @@ class PathInfoParserTest extends RewriteParserTestCase
 		$this->assertEquals(array(), $error);
 	}
 
-	public function testNeedsConfigurationForced()
-	{
+	public function testNeedsConfigurationForced() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'pathinfo.forced', '1');
 		if ($ret) {
 			return $ret;

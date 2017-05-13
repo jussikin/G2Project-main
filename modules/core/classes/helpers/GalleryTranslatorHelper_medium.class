@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryTranslatorHelper_medium
-{
+class GalleryTranslatorHelper_medium {
 	/**
 	 * @see GalleryCoreApi::installTranslationsForPlugin
 	 */
-	public static function installTranslationsForPlugin($pluginType, $pluginId)
-	{
+	public static function installTranslationsForPlugin($pluginType, $pluginId) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$codeBase = GalleryCoreApi::getCodeBasePath();
@@ -79,8 +77,7 @@ class GalleryTranslatorHelper_medium
 	/**
 	 * @see GalleryCoreApi::removeTranslationsForPlugin
 	 */
-	public static function removeTranslationsForPlugin($pluginType, $pluginId)
-	{
+	public static function removeTranslationsForPlugin($pluginType, $pluginId) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -101,8 +98,7 @@ class GalleryTranslatorHelper_medium
 	/**
 	 * @see GalleryCoreApi::installTranslationsForLocale
 	 */
-	public static function installTranslationsForLocale($locale = null)
-	{
+	public static function installTranslationsForLocale($locale = null) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$codeBase = GalleryCoreApi::getCodeBasePath();
@@ -154,8 +150,7 @@ class GalleryTranslatorHelper_medium
 	/**
 	 * @see GalleryCoreApi::getLanguageDescription
 	 */
-	public static function getLanguageDescription($locale)
-	{
+	public static function getLanguageDescription($locale) {
 		$cacheKey = "GalleryTranslator::LanguageDescription::$locale";
 		if (!GalleryDataCache::containsKey($cacheKey)) {
 			list($newLocale, $languageData) = GalleryTranslator::getSupportedLocale($locale, false);
@@ -187,8 +182,7 @@ class GalleryTranslatorHelper_medium
 	/**
 	 * @see GalleryCoreApi::getSupportedLanguages
 	 */
-	public static function getSupportedLanguages()
-	{
+	public static function getSupportedLanguages() {
 		global $gallery;
 		
 		$cacheKey = 'GalleryTranslator::SupportedLanguages';

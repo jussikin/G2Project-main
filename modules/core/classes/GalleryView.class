@@ -29,8 +29,7 @@
  * @version $Revision: 17891 $
  * @abstract
  */
-class GalleryView
-{
+class GalleryView {
 	/**
 	 * The localization domain for this view.
 	 * @var string
@@ -43,8 +42,7 @@ class GalleryView
 	 *
 	 * @param string $moduleId the name of the module
 	 */
-	public function init($moduleId)
-	{
+	public function init($moduleId) {
 		global $gallery;
 		$this->_l10Domain = 'modules_' . $moduleId;
 	}
@@ -54,8 +52,7 @@ class GalleryView
 	 *
 	 * @return boolean true if it's an immediate view
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return false;
 	}
 	
@@ -67,8 +64,7 @@ class GalleryView
 	 * @param array $error any error information from a delegating controller
 	 * @return GalleryStatus a status code
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		return null;
 	}
 	
@@ -80,8 +76,7 @@ class GalleryView
 	 * @return array GalleryStatus a status code
 	 *               array ('body' => string template or 'redirect' => array)
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		return array(
 			null,
 			null
@@ -92,8 +87,7 @@ class GalleryView
 	 * Does this view allow access to non-admins when site is in maintenance mode?
 	 * @return boolean
 	 */
-	public function isAllowedInMaintenance()
-	{
+	public function isAllowedInMaintenance() {
 		return false;
 	}
 	
@@ -101,8 +95,7 @@ class GalleryView
 	 * Does this view allow direct access even in embed-only mode?
 	 * @return boolean
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return false;
 	}
 	
@@ -111,8 +104,7 @@ class GalleryView
 	 * immediate views are handled in views in Gallery.
 	 * @return bool true if the view changes data
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		return false;
 	}
 	
@@ -120,8 +112,7 @@ class GalleryView
 	 * Should session be saved and session cookie sent when this view is accessed?
 	 * @return boolean
 	 */
-	public function shouldSaveSession()
-	{
+	public function shouldSaveSession() {
 		return true;
 	}
 	
@@ -129,8 +120,7 @@ class GalleryView
 	 * Type of view.
 	 * @return view type contant
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_MODULE;
 	}
 	
@@ -148,8 +138,7 @@ class GalleryView
 	 *               GalleryView a view
 	 * @static
 	 */
-	public static function loadView($viewName)
-	{
+	public static function loadView($viewName) {
 		global $gallery;
 		
 		/* If the module is not active, only let site admins see the config view */
@@ -240,8 +229,7 @@ class GalleryView
 	 *                      'returnUrl' => string redirection URL)
 	 *               GalleryTheme the current theme
 	 */
-	public function doLoadTemplate(&$template)
-	{
+	public function doLoadTemplate(&$template) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -377,8 +365,7 @@ class GalleryView
 	 * @return array GalleryStatus
 	 *               string localized description
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -389,8 +376,7 @@ class GalleryView
 	 * Get the localization domain for this view.
 	 * @return string
 	 */
-	public function getL10Domain()
-	{
+	public function getL10Domain() {
 		return $this->_l10Domain;
 	}
 	
@@ -405,8 +391,7 @@ class GalleryView
 	 *               GalleryItem an item
 	 *               boolean true if item was specified, false if default was used
 	 */
-	public static function getItem($checkPermissions = true)
-	{
+	public static function getItem($checkPermissions = true) {
 		global $gallery;
 		$itemId = (int) GalleryUtilities::getRequestVariables('itemId');
 		$wasSpecified = true;
@@ -468,8 +453,7 @@ class GalleryView
 	 *               array theme parameters
 	 *               GalleryItem item context
 	 */
-	public function loadThemeAndParameters()
-	{
+	public function loadThemeAndParameters() {
 		list($ret, $item, $wasSpecified) = $this->getItem();
 		if ($ret) {
 			/* Ignore missing object here to avoid revealing valid/invalid ids */
@@ -535,8 +519,7 @@ class GalleryView
 	 *               GalleryTheme a theme instance (can be null)
 	 *               array theme parameters (only set if loaded via event)
 	 */
-	public function loadThemeForItem($item = null)
-	{
+	public function loadThemeForItem($item = null) {
 		if (!isset($item)) {
 			$nearestAlbum = null;
 		} elseif (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
@@ -610,8 +593,7 @@ class GalleryView
 	 *               array Theme parameters, see GalleryTheme::fetchParameters()
 	 * @access private
 	 */
-	public function _getThemeAndParametersByEvent($item)
-	{
+	public function _getThemeAndParametersByEvent($item) {
 		global $gallery;
 		
 		$event = GalleryCoreApi::newEvent('Gallery::LoadThemeAndParameters');
@@ -678,8 +660,7 @@ class GalleryView
 	 * @access private
 	 * @static
 	 */
-	public function _loadTheme($themeId)
-	{
+	public function _loadTheme($themeId) {
 		$validTheme = false;
 		list($ret, $theme) = GalleryCoreApi::loadPlugin('theme', $themeId, false, true);
 		if ($ret) {
@@ -716,8 +697,7 @@ class GalleryView
 	 *
 	 * @return bool (default true) to opt-in to itemId oriented cache control
 	 */
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return true;
 	}
 	
@@ -727,8 +707,7 @@ class GalleryView
 	 * @param string $access (optional) no-cache
 	 * @return GalleryStatus
 	 */
-	public function setCacheControl(&$template, $access = null)
-	{
+	public function setCacheControl(&$template, $access = null) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 		$itemId = (int) GalleryUtilities::getRequestVariables('itemId');
@@ -797,8 +776,7 @@ class GalleryView
 	 * @return GalleryStatus
 	 * @static
 	 */
-	public static function setStandardTemplateVariables(&$template)
-	{
+	public static function setStandardTemplateVariables(&$template) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -839,8 +817,7 @@ class GalleryView
 	 * @return array for return from GalleryView::loadTemplate or null
 	 * @access protected
 	 */
-	public function _permissionCheck($ret)
-	{
+	public function _permissionCheck($ret) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

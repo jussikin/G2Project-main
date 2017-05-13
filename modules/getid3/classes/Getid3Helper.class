@@ -45,16 +45,14 @@ define('GETID3_MP3_TITLE', 1);
  * A helper class for the Getid3 module.
  * @static
  */
-class Getid3Helper
-{
+class Getid3Helper {
 	/**
 	 * Reset the given view mode back to its default settings
 	 *
 	 * @param int $viewMode
 	 * @return GalleryStatus a status code
 	 */
-	public static function setDefaultProperties($viewMode)
-	{
+	public static function setDefaultProperties($viewMode) {
 		switch ($viewMode) {
 			case GETID3_SUMMARY:
 				/* This is an initial install; make sure that we have some reasonable defaults */
@@ -103,8 +101,7 @@ class Getid3Helper
 	 *        as returned by getid3()
 	 * @access private
 	 */
-	public static function _fetchRawGetid3Data($path, &$rawGetid3Data)
-	{
+	public static function _fetchRawGetid3Data($path, &$rawGetid3Data) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/getid3/lib/getid3/getid3.inc');
 		
@@ -119,8 +116,7 @@ class Getid3Helper
 		$rawGetid3Data = $getID3->analyze($path);
 	}
 	
-	public function getId3ArchiveRecurse($results, $fileArray, $nameprefix = '')
-	{
+	public function getId3ArchiveRecurse($results, $fileArray, $nameprefix = '') {
 		foreach (array_keys($fileArray) as $filename) {
 			/* Only prepend a non-empty nameprefix and '/' to filename */
 			if ($nameprefix == '') {
@@ -143,8 +139,7 @@ class Getid3Helper
 		return ($results);
 	}
 	
-	public function getId3ArchiveTar($fileDetails)
-	{
+	public function getId3ArchiveTar($fileDetails) {
 		$results = array();
 		foreach (array_keys($fileDetails) as $filename) {
 			if (is_array($fileDetails[$filename])) {
@@ -158,8 +153,7 @@ class Getid3Helper
 		return ($results);
 	}
 	
-	public static function getId3ArchiveData($path, $viewMode)
-	{
+	public static function getId3ArchiveData($path, $viewMode) {
 		self::_fetchRawGetid3Data($path, $rawGetid3Data);
 		$fileArray = null;
 		if (isset($rawGetid3Data['zip']['files'])) {
@@ -205,8 +199,7 @@ class Getid3Helper
 	 * @return array GalleryStatus a status code
 	 *               array title/value pairs
 	 */
-	public static function getId3Data($path, $viewMode)
-	{
+	public static function getId3Data($path, $viewMode) {
 		self::_fetchRawGetid3Data($path, $rawGetid3Data);
 		$getid3Keys = self::getGetid3Keys();
 		$results = array();
@@ -255,8 +248,7 @@ class Getid3Helper
 	 * @param string $value time string
 	 * @return int an unix timestamp, null if not parsed
 	 */
-	public function getTimeDowMDHMSY($value)
-	{
+	public function getTimeDowMDHMSY($value) {
 		/* Match "WED DEC 21 19:19:17 2005" format produced by a Canon SD400 */
 		if (preg_match('#(\w+)\ +(\w+)\ +(\d+)\ +(\d+):(\d+):(\d+)\ +(\d+)#', $value, $m)) {
 			$month = 0;
@@ -314,8 +306,7 @@ class Getid3Helper
 	 * @param string $value time string
 	 * @return int an unix timestamp, null if not parsed
 	 */
-	public function getTimeYMDHMS($value)
-	{
+	public function getTimeYMDHMS($value) {
 		/*
 	     * Match "2000:05:28 21:18:18" format produced by a
 	     *  TOSHIBA DIGITAL CAMERA PDRM70 VERSION 1.07
@@ -335,8 +326,7 @@ class Getid3Helper
 	 * @param string $value time string
 	 * @return int an unix timestamp, null if not parsed
 	 */
-	public function getTimeInt($value)
-	{
+	public function getTimeInt($value) {
 		if (preg_match('/^\d+$/', $value)) {
 			$time = intval($value);
 			/* Adjust time by time zone offset */
@@ -359,8 +349,7 @@ class Getid3Helper
 	 * @return string the result (eg. "1/400 sec")
 	 * @todo (donw) Implement postProcessValue
 	 */
-	public static function postProcessValue($property, $value)
-	{
+	public static function postProcessValue($property, $value) {
 		global $gallery;
 		
 		if (!is_numeric($value)) {
@@ -406,8 +395,7 @@ class Getid3Helper
 	 * @param string $path the path to the file
 	 * @return int an unix timestamp
 	 */
-	public static function getOriginationTimestamp($path)
-	{
+	public static function getOriginationTimestamp($path) {
 		$rawGetid3Data = array();
 		self::_fetchRawGetid3Data($path, $rawGetid3Data);
 		foreach (array(
@@ -456,8 +444,7 @@ class Getid3Helper
 	 *               string value
 	 * @access private
 	 */
-	public static function _getValue(&$source, $keyPath)
-	{
+	public static function _getValue(&$source, $keyPath) {
 		$key = array_shift($keyPath);
 		if (!isset($source[$key])) {
 			return null;
@@ -477,8 +464,7 @@ class Getid3Helper
 	 * @return array GalleryStatus a status code
 	 *               array logical exif property names
 	 */
-	public static function getProperties($viewMode)
-	{
+	public static function getProperties($viewMode) {
 		list($ret, $searchResults) = GalleryCoreApi::getMapEntry('Getid3PropsMap', array(
 			'property',
 			'sequence'
@@ -514,8 +500,7 @@ class Getid3Helper
 	 * @param array $properties logical property key/value pairs
 	 * @return GalleryStatus a status code
 	 */
-	public static function setProperties($viewMode, $properties)
-	{
+	public static function setProperties($viewMode, $properties) {
 		/* Remove all old map entries */
 		$ret = GalleryCoreApi::removeMapEntry('Getid3PropsMap', array(
 			'viewMode' => $viewMode
@@ -553,8 +538,7 @@ class Getid3Helper
 	 *
 	 * @return array getID3() keys
 	 */
-	public static function getGetid3Keys()
-	{
+	public static function getGetid3Keys() {
 		global $gallery;
 		static $data;
 		

@@ -25,13 +25,11 @@
  * @author Pierre-Luc Paour <paour@users.sf.net>
  * @version $Revision: 17580 $
  */
-class SlideshowAppletSiteAdminController extends GalleryController
-{
+class SlideshowAppletSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -50,10 +48,10 @@ class SlideshowAppletSiteAdminController extends GalleryController
 				}
 
 		/* modify it */
-		$variables[$form[$type]['name']] = $form[$type]['value'];
+				$variables[$form[$type]['name']] = $form[$type]['value'];
 
 		/* serialize it again */
-		$ret = $this->setVariables($type, $variables);
+				$ret = $this->setVariables($type, $variables);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -73,17 +71,17 @@ class SlideshowAppletSiteAdminController extends GalleryController
 			}
 
 		/* delete it */
-		unset($variables[$form['delete']['variable']]);
+			unset($variables[$form['delete']['variable']]);
 
 		/* serialize it again */
-		$ret = $this->setVariables($type, $variables);
+			$ret = $this->setVariables($type, $variables);
 			if ($ret) {
 				return array($ret, null);
 			}
 		}
 
 	/* Figure out where to redirect upon success */
-	$method = empty($error) ? 'redirect' : 'delegate';
+		$method = empty($error) ? 'redirect' : 'delegate';
 		$results[$method]['view'] = 'core.SiteAdmin';
 		$results[$method]['subView'] = 'slideshowapplet.SlideshowAppletSiteAdmin';
 		$results['status'] = $status;
@@ -92,60 +90,62 @@ class SlideshowAppletSiteAdminController extends GalleryController
 		return array(null, $results);
 	}
 
-	public function implode_with_key($assoc, $inglue = '=', $outglue = '&')
-	{
+	public function implode_with_key($assoc, $inglue = '=', $outglue = '&') {
 		$return = '';
 		if (!empty($assoc)) {
 			foreach ($assoc as $tk => $tv) {
 				$return = ($return != '' ? $return . $outglue : '') .
-		$tk . $inglue . $tv;
+				$tk . $inglue . $tv;
 			}
 		}
 
 		return $return;
 	}
 
-	public function getVariables($type)
-	{
-		list($ret, $variables) = GalleryCoreApi::getPluginParameter('module', 'slideshowapplet',
-		'slideshow' . $type . 'Variables');
+	public function getVariables($type) {
+		list($ret, $variables) = GalleryCoreApi::getPluginParameter(
+			'module',
+			'slideshowapplet',
+			'slideshow' . $type . 'Variables'
+		);
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* unserialize the plugin parameter */
-	if (!empty($variables)) {
-		$variables1 = explode('|', $variables);
-		foreach ($variables1 as $variable) {
-			list($key, $value) = explode('=', $variable);
-			$variables2[$key] = $value;
-		}
+		if (!empty($variables)) {
+			$variables1 = explode('|', $variables);
+			foreach ($variables1 as $variable) {
+				list($key, $value) = explode('=', $variable);
+				$variables2[$key] = $value;
+			}
 
-		return array(null, $variables2);
-	}
+			return array(null, $variables2);
+		}
 
 		return array(null, null);
 	}
 
-	public function setVariables($type, $variables)
-	{
+	public function setVariables($type, $variables) {
 		$params = $this->implode_with_key($variables, '=', '|');
 
-		return GalleryCoreApi::setPluginParameter('module', 'slideshowapplet',
-		'slideshow' . $type . 'Variables', $params);
+		return GalleryCoreApi::setPluginParameter(
+			'module',
+			'slideshowapplet',
+			'slideshow' . $type . 'Variables',
+			$params
+		);
 	}
 }
 
 /**
  * Settings for Slideshow Applet
  */
-class SlideshowAppletSiteAdminView extends GalleryView
-{
+class SlideshowAppletSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);

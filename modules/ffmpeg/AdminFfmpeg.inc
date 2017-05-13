@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/ffmpeg/classes/FfmpegToolkitHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20947 $
  */
-class AdminFfmpegController extends GalleryController
-{
+class AdminFfmpegController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -56,7 +54,7 @@ class AdminFfmpegController extends GalleryController
 					if ($platform->file_exists($form['path']) && $platform->is_dir($form['path'])) {
 						$form['path'] = trim($form['path']);
 						if (!empty($form['path'])) {
-							if ($form['path']{strlen($form['path']) - 1} != $slash) {
+							if ($form['path'][strlen($form['path']) - 1] != $slash) {
 								$form['path'] .= $slash;
 							}
 						}
@@ -203,8 +201,7 @@ class AdminFfmpegController extends GalleryController
 		);
 	}
 	
-	public function _processThumbnails($query, $operation)
-	{
+	public function _processThumbnails($query, $operation) {
 		global $gallery;
 		list($ret, $searchResults) = $gallery->search($query);
 		if ($ret) {
@@ -244,8 +241,7 @@ class AdminFfmpegController extends GalleryController
 		return null;
 	}
 	
-	public function _addWatermark(&$thumbnail)
-	{
+	public function _addWatermark(&$thumbnail) {
 		static $op = 'composite|plugins_data/modules/ffmpeg/filmreel.png,image/png,12,399';
 		$operations = $thumbnail->getDerivativeOperations();
 		if (strpos($operations, 'filmreel.png') === false) {
@@ -254,8 +250,7 @@ class AdminFfmpegController extends GalleryController
 		}
 	}
 	
-	public function _removeWatermark(&$thumbnail)
-	{
+	public function _removeWatermark(&$thumbnail) {
 		$operations = $thumbnail->getDerivativeOperations();
 		$thumbnail->setDerivativeOperations(rtrim(preg_replace('#(^|;)(composite\|[^;]*filmreel.png.*?(;|$))+#', '$1', $operations), ';'));
 	}
@@ -264,13 +259,11 @@ class AdminFfmpegController extends GalleryController
 /**
  * Settings for ffmpeg
  */
-class AdminFfmpegView extends GalleryView
-{
+class AdminFfmpegView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

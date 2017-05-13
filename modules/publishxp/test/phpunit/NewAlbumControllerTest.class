@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class NewAlbumControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class NewAlbumControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'publishxp.NewAlbum');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -57,8 +54,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 		GalleryUtilities::putRequestVariable('form[description]', 'test description');
 	}
 
-	public function testNewAlbumFailsWithoutViewPermission()
-	{
+	public function testNewAlbumFailsWithoutViewPermission() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_parentAlbumId);
 		if ($ret) {
 			return $ret;
@@ -68,8 +64,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(null, $results, 'attempt without view permission');
 	}
 
-	public function testNewAlbumFailsWithoutAddAlbumPermission()
-	{
+	public function testNewAlbumFailsWithoutAddAlbumPermission() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_parentAlbumId);
 		if ($ret) {
 			return $ret;
@@ -85,8 +80,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(null, $results, 'attempt without view permission');
 	}
 
-	public function testNewAlbum()
-	{
+	public function testNewAlbum() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_parentAlbumId);
 		if ($ret) {
 			return $ret;
@@ -128,8 +122,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 	$this->assert(in_array($album->getKeywords(), array(null, '')), 'keywords should be empty');
 	}
 
-	public function testNewAlbumWithXss()
-	{
+	public function testNewAlbumWithXss() {
 		GalleryUtilities::putRequestVariable('form[parentId]', $this->_getRootId());
 		GalleryUtilities::putRequestVariable(
 		'form[pathComponent]', $pathComponent = 'test-' . rand(1000, 9999));
@@ -164,8 +157,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testNewAlbumInvalidPathComponent()
-	{
+	public function testNewAlbumInvalidPathComponent() {
 		GalleryUtilities::putRequestVariable('form[pathComponent]', '@!INVALID!@');
 
 		$results = $this->handleRequest();
@@ -175,8 +167,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testNewAlbumMissingElements()
-	{
+	public function testNewAlbumMissingElements() {
 		GalleryUtilities::removeRequestVariable('form[pathComponent]');
 		GalleryUtilities::removeRequestVariable('form[title]');
 		GalleryUtilities::removeRequestVariable('form[summary]');
@@ -191,8 +182,7 @@ class NewAlbumControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testNewAlbumBogusParentId()
-	{
+	public function testNewAlbumBogusParentId() {
 		GalleryUtilities::putRequestVariable('form[parentId]', 0);
 
 	/* We don't allow this via the UI, so a system error is acceptable */

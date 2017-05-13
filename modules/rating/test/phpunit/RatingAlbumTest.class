@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RatingAlbumTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RatingAlbumTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -81,8 +78,7 @@ class RatingAlbumTest extends GalleryTestCase
 		}
 	}
 
-	public function testLoadThemeAndSettingsForAlbum()
-	{
+	public function testLoadThemeAndSettingsForAlbum() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'description', 'test desc');
 		if ($ret) {
 			return $ret;
@@ -102,8 +98,7 @@ class RatingAlbumTest extends GalleryTestCase
 		$this->assertEquals('test desc', $item->getDescription(), 'description');
 	}
 
-	public function testLoadThemeAndSettingsForItem()
-	{
+	public function testLoadThemeAndSettingsForItem() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'description', 'test desc');
 		if ($ret) {
 			return $ret;
@@ -126,8 +121,7 @@ class RatingAlbumTest extends GalleryTestCase
 				$item->parent->getChildrenFunction, 'get children function');
 	}
 
-	public function testLoadTemplateForAlbum()
-	{
+	public function testLoadTemplateForAlbum() {
 		global $gallery;
 		$theme =& $this->_template->getVariableByReference('theme');
 		$theme['actingUserId'] = $gallery->getActiveUserId();
@@ -146,8 +140,7 @@ class RatingAlbumTest extends GalleryTestCase
 		$this->assert(!in_array($this->_items[3]->getId(), $theme['allChildIds']), 'item 3');
 	}
 
-	public function testLoadTemplateForItem()
-	{
+	public function testLoadTemplateForItem() {
 		list($ret, $count) = GalleryCoreApi::fetchItemViewCount($this->_items[2]->getId());
 		if ($ret) {
 			return $ret;
@@ -173,8 +166,7 @@ class RatingAlbumTest extends GalleryTestCase
 		$this->assertEquals(1, $count, 'count after');
 	}
 
-	public function testLoadTemplateForItemNoPermission()
-	{
+	public function testLoadTemplateForItemNoPermission() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_items[1]->getId());
 		if ($ret) {
 			return $ret;
@@ -195,8 +187,7 @@ class RatingAlbumTest extends GalleryTestCase
 		}
 	}
 
-	public function testLimitTooLow()
-	{
+	public function testLimitTooLow() {
 		GalleryUtilities::putRequestVariable('limit', '1.5');
 
 		list($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());

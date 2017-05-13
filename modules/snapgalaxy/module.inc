@@ -27,22 +27,19 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class SnapGalaxyModule extends GalleryModule
-{
-	public function __construct()
-	{
+class SnapGalaxyModule extends GalleryModule {
+	public function __construct() {
 		$this->SnapGalaxyModule();
 	}
 
-	public function SnapGalaxyModule()
-	{
+	public function SnapGalaxyModule() {
 		global $gallery;
 
 		$this->setId('snapgalaxy');
 		$this->setName($gallery->i18n('SnapGalaxy'));
 		$this->setDescription($gallery->i18n('SnapGalaxy Photo Printing Module'));
 		$this->setVersion('2.0.0'); /* Update upgrade() too */
-	$this->_templateVersion = 1;
+		$this->_templateVersion = 1;
 		$this->setGroup('commerce', $gallery->i18n('Commerce'));
 		$this->setCallbacks('getSiteAdminViews|getItemLinks');
 		$this->setRequiredCoreApi(array(8, 0));
@@ -52,8 +49,7 @@ class SnapGalaxyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x=null)
-	{
+	public function upgrade($currentVersion, $x = null) {
 		global $gallery;
 
 		if (!isset($currentVersion)) {
@@ -65,43 +61,52 @@ class SnapGalaxyModule extends GalleryModule
 		}
 
 		switch ($currentVersion) {
-	case '0':
-		/* Register our permission */
-		$ret = GalleryCoreApi::registerPermission($this->getId(), 'snapgalaxy.print',
-		  $gallery->i18n('[snapgalaxy] Print'));
-		if ($ret) {
-			return $ret;
-		}
-		/* Give everybody print permission by default */
-		$gallery->guaranteeTimeLimit(300);
-		$ret = GalleryCoreApi::addGroupPermission(
-		$coreParams['id.rootAlbum'], $coreParams['id.everybodyGroup'],
-		'snapgalaxy.print', true);
-		if ($ret) {
-			return $ret;
-		}
-		$ret = $this->setParameter('snapgalaxyPartnerId', 'default');
-		if ($ret) {
-			return $ret;
-		}
-		break;
+			case '0':
+				/* Register our permission */
+				$ret = GalleryCoreApi::registerPermission(
+					$this->getId(),
+					'snapgalaxy.print',
+					$gallery->i18n('[snapgalaxy] Print')
+				);
+				if ($ret) {
+					return $ret;
+				}
+						/* Give everybody print permission by default */
+						$gallery->guaranteeTimeLimit(300);
+						$ret = GalleryCoreApi::addGroupPermission(
+							$coreParams['id.rootAlbum'],
+							$coreParams['id.everybodyGroup'],
+							'snapgalaxy.print',
+							true
+						);
+				if ($ret) {
+					return $ret;
+				}
+						$ret = $this->setParameter('snapgalaxyPartnerId', 'default');
+				if ($ret) {
+					return $ret;
+				}
+		        break;
 
-	case '0.9.0':
-	case '0.9.0.1':
-	case '0.9.1':
-		/* Implementing new version of the cart plugin interface */
-	case '0.9.2':
-	case '0.9.3':
-	case '0.9.4':
-	case '0.9.5':
+			case '0.9.0':
+			case '0.9.0.1':
+			case '0.9.1':
+				/* Implementing new version of the cart plugin interface */
+			case '0.9.2':
+			case '0.9.3':
+			case '0.9.4':
+			case '0.9.5':
+			case 'end of upgrade path':
+		        break;
 
-	case 'end of upgrade path':
-		break;
-
-	default:
-		return GalleryCoreApi::error(ERROR_BAD_PLUGIN, __FILE__, __LINE__,
-		sprintf('Unknown module version %s', $currentVersion));
-	}
+			default:
+		        return GalleryCoreApi::error(
+					ERROR_BAD_PLUGIN,
+					__FILE__,
+					__LINE__,
+					sprintf('Unknown module version %s', $currentVersion)
+				);
+		}
 
 		return null;
 	}
@@ -109,12 +114,16 @@ class SnapGalaxyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		foreach (array('1_0', '1_1') as $version) {
 			$ret = GalleryCoreApi::registerFactoryImplementation(
-		'CartPluginInterface_' . $version, 'SnapGalaxyCartPlugin', 'snapgalaxy',
-		'modules/snapgalaxy/classes/SnapGalaxyCartPlugin.class', 'snapgalaxy', null);
+				'CartPluginInterface_' . $version,
+				'SnapGalaxyCartPlugin',
+				'snapgalaxy',
+				'modules/snapgalaxy/classes/SnapGalaxyCartPlugin.class',
+				'snapgalaxy',
+				null
+			);
 			if ($ret) {
 				return $ret;
 			}
@@ -126,8 +135,7 @@ class SnapGalaxyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		$links = array();
 
 		foreach ($items as $item) {
@@ -136,8 +144,8 @@ class SnapGalaxyModule extends GalleryModule
 			&& isset($permissions[$itemId]['snapgalaxy.print'])
 			&& GalleryUtilities::isA($item, 'GalleryPhotoItem')) {
 				$links[$itemId][] =
-			array('text' => $this->translate('Print on SnapGalaxy.com'),
-			  'params' => array('controller' => 'snapgalaxy.SnapGalaxyPrintPhotos',
+				array('text' => $this->translate('Print on SnapGalaxy.com'),
+				'params' => array('controller' => 'snapgalaxy.SnapGalaxyPrintPhotos',
 					  'itemId' => $itemId,
 					  'returnUrl' => '%CURRENT_URL%'));
 			}
@@ -149,8 +157,7 @@ class SnapGalaxyModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null, array(array('name' => $this->translate('SnapGalaxy'),
 					   'view' => 'snapgalaxy.AdminSnapGalaxy')));
 	}

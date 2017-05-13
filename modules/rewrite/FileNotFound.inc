@@ -25,13 +25,11 @@
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class FileNotFoundView extends GalleryView
-{
+class FileNotFoundView extends GalleryView {
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 		if ($ret) {
 			return array($ret, null);
@@ -43,14 +41,13 @@ class FileNotFoundView extends GalleryView
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 		$urlGenerator =& $gallery->getUrlGenerator();
 
 	/* Don't use getCurrentUrl, it migh be staged by the url generator */
-	$path = GalleryUtilities::getServerVar('REQUEST_URI');
+		$path = GalleryUtilities::getServerVar('REQUEST_URI');
 		$path = $urlGenerator->makeUrl($path);
 
 		$phpVm->header('HTTP/1.0 404 Not Found');

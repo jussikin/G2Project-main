@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class DatabaseBackupTask extends MaintenanceTask
-{
+class DatabaseBackupTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 
 		return array(
@@ -47,8 +45,7 @@ class DatabaseBackupTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		$this->_templateAdapter =& $gallery->getTemplateAdapter();
 		$storage =& $gallery->getStorage();
@@ -100,16 +97,14 @@ class DatabaseBackupTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::requiresProgressBar
 	 */
-	public function requiresProgressBar()
-	{
+	public function requiresProgressBar() {
 		return true;
 	}
 	
 	/**
 	 * @see MaintenanceTask::requiresMaintenanceMode
 	 */
-	public function requiresMaintenanceMode()
-	{
+	public function requiresMaintenanceMode() {
 		return true;
 	}
 	
@@ -117,8 +112,7 @@ class DatabaseBackupTask extends MaintenanceTask
 	 * Callback function to recieve notifications of database backup progess
 	 * @param float $percentComplete from 0 to 1
 	 */
-	public function progressCallBack($percentage)
-	{
+	public function progressCallBack($percentage) {
 		$this->_templateAdapter->updateProgressBar($this->_progressBarTitle, $this->_statusText, $percentage);
 	}
 }

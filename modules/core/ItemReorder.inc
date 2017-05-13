@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemReorderController extends GalleryController
-{
+class ItemReorderController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -220,13 +218,11 @@ class ItemReorderController extends GalleryController
 /**
  * This view will prompt for how to change the order of items in the album
  */
-class ItemReorderView extends GalleryView
-{
+class ItemReorderView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		/* itemId is the album where we want to move items from */
@@ -310,8 +306,7 @@ class ItemReorderView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

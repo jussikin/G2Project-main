@@ -5,8 +5,7 @@ if (!defined('G2_SUPPORT')) {
 }
 
 /* Connect to Gallery2 */
-function connect()
-{
+function connect() {
 	require_once '../../embed.php';
 	$ret = GalleryEmbed::init(array(
 		'fullInit' => true
@@ -20,8 +19,7 @@ function connect()
 }
 
 /* Process the request */
-function process(&$process_password_string, &$process_user_name, $process_admin_change, $process_advance, $process_auth)
-{
+function process(&$process_password_string, &$process_user_name, $process_admin_change, $process_advance, $process_auth) {
 	global $gallery, $status, $remember, $caches;
 	
 	if (isset($process_password_string)) {
@@ -155,8 +153,7 @@ function process(&$process_password_string, &$process_user_name, $process_admin_
 	return $html;
 }
 
-function getCacheDirs()
-{
+function getCacheDirs() {
 	$dirs = array(
 		'entity' => array(
 			true,
@@ -210,8 +207,7 @@ function getCacheDirs()
 	return $dirs;
 }
 
-function recDelDir($dirname, &$status)
-{
+function recDelDir($dirname, &$status) {
 	if (!file_exists($dirname) || !($fd = opendir($dirname))) {
 		return;
 	}
@@ -243,8 +239,7 @@ function recDelDir($dirname, &$status)
 	return;
 }
 
-function refreshCache($dir, $mark)
-{
+function refreshCache($dir, $mark) {
 	global $gallery;
 	$path = $gallery->getConfig('data.gallery.base') . $dir;
 	recDelDir($path, $status);
@@ -264,8 +259,7 @@ function refreshCache($dir, $mark)
 	return $status;
 }
 
-function validate()
-{
+function validate() {
 	global $gallery, $advance, $authError, $authString;
 	$platform =& $gallery->getPlatform();
 	
@@ -335,157 +329,148 @@ GalleryEmbed::done();
 ?>
 
 <html lang="en">
-    <head>
-        <title>Gallery Support | Password Reset</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>support.css">
-    </head>
-    <body>
-        <div id="content">
-            <div id="title">
-                <a href="../../">Gallery</a> &raquo;
-                <a href="<?php generateUrl('index.php') ?>">Support</a> &raquo; Reset Passwords
-            </div>
-            <h2>
-            Set new password for any user.  Can be used to regain access to an administrator
-            account when the "forgot password" feature cannot be used due to invalid/missing
-            email address or other email problems.
-            </h2>
-            <div class="center">
+	<head>
+		<title>Gallery Support | Password Reset</title>
+		<link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>support.css">
+	</head>
+	<body>
+		<div id="content">
+			<div id="title">
+				<a href="../../">Gallery</a> &raquo;
+				<a href="<?php generateUrl('index.php') ?>">Support</a> &raquo; Reset Passwords
+			</div>
+			<h2>
+			Set new password for any user.  Can be used to regain access to an administrator
+			account when the "forgot password" feature cannot be used due to invalid/missing
+			email address or other email problems.
+			</h2>
+			<div class="center">
 <?php if (isset($authError)) {
 	?>
-                <p class="description">
-                    <b>Additional Authentication Required</b>
-                </p>
-                <blockquote>
-                    <fieldset>
-                        Please create a file called "login.txt" in <br> <?php echo GALLERY_CONFIG_DIR; ?> <br> with the following content:<br>
-                        <h1><?php echo $authString; ?></h1>
-                        Click the "Authenticate" button to proceed once you are done.
-                        <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
-                            <input type="hidden" name="auth" value=true>
-                            <input type="hidden" name="advance" value=true>
-                            <input type="submit" value="Authenticate">
-                        </form>
-                    </fieldset>
-                </blockquote>
-            </div>
-    <?php if (isset($advance)) {
+				<p class="description">
+					<b>Additional Authentication Required</b>
+				</p>
+				<blockquote>
+					<fieldset>
+						Please create a file called "login.txt" in <br> <?php echo GALLERY_CONFIG_DIR; ?> <br> with the following content:<br>
+						<h1><?php echo $authString; ?></h1>
+						Click the "Authenticate" button to proceed once you are done.
+						<form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
+							<input type="hidden" name="auth" value=true>
+							<input type="hidden" name="advance" value=true>
+							<input type="submit" value="Authenticate">
+						</form>
+					</fieldset>
+				</blockquote>
+			</div>
+	<?php if (isset($advance)) {
 		?>
-            <hr class="faint">
-            <div class="error center">
-                <?php echo $authError; ?>
-            </div>
-    <?php
-
-	} ?>
+			<hr class="faint">
+			<div class="error center">
+				<?php echo $authError; ?>
+			</div>
+	<?php
+} ?>
 <?php
-
 } elseif (isset($invalidVersion)) {
 	?>
-                <p class="description">
-                    <b>Incompatible Gallery2 Version</b>
-                </p>
-                <blockquote>
-                    <?php echo $output; ?>
-                </blockquote>
-            </div>
-    <?php if (isset($advance)) {
+				<p class="description">
+					<b>Incompatible Gallery2 Version</b>
+				</p>
+				<blockquote>
+					<?php echo $output; ?>
+				</blockquote>
+			</div>
+	<?php if (isset($advance)) {
 		?>
-            <hr class="faint">
-            <div class="error center">
-                <?php echo $authError; ?>
-            </div>
-    <?php
-
-	} ?>
+			<hr class="faint">
+			<div class="error center">
+				<?php echo $authError; ?>
+			</div>
+	<?php
+} ?>
 <?php
-
 } else {
 	?>
-                <p class="description">
-                    "Reset Admin" sets admin username to 'Admin' and the admin password to the Gallery 2 setup password
-                </p>
-                <blockquote>
-                    <fieldset>
-                        <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
-                            <?php $caches = getCacheDirs(); ?>
-                            <?php foreach ($caches as $key => $info) : ?>
-                                <?php if (isset($info[0])) :
+				<p class="description">
+					"Reset Admin" sets admin username to 'Admin' and the admin password to the Gallery 2 setup password
+				</p>
+				<blockquote>
+					<fieldset>
+						<form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
+							<?php $caches = getCacheDirs(); ?>
+							<?php foreach ($caches as $key => $info) : ?>
+								<?php if (isset($info[0])) :
 ?><input type="hidden" name="target[<?php echo $key; ?>]" value=true <?php
 endif; ?>>
-                            <?php endforeach; ?>
-                            <input type="hidden" name="advance" value=true><br>
-                            <?php if (isset($user_name)) {
+							<?php endforeach; ?>
+							<input type="hidden" name="advance" value=true><br>
+							<?php if (isset($user_name)) {
 	?> 
-                                <label for="user_name">User Name</label><br><input required type="text" name="user_name" id="user_name" value=<?php echo $user_name; ?>><br>
-                            <?php
-
+								<label for="user_name">User Name</label><br><input required type="text" name="user_name" id="user_name" value=<?php echo $user_name; ?>><br>
+							<?php
 } else {
 	?>
-                                <label for="user_name">User Name</label><br><input required type="text" name="user_name" id="user_name"  placeholder="User Name"><br>
-                            <?php
-
+								<label for="user_name">User Name</label><br><input required type="text" name="user_name" id="user_name"  placeholder="User Name"><br>
+							<?php
 } ?>
-                            <?php if (isset($new_password_string)) {
+							<?php if (isset($new_password_string)) {
 	?> 
-                                <label for="new_password">New Password</label><br><input required type="password" name="new_password" id="new_password" value=<?php echo $new_password_string; ?>><br>
-                            <?php
-
+								<label for="new_password">New Password</label><br><input required type="password" name="new_password" id="new_password" value=<?php echo $new_password_string; ?>><br>
+							<?php
 } else {
 	?>
-                                <label for="new_password">New Password</label><br><input required type="password"  name="new_password" id="new_password" placeholder="New Password"><br>
-                            <?php
-
+								<label for="new_password">New Password</label><br><input required type="password"  name="new_password" id="new_password" placeholder="New Password"><br>
+							<?php
 } ?>
-                            <br><input type="submit" value="Change Password">
-                        </form>
-                    </fieldset>
-                    <fieldset>
-                        <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" onSubmit="return confirm('Reset admin username and password?');" method="POST">
-                            <?php $caches = getCacheDirs(); ?>
-                            <?php foreach ($caches as $key => $info) : ?>
-                                <?php if (isset($info[0])) :
+							<br><input type="submit" value="Change Password">
+						</form>
+					</fieldset>
+					<fieldset>
+						<form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" onSubmit="return confirm('Reset admin username and password?');" method="POST">
+							<?php $caches = getCacheDirs(); ?>
+							<?php foreach ($caches as $key => $info) : ?>
+								<?php if (isset($info[0])) :
 ?><input type="hidden" name="target[<?php echo $key; ?>]" value=true <?php
 endif; ?>>
-                            <?php endforeach; ?>
-                            <input type="hidden" name="advance" value=true>
-                            <input type="hidden" name="admin_change" id="admin_change" value="admin_change">
-                            <input type="hidden" name="user_name" id="user_name" value="Admin">
-                            <input type="hidden" name="new_password" id="new_password" value="Admin">
-                            <input type="submit" value="Reset Admin">
-                        </form>
-                    </fieldset>
-                    <fieldset>
-                        <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
-                            <input type="hidden" name="reset" value=true>
-                            <input type="hidden" name="advance" value=true>
-                            <input type="submit" value="Clear Form">
-                        </form>
-                    </fieldset>
-                </blockquote>
-            </div>
+							<?php endforeach; ?>
+							<input type="hidden" name="advance" value=true>
+							<input type="hidden" name="admin_change" id="admin_change" value="admin_change">
+							<input type="hidden" name="user_name" id="user_name" value="Admin">
+							<input type="hidden" name="new_password" id="new_password" value="Admin">
+							<input type="submit" value="Reset Admin">
+						</form>
+					</fieldset>
+					<fieldset>
+						<form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
+							<input type="hidden" name="reset" value=true>
+							<input type="hidden" name="advance" value=true>
+							<input type="submit" value="Clear Form">
+						</form>
+					</fieldset>
+				</blockquote>
+			</div>
 <?php
-
 } ?>          
-    <?php if (isset($output)) : ?>
-            <hr class="faint">
-            <?php echo $output; ?>
-        <?php if (!empty($status)) : ?>
-            <hr class="faint">
-            <div class="warning">
-            <?php foreach ($status as $line) : ?>
-                <pre class="<?php echo $line[0]; ?>"><?php echo $line[1]; ?></pre>
-            <?php endforeach; ?>
-            </div>
-            <?php if (isset($captcha)) : ?>          
-            <hr class="faint">
-            <div class="warning center">
-                The Captcha Module has been deactivated.<br>
-                Please reactivate it in the G2 Admin Interface.
-            </div>
-            <?php endif; ?>
-        <?php endif; ?>
-    <?php endif; ?>
-        </div>
-    </body>
+	<?php if (isset($output)) : ?>
+			<hr class="faint">
+			<?php echo $output; ?>
+		<?php if (!empty($status)) : ?>
+			<hr class="faint">
+			<div class="warning">
+			<?php foreach ($status as $line) : ?>
+				<pre class="<?php echo $line[0]; ?>"><?php echo $line[1]; ?></pre>
+			<?php endforeach; ?>
+			</div>
+			<?php if (isset($captcha)) : ?>          
+			<hr class="faint">
+			<div class="warning center">
+				The Captcha Module has been deactivated.<br>
+				Please reactivate it in the G2 Admin Interface.
+			</div>
+			<?php endif; ?>
+		<?php endif; ?>
+	<?php endif; ?>
+		</div>
+	</body>
 </html>

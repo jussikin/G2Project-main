@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18100 $
  */
-class SlideshowModule extends GalleryModule
-{
-	public function __construct()
-	{
+class SlideshowModule extends GalleryModule {
+	public function __construct() {
 		$this->SlideshowModule();
 	}
 
-	public function SlideshowModule()
-	{
+	public function SlideshowModule() {
 		global $gallery;
 		$this->setId('slideshow');
 		$this->setName($gallery->i18n('Slideshow'));
@@ -50,19 +47,27 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'SlideshowInterface_1_0', 'SlideshowImpl', 'Slideshow',
-		'modules/slideshow/classes/SlideshowImpl.class', 'slideshow', null);
+			'SlideshowInterface_1_0',
+			'SlideshowImpl',
+			'Slideshow',
+			'modules/slideshow/classes/SlideshowImpl.class',
+			'slideshow',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
 
-		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener',
-		'SlideshowModule', 'SlideshowModule',
-		'modules/slideshow/module.inc', 'slideshow',
-		array('Gallery::BeforeDisplay'));
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+			'GalleryEventListener',
+			'SlideshowModule',
+			'SlideshowModule',
+			'modules/slideshow/module.inc',
+			'slideshow',
+			array('Gallery::BeforeDisplay')
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -73,16 +78,19 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
 		$dir = $gallery->getConfig('data.gallery.plugins_data') . 'modules/slideshow';
 		list($success) = GalleryUtilities::guaranteeDirExists($dir);
 		if (!$success) {
-			return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE, __FILE__, __LINE__,
-					"Unable to create directory: $dir");
+			return GalleryCoreApi::error(
+				ERROR_PLATFORM_FAILURE,
+				__FILE__,
+				__LINE__,
+				"Unable to create directory: $dir"
+			);
 		}
 
 		return null;
@@ -91,8 +99,7 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent=true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 
 		list($ret, $uninstalled) = $this->getParameter('piclens.uninstalled');
@@ -107,12 +114,18 @@ class SlideshowModule extends GalleryModule
 				return array($ret, null);
 			} elseif ($ret) {
 				/* Should be safe to swallow this error */
-		GalleryCoreApi::addEventLogEntry(
-			'slideshow module', 'Unable to install PicLens',
-			$ret->getAsText());
+				GalleryCoreApi::addEventLogEntry(
+					'slideshow module',
+					'Unable to install PicLens',
+					$ret->getAsText()
+				);
 			} else {
 				$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'slideshow', 'piclens.version', $version);
+					'module',
+					'slideshow',
+					'piclens.version',
+					$version
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -125,8 +138,7 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -146,7 +158,7 @@ class SlideshowModule extends GalleryModule
 	     * Show View Slideshow link, only when album has images in it.
 	     */
 
-		$showSlideshowLink = false;
+				$showSlideshowLink = false;
 
 				if ($item->getCanContainChildren()) {
 					if (!isset($userId)) {
@@ -154,8 +166,16 @@ class SlideshowModule extends GalleryModule
 					}
 
 					list($ret, $query, $data) = GalleryCoreApi::buildItemQuery(
-			'GalleryChildEntity', 'id', '[GalleryChildEntity::parentId] = ?', null,
-			null, 'GalleryPhotoItem', 'core.view', null, $userId);
+						'GalleryChildEntity',
+						'id',
+						'[GalleryChildEntity::parentId] = ?',
+						null,
+						null,
+						'GalleryPhotoItem',
+						'core.view',
+						null,
+						$userId
+					);
 
 					if (!$ret || !empty($query)) {
 						array_unshift($data, $item->getId());
@@ -167,40 +187,44 @@ class SlideshowModule extends GalleryModule
 					}
 				} else {
 					/** @todo Check with isA instead of entityType (thus matching subclasses). */
-			$showSlideshowLink = $item->getEntityType() === 'GalleryPhotoItem';
+					$showSlideshowLink = $item->getEntityType() === 'GalleryPhotoItem';
 				}
 
 				if ($showSlideshowLink) {
 					if ($picLensVersion) {
 						$script = sprintf(
-				'var p=PicLensLite;'
-				. 'p.setCallbacks({onNoPlugins:function(){location.href=\'%s\'}});'
-				. 'p.setLiteURLs({swf:\'%s\'});'
-				. 'p.start({feedUrl:\'%s\', guid:%d, pid:\'2PWfB4lurT4g\', delay:10})',
-				$urlGenerator->generateUrl(
-				array('view' => 'slideshow.Slideshow',
-					  'itemId' => $itemId),
-				$jsUrlParams),
-				$urlGenerator->generateUrl(
-				array('view' => 'slideshow.DownloadPicLens',
-					  'file' => 'swf',
-					  'v' => $picLensVersion),
-				$jsUrlParamsDirect),
-				$urlGenerator->generateUrl(
-				array('view' => 'slideshow.SlideshowMediaRss',
-					  'itemId' => $item->getId()),
-				$jsUrlParams),
-				$itemId);
+							'var p=PicLensLite;'
+							. 'p.setCallbacks({onNoPlugins:function(){location.href=\'%s\'}});'
+							. 'p.setLiteURLs({swf:\'%s\'});'
+							. 'p.start({feedUrl:\'%s\', guid:%d, pid:\'2PWfB4lurT4g\', delay:10})',
+							$urlGenerator->generateUrl(
+								array('view' => 'slideshow.Slideshow',
+								'itemId' => $itemId),
+								$jsUrlParams
+							),
+							$urlGenerator->generateUrl(
+								array('view' => 'slideshow.DownloadPicLens',
+								'file' => 'swf',
+								'v' => $picLensVersion),
+								$jsUrlParamsDirect
+							),
+							$urlGenerator->generateUrl(
+								array('view' => 'slideshow.SlideshowMediaRss',
+								'itemId' => $item->getId()),
+								$jsUrlParams
+							),
+							$itemId
+						);
 						$links[$itemId][] =
-				array('text' => $this->translate('View Slideshow'),
-				  'params' => array('view' => 'slideshow.Slideshow',
+						array('text' => $this->translate('View Slideshow'),
+						'params' => array('view' => 'slideshow.Slideshow',
 							'itemId' => $itemId),
-				  'script' => $script);
+						'script' => $script);
 					} else {
 						$links[$itemId][] =
-				array('text' => $this->translate('View Slideshow'),
-				  'params' => array('view' => 'slideshow.Slideshow',
-				  'itemId' => $itemId));
+						array('text' => $this->translate('View Slideshow'),
+						'params' => array('view' => 'slideshow.Slideshow',
+						'itemId' => $itemId));
 					}
 				}
 			}
@@ -212,8 +236,7 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null,
 			 array(array('name' => $this->translate('Slideshow'),
 				 'view' => 'slideshow.AdminSlideshow')));
@@ -222,8 +245,7 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		$rules = array();
 
 		$rule = array();
@@ -244,8 +266,7 @@ class SlideshowModule extends GalleryModule
 	/**
 	 * @see GalleryModule::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -258,7 +279,7 @@ class SlideshowModule extends GalleryModule
 	     * and we can store lots of stuff in the data member.  But for now, we store the
 	     * template there, and we get the item by leaning on GalleryView.
 	     */
-		$template =& $event->getEntity();
+			$template =& $event->getEntity();
 
 			list($ret, $item, $ignored) = GalleryView::getItem();
 			if ($ret) {
@@ -272,18 +293,21 @@ class SlideshowModule extends GalleryModule
 
 			if ($picLensVersion) {
 				$template->link(
-			array('rel' => 'alternate',
-			  'type' => 'application/rss+xml',
-			  'title' => 'Photo RSS',
-			  'href' => $urlGenerator->generateUrl(
-				  array('view' => 'slideshow.SlideshowMediaRss',
-					'itemId' => $item->getId()))));
+					array('rel' => 'alternate',
+					'type' => 'application/rss+xml',
+					'title' => 'Photo RSS',
+					'href' => $urlGenerator->generateUrl(
+						array('view' => 'slideshow.SlideshowMediaRss',
+						'itemId' => $item->getId())
+					))
+				);
 
 				$template->javascript($urlGenerator->generateUrl(
-					  array('view' => 'slideshow.DownloadPicLens',
+					array('view' => 'slideshow.DownloadPicLens',
 						'file' => 'js',
 						'v' => $picLensVersion),
-					  array('forceDirect' => true, 'forceFullUrl' => true)));
+					array('forceDirect' => true, 'forceFullUrl' => true)
+				));
 			}
 		}
 

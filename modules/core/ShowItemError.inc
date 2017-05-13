@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ShowItemErrorView extends GalleryView
-{
+class ShowItemErrorView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		list($ret, $item, $wasSpecified) = $this->getItem();
@@ -118,8 +116,7 @@ class ShowItemErrorView extends GalleryView
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_ADMIN;
 	}
 }

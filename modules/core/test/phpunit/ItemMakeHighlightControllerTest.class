@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemMakeHighlightControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemMakeHighlightControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMakeHighlight');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -88,8 +85,7 @@ class ItemMakeHighlightControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		
@@ -101,8 +97,7 @@ class ItemMakeHighlightControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMakeHighlightParent()
-	{
+	public function testMakeHighlightParent() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[parentId]', $this->_subalbum->getId());
 		GalleryUtilities::putRequestVariable('form[action][makeHighlight]', 1);
@@ -128,8 +123,7 @@ class ItemMakeHighlightControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($this->_derivative->getId(), $thumbnail->getDerivativeSourceId());
 	}
 	
-	public function testMakeHighlightGrandparent()
-	{
+	public function testMakeHighlightGrandparent() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[parentId]', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[action][makeHighlight]', 1);
@@ -161,6 +155,5 @@ class ItemMakeHighlightControllerTest extends GalleryControllerTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemMakeHighlightTestToolkit extends GalleryToolkit
-{
+class ItemMakeHighlightTestToolkit extends GalleryToolkit {
 }

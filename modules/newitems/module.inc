@@ -27,15 +27,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class NewItemsModule extends GalleryModule
-{
-	public function __construct()
-	{
+class NewItemsModule extends GalleryModule {
+	public function __construct() {
 		$this->NewItemsModule();
 	}
 	
-	public function NewItemsModule()
-	{
+	public function NewItemsModule() {
 		global $gallery;
 		
 		$this->setId('newitems');
@@ -58,8 +55,7 @@ class NewItemsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		if (!isset($currentVersion)) {
 			foreach (array(
 				'days.new' => '7',
@@ -78,8 +74,7 @@ class NewItemsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GallerySortInterface_1_2', 'NewItemsSortOrder', 'NewItems', 'modules/newitems/classes/NewItemsSortOrder.class', 'newitems', null);
 		if ($ret) {
 			return $ret;
@@ -91,8 +86,7 @@ class NewItemsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -107,8 +101,7 @@ class NewItemsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemSummaries
 	 */
-	public function getItemSummaries($items, $permissions, &$template)
-	{
+	public function getItemSummaries($items, $permissions, &$template) {
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'newitems');
 		if ($ret) {
 			return array(
@@ -141,8 +134,7 @@ class NewItemsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::uninstall
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		$ret = GalleryCoreApi::deleteSortOrder('NewItems');
 		if ($ret) {
 			return $ret;

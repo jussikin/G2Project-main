@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ExternalCSSController extends GalleryController
-{
+class ExternalCSSController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		list($ret, $imageframe) = GalleryCoreApi::newFactoryInstance('ImageFrameInterface_1_1');
 		if ($ret) {
 			return array(
@@ -79,8 +77,7 @@ class ExternalCSSController extends GalleryController
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		/*
 	     * The sole purpose of this controller is to delegate dynamically to different views.
 	     * It does not do any controller-like action, thus there is no need for an auth-token check.
@@ -91,8 +88,7 @@ class ExternalCSSController extends GalleryController
 	/**
 	 * @see GalleryController::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 }
@@ -100,29 +96,25 @@ class ExternalCSSController extends GalleryController
 /**
  * Generate CSS when no frames are selected
  */
-class ExternalCSSView extends GalleryView
-{
+class ExternalCSSView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		header('Content-type: text/html');
 		header('Expires: ' . GalleryUtilities::getHttpDate(time() + 2592000));
 		echo '<style type="text/css"> img.giThumbnail { border-style: none; } </style>';

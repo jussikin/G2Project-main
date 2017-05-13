@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17580 $
  */
-class FeedListView extends GalleryView
-{
+class FeedListView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
 		if ($ret) {
 			return array($ret, null);

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class EditCommentControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class EditCommentControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'comment.EditComment');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -88,8 +85,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'misc.markup', $this->_saveMarkup);
 		if ($ret) {
 			return $ret;
@@ -101,8 +97,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testEditComment()
-	{
+	public function testEditComment() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -138,8 +133,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(COMMENT_PUBLISH_STATUS_PUBLISHED, $comment->getPublishStatus());
 	}
 	
-	public function testPreviewComment()
-	{
+	public function testPreviewComment() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -162,8 +156,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMissingFields()
-	{
+	public function testMissingFields() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -187,8 +180,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testInvalidCommenterName()
-	{
+	public function testInvalidCommenterName() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -210,8 +202,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testPreviewInvalidCommenterName()
-	{
+	public function testPreviewInvalidCommenterName() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][preview]', 1);
@@ -233,8 +224,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testPreviewEmptyComment()
-	{
+	public function testPreviewEmptyComment() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -263,8 +253,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 	/**
 	 * Use a bogus comment id
 	 */
-	public function testMaliciousEditComment1()
-	{
+	public function testMaliciousEditComment1() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', 123123123);
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -275,8 +264,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 	/**
 	 * Use mismatched item id and comment id
 	 */
-	public function testMaliciousEditComment2()
-	{
+	public function testMaliciousEditComment2() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[1]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -287,8 +275,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 	/**
 	 * Use malicious content
 	 */
-	public function testMaliciousEditComment3()
-	{
+	public function testMaliciousEditComment3() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'misc.markup', 'html');
 		if ($ret) {
 			return ($ret);
@@ -329,8 +316,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		$this->assertEquals((int) $this->_anonymousUserId, $comment->getCommenterId());
 	}
 	
-	public function testCancelEdit()
-	{
+	public function testCancelEdit() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
@@ -350,8 +336,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testPublishComment()
-	{
+	public function testPublishComment() {
 		/* comment[1] starts off unpublished */
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[1]->getId());
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[1]->getId());
@@ -382,8 +367,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(COMMENT_PUBLISH_STATUS_PUBLISHED, $comment->getPublishStatus());
 	}
 	
-	public function testUnpublishComment()
-	{
+	public function testUnpublishComment() {
 		/* comment[0] starts off published */
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());
@@ -414,8 +398,7 @@ class EditCommentControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(COMMENT_PUBLISH_STATUS_UNPUBLISHED, $comment->getPublishStatus());
 	}
 	
-	public function testSpamifyComment()
-	{
+	public function testSpamifyComment() {
 		/* comment[0] starts off published */
 		GalleryUtilities::putRequestVariable('commentId', $this->_comment[0]->getId());
 		GalleryUtilities::putRequestVariable('itemId', $this->_item[0]->getId());

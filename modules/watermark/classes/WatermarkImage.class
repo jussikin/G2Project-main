@@ -36,8 +36,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class WatermarkImage extends GalleryEntity
-{
+class WatermarkImage extends GalleryEntity {
 	/**
 	 * Should this watermark be applied to the preferred derivative?
 	 *
@@ -224,8 +223,7 @@ class WatermarkImage extends GalleryEntity
 	 * @param string $targetName the desired name of the new item
 	 * @return GalleryStatus a status code
 	**/
-	public function create($inputFileName, $mimeType, $targetName=null)
-	{
+	public function create($inputFileName, $mimeType, $targetName=null) {
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 		global $gallery;
 		$platform =& $gallery->getPlatform();
@@ -301,8 +299,7 @@ class WatermarkImage extends GalleryEntity
 	 * Determine file size and dimensions
 	 * @return GalleryStatus a status code
 	**/
-	public function rescan()
-	{
+	public function rescan() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -333,16 +330,14 @@ class WatermarkImage extends GalleryEntity
 	/**
 	 * @see GalleryEntity::save
 	**/
-	public function save($postEvent=true)
-	{
+	public function save($postEvent=true) {
 		return parent::save($postEvent, 0);
 	}
 
 	/**
 	 * @see GalleryEntity::delete
 	**/
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 
 	/* Delete myself */
@@ -368,8 +363,7 @@ class WatermarkImage extends GalleryEntity
 	 * @return array GalleryStatus a status code,
 	 *               string path
 	**/
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		return array(null, $this->getWatermarkDir() . $this->getFileName());
 	}
 
@@ -378,8 +372,7 @@ class WatermarkImage extends GalleryEntity
 	 *
 	 * @return string Directory where watermark images are stored
 	**/
-	public function getWatermarkDir()
-	{
+	public function getWatermarkDir() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
@@ -393,8 +386,7 @@ class WatermarkImage extends GalleryEntity
 	 * @see GalleryDataItem::render
 	 * @return string content
 	**/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		global $gallery;
 		
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -441,136 +433,110 @@ class WatermarkImage extends GalleryEntity
 	/**
 	 * So WatermarkImage is displayable with {g->image}
 	**/
-	public function getRenderer()
-	{
+	public function getRenderer() {
 		return null;
 	}
 
 	/**
 	 * @see GalleryEntity::getClassName
 	**/
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'WatermarkImage';
 	}
 
-	public function getApplyToPreferred()
-	{
+	public function getApplyToPreferred() {
 		return $this->applyToPreferred;
 	}
 
-	public function setApplyToPreferred($applyToPreferred)
-	{
+	public function setApplyToPreferred($applyToPreferred) {
 		$this->applyToPreferred = $applyToPreferred;
 	}
 
-	public function getApplyToResizes()
-	{
+	public function getApplyToResizes() {
 		return $this->applyToResizes;
 	}
 
-	public function setApplyToResizes($applyToResizes)
-	{
+	public function setApplyToResizes($applyToResizes) {
 		$this->applyToResizes = $applyToResizes;
 	}
 
-	public function getApplyToThumbnail()
-	{
+	public function getApplyToThumbnail() {
 		return $this->applyToThumbnail;
 	}
 
-	public function setApplyToThumbnail($applyToThumbnail)
-	{
+	public function setApplyToThumbnail($applyToThumbnail) {
 		$this->applyToThumbnail = $applyToThumbnail;
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return $this->name;
 	}
 
-	public function setName($name)
-	{
+	public function setName($name) {
 		$this->name = $name;
 	}
 
-	public function getFileName()
-	{
+	public function getFileName() {
 		return $this->fileName;
 	}
 
-	public function setFileName($fileName)
-	{
+	public function setFileName($fileName) {
 		$this->fileName = $fileName;
 	}
 
-	public function getMimeType()
-	{
+	public function getMimeType() {
 		return $this->mimeType;
 	}
 
-	public function setMimeType($mimeType)
-	{
+	public function setMimeType($mimeType) {
 		$this->mimeType = $mimeType;
 	}
 
-	public function getSize()
-	{
+	public function getSize() {
 		return $this->size;
 	}
 
-	public function setSize($size)
-	{
+	public function setSize($size) {
 		$this->size = $size;
 	}
 
-	public function getWidth()
-	{
+	public function getWidth() {
 		return $this->width;
 	}
 
-	public function setWidth($width)
-	{
+	public function setWidth($width) {
 		$this->width = $width;
 	}
 
-	public function getHeight()
-	{
+	public function getHeight() {
 		return $this->height;
 	}
 
-	public function setHeight($height)
-	{
+	public function setHeight($height) {
 		$this->height = $height;
 	}
 
-	public function getOwnerId()
-	{
+	public function getOwnerId() {
 		return $this->ownerId;
 	}
 
-	public function setOwnerId($ownerId)
-	{
+	public function setOwnerId($ownerId) {
 		$this->ownerId = $ownerId;
 	}
 
-	public function getXPercentage()
-	{
+	public function getXPercentage() {
 		return $this->xPercentage;
 	}
 
-	public function setXPercentage($xPercentage)
-	{
+	public function setXPercentage($xPercentage) {
 		$this->xPercentage = $xPercentage;
 	}
 
-	public function getYPercentage()
-	{
+	public function getYPercentage() {
 		return $this->yPercentage;
 	}
 
-	public function setYPercentage($yPercentage)
-	{
+	public function setYPercentage($yPercentage) {
 		$this->yPercentage = $yPercentage;
 	}
 }

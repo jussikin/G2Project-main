@@ -19,8 +19,8 @@
  */
 ini_set('error_reporting', 2047);
 if (!empty($_SERVER['SERVER_NAME'])) {
-    print "You must run this from the command line\n";
-    exit(1);
+	print "You must run this from the command line\n";
+	exit(1);
 }
 
 require_once(dirname(__FILE__) . '/XmlParser.inc');
@@ -28,13 +28,13 @@ require_once(dirname(__FILE__) . '/../../smarty/Smarty.class.php');
 
 $tmpdir = dirname(__FILE__) . '/tmp_entities_' . rand(1, 30000);
 if (file_exists($tmpdir)) {
-    print "Tmp dir already exists: $tmpdir\n";
-    exit(1);
+	print "Tmp dir already exists: $tmpdir\n";
+	exit(1);
 }
 
 if (!mkdir($tmpdir)) {
-    print "Unable to make tmp dir: $tmpdir\n";
-    exit(1);
+	print "Unable to make tmp dir: $tmpdir\n";
+	exit(1);
 }
 
 $smarty = new Smarty();
@@ -49,29 +49,29 @@ $smarty->template_dir = dirname(__FILE__);
 $xml = "<!DOCTYPE classes SYSTEM \"" . "../../../../lib/tools/dtd/GalleryClass2.1.dtd\">\n";
 $xml .= "<classes>\n";
 if (!$dh = opendir('.')) {
-    print "Unable to opendir(.)\n";
-    cleanExit(1);
+	print "Unable to opendir(.)\n";
+	cleanExit(1);
 }
 
 $files = array();
 while (($file = readdir($dh)) !== false) {
-    if (preg_match('/\.class$/', $file)) {
-        $files[] = $file;
-    }
+	if (preg_match('/\.class$/', $file)) {
+		$files[] = $file;
+	}
 }
 closedir($dh);
 sort($files);
 $classXml = '';
 foreach ($files as $file) {
-    $snippet = getXml($file);
-    if ($snippet) {
-        $classXml .= "<class>\n" . join("\n", $snippet) . "\n</class>\n";
-    }
+	$snippet = getXml($file);
+	if ($snippet) {
+		$classXml .= "<class>\n" . join("\n", $snippet) . "\n</class>\n";
+	}
 }
 
 if (empty($classXml)) {
-    /* Nothing to do */
-    cleanExit(0);
+	/* Nothing to do */
+	cleanExit(0);
 }
 
 $xml .= $classXml;
@@ -79,15 +79,15 @@ $xml .= "</classes>\n";
 
 $entitiesXml = "$tmpdir/Entities.xml";
 if (!$fp = fopen($entitiesXml, 'wb')) {
-    print "Unable to write to $entitiesXml\n";
-    cleanExit(1);
+	print "Unable to write to $entitiesXml\n";
+	cleanExit(1);
 }
 fwrite($fp, $xml);
 fclose($fp);
 
 if (system("xmllint --valid --noout $entitiesXml", $retval)) {
-    print "System error: $retval\n";
-    cleanExit();
+	print "System error: $retval\n";
+	cleanExit();
 }
 
 $p =& new XmlParser();
@@ -95,69 +95,69 @@ $root = $p->parse($entitiesXml);
 
 $entities = array();
 foreach ($root[0]['child'] as $entity) {
-    $entityName = $entity['child'][0]['content'];
-    $parentEntityName = $entity['child'][1]['content'];
-    
-    $j = 3;
-    if ($entity['child'][$j]['name'] == 'REQUIRES-ID') {
-        $j++;
-    }
-    
-    $entities[$entityName]['members'] = array();
-    $entities[$entityName]['linked'] = array();
-    for (; $j < count($entity['child']); $j++) {
-        $member = $entity['child'][$j];
-        $name = $member['child'][0]['content'];
-        
-        $entities[$entityName]['members'][$name]['type'] = 'STORAGE_TYPE_' . $member['child'][1]['content'];
-        $entities[$entityName]['members'][$name]['type'] = 'STORAGE_TYPE_' . $member['child'][1]['content'];
-        
-        for ($k = 2; $k < count($member['child']); $k++) {
-            if (!empty($member['child'][$k]['name'])) {
-                switch ($member['child'][$k]['name']) {
-                    case 'MEMBER-SIZE':
-                        $entities[$entityName]['members'][$name]['size'] = $size = 'STORAGE_SIZE_' . $member['child'][$k]['content'];
-                        break;
-                    
-                    case 'ID':
-                        $entities[$entityName]['members'][$name]['type'] .= '| STORAGE_TYPE_ID';
-                        break;
-                    
-                    case 'LINKED':
-                        $entities[$entityName]['linked'][] = $name;
-                        break;
-                    case 'REQUIRED':
-                    case 'PRIMARY':
-                        $elem = $member['child'][$k];
-                        if ($elem['name'] != 'REQUIRED' || empty($elem['attrs']['EMPTY']) || $elem['attrs']['EMPTY'] != 'allowed') {
-                            $entities[$entityName]['members'][$name]['notNull'] = true;
-                        } else {
-                            $entities[$entityName]['members'][$name]['notNullEmptyAllowed'] = true;
-                        }
-                        break;
-                    
-                    case 'MEMBER-EXTERNAL-ACCESS':
-                        switch (trim($member['child'][$k]['content'])) {
-                            case 'READ':
-                                $entities[$entityName]['members'][$name]['external-access'] = 'EXTERNAL_ACCESS_READ';
-                                break;
-                            case 'WRITE':
-                                $entities[$entityName]['members'][$name]['external-access'] = 'EXTERNAL_ACCESS_WRITE';
-                                break;
-                            case 'FULL':
-                                $entities[$entityName]['members'][$name]['external-access'] = 'EXTERNAL_ACCESS_FULL';
-                                break;
-                            default:
-                                printf('Unknown value for member-external-access "%s"\n', $member['child'][$k]['content']);
-                        }
-                        break;
-                }
-            }
-        }
-    }
-    
-    $entities[$entityName]['parent'] = $parentEntityName;
-    $entities[$entityName]['module'] = basename(dirname(realpath('.')));
+	$entityName = $entity['child'][0]['content'];
+	$parentEntityName = $entity['child'][1]['content'];
+	
+	$j = 3;
+	if ($entity['child'][$j]['name'] == 'REQUIRES-ID') {
+		$j++;
+	}
+	
+	$entities[$entityName]['members'] = array();
+	$entities[$entityName]['linked'] = array();
+	for (; $j < count($entity['child']); $j++) {
+		$member = $entity['child'][$j];
+		$name = $member['child'][0]['content'];
+		
+		$entities[$entityName]['members'][$name]['type'] = 'STORAGE_TYPE_' . $member['child'][1]['content'];
+		$entities[$entityName]['members'][$name]['type'] = 'STORAGE_TYPE_' . $member['child'][1]['content'];
+		
+		for ($k = 2; $k < count($member['child']); $k++) {
+			if (!empty($member['child'][$k]['name'])) {
+				switch ($member['child'][$k]['name']) {
+					case 'MEMBER-SIZE':
+						$entities[$entityName]['members'][$name]['size'] = $size = 'STORAGE_SIZE_' . $member['child'][$k]['content'];
+						break;
+					
+					case 'ID':
+						$entities[$entityName]['members'][$name]['type'] .= '| STORAGE_TYPE_ID';
+						break;
+					
+					case 'LINKED':
+						$entities[$entityName]['linked'][] = $name;
+						break;
+					case 'REQUIRED':
+					case 'PRIMARY':
+						$elem = $member['child'][$k];
+						if ($elem['name'] != 'REQUIRED' || empty($elem['attrs']['EMPTY']) || $elem['attrs']['EMPTY'] != 'allowed') {
+							$entities[$entityName]['members'][$name]['notNull'] = true;
+						} else {
+							$entities[$entityName]['members'][$name]['notNullEmptyAllowed'] = true;
+						}
+						break;
+					
+					case 'MEMBER-EXTERNAL-ACCESS':
+						switch (trim($member['child'][$k]['content'])) {
+							case 'READ':
+								$entities[$entityName]['members'][$name]['external-access'] = 'EXTERNAL_ACCESS_READ';
+								break;
+							case 'WRITE':
+								$entities[$entityName]['members'][$name]['external-access'] = 'EXTERNAL_ACCESS_WRITE';
+								break;
+							case 'FULL':
+								$entities[$entityName]['members'][$name]['external-access'] = 'EXTERNAL_ACCESS_FULL';
+								break;
+							default:
+								printf('Unknown value for member-external-access "%s"\n', $member['child'][$k]['content']);
+						}
+						break;
+				}
+			}
+		}
+	}
+	
+	$entities[$entityName]['parent'] = $parentEntityName;
+	$entities[$entityName]['module'] = basename(dirname(realpath('.')));
 }
 
 $smarty->assign('entities', $entities);
@@ -173,44 +173,42 @@ fclose($fd);
 /* Done */
 cleanExit(0);
 
-function cleanExit($status = 0)
-{
-    /* Clean up the cheap and easy way */
-    global $tmpdir;
-    if (file_exists($tmpdir)) {
-        system("rm -rf $tmpdir");
-    }
-    exit($status);
+function cleanExit($status = 0) {
+	/* Clean up the cheap and easy way */
+	global $tmpdir;
+	if (file_exists($tmpdir)) {
+		system("rm -rf $tmpdir");
+	}
+	exit($status);
 }
 
-function getXml($filename)
-{
-    $results = array();
-    if ($fp = fopen($filename, 'rb')) {
-        while (!feof($fp)) {
-            $line = fgets($fp, 4096);
-            if (preg_match('/@g2(.*)/', $line, $matches)) {
-                $results[] = $line = $matches[1];
-                
-                /*
+function getXml($filename) {
+	$results = array();
+	if ($fp = fopen($filename, 'rb')) {
+		while (!feof($fp)) {
+			$line = fgets($fp, 4096);
+			if (preg_match('/@g2(.*)/', $line, $matches)) {
+				$results[] = $line = $matches[1];
+				
+				/*
                  * NOTE!  Keep this in sync with the similar block in extractClassXml.pl
                  * and generate-dbxml.php
                  */
-                if (preg_match('{<class-name>(.*)</class-name>}', $line, $matches)) {
-                    $schemaName = $matches[1];
-                    $schemaName = preg_replace('/^Gallery/', '', $schemaName);
-                    /* Shorten some table names to fit Oracle's 30 char name limit.. */
-                    $schemaName = preg_replace('/Preferences/', 'Prefs', $schemaName);
-                    $schemaName = preg_replace('/Toolkit/', 'Tk', $schemaName);
-                    $schemaName = preg_replace('/TkOperation/', 'TkOperatn', $schemaName);
-                }
-                
-                if (preg_match('{<schema>}', $line)) {
-                    $results[] = "   <schema-name>$schemaName</schema-name>";
-                }
-            }
-        }
-        fclose($fp);
-    }
-    return $results;
+				if (preg_match('{<class-name>(.*)</class-name>}', $line, $matches)) {
+					$schemaName = $matches[1];
+					$schemaName = preg_replace('/^Gallery/', '', $schemaName);
+					/* Shorten some table names to fit Oracle's 30 char name limit.. */
+					$schemaName = preg_replace('/Preferences/', 'Prefs', $schemaName);
+					$schemaName = preg_replace('/Toolkit/', 'Tk', $schemaName);
+					$schemaName = preg_replace('/TkOperation/', 'TkOperatn', $schemaName);
+				}
+				
+				if (preg_match('{<schema>}', $line)) {
+					$results[] = "   <schema-name>$schemaName</schema-name>";
+				}
+			}
+		}
+		fclose($fp);
+	}
+	return $results;
 }

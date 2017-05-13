@@ -25,15 +25,12 @@
  * @author Jay Rossiter <cryptopgraphite@users.sf.net>
  * @version $Revision: 20940 $
  */
-class MailHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MailHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -58,8 +55,7 @@ class MailHelperTest extends GalleryTestCase
 		);
 	}
 	
-	public function testSendTemplatedEmailEmptyFromHeader()
-	{
+	public function testSendTemplatedEmailEmptyFromHeader() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'smtp.from', '');
 		if ($ret) {
 			return ($ret);
@@ -90,8 +86,7 @@ class MailHelperTest extends GalleryTestCase
 		$this->assertEquals($expectedData, $response);
 	}
 	
-	public function testSendTemplatedEmailFromAddressSetByFunctionInput()
-	{
+	public function testSendTemplatedEmailFromAddressSetByFunctionInput() {
 		/* Test that the from header is retrieved from function input */
 		$ret = GalleryCoreApi::sendTemplatedEmail($this->templateFile, $this->_emailData, 'mailhelpertest1@test.com', $this->_emailData['to'], $this->_emailData['subject']);
 		if ($ret) {
@@ -102,8 +97,7 @@ class MailHelperTest extends GalleryTestCase
 		$this->assertEquals('From: mailhelpertest1@test.com', $response['headers'][1]);
 	}
 	
-	public function testSendTemplatedEmailFromAddressSetByCoreSmtpParameter()
-	{
+	public function testSendTemplatedEmailFromAddressSetByCoreSmtpParameter() {
 		/* Test that the from header is retrieved from the core.smtp.from field */
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'smtp.from', 'mailhelpertest2@test.com');
 		if ($ret) {
@@ -119,8 +113,7 @@ class MailHelperTest extends GalleryTestCase
 		$this->assertEquals('From: mailhelpertest2@test.com', $response['headers'][1]);
 	}
 	
-	public function testSendTemplatedEmailFunctionInputOverridesCoreSmtpParameter()
-	{
+	public function testSendTemplatedEmailFunctionInputOverridesCoreSmtpParameter() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'smtp.from', 'mailhelpertest3_core_smtp@test.com');
 		if ($ret) {
 			return ($ret);
@@ -139,8 +132,7 @@ class MailHelperTest extends GalleryTestCase
 		$this->assertEquals('From: mailhelpertest3_function_input@test.com', $response['headers'][1]);
 	}
 	
-	public function testSendTemplatedEmailWithContentType()
-	{
+	public function testSendTemplatedEmailWithContentType() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'smtp.from', '');
 		if ($ret) {
 			return ($ret);
@@ -153,8 +145,7 @@ class MailHelperTest extends GalleryTestCase
 		$this->assertEquals("Content-Type: text/html", $response['headers'][1], print_r($response['headers'], true));
 	}
 	
-	public function testSendTemplatedEmailExtendedCharactersInSubject()
-	{
+	public function testSendTemplatedEmailExtendedCharactersInSubject() {
 		$ret = GalleryCoreApi::sendTemplatedEmail($this->templateFile, $this->_emailData, null, $this->_emailData['to'], "s\xc3\xa5 utrolig", null);
 		if ($ret) {
 			return ($ret);
@@ -163,8 +154,7 @@ class MailHelperTest extends GalleryTestCase
 		$this->assertEquals('=?utf-8?q?s=c3=a5 utrolig?=', $response['subject']);
 	}
 	
-	public function testSendTemplatedEmailMultiRecipient()
-	{
+	public function testSendTemplatedEmailMultiRecipient() {
 		$this->_emailData = array(
 			'to' => 'mailhelpertest@test.com',
 			'subject' => 'MailHelperTest subject',
@@ -188,16 +178,13 @@ class MailHelperTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class MailHelperDummyPlatform
-{
-	public function MailHelperDummyPlatform($platform)
-	{
+class MailHelperDummyPlatform {
+	public function MailHelperDummyPlatform($platform) {
 		$this->_platform = $platform;
 		$_REQUEST['mailedCount'] = 0;
 	}
 	
-	public function mail($to, $subject, $body, $headers = null)
-	{
+	public function mail($to, $subject, $body, $headers = null) {
 		
 		/* Normalize the date field in the headers to avoid having to worry about exact seconds */
 		$headers = preg_replace("/Date:.*?\r\n/", "Date: ELIDED\r\n", $headers);
@@ -214,73 +201,59 @@ class MailHelperDummyPlatform
 		return true;
 	}
 	
-	public function getMailedCount()
-	{
+	public function getMailedCount() {
 		return $_REQUEST['mailedCount'];
 	}
 	
-	public function getMailData()
-	{
+	public function getMailData() {
 		return $_REQUEST['maildata'];
 	}
 	
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		return $this->_platform->realpath($file);
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_platform->getDirectorySeparator();
 	}
 	
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		return $this->_platform->file_exists($filename);
 	}
 	
-	public function is_dir($filename)
-	{
+	public function is_dir($filename) {
 		return $this->_platform->is_dir($filename);
 	}
 	
-	public function is_writeable($filename)
-	{
+	public function is_writeable($filename) {
 		return $this->_platform->is_writeable($filename);
 	}
 	
-	public function is_readable($filename)
-	{
+	public function is_readable($filename) {
 		return $this->_platform->is_readable($filename);
 	}
 	
-	public function stat($filename)
-	{
+	public function stat($filename) {
 		return $this->_platform->stat($filename);
 	}
 	
-	public function mkdir($path)
-	{
+	public function mkdir($path) {
 		return $this->_platform->mkdir($path);
 	}
 	
-	public function fopen($filename, $mode, $use_include_path = 0)
-	{
+	public function fopen($filename, $mode, $use_include_path = 0) {
 		return $this->_platform->fopen($filename, $mode, $use_include_path);
 	}
 	
-	public function recursiveRmdir($dirname)
-	{
+	public function recursiveRmdir($dirname) {
 		return $this->_platform->recursiveRmdir($dirname);
 	}
 	
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		return $this->_platform->fclose($handle);
 	}
 	
-	public function flock($handle, $operation, &$wouldblock)
-	{
+	public function flock($handle, $operation, &$wouldblock) {
 		return $this->_platform->flock($handle, $operation, $wouldblock);
 	}
 }

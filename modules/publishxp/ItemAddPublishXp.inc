@@ -28,19 +28,19 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-class ItemAddPublishXp extends ItemAddPlugin
-{
+class ItemAddPublishXp extends ItemAddPlugin {
 	/**
 	 * @see ItemAddPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 
 		$isWindowsVista = strpos($httpUserAgent, 'Windows NT 6') !== false;
-		$template->setVariable('ItemAddPublishXp',
-				   array('isUsingWindowsVista' => (int)$isWindowsVista,
-					 'isUsingOtherWindows' => (int)!$isWindowsVista));
+		$template->setVariable(
+			'ItemAddPublishXp',
+			array('isUsingWindowsVista' => (int)$isWindowsVista,
+			'isUsingOtherWindows' => (int)!$isWindowsVista)
+		);
 
 		return array(null, 'modules/publishxp/templates/ItemAddPublishXp.tpl', 'modules_publishxp');
 	}
@@ -48,8 +48,7 @@ class ItemAddPublishXp extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
 		if ($ret) {
 			return array($ret, null);

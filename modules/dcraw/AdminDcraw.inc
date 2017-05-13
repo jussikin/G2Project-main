@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/dcraw/classes/DcrawToolkitHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20947 $
  */
-class AdminDcrawController extends GalleryController
-{
+class AdminDcrawController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -139,13 +137,11 @@ class AdminDcrawController extends GalleryController
 /**
  * Settings for dcraw
  */
-class AdminDcrawView extends GalleryView
-{
+class AdminDcrawView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

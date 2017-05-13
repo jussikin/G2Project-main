@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEmbed.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17775 $
  */
-class EmbedTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class EmbedTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -71,8 +68,7 @@ class EmbedTest extends GalleryTestCase
 		));
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		/* Restore */
 		global $gallery;
 		$GLOBALS['gallery'] = $this->_origGallery;
@@ -91,8 +87,7 @@ class EmbedTest extends GalleryTestCase
 	 * javascript. Multiple css styles are allowed and multiple javascript sections are allowed.
 	 * Furthermore, there are 2 types of css tags and 2 types of script tags.
 	 */
-	public function testParseHtml()
-	{
+	public function testParseHtml() {
 		/* Create some pseudo html <head> section */
 		$refTitle = '
   Gallery
@@ -166,8 +161,7 @@ class EmbedTest extends GalleryTestCase
 	 * multiple times, then we make sure that it doesn't call initFirstPass or initSecondPass
 	 * more than once per HTTP request.
 	 */
-	public function testInitMultipleTimes()
-	{
+	public function testInitMultipleTimes() {
 		$expectedUrl = 'http://example.com/cms/';
 		$_SERVER['HTTP_HOST'] = 'example.com';
 		/* These cache keys are the same as the ones defined in GalleryEmbed::init */
@@ -218,8 +212,7 @@ class EmbedTest extends GalleryTestCase
 	 * GalleryInitSecondPass should only be called if there are no params at all or if fullInit =
 	 * true
 	 */
-	public function testInitSecondPass()
-	{
+	public function testInitSecondPass() {
 		$firstCacheKey = 'GalleryEmbed::initFirstPass';
 		$secondCacheKey = 'GalleryEmbed::initSecondPass';
 		$ret = GalleryEmbed::init();
@@ -260,8 +253,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert(GalleryDataCache::containsKey($secondCacheKey), 'GallerySecondPass has not been called in third call.');
 	}
 
-	public function testIsCompatibleWithEmbedApi()
-	{
+	public function testIsCompatibleWithEmbedApi() {
 		$apiVersion = GalleryEmbed::getApiVersion();
 		$this->assertEquals(2, count($apiVersion));
 		$this->assert(is_int($apiVersion[0]), 'major');
@@ -278,8 +270,7 @@ class EmbedTest extends GalleryTestCase
 	}
 
 	/* Test the session doesn't change if the activeUserId equals the session's external id */
-	public function testCheckActiveUserSameId()
-	{
+	public function testCheckActiveUserSameId() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -309,8 +300,7 @@ class EmbedTest extends GalleryTestCase
 	}
 
 	/* Check that the session changes correctly if the activeUserId is different */
-	public function testCheckActiveUserNewId()
-	{
+	public function testCheckActiveUserNewId() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -341,8 +331,7 @@ class EmbedTest extends GalleryTestCase
 	}
 
 	/* Check that the session changes to an anonymous session if the activeUserId is '' */
-	public function testCheckActiveUserChangeToAnonymous()
-	{
+	public function testCheckActiveUserChangeToAnonymous() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -370,8 +359,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertEventNotFired('Gallery::Login');
 	}
 
-	public function testCheckActiveUserResumeAnonymousUser()
-	{
+	public function testCheckActiveUserResumeAnonymousUser() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -400,8 +388,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertEventNotFired('Gallery::Logout');
 	}
 
-	public function testCheckActiveUserLoginFromAnonymous()
-	{
+	public function testCheckActiveUserLoginFromAnonymous() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -434,8 +421,7 @@ class EmbedTest extends GalleryTestCase
 	}
 
 	/* Check that timeout is reset after administrator login */
-	public function testCheckActiveUserLoginAdministrator()
-	{
+	public function testCheckActiveUserLoginAdministrator() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$phpVm = $gallery->getPhpVm();
@@ -466,8 +452,7 @@ class EmbedTest extends GalleryTestCase
 	}
 
 	/* Check that timeout is not reset after non-administrator login */
-	public function testCheckActiveUserLoginNonAdministrator()
-	{
+	public function testCheckActiveUserLoginNonAdministrator() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$phpVm = $gallery->getPhpVm();
@@ -488,8 +473,7 @@ class EmbedTest extends GalleryTestCase
 	}
 
 	/* Regression test for bug 2030470 */
-	public function testCheckActiveUserSwitchUserGalleryUserNotSet()
-	{
+	public function testCheckActiveUserSwitchUserGalleryUserNotSet() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$phpVm = $gallery->getPhpVm();
@@ -517,8 +501,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertEquals($users[1]->getId(), $gallery->getActiveUserId(), 'active user id');
 	}
 
-	public function testCheckApiVersionOnInit()
-	{
+	public function testCheckApiVersionOnInit() {
 		$apiVersion = GalleryEmbed::getApiVersion();
 		$apiVersion[1] -= 2;
 		$ret = GalleryEmbed::init(array(
@@ -546,8 +529,7 @@ class EmbedTest extends GalleryTestCase
 		}
 	}
 
-	public function testEmbeddingAppSpecifiesDifferentAdodbFetchMode()
-	{
+	public function testEmbeddingAppSpecifiesDifferentAdodbFetchMode() {
 		global $gallery;
 
 		$save = $GLOBALS['ADODB_FETCH_MODE'];
@@ -568,8 +550,7 @@ class EmbedTest extends GalleryTestCase
 		$GLOBALS['ADODB_FETCH_MODE'] = $save;
 	}
 
-	public function testSetThemeForRequest()
-	{
+	public function testSetThemeForRequest() {
 		$ret = GalleryEmbed::setThemeForRequest('foobar', array(
 			'foo' => 'bar'
 		));
@@ -593,8 +574,7 @@ class EmbedTest extends GalleryTestCase
 		), $eventResults);
 	}
 
-	public function testGetBlock()
-	{
+	public function testGetBlock() {
 		global $gallery;
 		$user = $gallery->getActiveUser();
 
@@ -610,8 +590,7 @@ class EmbedTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetEmbedPathByHttpRequestValidRequest()
-	{
+	public function testGetEmbedPathByHttpRequestValidRequest() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 
@@ -637,8 +616,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 
-	public function testGetEmbedPathByHttpRequestInvalidRequest()
-	{
+	public function testGetEmbedPathByHttpRequestInvalidRequest() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 
@@ -656,8 +634,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 
-	public function testGetEmbedPathByHttpRequestNoServerAddr()
-	{
+	public function testGetEmbedPathByHttpRequestNoServerAddr() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 
@@ -688,8 +665,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 
-	public function testGetEmbedPathByHttpRequestNoServerAddrG2NotInstalled()
-	{
+	public function testGetEmbedPathByHttpRequestNoServerAddrG2NotInstalled() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 
@@ -721,8 +697,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 
-	public function testEmbeddedLogin()
-	{
+	public function testEmbeddedLogin() {
 		global $gallery;
 
 		list($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
@@ -739,8 +714,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertEquals($users[0]->getId(), $gallery->getActiveUserId(), 'The active user should change');
 	}
 
-	public function testEmbeddedLogout()
-	{
+	public function testEmbeddedLogout() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -764,8 +738,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert($sessionId != $session->getId(), "Session Id should have changed");
 	}
 
-	public function testCreateUserWithClearTextPassword()
-	{
+	public function testCreateUserWithClearTextPassword() {
 		$externalUserId = '_test_' . rand();
 		$ret = GalleryEmbed::createUser($externalUserId, array(
 			'username' => 'test_' . rand(),
@@ -784,8 +757,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert(!$user->isCorrectPassword('123456'), 'incorrect password');
 	}
 
-	public function testUpdateUserWithClearTextPassword()
-	{
+	public function testUpdateUserWithClearTextPassword() {
 		list($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 		if ($ret) {
 			return $ret;
@@ -809,8 +781,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert(!$user->isCorrectPassword('123456'), 'incorrect password');
 	}
 
-	public function testUpdateUserWithMd5PasswordHash()
-	{
+	public function testUpdateUserWithMd5PasswordHash() {
 		list($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 		if ($ret) {
 			return $ret;
@@ -835,8 +806,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assert(!$user->isCorrectPassword('123456'), 'incorrect password');
 	}
 
-	public function testUpdateUserWithPhpassPasswordHash()
-	{
+	public function testUpdateUserWithPhpassPasswordHash() {
 		list($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 		if ($ret) {
 			return $ret;
@@ -860,8 +830,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertEquals('secrethash', $user->getHashedPassword(), 'password hash');
 	}
 
-	public function testUpdateUserWithHashedPasswordMissingHashMethod()
-	{
+	public function testUpdateUserWithHashedPasswordMissingHashMethod() {
 		list($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 		if ($ret) {
 			return $ret;
@@ -875,8 +844,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_BAD_PARAMETER, $ret);
 	}
 
-	public function testUpdateUserWithInvalidHashMethod()
-	{
+	public function testUpdateUserWithInvalidHashMethod() {
 		list($ret, $users, $activeUserIds) = $this->_createTestUsers(1);
 		if ($ret) {
 			return $ret;
@@ -891,8 +859,7 @@ class EmbedTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_BAD_PARAMETER, $ret);
 	}
 
-	public function _createTestUsers($count)
-	{
+	public function _createTestUsers($count) {
 		$users = $activeUserIds = array();
 		for ($i = 0; $i < $count; $i++) {
 			$activeUserIds[$i] = '_test_' . $i . '_' . rand();

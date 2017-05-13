@@ -25,21 +25,18 @@
  * @author Tim Miller
  * @version $Revision: 17580 $
  */
-class GalleryRemoteProperties
-{
+class GalleryRemoteProperties {
 	/**
 	 * Our internal hash map
 	 * @access private
 	 */
 	public $_map;
 
-	public function __construct()
-	{
+	public function __construct() {
 		$this->GalleryRemoteProperties();
 	}
 
-	public function GalleryRemoteProperties()
-	{
+	public function GalleryRemoteProperties() {
 		$this->_map = array();
 	}
 
@@ -49,8 +46,7 @@ class GalleryRemoteProperties
 	 * @param mixed $defaultValue
 	 * @return mixed the actual value
 	 */
-	public function getProperty($key, $defaultValue=null)
-	{
+	public function getProperty($key, $defaultValue=null) {
 		if (isset($this->_map[$key])) {
 			return $this->_map[$key];
 		} else {
@@ -63,8 +59,7 @@ class GalleryRemoteProperties
 	 * @param string $key
 	 * @return boolean true if it exists
 	 */
-	public function hasProperty($key)
-	{
+	public function hasProperty($key) {
 		return isset($this->_map[$key]);
 	}
 
@@ -73,8 +68,7 @@ class GalleryRemoteProperties
 	 *
 	 * @return string the exported properties
 	 */
-	public function listProperties()
-	{
+	public function listProperties() {
 		$results = array();
 		$results[] = '#__GR2PROTO__';
 		foreach ($this->_map as $key => $value) {
@@ -91,8 +85,7 @@ class GalleryRemoteProperties
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setProperty($key, $value)
-	{
+	public function setProperty($key, $value) {
 		if ($key != null) {
 			/* perform replace in stages to avoid uncertainty on what gets done first */
 		$value = str_replace('\\', '\\\\', $value);

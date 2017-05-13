@@ -25,21 +25,18 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17657 $
  */
-class ExternalView extends GalleryView
-{
+class ExternalView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 	
@@ -47,16 +44,14 @@ class ExternalView extends GalleryView
 	 * Specify the template instance to use for our immediate view.  Used by our test code.
 	 * @param GalleryTemplate $template
 	 */
-	public function setTemplate(&$template)
-	{
+	public function setTemplate(&$template) {
 		$this->_template =& $template;
 	}
 	
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		GalleryCoreApi::requireOnce('modules/imageblock/classes/ImageBlockHelper.class');
 		global $gallery;
 		

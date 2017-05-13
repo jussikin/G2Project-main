@@ -25,37 +25,32 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CSSView extends GalleryView
-{
+class CSSView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::shouldSaveSession
 	 */
-	public function shouldSaveSession()
-	{
+	public function shouldSaveSession() {
 		return false;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		$frameList = GalleryUtilities::getRequestVariables('frames');
 		if (empty($frameList)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);

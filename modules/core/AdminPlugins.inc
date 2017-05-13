@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryRepository.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminPluginsView extends GalleryView
-{
+class AdminPluginsView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -197,8 +195,7 @@ class AdminPluginsView extends GalleryView
 		);
 	}
 	
-	public function pluginSort($a, $b)
-	{
+	public function pluginSort($a, $b) {
 		static $groupOrder, $stateOrder;
 		if (!isset($stateOrder)) {
 			/*

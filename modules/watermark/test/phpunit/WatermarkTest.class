@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class WatermarkTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class WatermarkTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -74,8 +71,7 @@ class WatermarkTest extends GalleryTestCase
 		$this->_markForCleanup($this->_user);
 	}
 
-	public function testFetchWatermarks1()
-	{
+	public function testFetchWatermarks1() {
 		/* We never gave permission to our test watermark, so it shouldn't show up */
 	list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 		if ($ret) {
@@ -86,8 +82,7 @@ class WatermarkTest extends GalleryTestCase
 			  'Watermark appears when it shouldn\'t');
 	}
 
-	public function testFetchWatermarks2()
-	{
+	public function testFetchWatermarks2() {
 		global $gallery;
 
 	/* Give permission for us to see the watermark */
@@ -106,8 +101,7 @@ class WatermarkTest extends GalleryTestCase
 		$this->assertEquals($this->_watermark, $watermarks[$this->_watermark->getId()]);
 	}
 
-	public function testFetchWatermarksByOwnerId1()
-	{
+	public function testFetchWatermarksByOwnerId1() {
 		global $gallery;
 
 		list($ret, $watermarkIds) =
@@ -120,8 +114,7 @@ class WatermarkTest extends GalleryTestCase
 			  'Watermark doesn\'t appear when it should');
 	}
 
-	public function testFetchWatermarksByOwnerId2()
-	{
+	public function testFetchWatermarksByOwnerId2() {
 		/* Use a random/bogus user id */
 	list($ret, $watermarkIds) = WatermarkHelper::fetchWatermarkIdsByOwnerId(1234567);
 		if ($ret) {
@@ -132,8 +125,7 @@ class WatermarkTest extends GalleryTestCase
 			  'Watermark appears when it shouldn\'t');
 	}
 
-	public function testWatermarkItem()
-	{
+	public function testWatermarkItem() {
 		/* Create an item to watermark */
 	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
@@ -182,8 +174,7 @@ class WatermarkTest extends GalleryTestCase
 		}
 	}
 
-	public function testReplaceWatermark()
-	{
+	public function testReplaceWatermark() {
 		/* Create an item to watermark */
 	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
@@ -220,8 +211,7 @@ class WatermarkTest extends GalleryTestCase
 		$this->assertEquals($filter, $thumbnail->getPostFilterOperations());
 	}
 
-	public function testWatermarkItemCreatedPreferred()
-	{
+	public function testWatermarkItemCreatedPreferred() {
 		/* Create an item to watermark */
 	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
@@ -275,8 +265,7 @@ class WatermarkTest extends GalleryTestCase
 		}
 	}
 
-	public function testWatermarkItemDeletePreferred()
-	{
+	public function testWatermarkItemDeletePreferred() {
 		/* Create an item to watermark */
 	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {

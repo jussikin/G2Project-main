@@ -34,13 +34,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryValidationPlugin.class'
  * @package Captcha
  * @subpackage Classes
  */
-class CaptchaValidationPlugin extends GalleryValidationPlugin
-{
+class CaptchaValidationPlugin extends GalleryValidationPlugin {
 	/**
 	 * @see GalleryValidationPlugin::performValidation
 	 */
-	public function performValidation(&$form, $options = array())
-	{
+	public function performValidation(&$form, $options = array()) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -105,8 +103,7 @@ class CaptchaValidationPlugin extends GalleryValidationPlugin
 	/**
 	 * @see GalleryValidationPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$form, $options = array())
-	{
+	public function loadTemplate(&$form, $options = array()) {
 		list($ret, $useCaptcha) = $this->_shouldValidate($options);
 		if ($ret) {
 			return array(
@@ -143,8 +140,7 @@ class CaptchaValidationPlugin extends GalleryValidationPlugin
 	 *               int current failure count, if applicable
 	 * @access private
 	 */
-	public function _shouldValidate($options)
-	{
+	public function _shouldValidate($options) {
 		$useCaptcha = false;
 		$failedAttempts = 0;
 		$securityLevel = empty($options['level']) ? 'HIGH' : $options['level'];

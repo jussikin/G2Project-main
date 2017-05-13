@@ -25,15 +25,12 @@
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 17580 $
  */
-class Getid3DetailModeControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class Getid3DetailModeControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'getid3:Getid3DetailMode');
 	}
 	
-	public function testSwitchToSummary()
-	{
+	public function testSwitchToSummary() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('mode', 'summary');
 		
@@ -56,8 +53,7 @@ class Getid3DetailModeControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('summary', $session->get('getid3.module.LoadGetid3Info.mode'));
 	}
 	
-	public function testSwitchToDetailed()
-	{
+	public function testSwitchToDetailed() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('mode', 'detailed');
 		
@@ -80,8 +76,7 @@ class Getid3DetailModeControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('detailed', $session->get('getid3.module.LoadGetid3Info.mode'));
 	}
 	
-	public function testSwitchToBogus()
-	{
+	public function testSwitchToBogus() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('mode', 'BoGuS');
 		

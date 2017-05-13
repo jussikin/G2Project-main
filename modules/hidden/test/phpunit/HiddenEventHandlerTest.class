@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/hidden/classes/HiddenHelper.class');
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class HiddenEventHandlerTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class HiddenEventHandlerTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -65,8 +62,7 @@ class HiddenEventHandlerTest extends GalleryTestCase
 		}
 	}
 	
-	public function _createSubAlbumWithItems($parentId, $top = false)
-	{
+	public function _createSubAlbumWithItems($parentId, $top = false) {
 		list($ret, $album) = $this->_createRandomAlbum($parentId);
 		if ($ret) {
 			return array(
@@ -140,8 +136,7 @@ class HiddenEventHandlerTest extends GalleryTestCase
 		);
 	}
 	
-	public function testHiddenDeleteHandler()
-	{
+	public function testHiddenDeleteHandler() {
 		global $gallery;
 		$gallery->_storage = new UnitTestStorage();
 		$storage =& $gallery->getStorage();
@@ -160,8 +155,7 @@ class HiddenEventHandlerTest extends GalleryTestCase
 		$this->assert($storage->isComplete(), $storage->getRemaining());
 	}
 	
-	public function testHiddenViewableTreeChangeHandlerForCoreView()
-	{
+	public function testHiddenViewableTreeChangeHandlerForCoreView() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -220,8 +214,7 @@ class HiddenEventHandlerTest extends GalleryTestCase
 		$this->assert(!empty($permissions['core.view']), 'Sub item[1] should have core.view');
 	}
 	
-	public function testHiddenViewableTreeChangeHandlerForCoreViewAll()
-	{
+	public function testHiddenViewableTreeChangeHandlerForCoreViewAll() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -280,8 +273,7 @@ class HiddenEventHandlerTest extends GalleryTestCase
 		$this->assert(!empty($permissions['core.view']), 'Sub item[1] should have core.view');
 	}
 	
-	public function testHiddenViewableTreeChangeHandlerForCoreAll()
-	{
+	public function testHiddenViewableTreeChangeHandlerForCoreAll() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -340,8 +332,7 @@ class HiddenEventHandlerTest extends GalleryTestCase
 		$this->assert(!empty($permissions['core.view']), 'Sub item[1] should have core.view');
 	}
 	
-	public function testHiddenViewableTreeChangeHandlerForUnhiddenAlbum()
-	{
+	public function testHiddenViewableTreeChangeHandlerForUnhiddenAlbum() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		

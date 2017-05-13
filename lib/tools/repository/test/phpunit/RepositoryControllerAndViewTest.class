@@ -32,14 +32,12 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryControllerAn
  * @package RepositoryTools
  * @subpackage PHPUnit
  */
-class RepositoryControllerTest extends GalleryTestCase
-{
+class RepositoryControllerTest extends GalleryTestCase {
 	/**
 	 * Test whether RepositoryController::showView properly includes the
 	 * specified template file.
 	 */
-	public function testShowView()
-	{
+	public function testShowView() {
 		global $gallery;
 		$gallery->setConfig('repository.templates', dirname(__FILE__) . '/../data/');
 		

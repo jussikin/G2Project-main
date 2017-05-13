@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryItemHelper_advanced
-{
+class GalleryItemHelper_advanced {
 	/**
 	 * @see GalleryCoreApi::fetchItemizedDescendentCounts
 	 */
-	public static function fetchItemizedDescendentCounts($itemIds)
-	{
+	public static function fetchItemizedDescendentCounts($itemIds) {
 		global $gallery;
 		
 		foreach ($itemIds as $idx => $id) {
@@ -133,8 +131,7 @@ class GalleryItemHelper_advanced
 	/**
 	 * @see GalleryCoreApi::guaranteeAlbumHasThumbnail
 	 */
-	public static function guaranteeAlbumHasThumbnail($albumId)
-	{
+	public static function guaranteeAlbumHasThumbnail($albumId) {
 		global $gallery;
 		
 		list($ret, $thumbnails) = GalleryCoreApi::fetchThumbnailsByItemIds(array(
@@ -236,8 +233,7 @@ class GalleryItemHelper_advanced
 	/**
 	 * @see GalleryCoreApi::createAlbum
 	 */
-	public static function createAlbum($parentAlbumId, $name, $title, $summary, $description, $keywords)
-	{
+	public static function createAlbum($parentAlbumId, $name, $title, $summary, $description, $keywords) {
 		global $gallery;
 		
 		/* Can't work without a name and a parentAlbum */
@@ -351,8 +347,7 @@ class GalleryItemHelper_advanced
 	 * @see GalleryCoreApi::remapOwnerId
 	 * @todo Scalability - Lock and load the items in batches (open files limit).
 	 */
-	public static function remapOwnerId($oldUserId, $newUserId)
-	{
+	public static function remapOwnerId($oldUserId, $newUserId) {
 		global $gallery;
 		
 		if (empty($oldUserId) || empty($newUserId)) {
@@ -469,8 +464,7 @@ class GalleryItemHelper_advanced
 	/**
 	 * @see GalleryCoreApi::deleteSortOrder
 	 */
-	public static function deleteSortOrder($sortOrder)
-	{
+	public static function deleteSortOrder($sortOrder) {
 		global $gallery;
 		
 		$query = '
@@ -545,8 +539,7 @@ class GalleryItemHelper_advanced
 	/**
 	 * @see GalleryCoreApi::deleteRenderer
 	 */
-	public static function deleteRenderer($rendererClassName)
-	{
+	public static function deleteRenderer($rendererClassName) {
 		global $gallery;
 		
 		$query = '

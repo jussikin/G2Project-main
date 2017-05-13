@@ -26,8 +26,7 @@
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17605 $
  */
-class RssGenerator
-{
+class RssGenerator {
 	/**
 	 * An array of all the items (in the RSS sense of the term) in the feed
 	 *
@@ -50,8 +49,7 @@ class RssGenerator
 	 * @param array $properties item properties array
 	 * @param string $key optional key for the item array
 	 */
-	public function addItem($properties, $key='')
-	{
+	public function addItem($properties, $key='') {
 		/* add the new item to our items array */
 	if ($key == '') {
 		$this->_items[] = $properties;
@@ -64,8 +62,7 @@ class RssGenerator
 	 * Function to set the items array that will be used when generated the feed
 	 * @param array $items
 	 */
-	public function setItems($items)
-	{
+	public function setItems($items) {
 		$this->_items = $items;
 	}
 
@@ -75,8 +72,7 @@ class RssGenerator
 	 * @param string $name property name
 	 * @param string $value property value
 	 */
-	public function addProperty($name, $value)
-	{
+	public function addProperty($name, $value) {
 		$this->_properties[$name] = $value;
 	}
 
@@ -85,8 +81,7 @@ class RssGenerator
 	 *
 	 * @param array $properties properties
 	 */
-	public function setProperties($properties)
-	{
+	public function setProperties($properties) {
 		$this->_properties = $properties;
 	}
 
@@ -96,8 +91,7 @@ class RssGenerator
 	 *
 	 * @param string $order Can either be ASC or DESC
 	 */
-	public function sortItems($order)
-	{
+	public function sortItems($order) {
 		if ($order == 'ASC') {
 			ksort($this->_items);
 		} elseif ($order == 'DESC') {
@@ -110,8 +104,7 @@ class RssGenerator
 	 *
 	 * @param int $count
 	 */
-	public function sliceItems($count)
-	{
+	public function sliceItems($count) {
 		$this->_items = array_slice($this->_items, 0, $count);
 	}
 
@@ -121,8 +114,7 @@ class RssGenerator
 	 * @param string $version the rss version number
 	 * @return string rss stream
 	 */
-	public function generate($version)
-	{
+	public function generate($version) {
 		switch ($version) {
 	case '0.91':
 		return $this->generate091();
@@ -138,8 +130,7 @@ class RssGenerator
 	 *
 	 * @return string rss stream
 	 */
-	public function generate091()
-	{
+	public function generate091() {
 		global $gallery;
 
 		if (!isset($this->_properties['title']) ||
@@ -206,8 +197,7 @@ class RssGenerator
 	 *
 	 * @return string rss stream
 	 */
-	public function generate200()
-	{
+	public function generate200() {
 		global $gallery;
 
 		$platform =& $gallery->getPlatform();
@@ -373,8 +363,7 @@ class RssGenerator
 	 * @param string $text
 	 * @return string wrapped text
 	 */
-	public function cdata($text)
-	{
+	public function cdata($text) {
 		return '<![CDATA[' . $text . ']]>';
 	}
 }

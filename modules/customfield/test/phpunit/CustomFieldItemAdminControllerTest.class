@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldItemAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class CustomFieldItemAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'customfield.CustomFieldItemAdmin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -99,8 +96,7 @@ class CustomFieldItemAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCustomFieldItemAdminController()
-	{
+	public function testCustomFieldItemAdminController() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

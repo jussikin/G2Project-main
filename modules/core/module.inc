@@ -24,15 +24,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20994 $
  */
-class CoreModule extends GalleryModule
-{
-	public function __construct()
-	{
+class CoreModule extends GalleryModule {
+	public function __construct() {
 		$this->CoreModule();
 	}
 	
-	public function CoreModule()
-	{
+	public function CoreModule() {
 		global $gallery;
 		
 		$this->setId('core');
@@ -59,8 +56,7 @@ class CoreModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -326,8 +322,7 @@ class CoreModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSystemLinks
 	 */
-	public function getSystemLinks()
-	{
+	public function getSystemLinks() {
 		global $gallery;
 		
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');
@@ -403,8 +398,7 @@ class CoreModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		$data = array(
 			array(
 				'name' => $this->translate('General'),
@@ -469,8 +463,7 @@ class CoreModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getUserAdminViews
 	 */
-	public function getUserAdminViews($user)
-	{
+	public function getUserAdminViews($user) {
 		global $gallery;
 		$views = array();
 		
@@ -511,8 +504,7 @@ class CoreModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemAdminViews
 	 */
-	public function getItemAdminViews($item)
-	{
+	public function getItemAdminViews($item) {
 		global $gallery;
 		
 		$views = array();
@@ -677,8 +669,7 @@ class CoreModule extends GalleryModule
 	 *
 	 * @see GalleryModule::install
 	 */
-	public function upgrade($currentVersion, $statusMonitor = null)
-	{
+	public function upgrade($currentVersion, $statusMonitor = null) {
 		GalleryCoreApi::requireOnce('modules/core/CoreModuleExtras.inc');
 		$ret = CoreModuleExtras::upgrade($this, $currentVersion, $statusMonitor);
 		if ($ret) {
@@ -691,16 +682,14 @@ class CoreModule extends GalleryModule
 	/**
 	 * Set the current version of Gallery.
 	 */
-	public function setGalleryVersion($version)
-	{
+	public function setGalleryVersion($version) {
 		$this->_galleryVersion = $version;
 	}
 	
 	/**
 	 * Get the current version of Gallery.
 	 */
-	public function getGalleryVersion()
-	{
+	public function getGalleryVersion() {
 		return $this->_galleryVersion;
 	}
 	
@@ -713,8 +702,7 @@ class CoreModule extends GalleryModule
 	 * @return array 'core' => core module version, 'gallery' => gallery version
 	 * @static
 	 */
-	public static function getInstalledVersions()
-	{
+	public static function getInstalledVersions() {
 		global $gallery;
 		
 		if (GalleryDataCache::containsKey('CoreModule::installedVersions')) {
@@ -755,8 +743,7 @@ class CoreModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		GalleryCoreApi::requireOnce('modules/core/CoreModuleExtras.inc');
 		$ret = CoreModuleExtras::performFactoryRegistrations($this);
 		if ($ret) {

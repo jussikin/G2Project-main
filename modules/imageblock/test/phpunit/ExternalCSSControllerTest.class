@@ -26,15 +26,12 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class ExternalCSSControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ExternalCSSControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'imageblock.ExternalCSS');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -60,8 +57,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase
 		$this->_registerFactoryImplementationForTest('ImageFrameInterface_1_1', 'ExternalCSSControllerTestImageFrame', 'testImplId', 'modules/imageblock/test/phpunit/ExternalCSSControllerTest.class', 'testModuleId');
 	}
 	
-	public function testExternalCSSWithDefaultImageFrames()
-	{
+	public function testExternalCSSWithDefaultImageFrames() {
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
 			'delegate' => array(
@@ -74,8 +70,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('frameA|frameB', GalleryUtilities::getRequestVariables('frames'));
 	}
 	
-	public function testExternalCSSWithSpecifiedImageFrames()
-	{
+	public function testExternalCSSWithSpecifiedImageFrames() {
 		GalleryUtilities::putRequestVariable('frames', 'frameFromRequest');
 		
 		$results = $this->handleRequest();
@@ -90,8 +85,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('frameFromRequest', GalleryUtilities::getRequestVariables('frames'));
 	}
 	
-	public function testExternalCSSWithoutImageFrameModule()
-	{
+	public function testExternalCSSWithoutImageFrameModule() {
 		$this->_unregisterFactoryImplementationForTest('ImageFrameInterface_1_1');
 		
 		$results = $this->handleRequest();
@@ -104,8 +98,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testExternalCSSWithoutDefaultImageFrames()
-	{
+	public function testExternalCSSWithoutDefaultImageFrames() {
 		foreach (array(
 			'albumFrame',
 			'itemFrame'
@@ -127,8 +120,7 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testExternalCSSDoesNotRequireAuthToken()
-	{
+	public function testExternalCSSDoesNotRequireAuthToken() {
 		$controller = new ExternalCSSController();
 		$this->assert($controller->omitAuthTokenCheck());
 	}
@@ -137,6 +129,5 @@ class ExternalCSSControllerTest extends GalleryControllerTestCase
 /**
  * Test ImageFrame
  */
-class ExternalCSSControllerTestImageFrame
-{
+class ExternalCSSControllerTestImageFrame {
 }

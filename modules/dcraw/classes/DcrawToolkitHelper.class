@@ -26,16 +26,14 @@
  * @version $Revision: 17780 $
  * @static
  */
-class DcrawToolkitHelper
-{
+class DcrawToolkitHelper {
 	/**
 	 * Figure out what operations and properties are supported by the DcrawToolkit and return them.
 	 *
 	 * @return array GalleryStatus a status code
 	 *               array('operations' => ..., 'properties' => ...)
 	 */
-	public function getOperationsAndProperties()
-	{
+	public function getOperationsAndProperties() {
 		global $gallery;
 		
 		$results = array(
@@ -73,8 +71,7 @@ class DcrawToolkitHelper
 	 *                      'success' => boolean: test successful?
 	 *                      'message' => string: the error message
 	 */
-	public static function testBinary($dcrawPath)
-	{
+	public static function testBinary($dcrawPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

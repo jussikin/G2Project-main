@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Toolkit.class');
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 20957 $
  */
-class Getid3ToolkitTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class Getid3ToolkitTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -45,8 +42,7 @@ class Getid3ToolkitTest extends GalleryTestCase
 		$this->_toolkit = new Getid3Toolkit();
 	}
 	
-	public function testGetProperties()
-	{
+	public function testGetProperties() {
 		list($ret, $results) = $this->_toolkit->getProperty('video/x-msvideo', 'originationTimestamp', dirname(__FILE__) . '/../data/test_small.avi');
 		if ($ret) {
 			return $ret;

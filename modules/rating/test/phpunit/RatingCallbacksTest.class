@@ -28,18 +28,15 @@ GalleryCoreApi::requireOnce('modules/rating/Callbacks.inc');
  * @author Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingCallbacksTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RatingCallbacksTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
 	/**
 	 * Create an album for testing
 	 */
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$ret = parent::setUp();
@@ -82,8 +79,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->_callbacks = new RatingCallbacks();
 	}
 
-	public function testRatingBlocks()
-	{
+	public function testRatingBlocks() {
 		$ret = $this->_callbacks->callback(array('itemId' => $this->_item->getId()),
 		$this->_smarty, 'LoadRating', $this->_userId);
 		if ($ret) {
@@ -107,8 +103,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assert(isset($data['averagePercent']), 'Missing average percent');
 	}
 
-	public function testAllowAlbumRating()
-	{
+	public function testAllowAlbumRating() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'allowAlbumRating', 1);
 		if ($ret) {
 			return $ret;
@@ -136,8 +131,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assert(isset($data['averagePercent']), 'Missing average percent');
 	}
 
-	public function testDoNotAllowAlbumRating()
-	{
+	public function testDoNotAllowAlbumRating() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'allowAlbumRating', 0);
 		if ($ret) {
 			return $ret;
@@ -152,8 +146,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assert(!$this->_smarty->getTemplateVars('block'), 'Received rating block.');
 	}
 
-	public function testRatingNoViewPermissionPermissionNone()
-	{
+	public function testRatingNoViewPermissionPermissionNone() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -171,8 +164,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		}
 	}
 
-	public function testRatingNoRatingPermission()
-	{
+	public function testRatingNoRatingPermission() {
 		global $gallery;
 
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
@@ -195,8 +187,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assert(!$this->_smarty->getTemplateVars('block'), 'Received rating block.');
 	}
 	
-	public function testRatingPermissionViewOnly()
-	{
+	public function testRatingPermissionViewOnly() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -235,8 +226,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assertEquals(false, $data['canRate'], 'canRate is true.');
 	}
 
-	public function testRatingPermissionFull()
-	{
+	public function testRatingPermissionFull() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -280,8 +270,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assertEquals(true, $data['canRate'], 'canRate is false.');
 	}
 
-	public function testRatingForItemInDisabledAlbum()
-	{
+	public function testRatingForItemInDisabledAlbum() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'enabled', 0,
 						  $this->_album->getId());
 		if ($ret) {
@@ -296,8 +285,7 @@ class RatingCallbacksTest extends GalleryTestCase
 		$this->assert(!$this->_smarty->getTemplateVars('block'), 'Received rating block.');
 	}
 
-	public function testRatingForDisabledAlbum()
-	{
+	public function testRatingForDisabledAlbum() {
 		list($ret, $subalbum) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;

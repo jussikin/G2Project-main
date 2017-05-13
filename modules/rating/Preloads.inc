@@ -23,10 +23,8 @@
  * @author  Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingPreloads
-{
-	public function preload(&$template, $preload, $paramSet)
-	{
+class RatingPreloads {
+	public function preload(&$template, $preload, $paramSet) {
 		static $loaded;
 
 		if (!empty($loaded[$preload])) {

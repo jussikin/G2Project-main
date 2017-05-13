@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminSlideshowControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminSlideshowControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'slideshow.AdminSlideshow');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -45,8 +42,7 @@ class AdminSlideshowControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testInstallNotSiteAdmin()
-	{
+	public function testInstallNotSiteAdmin() {
 		$ret = $this->_becomeGuestUser();
 		if ($ret) {
 			return $ret;
@@ -55,8 +51,7 @@ class AdminSlideshowControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 
-	public function testInstallSuccess()
-	{
+	public function testInstallSuccess() {
 		GalleryUtilities::putRequestVariable('form[action][install]', 1);
 		$mockPicLensHelper = new AdminSlideshowControllerTest_MockPicLensHelper();
 		$mockPicLensHelper->setReply('install', array(), array(null, 'TEST_VERSION'));
@@ -73,8 +68,7 @@ class AdminSlideshowControllerTest extends GalleryControllerTestCase
 		$this->assert($mockPicLensHelper->isComplete(), $mockPicLensHelper->getRemaining());
 	}
 
-	public function testInstallFailed()
-	{
+	public function testInstallFailed() {
 		GalleryUtilities::putRequestVariable('form[action][install]', 1);
 		$mockPicLensHelper = new AdminSlideshowControllerTest_MockPicLensHelper();
 		$mockPicLensHelper->setReply(
@@ -92,8 +86,7 @@ class AdminSlideshowControllerTest extends GalleryControllerTestCase
 		$this->assert($mockPicLensHelper->isComplete(), $mockPicLensHelper->getRemaining());
 	}
 
-	public function testUninstall()
-	{
+	public function testUninstall() {
 		GalleryUtilities::putRequestVariable('form[action][uninstall]', 1);
 		$ret = GalleryCoreApi::setPluginParameter(
 		'module', 'slideshow', 'piclens.version', 'TEST_VALUE');
@@ -124,15 +117,12 @@ class AdminSlideshowControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class AdminSlideshowControllerTest_MockPicLensHelper extends MockObject
-{
-	public function install()
-	{
+class AdminSlideshowControllerTest_MockPicLensHelper extends MockObject {
+	public function install() {
 		return $this->_makeReply('install', array());
 	}
 
-	public function uninstall()
-	{
+	public function uninstall() {
 		return $this->_makeReply('uninstall', array());
 	}
 }

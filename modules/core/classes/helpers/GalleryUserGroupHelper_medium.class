@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryUserGroupHelper_medium
-{
+class GalleryUserGroupHelper_medium {
 	/**
 	 * @see GalleryCoreApi::addUserToGroup
 	 */
-	public static function addUserToGroup($userId, $groupId)
-	{
+	public static function addUserToGroup($userId, $groupId) {
 		global $gallery;
 		if (empty($userId) || empty($groupId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
@@ -76,8 +74,7 @@ class GalleryUserGroupHelper_medium
 	/**
 	 * @see GalleryCoreApi::removeUserFromGroup
 	 */
-	public static function removeUserFromGroup($userId, $groupId)
-	{
+	public static function removeUserFromGroup($userId, $groupId) {
 		global $gallery;
 		if (empty($userId) || empty($groupId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
@@ -112,8 +109,7 @@ class GalleryUserGroupHelper_medium
 	/**
 	 * @see GalleryCoreApi::removeUserFromAllGroups
 	 */
-	public static function removeUserFromAllGroups($userId)
-	{
+	public static function removeUserFromAllGroups($userId) {
 		global $gallery;
 		if (empty($userId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
@@ -145,8 +141,7 @@ class GalleryUserGroupHelper_medium
 	/**
 	 * @see GalleryCoreApi::removeAllUsersFromGroup
 	 */
-	public static function removeAllUsersFromGroup($groupId)
-	{
+	public static function removeAllUsersFromGroup($groupId) {
 		global $gallery;
 		if (empty($groupId)) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
@@ -188,8 +183,7 @@ class GalleryUserGroupHelper_medium
 	/**
 	 * @see GalleryCoreApi::fetchUsersForGroup
 	 */
-	public static function fetchUsersForGroup($groupId, $count = null, $offset = null, $substring = null)
-	{
+	public static function fetchUsersForGroup($groupId, $count = null, $offset = null, $substring = null) {
 		global $gallery;
 		
 		$data = array();

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemAttributesTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAttributesTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -92,8 +89,7 @@ class ItemAttributesTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		
@@ -106,8 +102,7 @@ class ItemAttributesTest extends GalleryTestCase
 	/**
 	 * Update the view count and verify it.
 	 */
-	public function testSetItemViewCount()
-	{
+	public function testSetItemViewCount() {
 		$ret = GalleryCoreApi::setItemViewCount($this->_items[0]->getId(), 999);
 		if ($ret) {
 			return $ret;
@@ -124,8 +119,7 @@ class ItemAttributesTest extends GalleryTestCase
 	/**
 	 * Update the view count and verify it.
 	 */
-	public function testIncrementItemViewCount()
-	{
+	public function testIncrementItemViewCount() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm();
 		$gallery->_session = new ItemAttributesTestSession();
@@ -153,8 +147,7 @@ class ItemAttributesTest extends GalleryTestCase
 	 * Verify that we don't increment the view count until a day after the last increment within
 	 * the same session.
 	 */
-	public function testDontIncrementItemViewCountTooOften()
-	{
+	public function testDontIncrementItemViewCountTooOften() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm();
 		$gallery->_session = new ItemAttributesTestSession();
@@ -182,8 +175,7 @@ class ItemAttributesTest extends GalleryTestCase
 	 * Verify that we don't increment the view count until a day after the last increment within
 	 * the same session.
 	 */
-	public function testIncrementItemViewCountThreshold()
-	{
+	public function testIncrementItemViewCountThreshold() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm();
 		$gallery->_session = new ItemAttributesTestSession();
@@ -235,8 +227,7 @@ class ItemAttributesTest extends GalleryTestCase
 		$this->assertEquals(2, $viewCount);
 	}
 	
-	public function testIncrementItemViewCountGuestNoSessionIfModifiedNotSetIsSearchEngine()
-	{
+	public function testIncrementItemViewCountGuestNoSessionIfModifiedNotSetIsSearchEngine() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm(false, array(), time());
 		$gallery->_session = new ItemAttributesTestSession(false, true);
@@ -263,8 +254,7 @@ class ItemAttributesTest extends GalleryTestCase
 		$this->assertEquals(array(), GalleryUtilities::_getResponseHeaders());
 	}
 	
-	public function testIncrementItemViewCountGuestNoSessionIfModifiedNotSetIsNotSearchEngine()
-	{
+	public function testIncrementItemViewCountGuestNoSessionIfModifiedNotSetIsNotSearchEngine() {
 		global $gallery;
 		$now = time();
 		$gallery->_phpVm = new ItemAttributesTestPhpVm(false, array(), $now);
@@ -294,8 +284,7 @@ class ItemAttributesTest extends GalleryTestCase
 		), GalleryUtilities::_getResponseHeaders());
 	}
 	
-	public function testIncrementItemViewCountGuestIfModifiedIsSet()
-	{
+	public function testIncrementItemViewCountGuestIfModifiedIsSet() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm();
 		$gallery->_session = new ItemAttributesTestSession(false);
@@ -320,8 +309,7 @@ class ItemAttributesTest extends GalleryTestCase
 		$this->assertEquals(0, $viewCount);
 	}
 	
-	public function testIncrementItemViewCountGuestIfModifiedIsSet2()
-	{
+	public function testIncrementItemViewCountGuestIfModifiedIsSet2() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm(true, array(
 			'If-Modified-Since' => 'something'
@@ -348,8 +336,7 @@ class ItemAttributesTest extends GalleryTestCase
 		$this->assertEquals(0, $viewCount);
 	}
 	
-	public function testIncrementItemViewCountGuestIfModifiedIsSetNotGuest()
-	{
+	public function testIncrementItemViewCountGuestIfModifiedIsSetNotGuest() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAttributesTestPhpVm(true, array(
 			'If-Modified-Since' => 'something'
@@ -381,8 +368,7 @@ class ItemAttributesTest extends GalleryTestCase
 	/**
 	 * Update the view count and verify it
 	 */
-	public function testSetOrderWeight()
-	{
+	public function testSetOrderWeight() {
 		$ret = GalleryCoreApi::setItemOrderWeight($this->_items[0]->getId(), 123);
 		if ($ret) {
 			return $ret;
@@ -400,8 +386,7 @@ class ItemAttributesTest extends GalleryTestCase
 	 * Set the weights to something sequential then verify that we can find the next
 	 * higher or lower weight.
 	 */
-	public function testFetchNextItemWeight()
-	{
+	public function testFetchNextItemWeight() {
 		for ($i = 0; $i < sizeof($this->_items); $i++) {
 			$ret = GalleryCoreApi::setItemOrderWeight($this->_items[$i]->getId(), $i);
 			if ($ret) {
@@ -425,8 +410,7 @@ class ItemAttributesTest extends GalleryTestCase
 	/**
 	 * Fetch the min/max child weight.
 	 */
-	public function textFetchExtremeChildWeight()
-	{
+	public function textFetchExtremeChildWeight() {
 		$this->assert(false);
 		
 		for ($i = 0; $i < sizeof($this->_items); $i++) {
@@ -452,8 +436,7 @@ class ItemAttributesTest extends GalleryTestCase
 	/**
 	 * Update the view count and verify it.
 	 */
-	public function testRebalanceOrderWeights()
-	{
+	public function testRebalanceOrderWeights() {
 		for ($i = 0; $i < sizeof($this->_items); $i++) {
 			$ret = GalleryCoreApi::setItemOrderWeight($this->_items[$i]->getId(), $i);
 			if ($ret) {
@@ -475,8 +458,7 @@ class ItemAttributesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFetchParentSequence()
-	{
+	public function testFetchParentSequence() {
 		global $gallery;
 		
 		list($ret, $album) = $this->_createRandomAlbum($this->_items[1]->getId());
@@ -549,8 +531,7 @@ class ItemAttributesTest extends GalleryTestCase
 		), $parentSequence, 'item parent sequence, item created in multiroot');
 	}
 	
-	public function testFetchItemizedDescendentCounts()
-	{
+	public function testFetchItemizedDescendentCounts() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_items[1]->getId());
 		if ($ret) {
 			return $ret;
@@ -594,8 +575,7 @@ class ItemAttributesTest extends GalleryTestCase
 		), $counts);
 	}
 	
-	public function testFetchDescendentCounts()
-	{
+	public function testFetchDescendentCounts() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_items[1]->getId());
 		if ($ret) {
 			return $ret;
@@ -633,8 +613,7 @@ class ItemAttributesTest extends GalleryTestCase
 		), $counts);
 	}
 	
-	public function testFetchDescendentCountsSessionPermission()
-	{
+	public function testFetchDescendentCountsSessionPermission() {
 		/* Session based permissions should not apply when calculating cached descendent count */
 		global $gallery;
 		$session =& $gallery->getSession();
@@ -671,8 +650,7 @@ class ItemAttributesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFetchDescendentCountsDifferentUser()
-	{
+	public function testFetchDescendentCountsDifferentUser() {
 		global $gallery;
 		
 		list($ret, $album) = $this->_createRandomAlbum($this->_items[1]->getId());
@@ -730,30 +708,25 @@ class ItemAttributesTest extends GalleryTestCase
 	}
 }
 
-class ItemAttributesTestSession
-{
+class ItemAttributesTestSession {
 	public $_userId;
 	public $_creationTime;
 	
-	public function ItemAttributesTestSession($isPersistent = true, $isSearchEngineSession = false)
-	{
+	public function ItemAttributesTestSession($isPersistent = true, $isSearchEngineSession = false) {
 		$this->_creationTime = time();
 		$this->_isPersistent = $isPersistent;
 		$this->_isSearchEngineSession = $isSearchEngineSession;
 	}
 	
-	public function put($key, $value)
-	{
+	public function put($key, $value) {
 		$this->_data[$key] = $value;
 	}
 	
-	public function getCreationTime()
-	{
+	public function getCreationTime() {
 		return $this->_creationTime;
 	}
 	
-	public function exists($key)
-	{
+	public function exists($key) {
 		if (!$this->_isPersistent) {
 			return false;
 		}
@@ -761,48 +734,39 @@ class ItemAttributesTestSession
 		return isset($this->_data[$key]);
 	}
 	
-	public function &get($key)
-	{
+	public function &get($key) {
 		return $this->_data[$key];
 	}
 	
-	public function getUserId()
-	{
+	public function getUserId() {
 		return $this->_userId;
 	}
 	
-	public function setUserId($userId)
-	{
+	public function setUserId($userId) {
 		$this->_userId = $userId;
 	}
 	
-	public function isPersistent()
-	{
+	public function isPersistent() {
 		return $this->_isPersistent;
 	}
 	
-	public function isSearchEngineSession()
-	{
+	public function isSearchEngineSession() {
 		return $this->_isSearchEngineSession;
 	}
 }
 
-class ItemAttributesTestPhpVm extends GalleryPhpVm
-{
-	public function ItemAttributesTestPhpVm($getAllHeadersExists = false, $headers = array(), $time = null)
-	{
+class ItemAttributesTestPhpVm extends GalleryPhpVm {
+	public function ItemAttributesTestPhpVm($getAllHeadersExists = false, $headers = array(), $time = null) {
 		$this->_getAllHeadersExists = $getAllHeadersExists;
 		$this->_headers = $headers;
 		$this->_time = $time;
 	}
 	
-	public function getallheaders()
-	{
+	public function getallheaders() {
 		return $this->_headers;
 	}
 	
-	public function function_exists($functionName)
-	{
+	public function function_exists($functionName) {
 		if ($functionName == 'getallheaders') {
 			return $this->_getAllHeadersExists;
 		}
@@ -810,18 +774,15 @@ class ItemAttributesTestPhpVm extends GalleryPhpVm
 		return parent::function_exists($functionName);
 	}
 	
-	public function header($header, $replace = null)
-	{
+	public function header($header, $replace = null) {
 		/* Avoid modifying actual header information */
 	}
 	
-	public function headers_sent()
-	{
+	public function headers_sent() {
 		return GalleryUtilities::_getResponseHeaders() != array();
 	}
 	
-	public function time()
-	{
+	public function time() {
 		if (isset($this->_time)) {
 			return $this->_time;
 		}

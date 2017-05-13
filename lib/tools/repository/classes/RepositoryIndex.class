@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17580 $
  */
-class RepositoryIndex extends RepositoryObject
-{
+class RepositoryIndex extends RepositoryObject {
 	/**
 	 * The repository index, unserialized.
 	 *
@@ -51,8 +50,7 @@ class RepositoryIndex extends RepositoryObject
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function init($repositoryDir)
-	{
+	public function init($repositoryDir) {
 		parent::init();
 		
 		$ret = $this->setOutputDir($repositoryDir);
@@ -71,8 +69,7 @@ class RepositoryIndex extends RepositoryObject
 	 * @return array GalleryStatus a status code
 	 *		     array themes => count, modules => count
 	 */
-	public function generate()
-	{
+	public function generate() {
 		global $gallery;
 		
 		$pluginTypes = array(
@@ -208,8 +205,7 @@ class RepositoryIndex extends RepositoryObject
 	 * @return array GalleryStatis a status code
 	 *		     array index
 	 */
-	public function getPluginInfo()
-	{
+	public function getPluginInfo() {
 		global $gallery;
 		
 		/* Read index from disk if it's not in memory. */

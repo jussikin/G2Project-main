@@ -22,10 +22,8 @@
  * Show a warning page with a link to the installer
  * @package Upgrade
  */
-class RedirectToInstallerStep extends UpgradeStep
-{
-	public function loadTemplateData(&$templateData)
-	{
+class RedirectToInstallerStep extends UpgradeStep {
+	public function loadTemplateData(&$templateData) {
 		global $gallery, $stepNumber;
 		
 		/* Add @ here in case we haven't yet upgraded config.php to include galleryBaseUrl */

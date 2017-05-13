@@ -25,21 +25,18 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RandomHighlightOption extends ItemEditOption
-{
+class RandomHighlightOption extends ItemEditOption {
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		return array(null, isset($thumbnail));
 	}
 
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		$form['RandomHighlightOption']['isRandomHighlight'] =
 		$thumbnail->hasOnLoadHandler('RandomHighlight');
 
@@ -50,8 +47,7 @@ class RandomHighlightOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		list($ret, $thumbnail) = GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
 		if ($ret) {
 			return array($ret, null, null);

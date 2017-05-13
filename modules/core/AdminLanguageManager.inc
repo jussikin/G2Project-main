@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/AdminRepositoryDownloadAndInst
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17768 $
  */
-class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallController
-{
+class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		
@@ -102,8 +100,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	 * @param array $form the form values
 	 * @return GalleryStatus a status code
 	 */
-	public function updateLanguageSettings($form)
-	{
+	public function updateLanguageSettings($form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$templateAdapter =& $gallery->getTemplateAdapter();
@@ -221,8 +218,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	 * @return array GalleryStatus a status code
 	 *           bool flag indicating that the settings were updated
 	 */
-	public function _updateGeneralSettings($form)
-	{
+	public function _updateGeneralSettings($form) {
 		/* Handle general language settings. */
 		$form['language']['useBrowserPref'] = !empty($form['language']['useBrowserPref']);
 		
@@ -271,8 +267,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	 *           array list of language packages to install
 	 *           array list of language packages to remove
 	 */
-	public function _getFormLanguages($form, $repositories)
-	{
+	public function _getFormLanguages($form, $repositories) {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		
@@ -321,8 +316,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	 *           int number of language packages deleted
 	 *           array string status messages indicating problems encounterd
 	 */
-	public function _deleteLanguagePackages($deleteLanguages, $callback)
-	{
+	public function _deleteLanguagePackages($deleteLanguages, $callback) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -374,8 +368,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	 *           array string status messages indicating problems encounterd
 	 *           int count of packages installed
 	 */
-	public function _downloadAndInstallLanguagePackages($sourceFiles, $repositories, &$callback)
-	{
+	public function _downloadAndInstallLanguagePackages($sourceFiles, $repositories, &$callback) {
 		$status = array();
 		$count  = 0;
 		foreach ($sourceFiles as $source => $files) {
@@ -413,8 +406,7 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 	 * @param array $installLanguages an array of locales that were installed.
 	 * @return GalleryStatus a status code
 	 */
-	public function _synchronizeLanguagesByLocale($installLanguages, &$callback)
-	{
+	public function _synchronizeLanguagesByLocale($installLanguages, &$callback) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return $ret;
@@ -439,13 +431,11 @@ class AdminLanguageManagerController extends AdminRepositoryDownloadAndInstallCo
 /**
  * This view will show all repository-related features.
  */
-class AdminLanguageManagerView extends GalleryView
-{
+class AdminLanguageManagerView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$translator =& $gallery->getTranslator();
@@ -566,8 +556,7 @@ class AdminLanguageManagerView extends GalleryView
 	 * @return array GalleryStatus a status code
 	 *           array package list
 	 */
-	public function _getAllLanguages($repository, &$enableAllFlags)
-	{
+	public function _getAllLanguages($repository, &$enableAllFlags) {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		
@@ -703,8 +692,7 @@ class AdminLanguageManagerView extends GalleryView
 	 * @return array GalleryStatus a status code
 	 *               int package count
 	 */
-	public function _determinePackageAvailability($repository, $langCodes)
-	{
+	public function _determinePackageAvailability($repository, $langCodes) {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		

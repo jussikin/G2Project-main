@@ -27,10 +27,8 @@ GalleryCoreApi::requireOnce('modules/slideshow/classes/SlideshowHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17587 $
  */
-class SlideshowHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SlideshowHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
@@ -45,8 +43,7 @@ class SlideshowHelperTest extends GalleryTestCase
 	 *   a GalleryUnknownItem with a thumbnail
 	 *   a GalleryPhotoItem with a thumbnail and a 100x100 resized
 	 */
-	public function _createAlbumHierarchy($optionListString='')
-	{
+	public function _createAlbumHierarchy($optionListString='') {
 		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return array($ret, null, null, null);
@@ -127,8 +124,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		return array(null, $album, $info, $itemIds);
 	}
 
-	public function testBuildAlbumSlideshow_StartingFromAlbum()
-	{
+	public function testBuildAlbumSlideshow_StartingFromAlbum() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail');
 		if ($ret) {
@@ -152,8 +148,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertEquals(1, $start, 'Should start at second photo');
 	}
 
-	public function testBuildAlbumSlideshow_ItemInsideAlbum()
-	{
+	public function testBuildAlbumSlideshow_ItemInsideAlbum() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail');
 		if ($ret) {
@@ -177,8 +172,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertEquals(1, $start, 'Should start at second photo');
 	}
 
-	public function testBuildAlbumSlideshow_WithoutPermissionToViewAlbum()
-	{
+	public function testBuildAlbumSlideshow_WithoutPermissionToViewAlbum() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy('thumbnail');
 		if ($ret) {
 			return $ret;
@@ -193,8 +187,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_OBJECT, $ret);
 	}
 
-	public function testBuildAlbumSlideshow_WithoutPermissionToViewItem()
-	{
+	public function testBuildAlbumSlideshow_WithoutPermissionToViewItem() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail');
 		if ($ret) {
@@ -210,8 +203,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_OBJECT, $ret);
 	}
 
-	public function testBuildAlbumSlideshow_ItemInsideAlbumWithoutPermissionToViewParentAlbum()
-	{
+	public function testBuildAlbumSlideshow_ItemInsideAlbumWithoutPermissionToViewParentAlbum() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail');
 		if ($ret) {
@@ -227,8 +219,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_OBJECT, $ret);
 	}
 
-	public function testBuildItemsSlideshow_Basic()
-	{
+	public function testBuildItemsSlideshow_Basic() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail');
 		if ($ret) {
@@ -252,8 +243,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertEquals(1, $start, 'Should start at second photo');
 	}
 
-	public function testBuildItemsSlideshow_PhotosWithoutCoreViewCauseMissingObjectError()
-	{
+	public function testBuildItemsSlideshow_PhotosWithoutCoreViewCauseMissingObjectError() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail');
 		if ($ret) {
@@ -269,8 +259,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_OBJECT, $ret);
 	}
 
-	public function testBuildItemsSlideshow_IgnorePhotoWithNoThumbnail()
-	{
+	public function testBuildItemsSlideshow_IgnorePhotoWithNoThumbnail() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:resize_100:thumbnail');
 		if ($ret) {
@@ -294,8 +283,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$result);
 	}
 
-	public function testBuildItemsSlideshow_IgnoreNonPhotos()
-	{
+	public function testBuildItemsSlideshow_IgnoreNonPhotos() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'nonphoto,thumbnail:thumbnail');
 		if ($ret) {
@@ -316,8 +304,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$result);
 	}
 
-	public function testBuildItemsSlideshow_ShowPreferredWhenAvailable()
-	{
+	public function testBuildItemsSlideshow_ShowPreferredWhenAvailable() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail,preferred:thumbnail');
 		if ($ret) {
@@ -341,8 +328,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$result);
 	}
 
-	public function testBuildItemsSlideshow_ShowBiggestResize()
-	{
+	public function testBuildItemsSlideshow_ShowBiggestResize() {
 		global $gallery;
 
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
@@ -376,8 +362,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$result);
 	}
 
-	public function testBuildItemsSlideshow_FallbackToThumbnail()
-	{
+	public function testBuildItemsSlideshow_FallbackToThumbnail() {
 		global $gallery;
 
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy('thumbnail');
@@ -410,8 +395,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$result);
 	}
 
-	public function testBuildAlbumSlideshow_Offset()
-	{
+	public function testBuildAlbumSlideshow_Offset() {
 		list($ret, $album, $itemInfo, $itemIds) = $this->_createAlbumHierarchy(
 		'thumbnail:thumbnail:thumbnail');
 		if ($ret) {
@@ -433,8 +417,7 @@ class SlideshowHelperTest extends GalleryTestCase
 	}
 
 	/** @todo make this test run faster by overriding SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE */
-	public function testPaginateItemSlideshow_NextOffsetOnly()
-	{
+	public function testPaginateItemSlideshow_NextOffsetOnly() {
 		/* Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1) */
 	$options = str_repeat('thumbnail:preferred,nonphoto:thumbnail:',
 		SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE) . 'thumbnail';
@@ -455,8 +438,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		'Next page offset should match');
 	}
 
-	public function testPaginateItemSlideshow_PrevOffsetOnly()
-	{
+	public function testPaginateItemSlideshow_PrevOffsetOnly() {
 		/* Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1) */
 	$options = str_repeat('thumbnail:preferred,nonphoto:thumbnail:',
 		SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE) . 'thumbnail';
@@ -478,8 +460,7 @@ class SlideshowHelperTest extends GalleryTestCase
 		$this->assertEquals(null, $nextOffset, 'Should be no next page');
 	}
 
-	public function testPaginateItemSlideshow_PrevOffsetAndNextOffset()
-	{
+	public function testPaginateItemSlideshow_PrevOffsetAndNextOffset() {
 		/* Create three pages of items in the album (3 * SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE + 1) */
 	$options = str_repeat('thumbnail:preferred,nonphoto:thumbnail:',
 		SLIDESHOW_MEDIARSS_ITEMS_PER_PAGE) . 'thumbnail';

@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldSearchTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CustomFieldSearchTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -141,8 +138,7 @@ class CustomFieldSearchTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetSearchModuleInfo()
-	{
+	public function testGetSearchModuleInfo() {
 		list($ret, $info) = $this->_search->getSearchModuleInfo();
 		if ($ret) {
 			return $ret;
@@ -160,8 +156,7 @@ class CustomFieldSearchTest extends GalleryTestCase
 		), $info);
 	}
 	
-	public function testSearchAll()
-	{
+	public function testSearchAll() {
 		list($ret, $results) = $this->_search->search(array(
 			'customfield' => 1
 		), $this->_randomKey);
@@ -205,8 +200,7 @@ class CustomFieldSearchTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testLimitedSearch()
-	{
+	public function testLimitedSearch() {
 		list($ret, $results) = $this->_search->search(array(
 			'customfield' => 1
 		), $this->_randomKey, 1, 2);
@@ -241,8 +235,7 @@ class CustomFieldSearchTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testEmptySearch()
-	{
+	public function testEmptySearch() {
 		list($ret, $results) = $this->_search->search(array(
 			'customfield' => 1
 		), 'some string that will never show up');

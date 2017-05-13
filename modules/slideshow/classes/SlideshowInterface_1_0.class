@@ -28,8 +28,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class SlideshowInterface_1_0
-{
+class SlideshowInterface_1_0 {
 	/**
 	 * Get parameters for jumping to slideshow display
 	 *
@@ -37,8 +36,7 @@ class SlideshowInterface_1_0
 	 * @return array GalleryStatus a status code,
 	 *               array(parameter=>value)
 	 */
-	public function getLinkData($itemIds)
-	{
+	public function getLinkData($itemIds) {
 		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null, null);
 	}
 }

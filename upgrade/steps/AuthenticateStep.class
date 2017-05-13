@@ -22,15 +22,12 @@
  * Authentication
  * @package Upgrade
  */
-class AuthenticateStep extends UpgradeStep
-{
-	public function stepName()
-	{
+class AuthenticateStep extends UpgradeStep {
+	public function stepName() {
 		return _('Authenticate');
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $gallery;
 		
 		if (!$this->isComplete()) {

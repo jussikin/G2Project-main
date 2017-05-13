@@ -25,17 +25,14 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CoreModuleTest extends GalleryTestCase
-{
+class CoreModuleTest extends GalleryTestCase {
 	public $_module;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -60,8 +57,7 @@ class CoreModuleTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetItemAdminViews()
-	{
+	public function testGetItemAdminViews() {
 		global $gallery;
 		$albumId = $this->_parentAlbum->getId();
 		GalleryUtilities::putRequestVariable('itemId', $albumId);
@@ -172,14 +168,12 @@ class CoreModuleTest extends GalleryTestCase
 		), $content, 'nonempty album');
 	}
 
-	public function testGetConfigurationView()
-	{
+	public function testGetConfigurationView() {
 		$content = $this->_module->getConfigurationView();
 		$this->assertEquals(null, $content);
 	}
 
-	public function testGetSystemLinks()
-	{
+	public function testGetSystemLinks() {
 		global $gallery;
 
 		list($ret, $content) = $this->_module->getSystemLinks();
@@ -289,8 +283,7 @@ class CoreModuleTest extends GalleryTestCase
 		), $content, 'Locked User');
 	}
 
-	public function testSetModuleParameter()
-	{
+	public function testSetModuleParameter() {
 		$key = 'test-key';
 		$value = rand();
 
@@ -313,8 +306,7 @@ class CoreModuleTest extends GalleryTestCase
 		$this->assertEquals($value, (int) $newValue);
 	}
 
-	public function testGetInstalledVersionsFromCache()
-	{
+	public function testGetInstalledVersionsFromCache() {
 		GalleryDataCache::put('CoreModule::installedVersions', 'Test version string');
 
 		$versions = $this->_module->getInstalledVersions();
@@ -322,8 +314,7 @@ class CoreModuleTest extends GalleryTestCase
 		$this->assertEquals('Test version string', $versions, 'Unexpected value from getInstalled Versions');
 	}
 
-	public function testGetInstalledVersionsNoCacheOrVersionFile()
-	{
+	public function testGetInstalledVersionsNoCacheOrVersionFile() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -344,8 +335,7 @@ class CoreModuleTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 
-	public function testGetInstalledVersions()
-	{
+	public function testGetInstalledVersions() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -362,8 +352,7 @@ class CoreModuleTest extends GalleryTestCase
 		$this->assertEquals($expected, $versions, 'Unexpected value from getInstalled Versions');
 	}
 
-	public function testGetInstalledVersions2LinesReturned()
-	{
+	public function testGetInstalledVersions2LinesReturned() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -390,8 +379,7 @@ class CoreModuleTest extends GalleryTestCase
 		$this->assertEquals('TEST-VALUE', $gallery->getConfig('mode.maintenance'), 'Config:mode.maintenance should not have been overwritten.');
 	}
 
-	public function testGetInstalledVersionsSetsMaintenanceModeFromFile()
-	{
+	public function testGetInstalledVersionsSetsMaintenanceModeFromFile() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -419,8 +407,7 @@ class CoreModuleTest extends GalleryTestCase
 		$this->assertEquals(true, $gallery->getConfig('mode.maintenance'), 'Config:mode.maintenance has not been overwritten.');
 	}
 
-	public function testGetInstalledVersionsSetsMaintenanceModeFromFileWithAbsoluteUrl()
-	{
+	public function testGetInstalledVersionsSetsMaintenanceModeFromFileWithAbsoluteUrl() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();

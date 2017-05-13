@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17714 $
  */
-class CombinedJavascriptTest extends GalleryImmediateViewTestCase
-{
-	public function __construct($methodName)
-	{
+class CombinedJavascriptTest extends GalleryImmediateViewTestCase {
+	public function __construct($methodName) {
 		$this->GalleryImmediateViewTestCase($methodName, 'core.CombinedJavascript');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -48,8 +45,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		unset($_SERVER['HTTP_IF_MODIFIED_SINCE']);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
@@ -59,8 +55,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		return parent::tearDown();
 	}
 
-	public function testIfModifiedSinceFromServerVars()
-	{
+	public function testIfModifiedSinceFromServerVars() {
 		global $gallery;
 
 		$_SERVER['HTTP_IF_MODIFIED_SINCE'] = 'Anything';
@@ -77,8 +72,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testIfModifiedSinceFromGetAllHeadersWithCapitalLetters()
-	{
+	public function testIfModifiedSinceFromGetAllHeadersWithCapitalLetters() {
 		global $gallery;
 
 		$gallery->_phpVm->setReply('function_exists', array(
@@ -100,8 +94,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testIfModifiedSinceFromGetAllHeadersWithLowerCaseLetters()
-	{
+	public function testIfModifiedSinceFromGetAllHeadersWithLowerCaseLetters() {
 		global $gallery;
 
 		$gallery->_phpVm->setReply('function_exists', array(
@@ -123,8 +116,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testInvalidKey()
-	{
+	public function testInvalidKey() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('key', 'bogus');
@@ -140,8 +132,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function testMaliciousKey()
-	{
+	public function testMaliciousKey() {
 		global $gallery;
 
 		unset($_SERVER['HTTP_ACCEPT_ENCODING']);
@@ -158,8 +149,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('', $results);
 	}
 
-	public function _prepareToReadFromDiskCache($file, $contents)
-	{
+	public function _prepareToReadFromDiskCache($file, $contents) {
 		global $gallery;
 
 		GalleryDataCache::setFileCachingEnabled(true);
@@ -173,8 +163,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		), $contents);
 	}
 
-	public function testGzipAccepted()
-	{
+	public function testGzipAccepted() {
 		global $gallery;
 
 		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'gzip,and,other,stuff';
@@ -216,8 +205,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('gzipped data', $results);
 	}
 
-	public function testGzipNotAccepted()
-	{
+	public function testGzipNotAccepted() {
 		global $gallery;
 
 		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'something_that_doesnt_include_compression';
@@ -252,8 +240,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 		$this->assertEquals('regular data', $results);
 	}
 
-	public function testMissingGzipAndRegularData()
-	{
+	public function testMissingGzipAndRegularData() {
 		global $gallery;
 
 		$_SERVER['HTTP_ACCEPT_ENCODING'] = 'gzip,and,other,stuff';
@@ -289,8 +276,7 @@ class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 	}
 
 	/* Regression test. See bug 2021019 */
-	public function testAutoCacheControlDoesNotConflict()
-	{
+	public function testAutoCacheControlDoesNotConflict() {
 		global $gallery;
 
 		/*

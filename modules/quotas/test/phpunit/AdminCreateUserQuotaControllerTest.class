@@ -25,15 +25,12 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminCreateUserQuota');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -47,8 +44,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_user);
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
@@ -60,8 +56,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testCreateUserQuota()
-	{
+	public function testCreateUserQuota() {
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
@@ -77,8 +72,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteUserQuota($this->_user->getId());
 	}
 
-	public function testCreateUserQuotaMissingValues()
-	{
+	public function testCreateUserQuotaMissingValues() {
 		/* No Values */
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
@@ -113,14 +107,12 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testCreateUserQuotaUserIdMissing()
-	{
+	public function testCreateUserQuotaUserIdMissing() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
 
-	public function testCreateUserQuotaDuplicateQuota()
-	{
+	public function testCreateUserQuotaDuplicateQuota() {
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
@@ -145,8 +137,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteUserQuota($this->_user->getId());
 	}
 
-	public function _createUserQuota($userId, $quota)
-	{
+	public function _createUserQuota($userId, $quota) {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
 		array('userOrGroupId' => $userId, 'quotaSize' => $quota));
@@ -155,8 +146,7 @@ class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _deleteUserQuota($userId)
-	{
+	public function _deleteUserQuota($userId) {
 		$ret = GalleryCoreApi::removeMapEntry(
 		'QuotasMap', array('userOrGroupId' => $userId));
 		if ($ret) {

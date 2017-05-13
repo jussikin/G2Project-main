@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ColorPackModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ColorPackModule extends GalleryModule {
+	public function __construct() {
 		$this->ColorPackModule();
 	}
 	
-	public function ColorPackModule()
-	{
+	public function ColorPackModule() {
 		global $gallery;
 		$this->setId('colorpack');
 		$this->setName($gallery->i18n('Color Packs'));
@@ -55,8 +52,7 @@ class ColorPackModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('ColorPackInterface_1_0', 'ColorPackImpl', 'ColorPack', 'modules/colorpack/classes/ColorPackImpl.class', 'colorpack', null);
 		if ($ret) {
 			return $ret;

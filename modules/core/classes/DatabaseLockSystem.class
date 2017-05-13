@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryLockSystem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DatabaseLockSystem extends GalleryLockSystem
-{
+class DatabaseLockSystem extends GalleryLockSystem {
 	/**
 	 * @see GalleryLockSystem::_acquireLock
 	 */
-	public function _acquireLock($ids, $timeout, $lockType)
-	{
+	public function _acquireLock($ids, $timeout, $lockType) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -68,8 +66,7 @@ class DatabaseLockSystem extends GalleryLockSystem
 	/**
 	 * @see GalleryLockSystem::_releaseLocksNow
 	 */
-	public function _releaseLocksNow($locks)
-	{
+	public function _releaseLocksNow($locks) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -84,8 +81,7 @@ class DatabaseLockSystem extends GalleryLockSystem
 	/**
 	 * @see GalleryLockSystem:_removeObjectsFromLock
 	 */
-	public function _removeObjectsFromLock(&$lock, $ids)
-	{
+	public function _removeObjectsFromLock(&$lock, $ids) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -103,8 +99,7 @@ class DatabaseLockSystem extends GalleryLockSystem
 	/**
 	 * @see GalleryLockSystem:_moveObjectsBetweenLocks
 	 */
-	public function _moveObjectsBetweenLocks($relock, $newLockId)
-	{
+	public function _moveObjectsBetweenLocks($relock, $newLockId) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -123,8 +118,7 @@ class DatabaseLockSystem extends GalleryLockSystem
 	/**
 	 * @see GalleryLockSystem::_newLockId
 	 */
-	public function _newLockId()
-	{
+	public function _newLockId() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -145,8 +139,7 @@ class DatabaseLockSystem extends GalleryLockSystem
 	/**
 	 * @see GalleryLockSystem::refreshLocks
 	 */
-	public function refreshLocks($freshUntil)
-	{
+	public function refreshLocks($freshUntil) {
 		global $gallery;
 		
 		if (!empty($this->_locks)) {

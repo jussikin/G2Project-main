@@ -29,25 +29,21 @@ GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class'
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17990 $
  */
-class CommentSiteAdminController extends GalleryController
-{
+class CommentSiteAdminController extends GalleryController {
 	public $_akismet;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->CommentSiteAdminController();
 	}
 	
-	public function CommentSiteAdminController()
-	{
+	public function CommentSiteAdminController() {
 		$this->_akismet = new AkismetApi();
 	}
 	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
@@ -177,8 +173,7 @@ class CommentSiteAdminController extends GalleryController
 	 * @param AkismetApi $akismet AkismetApi instance
 	 * @return GalleryStatus a status code
 	 */
-	public function checkAllWithAkismet($akismet)
-	{
+	public function checkAllWithAkismet($akismet) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$session =& $gallery->getSession();
@@ -282,13 +277,11 @@ class CommentSiteAdminController extends GalleryController
 /**
  * Settings for comments
  */
-class CommentSiteAdminView extends GalleryView
-{
+class CommentSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

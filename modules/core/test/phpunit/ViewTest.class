@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 17957 $
  */
-class ViewTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ViewTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -44,16 +41,14 @@ class ViewTest extends GalleryTestCase
 		GalleryPluginHelper_medium::setPluginInstance('module', 'viewtest', new ViewTestModule());
 	}
 	
-	public function testLoadViewSuccess()
-	{
+	public function testLoadViewSuccess() {
 		list($ret, $view) = GalleryView::loadView('core.ShowItem');
 		if ($ret) {
 			return $ret;
 		}
 	}
 	
-	public function testLoadViewFail()
-	{
+	public function testLoadViewFail() {
 		list($ret, $view) = GalleryView::loadView('viewtest.SomeRandomView');
 		if ($ret && $ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
 			/* this is what we expect */
@@ -62,8 +57,7 @@ class ViewTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetConfigurationView()
-	{
+	public function testGetConfigurationView() {
 		/*
 	     * We can load the config view even though the module is deactivated
 	     * because we're an admin.
@@ -74,8 +68,7 @@ class ViewTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetItem()
-	{
+	public function testGetItem() {
 		global $gallery;
 		
 		list($ret, $view) = GalleryView::loadView('core.ShowItemError');
@@ -131,8 +124,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertEquals($album->getId(), $item->getId(), 'Alternate default album');
 	}
 	
-	public function testGetItemOnlyReturnsItems()
-	{
+	public function testGetItemOnlyReturnsItems() {
 		global $gallery;
 		
 		list($ret, $view) = GalleryView::loadView('core.ShowItemError');
@@ -147,8 +139,7 @@ class ViewTest extends GalleryTestCase
 		$this->assert($ret->getErrorCode() & ERROR_MISSING_OBJECT, 'ERROR_MISSING_OBJECT');
 	}
 	
-	public function testGetItemRequiresViewPermission()
-	{
+	public function testGetItemRequiresViewPermission() {
 		global $gallery;
 		
 		list($ret, $view) = GalleryView::loadView('core.ShowItemError');
@@ -202,8 +193,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertEquals($album->getId(), $item->getId(), 'with permission, itemId');
 	}
 	
-	public function testLoadThemeAndParametersDefaultTheme()
-	{
+	public function testLoadThemeAndParametersDefaultTheme() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters();
 		if ($ret) {
 			return $ret;
@@ -262,8 +252,7 @@ class ViewTest extends GalleryTestCase
 		}
 	}
 	
-	public function testLoadThemeAndParametersForAlbumItem()
-	{
+	public function testLoadThemeAndParametersForAlbumItem() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters(false, 'viewtestthemeid1');
 		if ($ret) {
 			return $ret;
@@ -291,8 +280,7 @@ class ViewTest extends GalleryTestCase
 		), $params, 'theme params');
 	}
 	
-	public function testLoadThemeAndParametersForDataItem()
-	{
+	public function testLoadThemeAndParametersForDataItem() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters(true, 'viewtestthemeid1');
 		if ($ret) {
 			return $ret;
@@ -320,8 +308,7 @@ class ViewTest extends GalleryTestCase
 		), $params, 'theme params');
 	}
 	
-	public function testLoadThemeAndParametersOverrideByEventListener()
-	{
+	public function testLoadThemeAndParametersOverrideByEventListener() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters();
 		if ($ret) {
 			return $ret;
@@ -352,8 +339,7 @@ class ViewTest extends GalleryTestCase
 		), $params, 'theme params');
 	}
 	
-	public function testLoadThemeAndParametersOverrideByEventListenerIncludingParams()
-	{
+	public function testLoadThemeAndParametersOverrideByEventListenerIncludingParams() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters(true);
 		if ($ret) {
 			return $ret;
@@ -386,8 +372,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertEquals($themeParams, $params, 'theme params');
 	}
 	
-	public function testLoadThemeAndParametersOverrideByEventListenerWithInactiveTheme()
-	{
+	public function testLoadThemeAndParametersOverrideByEventListenerWithInactiveTheme() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters(true, 'viewtestthemeid1');
 		if ($ret) {
 			return $ret;
@@ -422,8 +407,7 @@ class ViewTest extends GalleryTestCase
 		), $params, 'theme params');
 	}
 	
-	public function testLoadThemeAndParametersOverrideByEventListenerWithBogusTheme()
-	{
+	public function testLoadThemeAndParametersOverrideByEventListenerWithBogusTheme() {
 		list($ret, $view, $itemId) = $this->_prepareForLoadThemeAndParameters(true, 'viewtestthemeid1');
 		if ($ret) {
 			return $ret;
@@ -458,8 +442,7 @@ class ViewTest extends GalleryTestCase
 		), $params, 'theme params');
 	}
 	
-	public function _prepareForLoadThemeAndParameters($forDataItem = false, $themeId = null)
-	{
+	public function _prepareForLoadThemeAndParameters($forDataItem = false, $themeId = null) {
 		global $gallery;
 		
 		GalleryPluginHelper_medium::setPluginInstance('theme', 'Viewtestthemeid1', new ViewTestThemeId1Theme());
@@ -509,8 +492,7 @@ class ViewTest extends GalleryTestCase
 		);
 	}
 	
-	public function testLoadThemeForItemPostsEvent()
-	{
+	public function testLoadThemeForItemPostsEvent() {
 		/*
 	     * loadThemeForItem is a public method used e.g. in GalleryTemplate.
 	     * Verify that the loadThemeAndParameters is posted here.
@@ -536,8 +518,7 @@ class ViewTest extends GalleryTestCase
 		));
 	}
 	
-	public function testDoLoadTemplateAddsNoCacheNoIndexHeadersForAdminView()
-	{
+	public function testDoLoadTemplateAddsNoCacheNoIndexHeadersForAdminView() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		
@@ -589,8 +570,7 @@ class ViewTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testDoLoadTemplateDoesNotAddNoIndexDirectiveForNonAdminView()
-	{
+	public function testDoLoadTemplateDoesNotAddNoIndexDirectiveForNonAdminView() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		
@@ -641,8 +621,7 @@ class ViewTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testDoLoadTemplateDoesNotAddNoCacheForPublicView()
-	{
+	public function testDoLoadTemplateDoesNotAddNoCacheForPublicView() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -682,8 +661,7 @@ class ViewTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testDoLoadTemplateAddsNoCacheForPrivateView()
-	{
+	public function testDoLoadTemplateAddsNoCacheForPrivateView() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -753,8 +731,7 @@ class ViewTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testLoadViewWithoutAutoCacheControlDoesNotAdd()
-	{
+	public function testLoadViewWithoutAutoCacheControlDoesNotAdd() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -798,8 +775,7 @@ class ViewTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testPermissionCheckForGuest()
-	{
+	public function testPermissionCheckForGuest() {
 		$galleryView = new GalleryView();
 		
 		$ret = $this->_becomeGuestUser();
@@ -820,8 +796,7 @@ class ViewTest extends GalleryTestCase
 		), $results, 'Unexpected result');
 	}
 	
-	public function testPermissionCheckForRegisteredUser()
-	{
+	public function testPermissionCheckForRegisteredUser() {
 		global $gallery;
 		
 		$galleryView = new GalleryView();
@@ -836,8 +811,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_PERMISSION_DENIED, $ret, true);
 	}
 	
-	public function testPermissionCheckAuthTimeoutExpired()
-	{
+	public function testPermissionCheckAuthTimeoutExpired() {
 		$galleryView = new GalleryView();
 		
 		list($ret, $results) = $galleryView->_permissionCheck(GalleryCoreApi::error(ERROR_PERMISSION_DENIED));
@@ -853,8 +827,7 @@ class ViewTest extends GalleryTestCase
 		), $results, 'Unexpected result');
 	}
 	
-	public function testPermissionCheckHasPermission()
-	{
+	public function testPermissionCheckHasPermission() {
 		$galleryView = new GalleryView();
 		
 		list($ret, $results) = $galleryView->_permissionCheck(null);
@@ -864,8 +837,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertEquals(null, $results, 'Results should be null');
 	}
 	
-	public function testPermissionCheckErrorMissingObjectForGuest()
-	{
+	public function testPermissionCheckErrorMissingObjectForGuest() {
 		$galleryView = new GalleryView();
 		
 		$ret = $this->_becomeGuestUser();
@@ -886,8 +858,7 @@ class ViewTest extends GalleryTestCase
 		), $results, 'Unexpected result');
 	}
 	
-	public function testPermissionCheckErrorMissingObjectForRegisteredUser()
-	{
+	public function testPermissionCheckErrorMissingObjectForRegisteredUser() {
 		global $gallery;
 		
 		$galleryView = new GalleryView();
@@ -902,8 +873,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_OBJECT | ERROR_PERMISSION_DENIED, $ret, true);
 	}
 	
-	public function testPermissionCheckErrorMissingObjectForAdmin()
-	{
+	public function testPermissionCheckErrorMissingObjectForAdmin() {
 		$galleryView = new GalleryView();
 		
 		list($ret, $results) = $galleryView->_permissionCheck(GalleryCoreApi::error(ERROR_MISSING_OBJECT));
@@ -911,8 +881,7 @@ class ViewTest extends GalleryTestCase
 		$this->assertEquals(null, $results, 'view results');
 	}
 	
-	public function testPermissionCheckOtherError()
-	{
+	public function testPermissionCheckOtherError() {
 		$galleryView = new GalleryView();
 		
 		list($ret, $results) = $galleryView->_permissionCheck(GalleryCoreApi::error(ERROR_STORAGE_FAILURE));
@@ -921,72 +890,57 @@ class ViewTest extends GalleryTestCase
 	}
 }
 
-class ViewTestModule
-{
-	public function isActive()
-	{
+class ViewTestModule {
+	public function isActive() {
 		return array(
 			null,
 			false
 		);
 	}
 	
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'viewtest.ViewTestConfig';
 	}
 }
 
-class ViewTestConfigView extends GalleryView
-{
+class ViewTestConfigView extends GalleryView {
 }
 
-class ViewTestAdminView extends GalleryView
-{
-	public function getViewType()
-	{
+class ViewTestAdminView extends GalleryView {
+	public function getViewType() {
 		return VIEW_TYPE_ADMIN;
 	}
 }
 
-class ViewTestItemView extends GalleryView
-{
-	public function getViewType()
-	{
+class ViewTestItemView extends GalleryView {
+	public function getViewType() {
 		return VIEW_TYPE_SHOW_ITEM;
 	}
 }
 
-class ViewTestNoAutoCacheControlItemView extends GalleryView
-{
-	public function getViewType()
-	{
+class ViewTestNoAutoCacheControlItemView extends GalleryView {
+	public function getViewType() {
 		return VIEW_TYPE_SHOW_ITEM;
 	}
 	
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return false;
 	}
 }
 
-class ViewTestThemeId1Theme
-{
-	public function isActive()
-	{
+class ViewTestThemeId1Theme {
+	public function isActive() {
 		return array(
 			null,
 			true
 		);
 	}
 	
-	public function getId()
-	{
+	public function getId() {
 		return 'viewtestthemeid1';
 	}
 	
-	public function fetchParameters($itemId = 0)
-	{
+	public function fetchParameters($itemId = 0) {
 		return array(
 			null,
 			array(
@@ -996,23 +950,19 @@ class ViewTestThemeId1Theme
 	}
 }
 
-class ViewTestThemeId2Theme
-{
-	public function isActive()
-	{
+class ViewTestThemeId2Theme {
+	public function isActive() {
 		return array(
 			null,
 			false
 		);
 	}
 	
-	public function getId()
-	{
+	public function getId() {
 		return 'viewtestthemeid2';
 	}
 	
-	public function fetchParameters($itemId = 0)
-	{
+	public function fetchParameters($itemId = 0) {
 		return array(
 			null,
 			array()
@@ -1020,18 +970,15 @@ class ViewTestThemeId2Theme
 	}
 }
 
-class ViewTestEventListener
-{
-	public function ViewTestEventListener($testCase, $themeId, $params, $itemId)
-	{
+class ViewTestEventListener {
+	public function ViewTestEventListener($testCase, $themeId, $params, $itemId) {
 		$this->_themeId = $themeId;
 		$this->_params = $params;
 		$this->_testCase = $testCase;
 		$this->_itemId = $itemId;
 	}
 	
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$data = $event->getData();
 		$this->_testCase->assertEquals(array(
 			'viewType' => VIEW_TYPE_SHOW_ITEM,

@@ -26,16 +26,14 @@
  * @version $Revision: 18064 $
  * @static
  */
-class UserAlbumHelper
-{
+class UserAlbumHelper {
 	/**
 	 * Create a new user album
 	 *
 	 * @param GalleryUser $user new user
 	 * @return GalleryStatus a status code
 	 */
-	public static function createUserAlbum($user)
-	{
+	public static function createUserAlbum($user) {
 		global $gallery;
 
 		list($ret, $core) = GalleryCoreApi::fetchAllPluginParameters('module', 'core');

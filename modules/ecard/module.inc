@@ -26,15 +26,12 @@
  * @author Dariush Molavi <dari@nukedgallery.net>
  * @version $Revision: 18172 $
  */
-class EcardModule extends GalleryModule
-{
-	public function __construct()
-	{
+class EcardModule extends GalleryModule {
+	public function __construct() {
 		$this->EcardModule();
 	}
 
-	public function EcardModule()
-	{
+	public function EcardModule() {
 		global $gallery;
 
 		$this->setId('ecard');
@@ -58,8 +55,7 @@ class EcardModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		if (!isset($currentVersion)) {
 			$currentVersion = '0';
@@ -143,8 +139,7 @@ class EcardModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		$links = array();
 		foreach ($items as $item) {
 			$itemId = $item->getId();
@@ -168,8 +163,7 @@ class EcardModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -184,8 +178,7 @@ class EcardModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('CaptchaAdminOption', 'EcardCaptchaAdminOption', 'EcardCaptchaAdminOption', 'modules/ecard/classes/EcardCaptchaAdminOption.class', 'ecard', null);
 		if ($ret) {
 			return $ret;

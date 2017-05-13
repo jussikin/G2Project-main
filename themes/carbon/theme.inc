@@ -25,15 +25,12 @@
  * @author Mustafa Incel (based on Matrix by Bharat Mediratta <bharat@menalto.com>)
  * @version $Revision: 17580 $
  */
-class CarbonTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class CarbonTheme extends GalleryTheme {
+	public function __construct() {
 		$this->CarbonTheme();
 	}
 	
-	public function CarbonTheme()
-	{
+	public function CarbonTheme() {
 		global $gallery;
 		
 		$this->setId('carbon');
@@ -116,8 +113,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = null)
-	{
+	public function getSettings($itemId = null) {
 		list($ret, $settings, $params) = parent::getSettings($itemId);
 		if ($ret) {
 			return array(
@@ -241,8 +237,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::validateSettings
 	 */
-	public function validateSettings($settings)
-	{
+	public function validateSettings($settings) {
 		$error = parent::validateSettings($settings);
 		if (empty($settings['sidebarTop']) || !is_numeric($settings['sidebarTop'])) {
 			$error['sidebarTop'] = $this->translate('You must enter a number greater than 0');
@@ -270,8 +265,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'owner',
 			'viewCount',
@@ -312,8 +306,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$dataTypes = array(
 			'owner',
 			'parents',
@@ -349,8 +342,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -376,8 +368,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -398,8 +389,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -409,8 +399,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -431,8 +420,7 @@ class CarbonTheme extends GalleryTheme
 	/**
 	 * @see GalleryPlugin::upgrade
 	 */
-	public function upgrade($currentVersion)
-	{
+	public function upgrade($currentVersion) {
 		if (isset($currentVersion) && version_compare($currentVersion, '1.1.2', '<')) {
 			/* Rename albumBlocks2 and photoBlocks2 */
 			foreach (array(

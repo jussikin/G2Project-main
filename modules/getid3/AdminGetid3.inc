@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Helper.class');
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminGetid3Controller extends GalleryController
-{
+class AdminGetid3Controller extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -390,13 +388,11 @@ class AdminGetid3Controller extends GalleryController
 /**
  * Settings for getid3
  */
-class AdminGetid3View extends GalleryView
-{
+class AdminGetid3View extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

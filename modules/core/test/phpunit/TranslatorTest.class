@@ -27,15 +27,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17609 $
  */
-class TranslatorTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class TranslatorTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -68,8 +65,7 @@ class TranslatorTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$ret = $gallery->setActiveLocale($this->_locale);
 		if ($ret) {
@@ -86,8 +82,7 @@ class TranslatorTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetLocaleFromRequest()
-	{
+	public function testGetLocaleFromRequest() {
 		global $gallery;
 		$origLang = getenv('LANG');
 		
@@ -149,8 +144,7 @@ class TranslatorTest extends GalleryTestCase
 	}
 	
 	/* Use the Gallery::initTranslator method and make sure the activeLocale has changed  */
-	public function testGetLocaleFromRequest2()
-	{
+	public function testGetLocaleFromRequest2() {
 		global $gallery;
 		$origLang = getenv('LANG');
 		
@@ -199,8 +193,7 @@ class TranslatorTest extends GalleryTestCase
 	 * The translator should init to the site-wide default language if session/request defines no
 	 * preference.  Also check GalleryTranslator::getActiveLocale.
 	 */
-	public function testInitToDefaultLanguage()
-	{
+	public function testInitToDefaultLanguage() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->remove('core.language');
@@ -221,8 +214,7 @@ class TranslatorTest extends GalleryTestCase
 	}
 	
 	/* If we init without database support, fallback to en_US */
-	public function testInitToHardcodedDefaultLanguage()
-	{
+	public function testInitToHardcodedDefaultLanguage() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->remove('core.language');
@@ -241,8 +233,7 @@ class TranslatorTest extends GalleryTestCase
 	}
 	
 	/* If the session defines an active language, use it */
-	public function testInitToActiveLanguage()
-	{
+	public function testInitToActiveLanguage() {
 		global $gallery;
 		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de_DE';
@@ -263,8 +254,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assertEquals('fr_FR', $langCode);
 	}
 	
-	public function testInitWithoutDatabaseWithActiveLanguage()
-	{
+	public function testInitWithoutDatabaseWithActiveLanguage() {
 		global $gallery;
 		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de_DE';
@@ -285,8 +275,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assertEquals('fr_FR', $langCode);
 	}
 	
-	public function testTranslateSingular()
-	{
+	public function testTranslateSingular() {
 		global $gallery;
 		
 		$domain = 'modules_core';
@@ -321,8 +310,7 @@ class TranslatorTest extends GalleryTestCase
 		}
 	}
 	
-	public function testTranslatePlural()
-	{
+	public function testTranslatePlural() {
 		global $gallery;
 		
 		$domain = 'modules_core';
@@ -366,8 +354,7 @@ class TranslatorTest extends GalleryTestCase
 		}
 	}
 	
-	public function testTranslateCharset()
-	{
+	public function testTranslateCharset() {
 		global $gallery;
 		
 		$domain = 'modules_core';
@@ -389,8 +376,7 @@ class TranslatorTest extends GalleryTestCase
 		}
 	}
 	
-	public function testComment()
-	{
+	public function testComment() {
 		$translator = new GalleryTranslator();
 		list($ret, $locale) = $translator->init('en_US');
 		if ($ret) {
@@ -407,8 +393,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assertEquals('test <!-- old style hint, no longer removed -->', $text);
 	}
 	
-	public function testApiChange()
-	{
+	public function testApiChange() {
 		/* Core API 7.10 now allows simple string param, and 'args' array insead of 'arg1', etc */
 		$translator = new GalleryTranslator();
 		list($ret, $locale) = $translator->init('en_US');
@@ -435,8 +420,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assertEquals('Test foo Test bar', $text);
 	}
 	
-	public function testInstallTranslationsForPluginMoFilesInPoDirectory()
-	{
+	public function testInstallTranslationsForPluginMoFilesInPoDirectory() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		
@@ -469,8 +453,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testInstallTranslationsForPluginMoFilesInLocaleDirectory()
-	{
+	public function testInstallTranslationsForPluginMoFilesInLocaleDirectory() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		
@@ -507,8 +490,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testInstallTranslationsForPluginCreateDirectory()
-	{
+	public function testInstallTranslationsForPluginCreateDirectory() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		
@@ -568,8 +550,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testRemoveTranslationsForPlugin()
-	{
+	public function testRemoveTranslationsForPlugin() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		
@@ -594,8 +575,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testInstallTranslationsForLocale()
-	{
+	public function testInstallTranslationsForLocale() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		
@@ -676,8 +656,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testInstallTranslationsForLocaleNoParam()
-	{
+	public function testInstallTranslationsForLocaleNoParam() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		$translator =& $gallery->getTranslator();
@@ -715,8 +694,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testInstallTranslationsForLocaleEnUS()
-	{
+	public function testInstallTranslationsForLocaleEnUS() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		$gallery->setPlatform($platform);
@@ -729,8 +707,7 @@ class TranslatorTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetLocaleFromLocale()
-	{
+	public function testGetLocaleFromLocale() {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		
@@ -744,8 +721,7 @@ class TranslatorTest extends GalleryTestCase
 		), $translator->getLocaleFromId('en_GB'), 'en_GB');
 	}
 	
-	public function testGetLocaleFromLocaleChinese()
-	{
+	public function testGetLocaleFromLocaleChinese() {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		
@@ -759,8 +735,7 @@ class TranslatorTest extends GalleryTestCase
 		), $translator->getLocaleFromId('zh_TW'), 'zh_TW');
 	}
 	
-	public function testGetLanguageAndCountryFromLocale()
-	{
+	public function testGetLanguageAndCountryFromLocale() {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		

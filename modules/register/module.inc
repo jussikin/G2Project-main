@@ -25,15 +25,12 @@
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 18172 $
  */
-class RegisterModule extends GalleryModule
-{
-	public function __construct()
-	{
+class RegisterModule extends GalleryModule {
+	public function __construct() {
 		$this->RegisterModule();
 	}
 
-	public function RegisterModule()
-	{
+	public function RegisterModule() {
 		global $gallery;
 
 		$this->setId('register');
@@ -50,8 +47,7 @@ class RegisterModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'register');
 		if ($ret) {
 			return $ret;
@@ -78,18 +74,27 @@ class RegisterModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GalleryEntity', 'GalleryPendingUser', 'GalleryPendingUser',
-		'modules/register/classes/GalleryPendingUser.class', 'register', null);
+			'GalleryEntity',
+			'GalleryPendingUser',
+			'GalleryPendingUser',
+			'modules/register/classes/GalleryPendingUser.class',
+			'register',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
 
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'CaptchaAdminOption', 'RegisterCaptchaAdminOption', 'RegisterCaptchaAdminOption',
-		'modules/register/classes/RegisterCaptchaAdminOption.class', 'register', null);
+			'CaptchaAdminOption',
+			'RegisterCaptchaAdminOption',
+			'RegisterCaptchaAdminOption',
+			'modules/register/classes/RegisterCaptchaAdminOption.class',
+			'register',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -100,16 +105,14 @@ class RegisterModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getModuleEntityTypes
 	 */
-	public function getModuleEntityTypes()
-	{
+	public function getModuleEntityTypes() {
 		return array('GalleryPendingUser');
 	}
 
 	/**
 	 * @see GalleryModule::getSystemLinks
 	 */
-	public function getSystemLinks()
-	{
+	public function getSystemLinks() {
 		$links = array();
 
 		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
@@ -118,8 +121,8 @@ class RegisterModule extends GalleryModule
 		}
 		if ($isAnonymous) {
 			$links['Register'] = array(
-		'text' => $this->translate('Register'),
-		'params' => array('view' => 'core.UserAdmin',
+			'text' => $this->translate('Register'),
+			'params' => array('view' => 'core.UserAdmin',
 				  'subView' => 'register.UserSelfRegistration',
 				  'return' => 1));
 		}
@@ -130,8 +133,7 @@ class RegisterModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getUserAdminViews
 	 */
-	public function getUserAdminViews($user)
-	{
+	public function getUserAdminViews($user) {
 		$views = array();
 
 		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($user->getId());
@@ -149,8 +151,7 @@ class RegisterModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null, array(array('name' => $this->translate('Registration'),
 					   'view' => 'register.AdminSelfRegistration')));
 	}

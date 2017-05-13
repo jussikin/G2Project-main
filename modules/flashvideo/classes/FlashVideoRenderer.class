@@ -27,21 +27,18 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryRenderer.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class FlashVideoRenderer extends GalleryRenderer
-{
+class FlashVideoRenderer extends GalleryRenderer {
 	/**
 	 * @see GalleryRenderer::canBeViewedInline
 	 */
-	public function canBeViewedInline($item)
-	{
+	public function canBeViewedInline($item) {
 		return GalleryUtilities::isA($item, 'GalleryMovieItem') && $item->getMimeType() == 'video/x-flv';
 	}
 	
 	/**
 	 * @see GalleryRenderer::render
 	 **/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		global $gallery;
 		
 		$fallback = trim(preg_replace("/[\r\n]/", '', $params['fallback']));

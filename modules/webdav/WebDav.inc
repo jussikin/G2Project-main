@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/webdav/classes/WebDavHelper.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17623 $
  */
-class WebDavController extends GalleryController
-{
+class WebDavController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -44,9 +42,14 @@ class WebDavController extends GalleryController
 	 * registered for this request.  Since this is the WebDAV controller, we know it is a WebDAV
 	 * request.
 	 */
-	$ret = GalleryCoreApi::registerFactoryImplementationForRequest('GalleryEventListener',
-		'WebDavModule', 'WebDavModule', 'modules/webdav/module.inc', 'webdav',
-		array('Gallery::Error'));
+		$ret = GalleryCoreApi::registerFactoryImplementationForRequest(
+			'GalleryEventListener',
+			'WebDavModule',
+			'WebDavModule',
+			'modules/webdav/module.inc',
+			'webdav',
+			array('Gallery::Error')
+		);
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -57,7 +60,7 @@ class WebDavController extends GalleryController
 	 * to anonymous Windows Web Folders requests.  Consequently anonymous users can't connect to
 	 * WebDAV with Windows Web Folders.
 	 */
-	$userAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
+		$userAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 		if (strpos($userAgent, 'Microsoft Data Access Internet Publishing Provider DAV') !== false
 		|| strpos($userAgent, 'Microsoft-WebDAV-MiniRedir') !== false) {
 			list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
@@ -65,9 +68,13 @@ class WebDavController extends GalleryController
 				return array($ret, null);
 			}
 			if ($isAnonymous) {
-				return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED, __FILE__, __LINE__,
-			'WebDAV: Anonymous request by MS Windows Webfolders WebDAV client detected.'
-			. '  Usability workaround: Require auth on all requests.'), null);
+				return array(GalleryCoreApi::error(
+					ERROR_PERMISSION_DENIED,
+					__FILE__,
+					__LINE__,
+					'WebDAV: Anonymous request by MS Windows Webfolders WebDAV client detected.'
+					. '  Usability workaround: Require auth on all requests.'
+				), null);
 			}
 		}
 
@@ -83,26 +90,26 @@ class WebDavController extends GalleryController
 	 *
 	 * This condition may be relaxed in future if it's a problem.
 	 */
-	$path = GalleryUtilities::getRequestVariables('path');
+		$path = GalleryUtilities::getRequestVariables('path');
 	/**
 	 * @todo Refactor towards a cleaner approach, e.g. using a map for public paths.
 	 */
-	GalleryUtilities::putRequestVariable('originalPath', $path);
+		GalleryUtilities::putRequestVariable('originalPath', $path);
 		$pathComponent = basename($path);
 
 	/* Special case to suppress Mac '._' and '.DS_Store files.  Ignore but return success. */
-	if (!strncmp($pathComponent, '._', 2) || $pathComponent == '.DS_Store') {
-		WebDavServer::setResponseStatus('200 OK');
-		$handle = WebDavServer::openRequestBody();
-		while (!feof($handle)) {
-			fgets($handle);
+		if (!strncmp($pathComponent, '._', 2) || $pathComponent == '.DS_Store') {
+			WebDavServer::setResponseStatus('200 OK');
+			$handle = WebDavServer::openRequestBody();
+			while (!feof($handle)) {
+				fgets($handle);
+			}
+
+			return array(GalleryCoreApi::error(ERROR_BAD_PATH), null);
 		}
 
-		return array(GalleryCoreApi::error(ERROR_BAD_PATH), null);
-	}
-
 	/* Silently legalize path component */
-	$pathComponents = preg_split('/\//', $path, -1, PREG_SPLIT_NO_EMPTY);
+		$pathComponents = preg_split('/\//', $path, -1, PREG_SPLIT_NO_EMPTY);
 		foreach ($pathComponents as $key => $pathComponent) {
 			GalleryUtilities::unsanitizeInputValues($pathComponent);
 			$pathComponents[$key] = $platform->legalizePathComponent($pathComponent);
@@ -111,7 +118,8 @@ class WebDavController extends GalleryController
 		GalleryUtilities::putRequestVariable('path', $path);
 
 		$requestMethod = GalleryUtilities::strToLower(
-		GalleryUtilities::getServerVar('REQUEST_METHOD'));
+			GalleryUtilities::getServerVar('REQUEST_METHOD')
+		);
 		if ($requestMethod == 'get' || $requestMethod == 'head') {
 			if (empty($path)) {
 				list($ret, $itemId) = GalleryCoreApi::getDefaultAlbumId();
@@ -131,7 +139,7 @@ class WebDavController extends GalleryController
 			}
 
 		/* Until there's a better way to delegate to Show/DownloadItem */
-		GalleryUtilities::putRequestVariable('itemId', $itemId);
+			GalleryUtilities::putRequestVariable('itemId', $itemId);
 			if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 				return array(null, array('delegate' => array('view' => 'core.ShowItem'),
 					 'status' => array(),
@@ -150,17 +158,17 @@ class WebDavController extends GalleryController
 	         * appropriately scoped parent collection MUST fail with a 409
 	         * (Conflict).
 	         */
-			WebDavServer::setResponseStatus('409 Conflict');
+					WebDavServer::setResponseStatus('409 Conflict');
 				}
 
 				return array($ret, null);
 			}
 
 		/* Until there's a better way to delegate to ItemAdd */
-		GalleryUtilities::putRequestVariable('itemId', $parentId);
+			GalleryUtilities::putRequestVariable('itemId', $parentId);
 			GalleryUtilities::putRequestVariable('addPlugin', 'ItemAddWebDav');
 		/* Let the ItemAddPlugin handle the replacement for the auth-token check */
-		list($ret, $data) = ItemAddController::handleRequest($form);
+			list($ret, $data) = ItemAddController::handleRequest($form);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -179,8 +187,7 @@ class WebDavController extends GalleryController
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		return true;
 	}
 
@@ -189,8 +196,7 @@ class WebDavController extends GalleryController
 	 * differently (redirects to a HTML based login view don't work here).
 	 * @see GalleryController::permissionCheck()
 	 */
-	public function permissionCheck($ret)
-	{
+	public function permissionCheck($ret) {
 		if ($ret) {
 			list($ret2, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
 			if ($ret2) {
@@ -208,39 +214,35 @@ class WebDavController extends GalleryController
 /**
  * The WebDAV view generates WebDAV responses.
  */
-class WebDavView extends GalleryView
-{
+class WebDavView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		/* Although this view is controller-like, we return false since we can't add authTokens */
-	return false;
+		return false;
 	}
 
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		$requestMethod = GalleryUtilities::strToLower(
-		GalleryUtilities::getServerVar('REQUEST_METHOD'));
+			GalleryUtilities::getServerVar('REQUEST_METHOD')
+		);
 		if (!in_array($requestMethod, array('options', 'propfind', 'proppatch', 'mkcol', 'delete',
 						'move', 'lock', 'unlock'))) {
-
 		/* If we just completed a PUT request and got delegated here, just silently return */
-		if ($requestMethod == 'put') {
-			return null;
-		}
+			if ($requestMethod == 'put') {
+				return null;
+			}
 
 			return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 		}

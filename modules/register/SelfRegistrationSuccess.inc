@@ -25,13 +25,11 @@
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 17580 $
  */
-class SelfRegistrationSuccessView extends GalleryView
-{
+class SelfRegistrationSuccessView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($pending, $sentConfirmationEmail) =
 		GalleryUtilities::getRequestVariables('pending', 'sentConfirmationEmail');
 

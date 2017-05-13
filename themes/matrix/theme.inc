@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class MatrixTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class MatrixTheme extends GalleryTheme {
+	public function __construct() {
 		$this->MatrixTheme();
 	}
 	
-	public function MatrixTheme()
-	{
+	public function MatrixTheme() {
 		global $gallery;
 		
 		$this->setId('matrix');
@@ -103,8 +100,7 @@ class MatrixTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'owner',
 			'viewCount',
@@ -140,8 +136,7 @@ class MatrixTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$dataTypes = array(
 			'owner',
 			'parents',
@@ -172,8 +167,7 @@ class MatrixTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -194,8 +188,7 @@ class MatrixTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -216,8 +209,7 @@ class MatrixTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -227,8 +219,7 @@ class MatrixTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'

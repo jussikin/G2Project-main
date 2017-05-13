@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ImageBlockModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ImageBlockModule extends GalleryModule {
+	public function __construct() {
 		$this->ImageBlockModule();
 	}
 	
-	public function ImageBlockModule()
-	{
+	public function ImageBlockModule() {
 		global $gallery;
 		$this->setId('imageblock');
 		$this->setName($gallery->i18n('Image Block'));
@@ -55,8 +52,7 @@ class ImageBlockModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		/**
 	     * Our cache is probably out of date. Flush it.
 	     * @todo What about the ImageBlockDisabledMap which is out of date as well?
@@ -86,8 +82,7 @@ class ImageBlockModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -157,8 +152,7 @@ class ImageBlockModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'ImageBlockHelper', 'ImageBlockHelper', 'modules/imageblock/classes/ImageBlockHelper.class', 'imageblock', array(
 			'Gallery::ViewableTreeChange',
 			'GalleryEntity::delete',
@@ -181,8 +175,7 @@ class ImageBlockModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(

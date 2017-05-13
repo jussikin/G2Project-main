@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryRepositoryUtilities.cla
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17580 $
  */
-class GalleryRepositoryIndex
-{
+class GalleryRepositoryIndex {
 	/**
 	 * Indicates whether the index has been loaded from the filesystem.
 	 * @var boolean
@@ -57,13 +56,11 @@ class GalleryRepositoryIndex
 	 */
 	public $_utilities;
 	
-	public function __construct($source)
-	{
+	public function __construct($source) {
 		$this->GalleryRepositoryIndex($source);
 	}
 	
-	public function GalleryRepositoryIndex($source)
-	{
+	public function GalleryRepositoryIndex($source) {
 		$this->_utilities = new GalleryRepositoryUtilities();
 		$this->_source = $source;
 	}
@@ -73,8 +70,7 @@ class GalleryRepositoryIndex
 	 * writes it to the local repository cache.
 	 * @return GalleryStatus a status code
 	 */
-	public function update()
-	{
+	public function update() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -140,8 +136,7 @@ class GalleryRepositoryIndex
 	 *			   'moduleCount' => integer
 	 *			   'themeCount' => integer
 	 */
-	public function getMetaData()
-	{
+	public function getMetaData() {
 		if (!$this->_isLoaded) {
 			return array(
 				GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__, 'Index must be loaded.'),
@@ -172,8 +167,7 @@ class GalleryRepositoryIndex
 	 * Checks whether an index file exists in the local repository cache.
 	 * @return boolean
 	 */
-	public function existsInCache()
-	{
+	public function existsInCache() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -184,8 +178,7 @@ class GalleryRepositoryIndex
 	 * Loads and unserializes the index from the local filesystem into memory.
 	 * @return GalleryStatus a status code
 	 */
-	public function load()
-	{
+	public function load() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -212,8 +205,7 @@ class GalleryRepositoryIndex
 	 * Unserializes the index into memory.
 	 * @return GalleryStatus a status code
 	 */
-	public function unserializeIndex(&$index)
-	{
+	public function unserializeIndex(&$index) {
 		if (false === ($this->_index = @unserialize($index))) {
 			$this->_index = array(
 				'modules' => array(),
@@ -235,8 +227,7 @@ class GalleryRepositoryIndex
 	 * @return array GalleryStatus a status code
 	 *		     string plugin build
 	 */
-	public function getPluginHeader($pluginType, $pluginId)
-	{
+	public function getPluginHeader($pluginType, $pluginId) {
 		if (!$this->_isLoaded) {
 			return array(
 				GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__, 'Index must be loaded.'),
@@ -265,8 +256,7 @@ class GalleryRepositoryIndex
 	 * @return array GalleryStatus a status code
 	 *		     array locale => revision
 	 */
-	public function getAvailableLanguagesInPlugin($pluginType, $pluginId)
-	{
+	public function getAvailableLanguagesInPlugin($pluginType, $pluginId) {
 		if (!$this->_isLoaded) {
 			return array(
 				GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__, 'Index must be loaded.'),
@@ -320,8 +310,7 @@ class GalleryRepositoryIndex
 	 * @param string $pluginId
 	 * @return boolean
 	 */
-	public function containsPlugin($pluginType, $pluginId)
-	{
+	public function containsPlugin($pluginType, $pluginId) {
 		return isset($this->_index[$pluginType . 's'][$pluginId]);
 	}
 	
@@ -334,8 +323,7 @@ class GalleryRepositoryIndex
 	 * @return array GalleryStatus a status code
 	 *		     string the plugin name
 	 */
-	public function getPluginName($pluginType, $pluginId)
-	{
+	public function getPluginName($pluginType, $pluginId) {
 		global $gallery;
 		
 		if (!$this->_isLoaded) {
@@ -380,8 +368,7 @@ class GalleryRepositoryIndex
 	 * @return array GalleryStatus a status code
 	 *		     string descriptor URL
 	 */
-	public function getDescriptorUrl($pluginType, $pluginId)
-	{
+	public function getDescriptorUrl($pluginType, $pluginId) {
 		if (!$this->_isLoaded) {
 			return array(
 				GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__, 'Index must be loaded.'),
@@ -412,8 +399,7 @@ class GalleryRepositoryIndex
 	 * @return array GalleryStatus a status code
 	 *		     string package URL
 	 */
-	public function getPackageUrl($pluginType, $pluginId, $package)
-	{
+	public function getPackageUrl($pluginType, $pluginId, $package) {
 		list($ret, $version, $build) = $this->getPackageVersionAndBuild($pluginType, $pluginId, $package);
 		if ($ret) {
 			return array(
@@ -446,8 +432,7 @@ class GalleryRepositoryIndex
 	 *		     string version/revision
 	 *		     string build/revision
 	 */
-	public function getPackageVersionAndBuild($pluginType, $pluginId, $package)
-	{
+	public function getPackageVersionAndBuild($pluginType, $pluginId, $package) {
 		if (!$this->_isLoaded) {
 			return array(
 				GalleryCoreApi::error(ERROR_STORAGE_FAILURE, __FILE__, __LINE__, 'Index must be loaded.'),
@@ -499,8 +484,7 @@ class GalleryRepositoryIndex
 	 *		    'core'/'module'/'theme' => array(versionMajor, versionMinor)
 	 * @return array plugin list
 	 */
-	public function getPlugins($pluginType, $showAllPlugins = false, $coreApis = null)
-	{
+	public function getPlugins($pluginType, $showAllPlugins = false, $coreApis = null) {
 		$pluginList = array(
 			$pluginType => array()
 		);
@@ -552,8 +536,7 @@ class GalleryRepositoryIndex
 	 * @return array the index
 	 * @access private
 	 */
-	public function &getRawData()
-	{
+	public function &getRawData() {
 		return $this->_index;
 	}
 	
@@ -562,8 +545,7 @@ class GalleryRepositoryIndex
 	 *
 	 * @return string index path
 	 */
-	public function getRepositoryCacheDir()
-	{
+	public function getRepositoryCacheDir() {
 		global $gallery;
 
 		return $gallery->getConfig('repository.cache') . $this->_source . '/';
@@ -590,8 +572,7 @@ class GalleryRepositoryIndex
 	 * 			    'files' => array('descriptor' => $descriptorUrl,
 	 * 				'en_gb' => url, 'pt_BR' => url...))
 	 */
-	public function getLanguagePackageFiles($locales)
-	{
+	public function getLanguagePackageFiles($locales) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		

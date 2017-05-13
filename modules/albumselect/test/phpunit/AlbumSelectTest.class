@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/albumselect/Callbacks.inc');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17627 $
  */
-class AlbumSelectTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class AlbumSelectTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -90,8 +87,7 @@ class AlbumSelectTest extends GalleryTestCase
 		$this->_originalRequestUri = $_SERVER['REQUEST_URI'];
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		$gallery->setConfig('defaultAlbumId', $this->_rootAlbumId);
@@ -107,8 +103,7 @@ class AlbumSelectTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAlbumSelectManualSort()
-	{
+	public function testAlbumSelectManualSort() {
 		global $gallery;
 		$ret = $this->_module->setParameter('sort', 'manual');
 		if ($ret) {
@@ -158,8 +153,7 @@ class AlbumSelectTest extends GalleryTestCase
 		), array_slice($data['tree'], -4), 'test albums in tree');
 	}
 	
-	public function testAlbumSelectSortByTitle()
-	{
+	public function testAlbumSelectSortByTitle() {
 		global $gallery;
 		$ret = $this->_module->setParameter('sort', 'title');
 		if ($ret) {
@@ -231,8 +225,7 @@ class AlbumSelectTest extends GalleryTestCase
 		), array_slice($data['tree'], -4), 'test albums in tree');
 	}
 	
-	public function testAlbumSelectSortByAlbum()
-	{
+	public function testAlbumSelectSortByAlbum() {
 		global $gallery;
 		$ret = $this->_module->setParameter('sort', 'album');
 		if ($ret) {
@@ -290,8 +283,7 @@ class AlbumSelectTest extends GalleryTestCase
 		), array_slice($tree, $i, 4), 'test albums in tree');
 	}
 	
-	public function testCacheInvalidationByTitleChange()
-	{
+	public function testCacheInvalidationByTitleChange() {
 		global $gallery;
 		
 		$smarty = new GallerySmarty();
@@ -367,8 +359,7 @@ class AlbumSelectTest extends GalleryTestCase
 		$this->assert(empty($titles), 'cache should be gone');
 	}
 	
-	public function testAlternateRoot()
-	{
+	public function testAlternateRoot() {
 		global $gallery;
 		GalleryDataCache::setFileCachingEnabled(true);
 		
@@ -415,8 +406,7 @@ class AlbumSelectTest extends GalleryTestCase
 	 * Since we cache the generated URLs and their prefix, they must be server relative and
 	 * not relative to the current view.
 	 */
-	public function testUrlPrefixIsServerRelative()
-	{
+	public function testUrlPrefixIsServerRelative() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -441,8 +431,7 @@ class AlbumSelectTest extends GalleryTestCase
 		$this->assert(preg_match('#^(http|/)#', $data['links']['prefix']), 'URL prefix (' . $data['links']['prefix'] . ') is neither absolute nor server-relative');
 	}
 	
-	public function testAlbumSelectCacheWithSessionPermissions()
-	{
+	public function testAlbumSelectCacheWithSessionPermissions() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -493,8 +482,7 @@ class AlbumSelectTest extends GalleryTestCase
 		$this->_assertAlbumTreeData($smarty, 'test albums in tree, without session permissions (2)', false);
 	}
 	
-	public function _assertAlbumTreeData($smarty, $message, $withSubAlbum2 = true)
-	{
+	public function _assertAlbumTreeData($smarty, $message, $withSubAlbum2 = true) {
 		$data = $smarty->getTemplateVars('block');
 		$data = $data['albumselect']['LoadAlbumData']['albumSelect'];
 		$this->assert(!empty($data['tree']), 'tree');
@@ -535,20 +523,16 @@ class AlbumSelectTest extends GalleryTestCase
  * @package AlbumSelect
  * @subpackage PHPUnit
  */
-class AlbumSelectDummyGalleryTemplate
-{
+class AlbumSelectDummyGalleryTemplate {
 	public $data = array();
 
-	public function setVariable($key, $value)
-	{
+	public function setVariable($key, $value) {
 		$this->data[$key] = $value;
 	}
 
-	public function style($path)
-	{
+	public function style($path) {
 	}
 
-	public function javascript($path)
-	{
+	public function javascript($path) {
 	}
 }

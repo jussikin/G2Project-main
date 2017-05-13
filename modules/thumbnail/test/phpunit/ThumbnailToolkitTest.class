@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ThumbnailToolkitTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ThumbnailToolkitTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -76,8 +73,7 @@ class ThumbnailToolkitTest extends GalleryTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$ret = GalleryCoreApi::deleteEntityById($this->_itemId, 'ThumbnailImage');
 		if ($ret) {
@@ -99,8 +95,7 @@ class ThumbnailToolkitTest extends GalleryTestCase
 		}
 	}
 
-	public function testToolkit()
-	{
+	public function testToolkit() {
 		global $gallery;
 
 		list($ret, $outputMimeType) = $this->_toolkit->performOperation(
@@ -148,8 +143,7 @@ class ThumbnailToolkitTest extends GalleryTestCase
 		}
 	}
 
-	public function testRecursiveToolkitOperationIsBlocked()
-	{
+	public function testRecursiveToolkitOperationIsBlocked() {
 		global $gallery;
 
 	/* First ensure ThumbnailToolkit is also the primary toolkit for jpg thumbnail operations */
@@ -211,16 +205,13 @@ class ThumbnailToolkitTest extends GalleryTestCase
 /**
  * Test platform
  */
-class ThumbnailToolkitTestDummyPlatform
-{
-	public function copy($source, $dest)
-	{
+class ThumbnailToolkitTestDummyPlatform {
+	public function copy($source, $dest) {
 		/* Simulate copy failure */
 	return false;
 	}
 
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return DIRECTORY_SEPARATOR;
 	}
 }
@@ -228,11 +219,9 @@ class ThumbnailToolkitTestDummyPlatform
 /**
  * Test toolkit
  */
-class ThumbnailTestToolkit
-{
+class ThumbnailTestToolkit {
 	public function performOperation($mimeType, $operationName, $sourceFilename,
-				  $destFilename, $parameters, $context=array())
-	{
+				  $destFilename, $parameters, $context=array()) {
 		/* Do nothing */
 	return array(null, $mimeType, $context);
 	}

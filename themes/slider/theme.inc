@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SliderTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class SliderTheme extends GalleryTheme {
+	public function __construct() {
 		$this->SliderTheme();
 	}
 	
-	public function SliderTheme()
-	{
+	public function SliderTheme() {
 		global $gallery;
 		
 		$this->setId('slider');
@@ -72,8 +69,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = null)
-	{
+	public function getSettings($itemId = null) {
 		list($ret, $settings, $params) = parent::getSettings($itemId);
 		if ($ret) {
 			return array(
@@ -100,8 +96,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks',
@@ -141,8 +136,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$renderId = GalleryUtilities::getRequestVariables('renderId');
 		if (!empty($renderId)) {
 			/* Render this item */
@@ -218,8 +212,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -240,8 +233,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -262,8 +254,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -273,8 +264,7 @@ class SliderTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -296,8 +286,7 @@ class SliderTheme extends GalleryTheme
 	 * Prepare data about items in this album.
 	 * @access private
 	 */
-	public function _buildItemList($childIds, &$children)
-	{
+	public function _buildItemList($childIds, &$children) {
 		$imageWidths = $imageHeights = $childItems = array();
 		if (!empty($childIds)) {
 			$ret = GalleryCoreApi::studyPermissions($childIds);

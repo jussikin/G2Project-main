@@ -25,15 +25,12 @@
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17616 $
  */
-class ImageBlockHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageBlockHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function _createTopAlbum()
-	{
+	public function _createTopAlbum() {
 		/* Create a new album and image, set thumbnail and highlight */
 		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
@@ -50,8 +47,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		);
 	}
 	
-	public function _createHierarchy()
-	{
+	public function _createHierarchy() {
 		list($ret, $this->_topAlbum, $this->_topItems) = $this->_createSubAlbumWithItems($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -64,8 +60,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		}
 	}
 	
-	public function _createSubAlbumWithItems($parentId)
-	{
+	public function _createSubAlbumWithItems($parentId) {
 		/* Create a new album and image, set thumbnail and highlight */
 		list($ret, $album) = $this->_createRandomAlbum($parentId);
 		if ($ret) {
@@ -95,8 +90,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		);
 	}
 	
-	public function testImageBlockHelperGetDisabledFlag()
-	{
+	public function testImageBlockHelperGetDisabledFlag() {
 		$ret = $this->_createHierarchy();
 		if ($ret) {
 			return $ret;
@@ -122,8 +116,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		$this->assert(!$disabledFlag, 'getDisabledFlag returned true');
 	}
 	
-	public function testImageBlockHelperSetDisabledFlag()
-	{
+	public function testImageBlockHelperSetDisabledFlag() {
 		global $gallery;
 		
 		$ret = $this->_createHierarchy();
@@ -175,8 +168,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		$this->assertEquals(array(), $dbItemIds, 'Items not removed from the DisabledMap');
 	}
 	
-	public function testImageBlockHelperSetDisabledFlagRecursive()
-	{
+	public function testImageBlockHelperSetDisabledFlagRecursive() {
 		global $gallery;
 		
 		$ret = $this->_createHierarchy();
@@ -233,8 +225,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		$this->assertEquals(array(), $dbItemIds, 'Items not removed from the DisabledMap');
 	}
 	
-	public function testImageBlockHelperSetDisabledFlagFirstSubAlbumThenRecursive()
-	{
+	public function testImageBlockHelperSetDisabledFlagFirstSubAlbumThenRecursive() {
 		global $gallery;
 		
 		$ret = $this->_createHierarchy();
@@ -308,8 +299,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 	 * Verify the fix for bug 1536395
 	 * http://sourceforge.net/tracker/index.php?func=detail&aid=1536395&group_id=7130&atid=107130
 	 */
-	public function testMaxSizeWithoutViewSourcePermission()
-	{
+	public function testMaxSizeWithoutViewSourcePermission() {
 		global $gallery;
 		
 		$listener = new ImageBlockHelper();
@@ -355,8 +345,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		$this->assertEquals($thumbnail->getId(), $results[0]['thumb']['id']);
 	}
 	
-	public function testResizedWithoutViewResizePermission()
-	{
+	public function testResizedWithoutViewResizePermission() {
 		global $gallery;
 		
 		$listener = new ImageBlockHelper();
@@ -407,39 +396,33 @@ class ImageBlockHelperTest extends GalleryTestCase
 		$this->assertEquals($thumbnail->getId(), $results[0]['thumb']['id'], sprintf('Wrong image picked. Thumb id: %d, resize id: %d, item id: %d', $thumbnail->getId(), $resize->getId(), $photo->getId()));
 	}
 	
-	public function testGetRandomKeyReturnsPositiveInteger()
-	{
+	public function testGetRandomKeyReturnsPositiveInteger() {
 		$this->assert(is_int($a = ImageBlockHelper::getRandomKey()), "$a must be integer");
 	}
 	
-	public function testGetRandomKeyInDefaultRange()
-	{
+	public function testGetRandomKeyInDefaultRange() {
 		$a = ImageBlockHelper::getRandomKey();
 		$this->assert(0 <= $a, "$a must be >= 0");
 		$b = ImageBlockHelper::getRandomKey();
 		$this->assert(2147483647 >= $b, "$a must be >= 2147483647");
 	}
 	
-	public function testGetRandomKeyWithRange()
-	{
+	public function testGetRandomKeyWithRange() {
 		$a = ImageBlockHelper::getRandomKey(17, 30);
 		$this->assert($a <= 30 && $a >= 17, "$a is not in specified range");
 	}
 	
-	public function testGetRandomKeyWithMinimalRange()
-	{
+	public function testGetRandomKeyWithMinimalRange() {
 		$a = ImageBlockHelper::getRandomKey(17, 17);
 		$this->assertEquals(17, $a);
 	}
 	
-	public function testGetRandomKeyWithSmallRange()
-	{
+	public function testGetRandomKeyWithSmallRange() {
 		$a = ImageBlockHelper::getRandomKey(25, 26);
 		$this->assert($a == 25 || $a == 26, "$a is outside of specified range");
 	}
 	
-	public function testFetchViewableDataForRandomImageWithCache()
-	{
+	public function testFetchViewableDataForRandomImageWithCache() {
 		global $gallery;
 		$gallery->_storage = new UnitTestStorage();
 		$storage =& $gallery->getStorage();
@@ -548,8 +531,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 	 * Verify the fix for bug 1878943
 	 * http://sourceforge.net/tracker/index.php?func=detail&aid=1878943&group_id=7130&atid=107130
 	 */
-	public function testFetchViewableDataForMultipleRandomImages()
-	{
+	public function testFetchViewableDataForMultipleRandomImages() {
 		global $gallery;
 		$max = (int) 0x7fffffff;
 		$userId = $gallery->getActiveUserId();
@@ -584,8 +566,7 @@ class ImageBlockHelperTest extends GalleryTestCase
 		$this->assertEquals(count($items), count($randItems), sprintf("Wrong number of random images returned, asked for %d, but got %d", count($items), count($randItems)));
 	}
 	
-	public function testGetRandomKeyRange()
-	{
+	public function testGetRandomKeyRange() {
 		global $gallery;
 		$gallery->_storage = new UnitTestStorage();
 		$storage =& $gallery->getStorage();

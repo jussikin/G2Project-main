@@ -29,15 +29,12 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 18172 $
  */
-class PublishXpModule extends GalleryModule
-{
-	public function __construct()
-	{
+class PublishXpModule extends GalleryModule {
+	public function __construct() {
 		$this->PublishXpModule();
 	}
 
-	public function PublishXpModule()
-	{
+	public function PublishXpModule() {
 		global $gallery;
 		$this->setId('publishxp');
 		$this->setName($gallery->i18n('Windows Publishing Wizard'));
@@ -55,11 +52,15 @@ class PublishXpModule extends GalleryModule
 	 *
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		GalleryCoreApi::registerFactoryImplementation(
-		'ItemAddPlugin', 'ItemAddPublishXp', 'ItemAddPublishXp',
-		'modules/publishxp/ItemAddPublishXp.inc', 'publishxp', null);
+			'ItemAddPlugin',
+			'ItemAddPublishXp',
+			'ItemAddPublishXp',
+			'modules/publishxp/ItemAddPublishXp.inc',
+			'publishxp',
+			null
+		);
 
 		return null;
 	}

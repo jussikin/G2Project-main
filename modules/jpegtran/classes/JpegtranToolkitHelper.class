@@ -27,8 +27,7 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17777 $
  */
-class JpegtranToolkitHelper
-{
+class JpegtranToolkitHelper {
 	/**
 	 * Return the operations currently supported by JpegtranToolkit.
 	 *
@@ -36,8 +35,7 @@ class JpegtranToolkitHelper
 	 *               array('operations' => ...)
 	 * @static
 	 */
-	public static function getOperations()
-	{
+	public static function getOperations() {
 		global $gallery;
 		
 		/* Detect and test the binary */
@@ -119,8 +117,7 @@ class JpegtranToolkitHelper
 	 *
 	 * @static
 	 */
-	public static function testBinary($jpegtranPath)
-	{
+	public static function testBinary($jpegtranPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();

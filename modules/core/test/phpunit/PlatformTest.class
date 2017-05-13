@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17961 $
  */
-class PlatformTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PlatformTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -50,8 +47,7 @@ class PlatformTest extends GalleryTestCase
 		$this->_destFile = $gallery->getConfig('data.gallery.tmp') . 'test.dat';
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMimeType(array(
 			'mimeType' => 'test/test'
 		));
@@ -65,22 +61,19 @@ class PlatformTest extends GalleryTestCase
 		return parent::tearDown();
 	}
 	
-	public function testCopy()
-	{
+	public function testCopy() {
 		$this->assert($this->_platform->copy($this->_sourceFile, $this->_destFile));
 		$this->assert($this->_platform->unlink($this->_destFile));
 	}
 	
-	public function testSymlink()
-	{
+	public function testSymlink() {
 		if ($this->_platform->isSymlinkSupported()) {
 			$this->assert($this->_platform->symlink($this->_sourceFile, $this->_destFile));
 			$this->assert($this->_platform->unlink($this->_destFile));
 		}
 	}
 	
-	public function testTempnam()
-	{
+	public function testTempnam() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -106,37 +99,31 @@ class PlatformTest extends GalleryTestCase
 		}
 	}
 	
-	public function testMoveUploadedFile()
-	{
+	public function testMoveUploadedFile() {
 		/* XXX: How do we test this?  We don't have an uploaded file :-( */
 		$this->assert(!$this->_platform->move_uploaded_file($this->_sourceFile, $this->_destFile));
 	}
 	
-	public function testFileExists()
-	{
+	public function testFileExists() {
 		$this->assert($this->_platform->file_exists($this->_sourceFile));
 		$this->assert(!$this->_platform->file_exists($this->_destFile));
 	}
 	
-	public function testIsLink()
-	{
+	public function testIsLink() {
 		$this->assert(!$this->_platform->is_link($this->_sourceFile));
 	}
 	
-	public function testIsDir()
-	{
+	public function testIsDir() {
 		$this->assert($this->_platform->is_dir(dirname(__FILE__)));
 		$this->assert(!$this->_platform->is_dir(__FILE__));
 	}
 	
-	public function testIsFile()
-	{
+	public function testIsFile() {
 		$this->assert($this->_platform->is_file(__FILE__));
 		$this->assert(!$this->_platform->is_file('bogus-file-name'));
 	}
 	
-	public function testIsWriteable()
-	{
+	public function testIsWriteable() {
 		/* On Win32, all files are writeable so the next assertion isn't that useful! */
 		/* $this->assert(!$this->_platform->is_writeable(__FILE__)); */
 		
@@ -145,18 +132,15 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->unlink($this->_destFile));
 	}
 	
-	public function testIsReadable()
-	{
+	public function testIsReadable() {
 		$this->assert($this->_platform->is_readable($this->_sourceFile));
 	}
 	
-	public function testIsUploadedFile()
-	{
+	public function testIsUploadedFile() {
 		$this->assert(!$this->_platform->is_uploaded_file($this->_sourceFile));
 	}
 	
-	public function testIsExecutable()
-	{
+	public function testIsExecutable() {
 		if (GalleryUtilities::isA($this->_platform, 'WinNtPlatform')) {
 			$this->assert($this->_platform->is_executable($this->_sourceFile));
 		} else {
@@ -164,35 +148,30 @@ class PlatformTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFilesize()
-	{
+	public function testFilesize() {
 		$this->assertEquals(1083, $this->_platform->filesize($this->_sourceFile));
 	}
 	
-	public function testFile()
-	{
+	public function testFile() {
 		$lines = $this->_platform->file(__FILE__);
 		
 		/* --> Target Line <-- */
 		$this->assertEquals("/* --> Target Line <-- */", trim($lines[__LINE__ - 2]));
 	}
 	
-	public function testFopen()
-	{
+	public function testFopen() {
 		$fd = $this->_platform->fopen($this->_sourceFile, 'r');
 		$this->assert($fd);
 		fclose($fd);
 	}
 	
-	public function testOpendir()
-	{
+	public function testOpendir() {
 		$dir = $this->_platform->opendir(dirname(__FILE__));
 		$this->assert($dir);
 		$this->_platform->closedir($dir);
 	}
 	
-	public function testReaddir()
-	{
+	public function testReaddir() {
 		$dir = $this->_platform->opendir(dirname(__FILE__));
 		$files = array();
 		while ($filename = $this->_platform->readdir($dir)) {
@@ -203,26 +182,22 @@ class PlatformTest extends GalleryTestCase
 		$this->assertEquals(1, $files[basename(__FILE__)]);
 	}
 	
-	public function testRename()
-	{
+	public function testRename() {
 		$this->assert($this->_platform->copy($this->_sourceFile, $this->_destFile));
 		$this->assert($this->_platform->rename($this->_destFile, $this->_destFile . '-new'));
 		$this->assert($this->_platform->unlink($this->_destFile . '-new'));
 	}
 	
-	public function testStat()
-	{
+	public function testStat() {
 		$this->assert($this->_platform->stat($this->_sourceFile));
 	}
 	
-	public function testUnlink()
-	{
+	public function testUnlink() {
 		$this->assert($this->_platform->copy($this->_sourceFile, $this->_destFile));
 		$this->assert($this->_platform->unlink($this->_destFile));
 	}
 	
-	public function testRmdir()
-	{
+	public function testRmdir() {
 		$this->assert($this->_platform->mkdir($this->_destFile));
 		$this->assert($this->_platform->mkdir($this->_destFile . '/1'));
 		
@@ -233,8 +208,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->rmdir($this->_destFile));
 	}
 	
-	public function testRecursiveRmdir()
-	{
+	public function testRecursiveRmdir() {
 		$this->assert($this->_platform->mkdir($this->_destFile));
 		$this->assert($this->_platform->mkdir($this->_destFile . '/1'));
 		$this->assert($this->_platform->mkdir($this->_destFile . '/1/2'));
@@ -242,99 +216,82 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->recursiveRmdir($this->_destFile), 'remove');
 	}
 	
-	public function testMkdir()
-	{
+	public function testMkdir() {
 		$this->assert($this->_platform->mkdir($this->_destFile), 'mkdir');
 		$this->assert($this->_platform->recursiveRmdir($this->_destFile));
 	}
 	
-	public function testIsLegalPathComponent()
-	{
+	public function testIsLegalPathComponent() {
 		$this->assert($this->_platform->isLegalPathComponent('TheQuickBrownFox'));
 		$this->assert(!$this->_platform->isLegalPathComponent('The!QuickBrownFox'));
 	}
 	
-	public function testLegalizePathComponent()
-	{
+	public function testLegalizePathComponent() {
 		$this->assertEquals('The_Quick_', $this->_platform->legalizePathComponent('The!Quick$'));
 	}
 	
-	public function testLegalizePathComponentUnknownExtension()
-	{
+	public function testLegalizePathComponentUnknownExtension() {
 		$this->assertEquals('test_zzz', $this->_platform->legalizePathComponent('test.zzz'));
 	}
 	
-	public function testLegalizePathComponent3()
-	{
+	public function testLegalizePathComponent3() {
 		$this->assertEquals('test_php.jpg', $this->_platform->legalizePathComponent('test.php.jpg'));
 	}
 	
-	public function testLegalizePathComponentForDirectory()
-	{
+	public function testLegalizePathComponentForDirectory() {
 		$this->assertEquals('test_.php.jpg_', $this->_platform->legalizePathComponent('test!.php.jpg$', true));
 	}
 	
-	public function testPathComponentLegalCharactersConserved()
-	{
+	public function testPathComponentLegalCharactersConserved() {
 		$this->assertEquals(true, $this->_platform->isLegalPathComponent('TheQuickBrownFox'));
 		$this->assertEquals('TheQuickBrownFox', $this->_platform->legalizePathComponent('TheQuickBrownFox'));
 	}
 	
-	public function testPathComponentIllegalCharactersToUnderscores()
-	{
+	public function testPathComponentIllegalCharactersToUnderscores() {
 		$this->assertEquals(false, $this->_platform->isLegalPathComponent('The Quick!Brown#Fox'));
 		$this->assertEquals('The Quick_Brown#Fox', $this->_platform->legalizePathComponent('The Quick!Brown#Fox'));
 	}
 	
-	public function testPathComponentDotInFileBaseToUnderscore()
-	{
+	public function testPathComponentDotInFileBaseToUnderscore() {
 		$this->assertEquals(false, $this->_platform->isLegalPathComponent('test.php.jpg'));
 		$this->assertEquals('test_php.jpg', $this->_platform->legalizePathComponent('test.php.jpg'));
 	}
 	
-	public function testPathComponentDotRecognizedExtensionConserved()
-	{
+	public function testPathComponentDotRecognizedExtensionConserved() {
 		$this->assertEquals(true, $this->_platform->isLegalPathComponent('test.jpg'));
 		$this->assertEquals('test.jpg', $this->_platform->legalizePathComponent('test.jpg'));
 	}
 	
-	public function testPathComponentDotUnrecognizedExtensionToUnderscore()
-	{
+	public function testPathComponentDotUnrecognizedExtensionToUnderscore() {
 		$this->assertEquals(false, $this->_platform->isLegalPathComponent('test.foo'));
 		$this->assertEquals('test_foo', $this->_platform->legalizePathComponent('test.foo'));
 	}
 	
-	public function testPathComponentDotPhpExtensionToUnderscore()
-	{
+	public function testPathComponentDotPhpExtensionToUnderscore() {
 		$this->assertEquals(false, $this->_platform->isLegalPathComponent('test.php'));
 		$this->assertEquals('test_php', $this->_platform->legalizePathComponent('test.php'));
 	}
 	
-	public function testPathComponentDotUnderscoreToUnderscoreUnderscore()
-	{
+	public function testPathComponentDotUnderscoreToUnderscoreUnderscore() {
 		$this->assertEquals(false, $this->_platform->isLegalPathComponent('._test'));
 		$this->assertEquals('__test', $this->_platform->legalizePathComponent('._test'));
 	}
 	
-	public function testIsLegalPathComponentWithDotForDirectory()
-	{
+	public function testIsLegalPathComponentWithDotForDirectory() {
 		$this->assertEquals(true, $this->_platform->isLegalPathComponent('some._test', true));
 	}
 	
-	public function testLegalizePathComponentWithBlacklistedExtension()
-	{
+	public function testLegalizePathComponentWithBlacklistedExtension() {
 		$this->_platform->_blacklistedFileExtensions[] = 'xxx';
 		$this->assertEquals('test_xxx', $this->_platform->legalizePathComponent('test.xxx'));
 	}
 	
-	public function testIsLegalPathComponentForAllowedExtension()
-	{
+	public function testIsLegalPathComponentForAllowedExtension() {
 		$this->assert($this->_platform->isLegalPathComponent('test.xxx'));
 		$this->assert($this->_platform->isLegalPathComponent('test.XxX'), 'mixed case');
 	}
 	
-	public function testIsLegalPathComponentForBlacklistedExtension()
-	{
+	public function testIsLegalPathComponentForBlacklistedExtension() {
 		$this->_platform->_blacklistedFileExtensions[] = 'xxx';
 		$this->assert(!$this->_platform->isLegalPathComponent('test.xxx'));
 		$this->assert(!$this->_platform->isLegalPathComponent('test.XXX'), 'upper case');
@@ -346,8 +303,7 @@ class PlatformTest extends GalleryTestCase
 	 * XXX: This is a pretty weak test.  It's hard to improve it without actually shipping a
 	 * known-good script though.
 	 */
-	public function testExec()
-	{
+	public function testExec() {
 		$results = $this->_platform->exec(array(
 			array(
 				'/bogus/path'
@@ -359,8 +315,7 @@ class PlatformTest extends GalleryTestCase
 	/**
 	 * Verify bugfix: quotes around redirect file for stderr output, in case path has a space
 	 */
-	public function testExecWithSpaceInG2DataPath()
-	{
+	public function testExecWithSpaceInG2DataPath() {
 		global $gallery;
 		if (GalleryUtilities::isA($this->_platform, 'UnixPlatform')) {
 			$tmpDir = $gallery->getConfig('data.gallery.tmp') . '/dir with space';
@@ -385,8 +340,7 @@ class PlatformTest extends GalleryTestCase
 	 * Make sure files are written with correct permissions by exec, copy, symlink,
 	 * atomicWrite; test chmod.
 	 */
-	public function testPermissions()
-	{
+	public function testPermissions() {
 		if (GalleryUtilities::isA($this->_platform, 'UnixPlatform')) {
 			if ($this->_markPluginParametersForCleanup('module', 'core')) {
 				return;
@@ -442,8 +396,7 @@ class PlatformTest extends GalleryTestCase
 		}
 	}
 	
-	public function _permissionTest($expectedPermissions, $testNumber, $tests)
-	{
+	public function _permissionTest($expectedPermissions, $testNumber, $tests) {
 		global $gallery;
 		foreach ($tests as $test) {
 			$stat = $debug = '';
@@ -505,8 +458,7 @@ class PlatformTest extends GalleryTestCase
 		}
 	}
 	
-	public function _setupChmodTest()
-	{
+	public function _setupChmodTest() {
 		$this->assert($this->_platform->mkdir($this->_destFile), 'mkdir');
 		$this->assert($this->_platform->mkdir($this->_destFile . '/1'), 'mkdir/1');
 		$this->assert($this->_platform->copy($this->_sourceFile, $this->_destFile . '/1/2'), 'cp');
@@ -530,8 +482,7 @@ class PlatformTest extends GalleryTestCase
 		return null;
 	}
 	
-	public function testRecursiveChmod1()
-	{
+	public function testRecursiveChmod1() {
 		/* Set dir and file permissions by system prefs */
 		$ret = $this->_setupChmodTest();
 		if ($ret) {
@@ -562,8 +513,7 @@ class PlatformTest extends GalleryTestCase
 		$this->_platform->resetPlatform();
 	}
 	
-	public function testRecursiveChmod2()
-	{
+	public function testRecursiveChmod2() {
 		/* Set given dir permission, don't change file permissions */
 		$ret = $this->_setupChmodTest();
 		if ($ret) {
@@ -595,8 +545,7 @@ class PlatformTest extends GalleryTestCase
 		$this->_platform->resetPlatform();
 	}
 	
-	public function testRecursiveChmod3()
-	{
+	public function testRecursiveChmod3() {
 		/* Set given file permission, don't change dir permissions */
 		$ret = $this->_setupChmodTest();
 		if ($ret) {
@@ -629,15 +578,13 @@ class PlatformTest extends GalleryTestCase
 		$this->_platform->resetPlatform();
 	}
 	
-	public function testGetDirectorySeparator()
-	{
+	public function testGetDirectorySeparator() {
 		$file = __FILE__;
 		$realSeparator = $file[strlen(dirname(__FILE__))];
 		$this->assertEquals($realSeparator, $this->_platform->getDirectorySeparator());
 	}
 	
-	public function testGetLineEnding()
-	{
+	public function testGetLineEnding() {
 		if (GalleryUtilities::isA($this->_platform, 'UnixPlatform')) {
 			$realLineEnding = "\n";
 		} elseif (GalleryUtilities::isA($this->_platform, 'WinNtPlatform')) {
@@ -647,8 +594,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assertEquals($realLineEnding, $this->_platform->getLineEnding(), "Line Endings Don't Match");
 	}
 	
-	public function testIsRestrictedByOpenBaseDir()
-	{
+	public function testIsRestrictedByOpenBaseDir() {
 		global $gallery;
 		$isWin = GalleryUtilities::isA($this->_platform, 'WinNtPlatform');
 		
@@ -780,8 +726,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assert(!$platform->isRestrictedByOpenBaseDir("bogus${s}path${s}..${s}..${s}test"), 'valid relative path with two dotdots');
 	}
 	
-	public function testIsRestrictedByOpenBaseDirForMatchAllOpenBaseDir()
-	{
+	public function testIsRestrictedByOpenBaseDirForMatchAllOpenBaseDir() {
 		global $gallery;
 		
 		$gallery->_phpVm = new PlatformTestPhpVm('/', $this);
@@ -797,23 +742,20 @@ class PlatformTest extends GalleryTestCase
 	/**
 	 * Try opening a socket to the current web server.
 	 */
-	public function testFsockopen()
-	{
+	public function testFsockopen() {
 		$fd = $this->_platform->fsockopen($_SERVER['SERVER_NAME'], $_SERVER['SERVER_PORT'], $errno, $errstr, 30);
 		$this->assert($fd, 'File descriptor should not be null/false');
 		@$this->_platform->fclose($fd);
 	}
 	
-	public function ignore_error_handler($errno, $errstr)
-	{
+	public function ignore_error_handler($errno, $errstr) {
 		return true;
 	}
 	
 	/**
 	 * Try opening a socket to a bogus web server.
 	 */
-	public function testFsockopenBadHost()
-	{
+	public function testFsockopenBadHost() {
 		/* We know this is going to bomb so bypass PHPunit's error handler */
 		set_error_handler(array(
 			'PlatformTest',
@@ -827,8 +769,7 @@ class PlatformTest extends GalleryTestCase
 	/**
 	 * Verify that we can write a few bytes to a file.
 	 */
-	public function testOpenWriteAndClose()
-	{
+	public function testOpenWriteAndClose() {
 		$fd = $this->_platform->fopen($this->_destFile, 'wb');
 		$this->assert($fd, 'File descriptor should not be null');
 		
@@ -840,8 +781,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->unlink($this->_destFile), 'unlink');
 	}
 	
-	public function testOpenAndReadTillEof()
-	{
+	public function testOpenAndReadTillEof() {
 		$fd = $this->_platform->fopen($this->_sourceFile, 'rb');
 		$this->assert($fd, 'File descriptor should not be null');
 		
@@ -854,8 +794,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->fclose($fd));
 	}
 	
-	public function testOpenMissingFile()
-	{
+	public function testOpenMissingFile() {
 		/* We know this is going to bomb so bypass PHPunit's error handler */
 		set_error_handler(array(
 			'PlatformTest',
@@ -867,8 +806,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assertEquals(false, $fd);
 	}
 	
-	public function testAtomicWrite()
-	{
+	public function testAtomicWrite() {
 		/*
 	     * We should test if our operations are really concurrent-safe, but we cannot do that
 	     * without having multiple processes accessing the same file, which is not possible in our
@@ -887,8 +825,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->unlink($this->_destFile), 'unlink');
 	}
 	
-	public function testSplitPath()
-	{
+	public function testSplitPath() {
 		$this->assertEquals(array(
 			'dir',
 			'path',
@@ -920,8 +857,7 @@ class PlatformTest extends GalleryTestCase
 		}
 	}
 	
-	public function testChdir()
-	{
+	public function testChdir() {
 		global $gallery;
 		$tmpdir = $gallery->getConfig('data.gallery.tmp');
 		$oldCwd = $this->_platform->getcwd();
@@ -936,8 +872,7 @@ class PlatformTest extends GalleryTestCase
 		$this->_platform->chdir($oldCwd);
 	}
 	
-	public function testStrftime()
-	{
+	public function testStrftime() {
 		$this->assertEquals('2005 03', $this->_platform->strftime('%Y %m', 1110101111));
 		/* For windows we replace %e with %d and convert leading zeros to spaces */
 		$this->assertEquals(' 6 11', $this->_platform->strftime('%e %S', 1110101111));
@@ -948,8 +883,7 @@ class PlatformTest extends GalleryTestCase
 		/* How to test that strftime output is converted to UTF-8? */
 	}
 	
-	public function testFileGetAndPutContents()
-	{
+	public function testFileGetAndPutContents() {
 		$fileContents = $this->_platform->file_get_contents($this->_sourceFile);
 		$this->assert(is_string($fileContents), 'contents not a string');
 		$this->assert(false !== strpos($fileContents, 'GIF89'), 'invalid contents');
@@ -961,8 +895,7 @@ class PlatformTest extends GalleryTestCase
 		$this->assert($this->_platform->unlink($this->_destFile), 'unlink');
 	}
 	
-	public function testMailUsesUnixLineEndings()
-	{
+	public function testMailUsesUnixLineEndings() {
 		global $gallery;
 		
 		$ret = $this->_markPluginParametersForCleanup('module', 'core');
@@ -983,16 +916,13 @@ class PlatformTest extends GalleryTestCase
 	}
 }
 
-class PlatformTestPhpVm extends GalleryPhpVm
-{
-	public function PlatformTestPhpVm($iniVal, &$test)
-	{
+class PlatformTestPhpVm extends GalleryPhpVm {
+	public function PlatformTestPhpVm($iniVal, &$test) {
 		$this->_iniVal = $iniVal;
 		$this->_test =& $test;
 	}
 	
-	public function ini_get($varname)
-	{
+	public function ini_get($varname) {
 		if ($varname == 'open_basedir') {
 			return $this->_iniVal;
 		}
@@ -1000,8 +930,7 @@ class PlatformTestPhpVm extends GalleryPhpVm
 		return parent::ini_get($varname);
 	}
 	
-	public function mail($to, $subject, $body, $additionalHeaders = null, $additionalParameters = null)
-	{
+	public function mail($to, $subject, $body, $additionalHeaders = null, $additionalParameters = null) {
 		$this->_test->_mail = array(
 			'to' => $to,
 			'subj' => $subject,
@@ -1015,59 +944,47 @@ class PlatformTestPhpVm extends GalleryPhpVm
 }
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/UnixPlatform.class');
-class PlatformTestOpenBaseDirUnixPlatform extends UnixPlatform
-{
-	public function setRealpathData($realpathData)
-	{
+class PlatformTestOpenBaseDirUnixPlatform extends UnixPlatform {
+	public function setRealpathData($realpathData) {
 		$this->_realpathData = $realpathData;
 	}
 	
-	public function setCwd($path)
-	{
+	public function setCwd($path) {
 		$this->_cwd = $path;
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return isset($this->_realpathData[$path]) ? $this->_realpathData[$path] : false;
 	}
 	
-	public function getcwd()
-	{
+	public function getcwd() {
 		return isset($this->_cwd) ? $this->_cwd : parent::getcwd();
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 }
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/WinNtPlatform.class');
-class PlatformTestOpenBaseDirWinNtPlatform extends WinNtPlatform
-{
-	public function setRealpathData($realpathData)
-	{
+class PlatformTestOpenBaseDirWinNtPlatform extends WinNtPlatform {
+	public function setRealpathData($realpathData) {
 		$this->_realpathData = $realpathData;
 	}
 	
-	public function setCwd($path)
-	{
+	public function setCwd($path) {
 		$this->_cwd = $path;
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return isset($this->_realpathData[$path]) ? $this->_realpathData[$path] : false;
 	}
 	
-	public function getcwd()
-	{
+	public function getcwd() {
 		return isset($this->_cwd) ? $this->_cwd : parent::getcwd();
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '\\';
 	}
 }

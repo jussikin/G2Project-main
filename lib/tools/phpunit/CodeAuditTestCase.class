@@ -26,18 +26,15 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CodeAuditTestCase extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CodeAuditTestCase extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 		$this->_shouldHalt = false;
 		$this->_baseDir = realpath(dirname(__FILE__) . '/../../..');
 		$this->_checkTime = time();
 	}
 	
-	public function testCodeAudit()
-	{
+	public function testCodeAudit() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -61,8 +58,7 @@ class CodeAuditTestCase extends GalleryTestCase
 		$this->finishScan($this->_shouldHalt);
 	}
 	
-	public function _scanDir($dirPath)
-	{
+	public function _scanDir($dirPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -99,8 +95,7 @@ class CodeAuditTestCase extends GalleryTestCase
 		}
 	}
 	
-	public function _scanXmlDir($dirPath)
-	{
+	public function _scanXmlDir($dirPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -155,8 +150,7 @@ class CodeAuditTestCase extends GalleryTestCase
 		return $dirPaths;
 	}
 	
-	public function _scanNonXmlDir($dirPath)
-	{
+	public function _scanNonXmlDir($dirPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -215,8 +209,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	/**
 	 * Keep this test running.
 	 */
-	public function _timeCheck()
-	{
+	public function _timeCheck() {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(30);
 		if (time() - $this->_checkTime >= 20) {
@@ -229,8 +222,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	/**
 	 * Subclasses can call this to stop scanning.
 	 */
-	public function halt()
-	{
+	public function halt() {
 		$this->_shouldHalt = true;
 	}
 	
@@ -238,8 +230,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	 * Overload this method in subclasses to audit the file.
 	 * @access protected
 	 */
-	public function checkFile($fileName, $buffer)
-	{
+	public function checkFile($fileName, $buffer) {
 	}
 	
 	/**
@@ -247,8 +238,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	 * @param bool $halted true if the scan was halted early
 	 * @access protected
 	 */
-	public function finishScan($halted)
-	{
+	public function finishScan($halted) {
 	}
 	
 	/**
@@ -256,8 +246,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	 * @return true if we should check this file
 	 * @access protected
 	 */
-	public function shouldCheckFile($fileName)
-	{
+	public function shouldCheckFile($fileName) {
 		/*
 	     * By default we accept php|inc|class|tpl|po extensions, with the exception that we only
 	     * take lib/tools/repository from the lib directory.
@@ -283,8 +272,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	 * @param string $fileName (optional) Cache tokens between function calls for this file name
 	 * @return array of function calls, e.g. array('$bar->foo("hello world")')
 	 */
-	public function getFunctionCalls($phpCode, $function, $fileName = null)
-	{
+	public function getFunctionCalls($phpCode, $function, $fileName = null) {
 		$calls = array();
 		
 		if (is_array($function)) {
@@ -381,8 +369,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	 * @param string $functionCall e.g. "$this->foo(array(1, 2), 'moo')"
 	 * @return array the list of parameters, e.g. array("array(1, 2)", "'moo'")
 	 */
-	public function getFunctionParameters($functionCall)
-	{
+	public function getFunctionParameters($functionCall) {
 		/* Replace the function with an array */
 		$parameterString = preg_replace('/^.*?\((.*)\)$/', 'array(\1)', $functionCall);
 		/* Seek to the beginning of the parameter string */
@@ -433,8 +420,7 @@ class CodeAuditTestCase extends GalleryTestCase
 	 * @param boolean $previous whether to seek backwards (defaults to forward (false))
 	 * @return int the index of the next token in the request direction, or null
 	 */
-	public function _getNextTokenIndex(&$tokens, $i, $previous = false)
-	{
+	public function _getNextTokenIndex(&$tokens, $i, $previous = false) {
 		$i += $previous ? -1 : 1;
 		if (!isset($tokens[$i])) {
 			return null;

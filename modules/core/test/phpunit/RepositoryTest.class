@@ -31,13 +31,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17604 $
  */
-class RepositoryTest extends GalleryTestCase
-{
+class RepositoryTest extends GalleryTestCase {
 	public $_index;
 	public $_sampleIndex;
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -56,8 +54,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->_index->_isLoaded = true;
 	}
 	
-	public function _setupUpdateUtilitiesResponses(&$utilities, $index, $case, $pluginType = 'module')
-	{
+	public function _setupUpdateUtilitiesResponses(&$utilities, $index, $case, $pluginType = 'module') {
 		$coreApi = GalleryCoreApi::getApiVersion();
 		$pluginApi = $pluginType == 'module' ? GalleryModule::getApiVersion() : GalleryTheme::getApiVersion();
 		$pluginId = 'test' . ucfirst($pluginType);
@@ -108,8 +105,7 @@ class RepositoryTest extends GalleryTestCase
 		}
 	}
 	
-	public function _getUpgradeTestCase($testCase)
-	{
+	public function _getUpgradeTestCase($testCase) {
 		switch ($testCase) {
 			case 0:
 				$case = array(
@@ -1243,8 +1239,7 @@ class RepositoryTest extends GalleryTestCase
 	/**
 	 * Test getAllUpgradeablePackages and getUpgradeInfo.
 	 */
-	public function testUpgrade()
-	{
+	public function testUpgrade() {
 		global $gallery;
 		
 		$cacheKey = 'GalleryTranslator::SupportedLanguages';
@@ -1352,8 +1347,7 @@ class RepositoryTest extends GalleryTestCase
 		}
 	}
 	
-	public function testIsCoreUpgradeAvailable()
-	{
+	public function testIsCoreUpgradeAvailable() {
 		/* Get installed core version. */
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
@@ -1436,8 +1430,7 @@ class RepositoryTest extends GalleryTestCase
 	 * @param string $operator operator, '+' or '-'
 	 * @return string result
 	 */
-	public function calculateVersion($operand1, $operand2, $operator)
-	{
+	public function calculateVersion($operand1, $operand2, $operator) {
 		$operand1 = explode('.', $operand1);
 		$operand2 = explode('.', $operand2);
 		
@@ -1448,8 +1441,7 @@ class RepositoryTest extends GalleryTestCase
 		return implode('.', $result);
 	}
 	
-	public function _setupRepositoryPluginListResponses(&$utilities, $case)
-	{
+	public function _setupRepositoryPluginListResponses(&$utilities, $case) {
 		$expectedPlugin = $case['expectedPluginList']['testModule'];
 		$coreApis = $case['pluginData']['coreApis'];
 		
@@ -1496,8 +1488,7 @@ class RepositoryTest extends GalleryTestCase
 		));
 	}
 	
-	public function _getRepositoryPluginListTestCase($testCase)
-	{
+	public function _getRepositoryPluginListTestCase($testCase) {
 		$testModule = $this->_sampleIndex['modules']['testModule'];
 		
 		$coreApi = GalleryCoreApi::getApiVersion();
@@ -1736,8 +1727,7 @@ class RepositoryTest extends GalleryTestCase
 		return $case;
 	}
 	
-	public function testGetRepositoryPluginList()
-	{
+	public function testGetRepositoryPluginList() {
 		global $gallery;
 		list($ret, $saveLanguage) = $gallery->getActiveLocale();
 		if ($ret) {
@@ -1788,8 +1778,7 @@ class RepositoryTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetRepositoryPluginListThemeGroupLabel()
-	{
+	public function testGetRepositoryPluginListThemeGroupLabel() {
 		global $gallery;
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
@@ -1861,8 +1850,7 @@ class RepositoryTest extends GalleryTestCase
 		}
 	}
 	
-	public function testComparePluginListEntries()
-	{
+	public function testComparePluginListEntries() {
 		$repository = new GalleryRepository();
 		
 		$testCase = array(
@@ -1900,8 +1888,7 @@ class RepositoryTest extends GalleryTestCase
 		), $testCase, 'List not sorted properly.');
 	}
 	
-	public function testCreatePluginDirectory()
-	{
+	public function testCreatePluginDirectory() {
 		global $gallery;
 		
 		$repository = new GalleryRepository();
@@ -1972,8 +1959,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetDownloadFileList()
-	{
+	public function testGetDownloadFileList() {
 		$indexData = array(
 			'module' => array(
 				'testModule' => array(
@@ -2015,8 +2001,7 @@ class RepositoryTest extends GalleryTestCase
 		), $files, 'Unexpected file data.');
 	}
 	
-	public function testDownloadAndUnpack()
-	{
+	public function testDownloadAndUnpack() {
 		global $gallery;
 		
 		$testCachePath = dirname(__FILE__) . '/../data/';
@@ -2106,8 +2091,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($repository->_utilities->isComplete(), $repository->_utilities->getRemaining());
 	}
 	
-	public function testScanPlugin()
-	{
+	public function testScanPlugin() {
 		global $gallery;
 		
 		$repository = new GalleryRepository();
@@ -2215,8 +2199,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testScanPluginWithNoPoDir()
-	{
+	public function testScanPluginWithNoPoDir() {
 		global $gallery;
 		
 		$repository = new GalleryRepository();
@@ -2276,8 +2259,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testScanLockedPlugin()
-	{
+	public function testScanLockedPlugin() {
 		global $gallery;
 		
 		$repository = new GalleryRepository();
@@ -2384,8 +2366,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testScanPluginWithNoManifest()
-	{
+	public function testScanPluginWithNoManifest() {
 		global $gallery;
 		
 		$repository = new GalleryRepository();
@@ -2420,8 +2401,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetRepositoriesAndClearCache()
-	{
+	public function testGetRepositoriesAndClearCache() {
 		list($ret, $repositories, $repositoryErrors) = GalleryRepository::getRepositories(array(
 			'works',
 			'broken'
@@ -2450,8 +2430,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert(!GalleryDataCache::containsKey($cacheKey), 'key should be deleted');
 	}
 	
-	public function _prepareForGetPluginUpgradeInfo($isNewer = false)
-	{
+	public function _prepareForGetPluginUpgradeInfo($isNewer = false) {
 		$repository = new GalleryRepository();
 		$repository->_index = $this->_index;
 		$utilities = new UnitTestRepositoryUtilities();
@@ -2532,8 +2511,7 @@ class RepositoryTest extends GalleryTestCase
 		);
 	}
 	
-	public function testGetPluginUpgradeInfoForBasePackageUpgrade()
-	{
+	public function testGetPluginUpgradeInfoForBasePackageUpgrade() {
 		list($repository, $languages) = $this->_prepareForGetPluginUpgradeInfo();
 		
 		list($ret, $info) = $repository->getPluginUpgradeInfo('module', 'testModule');
@@ -2559,8 +2537,7 @@ class RepositoryTest extends GalleryTestCase
 		), $info);
 	}
 	
-	public function testGetPluginUpgradeInfoInstalledVersionNewer()
-	{
+	public function testGetPluginUpgradeInfoInstalledVersionNewer() {
 		list($repository, $languages) = $this->_prepareForGetPluginUpgradeInfo(true);
 		
 		list($ret, $info) = $repository->getPluginUpgradeInfo('module', 'testModule', false);
@@ -2585,8 +2562,7 @@ class RepositoryTest extends GalleryTestCase
 		), $info);
 	}
 	
-	public function _setDownloadAndUnpackPackagesResponses($testData, &$callback)
-	{
+	public function _setDownloadAndUnpackPackagesResponses($testData, &$callback) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -2726,8 +2702,7 @@ class RepositoryTest extends GalleryTestCase
 		);
 	}
 	
-	public function _buildDescriptor($pluginData)
-	{
+	public function _buildDescriptor($pluginData) {
 		/* Leave the files empty so we don't have to generate a lot of platform calls */
 		return array(
 			'header' => array(
@@ -2781,8 +2756,7 @@ class RepositoryTest extends GalleryTestCase
 		);
 	}
 	
-	public function testDownloadAndUnpackPackages()
-	{
+	public function testDownloadAndUnpackPackages() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -2873,8 +2847,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($repository->_utilities->isComplete(), $repository->_utilities->getRemaining());
 	}
 	
-	public function testDownloadAndUnpackPackagesLockedFiles()
-	{
+	public function testDownloadAndUnpackPackagesLockedFiles() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -2973,8 +2946,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($repository->_utilities->isComplete(), $repository->_utilities->getRemaining());
 	}
 	
-	public function testDownloadAndUnpackPackagesNoDescriptors()
-	{
+	public function testDownloadAndUnpackPackagesNoDescriptors() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -3063,8 +3035,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($repository->_utilities->isComplete(), $repository->_utilities->getRemaining());
 	}
 	
-	public function testDownloadAndUnpackPackagesFailed()
-	{
+	public function testDownloadAndUnpackPackagesFailed() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -3105,8 +3076,7 @@ class RepositoryTest extends GalleryTestCase
 		$this->assert($repository->_utilities->isComplete(), $repository->_utilities->getRemaining());
 	}
 	
-	public function testRemoveObsoleteFiles()
-	{
+	public function testRemoveObsoleteFiles() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -3143,10 +3113,8 @@ class RepositoryTest extends GalleryTestCase
 	}
 }
 
-class RepositoryTest_GalleryRepository
-{
-	public function init($sourceName)
-	{
+class RepositoryTest_GalleryRepository {
+	public function init($sourceName) {
 		if ($sourceName == 'broken') {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
@@ -3155,21 +3123,17 @@ class RepositoryTest_GalleryRepository
 	}
 }
 
-class RepositoryTestModule
-{
-	public function getVersion()
-	{
+class RepositoryTestModule {
+	public function getVersion() {
 		return '1.0';
 	}
 }
 
-class RepositoryTestIndex
-{
+class RepositoryTestIndex {
 	public $_pluginData;
 	public $_index;
 	
-	public function RepositoryTestIndex($sampleIndex, $pluginData)
-	{
+	public function RepositoryTestIndex($sampleIndex, $pluginData) {
 		$this->_index = new GalleryRepositoryIndex('test');
 		$this->_index->_index = $sampleIndex;
 		$this->_index->_isLoaded = true;
@@ -3177,8 +3141,7 @@ class RepositoryTestIndex
 		$this->_pluginData = $pluginData;
 	}
 	
-	public function getPlugins($pluginType, $showAll, $coreApis = null)
-	{
+	public function getPlugins($pluginType, $showAll, $coreApis = null) {
 		if ($this->_pluginData['pluginType'] != $pluginType || $this->_pluginData['showAll'] != $showAll || $this->_pluginData['coreApis'] != $coreApis) {
 			return array(
 				GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, 'Wrong arguments passed.'),
@@ -3192,18 +3155,15 @@ class RepositoryTestIndex
 		);
 	}
 	
-	public function getPluginHeader($pluginType, $pluginId)
-	{
+	public function getPluginHeader($pluginType, $pluginId) {
 		return $this->_index->getPluginHeader($pluginType, $pluginId);
 	}
 	
-	public function getAvailableLanguagesInPlugin($pluginType, $pluginId)
-	{
+	public function getAvailableLanguagesInPlugin($pluginType, $pluginId) {
 		return $this->_index->getAvailableLanguagesInPlugin($pluginType, $pluginId);
 	}
 	
-	public function getPackageUrl($pluginType, $pluginId, $package)
-	{
+	public function getPackageUrl($pluginType, $pluginId, $package) {
 		if (!isset($this->_pluginData[$pluginType][$pluginId][$package])) {
 			return array(
 				GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "[$pluginType] [$pluginId] [$package]: No url found"),
@@ -3217,8 +3177,7 @@ class RepositoryTestIndex
 		);
 	}
 	
-	public function getDescriptorUrl($pluginType, $pluginId)
-	{
+	public function getDescriptorUrl($pluginType, $pluginId) {
 		if (!isset($this->_pluginData[$pluginType][$pluginId]['descriptorUrl'])) {
 			return array(
 				GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "[$pluginType] [$pluginId]: Descriptor not found."),
@@ -3232,8 +3191,7 @@ class RepositoryTestIndex
 		);
 	}
 	
-	public function getPluginName($pluginType, $pluginId)
-	{
+	public function getPluginName($pluginType, $pluginId) {
 		if (!isset($this->_pluginData[$pluginType][$pluginId]['name'])) {
 			return array(
 				GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "[$pluginType] [$pluginId]: Name not found."),
@@ -3247,8 +3205,7 @@ class RepositoryTestIndex
 		);
 	}
 	
-	public function getPackageVersionAndBuild($pluginType, $pluginId, $packageName)
-	{
+	public function getPackageVersionAndBuild($pluginType, $pluginId, $packageName) {
 		return array(
 			null,
 			$pluginType,

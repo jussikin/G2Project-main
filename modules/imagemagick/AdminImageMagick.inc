@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/imagemagick/classes/ImageMagickToolkitHelpe
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20940 $
  */
-class AdminImageMagickController extends GalleryController
-{
+class AdminImageMagickController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -54,7 +52,7 @@ class AdminImageMagickController extends GalleryController
 				$slash = $platform->getDirectorySeparator();
 				$form['path'] = trim($form['path']);
 				if (!empty($form['path'])) {
-					if ($form['path']{strlen($form['path']) - 1} != $slash) {
+					if ($form['path'][strlen($form['path']) - 1] != $slash) {
 						$form['path'] .= $slash;
 					}
 				}
@@ -211,13 +209,11 @@ class AdminImageMagickController extends GalleryController
 /**
  * Settings for ImageMagick
  */
-class AdminImageMagickView extends GalleryView
-{
+class AdminImageMagickView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -251,7 +247,7 @@ class AdminImageMagickView extends GalleryView
 		$slash = $platform->getDirectorySeparator();
 		$form['path'] = trim($form['path']);
 		if (!empty($form['path'])) {
-			if ($form['path']{strlen($form['path']) - 1} != $slash) {
+			if ($form['path'][strlen($form['path']) - 1] != $slash) {
 				$form['path'] .= $slash;
 			}
 		}

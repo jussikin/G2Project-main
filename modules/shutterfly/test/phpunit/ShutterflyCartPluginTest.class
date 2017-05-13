@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ShutterflyCartPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ShutterflyCartPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -99,8 +96,7 @@ class ShutterflyCartPluginTest extends GalleryTestCase
 	}
 	}
 
-	public function testFulfillCart()
-	{
+	public function testFulfillCart() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$session =& $gallery->getSession();

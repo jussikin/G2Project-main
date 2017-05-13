@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlushDatabaseCacheTask.class')
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class FlushDatabaseCacheTaskTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class FlushDatabaseCacheTaskTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function testRunSuccess()
-	{
+	public function testRunSuccess() {
 		global $gallery;
 
 		$gallery->setConfig('data.gallery.cache', '/cache/');
@@ -76,8 +73,7 @@ class FlushDatabaseCacheTaskTest extends GalleryTestCase
 		), $mockPlatform->getCalls());
 	}
 
-	public function testRunFail()
-	{
+	public function testRunFail() {
 		global $gallery;
 
 		$gallery->setConfig('data.gallery.cache', '/cache/');
@@ -119,16 +115,13 @@ class FlushDatabaseCacheTaskTest extends GalleryTestCase
 	}
 }
 
-class FlushDatabaseCacheTaskTestPlatform
-{
-	public function FlushDatabaseCacheTaskTestPlatform($failedCalls)
-	{
+class FlushDatabaseCacheTaskTestPlatform {
+	public function FlushDatabaseCacheTaskTestPlatform($failedCalls) {
 		GalleryUtilities::putRequestVariable('calls', array());
 		$this->_failedCalls = $failedCalls;
 	}
 
-	public function _addCall($call)
-	{
+	public function _addCall($call) {
 		$calls = GalleryUtilities::getRequestVariables('calls');
 		$calls[] = $call;
 		GalleryUtilities::putRequestVariable('calls', $calls);
@@ -136,28 +129,23 @@ class FlushDatabaseCacheTaskTestPlatform
 		return !in_array($call, $this->_failedCalls);
 	}
 
-	public function getCalls()
-	{
+	public function getCalls() {
 		return GalleryUtilities::getRequestVariables('calls');
 	}
 
-	public function file_exists($dir)
-	{
+	public function file_exists($dir) {
 		return $this->_addCall("file_exists($dir)");
 	}
 
-	public function mkdir($dir)
-	{
+	public function mkdir($dir) {
 		return $this->_addCall("mkdir($dir)");
 	}
 
-	public function recursiveRmdir($dir)
-	{
+	public function recursiveRmdir($dir) {
 		return $this->_addCall("recursiveRmdir($dir)");
 	}
 
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return $path;
 	}
 }

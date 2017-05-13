@@ -24,13 +24,11 @@
  * @subpackage UserInterface
  * @version $Revision: 15513 $
  */
-class ItemRotateController extends GalleryController
-{
+class ItemRotateController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$itemId = GalleryUtilities::getRequestVariables('itemId');
@@ -160,13 +158,11 @@ class ItemRotateController extends GalleryController
 /**
  * This view will prompt for which items to rotate and which direction
  */
-class ItemRotateView extends GalleryView
-{
+class ItemRotateView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		/* itemId is the album that we want to rotate items in */
@@ -356,8 +352,7 @@ class ItemRotateView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

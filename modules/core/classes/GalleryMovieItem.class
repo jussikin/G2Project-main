@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlugin.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryModule extends GalleryPlugin
-{
+class GalleryModule extends GalleryPlugin {
 	/**
 	 * The module group (optional).
 	 * Used to better organize site admin pages; array('group' => string, 'groupLabel' => string)
@@ -88,8 +87,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return array major number, minor number
 	 */
-	public static function getApiVersion()
-	{
+	public static function getApiVersion() {
 		return array(
 			4,
 			0
@@ -111,8 +109,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function installOrUpgrade($bootstrap = false, $statusMonitor = null)
-	{
+	public function installOrUpgrade($bootstrap = false, $statusMonitor = null) {
 		global $gallery;
 		
 		if ($gallery->getDebug()) {
@@ -269,8 +266,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		global $gallery;
 		
 		/* Find and remove all module permissions */
@@ -307,8 +303,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _deleteModuleEntities()
-	{
+	public function _deleteModuleEntities() {
 		global $gallery;
 		$types = $this->getModuleEntityTypes();
 		if (empty($types)) {
@@ -347,8 +342,7 @@ class GalleryModule extends GalleryPlugin
 	/**
 	 * @see GalleryPlugin::deactivate
 	 */
-	public function deactivate($postDeactivationEvent = true)
-	{
+	public function deactivate($postDeactivationEvent = true) {
 		$ret = GalleryCoreApi::unregisterToolkitsByModuleId($this->getId());
 		if ($ret) {
 			return $ret;
@@ -377,8 +371,7 @@ class GalleryModule extends GalleryPlugin
 	 * Note: if you add something here, consider adding the same functionality
 	 * to installOrUpgrade (see the TODO there).
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -448,8 +441,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               boolean
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		return array(
 			null,
 			false
@@ -466,8 +458,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               boolean was module able to autoconfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		/* By default we don't need any configuration */
 		return array(
 			null,
@@ -484,8 +475,7 @@ class GalleryModule extends GalleryPlugin
 	 *               array( array('name' => name, 'view' => view,
 	 *                 [optional: 'group' => group, 'groupLabel' => localized label]), ...)
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array()
@@ -502,8 +492,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array( array('name' => name, 'view' => view), ...)
 	 */
-	public function getItemAdminViews($item)
-	{
+	public function getItemAdminViews($item) {
 		return array(
 			null,
 			array()
@@ -520,8 +509,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array( array('name' => name, 'view' => view), ...)
 	 */
-	public function getUserAdminViews($user)
-	{
+	public function getUserAdminViews($user) {
 		return array(
 			null,
 			array()
@@ -534,8 +522,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return array string view name
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return null;
 	}
 	
@@ -550,8 +537,7 @@ class GalleryModule extends GalleryPlugin
 	 *                                            'params' => array(key => value, key => value))
 	 *                     ...)
 	 */
-	public function getSystemLinks()
-	{
+	public function getSystemLinks() {
 		return array(
 			null,
 			array()
@@ -572,8 +558,7 @@ class GalleryModule extends GalleryPlugin
 	 *                                           'params' => array(key => value, key => value))
 	 *                                     ...))
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null) {
 		return array(
 			null,
 			array()
@@ -589,8 +574,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return array GalleryStatus a status code
 	 *               array (id => string HTML content, ..)
 	 */
-	public function getItemSummaries($items, $permissions, &$template)
-	{
+	public function getItemSummaries($items, $permissions, &$template) {
 		return array(
 			null,
 			array()
@@ -603,8 +587,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		return null;
 	}
 	
@@ -614,8 +597,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return array of factory impl ids
 	 */
-	public function getOnLoadHandlerIds()
-	{
+	public function getOnLoadHandlerIds() {
 		return array();
 	}
 	
@@ -625,8 +607,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return array of class names
 	 */
-	public function getModuleEntityTypes()
-	{
+	public function getModuleEntityTypes() {
 		return array();
 	}
 	
@@ -647,23 +628,20 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return array of short URL rules.
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		return array();
 	}
 	
 	/* Getters and setters below */
 	
-	public function setGroup($group, $groupLabel)
-	{
+	public function setGroup($group, $groupLabel) {
 		$this->_group = array(
 			'group' => $group,
 			'groupLabel' => $groupLabel
 		);
 	}
 	
-	public function getGroup()
-	{
+	public function getGroup() {
 		if (empty($this->_group)) {
 			$groupLabel = 'Other';
 			list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -683,41 +661,34 @@ class GalleryModule extends GalleryPlugin
 		);
 	}
 	
-	public function setTemplateVersion($version)
-	{
+	public function setTemplateVersion($version) {
 		$this->_templateVersion = $version;
 	}
 	
-	public function getTemplateVersion()
-	{
+	public function getTemplateVersion() {
 		return (int) $this->_templateVersion;
 	}
 	
-	public function getCallbacks()
-	{
+	public function getCallbacks() {
 		return $this->_callbacks;
 	}
 	
-	public function setCallbacks($callbacks)
-	{
+	public function setCallbacks($callbacks) {
 		$this->_callbacks = $callbacks;
 	}
 	
 	/**
 	 * @see GalleryPlugin::getPluginType
 	 */
-	public function getPluginType()
-	{
+	public function getPluginType() {
 		return 'module';
 	}
 	
-	public function setRequiredModuleApi($requirement)
-	{
+	public function setRequiredModuleApi($requirement) {
 		$this->_requiredModuleApi = $requirement;
 	}
 	
-	public function getRequiredModuleApi()
-	{
+	public function getRequiredModuleApi() {
 		return $this->_requiredModuleApi;
 	}
 	
@@ -731,8 +702,7 @@ class GalleryModule extends GalleryPlugin
 	 * @return translated string
 	 * @access protected
 	 */
-	public function _translate($params, $postSprintf = null)
-	{
+	public function _translate($params, $postSprintf = null) {
 		if (isset($postSprintf)) {
 			$string = sprintf($params['text'], $postSprintf);
 		} elseif (is_string($params)) {
@@ -759,8 +729,7 @@ class GalleryModule extends GalleryPlugin
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function _removeObsoleteThemeBlocks()
-	{
+	public function _removeObsoleteThemeBlocks() {
 		/* Get all available blocks, even from inactive modules; and used blocks. */
 		list($ret, $blocks) = GalleryCoreApi::loadAvailableBlocks(true);
 		if ($ret) {

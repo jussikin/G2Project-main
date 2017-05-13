@@ -32,15 +32,13 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryIndex.class'
  * @subpackage Controllers
  * @module RepositoryManagerController
  */
-class RepositoryManagerControllerAndView extends RepositoryControllerAndView
-{
+class RepositoryManagerControllerAndView extends RepositoryControllerAndView {
 	/**
 	 * Displays the contents of the repository.
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function browse()
-	{
+	public function browse() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -85,8 +83,7 @@ class RepositoryManagerControllerAndView extends RepositoryControllerAndView
 	 *
 	 * For now, versions are ignored - all versions of the plugin are removed.
 	 */
-	public function removePlugin()
-	{
+	public function removePlugin() {
 		global $gallery;
 		
 		list($pluginId, $pluginType) = GalleryUtilities::getRequestVariables('pluginId', 'pluginType');

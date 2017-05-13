@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryUserGroupHelper_simple
-{
+class GalleryUserGroupHelper_simple {
 	/**
 	 * @see GalleryCoreApi::isUserInSiteAdminGroup
 	 */
-	public static function isUserInSiteAdminGroup($userId = null)
-	{
+	public static function isUserInSiteAdminGroup($userId = null) {
 		global $gallery;
 		if (!isset($userId)) {
 			$userId = $gallery->getActiveUserId();
@@ -63,8 +61,7 @@ class GalleryUserGroupHelper_simple
 	/**
 	 * @see GalleryCoreApi::isUserInGroup
 	 */
-	public static function isUserInGroup($userId, $groupId)
-	{
+	public static function isUserInGroup($userId, $groupId) {
 		$userId = (int) $userId;
 		$groupId = (int) $groupId;
 		
@@ -105,8 +102,7 @@ class GalleryUserGroupHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchGroupsForUser
 	 */
-	public static function fetchGroupsForUser($userId, $count = null, $offset = null)
-	{
+	public static function fetchGroupsForUser($userId, $count = null, $offset = null) {
 		global $gallery;
 		
 		$cacheKey = "GalleryUserGroupHelper::fetchGroupsForUser($userId,$count,$offset)";

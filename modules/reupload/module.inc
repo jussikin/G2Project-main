@@ -25,15 +25,12 @@
  * @author Piotr P. Karwasz <piotr.karwasz@ens.fr>
  * @version $Revision: 18172 $
  */
-class ReuploadModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ReuploadModule extends GalleryModule {
+	public function __construct() {
 		$this->ReuploadModule();
 	}
 
-	public function ReuploadModule()
-	{
+	public function ReuploadModule() {
 		global $gallery;
 		$this->setId('reupload');
 		$this->setName($gallery->i18n('Reupload'));
@@ -49,12 +46,15 @@ class ReuploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemEditOption', 'ReuploadPhotoOption', 'ReuploadPhotoOption',
-		'modules/reupload/ReuploadPhotoOption.inc', 'reupload',
-		array('ItemEditRotateAndScalePhoto'));
+			'ItemEditOption',
+			'ReuploadPhotoOption',
+			'ReuploadPhotoOption',
+			'modules/reupload/ReuploadPhotoOption.inc',
+			'reupload',
+			array('ItemEditRotateAndScalePhoto')
+		);
 		if ($ret) {
 			return $ret;
 		}

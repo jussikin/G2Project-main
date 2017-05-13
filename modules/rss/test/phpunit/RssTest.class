@@ -28,17 +28,14 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  * @author Pierre-Luc Paour
  * @version $Revision: 17580 $
  */
-class RssTest extends GalleryTestCase
-{
+class RssTest extends GalleryTestCase {
 	public $_feedsToDelete;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -53,8 +50,7 @@ class RssTest extends GalleryTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		if (!empty($this->_feedsToDelete)) {
 			foreach ($this->_feedsToDelete as $name) {
 				$ret = RssMapHelper::deleteFeed($name);
@@ -70,8 +66,7 @@ class RssTest extends GalleryTestCase
 		}
 	}
 
-	public function testDeleteItem()
-	{
+	public function testDeleteItem() {
 		/* The event listener is deactivated during unit tests, register it */
 	GalleryCoreApi::registerEventListener('GalleryEntity::delete', new RssModule());
 

@@ -25,13 +25,11 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class WebDavMountView extends GalleryView
-{
+class WebDavMountView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return array($ret, null);
@@ -42,7 +40,7 @@ class WebDavMountView extends GalleryView
 		}
 		if (!$canView) {
 			/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
 		$template->setVariable('item', (array)$item);
@@ -54,8 +52,7 @@ class WebDavMountView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'webdav');
 		if ($ret) {
 			return array($ret, null);

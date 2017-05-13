@@ -26,8 +26,7 @@
  * @version $Revision: 17771 $
  * @static
  */
-class ArchiveUploadHelper
-{
+class ArchiveUploadHelper {
 	/**
 	 * Test if the given path has a working unzip binary.
 	 *
@@ -39,8 +38,7 @@ class ArchiveUploadHelper
 	 *               string error type or null
 	 *               string unzip output
 	 */
-	public static function testBinary($unzipPath)
-	{
+	public static function testBinary($unzipPath) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -97,8 +95,7 @@ class ArchiveUploadHelper
 	 * Try to find a valid unzip binary.
 	 * @return string valid path or null
 	 */
-	public static function findUnzipBinary()
-	{
+	public static function findUnzipBinary() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash	 = $platform->getDirectorySeparator();
@@ -115,7 +112,7 @@ class ArchiveUploadHelper
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path . 'unzip.exe';
@@ -128,7 +125,7 @@ class ArchiveUploadHelper
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path . 'unzip';

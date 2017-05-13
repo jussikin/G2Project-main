@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');
  * @author Jozsef R.Nagy <jozsef.rnagy@site.hu>
  * @version $Revision: 17580 $
  */
-class AdminExifController extends GalleryController
-{
+class AdminExifController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -393,13 +391,11 @@ class AdminExifController extends GalleryController
 /**
  * Settings for Exif
  */
-class AdminExifView extends GalleryView
-{
+class AdminExifView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

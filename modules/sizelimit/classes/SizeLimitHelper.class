@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @static
  */
-class SizeLimitHelper
-{
+class SizeLimitHelper {
 	/**
 	 * Reduce the item file size without preserving the original
 	 *
@@ -37,8 +36,7 @@ class SizeLimitHelper
 	 * @return array GalleryStatus a status code,
 	 *               array (errors), array (warnings)
 	 */
-	public static function applyLimits(&$item, $operation, $args)
-	{
+	public static function applyLimits(&$item, $operation, $args) {
 
 	/* Get the path of the source */
 	list($ret, $sourcePath) = $item->fetchPath();
@@ -120,8 +118,7 @@ class SizeLimitHelper
 	 * @return array GalleryStatus a status code,
 	 *               array (errors), array (warnings)
 	 */
-	public static function buildDerivativeWithLimits($item, $operation, $args)
-	{
+	public static function buildDerivativeWithLimits($item, $operation, $args) {
 		/* Check to see if we have a preferred source */
 	list($ret, $preferred) = GalleryCoreApi::fetchPreferredSource($item);
 		if ($ret) {
@@ -213,8 +210,7 @@ class SizeLimitHelper
 	 * @param int $imageHeight new fullsize height
 	 * @return GalleryStatus a status code
 	 */
-	public function _updateResizes($itemId, $imageWidth, $imageHeight)
-	{
+	public function _updateResizes($itemId, $imageWidth, $imageHeight) {
 		/* Remove larger or equal sized resizes if necessary */
 	list($ret, $resizes) = GalleryCoreApi::fetchResizesByItemIds(array($itemId));
 		if ($ret) {

@@ -38,11 +38,10 @@ $pow = pow(10, $precision);
 $poFiles = findPoFiles('../../..');
 list($reportData, $mostRecentPoDate, $totalTranslated) = parsePoFiles($poFiles);
 
- require dirname(__FILE__) . '/localization/main_' . $type . '.inc';
+	require dirname(__FILE__) . '/localization/main_' . $type . '.inc';
 exit;
 
-function findPoFiles($dir)
-{
+function findPoFiles($dir) {
 	$results = array();
 	if (!is_dir($dir)) {
 		return $results;
@@ -67,8 +66,7 @@ function findPoFiles($dir)
 	return $results;
 }
 
-function parsePoFiles($poFiles)
-{
+function parsePoFiles($poFiles) {
 	/*
 	 * Parse each .po file for relevant statistics and gather it together into a
 	 * single data structure.
@@ -321,8 +319,7 @@ function parsePoFiles($poFiles)
  * @param array $b second entry to sort
  * @return int   -1, 0, +1, depending on the comparision
  */
-function sortByPercentDone($a, $b)
-{
+function sortByPercentDone($a, $b) {
 	if (isset($a['missing']) && !isset($b['missing'])) {
 		return 1;
 	} elseif (isset($b['missing']) && !isset($a['missing'])) {
@@ -340,8 +337,7 @@ function sortByPercentDone($a, $b)
 	return ($a['exactPercentDone'] < $b['exactPercentDone']) ? 1 : -1;
 }
 
-function percentColor($percent)
-{
+function percentColor($percent) {
 	$border = 50;
 	if ($percent < $border) {
 		$color = dechex(255 - $percent * 2) . "0000";
@@ -355,14 +351,12 @@ function percentColor($percent)
 	return $color;
 }
 
-function newRow()
-{
+function newRow() {
 	$count =& getRowCount();
 	$count++;
 }
 
-function &getRowCount()
-{
+function &getRowCount() {
 	static $count;
 	if (!isset($count)) {
 		$count = 0;
@@ -371,8 +365,7 @@ function &getRowCount()
 	return $count;
 }
 
-function modifier($string)
-{
+function modifier($string) {
 	$count =& getRowCount();
 	
 	if ($count % 2) {

@@ -25,13 +25,11 @@
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 17580 $
  */
-class ShowTreeView extends GalleryView
-{
+class ShowTreeView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		/* Make sure we have permission */
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {

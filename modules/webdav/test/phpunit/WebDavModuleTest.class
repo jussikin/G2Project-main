@@ -25,15 +25,12 @@
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class WebDavModuleTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class WebDavModuleTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -133,8 +130,7 @@ class WebDavModuleTest extends GalleryTestCase
 		$this->_registerEventListener('Gallery::ActivatePlugin', $this->_module);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		GalleryDataCache::reset();
 		$ret = parent::tearDown();
 		if ($ret) {
@@ -142,8 +138,7 @@ class WebDavModuleTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetItemLinks()
-	{
+	public function testGetItemLinks() {
 		global $gallery;
 
 		$items = array($this->_item, $this->_subAlbum);
@@ -182,22 +177,19 @@ class WebDavModuleTest extends GalleryTestCase
 		$this->assertEquals(array(), $links, 'must be a request for detailed links');
 	}
 
-	public function testGetRewriteRules()
-	{
+	public function testGetRewriteRules() {
 		$rules = $this->_module->getRewriteRules();
 		$this->assertEquals(array('connect', 'davmount'), array_keys($rules));
 	}
 
-	public function testGetRewriteRulesOptionsRuleActive()
-	{
+	public function testGetRewriteRulesOptionsRuleActive() {
 		$this->_activeRules = array('options');
 
 		$rules = $this->_module->getRewriteRules();
 		$this->assertEquals(array('connect', 'davmount', 'options'), array_keys($rules));
 	}
 
-	public function testGetRewriteRulesMissingDavHeaders()
-	{
+	public function testGetRewriteRulesMissingDavHeaders() {
 		$this->_platform->_messages[$this->_optionsRequest] =
 		$this->_missingDavHeadersResponse;
 
@@ -205,8 +197,7 @@ class WebDavModuleTest extends GalleryTestCase
 		$this->assertEquals(array('connect', 'davmount', 'options'), array_keys($rules));
 	}
 
-	public function testHandleEventActivatePlugin()
-	{
+	public function testHandleEventActivatePlugin() {
 		$event = GalleryCoreApi::newEvent('Gallery::ActivatePlugin');
 		$event->setData(array('pluginType' => 'module',
 				  'pluginId' => 'rewrite'));
@@ -218,8 +209,7 @@ class WebDavModuleTest extends GalleryTestCase
 		$this->assertEquals(array(array('webdav')), $this->_activateCalls);
 	}
 
-	public function testHandleEventError()
-	{
+	public function testHandleEventError() {
 		GalleryUtilities::removeRequestVariable('controller');
 		GalleryUtilities::putRequestVariable('view', 'webdav.WebDav');
 		$this->_registerEventListener('Gallery::Error', $this->_module);
@@ -238,8 +228,7 @@ class WebDavModuleTest extends GalleryTestCase
 		'httpauth should only be called for ERROR_PERMISSION_DENIED');
 	}
 
-	public function testHandleEventErrorPermissionDenied()
-	{
+	public function testHandleEventErrorPermissionDenied() {
 		GalleryUtilities::removeRequestVariable('controller');
 		GalleryUtilities::putRequestVariable('view', 'webdav.WebDav');
 		$this->_registerEventListener('Gallery::Error', $this->_module);
@@ -259,58 +248,48 @@ class WebDavModuleTest extends GalleryTestCase
 	}
 }
 
-class WebDavModuleTestRewriteApi
-{
+class WebDavModuleTestRewriteApi {
 	public $foo;
 
-	public function &_fetchActiveRulesForModule($moduleId)
-	{
+	public function &_fetchActiveRulesForModule($moduleId) {
 		static $activeRules;
 
 		return $activeRules;
 	}
 
-	public function &_getActivateCalls()
-	{
+	public function &_getActivateCalls() {
 		static $activateCalls;
 
 		return $activateCalls;
 	}
 
-	public function isCompatibleWithApi($version)
-	{
+	public function isCompatibleWithApi($version) {
 		return array(null, true);
 	}
 
-	public function fetchActiveRulesForModule($moduleId)
-	{
+	public function fetchActiveRulesForModule($moduleId) {
 		return array(null, self::_fetchActiveRulesForModule($moduleId));
 	}
 
-	public function activateRewriteRulesForModule($moduleId)
-	{
+	public function activateRewriteRulesForModule($moduleId) {
 		$activateCalls =& self::_getActivateCalls();
 		$activateCalls[] = array($moduleId);
 	}
 }
 
-class WebDavModuleTestPlatform extends GalleryPlatform
-{
+class WebDavModuleTestPlatform extends GalleryPlatform {
 	public $_messages;
 	public $_buffer;
 
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		return 'test';
 	}
 
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		return empty($this->_buffer);
 	}
 
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if (empty($this->_buffer)) {
 			return null;
 		}
@@ -322,8 +301,7 @@ class WebDavModuleTestPlatform extends GalleryPlatform
 		return $this->fread($handle, $length);
 	}
 
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if (empty($this->_buffer)) {
 			return null;
 		}
@@ -334,8 +312,7 @@ class WebDavModuleTestPlatform extends GalleryPlatform
 		return $buffer;
 	}
 
-	public function fwrite($handle, $string, $length=0)
-	{
+	public function fwrite($handle, $string, $length=0) {
 		if (isset($this->_messages[$string])) {
 			$this->_buffer = $this->_messages[$string];
 
@@ -343,21 +320,18 @@ class WebDavModuleTestPlatform extends GalleryPlatform
 		}
 	}
 
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		return true;
 	}
 
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		return true;
 	}
 }
 
 class WebDavModuleTestHttpAuthInterface /* extends HttpAuthInterface_1_0 */
 {
-	public function _requestAuthenticationCalls($mode=false)
-	{
+	public function _requestAuthenticationCalls($mode=false) {
 		static $calls = 0;
 		if ($mode == 'reset') {
 			$calls = 0;
@@ -368,8 +342,7 @@ class WebDavModuleTestHttpAuthInterface /* extends HttpAuthInterface_1_0 */
 		}
 	}
 
-	public function requestAuthentication()
-	{
+	public function requestAuthentication() {
 		self::_requestAuthenticationCalls();
 
 		return null;

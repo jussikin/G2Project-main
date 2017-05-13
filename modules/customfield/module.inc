@@ -27,15 +27,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class CustomFieldModule extends GalleryModule
-{
-	public function __construct()
-	{
+class CustomFieldModule extends GalleryModule {
+	public function __construct() {
 		$this->CustomFieldModule();
 	}
 	
-	public function CustomFieldModule()
-	{
+	public function CustomFieldModule() {
 		global $gallery;
 		
 		$this->setId('customfield');
@@ -58,8 +55,7 @@ class CustomFieldModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		
 		if (!empty($currentVersion) && version_compare($currentVersion, '1.0.1', '<')) {
@@ -78,8 +74,7 @@ class CustomFieldModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -94,8 +89,7 @@ class CustomFieldModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemSummaries
 	 */
-	public function getItemSummaries($items, $permissions, &$template)
-	{
+	public function getItemSummaries($items, $permissions, &$template) {
 		GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class');
 		GalleryCoreApi::requireOnce('lib/smarty_plugins/modifier.markup.php');
 		$summaries = array();
@@ -127,8 +121,7 @@ class CustomFieldModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our item edit plugin */
 		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditPlugin', 'CustomFieldItemEdit', 'CustomFieldItemEdit', 'modules/customfield/CustomFieldItemEdit.inc', 'customfield', null);
 		if ($ret) {

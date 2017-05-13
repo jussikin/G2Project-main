@@ -25,21 +25,18 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RatingAlbumView extends GalleryView
-{
+class RatingAlbumView extends GalleryView {
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_SHOW_ITEM;
 	}
 
 	/**
 	 * @see GalleryView::loadThemeAndParameters
 	 */
-	public function loadThemeAndParameters()
-	{
+	public function loadThemeAndParameters() {
 		list($ret, $item) = GalleryCoreApi::newFactoryInstance('GalleryDynamicAlbum');
 		if ($ret) {
 			return array($ret, null, null, null);
@@ -53,10 +50,10 @@ class RatingAlbumView extends GalleryView
 		}
 		list($limit, $itemId) = GalleryUtilities::getRequestVariables('limit', 'itemId');
 		$item->create(
-		$module->translate(array('text' => 'Rating Album: %s', 'arg1' => $limit)),
-		array(array('Rating Album', 'rating album'),
-		  array($module->translate('Rating Album'), $module->translate('rating album')))
-	);
+			$module->translate(array('text' => 'Rating Album: %s', 'arg1' => $limit)),
+			array(array('Rating Album', 'rating album'),
+			array($module->translate('Rating Album'), $module->translate('rating album')))
+		);
 
 		list($ret, $moduleParams) = GalleryCoreApi::fetchAllPluginParameters('module', 'rating');
 		if ($ret) {
@@ -66,7 +63,7 @@ class RatingAlbumView extends GalleryView
 
 		if (!empty($itemId)) {
 			/* Viewing an item in this dynamic album */
-		list($ret, $viewItem) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
+			list($ret, $viewItem) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 			if ($ret) {
 				return array($ret, null, null, null);
 			}
@@ -76,11 +73,11 @@ class RatingAlbumView extends GalleryView
 			}
 			if (!$hasPermission) {
 				/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null, null, null);
+				return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null, null, null);
 			}
 
 		/* Provide parent, parent URL and get-children function to Theme API */
-		$item->urlParams = array('view' => 'rating.RatingAlbum', 'limit' => $limit,
+			$item->urlParams = array('view' => 'rating.RatingAlbum', 'limit' => $limit,
 					 'highlightId' => $itemId);
 			$item->getChildrenFunction = array('RatingAlbumView', 'getChildIds');
 			$viewItem->parent = $item;
@@ -91,13 +88,13 @@ class RatingAlbumView extends GalleryView
 			list($ret, $theme) = $this->loadThemeForItem();
 			if ($ret || !isset($theme)) {
 				/* Ignore errors here so fallback theme can be used */
-		return array(null, null, array(), $item);
+				return array(null, null, array(), $item);
 			}
 		} else {
 			list($ret, $theme) = GalleryView::_loadTheme($moduleParams['themeId']);
 			if ($ret || !isset($theme)) {
 				/* Ignore errors here so fallback theme can be used */
-		return array(null, null, array(), $item);
+				return array(null, null, array(), $item);
 			}
 		}
 
@@ -112,8 +109,7 @@ class RatingAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$theme =& $template->getVariableByReference('theme');
 
 		list($limit, $itemId) = GalleryUtilities::getRequestVariables('limit', 'itemId');
@@ -130,14 +126,14 @@ class RatingAlbumView extends GalleryView
 
 		if (empty($itemId)) {
 			/* Perform query for this dynamic album */
-		list($ret, $theme['allChildIds']) =
-		$this->getChildIds($theme['actingUserId'], $limit);
+			list($ret, $theme['allChildIds']) =
+			$this->getChildIds($theme['actingUserId'], $limit);
 			if ($ret) {
 				return array($ret, null);
 			}
 		} else {
 			/* Item in dynamic album; use core.ShowItem to check permission, increment view count */
-		list($ret, $showItem) = GalleryView::loadView('core.ShowItem');
+			list($ret, $showItem) = GalleryView::loadView('core.ShowItem');
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -161,8 +157,7 @@ class RatingAlbumView extends GalleryView
 	 *               array of item ids
 	 * @static
 	 */
-	public function getChildIds($userId, $limit=null)
-	{
+	public function getChildIds($userId, $limit = null) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -179,8 +174,16 @@ class RatingAlbumView extends GalleryView
 		}
 
 		list($ret, $query, $data) = GalleryCoreApi::buildItemQuery(
-		'RatingCacheMap', 'itemId', '[RatingCacheMap::averageRating] >= ?',
-		$params['orderBy'], $params['orderDirection'], null, 'core.view', false, $userId);
+			'RatingCacheMap',
+			'itemId',
+			'[RatingCacheMap::averageRating] >= ?',
+			$params['orderBy'],
+			$params['orderDirection'],
+			null,
+			'core.view',
+			false,
+			$userId
+		);
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -204,8 +207,7 @@ class RatingAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rating');
 		if ($ret) {
 			return array($ret, null);

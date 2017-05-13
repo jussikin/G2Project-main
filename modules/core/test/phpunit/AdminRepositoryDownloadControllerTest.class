@@ -27,17 +27,14 @@ GalleryCoreApi::requireOnce('modules/core/AdminRepositoryDownload.inc');
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17582 $
  */
-class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase
-{
+class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase {
 	public $_galleryTemplateAdapter;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminRepositoryDownload');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -88,8 +85,7 @@ class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase
 		$session->put('session.siteAdminActivityTimestamp', time());
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_templateAdapter =& $this->_galleryTemplateAdapter;
 
@@ -99,8 +95,7 @@ class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testDownloadCancel()
-	{
+	public function testDownloadCancel() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('form[pluginType]', 'module');
@@ -118,8 +113,7 @@ class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testInitiateDownload()
-	{
+	public function testInitiateDownload() {
 		global $gallery;
 
 		list($ret, $adminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
@@ -246,10 +240,8 @@ class AdminRepositoryDownloadControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class AdminRepositoryDownloadControllerTestUrlGenerator
-{
-	public function generateUrl($params = array(), $options = array())
-	{
+class AdminRepositoryDownloadControllerTestUrlGenerator {
+	public function generateUrl($params = array(), $options = array()) {
 		$buf = array();
 		foreach ($params as $key => $value) {
 			$buf[] = "$key=$value";
@@ -259,17 +251,14 @@ class AdminRepositoryDownloadControllerTestUrlGenerator
 	}
 }
 
-class AdminRepositoryDownloadControllerTestModule
-{
-	public function installOrUpgrade()
-	{
+class AdminRepositoryDownloadControllerTestModule {
+	public function installOrUpgrade() {
 		$_REQUEST['called']['installOrUpgrade'] = 1;
 
 		return null;
 	}
 
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		$_REQUEST['called']['autoConfigure'] = 1;
 
 		return array(
@@ -278,8 +267,7 @@ class AdminRepositoryDownloadControllerTestModule
 		);
 	}
 
-	public function activate()
-	{
+	public function activate() {
 		$_REQUEST['called']['activate'] = 1;
 
 		return array(
@@ -289,13 +277,11 @@ class AdminRepositoryDownloadControllerTestModule
 	}
 }
 
-class AdminRepositoryDownloadControllerTestWrapper extends AdminRepositoryDownloadController
-{
+class AdminRepositoryDownloadControllerTestWrapper extends AdminRepositoryDownloadController {
 	public $_version = null;
 	public $_active = null;
 
-	public function _fetchPluginStatus($pluginType, $ignoreCache)
-	{
+	public function _fetchPluginStatus($pluginType, $ignoreCache) {
 		list($ret, $pluginStatus) = parent::_fetchPluginStatus($pluginType, $ignoreCache);
 		if ($ret) {
 			return array(
@@ -315,20 +301,16 @@ class AdminRepositoryDownloadControllerTestWrapper extends AdminRepositoryDownlo
 	}
 }
 
-class AdminRepositoryDownloadControllerTestPhpVm
-{
-	public function AdminRepositoryDownloadControllerTestPhpVm()
-	{
+class AdminRepositoryDownloadControllerTestPhpVm {
+	public function AdminRepositoryDownloadControllerTestPhpVm() {
 		$this->_class_exists = false;
 	}
 
-	public function class_exists($class_name)
-	{
+	public function class_exists($class_name) {
 		return $this->_class_exists;
 	}
 
-	public function time()
-	{
+	public function time() {
 		return time();
 	}
 }

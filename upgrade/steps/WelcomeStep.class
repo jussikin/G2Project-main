@@ -24,15 +24,12 @@ require_once dirname(__FILE__) . '/../../modules/core/classes/GalleryCoreApi.cla
  * Welcome screen
  * @package Upgrade
  */
-class WelcomeStep extends UpgradeStep
-{
-	public function stepName()
-	{
+class WelcomeStep extends UpgradeStep {
+	public function stepName() {
 		return _('Welcome');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		if (isset($_POST['language'])) {
 			global $translator;
 			$translator->init($_POST['language'], true);
@@ -42,8 +39,7 @@ class WelcomeStep extends UpgradeStep
 		return true;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $gallery;
 		global $translator;
 		

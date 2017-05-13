@@ -28,15 +28,12 @@
  * @author Jerome Rannikko <jeromer@hotpop.com>
  * @version $Revision: 18172 $
  */
-class NokiaUploadModule extends GalleryModule
-{
-	public function __construct()
-	{
+class NokiaUploadModule extends GalleryModule {
+	public function __construct() {
 		$this->NokiaUploadModule();
 	}
 	
-	public function NokiaUploadModule()
-	{
+	public function NokiaUploadModule() {
 		global $gallery;
 		
 		$this->setId('nokiaupload');
@@ -59,8 +56,7 @@ class NokiaUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		list($ret, $needsConfiguration) = $this->needsConfiguration();
 		if ($ret) {
 			return array(
@@ -78,8 +74,7 @@ class NokiaUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'nokiaupload');
 		if ($ret) {
 			return array(
@@ -108,8 +103,7 @@ class NokiaUploadModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'nokiaupload.Configure';
 	}
 }

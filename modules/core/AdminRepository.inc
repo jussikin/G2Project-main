@@ -28,15 +28,13 @@ GalleryCoreApi::requireOnce('modules/core/classes/AdminRepositoryDownloadAndInst
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 17580 $
  */
-class AdminRepositoryController extends AdminRepositoryDownloadAndInstallController
-{
+class AdminRepositoryController extends AdminRepositoryDownloadAndInstallController {
 	/**
 	 * Get the repositories, but allow tests to inject their own version.
 	 * @see GalleryRepository::getRepositories
 	 * @access private
 	 */
-	public function _getRepositories()
-	{
+	public function _getRepositories() {
 		if (isset($this->_repositories)) {
 			return array(
 				null,
@@ -50,8 +48,7 @@ class AdminRepositoryController extends AdminRepositoryDownloadAndInstallControl
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -194,13 +191,11 @@ class AdminRepositoryController extends AdminRepositoryDownloadAndInstallControl
 /**
  * This view will show all repository-related features.
  */
-class AdminRepositoryView extends GalleryView
-{
+class AdminRepositoryView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$session =& $gallery->getSession();
@@ -381,8 +376,7 @@ class AdminRepositoryView extends GalleryView
 	/**
 	 * @todo: combine this with AdminPluginsView::pluginSort
 	 */
-	public function pluginSort($a, $b)
-	{
+	public function pluginSort($a, $b) {
 		if (($cmp = strcmp($a['groupLabel'], $b['groupLabel'])) == 0) {
 			$cmp = strcmp($a['name'], $b['name']);
 		}

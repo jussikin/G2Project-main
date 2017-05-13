@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryFileSystemEntityHelper_medium
-{
+class GalleryFileSystemEntityHelper_medium {
 	/**
 	 * @see GalleryCoreApi::checkPathCollision
 	 */
-	public static function checkPathCollision($pathComponent, $parentId, $selfId = null)
-	{
+	public static function checkPathCollision($pathComponent, $parentId, $selfId = null) {
 		global $gallery;
 		
 		$pathComponent = self::_truncatePathComponent($pathComponent);
@@ -81,8 +79,7 @@ class GalleryFileSystemEntityHelper_medium
 	/**
 	 * @see GalleryCoreApi::getLegalPathComponent
 	 */
-	public static function getLegalPathComponent($pathComponent, $parentId, $selfId = null, $forDirectory = false)
-	{
+	public static function getLegalPathComponent($pathComponent, $parentId, $selfId = null, $forDirectory = false) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -160,8 +157,7 @@ class GalleryFileSystemEntityHelper_medium
 	 * @return string truncated path component
 	 * @access private
 	 */
-	public static function _truncatePathComponent($baseName, $variablePart = '', $extension = '')
-	{
+	public static function _truncatePathComponent($baseName, $variablePart = '', $extension = '') {
 		$length = 128 - strlen($variablePart) - strlen($extension);
 		$baseName = GalleryCoreApi::utf8Substring($baseName, 0, $length);
 		

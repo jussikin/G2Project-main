@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminThemesControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminThemesControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminThemes');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -50,8 +47,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testSaveTheme()
-	{
+	public function testSaveTheme() {
 		GalleryUtilities::putRequestVariable('themeId', 'testThemeId2');
 		GalleryUtilities::putRequestVariable('form[key][rows]', '2');
 		GalleryUtilities::putRequestVariable('form[key][columns]', '4');
@@ -76,8 +72,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(4, (int) $map['columns']);
 	}
 
-	public function testUndoTheme()
-	{
+	public function testUndoTheme() {
 		GalleryUtilities::putRequestVariable('themeId', 'testThemeId2');
 		GalleryUtilities::putRequestVariable('form[key][rows]', '2');
 		GalleryUtilities::putRequestVariable('form[key][columns]', '4');
@@ -98,8 +93,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testSaveThemeWithValidationErrors()
-	{
+	public function testSaveThemeWithValidationErrors() {
 		GalleryUtilities::putRequestVariable('themeId', 'testThemeId1');
 		GalleryUtilities::putRequestVariable('form[key][rows]', '2');
 		GalleryUtilities::putRequestVariable('form[key][columns]', '4');
@@ -120,8 +114,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testSaveDefaults()
-	{
+	public function testSaveDefaults() {
 		GalleryUtilities::putRequestVariable('form[default][orderBy]', 'viewCount');
 		GalleryUtilities::putRequestVariable('form[default][orderDirection]', 'desc');
 		GalleryUtilities::putRequestVariable('form[default][presort]', 'albumsFirst');
@@ -157,8 +150,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		$this->assert(!isset($params['default.doesNotExist']), 'parameter not whitelisted');
 	}
 
-	public function testSaveDefaultsValidatesDefaultTheme()
-	{
+	public function testSaveDefaultsValidatesDefaultTheme() {
 		GalleryUtilities::putRequestVariable('form[default][orderBy]', 'viewCount');
 		GalleryUtilities::putRequestVariable('form[default][orderDirection]', 'desc');
 		GalleryUtilities::putRequestVariable('form[default][presort]', 'albumsFirst');
@@ -185,8 +177,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('matrix', $themeId);
 	}
 
-	public function testSaveDefaultsValidatesOrderBy()
-	{
+	public function testSaveDefaultsValidatesOrderBy() {
 		GalleryUtilities::putRequestVariable('form[default][orderBy]', 'doesNotExist');
 		GalleryUtilities::putRequestVariable('form[default][orderDirection]', 'desc');
 		GalleryUtilities::putRequestVariable('form[default][presort]', 'viewedFirst');
@@ -215,8 +206,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($originalOrderBy, $orderBy);
 	}
 
-	public function testSaveDefaultsValidatesPreSort()
-	{
+	public function testSaveDefaultsValidatesPreSort() {
 		GalleryUtilities::putRequestVariable('form[default][orderBy]', 'title');
 		GalleryUtilities::putRequestVariable('form[default][orderDirection]', 'desc');
 		GalleryUtilities::putRequestVariable('form[default][presort]', 'doesNotExist');
@@ -245,8 +235,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($originalOrderBy, $orderBy);
 	}
 
-	public function testSaveDefaultsValidatesOrderDirection()
-	{
+	public function testSaveDefaultsValidatesOrderDirection() {
 		GalleryUtilities::putRequestVariable('form[default][orderBy]', 'viewCount');
 		GalleryUtilities::putRequestVariable('form[default][orderDirection]', 'doesNotExist');
 		GalleryUtilities::putRequestVariable('form[default][presort]', 'albumsFirst');
@@ -275,8 +264,7 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($originalOrderDirection, $orderBy);
 	}
 
-	public function testSaveDefaultsValidatesNewAlbumsUseDefaults()
-	{
+	public function testSaveDefaultsValidatesNewAlbumsUseDefaults() {
 		GalleryUtilities::putRequestVariable('form[default][orderBy]', 'viewCount');
 		GalleryUtilities::putRequestVariable('form[default][orderDirection]', 'desc');
 		GalleryUtilities::putRequestVariable('form[default][presort]', 'albumsFirst');
@@ -309,13 +297,11 @@ class AdminThemesControllerTest extends GalleryControllerTestCase
 /**
  * Test Theme that fails to validate settings
  */
-class TestThemeId1Theme extends GalleryTheme
-{
+class TestThemeId1Theme extends GalleryTheme {
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = 0)
-	{
+	public function getSettings($itemId = 0) {
 		$settings = array();
 		$settings[] = array(
 			'key' => 'rows',
@@ -345,8 +331,7 @@ class TestThemeId1Theme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::validateSettings
 	 */
-	public function validateSettings($settings)
-	{
+	public function validateSettings($settings) {
 		$error = array();
 		$error['rows'] = 'rows error';
 		$error['columns'] = 'columns error';
@@ -354,14 +339,12 @@ class TestThemeId1Theme extends GalleryTheme
 		return $error;
 	}
 
-	public function TestThemeId1Theme()
-	{
+	public function TestThemeId1Theme() {
 		$this->setId('testThemeId1');
 		$this->setName('Test Theme 1');
 	}
 
-	public function isActive()
-	{
+	public function isActive() {
 		return array(
 			null,
 			true
@@ -372,10 +355,8 @@ class TestThemeId1Theme extends GalleryTheme
 /**
  * Test Theme that successfully validates settings
  */
-class TestThemeId2Theme extends GalleryTheme
-{
-	public function &getMap()
-	{
+class TestThemeId2Theme extends GalleryTheme {
+	public function &getMap() {
 		static $map;
 		if (!isset($map)) {
 			$map = array();
@@ -384,16 +365,14 @@ class TestThemeId2Theme extends GalleryTheme
 		return $map;
 	}
 
-	public function setParameter($key, $value)
-	{
+	public function setParameter($key, $value) {
 		$map =& $this->getMap();
 		$map[$key] = $value;
 
 		return null;
 	}
 
-	public function TestThemeId2Theme()
-	{
+	public function TestThemeId2Theme() {
 		$this->setId('testThemeId2');
 		$this->setName('Test Theme 2');
 	}
@@ -401,8 +380,7 @@ class TestThemeId2Theme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = 0)
-	{
+	public function getSettings($itemId = 0) {
 		$settings = array();
 		$settings[] = array(
 			'key' => 'rows',
@@ -432,13 +410,11 @@ class TestThemeId2Theme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::validateSettings
 	 */
-	public function validateSettings($settings)
-	{
+	public function validateSettings($settings) {
 		return array();
 	}
 
-	public function isActive()
-	{
+	public function isActive() {
 		return array(
 			null,
 			true
@@ -449,10 +425,8 @@ class TestThemeId2Theme extends GalleryTheme
 /**
  * Test theme
  */
-class AdminThemesControllerTestTheme
-{
-	public function &getSingleton()
-	{
+class AdminThemesControllerTestTheme {
+	public function &getSingleton() {
 		static $singleton;
 		if (!isset($singleton)) {
 			$singleton = new self();
@@ -461,32 +435,27 @@ class AdminThemesControllerTestTheme
 		return $singleton;
 	}
 
-	public function getId()
-	{
+	public function getId() {
 		return 'AdminThemesControllerTest';
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return 'AdminThemes Controller Test';
 	}
 
-	public function init()
-	{
+	public function init() {
 		$this->_setCalled('init');
 
 		return null;
 	}
 
-	public function installOrUpgrade()
-	{
+	public function installOrUpgrade() {
 		$this->_setCalled('installOrUpgrade');
 
 		return null;
 	}
 
-	public function activate()
-	{
+	public function activate() {
 		$this->_setCalled('activate');
 
 		return array(
@@ -495,47 +464,40 @@ class AdminThemesControllerTestTheme
 		);
 	}
 
-	public function uninstall()
-	{
+	public function uninstall() {
 		$this->_setCalled('uninstall');
 
 		return null;
 	}
 
-	public function deactivate()
-	{
+	public function deactivate() {
 		$this->_setCalled('deactivate');
 
 		return null;
 	}
 
-	public function _setCalled($function)
-	{
+	public function _setCalled($function) {
 		$singleton =& $this->getSingleton();
 		$singleton->_callMap[$function] = 1;
 	}
 
-	public function wasCalled($function)
-	{
+	public function wasCalled($function) {
 		$singleton =& $this->getSingleton();
 
 		return isset($singleton->_callMap[$function]);
 	}
 
-	public function resetCalls()
-	{
+	public function resetCalls() {
 		$singleton =& $this->getSingleton();
 		$singleton->_callMap = array();
 	}
 
-	public function _set($key, $val)
-	{
+	public function _set($key, $val) {
 		$singleton =& $this->getSingleton();
 		$singleton->$key = $val;
 	}
 
-	public function isActive()
-	{
+	public function isActive() {
 		$singleton =& $this->getSingleton();
 
 		return array(
@@ -544,15 +506,13 @@ class AdminThemesControllerTestTheme
 		);
 	}
 
-	public function isAdvancedSettings()
-	{
+	public function isAdvancedSettings() {
 		$singleton =& $this->getSingleton();
 
 		return $singleton->_isAdvancedSettings;
 	}
 
-	public function translate($str)
-	{
+	public function translate($str) {
 		return $str;
 	}
 }

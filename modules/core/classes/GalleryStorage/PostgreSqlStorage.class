@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PostgreSqlStorage extends GalleryStorage
-{
-	public function __construct($config)
-	{
+class PostgreSqlStorage extends GalleryStorage {
+	public function __construct($config) {
 		$this->PostgreSqlStorage($config);
 	}
 	
-	public function PostgreSqlStorage($config)
-	{
+	public function PostgreSqlStorage($config) {
 		$this->GalleryStorage($config);
 		$this->_isTransactional = true;
 	}
@@ -46,16 +43,14 @@ class PostgreSqlStorage extends GalleryStorage
 	 * Return the type of this database
 	 * @return string
 	 */
-	public function getType()
-	{
+	public function getType() {
 		return 'postgres';
 	}
 	
 	/**
 	 * @see GalleryStorage::cleanStore
 	 */
-	public function cleanStore()
-	{
+	public function cleanStore() {
 		$ret = parent::cleanStore();
 		if ($ret) {
 			return $ret;
@@ -82,8 +77,7 @@ class PostgreSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::configureStore
 	 */
-	public function configureStore($moduleId, $upgradeInfo = array())
-	{
+	public function configureStore($moduleId, $upgradeInfo = array()) {
 		if ($moduleId == 'core' && empty($upgradeInfo)) {
 			$query = '
 	    CREATE AGGREGATE BIT_OR
@@ -125,8 +119,7 @@ class PostgreSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::_setConnectionSettings
 	 */
-	public function _setConnectionSettings(&$db)
-	{
+	public function _setConnectionSettings(&$db) {
 		if (!empty($this->_schema)) {
 			$this->_traceStart();
 			$db->Execute('set search_path to ' . $this->_schema);
@@ -137,24 +130,21 @@ class PostgreSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::convertIntToBits
 	 */
-	public function convertIntToBits($intVal)
-	{
+	public function convertIntToBits($intVal) {
 		return sprintf("%032b", $intVal);
 	}
 	
 	/**
 	 * @see GalleryStorage::convertBitsToInt
 	 */
-	public function convertBitsToInt($bitsVal)
-	{
+	public function convertBitsToInt($bitsVal) {
 		return bindec($bitsVal);
 	}
 	
 	/**
 	 * @see GalleryStorage::getFunctionsSql
 	 */
-	public function getFunctionSql($functionName, $args)
-	{
+	public function getFunctionSql($functionName, $args) {
 		switch ($functionName) {
 			case 'CONCAT':
 				$sql = implode(' || ', $args);
@@ -240,8 +230,7 @@ class PostgreSqlStorage extends GalleryStorage
 	 * Get database version.
 	 * @return string version
 	 */
-	public function getVersion()
-	{
+	public function getVersion() {
 		if (function_exists('pg_version')) {
 			return implode(' ', pg_version());
 		}
@@ -252,8 +241,7 @@ class PostgreSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::_getOptimizeStatements
 	 */
-	public function _getOptimizeStatements()
-	{
+	public function _getOptimizeStatements() {
 		return array(
 			'VACUUM ANALYZE VERBOSE %s'
 		);
@@ -265,8 +253,7 @@ class PostgreSqlStorage extends GalleryStorage
 	 * Note: pg_escape_bytea is only available in PHP 4.2.0+ and is even a little
 	 * slower than addcslashes.
 	 */
-	public function encodeBlob($blob)
-	{
+	public function encodeBlob($blob) {
 		/* See: http://www.postgresql.org/docs/8.1/interactive/datatype-binary.html */
 		return addcslashes($blob, "\000..\037\047\134\177..\377");
 	}
@@ -274,8 +261,7 @@ class PostgreSqlStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::decodeBlob
 	 */
-	public function decodeBlob($blob)
-	{
+	public function decodeBlob($blob) {
 		return stripcslashes($blob);
 	}
 }

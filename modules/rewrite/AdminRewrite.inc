@@ -25,13 +25,11 @@
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class AdminRewriteController extends GalleryController
-{
+class AdminRewriteController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		$error = $status = $seenPatterns = $seenConditions = array();
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -50,81 +48,81 @@ class AdminRewriteController extends GalleryController
 			$mode = 'rules';
 
 		/* Build the activeRules array and check for emtpy / dupe patterns */
-		if (isset($form['rules'])) {
-			foreach (array_keys($form['rules']) as $moduleId) {
-				list($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId);
+			if (isset($form['rules'])) {
+				foreach (array_keys($form['rules']) as $moduleId) {
+					list($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId);
+					if ($ret) {
+						return array($ret, null);
+					}
+
+					$rules = $module->getRewriteRules();
+					foreach ($form['rules'][$moduleId] as $ruleId => $rule) {
+						if (isset($rule['active'])) {
+							/* Activate the rule */
+							$activeRules[$moduleId][$ruleId] = array();
+
+							if (isset($rules[$ruleId]['conditions'])) {
+								$condition = serialize($rules[$ruleId]['conditions']);
+
+					/* Dupe? */
+								if (isset($seenConditions[$condition])) {
+									$error[] = 'form[error][conditions][dupe]['
+									. $seenConditions[$condition];
+									$error[] = 'form[error][conditions][dupe]['
+									. $moduleId . '][' . $ruleId . ']';
+									break 2;
+								}
+								$seenConditions[$condition] = $moduleId . '][' . $ruleId . ']';
+							}
+
+							if (isset($rule['pattern'])) {
+								$pattern = ltrim($rule['pattern'], '/');
+
+					/* Empty? */
+								if (empty($pattern)) {
+									$error[] = 'form[error][pattern][empty]['
+									. $moduleId . '][' . $ruleId . ']';
+									break 2;
+								}
+
+					/* Dupe? */
+								if (isset($seenPatterns[$pattern])) {
+									$error[] = 'form[error][pattern][dupe]['
+										. $seenPatterns[$pattern];
+									$error[] = 'form[error][pattern][dupe]['
+									. $moduleId . '][' . $ruleId . ']';
+									break 2;
+								}
+								$seenPatterns[$pattern] = $moduleId . '][' . $ruleId . ']';
+
+					/* Save the pattern */
+								$activeRules[$moduleId][$ruleId]['pattern'] = $pattern;
+							}
+						}
+					}
+				}
+			}
+
+		/* Save the active rules */
+			if (empty($error)) {
+				list($ret, $code, $errorId) = $rewriteParser->saveActiveRules($activeRules);
 				if ($ret) {
 					return array($ret, null);
 				}
 
-				$rules = $module->getRewriteRules();
-				foreach ($form['rules'][$moduleId] as $ruleId => $rule) {
-					if (isset($rule['active'])) {
-						/* Activate the rule */
-				$activeRules[$moduleId][$ruleId] = array();
-
-						if (isset($rules[$ruleId]['conditions'])) {
-							$condition = serialize($rules[$ruleId]['conditions']);
-
-				/* Dupe? */
-				if (isset($seenConditions[$condition])) {
-					$error[] = 'form[error][conditions][dupe]['
-					. $seenConditions[$condition];
-					$error[] = 'form[error][conditions][dupe]['
-					. $moduleId . '][' . $ruleId . ']';
-					break 2;
-				}
-							$seenConditions[$condition] = $moduleId . '][' . $ruleId . ']';
-						}
-
-						if (isset($rule['pattern'])) {
-							$pattern = ltrim($rule['pattern'], '/');
-
-				/* Empty? */
-				if (empty($pattern)) {
-					$error[] = 'form[error][pattern][empty]['
-					. $moduleId . '][' . $ruleId . ']';
-					break 2;
-				}
-
-				/* Dupe? */
-				if (isset($seenPatterns[$pattern])) {
-					$error[] = 'form[error][pattern][dupe]['
-						. $seenPatterns[$pattern];
-					$error[] = 'form[error][pattern][dupe]['
-					. $moduleId . '][' . $ruleId . ']';
-					break 2;
-				}
-							$seenPatterns[$pattern] = $moduleId . '][' . $ruleId . ']';
-
-				/* Save the pattern */
-				$activeRules[$moduleId][$ruleId]['pattern'] = $pattern;
+				if ($code == REWRITE_STATUS_OK) {
+					$status['saved'] = 1;
+				} else {
+					$errorString = 'form[error][' . $code . ']';
+					if (isset($errorId)) {
+						foreach ($errorId as $errno) {
+							$errorString .= '[' . $errno . ']';
 						}
 					}
+
+					$error[] = $errorString;
 				}
 			}
-		}
-
-		/* Save the active rules */
-		if (empty($error)) {
-			list($ret, $code, $errorId) = $rewriteParser->saveActiveRules($activeRules);
-			if ($ret) {
-				return array($ret, null);
-			}
-
-			if ($code == REWRITE_STATUS_OK) {
-				$status['saved'] = 1;
-			} else {
-				$errorString = 'form[error][' . $code . ']';
-				if (isset($errorId)) {
-					foreach ($errorId as $errno) {
-						$errorString .= '[' . $errno . ']';
-					}
-				}
-
-				$error[] = $errorString;
-			}
-		}
 		} elseif (isset($form['action']['accessList'])) {
 			$mode = 'setup';
 
@@ -140,8 +138,10 @@ class AdminRewriteController extends GalleryController
 				$allowEmptyReferer = true;
 			}
 
-			list($ret, $code) = $rewriteParser->saveAccessList($accessList,
-		$allowEmptyReferer);
+			list($ret, $code) = $rewriteParser->saveAccessList(
+				$accessList,
+				$allowEmptyReferer
+			);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -188,13 +188,11 @@ class AdminRewriteController extends GalleryController
 /**
  * Settings for URL Rewrite
  */
-class AdminRewriteView extends GalleryView
-{
+class AdminRewriteView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$AdminRewrite = array();
@@ -218,7 +216,7 @@ class AdminRewriteView extends GalleryView
 		}
 
 	/* Error handling for defined (numeric) REWRITE_STATUS_* errors */
-	$errors = array();
+		$errors = array();
 		if (isset($form['error'])) {
 			foreach ($form['error'] as $errno => $tmp) {
 				if (is_numeric($errno)) {
@@ -234,130 +232,139 @@ class AdminRewriteView extends GalleryView
 		}
 
 		switch ($AdminRewrite['mode']) {
-	case 'rules':
-		list($ret, $activeRules) = GalleryCoreApi::getPluginParameter(
-		'module', 'rewrite', 'activeRules');
-		if ($ret) {
-			return array($ret, null);
-		}
-		$activeRules = unserialize($activeRules);
-
-		/* Get all modules to walk through and get any rules it provieds */
-		list($ret, $modules) = GalleryCoreAPi::fetchPluginStatus('module');
-		if ($ret) {
-			return array($ret, null);
-		}
-
-		foreach ($modules as $moduleId => $status) {
-			if (isset($status['active']) && $status['active']) {
-				list($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId);
+			case 'rules':
+				list($ret, $activeRules) = GalleryCoreApi::getPluginParameter(
+					'module',
+					'rewrite',
+					'activeRules'
+				);
 				if ($ret) {
-					if ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH) {
-						continue;
-					}
+					return array($ret, null);
+				}
+						$activeRules = unserialize($activeRules);
 
+						/* Get all modules to walk through and get any rules it provieds */
+						list($ret, $modules) = GalleryCoreAPi::fetchPluginStatus('module');
+				if ($ret) {
 					return array($ret, null);
 				}
 
-				$AdminRewrite['modules'][$moduleId] = $module->translate($module->getName());
+				foreach ($modules as $moduleId => $status) {
+					if (isset($status['active']) && $status['active']) {
+						list($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId);
+						if ($ret) {
+							if ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH) {
+								continue;
+							}
 
-			/* Walk through the rules this module provieds */
-			$rules = $module->getRewriteRules();
-				foreach ($rules as $ruleId => $rule) {
-					/* Make sure this parser supports this kind of rule */
-			if (!$rewriteParser->isValidRule($rule)) {
-				continue;
-			}
+							return array($ret, null);
+						}
 
-			/* If we dont have old form data, populate the array with db info */
-			if ($form['formName'] != 'AdminRewrite') {
-				$form['rules'][$moduleId][$ruleId] = array();
-				if (isset($activeRules[$moduleId][$ruleId])) {
-					$form['rules'][$moduleId][$ruleId]['active'] = 1;
-				}
-				if (isset($rule['pattern'])) {
-					$form['rules'][$moduleId][$ruleId]['pattern'] =
-					$rule['pattern'];
-					if (isset($activeRules[$moduleId][$ruleId]['pattern'])) {
-						$form['rules'][$moduleId][$ruleId]['pattern'] =
-					$activeRules[$moduleId][$ruleId]['pattern'];
+						$AdminRewrite['modules'][$moduleId] = $module->translate($module->getName());
+
+					/* Walk through the rules this module provieds */
+						$rules = $module->getRewriteRules();
+						foreach ($rules as $ruleId => $rule) {
+							/* Make sure this parser supports this kind of rule */
+							if (!$rewriteParser->isValidRule($rule)) {
+								continue;
+							}
+
+							/* If we dont have old form data, populate the array with db info */
+							if ($form['formName'] != 'AdminRewrite') {
+								$form['rules'][$moduleId][$ruleId] = array();
+								if (isset($activeRules[$moduleId][$ruleId])) {
+									$form['rules'][$moduleId][$ruleId]['active'] = 1;
+								}
+								if (isset($rule['pattern'])) {
+									$form['rules'][$moduleId][$ruleId]['pattern'] =
+									$rule['pattern'];
+									if (isset($activeRules[$moduleId][$ruleId]['pattern'])) {
+										$form['rules'][$moduleId][$ruleId]['pattern'] =
+										$activeRules[$moduleId][$ruleId]['pattern'];
+									}
+								}
+							}
+
+							/* If a dupe rule is detected we need to know it's 'match' */
+							$AdminRewrite['info'][$moduleId][$ruleId]['match'] = '';
+							if (isset($rule['match'])) {
+								$AdminRewrite['info'][$moduleId][$ruleId]['match'] =
+								join('|', $rule['match']);
+							}
+
+							/* Should we display an input box for users to edit this pattern? */
+							if (isset($rule['locked'])) {
+								$AdminRewrite['info'][$moduleId][$ruleId]['locked'] = 1;
+							}
+
+							/* Get the comment, or the technical view name if there's no comment */
+							if (isset($rule['comment'])) {
+								$AdminRewrite['info'][$moduleId][$ruleId]['comment'] = $rule['comment'];
+							} elseif (isset($rule['match'])) {
+								$AdminRewrite['info'][$moduleId][$ruleId]['comment'] =
+								join('|', $rule['match']);
+							} else {
+								$AdminRewrite['info'][$moduleId][$ruleId]['comment'] =
+								$moduleId . '.' . $ruleId;
+							}
+
+							/* This module may provide extra keywords */
+							$AdminRewrite['info'][$moduleId][$ruleId]['keywords'] =
+							isset($rule['keywords']) ? $rule['keywords'] : array();
+
+							/* Get rule information */
+							if (isset($rule['help'])) {
+								$AdminRewrite['info'][$moduleId][$ruleId]['help'] = $rule['help'];
+							}
+						}
 					}
 				}
-			}
 
-			/* If a dupe rule is detected we need to know it's 'match' */
-			$AdminRewrite['info'][$moduleId][$ruleId]['match'] = '';
-					if (isset($rule['match'])) {
-						$AdminRewrite['info'][$moduleId][$ruleId]['match'] =
-				join('|', $rule['match']);
+						$template->javascript('lib/javascript/BlockToggle.js');
+		        break;
+
+			case 'setup':
+				$AdminRewrite['serverName'] = $urlGenerator->getHostName();
+
+				if ($form['formName'] != 'AdminRewrite' &&
+					$AdminRewrite['parserType'] == 'preGallery') {
+							list($ret, $form['accessList']) = GalleryCoreApi::getPluginParameter(
+								'module',
+								'rewrite',
+								'accessList'
+							);
+					if ($ret) {
+								return array($ret, null);
 					}
+							$form['accessList'] = unserialize($form['accessList']);
 
-			/* Should we display an input box for users to edit this pattern? */
-			if (isset($rule['locked'])) {
-				$AdminRewrite['info'][$moduleId][$ruleId]['locked'] = 1;
-			}
-
-			/* Get the comment, or the technical view name if there's no comment */
-			if (isset($rule['comment'])) {
-				$AdminRewrite['info'][$moduleId][$ruleId]['comment'] = $rule['comment'];
-			} elseif (isset($rule['match'])) {
-				$AdminRewrite['info'][$moduleId][$ruleId]['comment'] =
-				join('|', $rule['match']);
-			} else {
-				$AdminRewrite['info'][$moduleId][$ruleId]['comment'] =
-				$moduleId . '.' . $ruleId;
-			}
-
-			/* This module may provide extra keywords */
-			$AdminRewrite['info'][$moduleId][$ruleId]['keywords'] =
-				isset($rule['keywords']) ? $rule['keywords'] : array();
-
-			/* Get rule information */
-			if (isset($rule['help'])) {
-				$AdminRewrite['info'][$moduleId][$ruleId]['help'] = $rule['help'];
-			}
+							list($ret, $allowEmptyReferer) = GalleryCoreApi::getPluginParameter(
+								'module',
+								'rewrite',
+								'allowEmptyReferer'
+							);
+					if ($ret) {
+								return array($ret, null);
+					}
+					if ($allowEmptyReferer) {
+								$form['allowEmptyReferer'] = 1;
+					}
 				}
-			}
+
+				$ret = $rewriteParser->loadAdminParserTemplate($template, $form);
+				if ($ret) {
+					return array($ret, null);
+				}
+		        break;
+
+			case 'test':
+				$ret = $rewriteParser->loadTestResultsTemplate($template, $form);
+				if ($ret) {
+					return array($ret, null);
+				}
+		        break;
 		}
-
-		$template->javascript('lib/javascript/BlockToggle.js');
-		break;
-
-	case 'setup':
-		$AdminRewrite['serverName'] = $urlGenerator->getHostName();
-
-		if ($form['formName'] != 'AdminRewrite' &&
-			$AdminRewrite['parserType'] == 'preGallery') {
-			list($ret, $form['accessList']) = GalleryCoreApi::getPluginParameter(
-			'module', 'rewrite', 'accessList');
-			if ($ret) {
-				return array($ret, null);
-			}
-			$form['accessList'] = unserialize($form['accessList']);
-
-			list($ret, $allowEmptyReferer) = GalleryCoreApi::getPluginParameter(
-			'module', 'rewrite', 'allowEmptyReferer');
-			if ($ret) {
-				return array($ret, null);
-			}
-			if ($allowEmptyReferer) {
-				$form['allowEmptyReferer'] = 1;
-			}
-		}
-
-		$ret = $rewriteParser->loadAdminParserTemplate($template, $form);
-		if ($ret) {
-			return array($ret, null);
-		}
-		break;
-
-	case 'test':
-		$ret = $rewriteParser->loadTestResultsTemplate($template, $form);
-		if ($ret) {
-			return array($ret, null);
-		}
-		break;
-	}
 
 		if ($form['formName'] != 'AdminRewrite') {
 			$form['formName'] = 'AdminRewrite';

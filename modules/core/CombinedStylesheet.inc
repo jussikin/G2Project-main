@@ -26,21 +26,18 @@
  * @author Dayo Akanji <http://dakanji.com>
  * @version $Revision: 0 $
  */
-class CombinedStylesheetView extends GalleryView
-{
+class CombinedStylesheetView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate()
-	{
+	public function renderImmediate() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
@@ -110,16 +107,14 @@ class CombinedStylesheetView extends GalleryView
 	/**
 	 * @see GalleryView::autoCacheControl
 	 */
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return false;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 }

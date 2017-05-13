@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20951 $
  */
-class ItemAddModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ItemAddModule extends GalleryModule {
+	public function __construct() {
 		$this->ItemAddModule();
 	}
 	
-	public function ItemAddModule()
-	{
+	public function ItemAddModule() {
 		global $gallery;
 		$this->setId('itemadd');
 		$this->setName($gallery->i18n('Add Items'));
@@ -56,8 +53,7 @@ class ItemAddModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddFromWeb', 'ItemAddFromWeb', 'modules/itemadd/ItemAddFromWeb.inc', 'itemadd', null, 3);
 		if ($ret) {
 			return $ret;
@@ -74,8 +70,7 @@ class ItemAddModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -90,8 +85,7 @@ class ItemAddModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'itemadd');
 		if ($ret) {
 			return $ret;

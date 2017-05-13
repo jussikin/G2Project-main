@@ -27,10 +27,8 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20940 $
  */
-class CodeAuditTest extends CodeAuditTestCase
-{
-	public function __construct($methodName)
-	{
+class CodeAuditTest extends CodeAuditTestCase {
+	public function __construct($methodName) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -123,8 +121,7 @@ class CodeAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::shouldCheckFile
 	 */
-	public function shouldCheckFile($fileName)
-	{
+	public function shouldCheckFile($fileName) {
 		$base1 = basename($fileName);
 
 		if ($base1 == 'GNUmakefile.inc') {
@@ -171,8 +168,7 @@ class CodeAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::checkFile
 	 */
-	public function checkFile($fileName, $buffer)
-	{
+	public function checkFile($fileName, $buffer) {
 		$fileName = substr($fileName, strlen($this->_baseDir) + 1);
 		$lines = preg_split("/(\r\n|\n)/", $buffer);
 		$checkSuperglobals = !preg_match('{/test/phpunit|^install/|^upgrade/}', $fileName);
@@ -396,8 +392,7 @@ class CodeAuditTest extends CodeAuditTestCase
 		}
 	}
 
-	public function checkPreamble($fileName, $buffer, $lines)
-	{
+	public function checkPreamble($fileName, $buffer, $lines) {
 		if (preg_match($this->_exception['preamble'], $fileName)) {
 			return;
 		}
@@ -421,8 +416,7 @@ class CodeAuditTest extends CodeAuditTestCase
 		}
 	}
 
-	public function getPreamble($lines)
-	{
+	public function getPreamble($lines) {
 		$copy = array();
 		for ($i = 0; $i < count($lines); $i++) {
 			$copy[] = rtrim($lines[$i]);
@@ -438,8 +432,7 @@ class CodeAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::testCodeAudit
 	 */
-	public function testCodeAudit()
-	{
+	public function testCodeAudit() {
 		parent::testCodeAudit();
 
 		/* Check result of longLineCount */

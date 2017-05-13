@@ -25,13 +25,11 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminEditGroupQuotaController extends GalleryController
-{
+class AdminEditGroupQuotaController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -46,22 +44,21 @@ class AdminEditGroupQuotaController extends GalleryController
 		}
 
 		if (isset($form['action']['cancel'])) {
-
 		/* Redirect back to the AdminGroups view */
-		$redirect['view'] = 'core.SiteAdmin';
+			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'quotas.AdminQuotas';
 		} elseif (isset($form['action']['undo'])) {
-
 		/* Redirect back to the same view to reset the form */
-		$redirect['view'] = 'core.SiteAdmin';
+			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'quotas.AdminEditGroupQuota';
 			$redirect['groupId'] = $groupId;
 		} elseif (isset($form['action']['save'])) {
 			if (array_key_exists('quotaSize', $form) && array_key_exists('quotaUnit', $form)) {
 				if (!empty($form['quotaSize']) && is_numeric($form['quotaSize']) &&
-			$form['quotaSize'] >= 0 && !empty($form['quotaSize'])) {
+				$form['quotaSize'] >= 0 && !empty($form['quotaSize'])) {
 					GalleryCoreApi::requireOnce(
-			'modules/quotas/classes/GalleryQuotasHelper.class');
+						'modules/quotas/classes/GalleryQuotasHelper.class'
+					);
 					$form['quotaSize'] = round((float)$form['quotaSize'], 2);
 					if ($form['quotaUnit'] == 'KB') {
 						$quotaSize = round($form['quotaSize']);
@@ -78,24 +75,25 @@ class AdminEditGroupQuotaController extends GalleryController
 						}
 
 						list($ret, $quotaExists, $groupQuota) =
-				GalleryQuotasHelper::fetchGroupQuota($group->getId());
+						GalleryQuotasHelper::fetchGroupQuota($group->getId());
 						if ($ret) {
 							return array($ret, null);
 						}
 						if ($quotaExists) {
 							$match = array('userOrGroupId' => $groupQuota['id'],
-					   'quotaSize' => $groupQuota['quota']);
+							'quotaSize' => $groupQuota['quota']);
 							$ret = GalleryCoreApi::updateMapEntry(
-				'QuotasMap',
-				$match,
-				array('userOrGroupId' => $group->getId(),
-					  'quotaSize' => $quotaSize));
+								'QuotasMap',
+								$match,
+								array('userOrGroupId' => $group->getId(),
+								'quotaSize' => $quotaSize)
+							);
 							if ($ret) {
 								return array($ret, null);
 							}
 
 				/* Request a redirect to the confirmation screen */
-				$redirect['view'] = 'core.SiteAdmin';
+							$redirect['view'] = 'core.SiteAdmin';
 							$redirect['subView'] = 'quotas.AdminQuotas';
 							$status['modifiedGroup'] = $group->getGroupName();
 						}
@@ -108,9 +106,9 @@ class AdminEditGroupQuotaController extends GalleryController
 				}
 			} else {
 				/* set our error status and fall back to the view */
-		if (empty($form['quotaSize'])) {
-			$error[] = 'form[error][quotaSize][missing]';
-		}
+				if (empty($form['quotaSize'])) {
+					$error[] = 'form[error][quotaSize][missing]';
+				}
 				if (empty($form['quotaUnit'])) {
 					$error[] = 'form[error][quotaUnit][missing]';
 				}
@@ -133,13 +131,11 @@ class AdminEditGroupQuotaController extends GalleryController
 /**
  * This view will show options available to group quotas
  */
-class AdminEditGroupQuotaView extends GalleryView
-{
+class AdminEditGroupQuotaView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -161,7 +157,7 @@ class AdminEditGroupQuotaView extends GalleryView
 
 		if ($form['formName'] != 'AdminEditGroupQuota') {
 			/* First time around initialize our form */
-		$form['formName'] = 'AdminEditGroupQuota';
+			$form['formName'] = 'AdminEditGroupQuota';
 		}
 
 		$form['groupName'] = $group->getGroupName();

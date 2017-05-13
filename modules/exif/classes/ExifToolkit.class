@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 17580 $
  */
-class ExifToolkit extends GalleryToolkit
-{
+class ExifToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		switch ($propertyName) {
 			case 'originationTimestamp':
 				GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');

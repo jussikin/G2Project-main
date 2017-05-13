@@ -27,29 +27,25 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PluginCallbackView extends GalleryView
-{
+class PluginCallbackView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$storage =& $gallery->getStorage();
@@ -120,8 +116,7 @@ class PluginCallbackView extends GalleryView
 	 * @return array changed states (moduleId => state, ...)
 	 * @static
 	 */
-	public function calculateStateChanges($beforeStates, $afterStates)
-	{
+	public function calculateStateChanges($beforeStates, $afterStates) {
 		$states = array();
 		$deleted = array();
 		foreach (array(
@@ -151,8 +146,7 @@ class PluginCallbackView extends GalleryView
 	 * @return GalleryStatus a status code
 	 * @static
 	 */
-	public function handleCallback($command, &$result)
-	{
+	public function handleCallback($command, &$result) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -340,8 +334,7 @@ class PluginCallbackView extends GalleryView
 	 *               array(moduleId => state, ...)
 	 * @static
 	 */
-	public static function getPluginStates()
-	{
+	public static function getPluginStates() {
 		$states = array();
 		
 		foreach (array(
@@ -390,8 +383,7 @@ class PluginCallbackView extends GalleryView
 	 *               string a state
 	 * @static
 	 */
-	public static function getPluginState($type, $plugin, $status)
-	{
+	public static function getPluginState($type, $plugin, $status) {
 		if ($type == 'module' && $plugin->getId() == 'core') {
 			return array(
 				null,

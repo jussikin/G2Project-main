@@ -25,21 +25,18 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class KeywordAlbumView extends GalleryView
-{
+class KeywordAlbumView extends GalleryView {
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_SHOW_ITEM;
 	}
 	
 	/**
 	 * @see GalleryView::loadThemeAndParameters
 	 */
-	public function loadThemeAndParameters()
-	{
+	public function loadThemeAndParameters() {
 		list($ret, $item) = GalleryCoreApi::newFactoryInstance('GalleryDynamicAlbum');
 		if ($ret) {
 			return array(
@@ -181,8 +178,7 @@ class KeywordAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$theme =& $template->getVariableByReference('theme');
 		
 		list($keyword, $itemId) = GalleryUtilities::getRequestVariables('keyword', 'itemId');
@@ -240,8 +236,7 @@ class KeywordAlbumView extends GalleryView
 	 *               array of item ids
 	 * @static
 	 */
-	public function getChildIds($userId, $keyword = null)
-	{
+	public function getChildIds($userId, $keyword = null) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -311,8 +306,7 @@ class KeywordAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'keyalbum');
 		if ($ret) {
 			return array(

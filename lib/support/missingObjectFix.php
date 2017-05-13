@@ -63,8 +63,7 @@ GalleryEmbed::done();
 //   Functions used by this script
 //
 //----------------------------------------------------------------------
-function g2Connect()
-{
+function g2Connect() {
 	require_once '../../embed.php';
 	$ret = GalleryEmbed::init(array(
 		'fullInit' => true
@@ -76,8 +75,7 @@ function g2Connect()
 	return null;
 }
 
-function process($renderType, $args = array())
-{
+function process($renderType, $args = array()) {
 	global $gallery, $adv, $hide, $show, $reset;
 	$storage =& $gallery->getStorage();
 	
@@ -272,8 +270,7 @@ function process($renderType, $args = array())
 	);
 }
 
-function getAlbumIdsRecursive($id)
-{
+function getAlbumIdsRecursive($id) {
 	$err = $albumIds = null;
 	/* Get ids of all albums from starting point $id. */
 	list($ret, $tree) = GalleryCoreApi::fetchAlbumTree($id, null, null, true);
@@ -292,8 +289,7 @@ function getAlbumIdsRecursive($id)
 	);
 }
 
-function getItemIdsRecursive($id)
-{
+function getItemIdsRecursive($id) {
 	$err = null;
 	$itemIds = $missingIds = $albums = array();
 	list($err, $albumIds) = getAlbumIdsRecursive($id);
@@ -332,8 +328,7 @@ function getItemIdsRecursive($id)
 	);
 }
 
-function getMissingDerivatives($id)
-{
+function getMissingDerivatives($id) {
 	$err = null;
 	$itemIds = $missingIds = $albums = array();
 	list($err, $albumIds) = getAlbumIdsRecursive($id);
@@ -372,8 +367,7 @@ function getMissingDerivatives($id)
 	);
 }
 
-function getRoot()
-{
+function getRoot() {
 	$err = $defaultId = null;
 	if (GalleryUtilities::isCompatibleWithApi(array(
 		7,
@@ -396,8 +390,7 @@ function getRoot()
 	);
 }
 
-function getAlbumSelector($gID)
-{
+function getAlbumSelector($gID) {
 	$err = $albumSelectorCode = $albumSelector = null;
 	$albums = array();
 	list($err, $rootID) = getRoot();
@@ -419,8 +412,7 @@ function getAlbumSelector($gID)
 	);
 }
 
-function getAlbumTree($gID)
-{
+function getAlbumTree($gID) {
 	$err = $ret = $album = null;
 	$albumIds = $albums = array();
 	list($ret, $tree) = GalleryCoreApi::fetchAlbumTree($gID, null, null, true);
@@ -443,8 +435,7 @@ function getAlbumTree($gID)
 	);
 }
 
-function statusMsg($display = false)
-{
+function statusMsg($display = false) {
 	if ($display !== false) {
 		return "\n" . '
 			<script type="text/javascript">
@@ -460,8 +451,7 @@ function statusMsg($display = false)
 	}
 }
 
-function jsessAdd($tag = "dummy", $msg = "dummy")
-{
+function jsessAdd($tag = "dummy", $msg = "dummy") {
 	return '<script type="text/javascript">jsess.missingObjectFix_' . $tag . '="' . $msg . '";</script>';
 }
 
@@ -474,112 +464,107 @@ function jsessAdd($tag = "dummy", $msg = "dummy")
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Gallery Support | Missing Object Error Fix</title>
-        <link rel="stylesheet" type="text/css" href="support.css">
-        <script type="text/javascript" src="../javascript/jsess.min.js"></script>
-        <script type="text/javascript">
-            function changeContent(id,content) {
-                if (document.getElementById(id) != null) {
-                    var node = document.getElementById(id);
-                    node.innerHTML = content;
-                }
-            }
-            function jsAlbumSelect() {
-                if (typeof(jsess.missingObjectFix_select) !== "undefined") {
-                    var selectStr = jsess.missingObjectFix_select;
-                }
-                
-                if (typeof(jsess.missingObjectFix_pick) !== "undefined") {
-                <?php if ($reset) {
+	<head>
+		<title>Gallery Support | Missing Object Error Fix</title>
+		<link rel="stylesheet" type="text/css" href="support.css">
+		<script type="text/javascript" src="../javascript/jsess.min.js"></script>
+		<script type="text/javascript">
+			function changeContent(id,content) {
+				if (document.getElementById(id) != null) {
+					var node = document.getElementById(id);
+					node.innerHTML = content;
+				}
+			}
+			function jsAlbumSelect() {
+				if (typeof(jsess.missingObjectFix_select) !== "undefined") {
+					var selectStr = jsess.missingObjectFix_select;
+				}
+				
+				if (typeof(jsess.missingObjectFix_pick) !== "undefined") {
+				<?php if ($reset) {
 	?>
-                
-                    var oldStr = 'selected value=' + jsess.missingObjectFix_pick + '>';
-                    var newStr = 'value=' + jsess.missingObjectFix_pick + '>';
-                <?php
-
+				
+					var oldStr = 'selected value=' + jsess.missingObjectFix_pick + '>';
+					var newStr = 'value=' + jsess.missingObjectFix_pick + '>';
+				<?php
 } else {
 	?>
-                
-                    var oldStr = 'value=' + jsess.missingObjectFix_pick + '>';
-                    var newStr = 'selected value=' + jsess.missingObjectFix_pick + '>';
-                <?php
-
+				
+					var oldStr = 'value=' + jsess.missingObjectFix_pick + '>';
+					var newStr = 'selected value=' + jsess.missingObjectFix_pick + '>';
+				<?php
 } ?>
-                
-                    var selectStr = selectStr.replace(oldStr, newStr);
-                }
-                changeContent("gID", selectStr);
-            }
-        </script>
-        <?php if ($HTMLhead) {
-	echo $HTMLhead;
+				
+					var selectStr = selectStr.replace(oldStr, newStr);
+				}
+				changeContent("gID", selectStr);
+			}
+		</script>
+		<?php if ($HTMLhead) {
+			echo $HTMLhead;
 } ?>
-    </head>
-    <body>
-        <div id="content">
-        <?php if ($HTMLbody || $HTMLForm) {
+	</head>
+	<body>
+		<div id="content">
+		<?php if ($HTMLbody || $HTMLForm) {
 	?>
-        
-            <div id="title">
-                <a href="../../">Gallery</a> &raquo;
-                <a href="index.php">Support</a> &raquo; Missing Object Error Fix
-            </div>
-            <div class="center">
-                <p class="description">Run to recover from "ERROR_MISSING_OBJECT" error messages.</p>
-                <noscript>
-                    <h2>This Tool Requires Javascript</h2>
-                    <p class="description">Please enable javascript to use this tool.</p>
-                </noscript>
-                <p><?php echo $HTMLForm; ?></p>
-                <p id="tPara"></p>
-                <p><?php echo $HTMLbody; ?></p>
-            </div>
-        <?php
-
+		
+			<div id="title">
+				<a href="../../">Gallery</a> &raquo;
+				<a href="index.php">Support</a> &raquo; Missing Object Error Fix
+			</div>
+			<div class="center">
+				<p class="description">Run to recover from "ERROR_MISSING_OBJECT" error messages.</p>
+				<noscript>
+					<h2>This Tool Requires Javascript</h2>
+					<p class="description">Please enable javascript to use this tool.</p>
+				</noscript>
+				<p><?php echo $HTMLForm; ?></p>
+				<p id="tPara"></p>
+				<p><?php echo $HTMLbody; ?></p>
+			</div>
+		<?php
 } else {
 	?>
-        
-            <div class="center">
-                <fieldset>
-                    <br><p class="description">
-                        No Output = Script Failure
-                    </p><br>
-                </fieldset>
-            </div>
-        <?php
-
+		
+			<div class="center">
+				<fieldset>
+					<br><p class="description">
+						No Output = Script Failure
+					</p><br>
+				</fieldset>
+			</div>
+		<?php
 } ?>
-        
-        </div>
-        <?php if ($show) {
+		
+		</div>
+		<?php if ($show) {
 	?>
-        
-        <script type="text/javascript">
-            var formData = '';
-            if (typeof(jsess.missingObjectFix_pick) !== "undefined") {
-                formData = formData + ' <input type="hidden" id="gID" name="gID" value="' + jsess.missingObjectFix_pick + '">';
-            }
-            formData = formData + ' <input type="hidden" id="vw" name="vw" value="req">';
-            formData = formData + ' <input type="hidden" id="args" name="args" value="mode:resChk">';
-            formData = formData + ' <select id="batchSize" name="batchSize">';
-            formData = formData + '     <option value=125>125 Items</option>';
-            formData = formData + '     <option value=250>250 Items</option>';
-            formData = formData + '     <option selected value=500>500 Items</option>';
-            formData = formData + '     <option value=1000>1000 Items</option>';
-            formData = formData + '     <option value=2000>2000 Items</option>';
-            formData = formData + ' </select><br>';
-            formData = formData + ' <input class="neutralbtn continue" type="submit" value="Check Derivatives" onclick="this.disabled=true;this.form.submit();">';
-            changeContent("derivativesForm", formData);
-        </script>
-        <?php
-
+		
+		<script type="text/javascript">
+			var formData = '';
+			if (typeof(jsess.missingObjectFix_pick) !== "undefined") {
+				formData = formData + ' <input type="hidden" id="gID" name="gID" value="' + jsess.missingObjectFix_pick + '">';
+			}
+			formData = formData + ' <input type="hidden" id="vw" name="vw" value="req">';
+			formData = formData + ' <input type="hidden" id="args" name="args" value="mode:resChk">';
+			formData = formData + ' <select id="batchSize" name="batchSize">';
+			formData = formData + '     <option value=125>125 Items</option>';
+			formData = formData + '     <option value=250>250 Items</option>';
+			formData = formData + '     <option selected value=500>500 Items</option>';
+			formData = formData + '     <option value=1000>1000 Items</option>';
+			formData = formData + '     <option value=2000>2000 Items</option>';
+			formData = formData + ' </select><br>';
+			formData = formData + ' <input class="neutralbtn continue" type="submit" value="Check Derivatives" onclick="this.disabled=true;this.form.submit();">';
+			changeContent("derivativesForm", formData);
+		</script>
+		<?php
 } ?>
-            
-        <script type="text/javascript">
-            if (typeof(jsess.missingObjectFix_tgtHTML) !== "undefined") {
-                changeContent('tPara', jsess.missingObjectFix_tgtHTML);
-            }
-        </script>
-    </body>
+			
+		<script type="text/javascript">
+			if (typeof(jsess.missingObjectFix_tgtHTML) !== "undefined") {
+				changeContent('tPara', jsess.missingObjectFix_tgtHTML);
+			}
+		</script>
+	</body>
 </html>

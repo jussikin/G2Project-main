@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditMoviePluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditMoviePluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditMovie');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -61,8 +58,7 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase
 		$this->_preferred = null;
 	}
 	
-	public function testChangeSize()
-	{
+	public function testChangeSize() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', 123);
 		GalleryUtilities::putRequestVariable('form[height]', 456);
@@ -86,8 +82,7 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase
 		$this->assertEquals(456, $this->_item->getHeight());
 	}
 	
-	public function testChangeSizeMissingValues()
-	{
+	public function testChangeSizeMissingValues() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', '');
 		GalleryUtilities::putRequestVariable('form[height]', '');
@@ -111,8 +106,7 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase
 		$this->assertEquals(0, $this->_item->getHeight());
 	}
 	
-	public function testChangeSizeInvalidValues()
-	{
+	public function testChangeSizeInvalidValues() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', -123);
 		GalleryUtilities::putRequestVariable('form[height]', -456);
@@ -129,8 +123,7 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase
 		), $results);
 	}
 	
-	public function testInvalidSerialNumber()
-	{
+	public function testInvalidSerialNumber() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', 123);
 		GalleryUtilities::putRequestVariable('form[height]', 456);
@@ -148,60 +141,48 @@ class ItemEditMoviePluginTest extends ItemEditPluginTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemEditMoviePluginTestPlatform
-{
-	public function ItemEditMoviePluginTestPlatform($originalPlatform)
-	{
+class ItemEditMoviePluginTestPlatform {
+	public function ItemEditMoviePluginTestPlatform($originalPlatform) {
 		$this->_platform = $originalPlatform;
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		return $this->_platform->file_exists($path);
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		return $this->_platform->is_dir($path);
 	}
 	
-	public function is_writeable($path)
-	{
+	public function is_writeable($path) {
 		return $this->_platform->is_writeable($path);
 	}
 	
-	public function legalizePathComponent($pathComponent)
-	{
+	public function legalizePathComponent($pathComponent) {
 		return $this->_platform->legalizePathComponent($pathComponent);
 	}
 	
-	public function mkdir($path)
-	{
+	public function mkdir($path) {
 		return $this->_platform->mkdir($path);
 	}
 	
-	public function is_uploaded_file($path)
-	{
+	public function is_uploaded_file($path) {
 		return $this->_platform->is_uploaded_file($path);
 	}
 	
-	public function copy($from, $to)
-	{
+	public function copy($from, $to) {
 		return $this->_platform->copy($from, $to);
 	}
 	
-	public function filesize($path)
-	{
+	public function filesize($path) {
 		return $this->_platform->filesize($path);
 	}
 	
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		return fflush($handle);
 	}
 	
-	public function exec($args)
-	{
+	public function exec($args) {
 		/*
 	     * Check for: (this is a Windows example, but we have to account for Unix also)
 	     * [0] => C:\apps\ffmpeg\ffmpeg.exe
@@ -231,13 +212,11 @@ class ItemEditMoviePluginTestPlatform
 		}
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_platform->getDirectorySeparator();
 	}
 	
-	public function fopen($filename, $modes)
-	{
+	public function fopen($filename, $modes) {
 		/* Pass lock requests */
 		if (preg_match("|\blocks\b|", $filename)) {
 			return fopen($filename, $modes);
@@ -248,33 +227,27 @@ class ItemEditMoviePluginTestPlatform
 		return null;
 	}
 	
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		return opendir($path);
 	}
 	
-	public function readdir($handle)
-	{
+	public function readdir($handle) {
 		return readdir($handle);
 	}
 	
-	public function closedir($handle)
-	{
+	public function closedir($handle) {
 		return closedir($handle);
 	}
 	
-	public function rmdir($path)
-	{
+	public function rmdir($path) {
 		return rmdir($path);
 	}
 	
-	public function fwrite($handle, $string)
-	{
+	public function fwrite($handle, $string) {
 		return fwrite($handle, $string);
 	}
 	
-	public function recursiveRmdir($dirname)
-	{
+	public function recursiveRmdir($dirname) {
 		global $gallery;
 		if ($gallery->getDebug()) {
 			$gallery->debug("recursiveRmdir($dirname)");
@@ -305,25 +278,21 @@ class ItemEditMoviePluginTestPlatform
 		return $this->rmdir($dirname);
 	}
 	
-	public function unlink($path)
-	{
+	public function unlink($path) {
 		return unlink($path);
 		/* needed to release locks */
 	}
 	
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		return realpath($file);
 	}
 	
-	public function flock($handle, $operation, &$wouldblock)
-	{
+	public function flock($handle, $operation, &$wouldblock) {
 		/* Pass lock requests */
 		return flock($handle, $operation, $wouldblock);
 	}
 	
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		return fclose($handle);
 	}
 }

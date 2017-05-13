@@ -37,8 +37,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryPhotoItem extends GalleryDataItem
-{
+class GalleryPhotoItem extends GalleryDataItem {
 	/**
 	 * The width of this image.
 	 * @var int
@@ -68,8 +67,7 @@ class GalleryPhotoItem extends GalleryDataItem
 	/**
 	 * @see GalleryDataItem::canBeViewedInline
 	 */
-	public function canBeViewedInline()
-	{
+	public function canBeViewedInline() {
 		static $mimeList = array('image/jpeg', 'image/pjpeg', 'image/png', 'image/gif', 'image/vnd.wap.wbmp');
 
 		return $this->_canBeViewedInline($mimeList);
@@ -86,8 +84,7 @@ class GalleryPhotoItem extends GalleryDataItem
 	 *        of copy (default is false).
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId, $imageFileName, $mimeType, $targetName = null, $symlink = false)
-	{
+	public function create($parentId, $imageFileName, $mimeType, $targetName = null, $symlink = false) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -131,8 +128,7 @@ class GalleryPhotoItem extends GalleryDataItem
 	/**
 	 * @see GalleryDataItem::rescan
 	 */
-	public function rescan()
-	{
+	public function rescan() {
 		$ret = parent::rescan();
 		if ($ret) {
 			return $ret;
@@ -190,8 +186,7 @@ class GalleryPhotoItem extends GalleryDataItem
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		if ($localized) {
 			list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 			if (!$ret) {
@@ -211,8 +206,7 @@ class GalleryPhotoItem extends GalleryDataItem
 	/**
 	 * @see GalleryDataItem::render
 	 **/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		global $gallery;
 		
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -258,28 +252,23 @@ class GalleryPhotoItem extends GalleryDataItem
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryPhotoItem';
 	}
 	
-	public function getWidth()
-	{
+	public function getWidth() {
 		return $this->width;
 	}
 	
-	public function setWidth($width)
-	{
+	public function setWidth($width) {
 		$this->width = $width;
 	}
 	
-	public function getHeight()
-	{
+	public function getHeight() {
 		return $this->height;
 	}
 	
-	public function setHeight($height)
-	{
+	public function setHeight($height) {
 		$this->height = $height;
 	}
 }

@@ -42,8 +42,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @return array GalleryStatus a status code,
 	 *               array (entityId => GalleryComment, ...)
 	 */
-	public static function fetchComments($itemId, $count = null, $orderDirection = ORDER_ASCENDING, $publishStatus = COMMENT_PUBLISH_STATUS_PUBLISHED)
-	{
+	public static function fetchComments($itemId, $count = null, $orderDirection = ORDER_ASCENDING, $publishStatus = COMMENT_PUBLISH_STATUS_PUBLISHED) {
 		global $gallery;
 		
 		switch ($orderDirection) {
@@ -137,8 +136,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 *               array (entityId => GalleryComment, ...)
 	 *               int total number of comments available
 	 */
-	public static function fetchAllComments($itemId, $count = null, $offset = null, $orderDirection = ORDER_ASCENDING, $publishStatus = COMMENT_PUBLISH_STATUS_PUBLISHED)
-	{
+	public static function fetchAllComments($itemId, $count = null, $offset = null, $orderDirection = ORDER_ASCENDING, $publishStatus = COMMENT_PUBLISH_STATUS_PUBLISHED) {
 		global $gallery;
 		
 		switch ($orderDirection) {
@@ -305,8 +303,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @return array GalleryStatus a status code
 	 *               int a count
 	 */
-	public static function fetchCommentCounts($itemIds)
-	{
+	public static function fetchCommentCounts($itemIds) {
 		global $gallery;
 		
 		$markers = GalleryUtilities::makeMarkers(sizeof($itemIds));
@@ -354,8 +351,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @return array GalleryStatus a status code,
 	 *               int latest comment time
 	 */
-	public static function getLatestCommentTime($hostAddress)
-	{
+	public static function getLatestCommentTime($hostAddress) {
 		global $gallery;
 		
 		$data = array(
@@ -405,8 +401,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @return array GalleryStatus a status code
 	 *               array values used for the AddComment page (itemId, host, validation plugins)
 	 */
-	public static function getAddComment(&$item, &$form)
-	{
+	public static function getAddComment(&$item, &$form) {
 		/* Make sure we have permission to add a comment */
 		list($ret, $permissions) = GalleryCoreApi::getPermissions($item->getId());
 		if ($ret) {
@@ -500,8 +495,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @return array GalleryStatus a status code
 	 *               boolean true to use validation plugins
 	 */
-	public static function useValidationPlugins()
-	{
+	public static function useValidationPlugins() {
 		list($ret, $level) = GalleryCoreApi::getPluginParameter('module', 'comment', 'validation.level');
 		if ($ret) {
 			return array(
@@ -541,8 +535,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 *
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		global $gallery;
 		
 		switch ($event->getEventName()) {
@@ -629,8 +622,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @param $enabled bool true to enable the listener, false to disable it
 	 * @static
 	 */
-	public static function setAkismetSaveListenerSwitch($enabled)
-	{
+	public static function setAkismetSaveListenerSwitch($enabled) {
 		$switch =& self::getAkismetSaveListenerSwitch();
 		$switch = $enabled;
 	}
@@ -640,8 +632,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @return bool the current status
 	 * @static
 	 */
-	public function &getAkismetSaveListenerSwitch()
-	{
+	public function &getAkismetSaveListenerSwitch() {
 		static $enabled = true;
 
 		return $enabled;
@@ -656,8 +647,7 @@ class GalleryCommentHelper /* implements GalleryEventListener */
 	 * @param AkismetApi $akismet an instance of AkismetApi
 	 * @return GalleryStatus a status code
 	 */
-	public function checkWithAkismet(&$comment, $akismet)
-	{
+	public function checkWithAkismet(&$comment, $akismet) {
 		$logError = false;
 		if ($comment->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
 			list($ret, $isSpam) = $akismet->checkComment($comment);

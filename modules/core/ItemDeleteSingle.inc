@@ -26,13 +26,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemDeleteSingleController extends GalleryController
-{
+class ItemDeleteSingleController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		

@@ -202,8 +202,7 @@ printFooter();
  * @param int $start unix timestamp of last webserver/php timeout counter-measure
  * @return null on success, int <> 0 on error
  */
-function chmodRecursively($filename, $folderPermissions, $filePermissions, $start)
-{
+function chmodRecursively($filename, $folderPermissions, $filePermissions, $start) {
 	$filename = rtrim($filename, '\\/');
 	$error = 0;
 	/* Try to prevent timeouts */
@@ -268,8 +267,7 @@ function chmodRecursively($filename, $folderPermissions, $filePermissions, $star
  *
  * @return array(array(string folder permission) )
  */
-function getPermissionSets()
-{
+function getPermissionSets() {
 	$permissionSets = array();
 	
 	$permissionSets[] = array(
@@ -288,8 +286,7 @@ function getPermissionSets()
 	return $permissionSets;
 }
 
-function getGalleryStoragePath()
-{
+function getGalleryStoragePath() {
 	$config = GallerySetupUtilities::getGalleryConfig();
 
 	return $config['data.gallery.base'];
@@ -298,8 +295,7 @@ function getGalleryStoragePath()
 /**
  * Class to represent a set of filesystem permission bits, eg. 0755 with a few convenience methods.
  */
-class PermissionBits
-{
+class PermissionBits {
 	/**
 	 * Bits in octal integer representation, e.g. 0755
 	 */
@@ -309,13 +305,11 @@ class PermissionBits
 	 * Constructor
 	 * @param int $bits permission bits in decimal integer representation, eg. octdec(0755)
 	 */
-	public function __construct($bits)
-	{
+	public function __construct($bits) {
 		$this->PermissionBits($bits);
 	}
 	
-	public function PermissionBits($bits)
-	{
+	public function PermissionBits($bits) {
 		$this->_bits = decoct($bits);
 	}
 	
@@ -325,18 +319,16 @@ class PermissionBits
 	 * @return PermissionBits object
 	 * @static
 	 */
-	public function fromString($bitsAsString)
-	{
+	public function fromString($bitsAsString) {
 		$bitsAsString = (string) $bitsAsString;
-		if (strlen($bitsAsString) && $bitsAsString{0} != '0') {
+		if (strlen($bitsAsString) && $bitsAsString[0] != '0') {
 			$bitsAsString = '0' . $bitsAsString;
 		}
 
 		return new self(octdec($bitsAsString));
 	}
 	
-	public function getAsString()
-	{
+	public function getAsString() {
 		return (string) $this->_bits;
 	}
 	
@@ -344,8 +336,7 @@ class PermissionBits
 	 * For use with chmod()
 	 * @return int the permission set as decimal integer
 	 */
-	public function getAsInt()
-	{
+	public function getAsInt() {
 		return octdec($this->_bits);
 	}
 	
@@ -353,8 +344,7 @@ class PermissionBits
 	 * Returns a concise description of this permission set
 	 * @XXX rethink the whole concept, maybe just show a owner/group/world vs. r+w+x matrix
 	 */
-	public function getDescription()
-	{
+	public function getDescription() {
 		switch (intval($this->_bits, 8)) {
 			case 0777:
 				return 'Read + Write + Execute for Everyone';
@@ -374,18 +364,15 @@ class PermissionBits
 		}
 	}
 	
-	public function getAsDescriptiveString()
-	{
+	public function getAsDescriptiveString() {
 		return $this->getAsString() . ' (' . $this->getDescription() . ' )';
 	}
 	
-	public function equals($permissionBits)
-	{
+	public function equals($permissionBits) {
 		return $this->getAsInt() == $permissionBits->getAsInt();
 	}
 	
-	public function isValid()
-	{
+	public function isValid() {
 		$description = $this->getDescription();
 
 		return !empty($description);
@@ -394,22 +381,19 @@ class PermissionBits
 
 /* Functions which control the HTML output of the page. */
 $errorBoxOpen = 0;
-function status($msg, $obj)
-{
+function status($msg, $obj) {
 	openErrorBox();
 	printf("$msg&nbsp;<b>%s</b><br>", wordwrap($obj, 85, "<br>&nbsp;&nbsp;&nbsp;", true));
 }
 
-function error($msg, $obj)
-{
+function error($msg, $obj) {
 	openErrorBox();
 	echo '<span class="error">';
 	printf("$msg&nbsp;<b>%s</b><br>", wordwrap($obj, 85, "<br>&nbsp;&nbsp;&nbsp;", true));
 	echo '</span>';
 }
 
-function isModulesOrThemesDirWriteable()
-{
+function isModulesOrThemesDirWriteable() {
 	return is_writeable(GallerySetupUtilities::getConfigDir() . '/modules/') && is_writeable(GallerySetupUtilities::getConfigDir() . '/themes/');
 }
 
@@ -418,8 +402,7 @@ function isModulesOrThemesDirWriteable()
  * @param boolean $makeItWriteable true to make the dirs writeable, false to make them read-only
  * @return null on success, non 0 integer on error
  */
-function chmodModulesAndThemesDir($makeItWriteable)
-{
+function chmodModulesAndThemesDir($makeItWriteable) {
 	$mode = $makeItWriteable ? 0777 : 0555;
 	$ret = null;
 	foreach (array(
@@ -438,8 +421,7 @@ function chmodModulesAndThemesDir($makeItWriteable)
 	return $ret;
 }
 
-function isGalleryDirWriteable()
-{
+function isGalleryDirWriteable() {
 	return is_writeable(GallerySetupUtilities::getConfigDir());
 }
 
@@ -448,8 +430,7 @@ function isGalleryDirWriteable()
  * @param boolean $makeItWriteable true to make the dirs writeable, false to make them read-only
  * @return null on success, non 0 integer on error
  */
-function chmodGalleryDirRecursively($makeItWriteable)
-{
+function chmodGalleryDirRecursively($makeItWriteable) {
 	/* This is just a wrapper function for the general chmod recursively function */
 	$folderMode = $makeItWriteable ? 0777 : 0555;
 	$fileMode = $makeItWriteable ? 0666 : 0444;
@@ -458,8 +439,7 @@ function chmodGalleryDirRecursively($makeItWriteable)
 }
 
 /* Chmod a specific plugin dir recursively */
-function chmodPluginDir($pluginPath, $makeItWriteable)
-{
+function chmodPluginDir($pluginPath, $makeItWriteable) {
 	/* This is just a wrapper function for the general chmod recursively function */
 	$folderMode = $makeItWriteable ? 0777 : 0555;
 	$fileMode = $makeItWriteable ? 0666 : 0444;
@@ -467,14 +447,12 @@ function chmodPluginDir($pluginPath, $makeItWriteable)
 	return chmodRecursively(GallerySetupUtilities::getConfigDir() . $pluginPath, $folderMode, $fileMode, time() - 60);
 }
 
-function chmodStorageDirRecursively()
-{
+function chmodStorageDirRecursively() {
 	/* This is just a wrapper function for the general chmod recursively function */
 	return chmodRecursively(getGalleryStoragePath(), 0777, 0666, time() - 60);
 }
 
-function chmodLocaleDirRecursively()
-{
+function chmodLocaleDirRecursively() {
 	/* This is just a wrapper function for the general chmod recursively function */
 	return chmodRecursively(getGalleryStoragePath() . 'locale', 0777, 0666, time() - 60);
 }
@@ -482,8 +460,7 @@ function chmodLocaleDirRecursively()
 /**
  * @return array (pluginId => boolean writeable, .. )
  */
-function getPluginList()
-{
+function getPluginList() {
 	/*
 	 * We don't want to depend on the G2 API here, so just list the folders in
 	 * modules/, themes/ and in plugins/modules/, plugins/themes/.
@@ -520,8 +497,7 @@ function getPluginList()
 	return $plugins;
 }
 
-function getRequestVariable($varName)
-{
+function getRequestVariable($varName) {
 	foreach (array(
 		$_POST,
 		$_GET
@@ -538,8 +514,7 @@ function getRequestVariable($varName)
  * Uses JavaScript to print the status / error message at the top of the page
  * even if the page has already been printed.
  */
-function printStatus($status)
-{
+function printStatus($status) {
 	if (!empty($status['error'])) {
 		printf('<script type="text/javascript">printErrorMessage(\'%s\');</script>', str_replace(array(
 			"\\",
@@ -569,8 +544,7 @@ function printStatus($status)
  * Call this function, then call chmodRecursively() which will output some HTML,
  * and finally call printFooter();
  */
-function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermissions, $permissionBitSets)
-{
+function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermissions, $permissionBitSets) {
 	global $baseUrl; ?>
 <html lang="en">
   <head>
@@ -769,8 +743,7 @@ function printPageWithoutFooter($plugins, $path, $filePermissions, $folderPermis
 
 } /* end function printPageWithoutFooter() */
 
-function openErrorBox()
-{
+function openErrorBox() {
 	global $errorBoxOpen;
 	if ($errorBoxOpen) {
 		return;
@@ -783,8 +756,7 @@ function openErrorBox()
 
 } /* end function openErrorBox() */
 
-function closeErrorBox()
-{
+function closeErrorBox() {
 	global $errorBoxOpen;
 	if (!$errorBoxOpen) {
 		return;
@@ -794,8 +766,7 @@ function closeErrorBox()
 
 } /* end function closeErrorBox() */
 
-function printFooter()
-{
+function printFooter() {
 	closeErrorBox(); ?>
     </div>
   </body>

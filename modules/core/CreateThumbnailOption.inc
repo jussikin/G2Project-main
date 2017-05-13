@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CreateThumbnailOption extends ItemAddOption
-{
+class CreateThumbnailOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		return array(
 			null,
 			'modules/core/templates/CreateThumbnailOption.tpl',
@@ -42,8 +40,7 @@ class CreateThumbnailOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		return array(
 			null,
 			true
@@ -53,8 +50,7 @@ class CreateThumbnailOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		$errors = $warnings = $itemIds = array();
 		foreach ($items as $item) {
 			$itemIds[] = $item->getId();

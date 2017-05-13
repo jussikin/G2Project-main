@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18162 $
  */
-class ItemAddFromServerTest extends ItemAddPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAddFromServerTest extends ItemAddPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddPluginTestCase($methodName, 'itemadd', 'ItemAddFromServer');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -83,8 +80,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		GalleryDataCache::remove('GalleryCharsetHelper_simple::detectSystemCharset');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::releaseLocks($this->_lockId);
 		if ($ret) {
 			return $ret;
@@ -96,8 +92,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testIsAppropriate()
-	{
+	public function testIsAppropriate() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'itemadd', 'fromserver', 'off');
 		if ($ret) {
 			return $ret;
@@ -136,8 +131,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		$this->assertEquals(true, $isAppropriate, 'on');
 	}
 	
-	public function testAddFromLocalServerCallsIsAppropriate()
-	{
+	public function testAddFromLocalServerCallsIsAppropriate() {
 		$ret = $this->_markPluginParametersForCleanup('module', 'itemadd');
 		if ($ret) {
 			return $ret;
@@ -158,8 +152,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 	 * call _testAddChildrenFromLocalServer with the '$useSymlink'
 	 * parameter set to false, thus specifying that the files should be copied.
 	 */
-	public function testAddChildrenFromLocalServer()
-	{
+	public function testAddChildrenFromLocalServer() {
 		return $this->_testAddChildrenFromLocalServer(false);
 	}
 	
@@ -168,8 +161,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 	 * a symlink. Also specify that the symlink should be supported (and
 	 * thus the mock platform object that supports symlinks will be used.
 	 */
-	public function testAddChildrenFromLocalServerUsingSymlinkWithSymlinkSupported()
-	{
+	public function testAddChildrenFromLocalServerUsingSymlinkWithSymlinkSupported() {
 		return $this->_testAddChildrenFromLocalServer(true, true);
 	}
 	
@@ -178,44 +170,37 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 	 * a symlink. Also specify that the symlink should >not< be supported
 	 * (and thus the mock platform object that does not support symlinks will be used.
 	 */
-	public function testAddChildrenFromLocalServerUsingSymlinkWithSymlinkNotSupported()
-	{
+	public function testAddChildrenFromLocalServerUsingSymlinkWithSymlinkNotSupported() {
 		return $this->_testAddChildrenFromLocalServer(true, false);
 	}
 	
 	/*
 	 * call _testAddChildrenFromLocalServer with setTitle (set to base filename)
 	 */
-	public function testAddChildrenFromLocalServerSetTitle()
-	{
+	public function testAddChildrenFromLocalServerSetTitle() {
 		return $this->_testAddChildrenFromLocalServer(false, true, true, false, true);
 	}
 	
 	/*
 	 * call _testAddChildrenFromLocalServer with setTitle/setDescription (set to base filename)
 	 */
-	public function testAddChildrenFromLocalServerSetTitleDescription()
-	{
+	public function testAddChildrenFromLocalServerSetTitleDescription() {
 		return $this->_testAddChildrenFromLocalServer(false, true, true, false, true, false, true);
 	}
 	
-	public function testAddChildrenFromLocalServerRecursive()
-	{
+	public function testAddChildrenFromLocalServerRecursive() {
 		return $this->_testAddChildrenFromLocalServer(false, true, false, true);
 	}
 	
-	public function testAddChildrenFromLocalServerRecursiveUsingSymlinkWithSymlinkSupported()
-	{
+	public function testAddChildrenFromLocalServerRecursiveUsingSymlinkWithSymlinkSupported() {
 		return $this->_testAddChildrenFromLocalServer(true, true, false, true);
 	}
 	
-	public function testAddChildrenFromLocalServerRecursiveUsingSymlinkWithSymlinkNotSupported()
-	{
+	public function testAddChildrenFromLocalServerRecursiveUsingSymlinkWithSymlinkNotSupported() {
 		return $this->_testAddChildrenFromLocalServer(true, false, false, true);
 	}
 	
-	public function testAddChildrenFromLocalServerRecursiveSetSummaryDescription()
-	{
+	public function testAddChildrenFromLocalServerRecursiveSetSummaryDescription() {
 		return $this->_testAddChildrenFromLocalServer(false, true, false, true, false, true, true);
 	}
 	
@@ -230,8 +215,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 	 * symlinks and one that does not.  If we expect using a symlink to
 	 * fail, we bail check for that condition, and then bail out immediately.
 	 */
-	public function _testAddChildrenFromLocalServer($useSymlink, $symlinkSupported = true, $addFiles = true, $addDirectories = false, $setTitle = false, $setSummary = false, $setDescription = false)
-	{
+	public function _testAddChildrenFromLocalServer($useSymlink, $symlinkSupported = true, $addFiles = true, $addDirectories = false, $setTitle = false, $setSummary = false, $setDescription = false) {
 		global $gallery;
 		
 		/*
@@ -427,8 +411,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testInvalidLocalServerPath()
-	{
+	public function testInvalidLocalServerPath() {
 		GalleryUtilities::putRequestVariable('form[action][addFromLocalServer]', 1);
 		GalleryUtilities::putRequestVariable('form[localServerPath]', '/');
 		GalleryUtilities::putRequestVariable('form[localServerFiles][ItemAddFromServerTest.foo][selected]', 1);
@@ -439,8 +422,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 	 * Checks if the urlencoded filename gets correctly converted to a nice filename
 	 * in pathComponent, title and summary
 	 */
-	public function testAddFromServerFilenameToFields()
-	{
+	public function testAddFromServerFilenameToFields() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$dirSep = $platform->getDirectorySeparator();
@@ -490,8 +472,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 	/**
 	 * Checks that we disallow recursive add from our own g2data directory.
 	 */
-	public function testAddFromServerG2DataDir()
-	{
+	public function testAddFromServerG2DataDir() {
 		global $gallery;
 		
 		list($ret, $path) = $this->_rootAlbum->fetchPath();
@@ -511,8 +492,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		), $results);
 	}
 	
-	public function testAddFromServerMalformedInput()
-	{
+	public function testAddFromServerMalformedInput() {
 		/* Test that manually constructed input can't get outside our approved dirs */
 		global $gallery;
 		$platform =& $gallery->getPlatform();
@@ -532,8 +512,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		), $results);
 	}
 	
-	public function testAddFromServerEntityDir()
-	{
+	public function testAddFromServerEntityDir() {
 		/* Test that characters in dirname that get entitized still work ok */
 		global $gallery;
 		$platform =& $gallery->getPlatform();
@@ -565,8 +544,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddItemWithXssFilename()
-	{
+	public function testAddItemWithXssFilename() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$dirSep = $platform->getDirectorySeparator();
@@ -597,8 +575,7 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 		$this->assertEquals('good_script_evil.jpg', $item->getPathComponent());
 	}
 	
-	public function testAddDirectoryWithXssFilename()
-	{
+	public function testAddDirectoryWithXssFilename() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$dirSep = $platform->getDirectorySeparator();
@@ -637,10 +614,8 @@ class ItemAddFromServerTest extends ItemAddPluginTestCase
 /**
  * Test platform
  */
-class ItemAddFromServerTestPlatform extends GalleryPlatform
-{
-	public function ItemAddFromServerTestPlatform($delegate, $symlinkSupported)
-	{
+class ItemAddFromServerTestPlatform extends GalleryPlatform {
+	public function ItemAddFromServerTestPlatform($delegate, $symlinkSupported) {
 		$this->_delegate = $delegate;
 		$dirSep = $this->_dirSep = $delegate->getDirectorySeparator();
 		$this->_symlinkSupported = $symlinkSupported;
@@ -652,13 +627,11 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 	 * Simply collapse .. clauses out of paths.  If we use realpath() it'll try to verify that the
 	 * path actually exists (which it won't, in some cases)
 	 */
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return preg_replace('#[^\\\/]+[\\\/]\.\.([\\\/]|$)#', '', $path);
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		switch ($path) {
 			case $this->_baseDir . 'December - <#952>.jpg':
 			case $this->_baseDir . 'Black&White':
@@ -676,8 +649,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		}
 	}
 	
-	public function is_readable($path)
-	{
+	public function is_readable($path) {
 		switch ($path) {
 			case $this->_baseDir . 'December - <#952>.jpg':
 			case $this->_baseDir . 'Black&White':
@@ -697,8 +669,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		}
 	}
 	
-	public function copy($source, $dest)
-	{
+	public function copy($source, $dest) {
 		switch ($source) {
 			case $this->_baseDir . 'December - <#952>.jpg':
 			case $this->_baseDir . '<My "Files">' . $this->_dirSep . 'foo':
@@ -716,8 +687,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		return $this->_delegate->copy($source, $dest);
 	}
 	
-	public function symlink($source, $dest)
-	{
+	public function symlink($source, $dest) {
 		switch ($source) {
 			case $this->_baseDir . 'December - <#952>.jpg':
 			case $this->_baseDir . "t\xebst.png":
@@ -737,13 +707,11 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		}
 	}
 	
-	public function isSymlinkSupported()
-	{
+	public function isSymlinkSupported() {
 		return $this->_symlinkSupported;
 	}
 	
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		if (in_array($path, array(
 			$this->_baseDir . "subD\xeer",
 			$this->_baseDir . 'Black&White'
@@ -754,8 +722,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		return $this->_delegate->opendir($path);
 	}
 	
-	public function readdir($resource)
-	{
+	public function readdir($resource) {
 		if ($resource === 'testHandle') {
 			return false;
 		}
@@ -763,8 +730,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		return $this->_delegate->readdir($resource);
 	}
 	
-	public function closedir($resource)
-	{
+	public function closedir($resource) {
 		if ($resource === 'testHandle') {
 			return true;
 		}
@@ -772,8 +738,7 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 		return $this->_delegate->closedir($resource);
 	}
 	
-	public function exec($cmd)
-	{
+	public function exec($cmd) {
 		/* In case add of jpeg tries to get 'colorspace' property */
 		return array(
 			true,
@@ -788,15 +753,12 @@ class ItemAddFromServerTestPlatform extends GalleryPlatform
 /**
  * Test PhpVm
  */
-class ItemAddFromServerTestPhpVm extends GalleryPhpVm
-{
-	public function function_exists($functionName)
-	{
+class ItemAddFromServerTestPhpVm extends GalleryPhpVm {
+	public function function_exists($functionName) {
 		return $functionName === 'nl_langinfo' ? true : function_exists($functionName);
 	}
 	
-	public function nl_langinfo($item)
-	{
+	public function nl_langinfo($item) {
 		return 'ISO-8859-1';
 	}
 }

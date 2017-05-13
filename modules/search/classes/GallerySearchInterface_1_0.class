@@ -28,8 +28,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GallerySearchInterface_1_0
-{
+class GallerySearchInterface_1_0 {
 	/**
 	 * Return the name, description and searchable options of this searchable subsystem
 	 *
@@ -46,8 +45,7 @@ class GallerySearchInterface_1_0
 	 *                                                  array('description' => 'Option 3',
 	 *                                                        'enabled' => 1)))
 	 */
-	public function getSearchModuleInfo()
-	{
+	public function getSearchModuleInfo() {
 		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			 null);
 	}
@@ -71,8 +69,7 @@ class GallerySearchInterface_1_0
 	 *                                              array('key' => 'localized title',
 	 *                                                    'value' => 'localized text'))))
 	 */
-	public function search($options, $criteria, $offset=0, $count=-1)
-	{
+	public function search($options, $criteria, $offset=0, $count=-1) {
 		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			 null);
 	}

@@ -25,15 +25,12 @@
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17580 $
  */
-class ImageBlockHandlerTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageBlockHandlerTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -54,8 +51,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = ImageBlockHelper::setDisabledFlag($this->_topAlbum, true, false);
 		if ($ret) {
 			return $ret;
@@ -67,8 +63,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		}
 	}
 	
-	public function _createSubAlbumWithItems($parentId)
-	{
+	public function _createSubAlbumWithItems($parentId) {
 		/* Create a new album and image, set thumbnail and highlight */
 		list($ret, $album) = $this->_createRandomAlbum($parentId);
 		if ($ret) {
@@ -98,8 +93,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		);
 	}
 	
-	public function testImageBlockDisabledMapHandler()
-	{
+	public function testImageBlockDisabledMapHandler() {
 		/* Enable event (normally disabled for unit tests) */
 		$this->_registerEventListener('GalleryEntity::save', new ImageBlockHelper());
 		$this->_registerEventListener('GalleryEntity::delete', new ImageBlockHelper());
@@ -137,8 +131,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		$this->assert(!$disabledFlag, 'Delete eventHandler failed');
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveDisabledItemToDisabledAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveDisabledItemToDisabledAlbum() {
 		/* Move a data item from one album with disabledFlag to another album with disabledFlag */
 		$item = $this->_topItems[0];
 		
@@ -161,8 +154,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		), true);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveItemToDisabledAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveItemToDisabledAlbum() {
 		/*
 	     * Move a data item from one album without disabledFlag
 	     * to another album with disabledFlag
@@ -188,8 +180,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		), true);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveDisabledItemToAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveDisabledItemToAlbum() {
 		/*
 	     * Move a data item from one album with disabledFlag
 	     * to another album without disabledFlag
@@ -215,8 +206,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		), false);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveItemToAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveItemToAlbum() {
 		/*
 	     * Move a data item from one album with disabledFlag
 	     * to another album without disabledFlag
@@ -243,8 +233,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* Create a new data item in an album with disabledFlag */
-	public function testImageBlockDisabledMapHandlerNewItemToDisabledAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerNewItemToDisabledAlbum() {
 		/* Make sure it's new parent album is in the disabledFlag map  */
 		$this->_setAndAssertDisabledFlag($this->_subAlbum, true);
 		
@@ -265,8 +254,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* Create a new data item in an album without disabledFlag */
-	public function testImageBlockDisabledMapHandlerNewItemToAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerNewItemToAlbum() {
 		/* Make sure it's new parent album is in the disabledFlag map  */
 		$this->_setAndAssertDisabledFlag($this->_subAlbum, false);
 		
@@ -286,8 +274,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		), false);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveDisabledAlbumToDisabledAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveDisabledAlbumToDisabledAlbum() {
 		/* Move an album with disabledFlag to another album with disabledFlag */
 		list($ret, $albumItem, $this->_subItems2) = $this->_createSubAlbumWithItems($this->_topAlbum->getId());
 		if ($ret) {
@@ -313,8 +300,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		$this->_verifyDisabledFlagForItems($checkItems, true);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveAlbumToDisabledAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveAlbumToDisabledAlbum() {
 		/* Move an album without disabledFlag to another album with disabledFlag */
 		list($ret, $albumItem, $this->_subItems2) = $this->_createSubAlbumWithItems($this->_topAlbum->getId());
 		if ($ret) {
@@ -340,8 +326,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		$this->_verifyDisabledFlagForItems($checkItems, false);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveDisabledAlbumToAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveDisabledAlbumToAlbum() {
 		/* Move an album with disabledFlag to another album without disabledFlag */
 		list($ret, $albumItem, $this->_subItems2) = $this->_createSubAlbumWithItems($this->_topAlbum->getId());
 		if ($ret) {
@@ -367,8 +352,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 		$this->_verifyDisabledFlagForItems($checkItems, true);
 	}
 	
-	public function testImageBlockDisabledMapHandlerMoveAlbumToAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerMoveAlbumToAlbum() {
 		/* Move an album without disabledFlag to another album without disabledFlag */
 		list($ret, $albumItem, $this->_subItems2) = $this->_createSubAlbumWithItems($this->_topAlbum->getId());
 		if ($ret) {
@@ -395,8 +379,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* Create a new album in another album with disabledFlag */
-	public function testImageBlockDisabledMapHandlerNewAlbumToDisabledAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerNewAlbumToDisabledAlbum() {
 		/* Make sure the new parent album is in the disabledFlag map  */
 		$this->_setAndAssertDisabledFlag($this->_subAlbum, true);
 		
@@ -417,8 +400,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* Create a new album in another album with disabledFlag */
-	public function testImageBlockDisabledMapHandlerNewAlbumToAlbum()
-	{
+	public function testImageBlockDisabledMapHandlerNewAlbumToAlbum() {
 		/* Make sure the new parent album is not in the disabledFlag map  */
 		$this->_setAndAssertDisabledFlag($this->_subAlbum, false);
 		
@@ -439,8 +421,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* The entity::save event handler should ignore non GalleryItem entities*/
-	public function testImageBlockSaveEventHandlerShouldIgnoreNonGalleryItemEntities()
-	{
+	public function testImageBlockSaveEventHandlerShouldIgnoreNonGalleryItemEntities() {
 		/* Make sure the event handler is registered */
 		$listener = new ImageBlockHelper();
 		$this->_registerEventListener('GalleryEntity::save', $listener);
@@ -476,8 +457,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	 * @param GalleryAlbumItem $oldParent the old / current parent album
 	 * @param GalleryAlbumItem $newParent the new parent album
 	 */
-	public function _moveItem(&$item, &$oldParent, &$newParent)
-	{
+	public function _moveItem(&$item, &$oldParent, &$newParent) {
 		$lockIds = array();
 		
 		/* Acquire the locks */
@@ -512,8 +492,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* Verify the value of the disabledFlag for a list of items */
-	public function _verifyDisabledFlagForItems($items, $expectedValue)
-	{
+	public function _verifyDisabledFlagForItems($items, $expectedValue) {
 		foreach ($items as $item) {
 			list($ret, $disabledFlag) = ImageBlockHelper::getDisabledFlag($item->getId());
 			if ($ret) {
@@ -524,8 +503,7 @@ class ImageBlockHandlerTest extends GalleryTestCase
 	}
 	
 	/* Sets the disabledFlag for an item and verifies its new value */
-	public function _setAndAssertDisabledFlag($item, $value)
-	{
+	public function _setAndAssertDisabledFlag($item, $value) {
 		$ret = ImageBlockHelper::setDisabledFlag($item, false, $value);
 		if ($ret) {
 			return $ret;

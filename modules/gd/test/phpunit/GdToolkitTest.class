@@ -29,8 +29,7 @@ GalleryCoreApi::requireOnce('modules/gd/test/phpunit/TestGdFunctionality.class')
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 20957 $
  */
-class GdToolkitTest extends GalleryTestCase
-{
+class GdToolkitTest extends GalleryTestCase {
 	/*
 	 * The possible environments to simulate
 	 */
@@ -39,15 +38,13 @@ class GdToolkitTest extends GalleryTestCase
 	
 	public $_oldBase;
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 		include dirname(__FILE__) . '/GdFunctionMatrix.inc';
 		$this->_gdEnvironments = $gdEnvironments;
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -79,8 +76,7 @@ class GdToolkitTest extends GalleryTestCase
 		$this->_gdFunctionality = new TestGdFunctionality();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		$gallery->setConfig('data.gallery.base', $this->_oldBase);
@@ -91,8 +87,7 @@ class GdToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPerformOperations()
-	{
+	public function testPerformOperations() {
 		foreach ($this->_gdEnvironments as $environment) {
 			/* Test each PHP environment we know */
 			$this->_gdFunctionality->setEnvironment($environment);
@@ -354,8 +349,7 @@ class GdToolkitTest extends GalleryTestCase
 		$this->assertEquals(0, $gd->_undestroyedResourceCounter, 'memory leak in unsupported operation');
 	}
 	
-	public function testGetProperties()
-	{
+	public function testGetProperties() {
 		foreach ($this->_gdEnvironments as $environment) {
 			/*
 	         * Test each PHP environment we know
@@ -388,8 +382,7 @@ class GdToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testMergeOperations()
-	{
+	public function testMergeOperations() {
 		list($success, $operation, $args) = $this->_toolkit->mergeOperations('crop', array(
 			1,
 			2,
@@ -538,8 +531,7 @@ class GdToolkitTest extends GalleryTestCase
 		$this->assert(!$success);
 	}
 	
-	public function testDiscoverMimeTypes()
-	{
+	public function testDiscoverMimeTypes() {
 		foreach ($this->_gdEnvironments as $environment) {
 			/*
 	         * Test each PHP environment we know
@@ -554,8 +546,7 @@ class GdToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetOperationsAndProperties()
-	{
+	public function testGetOperationsAndProperties() {
 		foreach ($this->_gdEnvironments as $environment) {
 			/*
 	         * Test each PHP environment we know
@@ -736,8 +727,7 @@ class GdToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFlattenAlphaChannelForGifWithoutIndexForTransparentColor()
-	{
+	public function testFlattenAlphaChannelForGifWithoutIndexForTransparentColor() {
 		/* We use the other case (has transparent color index) in other tests for simplicity */
 		$this->_gdFunctionality->setEnvironment(array_pop($this->_gdEnvironments));
 		$this->_toolkit->setGdFunctionality($this->_gdFunctionality);

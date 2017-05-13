@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryFileSystemEntityHelper_simple
-{
+class GalleryFileSystemEntityHelper_simple {
 	/**
 	 * @see GalleryCoreApi::fetchItemIdByPath
 	 */
-	public static function fetchItemIdByPath($path)
-	{
+	public static function fetchItemIdByPath($path) {
 		global $gallery;
 		if (empty($path)) {
 			return array(
@@ -77,8 +75,7 @@ class GalleryFileSystemEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchChildIdByPathComponent
 	 */
-	public static function fetchChildIdByPathComponent($parentId, $pathComponent)
-	{
+	public static function fetchChildIdByPathComponent($parentId, $pathComponent) {
 		global $gallery;
 		
 		if (empty($parentId) || empty($pathComponent)) {

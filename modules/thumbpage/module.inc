@@ -25,21 +25,21 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
-{
-	public function __construct()
-	{
+class ThumbPageModule extends GalleryModule {
+	/* and GalleryEventListener */
+
+	public function __construct() {
 		$this->ThumbPageModule();
 	}
 
-	public function ThumbPageModule()
-	{
+	public function ThumbPageModule() {
 		global $gallery;
 
 		$this->setId('thumbpage');
 		$this->setName($gallery->i18n('Thumbnail Page'));
 		$this->setDescription(
-		$gallery->i18n('Select page/frame from a multipage file or movie for the thumbnail'));
+			$gallery->i18n('Select page/frame from a multipage file or movie for the thumbnail')
+		);
 		$this->setVersion('2.0.0');
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $gallery->i18n('Display'));
@@ -50,25 +50,39 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemEditPlugin', 'ItemEditThumbPage', 'ItemEditThumbPage',
-		'modules/thumbpage/ItemEditThumbPage.inc', 'thumbpage', null);
+			'ItemEditPlugin',
+			'ItemEditThumbPage',
+			'ItemEditThumbPage',
+			'modules/thumbpage/ItemEditThumbPage.inc',
+			'thumbpage',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
 
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemEditPlugin', 'ItemEditThumbOffset', 'ItemEditThumbOffset',
-		'modules/thumbpage/ItemEditThumbOffset.inc', 'thumbpage', null);
+			'ItemEditPlugin',
+			'ItemEditThumbOffset',
+			'ItemEditThumbOffset',
+			'modules/thumbpage/ItemEditThumbOffset.inc',
+			'thumbpage',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
 
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GalleryEventListener', 'ThumbPageModule', 'ThumbPageModule',
-		'modules/thumbpage/module.inc', 'thumbpage', array('Gallery::DeactivatePlugin'));
+			'GalleryEventListener',
+			'ThumbPageModule',
+			'ThumbPageModule',
+			'modules/thumbpage/module.inc',
+			'thumbpage',
+			array('Gallery::DeactivatePlugin')
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -79,8 +93,7 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent=true)
-	{
+	public function activate($postActivationEvent = true) {
 		list($ret, $page) = $this->_getSupportedMultiPageTypes();
 		if ($ret) {
 			return array($ret, null);
@@ -92,7 +105,7 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 
 		if (empty($page) && empty($movie)) {
 			/* Can't activate unless there's already toolkit support */
-		return array(null, array('view' => 'core.SiteAdmin',
+			return array(null, array('view' => 'core.SiteAdmin',
 							 'subView' => 'thumbpage.CantActivate'));
 		} else {
 			$ret = $this->setParameter('pageTypes', implode('|', $page));
@@ -116,8 +129,7 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'thumbpage.CantActivate';
 	}
 
@@ -128,8 +140,7 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 	 * @return array GalleryStatus a status code
 	 *               array mime types
 	 */
-	public function _getSupportedMultiPageTypes()
-	{
+	public function _getSupportedMultiPageTypes() {
 		list($ret, $thumbnail) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
 		if ($ret) {
 			return array($ret, null);
@@ -163,8 +174,7 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 	 * @return array GalleryStatus a status code
 	 *               array mime types
 	 */
-	public function _getSupportedMovieTypes()
-	{
+	public function _getSupportedMovieTypes() {
 		list($ret, $convert) =
 		GalleryCoreApi::getToolkitOperationMimeTypes('convert-to-image/jpeg');
 		if ($ret) {
@@ -197,14 +207,13 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 	 *
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		/*
 	 * We're going to deactivate this module which will generate another
 	 * Gallery::DeactivatePlugin event, so make sure that we don't handle
 	 * *that* event and get into an infinite loop!
 	 */
-	$data = $event->getData();
+		$data = $event->getData();
 		if ($event->getEventName() == 'Gallery::DeactivatePlugin' &&
 		$data['pluginType'] == 'module' && $data['pluginId'] != 'thumbpage') {
 			list($ret, $isActive) = $this->isActive();
@@ -213,7 +222,7 @@ class ThumbPageModule extends GalleryModule /* and GalleryEventListener */
 			}
 			if ($isActive) {
 				/* Reactivate may fail if toolkit support no longer found. */
-		list($ret, $redirect) = $this->reactivate();
+				list($ret, $redirect) = $this->reactivate();
 				if ($ret) {
 					return array($ret, null);
 				}

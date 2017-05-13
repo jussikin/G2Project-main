@@ -29,13 +29,11 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17589 $
  */
-class NewAlbumController extends GalleryController
-{
+class NewAlbumController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest(&$form)
-	{
+	public function handleRequest(&$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$results = $error = $status = array();
@@ -50,25 +48,30 @@ class NewAlbumController extends GalleryController
 			}
 			if (empty($permissions['core.view'])) {
 				/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+				return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 			}
 			if (empty($permissions['core.addAlbumItem'])) {
 				return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
 			}
 
 		/* Now check the value of name and title */
-		if (empty($form['pathComponent'])) {
-			$error[] = 'form[error][pathComponent][missing]';
-		} elseif (!$platform->isLegalPathComponent($form['pathComponent'])) {
-			$error[] = 'form[error][pathComponent][invalid]';
-		}
+			if (empty($form['pathComponent'])) {
+				$error[] = 'form[error][pathComponent][missing]';
+			} elseif (!$platform->isLegalPathComponent($form['pathComponent'])) {
+				$error[] = 'form[error][pathComponent][invalid]';
+			}
 			if (empty($form['title'])) {
 				$error[] = 'form[error][title][missing]';
 			}
 			if (empty($error)) {
 				list($ret, $newAlbum) = GalleryCoreApi::createAlbum(
-			(int)$form['parentId'], $form['pathComponent'], $form['title'],
-			$form['summary'], $form['description'], null);
+					(int)$form['parentId'],
+					$form['pathComponent'],
+					$form['title'],
+					$form['summary'],
+					$form['description'],
+					null
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -97,13 +100,11 @@ class NewAlbumController extends GalleryController
  * specify the name, title, and summary for the album.  The user is redirected back to the select
  * album page after creating the album with the newly created album automatically selected.
  */
-class NewAlbumView extends GalleryView
-{
+class NewAlbumView extends GalleryView {
 	/**
 	 * @see GalleryView:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		if ($form['formName'] != 'NewAlbum') {
 			$form['formName'] = 'NewAlbum';
@@ -127,7 +128,7 @@ class NewAlbumView extends GalleryView
 		}
 		if (!$canView) {
 			/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
 		$ret = GalleryCoreApi::assertHasItemPermission($form['parentId'], 'core.addAlbumItem');
@@ -142,7 +143,7 @@ class NewAlbumView extends GalleryView
 		}
 
 	/* Load the item's parents */
-	list($ret, $parents) = GalleryCoreApi::fetchParents($parent, 'core.view', true);
+		list($ret, $parents) = GalleryCoreApi::fetchParents($parent, 'core.view', true);
 		if ($ret) {
 			return array($ret, null);
 		}

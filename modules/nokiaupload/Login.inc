@@ -26,13 +26,11 @@ GalleryCoreApi::requireOnce('modules/nokiaupload/classes/ImageUploadHelper.class
  * @author Jerome Rannikko <jeromer@hotpop.com>
  * @version $Revision: 17580 $
  */
-class LoginController extends GalleryController
-{
+class LoginController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		ImageUploadHelper::logRequest('LoginController');
 		
 		/* Request forgery protection */
@@ -59,8 +57,7 @@ class LoginController extends GalleryController
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		return true;
 	}
 }
@@ -68,13 +65,11 @@ class LoginController extends GalleryController
 /**
  * This view implements the Nokia Image Uploader API's 'Login' command.
  */
-class LoginView extends GalleryView
-{
+class LoginView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
@@ -82,8 +77,7 @@ class LoginView extends GalleryView
 	 * API defines the output very specifically so we can't allow any global templating to be used.
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$gallery->debug("##### LoginView #####\n\$status = ");
 		$gallery->debug_r($status);

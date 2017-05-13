@@ -29,15 +29,12 @@
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 GalleryCoreApi::requireOnce(
 	'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
-class ModRewriteHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ModRewriteHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -76,8 +73,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$gallery->setPlatform($this->_platform);
 	}
 
-	public function testHtaccessPath()
-	{
+	public function testHtaccessPath() {
 		list($ret, $path) = ModRewriteHelper::getHtaccessPath();
 		if ($ret) {
 			return $ret;
@@ -93,8 +89,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals('/phpunit/embedded/.htaccess', $path, 'embedded');
 	}
 
-	public function testCheckFile()
-	{
+	public function testCheckFile() {
 		list($ret, $code) = ModRewriteHelper::checkFile();
 		if ($ret) {
 			return $ret;
@@ -123,8 +118,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_HTACCESS_MISSING, $code, 'exists');
 	}
 
-	public function testCheckFileEmbedded()
-	{
+	public function testCheckFileEmbedded() {
 		list($ret, $code) = ModRewriteHelper::checkFile(true);
 		if ($ret) {
 			return $ret;
@@ -153,8 +147,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_EMBED_HTACCESS_MISSING, $code, 'exists');
 	}
 
-	public function testWriteFile()
-	{
+	public function testWriteFile() {
 		list($ret, $code) = ModRewriteHelper::writeFile(array());
 		if ($ret) {
 			return $ret;
@@ -184,8 +177,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assert(!isset($this->_fileContent), 'writeable fileContent');
 	}
 
-	public function testWriteFileEmbedded()
-	{
+	public function testWriteFileEmbedded() {
 		list($ret, $code) = ModRewriteHelper::writeFile(array(), true);
 		if ($ret) {
 			return $ret;
@@ -215,8 +207,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assert(!isset($this->_embeddedFileContent), 'writeable fileContent');
 	}
 
-	public function testGetHtaccessContentForEmbeddedDownloadItemRule()
-	{
+	public function testGetHtaccessContentForEmbeddedDownloadItemRule() {
 		/*
 	 * Bug 1693956 - Verify that embedded core.DownloadItem rules don't have a session id in
 	 * the RewriteRule.
@@ -239,8 +230,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		'<pre>' . $htaccess . '</pre>');
 	}
 
-	public function testCheckModRewrite()
-	{
+	public function testCheckModRewrite() {
 		GalleryUtilities::putRequestVariable('modRewriteTest', 'pass');
 		list($ret, $status, $trueStatus) = ModRewriteHelper::checkModRewrite();
 		if ($ret) {
@@ -269,8 +259,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_APACHE_NO_MOD_REWRITE, $trueStatus, '404');
 	}
 
-	public function testCheckModRewriteUnableToTest()
-	{
+	public function testCheckModRewriteUnableToTest() {
 		global $gallery;
 	/* Prepare the URL Generator */
 	$urlGenerator = new GalleryUrlGenerator();
@@ -291,8 +280,7 @@ class ModRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_APACHE_UNABLE_TO_TEST, $trueStatus, 'unable to test');
 	}
 
-	public function testCheckModRewriteForced()
-	{
+	public function testCheckModRewriteForced() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'modrewrite.status',
 		serialize(array('needOptions' => true, 'forced' => 1)));
 		if ($ret) {
@@ -316,8 +304,7 @@ class ModRewriteHelperTest extends GalleryTestCase
  * @package Rewrite
  * @subpackage PHPUnit
  */
-class ModRewriteHelperMockPlatform extends GalleryPlatform
-{
+class ModRewriteHelperMockPlatform extends GalleryPlatform {
 	public $_isWriteable = true;
 	public $_isReadable = true;
 	public $_fileExists = true;
@@ -327,13 +314,11 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 	public $_embeddedPreviousContent = array();
 	public $_previousContent = array();
 
-	public function init(&$test)
-	{
+	public function init(&$test) {
 		$this->_test =& $test;
 	}
 
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		if ($target == 'www.test.server') {
 			return 'phpunit';
 		}
@@ -341,8 +326,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fsockopen($target, $port, $errno, $errstr, $timeout);
 	}
 
-	public function file_exists($file)
-	{
+	public function file_exists($file) {
 		if (strpos($file, 'embedded/.htaccess') !== false) {
 			return $this->_fileExistsEmbed;
 		} elseif (strpos($file, '/.htaccess') !== false) {
@@ -352,8 +336,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::file_exists($file);
 	}
 
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if ($path == '/phpunit/test') {
 			return true;
 		}
@@ -361,8 +344,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 
-	public function fwrite($handle, $string, $length=0)
-	{
+	public function fwrite($handle, $string, $length=0) {
 		$buffer = array(
 		'pass' => array('HTTP/1.1 200 OK',
 				'Content-Type: text/html; charset=ISO-8859-1',
@@ -395,8 +377,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fwrite($handle, $string, $length=0);
 	}
 
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		if ($handle == 'phpunit') {
 			return empty($this->_readBuffer);
 		}
@@ -404,8 +385,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::feof($handle);
 	}
 
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if ($handle == 'phpunit') {
 			if (empty($this->_readBuffer)) {
 				return null;
@@ -417,8 +397,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fgets($handle, $length);
 	}
 
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if ($handle == 'phpunit') {
 			if (empty($this->_readBuffer)) {
 				return null;
@@ -441,8 +420,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fread($handle, $length);
 	}
 
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		if ($handle == 'phpunit') {
 			return true;
 		}
@@ -450,8 +428,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fflush($handle);
 	}
 
-	public function is_readable($file)
-	{
+	public function is_readable($file) {
 		if (strpos($file, 'embedded/.htaccess') !== false) {
 			return $this->_isReadableEmbed;
 		} elseif (strpos($file, '/.htaccess') !== false) {
@@ -461,8 +438,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_readable($file);
 	}
 
-	public function is_writeable($file)
-	{
+	public function is_writeable($file) {
 		if (strpos($file, 'embedded/.htaccess') !== false) {
 			return $this->_isWriteableEmbed;
 		} elseif (strpos($file, '/.htaccess') !== false) {
@@ -474,8 +450,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_writeable($file);
 	}
 
-	public function file($file)
-	{
+	public function file($file) {
 		if (strpos($file, '.htaccess') !== false) {
 			return $passCodeAudit = array();
 		}
@@ -483,8 +458,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::file($file);
 	}
 
-	public function fopen($file, $mode, $useIncludePath=null, $zcontext=null)
-	{
+	public function fopen($file, $mode, $useIncludePath=null, $zcontext=null) {
 		if (strpos($file, 'embedded/.htaccess') !== false) {
 			if ($this->_isWriteableEmbed) {
 				$this->_test->_embeddedFileContent = '';
@@ -506,8 +480,7 @@ class ModRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fopen($file, $mode, $useIncludePath, $zcontext);
 	}
 
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		if ($handle == '.htaccess') {
 			return true;
 		} elseif ($handle == '.embedded') {

@@ -22,15 +22,12 @@
  * Upgrade core module
  * @package Upgrade
  */
-class UpgradeCoreModuleStep extends UpgradeStep
-{
-	public function stepName()
-	{
+class UpgradeCoreModuleStep extends UpgradeStep {
+	public function stepName() {
 		return _('Upgrade Core');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		global $gallery;
 		$gallery->startRecordingDebugSnippet();
 		
@@ -143,8 +140,7 @@ class UpgradeCoreModuleStep extends UpgradeStep
 		return false;
 	}
 	
-	public function _addSystemInformationToDebugLog($versions)
-	{
+	public function _addSystemInformationToDebugLog($versions) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$isSvnInstall = file_exists(dirname(dirname(dirname(__FILE__))) . '/.svn');

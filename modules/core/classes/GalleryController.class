@@ -29,8 +29,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryController
-{
+class GalleryController {
 	/**
 	 * Take the appropriate action based on the user input provided.
 	 *
@@ -102,8 +101,7 @@ class GalleryController
 	 * @return array GalleryStatus a status code
 	 *               return-array
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -120,8 +118,7 @@ class GalleryController
 	 *               GalleryController a controller
 	 * @static
 	 */
-	public static function loadController($controllerName)
-	{
+	public static function loadController($controllerName) {
 		global $gallery;
 		
 		/* Continue to support old style : separator for a while */
@@ -201,8 +198,7 @@ class GalleryController
 	 *
 	 * @return boolean true if access always allowed
 	 */
-	public function isAllowedInMaintenance()
-	{
+	public function isAllowedInMaintenance() {
 		return false;
 	}
 	
@@ -211,8 +207,7 @@ class GalleryController
 	 *
 	 * @return boolean true if access always allowed
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return false;
 	}
 	
@@ -224,8 +219,7 @@ class GalleryController
 	 *
 	 * @return boolean true if the controller opts-out from the auth token check
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		return false;
 	}
 	
@@ -234,8 +228,7 @@ class GalleryController
 	 *
 	 * @return boolean true to enable session
 	 */
-	public function shouldSaveSession()
-	{
+	public function shouldSaveSession() {
 		return true;
 	}
 	
@@ -247,8 +240,7 @@ class GalleryController
 	 * @return GalleryStatus a status code null on success, ERROR_REQUEST_FORGED on failure
 	 * @static
 	 */
-	public static function assertIsGenuineRequest()
-	{
+	public static function assertIsGenuineRequest() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -282,8 +274,7 @@ class GalleryController
 	 *               GalleryItem an item
 	 * @throws ERROR_MISSING_VALUE if there is no itemId in the request parameters.
 	 */
-	public function getItem($checkPermissions = true)
-	{
+	public function getItem($checkPermissions = true) {
 		$itemId = (int) GalleryUtilities::getRequestVariables('itemId');
 		
 		if (empty($itemId)) {
@@ -328,8 +319,7 @@ class GalleryController
 	/**
 	 * @see GalleryView::_permissionCheck()
 	 */
-	public function permissionCheck($ret)
-	{
+	public function permissionCheck($ret) {
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
 		$view = new GalleryView();
 		list($ret, $results) = $view->_permissionCheck($ret);

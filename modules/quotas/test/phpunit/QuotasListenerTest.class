@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class QuotasListenerTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class QuotasListenerTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -79,8 +76,7 @@ class QuotasListenerTest extends GalleryTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::deleteEntityById($this->_album->getId(), 'GalleryAlbumItem');
 		if ($ret) {
 			return $ret;
@@ -111,8 +107,7 @@ class QuotasListenerTest extends GalleryTestCase
 		}
 	}
 
-	public function testDeleteEntityQuotasListener()
-	{
+	public function testDeleteEntityQuotasListener() {
 		/* Enable event listener (normally disabled for unit tests) */
 	$this->_registerEventListener('GalleryEntity::delete', new QuotasModule());
 
@@ -197,24 +192,21 @@ class QuotasListenerTest extends GalleryTestCase
 		}
 	}
 
-	public function _removeMapEntry($remove)
-	{
+	public function _removeMapEntry($remove) {
 		$ret = GalleryCoreApi::removeMapEntry('QuotasMap', $remove);
 		if ($ret) {
 			return ($ret);
 		}
 	}
 
-	public function _addMapEntry($add)
-	{
+	public function _addMapEntry($add) {
 		$ret = GalleryCoreApi::addMapEntry('QuotasMap', $add);
 		if ($ret) {
 			return ($ret);
 		}
 	}
 
-	public function _deleteEntity($entity)
-	{
+	public function _deleteEntity($entity) {
 		$ret = GalleryCoreApi::deleteEntityById($entity->getId(), $entity->getEntityType());
 		if ($ret) {
 			return $ret;

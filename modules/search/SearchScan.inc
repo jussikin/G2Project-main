@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/search/classes/SearchUtilities.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SearchScanController extends GalleryController
-{
+class SearchScanController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 		$results = array();
@@ -45,22 +43,23 @@ class SearchScanController extends GalleryController
 			}
 
 			list($ret, $slideshow) =
-		GalleryCoreApi::newFactoryInstance('SlideshowInterface_1_0');
+			GalleryCoreApi::newFactoryInstance('SlideshowInterface_1_0');
 			if ($ret || !isset($slideshow)) {
 				return array($ret, null);
 			}
 
 			GalleryCoreApi::requireOnce(
-		'modules/search/classes/GallerySearchInterface_1_0.class');
+				'modules/search/classes/GallerySearchInterface_1_0.class'
+			);
 			list($ret, $ids) =
-		GalleryCoreApi::getAllFactoryImplementationIds('GallerySearchInterface_1_0');
+			GalleryCoreApi::getAllFactoryImplementationIds('GallerySearchInterface_1_0');
 			if ($ret) {
 				return array($ret, null);
 			}
 
 			foreach ($ids as $id => $className) {
 				list($ret, $searchInstances[$id]) =
-			GalleryCoreApi::newFactoryInstance('GallerySearchInterface_1_0', $className);
+				GalleryCoreApi::newFactoryInstance('GallerySearchInterface_1_0', $className);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -69,8 +68,10 @@ class SearchScanController extends GalleryController
 			foreach ($searchInstances as $id => $instance) {
 				if (isset($form['options'][$id])) {
 					list($ret, $resultSet) =
-			$instance->search($form['options'][$id],
-				SearchUtilities::sanitizeSearchCriteria($form['searchCriteria']));
+					$instance->search(
+						$form['options'][$id],
+						SearchUtilities::sanitizeSearchCriteria($form['searchCriteria'])
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -103,21 +104,20 @@ class SearchScanController extends GalleryController
 /**
  * Perform a search
  */
-class SearchScanView extends GalleryView
-{
+class SearchScanView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 	/* TODO: Parameterize this */
-	$scanSize = 3;
+		$scanSize = 3;
 
 	/* Find all the modules that support the Search interface */
-	GalleryCoreApi::requireOnce(
-		'modules/search/classes/GallerySearchInterface_1_0.class');
+		GalleryCoreApi::requireOnce(
+			'modules/search/classes/GallerySearchInterface_1_0.class'
+		);
 		list($ret, $ids) =
 		GalleryCoreApi::getAllFactoryImplementationIds('GallerySearchInterface_1_0');
 		if ($ret) {
@@ -126,19 +126,19 @@ class SearchScanView extends GalleryView
 
 		foreach ($ids as $id => $className) {
 			list($ret, $searchInstances[$id]) =
-		GalleryCoreApi::newFactoryInstance('GallerySearchInterface_1_0', $className);
+			GalleryCoreApi::newFactoryInstance('GallerySearchInterface_1_0', $className);
 			if ($ret) {
 				return array($ret, null);
 			}
 		}
 
 	/* Load the search info for each module */
-	foreach ($searchInstances as $id => $instance) {
-		list($ret, $modules[$id]) = $instance->getSearchModuleInfo();
-		if ($ret) {
-			return array($ret, null);
+		foreach ($searchInstances as $id => $instance) {
+			list($ret, $modules[$id]) = $instance->getSearchModuleInfo();
+			if ($ret) {
+				return array($ret, null);
+			}
 		}
-	}
 
 		$items = array();
 		$thumbnails = array();
@@ -163,21 +163,24 @@ class SearchScanView extends GalleryView
 				}
 
 		/* Execute a "scan" search */
-		foreach ($searchInstances as $id => $instance) {
-			if (isset($form['options'][$id])) {
-				list($ret, $searchResults[$id]) =
-				$instance->search($form['options'][$id],
-				SearchUtilities::sanitizeSearchCriteria($form['searchCriteria']),
-				0, $scanSize);
-				if ($ret) {
-					return array($ret, null);
+				foreach ($searchInstances as $id => $instance) {
+					if (isset($form['options'][$id])) {
+						list($ret, $searchResults[$id]) =
+						$instance->search(
+							$form['options'][$id],
+							SearchUtilities::sanitizeSearchCriteria($form['searchCriteria']),
+							0,
+							$scanSize
+						);
+						if ($ret) {
+									return array($ret, null);
+						}
+					}
 				}
-			}
-		}
 			}
 
 		/* Pull out all the item ids and save them */
-		$itemIds = array();
+			$itemIds = array();
 			foreach ($searchResults as $id => $resultSet) {
 				foreach ($resultSet['results'] as $result) {
 					if (isset($result['itemId'])) {
@@ -189,9 +192,8 @@ class SearchScanView extends GalleryView
 
 			$thumbnails = array();
 			if (!empty($itemIds)) {
-
 		/* Fetch items */
-		list($ret, $itemList) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
+				list($ret, $itemList) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -200,8 +202,8 @@ class SearchScanView extends GalleryView
 				}
 
 		/* Fetch thumbnails */
-		list($ret, $thumbnailList) =
-			GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
+				list($ret, $thumbnailList) =
+				GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -224,7 +226,7 @@ class SearchScanView extends GalleryView
 		$slideshowAvailable = !empty($ids);
 
 	/* Render the HTML body */
-	$template->setVariable('SearchScan', array(
+		$template->setVariable('SearchScan', array(
 		'controller' => 'search.SearchScan',
 		'modules' => $modules,
 		'searchResults' => $searchResults,

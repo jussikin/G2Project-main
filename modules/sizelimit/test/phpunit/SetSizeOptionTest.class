@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class SetSizeOptionTest extends ItemAddOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class SetSizeOptionTest extends ItemAddOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddOptionTestCase($methodName, 'sizelimit', 'SetSizeOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -124,8 +121,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 		$this->_expectCompress = array('compress');
 	}
 
-	public function testAppropriate()
-	{
+	public function testAppropriate() {
 		list($ret, $appropriate) = $this->_option->isAppropriate($this->_album, null);
 		if ($ret) {
 			return $ret;
@@ -134,8 +130,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions, don't keep original */
-	public function testChangeDimNoOriginal()
-	{
+	public function testChangeDimNoOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -168,8 +163,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions on multiple items, don't keep originals */
-	public function testMultipleChangeDimNoOriginal()
-	{
+	public function testMultipleChangeDimNoOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		foreach (array('width' => 768, 'height' => 1024, 'keepOriginal' => 0) as $key => $value) {
@@ -217,8 +211,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions, keep original */
-	public function testChangeDimKeepOriginal()
-	{
+	public function testChangeDimKeepOriginal() {
 		global $gallery;
 
 		foreach (array('width' => 768, 'height' => 1024, 'keepOriginal' => 1) as $key => $value) {
@@ -252,8 +245,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions on multiple items, keep originals */
-	public function testMultipleChangeDimKeepOriginal()
-	{
+	public function testMultipleChangeDimKeepOriginal() {
 		global $gallery;
 
 		foreach (array('width' => 768, 'height' => 1024, 'keepOriginal' => 1) as $key => $value) {
@@ -304,8 +296,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change size, don't keep original */
-	public function testChangeSizeNoOriginal()
-	{
+	public function testChangeSizeNoOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -339,8 +330,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change size on multiple items, don't keep originals */
-	public function testMultipleChangeSizeNoOriginal()
-	{
+	public function testMultipleChangeSizeNoOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -392,8 +382,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change size, keep original */
-	public function testChangeSizeKeepOriginal()
-	{
+	public function testChangeSizeKeepOriginal() {
 		foreach (array('size' => 1000, 'keepOriginal' => 1) as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
 		$key, $value, $this->_album->getId());
@@ -426,8 +415,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change size on multiple items, keep originals */
-	public function testMultipleChangeSizeKeepOriginal()
-	{
+	public function testMultipleChangeSizeKeepOriginal() {
 		foreach (array('size' => 1000, 'keepOriginal' => 1) as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
 		$key, $value, $this->_album->getId());
@@ -477,8 +465,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions AND size, keep original */
-	public function testChangeBothKeepOriginal()
-	{
+	public function testChangeBothKeepOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$this->_expectResizeCompress = array_merge($this->_expectResize, $this->_expectCompress);
@@ -516,8 +503,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions AND size on multiple items, keep originals */
-	public function testMultipleChangeBothKeepOriginal()
-	{
+	public function testMultipleChangeBothKeepOriginal() {
 		$this->_expectResizeCompress = array_merge($this->_expectResize, $this->_expectCompress);
 		foreach (array('width' => 768, 'height' => 1024, 'size' => 1000, 'keepOriginal' => 1)
 		as $key => $value) {
@@ -572,8 +558,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions AND size, don't keep original */
-	public function testChangeBothNoOriginal()
-	{
+	public function testChangeBothNoOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$this->_expectResizeCompress = array_merge($this->_expectResize, $this->_expectCompress);
@@ -607,8 +592,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions AND size on multiple items, don't keep originals */
-	public function testMultipleChangeBothNoOriginal()
-	{
+	public function testMultipleChangeBothNoOriginal() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$this->_expectResizeCompress = array_merge($this->_expectResize, $this->_expectCompress);
@@ -659,8 +643,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* try to change size and dimensions for unsupported file format */
-	public function testUnknownFormat()
-	{
+	public function testUnknownFormat() {
 		foreach (array('width' => 768, 'height' => 1024, 'size' => 1000, 'keepOriginal' => 0)
 		as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
@@ -675,8 +658,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* try to change size and dimensions for unsupported file format on multiple files */
-	public function testMultipleUnknownFormat()
-	{
+	public function testMultipleUnknownFormat() {
 		foreach (array('width' => 768, 'height' => 1024, 'size' => 1000, 'keepOriginal' => 0)
 		as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
@@ -707,8 +689,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* ensure no change when image is already smaller than limits (don't stretch) */
-	public function testBelowLimits()
-	{
+	public function testBelowLimits() {
 		foreach (array('width' => 1800, 'height' => 2400, 'size' => 30000, 'keepOriginal' => 0)
 		as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
@@ -734,8 +715,7 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
 	}
 
 	/* change dimensions, delete larger resizes */
-	public function testChangeDimDropResizes()
-	{
+	public function testChangeDimDropResizes() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$id = $this->_items[0]->getId();
@@ -822,17 +802,14 @@ class SetSizeOptionTest extends ItemAddOptionTestCase
  * @package SizeLimit
  * @subpackage PHPUnit
  */
-class SetSizeOptionTestPlatform extends GalleryPlatform
-{
-	public function SetSizeOptionTestPlatform($originalPlatform)
-	{
+class SetSizeOptionTestPlatform extends GalleryPlatform {
+	public function SetSizeOptionTestPlatform($originalPlatform) {
 		$this->_savedPlatform = $originalPlatform;
 		GalleryUtilities::putRequestVariable('resizePerformed', false);
 		GalleryUtilities::putRequestVariable('compressPerformed', false);
 	}
 
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		$size = GalleryUtilities::getRequestVariables('size_' . basename($file));
 		if ($size) {
 			return (int)$size;
@@ -841,8 +818,7 @@ class SetSizeOptionTestPlatform extends GalleryPlatform
 		return 26031966;
 	}
 
-	public function getimagesize($file)
-	{
+	public function getimagesize($file) {
 		$imagesize = GalleryUtilities::getRequestVariables('imagesize_' . basename($file));
 		if ($imagesize) {
 			/* doing it this way keeps CodeAudit happy */
@@ -852,8 +828,7 @@ class SetSizeOptionTestPlatform extends GalleryPlatform
 		return array(1728, 2304);
 	}
 
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		$compressPerformed = GalleryUtilities::getRequestVariables('compressPerformed');
 		$resizePerformed = GalleryUtilities::getRequestVariables('resizePerformed');
 
@@ -865,8 +840,7 @@ class SetSizeOptionTestPlatform extends GalleryPlatform
 	}
 	}
 
-	public function unlink($filename)
-	{
+	public function unlink($filename) {
 		/* if it is a derivative - we didn't really create it */
 	if ($this->_savedPlatform->file_exists($filename)) {
 		return $this->_savedPlatform->unlink($filename);
@@ -879,14 +853,12 @@ class SetSizeOptionTestPlatform extends GalleryPlatform
 /**
  * Test toolkit
  */
-class SetSizeOptionTestToolkit extends GalleryToolkit
-{
+class SetSizeOptionTestToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
 	public function performOperation($mimeType, $operationName, $sourceFilename,
-				  $destFilename, $parameters, $context=array())
-	{
+				  $destFilename, $parameters, $context=array()) {
 		/* Here we are pretending that conversion happened by setting the flag */
 	switch ($operationName) {
 	case 'compress':
@@ -919,8 +891,7 @@ class SetSizeOptionTestToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $file)
-	{
+	public function getProperty($mimeType, $propertyName, $file) {
 		global $gallery;
 
 	/* Our 'mime type' has to support dimensions */

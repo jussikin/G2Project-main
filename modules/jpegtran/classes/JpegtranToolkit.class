@@ -31,13 +31,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class JpegtranToolkit extends GalleryToolkit
-{
+class JpegtranToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation()
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		global $gallery;
 		
 		if (!in_array($mimeType, array(
@@ -209,8 +207,7 @@ class JpegtranToolkit extends GalleryToolkit
 	 *               int width,
 	 *               int height
 	 */
-	public function _getImageDimensions($filename)
-	{
+	public function _getImageDimensions($filename) {
 		global $gallery;
 		
 		/*

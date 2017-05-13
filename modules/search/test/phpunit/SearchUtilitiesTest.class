@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SearchUtilitiesTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SearchUtilitiesTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function testSanitizeSearchCriteria()
-	{
+	public function testSanitizeSearchCriteria() {
 		global $gallery;
 
 		GalleryCoreApi::requireOnce('modules/search/classes/SearchUtilities.class');

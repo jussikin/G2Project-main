@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class LanguageTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class LanguageTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ChangeLanguage');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -45,8 +42,7 @@ class LanguageTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testGetActiveLocale()
-	{
+	public function testGetActiveLocale() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->remove('core.language');
@@ -77,8 +73,7 @@ class LanguageTest extends GalleryControllerTestCase
 		$this->assertEquals('sess_language', $language, 'session language');
 	}
 	
-	public function testChangeLanguageController()
-	{
+	public function testChangeLanguageController() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('language', 'test_language');
 		
@@ -96,8 +91,7 @@ class LanguageTest extends GalleryControllerTestCase
 		$this->assertEquals('test_language', $language, 'language');
 	}
 	
-	public function testGetLanguageDescription()
-	{
+	public function testGetLanguageDescription() {
 		$testCases = array(
 			'en_US' => 'English (US)',
 			'hu_HU' => 'Magyar'
@@ -112,8 +106,7 @@ class LanguageTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testGetSupportedLanguageEnglishOnly()
-	{
+	public function testGetSupportedLanguageEnglishOnly() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -136,8 +129,7 @@ class LanguageTest extends GalleryControllerTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetSupportedLanguageEnglishFilterd()
-	{
+	public function testGetSupportedLanguageEnglishFilterd() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -170,8 +162,7 @@ class LanguageTest extends GalleryControllerTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetSupportedLanguageHasExceptionForChineseDefaultCountry()
-	{
+	public function testGetSupportedLanguageHasExceptionForChineseDefaultCountry() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();

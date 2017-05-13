@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryFactoryHelper_s
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryFactoryHelper_medium
-{
+class GalleryFactoryHelper_medium {
 	/**
 	 * @see GalleryCoreApi::getAllFactoryImplementationIdsWithHint
 	 */
-	public static function getAllImplementationIdsWithHint($classType, $hint)
-	{
+	public static function getAllImplementationIdsWithHint($classType, $hint) {
 		list($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
 		if ($ret) {
 			return array(
@@ -59,8 +57,7 @@ class GalleryFactoryHelper_medium
 	/**
 	 * @see GalleryCoreApi::getFactoryDefinitionHints
 	 */
-	public static function getFactoryDefinitionHints($classType, $implId)
-	{
+	public static function getFactoryDefinitionHints($classType, $implId) {
 		list($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
 		if ($ret) {
 			return array(
@@ -85,8 +82,7 @@ class GalleryFactoryHelper_medium
 	/**
 	 * @see GalleryCoreApi::updateFactoryDefinitionHints
 	 */
-	public static function updateFactoryDefinitionHints($classType, $implId, $hints)
-	{
+	public static function updateFactoryDefinitionHints($classType, $implId, $hints) {
 		foreach ($hints as $i => $hint) {
 			$hints[$i] = GalleryUtilities::strToLower($hint);
 		}
@@ -110,8 +106,7 @@ class GalleryFactoryHelper_medium
 	/**
 	 * @see GalleryCoreApi::unregisterFactoryImplementationsByModuleId
 	 */
-	public static function unregisterImplementationsByModuleId($moduleId)
-	{
+	public static function unregisterImplementationsByModuleId($moduleId) {
 		$ret = GalleryCoreApi::removeMapEntry('GalleryFactoryMap', array(
 			'implModuleId' => $moduleId
 		));
@@ -127,8 +122,7 @@ class GalleryFactoryHelper_medium
 	/**
 	 * @see GalleryCoreApi::unregisterFactoryImplementation
 	 */
-	public static function unregisterImplementation($classType, $implId)
-	{
+	public static function unregisterImplementation($classType, $implId) {
 		$ret = GalleryCoreApi::removeMapEntry('GalleryFactoryMap', array(
 			'classType' => $classType,
 			'implId' => $implId
@@ -145,8 +139,7 @@ class GalleryFactoryHelper_medium
 	/**
 	 * @see GalleryCoreApi::registerFactoryImplementation
 	 */
-	public static function registerImplementation($classType, $className, $implId, $implPath, $implModuleId, $hints, $orderWeight)
-	{
+	public static function registerImplementation($classType, $className, $implId, $implPath, $implModuleId, $hints, $orderWeight) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -185,8 +178,7 @@ class GalleryFactoryHelper_medium
 	/**
 	 * @see GalleryCoreApi::registerFactoryImplementation
 	 */
-	public static function registerFactoryImplementationForRequest($classType, $className, $implId, $implPath, $implModuleId, $hints)
-	{
+	public static function registerFactoryImplementationForRequest($classType, $className, $implId, $implPath, $implModuleId, $hints) {
 		$registryData =& GalleryFactoryHelper_simple::_getFactoryData();
 		if ($registryData[0]) {
 			return $registryData[0];
@@ -228,8 +220,7 @@ class GalleryFactoryHelper_medium
 	 * @param string $value the value of the new entry
 	 * @access private
 	 */
-	public function _array_unshift_key_value(&$array, $key, $value)
-	{
+	public function _array_unshift_key_value(&$array, $key, $value) {
 		unset($array[$key]);
 		$array = array_merge(array(
 			$key => $value

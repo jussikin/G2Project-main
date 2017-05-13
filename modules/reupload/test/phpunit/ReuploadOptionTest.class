@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Piotr P. Karwasz <piotr.karwasz@ens.fr>
  * @version $Revision: 17580 $
  */
-class ReuploadOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class ReuploadOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'reupload', 'ReuploadPhotoOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -75,8 +72,7 @@ class ReuploadOptionTest extends ItemEditOptionTestCase
 	$gallery->setPlatform(new ReuploadOptionTestPlatform($gallery->getPlatform()));
 	}
 
-	public function testReupload()
-	{
+	public function testReupload() {
 		$form['tmp_name']['reupload'] = 'bogus.tmp';
 		$form['size']['reupload'] = 800;
 		$form['serialNumber'] = $this->_item->getSerialNumber();
@@ -94,8 +90,7 @@ class ReuploadOptionTest extends ItemEditOptionTestCase
 	 * We are assuming that the reason is that filesize exceeds the limit
 	 * which is most common case.
 	 */
-	public function testReuploadFailure()
-	{
+	public function testReuploadFailure() {
 		$form['tmp_name']['reupload'] = '';
 		$form['name']['reupload'] = 'itried.jpg';
 		$form['size']['reupload'] = 0;
@@ -109,8 +104,7 @@ class ReuploadOptionTest extends ItemEditOptionTestCase
 	}
 
 	/* This imitates the case when the new file has different mime type than the old one */
-	public function testReuploadToolkitFailure()
-	{
+	public function testReuploadToolkitFailure() {
 		$form['tmp_name']['reupload'] = 'bogus.mpeg';
 		$form['size']['reupload'] = 1500;
 		$form['serialNumber'] = $this->_item->getSerialNumber();
@@ -132,8 +126,7 @@ class ReuploadOptionTest extends ItemEditOptionTestCase
 	 * This imitates the case when we didn't even try to upload the file
 	 * Shouldn't be any errors!
 	 */
-	public function testReuploadNothing()
-	{
+	public function testReuploadNothing() {
 		$form['tmp_name']['reupload'] = '';
 		$form['name']['reupload'] = '';
 		$form['size']['reupload'] = 0;
@@ -148,8 +141,7 @@ class ReuploadOptionTest extends ItemEditOptionTestCase
 	/**
 	 * Verify that attempt to reupload to a linked entity is blocked (UI doesn't allow it).
 	 */
-	public function testReuploadLinkedEntity()
-	{
+	public function testReuploadLinkedEntity() {
 		list($ret, $linkedEntity) = $this->_createLinkedItem($this->_album->getId(), $this->_item);
 		if ($ret) {
 			return $ret;
@@ -167,35 +159,28 @@ class ReuploadOptionTest extends ItemEditOptionTestCase
 /**
  * Test platform
  */
-class ReuploadOptionTestPlatform extends GalleryPlatform
-{
-	public function ReuploadOptionTestPlatform($originalPlatform)
-	{
+class ReuploadOptionTestPlatform extends GalleryPlatform {
+	public function ReuploadOptionTestPlatform($originalPlatform) {
 		$this->_savedPlatform = $originalPlatform;
 	}
 
-	public function is_uploaded_file($file)
-	{
+	public function is_uploaded_file($file) {
 		return true;
 	}
 
-	public function file_exists($file)
-	{
+	public function file_exists($file) {
 		return !strstr($file, 'albumtest');
 	}
 
-	public function unlink($file)
-	{
+	public function unlink($file) {
 		return true;
 	}
 
-	public function copy($input, $output)
-	{
+	public function copy($input, $output) {
 		return true;
 	}
 
-	public function filesize($path)
-	{
+	public function filesize($path) {
 		return 800;
 	}
 }
@@ -203,13 +188,11 @@ class ReuploadOptionTestPlatform extends GalleryPlatform
 /**
  * Test toolkit
  */
-class ReuploadOptionTestToolkit extends GalleryToolkit
-{
+class ReuploadOptionTestToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $file)
-	{
+	public function getProperty($mimeType, $propertyName, $file) {
 		if ($propertyName == 'dimensions') {
 			$dimensionRequest = GalleryUtilities::getRequestVariables('dimensions');
 			if ($dimensionRequest == 'bad_data') {

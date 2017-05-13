@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaRenderer.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class PanoramaOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class PanoramaOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'panorama', 'PanoramaOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -61,8 +58,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase
 		$this->_renderer = new PanoramaRenderer();
 	}
 
-	public function _makePanoramas()
-	{
+	public function _makePanoramas() {
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -87,8 +83,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase
 		return null;
 	}
 
-	public function testPanoramaOn()
-	{
+	public function testPanoramaOn() {
 		$form['PanoramaOption']['isPanorama'] = 1;
 
 		$result = $this->_handleRequestAfterEdit($form, $this->_item);
@@ -101,8 +96,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals('PanoramaRenderer', $item->getRenderer());
 	}
 
-	public function testPanoramaOff()
-	{
+	public function testPanoramaOff() {
 		$ret = $this->_makePanoramas();
 		if ($ret) {
 			return $ret;
@@ -119,8 +113,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase
 	$this->assert(in_array($item->getRenderer(), array(null, '')), 'renderer not empty');
 	}
 
-	public function testHelper()
-	{
+	public function testHelper() {
 		list($ret, $images) = PanoramaHelper::fetchViewableImages(array($this->_item));
 		if ($ret) {
 			return $ret;
@@ -130,8 +123,7 @@ class PanoramaOptionTest extends ItemEditOptionTestCase
 				$images[$this->_item->getId()]->getId(), 'Id');
 	}
 
-	public function testRender()
-	{
+	public function testRender() {
 		/* Make sure we use full urls in applet parameters, and sessionid in image url */
 	$ret = $this->_makePanoramas();
 		if ($ret) {

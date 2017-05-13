@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryQuotasHelper
-{
+class GalleryQuotasHelper {
 	/**
 	 * Get the total size of all the user's current files, excluding the files in the
 	 * excludeIds param array.
@@ -35,8 +34,7 @@ class GalleryQuotasHelper
 	 * @return array GalleryStatus a status code
 	 *               integer user's disk usage in bytes
 	 */
-	public static function getUserDiskUsage($userId, $excludeIds=array())
-	{
+	public static function getUserDiskUsage($userId, $excludeIds=array()) {
 		global $gallery;
 
 		$storage =& $gallery->getStorage();
@@ -86,8 +84,7 @@ class GalleryQuotasHelper
 	 *               bool does a quota exists for this user
 	 *               integer user's disk quota in Kilobytes
 	 */
-	public static function getUserDiskQuota($userId)
-	{
+	public static function getUserDiskQuota($userId) {
 		global $gallery;
 		$userDiskQuota = null;
 		list($ret, $userQuotaExists, $userQuotaInfo) =
@@ -122,8 +119,7 @@ class GalleryQuotasHelper
 	 *               array('quota' => integer user's disk quota in Kilobytes,
 	 *                     'name' => string group's name)
 	 */
-	public function fetchHighestGroupQuota($userId)
-	{
+	public function fetchHighestGroupQuota($userId) {
 		global $gallery;
 
 		list($ret, $groupQuotaIds) = GalleryCoreApi::fetchGroupsForUser($userId);
@@ -176,8 +172,7 @@ class GalleryQuotasHelper
 	 *               string user's quota in human readable format
 	 *               string the unit of measurement for the user's quota (ie: KB, MB, GB)
 	 */
-	public static function humanReadableFromKilobytes($kilobytes)
-	{
+	public static function humanReadableFromKilobytes($kilobytes) {
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'quotas');
 		if ($ret) {
@@ -204,8 +199,7 @@ class GalleryQuotasHelper
 	 *               array(groupId => array('quota' => group's disk quota,
 	 *                                      'name' => group's groupname))
 	 */
-	public static function fetchQuotaGroupIdList($count, $offset=0)
-	{
+	public static function fetchQuotaGroupIdList($count, $offset=0) {
 		global $gallery;
 
 		$storage =& $gallery->getStorage();
@@ -247,8 +241,7 @@ class GalleryQuotasHelper
 	 * @return array GalleryStatus a status code
 	 *               integer the number of groups that have quotas assigned
 	 */
-	public static function fetchQuotaGroupCount()
-	{
+	public static function fetchQuotaGroupCount() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -280,8 +273,7 @@ class GalleryQuotasHelper
 	 *               array(groupId => array('quota' => user's disk quota,
 	 *                                      'name' => user's username))
 	 */
-	public static function fetchQuotaUserIdList($count, $offset=0)
-	{
+	public static function fetchQuotaUserIdList($count, $offset=0) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -320,8 +312,7 @@ class GalleryQuotasHelper
 	 * @return array GalleryStatus a status code
 	 *               integer the number of users that have quotas assigned
 	 */
-	public static function fetchQuotaUserCount()
-	{
+	public static function fetchQuotaUserCount() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -355,8 +346,7 @@ class GalleryQuotasHelper
 	 *                     'quota' => group's disk quota,
 	 *                     'name' => group's groupname)
 	 */
-	public static function fetchGroupQuota($groupId)
-	{
+	public static function fetchGroupQuota($groupId) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$query = '
@@ -401,8 +391,7 @@ class GalleryQuotasHelper
 	 *                     'quota' => user's disk quota,
 	 *                     'name' => user's username)
 	 */
-	public static function fetchUserQuota($userId)
-	{
+	public static function fetchUserQuota($userId) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 

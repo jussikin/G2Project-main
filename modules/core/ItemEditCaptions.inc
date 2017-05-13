@@ -26,13 +26,11 @@
  * @author Changpeng Zhao
  * @version $Revision: 18138 $
  */
-class ItemEditCaptionsController extends GalleryController
-{
+class ItemEditCaptionsController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$page = (int) GalleryUtilities::getRequestVariables('page');
 		
 		list($ret, $item) = $this->getItem();
@@ -174,8 +172,7 @@ class ItemEditCaptionsController extends GalleryController
 /**
  * This view will allow the user to edit many item captions at once.
  */
-class ItemEditCaptionsView extends GalleryView
-{
+class ItemEditCaptionsView extends GalleryView {
 	/**
 	 * Returns sizes for "maxlength" in forms
 	 * @todo: this function is duplicated in ItemEdit.inc, so it needs to be consolidated somehow
@@ -183,8 +180,7 @@ class ItemEditCaptionsView extends GalleryView
 	 * @return size for "maxlength" in form
 	 * @access private
 	 */
-	public function _getSizesForMaxlength($value)
-	{
+	public function _getSizesForMaxlength($value) {
 		switch ($value) {
 			case STORAGE_SIZE_SMALL:
 				$size = 32;
@@ -205,8 +201,7 @@ class ItemEditCaptionsView extends GalleryView
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		list($page, $selectedId, $albumPage) = GalleryUtilities::getRequestVariables('page', 'selectedId', 'albumPage');
@@ -344,8 +339,7 @@ class ItemEditCaptionsView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

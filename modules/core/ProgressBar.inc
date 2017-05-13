@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ProgressBarView extends GalleryView
-{
+class ProgressBarView extends GalleryView {
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_PROGRESS_BAR;
 	}
 }

@@ -26,20 +26,18 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ReplicaModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ReplicaModule extends GalleryModule {
+	public function __construct() {
 		$this->ReplicaModule();
 	}
 
-	public function ReplicaModule()
-	{
+	public function ReplicaModule() {
 		global $gallery;
 		$this->setId('replica');
 		$this->setName($gallery->i18n('Replica'));
 		$this->setDescription(
-		$gallery->i18n('Create item copies sharing the same original data file'));
+			$gallery->i18n('Create item copies sharing the same original data file')
+		);
 		$this->setVersion('2.0.0');
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $gallery->i18n('Display'));
@@ -51,8 +49,7 @@ class ReplicaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null) {
 		global $gallery;
 		$links = array();
 		foreach ($items as $item) {
@@ -61,9 +58,10 @@ class ReplicaModule extends GalleryModule
 			&& isset($permissions[$itemId]['core.viewSource'])) {
 				if (!isset($count)) {
 					list($ret, $count) = GalleryCoreApi::fetchItemIdCount(
-			'GalleryAlbumItem',
-			$item->getCanContainChildren() ? 'core.addAlbumItem' : 'core.addDataItem',
-			$userId);
+						'GalleryAlbumItem',
+						$item->getCanContainChildren() ? 'core.addAlbumItem' : 'core.addDataItem',
+						$userId
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -72,8 +70,8 @@ class ReplicaModule extends GalleryModule
 					}
 				}
 				$links[$itemId][] =
-			array('text' => $this->_translate('Create Replica'),
-			  'params' => array('view' => 'core.ItemAdmin',
+				array('text' => $this->_translate('Create Replica'),
+				'params' => array('view' => 'core.ItemAdmin',
 						'subView' => 'replica.ItemCreateReplica',
 						'itemId' => $item->getParentId(),
 						'selectedId' => $itemId,
@@ -87,8 +85,7 @@ class ReplicaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemAdminViews
 	 */
-	public function getItemAdminViews($item)
-	{
+	public function getItemAdminViews($item) {
 		global $gallery;
 		$views = array();
 		list($ret, $permissions) = GalleryCoreApi::getPermissions($item->getId());
@@ -98,22 +95,24 @@ class ReplicaModule extends GalleryModule
 
 		if ($item->getIsLinkable() && isset($permissions['core.viewSource'])) {
 			list($ret, $count) = GalleryCoreApi::fetchItemIdCount(
-			'GalleryAlbumItem',
-			$item->getCanContainChildren() ? 'core.addAlbumItem' : 'core.addDataItem');
+				'GalleryAlbumItem',
+				$item->getCanContainChildren() ? 'core.addAlbumItem' : 'core.addDataItem'
+			);
 			if ($ret) {
 				return array($ret, null);
 			}
 			if ($count > 0) {
 				if (false) {
 					/* Specific translations: */
-			_('Replicate Album');
+					_('Replicate Album');
 					_('Replicate Photo');
 					_('Replicate Movie');
 				}
 				$itemTypeNames = array_merge($item->itemTypeName(), $item->itemTypeName(false));
 				$views[] = array('name' => $this->_translate(
-				   array('text' => 'Replicate %s', 'arg1' => $itemTypeNames[0]),
-				   $itemTypeNames[2]),
+					array('text' => 'Replicate %s', 'arg1' => $itemTypeNames[0]),
+					$itemTypeNames[2]
+				),
 				 'view' => 'replica.ItemCreateReplicaSingle');
 			}
 		}

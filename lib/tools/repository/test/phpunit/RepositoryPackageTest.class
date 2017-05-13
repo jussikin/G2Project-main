@@ -34,16 +34,14 @@ GalleryCoreApi::requireOnce('lib/tools/repository/test/phpunit/RepositoryTestTem
  * @package RepositoryTools
  * @subpackage PHPUnit
  */
-class RepositoryPackageTest extends GalleryTestCase
-{
+class RepositoryPackageTest extends GalleryTestCase {
 	public $_package;
 	public $_expectedPackageData;
 	
 	/**
 	 * Prepare a RepositoryPackage for testing.
 	 */
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -112,8 +110,7 @@ class RepositoryPackageTest extends GalleryTestCase
 	 * put in the template. This is done by saving the data that is sent to
 	 * replaceVariable by using a mock template.
 	 */
-	public function testCreateSinglePackage()
-	{
+	public function testCreateSinglePackage() {
 		global $gallery;
 		
 		$testDescriptor = new RepositoryPackageTestDescriptor();
@@ -149,8 +146,7 @@ class RepositoryPackageTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testCreateAllPackages()
-	{
+	public function testCreateAllPackages() {
 		global $gallery;
 		
 		$this->_package->_descriptor = new RepositoryPackageTestDescriptor();
@@ -206,8 +202,7 @@ class RepositoryPackageTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testGetPackageFileName()
-	{
+	public function testGetPackageFileName() {
 		$this->_package->_descriptor = new RepositoryPackageTestDescriptor();
 		
 		$this->assertEquals('testplugin-1.0.0-19700411131300-base.package', $this->_package->getPackageFileName('base'), 'Unexpected package file name generated.');
@@ -220,8 +215,7 @@ class RepositoryPackageTest extends GalleryTestCase
 	/**
 	 * Test if getRandomString returns a string of the specified length.
 	 */
-	public function testGetPackageHash()
-	{
+	public function testGetPackageHash() {
 		global $gallery;
 		
 		$gallery->_phpVm = new RepositoryPackageTestPhpVm();
@@ -233,26 +227,21 @@ class RepositoryPackageTest extends GalleryTestCase
 	}
 }
 
-class RepositoryPackageTestPhpVm
-{
-	public function md5($input)
-	{
+class RepositoryPackageTestPhpVm {
+	public function md5($input) {
 		return $input;
 	}
 }
 
-class RepositoryPackageTestPackage extends RepositoryPackage
-{
-	public function getPackageFilename($packageType)
-	{
+class RepositoryPackageTestPackage extends RepositoryPackage {
+	public function getPackageFilename($packageType) {
 		if ($packageType == 'package-type') {
 			return 'mock-filename';
 		}
 	}
 }
 
-class RepositoryPackageTestDescriptor
-{
+class RepositoryPackageTestDescriptor {
 	public $_packages;
 	public $_directories;
 	public $_files;
@@ -262,8 +251,7 @@ class RepositoryPackageTestDescriptor
 	public $_pluginDir;
 	public $_pluginVersion;
 	
-	public function RepositoryPackageTestDescriptor()
-	{
+	public function RepositoryPackageTestDescriptor() {
 		$this->_packages = array(
 			'package1',
 			'package2'
@@ -299,53 +287,43 @@ class RepositoryPackageTestDescriptor
 		$this->_pluginStringsRevision = '2.2';
 	}
 	
-	public function getPackages()
-	{
+	public function getPackages() {
 		return $this->_packages;
 	}
 	
-	public function getDirectoriesInPackage($package)
-	{
+	public function getDirectoriesInPackage($package) {
 		return isset($this->_directories[$package]) ? $this->_directories[$package] : 'error';
 	}
 	
-	public function getFilesInPackage($package)
-	{
+	public function getFilesInPackage($package) {
 		return isset($this->_files[$package]) ? $this->_files[$package] : 'error';
 	}
 	
-	public function getPluginId()
-	{
+	public function getPluginId() {
 		return $this->_pluginId;
 	}
 	
-	public function getPluginType()
-	{
+	public function getPluginType() {
 		return $this->_pluginId;
 	}
 	
-	public function getPluginVersion()
-	{
+	public function getPluginVersion() {
 		return $this->_pluginVersion;
 	}
 	
-	public function getPluginDir()
-	{
+	public function getPluginDir() {
 		return $this->_pluginDir;
 	}
 	
-	public function getBuildTimestamp()
-	{
+	public function getBuildTimestamp() {
 		return $this->_pluginBuildTimestamp;
 	}
 	
-	public function getStringsRevision()
-	{
+	public function getStringsRevision() {
 		return $this->_pluginStringsRevision;
 	}
 	
-	public function getLanguageRevision($locale)
-	{
+	public function getLanguageRevision($locale) {
 		return $this->_pluginStringsRevision;
 	}
 }

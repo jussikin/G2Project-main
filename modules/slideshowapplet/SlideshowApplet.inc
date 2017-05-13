@@ -25,13 +25,11 @@
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 17580 $
  */
-class SlideshowAppletView extends GalleryView
-{
+class SlideshowAppletView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'slideshowapplet');
@@ -47,16 +45,16 @@ class SlideshowAppletView extends GalleryView
 		$startId = null;
 
 	/* Build slideshow for an album.. */
-	list($ret, $item) = $this->getItem();
+		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return array($ret, null);
 		}
 
 		if (!$item->getCanContainChildren()) {
 			/* Photo: do slideshow of parent album, start at this photo */
-		$startId = $item->getId();
+			$startId = $item->getId();
 			list($ret, $item) =
-		GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
+			GalleryCoreApi::loadEntitiesById($item->getParentId(), 'GalleryItem');
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -66,7 +64,7 @@ class SlideshowAppletView extends GalleryView
 			}
 			if (!$canView) {
 				/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+				return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 			}
 		}
 
@@ -82,7 +80,7 @@ class SlideshowAppletView extends GalleryView
 	     * Force the use of the G2 base for the url and the cookie path as the applet will
 	     * communicate to G2 directly, even when G2 is embedded
 	     */
-		$SlideshowApplet['g2BaseUrl'] = $urlGenerator->getCurrentUrlDir(true);
+			$SlideshowApplet['g2BaseUrl'] = $urlGenerator->getCurrentUrlDir(true);
 			list($ret, $cookiePath) = $urlGenerator->getCookiePath(true);
 			if ($ret) {
 				return array($ret, null);
@@ -109,11 +107,11 @@ class SlideshowAppletView extends GalleryView
 
 			if (isset($startId)) {
 				/* format the start_from as album_picture, that's what GR expects */
-		$SlideshowApplet['extra']['gr_slideshow_start_from'] = $item->getId() . '_' . $startId;
+				$SlideshowApplet['extra']['gr_slideshow_start_from'] = $item->getId() . '_' . $startId;
 			}
 
 			list($ret, $params) =
-		GalleryCoreApi::fetchAllPluginParameters('module', 'slideshowapplet');
+			GalleryCoreApi::fetchAllPluginParameters('module', 'slideshowapplet');
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -140,8 +138,7 @@ class SlideshowAppletView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'slideshowapplet');
 		if ($ret) {
 			return array($ret, null);

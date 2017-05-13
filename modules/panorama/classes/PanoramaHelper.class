@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @static
  */
-class PanoramaHelper
-{
+class PanoramaHelper {
 	/**
 	 * Fetch largest viewable images for use in a panorama
 	 *
@@ -35,8 +34,7 @@ class PanoramaHelper
 	 * @return array GalleryStatus a status code
 	 *               array of given-itemId=>GalleryDataItem-for-display
 	 */
-	public static function fetchViewableImages($items)
-	{
+	public static function fetchViewableImages($items) {
 		global $gallery;
 		foreach ($items as $item) {
 			if (GalleryUtilities::isA($item, 'GalleryPhotoItem')) {

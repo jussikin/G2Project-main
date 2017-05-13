@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20886 $
  */
-class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'watermark.WatermarkSiteAdmin');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -63,8 +60,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::releaseAllLocks();
 		if ($ret) {
 			return $ret;
@@ -92,8 +88,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testNoFile()
-	{
+	public function testNoFile() {
 		/* No file */
 	GalleryUtilities::putRequestVariable('form[action][add]', '1');
 
@@ -105,8 +100,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 				$results, 'No file');
 	}
 
-	public function testAdd()
-	{
+	public function testAdd() {
 		/* Add */
 	GalleryUtilities::putRequestVariable('form[action][add]', '1');
 		GalleryUtilities::putRequestVariable('form[name][1]', $this->_randomName);
@@ -134,8 +128,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assert(isset($map[$this->_expectedName]), 'Watermark is missing');
 	}
 
-	public function testAddDuplicate()
-	{
+	public function testAddDuplicate() {
 		for ($i = 0; $i < 2; $i++) {
 			/* Add */
 		GalleryUtilities::putRequestVariable('form[action][add]', '1');
@@ -166,8 +159,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assert(isset($map['_' . $this->_expectedName]), 'Watermark 2 is missing');
 	}
 
-	public function testAddWrongMimeType()
-	{
+	public function testAddWrongMimeType() {
 		/* Add same name, browser doesn't send correct mime type */
 	GalleryUtilities::putRequestVariable('form[action][add]', '1');
 		GalleryUtilities::putRequestVariable('form[name][1]', $this->_randomName);
@@ -200,8 +192,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testDelete()
-	{
+	public function testDelete() {
 		/* Create something to delete */
 	list($ret, $watermark) = $this->_createTestWatermark();
 		if ($ret) {
@@ -239,8 +230,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testDeleteForceDefault()
-	{
+	public function testDeleteForceDefault() {
 		/* Create something to delete */
 	list($ret, $watermark) = $this->_createTestWatermark();
 		if ($ret) {
@@ -306,8 +296,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assert(!empty($forceDefaultWatermark), '$forceDefaultWatermark is empty');
 	}
 
-	public function testDeleteInUse()
-	{
+	public function testDeleteInUse() {
 		/* Create something to delete */
 	list($ret, $watermark) = $this->_createTestWatermark();
 		if ($ret) {
@@ -350,8 +339,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testIllegalDelete()
-	{
+	public function testIllegalDelete() {
 		/* valid, but illegal */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 		GalleryUtilities::putRequestVariable('form[delete][watermarkId]', 1);
@@ -365,8 +353,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_MISSING_OBJECT);
 	}
 
-	public function testAddMaliciousFile()
-	{
+	public function testAddMaliciousFile() {
 		$rand = rand();
 		$randomName = 'phpunit_' . $rand . '.php';
 		$expectedName = 'phpunit_' . $rand . '_php';
@@ -410,8 +397,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _fetchWatermarkMapByFilename()
-	{
+	public function _fetchWatermarkMapByFilename() {
 		list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 		if ($ret) {
 			return array($this, null);
@@ -424,8 +410,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 		return array(null, $results);
 	}
 
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[allowUserWatermarks]', 1);
 		GalleryUtilities::putRequestVariable('form[hotlinkWatermarkId]', 123);
@@ -439,8 +424,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testSaveMissingId()
-	{
+	public function testSaveMissingId() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[forceDefaultWatermark]', 1);
 		GalleryUtilities::putRequestVariable('form[hotlinkWatermarkId]', 123);
@@ -453,8 +437,7 @@ class WatermarkSiteAdminControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function _createTestWatermark()
-	{
+	public function _createTestWatermark() {
 		$name = 'phpunit_' . rand() . '.jpg';
 		$form = array('action' => array('add', '1'), 'name' => array('1' => $name),
 			  'type' => array('1' => 'image/jpeg'),'tmp_name' =>array('1' =>

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemMoveSingleControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemMoveSingleControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMoveSingle');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -129,8 +126,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _setDerivativePreferences()
-	{
+	public function _setDerivativePreferences() {
 		$args = func_get_args();
 		$itemId = array_shift($args);
 		$thumbSize = array_shift($args);
@@ -150,8 +146,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _getDerivativeSizes($itemIds)
-	{
+	public function _getDerivativeSizes($itemIds) {
 		if (!is_array($itemIds)) {
 			$itemIds = array(
 				$itemIds
@@ -187,8 +182,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item
 	 */
-	public function testMoveItem()
-	{
+	public function testMoveItem() {
 		/* Create derivatives according to prefs of original album */
 		$ret = GalleryCoreApi::addExistingItemToAlbum($this->_item, $this->_rootAlbum->getId(), true);
 		if ($ret) {
@@ -308,8 +302,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item to a bogus destination
 	 */
-	public function testMoveItemIntoEmptyDestination()
-	{
+	public function testMoveItemIntoEmptyDestination() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[action][move]', 1);
 		
@@ -329,8 +322,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into itself
 	 */
-	public function testMoveItemIntoSelf()
-	{
+	public function testMoveItemIntoSelf() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_rootAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[action][move]', 1);
 		GalleryUtilities::putRequestVariable('form[destination]', $this->_rootAlbum->getId());
@@ -351,8 +343,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into its own child
 	 */
-	public function testMoveItemIntoChild()
-	{
+	public function testMoveItemIntoChild() {
 		list($ret, $this->_childAlbum) = $this->_createRandomAlbum($this->_rootAlbum->getId());
 		if ($ret) {
 			return $ret;
@@ -378,8 +369,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into a container where we have no add permissions
 	 */
-	public function testMoveItemIntoAlbumWithNoPermissions()
-	{
+	public function testMoveItemIntoAlbumWithNoPermissions() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
@@ -403,8 +393,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item that we can't delete
 	 */
-	public function testMoveItemWithNoDeletePermissions()
-	{
+	public function testMoveItemWithNoDeletePermissions() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
@@ -427,8 +416,7 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item with a cropped thumbnail; ensure crop operation is maintained
 	 */
-	public function testMoveItemWithCroppedThumbnail()
-	{
+	public function testMoveItemWithCroppedThumbnail() {
 		/* Create derivatives according to prefs of original album */
 		$ret = GalleryCoreApi::addExistingItemToAlbum($this->_item, $this->_rootAlbum->getId(), true);
 		if ($ret) {
@@ -520,6 +508,5 @@ class ItemMoveSingleControllerTest extends GalleryControllerTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemMoveSingleTestToolkit extends GalleryToolkit
-{
+class ItemMoveSingleTestToolkit extends GalleryToolkit {
 }

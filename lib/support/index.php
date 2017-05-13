@@ -29,8 +29,7 @@ if (!empty($_SERVER['QUERY_STRING'])) {
 		}
 	}
 }
-function generateUrl($uri, $print = true)
-{
+function generateUrl($uri, $print = true) {
 	/* If session.use_trans_sid is on then it will add the session id. */
 	if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {
 		$sid = session_name() . '=' . session_id();
@@ -45,76 +44,76 @@ function generateUrl($uri, $print = true)
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Gallery Support</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>support.css">
-  </head>
+	<head>
+	<title>Gallery Support</title>
+	<link rel="stylesheet" type="text/css" href="<?php echo $baseUrl ?>support.css">
+	</head>
 
-  <body>
-    <div id="content">
-      <div id="title">
-        <a href="../../">Gallery</a> &raquo; Support
-      </div>
+	<body>
+	<div id="content">
+	  <div id="title">
+		<a href="../../">Gallery</a> &raquo; Support
+	  </div>
 
-      <h2>
-    This is a collection of scripts that you use to troubleshoot problems with
-    your Gallery installation.
-      </h2>
+	  <h2>
+	This is a collection of scripts that you use to troubleshoot problems with
+	your Gallery installation.
+	  </h2>
 
-      <h2>
-        <a href="<?php generateUrl('index.php?phpinfo') ?>">PHP Info</a>
-      </h2>
-      <p class="description">
-        PHP configuration information
-      </p>
-      <hr class="faint">
+	  <h2>
+		<a href="<?php generateUrl('index.php?phpinfo') ?>">PHP Info</a>
+	  </h2>
+	  <p class="description">
+		PHP configuration information
+	  </p>
+	  <hr class="faint">
 
-      <h2>
-        <a href="<?php generateUrl('index.php?cache') ?>">Cache Maintenance</a>
-      </h2>
-      <p class="description">
-        Delete files from the Gallery data cache
-      </p>
-      <hr class="faint">
+	  <h2>
+		<a href="<?php generateUrl('index.php?cache') ?>">Cache Maintenance</a>
+	  </h2>
+	  <p class="description">
+		Delete files from the Gallery data cache
+	  </p>
+	  <hr class="faint">
 
-      <h2>
-        <a href="<?php generateUrl('index.php?chmod') ?>">Filesystem Permissions</a>
-      </h2>
-      <p class="description">
-        Change the filesystem permissions of your Gallery and your storage folder.
-      </p>
-      <hr class="faint">
+	  <h2>
+		<a href="<?php generateUrl('index.php?chmod') ?>">Filesystem Permissions</a>
+	  </h2>
+	  <p class="description">
+		Change the filesystem permissions of your Gallery and your storage folder.
+	  </p>
+	  <hr class="faint">
 
-      <h2>
-        <a href="<?php generateUrl('index.php?gd') ?>">GD</a>
-      </h2>
-      <p class="description">
-        Information about your GD configuration
-      </p>
-      <hr class="faint">
+	  <h2>
+		<a href="<?php generateUrl('index.php?gd') ?>">GD</a>
+	  </h2>
+	  <p class="description">
+		Information about your GD configuration
+	  </p>
+	  <hr class="faint">
 
-      <h2>
-        <a href="<?php generateUrl('index.php?import') ?>">Import Database</a>
-      </h2>
-      <p class="description">
-        Restore your Gallery database from an export that was made from the site administration
-        maintenance screen or from the Database Backup step of the Gallery upgrader.
-      </p>
-      <hr class="faint">
+	  <h2>
+		<a href="<?php generateUrl('index.php?import') ?>">Import Database</a>
+	  </h2>
+	  <p class="description">
+		Restore your Gallery database from an export that was made from the site administration
+		maintenance screen or from the Database Backup step of the Gallery upgrader.
+	  </p>
+	  <hr class="faint">
 
-      <h2>
-        <a href="<?php generateUrl('index.php?password') ?>">Reset User Password</a>
-      </h2>
-      <p class="description">
-        Change or Reset Passwords.
-      </p>
+	  <h2>
+		<a href="<?php generateUrl('index.php?password') ?>">Reset User Password</a>
+	  </h2>
+	  <p class="description">
+		Change or Reset Passwords.
+	  </p>
 
-      <h2>
-        <a href="<?php generateUrl('index.php?search_db') ?>">Search Database</a>
-      </h2>
-      <p class="description">
-        A tool for searching the Gallery2 database.
-      </p>
-    </div>
-  </body>
+	  <h2>
+		<a href="<?php generateUrl('index.php?search_db') ?>">Search Database</a>
+	  </h2>
+	  <p class="description">
+		A tool for searching the Gallery2 database.
+	  </p>
+	</div>
+	</body>
 </html>

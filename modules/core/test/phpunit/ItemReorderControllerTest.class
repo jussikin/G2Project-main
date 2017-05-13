@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemReorderControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemReorderControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemReorder');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -68,8 +65,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
@@ -83,8 +79,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testReorderItemsBefore()
-	{
+	public function testReorderItemsBefore() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[selectedId]', $this->_child[1]->getId());
 		GalleryUtilities::putRequestVariable('form[placement]', 'before');
@@ -118,8 +113,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $childIds);
 	}
 	
-	public function testReorderItemsBefore2()
-	{
+	public function testReorderItemsBefore2() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[selectedId]', $this->_child[3]->getId());
 		GalleryUtilities::putRequestVariable('form[placement]', 'before');
@@ -153,8 +147,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $childIds);
 	}
 	
-	public function testReorderItemsAfter()
-	{
+	public function testReorderItemsAfter() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[selectedId]', $this->_child[3]->getId());
 		GalleryUtilities::putRequestVariable('form[placement]', 'after');
@@ -188,8 +181,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $childIds);
 	}
 	
-	public function testReorderItemsAfter2()
-	{
+	public function testReorderItemsAfter2() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[selectedId]', $this->_child[0]->getId());
 		GalleryUtilities::putRequestVariable('form[placement]', 'after');
@@ -223,8 +215,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $childIds);
 	}
 	
-	public function testReorderItemsWithoutPermissions()
-	{
+	public function testReorderItemsWithoutPermissions() {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::removeItemPermissions($this->_parentAlbum->getId());
@@ -244,8 +235,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 	
-	public function testReorderItemsMissingSelection()
-	{
+	public function testReorderItemsMissingSelection() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[targetId]', $this->_child[4]->getId());
 		GalleryUtilities::putRequestVariable('form[action][reorder]', 1);
@@ -263,8 +253,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testReorderItemsMissingTarget()
-	{
+	public function testReorderItemsMissingTarget() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[selectedId]', $this->_child[3]->getId());
 		GalleryUtilities::putRequestVariable('form[action][reorder]', 1);
@@ -282,15 +271,13 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testReorderItemsWithBogusId()
-	{
+	public function testReorderItemsWithBogusId() {
 		GalleryUtilities::putRequestVariable('itemId', 12345678);
 		
 		$results = $this->handleRequest(ERROR_MISSING_OBJECT);
 	}
 	
-	public function testReorderItemsForceRebalance()
-	{
+	public function testReorderItemsForceRebalance() {
 		/* Pack 'em in tight */
 		for ($i = 0; $i < 5; $i++) {
 			$ret = GalleryCoreApi::setItemOrderWeight($this->_child[$i]->getId(), $i);
@@ -332,8 +319,7 @@ class ItemReorderControllerTest extends GalleryControllerTestCase
 		), $childIds);
 	}
 	
-	public function testReorderItemsForceRebalance2()
-	{
+	public function testReorderItemsForceRebalance2() {
 		/* Pack 'em in tight */
 		for ($i = 0; $i < 5; $i++) {
 			$ret = GalleryCoreApi::setItemOrderWeight($this->_child[$i]->getId(), $i);

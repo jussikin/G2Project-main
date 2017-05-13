@@ -27,15 +27,12 @@
  * @author Ernesto Baschny <ernst@baschny.de>
  * @version $Revision: 18172 $
  */
-class DebugModule extends GalleryModule
-{
-	public function __construct()
-	{
+class DebugModule extends GalleryModule {
+	public function __construct() {
 		$this->DebugModule();
 	}
 	
-	public function DebugModule()
-	{
+	public function DebugModule() {
 		global $gallery;
 		
 		$this->setId('debug');
@@ -58,8 +55,7 @@ class DebugModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null) {
 		$links = array();
 		
 		list($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup($userId);

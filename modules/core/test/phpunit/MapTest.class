@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class MapTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MapTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function testAddNull()
-	{
+	public function testAddNull() {
 		/* Ensure addMapEntry() method will accept null input values.. */
 		
 		$name = 'test-' . rand();
@@ -66,8 +63,7 @@ class MapTest extends GalleryTestCase
 		}
 	}
 	
-	public function testUpdateNull()
-	{
+	public function testUpdateNull() {
 		/* Ensure updateMapEntry() method will accept null input values.. */
 		$name = 'test-' . rand();
 		$ret = GalleryCoreApi::addMapEntry('GalleryToolkitOperationMap', array(

@@ -26,15 +26,12 @@
  * @author Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class RatingSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'rating.RatingSiteAdmin');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -60,8 +57,7 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testEnableAlbumRatings()
-	{
+	public function testEnableAlbumRatings() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 'Save');
 		GalleryUtilities::putRequestVariable('form[allowAlbumRating]', 'on');
 		GalleryUtilities::putRequestVariable('form[minLimit]', '1.5');
@@ -106,8 +102,7 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase
 				$params, 'Verify DB Data');
 	}
 
-	public function testDisableAlbumRatings()
-	{
+	public function testDisableAlbumRatings() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 'Save');
 		GalleryUtilities::putRequestVariable('form[minLimit]', '3,75');
 		GalleryUtilities::putRequestVariable('form[description]', '');
@@ -151,8 +146,7 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase
 				$params, 'Verify DB Data');
 	}
 
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 'Reset');
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
@@ -169,10 +163,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
 /**
  * Test theme
  */
-class RatingTestTheme extends GalleryTheme
-{
-	public function RatingTestTheme()
-	{
+class RatingTestTheme extends GalleryTheme {
+	public function RatingTestTheme() {
 		$this->setId('ratingTest');
 		$this->setStandardSettings(array());
 	}

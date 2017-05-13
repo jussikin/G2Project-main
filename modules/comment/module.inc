@@ -32,15 +32,12 @@ define('COMMENT_PUBLISH_STATUS_SPAM', 2);
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class CommentModule extends GalleryModule
-{
-	public function __construct()
-	{
+class CommentModule extends GalleryModule {
+	public function __construct() {
 		$this->CommentModule();
 	}
 	
-	public function CommentModule()
-	{
+	public function CommentModule() {
 		global $gallery;
 		
 		$this->setId('comment');
@@ -64,8 +61,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -251,8 +247,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'GalleryCommentHelper', 'GalleryCommentHelper', 'modules/comment/classes/GalleryCommentHelper.class', 'comment', array(
 			'GalleryEntity::delete',
 			'GalleryEntity::save'
@@ -289,8 +284,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getModuleEntityTypes
 	 */
-	public function getModuleEntityTypes()
-	{
+	public function getModuleEntityTypes() {
 		return array(
 			'GalleryComment'
 		);
@@ -299,8 +293,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		list($ret, $showAll) = $this->getParameter('comments.latest');
 		if ($ret) {
 			return array(
@@ -345,8 +338,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemSummaries
 	 */
-	public function getItemSummaries($items, $permissions, &$template)
-	{
+	public function getItemSummaries($items, $permissions, &$template) {
 		$ids = array();
 		foreach ($items as $item) {
 			$ids[] = $item->getId();
@@ -384,8 +376,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemAdminViews
 	 */
-	public function getItemAdminViews($item)
-	{
+	public function getItemAdminViews($item) {
 		$views = array();
 		list($ret, $permissions) = GalleryCoreApi::getPermissions($item->getId());
 		if ($ret) {
@@ -411,8 +402,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -431,8 +421,7 @@ class CommentModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		$rules = array();
 		
 		$rule = array();

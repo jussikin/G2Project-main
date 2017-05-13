@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ChooseObjectsControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ChooseObjectsControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'migrate.ChooseObjects');
 	}
 	
-	public function testImportNothingSelected()
-	{
+	public function testImportNothingSelected() {
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . '/../data/albums/');
 		GalleryUtilities::putRequestVariable('form[action][import]', 1);
 		GalleryUtilities::putRequestVariable('form[set][title]', 'caption');
@@ -53,8 +50,7 @@ class ChooseObjectsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testImportValidSelections1()
-	{
+	public function testImportValidSelections1() {
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . '/../data/albums/');
 		GalleryUtilities::putRequestVariable('form[migrateUser][12345:6789]', 1);
 		GalleryUtilities::putRequestVariable('form[action][import]', 1);
@@ -73,8 +69,7 @@ class ChooseObjectsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testImportValidSelections2()
-	{
+	public function testImportValidSelections2() {
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . '/../data/albums/');
 		GalleryUtilities::putRequestVariable('form[sourceAlbums][0]', 'album01');
 		GalleryUtilities::putRequestVariable('form[action][import]', 1);
@@ -94,8 +89,7 @@ class ChooseObjectsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMissingCustomField()
-	{
+	public function testMissingCustomField() {
 		GalleryUtilities::putRequestVariable('albumsPath', dirname(__FILE__) . '/../data/albums/');
 		GalleryUtilities::putRequestVariable('form[sourceAlbums][0]', 'album01');
 		GalleryUtilities::putRequestVariable('form[action][import]', 1);

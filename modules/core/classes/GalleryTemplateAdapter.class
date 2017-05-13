@@ -27,8 +27,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20954 $
  */
-class GalleryTemplateAdapter
-{
+class GalleryTemplateAdapter {
 	/**
 	 * The number of times our block callbacks have been executed
 	 * @var array
@@ -65,13 +64,11 @@ class GalleryTemplateAdapter
 	 */
 	public $_progressBarStats;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->GalleryTemplateAdapter();
 	}
 	
-	public function GalleryTemplateAdapter()
-	{
+	public function GalleryTemplateAdapter() {
 		$this->_callCount = array();
 		$this->_theme = null;
 		$this->_trailer = null;
@@ -82,8 +79,7 @@ class GalleryTemplateAdapter
 	 * Set the theme
 	 * @param GalleryTheme $theme
 	 */
-	public function setTheme($theme)
-	{
+	public function setTheme($theme) {
 		$this->_theme = $theme;
 	}
 	
@@ -98,8 +94,7 @@ class GalleryTemplateAdapter
 	 * @param array $params data in key/value pairs
 	 * @return string a URL
 	 */
-	public function url($params)
-	{
+	public function url($params) {
 		global $gallery;
 		
 		/* Allow the user to pass in bulk params */
@@ -138,8 +133,7 @@ class GalleryTemplateAdapter
 	 * @param array $params data in key/value pairs
 	 * @return a series of XHTML 1.0 compliant <input> elements
 	 */
-	public function hiddenFormVars($params)
-	{
+	public function hiddenFormVars($params) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$session =& $gallery->getSession();
@@ -180,8 +174,7 @@ class GalleryTemplateAdapter
 	 * @param array $params data in key/value pairs
 	 * @return string date
 	 */
-	public function date($params)
-	{
+	public function date($params) {
 		global $gallery;
 		static $defaultFormat;
 		$platform =& $gallery->getPlatform();
@@ -212,8 +205,7 @@ class GalleryTemplateAdapter
 	/**
 	 * @see GalleryTranslator::translateDomain
 	 */
-	public function text($params, $_template)
-	{
+	public function text($params, $_template) {
 		global $gallery;
 		
 		if (isset($params['l10Domain'])) {
@@ -260,8 +252,7 @@ class GalleryTemplateAdapter
 	 * @param Smarty_Internal_Template $_template the smarty instance
 	 * @return HTML content
 	 */
-	public function changeInDescendents($params, $_template)
-	{
+	public function changeInDescendents($params, $_template) {
 		global $gallery;
 		
 		if (isset($params['l10Domain'])) {
@@ -284,8 +275,7 @@ class GalleryTemplateAdapter
 	 * @param array $params key => value attributes
 	 * @return HTML content
 	 */
-	public function formVar($params)
-	{
+	public function formVar($params) {
 		return GalleryUtilities::prefixFormVariable($params['var']);
 	}
 	
@@ -296,8 +286,7 @@ class GalleryTemplateAdapter
 	 * @param array $params containing item, image, maxSize, fallback, and any img attributes
 	 * @return string HTML content
 	 */
-	public function image($params)
-	{
+	public function image($params) {
 		list($ret, $html) = $this->_image($params);
 		if ($ret) {
 			return '[Render error]';
@@ -311,8 +300,7 @@ class GalleryTemplateAdapter
 	 * @see GalleryTemplateAdapter::image
 	 * @access private
 	 */
-	public function _image($params)
-	{
+	public function _image($params) {
 		
 		/*
 	     * Cases:
@@ -398,8 +386,7 @@ class GalleryTemplateAdapter
 	 * @param Smarty $smarty the smarty instance
 	 * @return string HTML content
 	 */
-	public function head($params, $smarty)
-	{
+	public function head($params, $smarty) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$head = $smarty->getTemplateVars('head');
@@ -470,8 +457,7 @@ class GalleryTemplateAdapter
 	 * @param string $resource_path
 	 * @param array $vars
 	 */
-	protected function _smarty_include($smarty, $resource_path, $vars = array())
-	{
+	protected function _smarty_include($smarty, $resource_path, $vars = array()) {
 		if (method_exists($smarty, '_smarty_include')) {
 			// for unittests compatibility
 			return $smarty->_smarty_include(array(
@@ -501,8 +487,7 @@ class GalleryTemplateAdapter
 	 * @param array $files relative paths to stylesheet files
 	 * @param array $output output buffer to add lines.
 	 **/
-	public function _combineJS($files, &$output)
-	{
+	public function _combineJS($files, &$output) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -559,8 +544,7 @@ class GalleryTemplateAdapter
 	 * @param array $files relative paths to stylesheet files
 	 * @param array $output output buffer to add lines.
 	 **/
-	public function _combineCSS($files, &$output)
-	{
+	public function _combineCSS($files, &$output) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -602,8 +586,7 @@ class GalleryTemplateAdapter
 	 * @param array string to be used to generate the key
 	 * @return string a url to retrieve the combined file or null
 	 **/
-	public function _makeCombinedFile($filteredFiles, $key, $fileType = 'Javascript')
-	{
+	public function _makeCombinedFile($filteredFiles, $key, $fileType = 'Javascript') {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -654,8 +637,7 @@ class GalleryTemplateAdapter
 		));
 	}
 	
-	public function minifyStr($str, $inType = 'Javascript')
-	{
+	public function minifyStr($str, $inType = 'Javascript') {
 		$res = '';
 		$i = 0;
 		$inside_block = false;
@@ -844,8 +826,7 @@ class GalleryTemplateAdapter
 	 * @param string $content content
 	 * @param SmartyInternalTemplate $template the smarty instance
 	 */
-	public function autoComplete($params, $content, $template)
-	{
+	public function autoComplete($params, $content, $template) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -880,8 +861,7 @@ class GalleryTemplateAdapter
 	 * @param array $params params
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function dimensions($params, $template)
-	{
+	public function dimensions($params, $template) {
 		if (!isset($this->_callCount['dimensions'])) {
 			$this->_callCount['dimensions'] = 0;
 		}
@@ -903,8 +883,7 @@ class GalleryTemplateAdapter
 	 * @param array $params params
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function defaultButton($params, $smarty)
-	{
+	public function defaultButton($params, $smarty) {
 		if (!isset($this->_callCount['defaultButton'])) {
 			$this->_callCount['defaultButton'] = 0;
 		}
@@ -922,8 +901,7 @@ class GalleryTemplateAdapter
 	 * @param array $params the items to make a css class out of
 	 * @return string the id of the css class
 	 */
-	public function linkId($params)
-	{
+	public function linkId($params) {
 		$linkId = 'gbLink';
 		if (!empty($params['urlParams']['controller'])) {
 			$linkId .= '-' . $params['urlParams']['controller'];
@@ -957,8 +935,7 @@ class GalleryTemplateAdapter
 	 *                      Other keys are used as attributes.
 	 * @return string
 	 */
-	public function itemLink($params)
-	{
+	public function itemLink($params) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		if (empty($params['link'])) {
@@ -1006,8 +983,7 @@ class GalleryTemplateAdapter
 	 * @return string
 	 * @access private
 	 */
-	public function _safeCssName($string)
-	{
+	public function _safeCssName($string) {
 		$string = preg_replace('/[^-A-Za-z0-9_]+/', '_', $string);
 		$string = preg_replace('/__+/', '_', $string);
 
@@ -1017,8 +993,7 @@ class GalleryTemplateAdapter
 	/**
 	 * Return attributes for container of all Gallery content.
 	 */
-	public function mainDivAttributes($params, $smarty)
-	{
+	public function mainDivAttributes($params, $smarty) {
 		global $gallery;
 		
 		$classes = array();
@@ -1046,8 +1021,7 @@ class GalleryTemplateAdapter
 	/**
 	 * Return active language code in format used with HTML lang attribute.
 	 */
-	public function language($params)
-	{
+	public function language($params) {
 		global $gallery;
 		list($ret, $locale) = $gallery->getActiveLocale();
 		if ($ret || empty($locale)) {
@@ -1063,8 +1037,7 @@ class GalleryTemplateAdapter
 	 * @param Smarty $smarty the smarty instance
 	 * @return HTML content
 	 */
-	public function logoButton($params, $_template)
-	{
+	public function logoButton($params, $_template) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core', true);
@@ -1143,8 +1116,7 @@ class GalleryTemplateAdapter
 	/**
 	 * Show debug output.
 	 */
-	public function debug($params, $smarty)
-	{
+	public function debug($params, $smarty) {
 		global $gallery;
 		$debug = $gallery->getDebug();
 		$profiling = $gallery->isProfiling('sql');
@@ -1182,8 +1154,7 @@ class GalleryTemplateAdapter
 	 * @param array $params ('include' => ..., 'url' => ...)
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function theme($params, $smarty)
-	{
+	public function theme($params, $smarty) {
 		global $gallery;
 		
 		if (isset($params['include'])) {
@@ -1222,8 +1193,7 @@ class GalleryTemplateAdapter
 	 * @param array $params ('type' => <block descriptor>, ...)
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function block($params, $smarty)
-	{
+	public function block($params, $smarty) {
 		global $gallery;
 		list($module, $file) = explode('.', $params['type']);
 		$class = empty($params['class']) ? '' : ' ' . $params['class'];
@@ -1276,8 +1246,7 @@ class GalleryTemplateAdapter
 	 * @param string $content
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function container($params, $content)
-	{
+	public function container($params, $content) {
 		if (!isset($content)) {
 			return;
 		}
@@ -1312,8 +1281,7 @@ class GalleryTemplateAdapter
 	 * @param array $params ('type' => <block descriptor>, ...)
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function callback($params, $_template)
-	{
+	public function callback($params, $_template) {
 		global $gallery;
 		static $moduleStatus;
 		if (empty($status)) {
@@ -1350,8 +1318,7 @@ class GalleryTemplateAdapter
 	 * @param string $content
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function addToTrailer($params, $content)
-	{
+	public function addToTrailer($params, $content) {
 		if (!isset($content)) {
 			return;
 		}
@@ -1364,8 +1331,7 @@ class GalleryTemplateAdapter
 	 * @param callback $callback suitable to be used as an input for call_user_func()
 	 * @param array $args for callback
 	 */
-	public function registerTrailerCallback($callback, $args)
-	{
+	public function registerTrailerCallback($callback, $args) {
 		$this->_trailerCallbacks[] = array(
 			'function' => $callback,
 			'args' => $args
@@ -1375,8 +1341,7 @@ class GalleryTemplateAdapter
 	/**
 	 * Render trailer output
 	 */
-	public function trailer($params)
-	{
+	public function trailer($params) {
 		echo $this->_trailer;
 		
 		foreach ($this->_trailerCallbacks as $callback) {
@@ -1406,8 +1371,7 @@ class GalleryTemplateAdapter
 	 * @param array $params args; should contain widthVar, heightVar, maxSize keys
 	 * @param Smarty $smarty the smarty instance
 	 */
-	public function shrinkDimensions($params, $smarty)
-	{
+	public function shrinkDimensions($params, $smarty) {
 		if (!isset($params['widthVar']) || !isset($params['heightVar']) || !isset($params['maxSize'])) {
 			return;
 		}
@@ -1428,8 +1392,7 @@ class GalleryTemplateAdapter
 	 * @param string $description subheading
 	 * @param float $percentComplete from 0 to 1
 	 */
-	public function updateProgressBar($title, $description, $percentComplete)
-	{
+	public function updateProgressBar($title, $description, $percentComplete) {
 		static $coreModule;
 		if (!isset($coreModule)) {
 			list($ret, $coreModule) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -1500,8 +1463,7 @@ class GalleryTemplateAdapter
 	}
 	
 	/* Reset progress bar timing stats. */
-	public function resetProgressBarStats()
-	{
+	public function resetProgressBarStats() {
 		$this->_progressBarStats = array();
 	}
 	
@@ -1509,8 +1471,7 @@ class GalleryTemplateAdapter
 	 * Display error progress bar.
 	 * @param GalleryStatus $status
 	 */
-	public function errorProgressBar($status)
-	{
+	public function errorProgressBar($status) {
 		global $gallery;
 		list($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup();
 		if ($ret) {
@@ -1543,8 +1504,7 @@ class GalleryTemplateAdapter
 	 * @param bool $doRedirect Whether to redirect automatically. Defaults to false, requiring
 	 *                         user-interaction to follow the continue link.
 	 */
-	public function completeProgressBar($continueUrl, $doRedirect = false)
-	{
+	public function completeProgressBar($continueUrl, $doRedirect = false) {
 		global $gallery;
 		$continueUrl = str_replace('&amp;', '&', $continueUrl);
 		/* Display the continue link after a short delay to avoid bug 2031942 */

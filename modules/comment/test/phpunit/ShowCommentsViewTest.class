@@ -26,15 +26,12 @@
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17679 $
  */
-class ShowCommentsViewTest extends GalleryViewTestCase
-{
-	public function __construct($methodName)
-	{
+class ShowCommentsViewTest extends GalleryViewTestCase {
+	public function __construct($methodName) {
 		$this->GalleryViewTestCase($methodName, 'comment.ShowComments');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -99,8 +96,7 @@ class ShowCommentsViewTest extends GalleryViewTestCase
 		}
 	}
 	
-	public function testShowCommentsAddsNoCacheWithoutViewPermission()
-	{
+	public function testShowCommentsAddsNoCacheWithoutViewPermission() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -152,8 +148,7 @@ class ShowCommentsViewTest extends GalleryViewTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testShowCommentsAddsNoCacheWithoutCoreViewPermission()
-	{
+	public function testShowCommentsAddsNoCacheWithoutCoreViewPermission() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		$gallery->_phpVm->setReply('time', array(), strtotime('Sun, 16 Mar 2008 21:00:00 GMT'));
@@ -205,8 +200,7 @@ class ShowCommentsViewTest extends GalleryViewTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testShowCommentsDoesNotAddNoCacheWithViewPermission()
-	{
+	public function testShowCommentsDoesNotAddNoCacheWithViewPermission() {
 		global $gallery;
 		$gallery->_phpVm = new UnitTestPhpVm();
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());

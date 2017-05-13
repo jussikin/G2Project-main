@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17679 $
  */
-class ItemEditController extends GalleryController
-{
+class ItemEditController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		$editPlugin = GalleryUtilities::getRequestVariables('editPlugin');
@@ -179,8 +177,7 @@ class ItemEditController extends GalleryController
 		);
 	}
 	
-	public function runProgressBarOptions($options, $form, $item, $preferred, $status, $editPlugin)
-	{
+	public function runProgressBarOptions($options, $form, $item, $preferred, $status, $editPlugin) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		
@@ -215,8 +212,7 @@ class ItemEditController extends GalleryController
 /**
  * This view will show options to edit an item
  */
-class ItemEditView extends GalleryView
-{
+class ItemEditView extends GalleryView {
 	/**
 	 * Returns sizes for "maxlength" in forms
 	 * @todo This function is duplicated in ItemEditCaptions.inc, so it needs to be consolidated
@@ -225,8 +221,7 @@ class ItemEditView extends GalleryView
 	 * @return size for "maxlength" in form
 	 * @access private
 	 */
-	public function _getSizesForMaxlength($value)
-	{
+	public function _getSizesForMaxlength($value) {
 		switch ($value) {
 			case STORAGE_SIZE_SMALL:
 				$size = 32;
@@ -247,8 +242,7 @@ class ItemEditView extends GalleryView
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$editPlugin = GalleryUtilities::getRequestVariables('editPlugin');
@@ -427,8 +421,7 @@ class ItemEditView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -463,8 +456,7 @@ class ItemEditView extends GalleryView
  * Interface for plugins to the ItemEdit view and controller
  * @abstract
  */
-class ItemEditPlugin
-{
+class ItemEditPlugin {
 	/**
 	 * Does this plugin support the given item type?
 	 *
@@ -472,8 +464,7 @@ class ItemEditPlugin
 	 * @param GalleryDerivative $thumbnail item's thumbnail
 	 * @return boolean true if it's supported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		return false;
 	}
 	
@@ -489,8 +480,7 @@ class ItemEditPlugin
 	 *               string the path to a template file to include
 	 *               string localization domain for the template file
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -510,8 +500,7 @@ class ItemEditPlugin
 	 *               string localized status message
 	 *               boolean true if progress bar is needed
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -526,8 +515,7 @@ class ItemEditPlugin
 	 * @return array GalleryStatus a status code
 	 *               string localized title
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -543,8 +531,7 @@ class ItemEditPlugin
 	 *               bool true if any of the mime types are supported
 	 * @access protected
 	 */
-	public function _checkForOperation($operation, $mimeTypes)
-	{
+	public function _checkForOperation($operation, $mimeTypes) {
 		foreach (array_unique($mimeTypes) as $mimeType) {
 			list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($mimeType, $operation);
 			if ($ret) {
@@ -572,8 +559,7 @@ class ItemEditPlugin
  * that we can add new functionality to various ItemEditPlugins
  * @abstract
  */
-class ItemEditOption
-{
+class ItemEditOption {
 	/**
 	 * Return all the available option plugins
 	 *
@@ -584,8 +570,7 @@ class ItemEditOption
 	 *               array ItemEditOption instances
 	 * @static
 	 */
-	public function getAllOptions($editPlugin, $item, $thumbnail)
-	{
+	public function getAllOptions($editPlugin, $item, $thumbnail) {
 		list($ret, $allOptionIds) = GalleryCoreApi::getAllFactoryImplementationIdsWithHint('ItemEditOption', $editPlugin);
 		if ($ret) {
 			return array(
@@ -634,8 +619,7 @@ class ItemEditOption
 	 *               string the path to a template file to include
 	 *               string localization domain for the template file
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -654,8 +638,7 @@ class ItemEditOption
 	 *               array error messages
 	 *               array localized warning messages
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -671,8 +654,7 @@ class ItemEditOption
 	 * @return array GalleryStatus a status code
 	 *               boolean true or false
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		return array(
 			null,
 			false
@@ -685,8 +667,7 @@ class ItemEditOption
 	 * @param array $form the state of the current form
 	 * @return boolean
 	 */
-	public function requiresProgressBar($form)
-	{
+	public function requiresProgressBar($form) {
 		return false;
 	}
 }

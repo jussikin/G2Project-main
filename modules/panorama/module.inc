@@ -28,15 +28,12 @@
  * @author Java applet: Rüdiger Appel
  * @version $Revision: 18172 $
  */
-class PanoramaModule extends GalleryModule
-{
-	public function __construct()
-	{
+class PanoramaModule extends GalleryModule {
+	public function __construct() {
 		$this->PanoramaModule();
 	}
 
-	public function PanoramaModule()
-	{
+	public function PanoramaModule() {
 		global $gallery;
 		$this->setId('panorama');
 		$this->setName($gallery->i18n('Panorama'));
@@ -52,18 +49,17 @@ class PanoramaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		if (!isset($currentVersion)) {
 			/* Initial install */
-		foreach (array('itemType' => 1,
+			foreach (array('itemType' => 1,
 			   'itemLink' => 1,
 			   'width' => 800) as $key => $value) {
-			$ret = $this->setParameter($key, $value);
-			if ($ret) {
-				return $ret;
+				$ret = $this->setParameter($key, $value);
+				if ($ret) {
+					return $ret;
+				}
 			}
-		}
 		} else {
 			if (version_compare($currentVersion, '1.0.6', '<')) {
 				GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaUpgradeHelper.class');
@@ -80,18 +76,27 @@ class PanoramaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GalleryRenderer', 'PanoramaRenderer', 'PanoramaRenderer',
-		'modules/panorama/classes/PanoramaRenderer.class', 'panorama', null);
+			'GalleryRenderer',
+			'PanoramaRenderer',
+			'PanoramaRenderer',
+			'modules/panorama/classes/PanoramaRenderer.class',
+			'panorama',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
 
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemEditOption', 'PanoramaOption', 'PanoramaOption',
-		'modules/panorama/PanoramaOption.inc', 'panorama', array('ItemEditPhoto'));
+			'ItemEditOption',
+			'PanoramaOption',
+			'PanoramaOption',
+			'modules/panorama/PanoramaOption.inc',
+			'panorama',
+			array('ItemEditPhoto')
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -102,8 +107,7 @@ class PanoramaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null,
 			 array(array('name' => $this->translate('Panorama'),
 				 'view' => 'panorama.PanoramaSiteAdmin')));
@@ -112,8 +116,7 @@ class PanoramaModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		$links = array();
 
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'panorama');
@@ -128,7 +131,7 @@ class PanoramaModule extends GalleryModule
 	     * determine if a panorama is even possible.  We'll still also gate on the acting
 	     * user's permissions that we receive.
 	     */
-		list($ret, $images) = PanoramaHelper::fetchViewableImages($items);
+			list($ret, $images) = PanoramaHelper::fetchViewableImages($items);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -141,16 +144,16 @@ class PanoramaModule extends GalleryModule
 				$mimeType = $item->getMimeType();
 				$width = $image->getWidth();
 		/* Applet supports jpeg and gif images */
-		if (GalleryUtilities::isA($item, 'GalleryPhotoItem') &&
-			$item->getRenderer() != 'PanoramaRenderer' &&
-			preg_match(':^image/(gif|p?jpeg)$:', $mimeType) &&
-			$width > $param['width'] &&
-			($image->getHeight() / $width < 0.6)) {
-			$links[$itemId][] =
-			array('text' => $this->translate('View Panorama'),
-				  'params' => array('view' => 'panorama.Panorama',
+				if (GalleryUtilities::isA($item, 'GalleryPhotoItem') &&
+				$item->getRenderer() != 'PanoramaRenderer' &&
+				preg_match(':^image/(gif|p?jpeg)$:', $mimeType) &&
+				$width > $param['width'] &&
+				($image->getHeight() / $width < 0.6)) {
+					$links[$itemId][] =
+					array('text' => $this->translate('View Panorama'),
+						  'params' => array('view' => 'panorama.Panorama',
 						'itemId' => $itemId));
-		}
+				}
 			}
 		}
 
@@ -160,8 +163,7 @@ class PanoramaModule extends GalleryModule
 	/**
 	 * @see GalleryPlugin::uninstall
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		$ret = GalleryCoreApi::deleteRenderer('PanoramaRenderer');
 		if ($ret) {
 			return $ret;

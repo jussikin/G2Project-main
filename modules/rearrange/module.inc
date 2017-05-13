@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class RearrangeModule extends GalleryModule
-{
-	public function __construct()
-	{
+class RearrangeModule extends GalleryModule {
+	public function __construct() {
 		$this->RearrangeModule();
 	}
 
-	public function RearrangeModule()
-	{
+	public function RearrangeModule() {
 		global $gallery;
 		$this->setId('rearrange');
 		$this->setName($gallery->i18n('Rearrange'));
@@ -49,8 +46,7 @@ class RearrangeModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1=null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		$links = array();
 
 		$itemIds = array();
@@ -65,7 +61,7 @@ class RearrangeModule extends GalleryModule
 	     * determine if the link has children.  We're still gated on the acting user id's
 	     * permissions.
 	     */
-		list($ret, $childCounts) = GalleryCoreApi::fetchChildCounts($itemIds);
+			list($ret, $childCounts) = GalleryCoreApi::fetchChildCounts($itemIds);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -73,10 +69,10 @@ class RearrangeModule extends GalleryModule
 			foreach ($itemIds as $itemId) {
 				if (isset($wantsDetailedLinks[$itemId])) {
 					if (isset($permissions[$itemId]['core.edit']) &&
-			!empty($childCounts[$itemId]) && $childCounts[$itemId] > 1) {
+					!empty($childCounts[$itemId]) && $childCounts[$itemId] > 1) {
 						$links[$itemId][] =
-				array('text' => $this->translate('Rearrange Items'),
-				  'params' => array('view' => 'core.ItemAdmin',
+						array('text' => $this->translate('Rearrange Items'),
+						'params' => array('view' => 'core.ItemAdmin',
 							'subView' => 'rearrange.RearrangeItems',
 							'itemId' => $itemId, 'return' => 1));
 					}
@@ -90,8 +86,7 @@ class RearrangeModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemAdminViews
 	 */
-	public function getItemAdminViews($item)
-	{
+	public function getItemAdminViews($item) {
 		$views = array();
 		if (!$item->getCanContainChildren()) {
 			return array(null, $views);

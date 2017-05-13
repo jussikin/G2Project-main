@@ -25,16 +25,14 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17590 $
  */
-class GalleryControllerTestCase extends GalleryTestCase
-{
+class GalleryControllerTestCase extends GalleryTestCase {
 	/**
 	 * The controller instance
 	 * @access protected
 	 */
 	public $_controller;
 	
-	public function GalleryControllerTestCase($methodName, $controllerName)
-	{
+	public function GalleryControllerTestCase($methodName, $controllerName) {
 		$this->GalleryTestCase($methodName);
 		
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryController.class');
@@ -44,8 +42,7 @@ class GalleryControllerTestCase extends GalleryTestCase
 		}
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -55,8 +52,7 @@ class GalleryControllerTestCase extends GalleryTestCase
 		$gallery->_session->put('session.siteAdminActivityTimestamp', time());
 	}
 	
-	public function handleRequest($errorCode = null)
-	{
+	public function handleRequest($errorCode = null) {
 		/* Get our form variables */
 		$form = GalleryUtilities::getFormVariables('form');
 		

@@ -26,14 +26,12 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryPluginHelper_simple
-{
+class GalleryPluginHelper_simple {
 	/**
 	 * @see GalleryCoreApi::loadPlugin
 	 * @param int $depth of recursion (don't set this; it's used internally)
 	 */
-	public static function loadPlugin($pluginType, $pluginId, $ignoreVersionMismatch = false, $errorOnVersionMismatch = false, $depth = 0)
-	{
+	public static function loadPlugin($pluginType, $pluginId, $ignoreVersionMismatch = false, $errorOnVersionMismatch = false, $depth = 0) {
 		global $gallery;
 		
 		if ($gallery->getDebug()) {
@@ -177,8 +175,7 @@ class GalleryPluginHelper_simple
 	/**
 	 * @see GalleryCoreApi::isPluginCompatibleWithApis
 	 */
-	public static function isPluginCompatibleWithApis($plugin)
-	{
+	public static function isPluginCompatibleWithApis($plugin) {
 		$pluginType = $plugin->getPluginType();
 
 		return GalleryUtilities::isCompatibleWithApi($plugin->getRequiredCoreApi(), GalleryCoreApi::getApiVersion()) && (($pluginType == 'module' && GalleryUtilities::isCompatibleWithApi($plugin->getRequiredModuleApi(), GalleryModule::getApiVersion())) || ($pluginType == 'theme' && GalleryUtilities::isCompatibleWithApi($plugin->getRequiredThemeApi(), GalleryTheme::getApiVersion())));
@@ -187,8 +184,7 @@ class GalleryPluginHelper_simple
 	/**
 	 * @see GalleryCoreApi::getPluginParameter
 	 */
-	public static function getParameter($pluginType, $pluginId, $parameterName, $itemId = 0, $ignoreDiskCache = false)
-	{
+	public static function getParameter($pluginType, $pluginId, $parameterName, $itemId = 0, $ignoreDiskCache = false) {
 		global $gallery;
 		
 		if ($gallery->getDebug()) {
@@ -225,8 +221,7 @@ class GalleryPluginHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchAllPluginParameters
 	 */
-	public static function fetchAllParameters($pluginType, $pluginId, $itemId = 0, $ignoreDiskCache = false)
-	{
+	public static function fetchAllParameters($pluginType, $pluginId, $itemId = 0, $ignoreDiskCache = false) {
 		/* Convert null to 0, just in case */
 		if ($itemId == null) {
 			$itemId = 0;
@@ -256,8 +251,7 @@ class GalleryPluginHelper_simple
 	 *               array (itemId/zero => array(parameterName => parameterValue), ..)
 	 * @access protected
 	 */
-	public static function _fetchAllParameters($pluginType, $pluginId, $itemId, $ignoreDiskCache = false)
-	{
+	public static function _fetchAllParameters($pluginType, $pluginId, $itemId, $ignoreDiskCache = false) {
 		global $gallery;
 		if (empty($pluginType) || empty($pluginId)) {
 			return array(
@@ -353,8 +347,7 @@ class GalleryPluginHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchPluginStatus
 	 */
-	public static function fetchPluginStatus($pluginType, $ignoreCache = false)
-	{
+	public static function fetchPluginStatus($pluginType, $ignoreCache = false) {
 		global $gallery;
 		
 		$cacheKey = "GalleryPluginHelper::fetchPluginStatus($pluginType)";
@@ -408,7 +401,7 @@ class GalleryPluginHelper_simple
 				$pluginBasePath = GalleryCoreApi::getCodeBasePath($pluginsDir);
 				if ($dir = $platform->opendir($pluginBasePath)) {
 					while ($pluginId = $platform->readdir($dir)) {
-						if ($pluginId{0} == '.') {
+						if ($pluginId[0] == '.') {
 							continue;
 						}
 						if (!$platform->is_dir($pluginBasePath . $pluginId)) {
@@ -481,8 +474,7 @@ class GalleryPluginHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchPluginList
 	 */
-	public static function fetchPluginList($pluginType)
-	{
+	public static function fetchPluginList($pluginType) {
 		global $gallery;
 		
 		if (empty($pluginType)) {

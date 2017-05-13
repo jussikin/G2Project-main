@@ -25,13 +25,11 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminDeleteUserQuotaController extends GalleryController
-{
+class AdminDeleteUserQuotaController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -44,28 +42,29 @@ class AdminDeleteUserQuotaController extends GalleryController
 			return array($ret, null);
 		}
 		if (isset($form['action']['cancel'])) {
-
 		/* Go back to the AdminQuotas view */
-		$redirect['view'] = 'core.SiteAdmin';
+			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'quotas.AdminQuotas';
 		} elseif (isset($form['action']['delete'])) {
 			GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
 
 			list($ret, $quotaExists, $userQuota) =
-		GalleryQuotasHelper::fetchUserQuota($user->getId());
+			GalleryQuotasHelper::fetchUserQuota($user->getId());
 			if ($ret) {
 				return array($ret, null);
 			}
 
 			if ($quotaExists) {
 				$ret = GalleryCoreApi::removeMapEntry(
-			'QuotasMap', array('userOrGroupId' => $user->getId()));
+					'QuotasMap',
+					array('userOrGroupId' => $user->getId())
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
 
 		/* Request a redirect to the confirmation screen */
-		$redirect['view'] = 'core.SiteAdmin';
+				$redirect['view'] = 'core.SiteAdmin';
 				$redirect['subView'] = 'quotas.AdminQuotas';
 				$status['deletedUser'] = $user->getUserName();
 			}
@@ -87,13 +86,11 @@ class AdminDeleteUserQuotaController extends GalleryController
 /**
  * This view will prompt for confirmation to delete a user quota
  */
-class AdminDeleteUserQuotaView extends GalleryView
-{
+class AdminDeleteUserQuotaView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -113,7 +110,7 @@ class AdminDeleteUserQuotaView extends GalleryView
 
 		if ($form['formName'] != 'AdminDeleteUserQuota') {
 			/* First time around initialize our form */
-		$form['userName'] = $user->getUserName();
+			$form['userName'] = $user->getUserName();
 			$form['formName'] = 'AdminDeleteUserQuota';
 		}
 

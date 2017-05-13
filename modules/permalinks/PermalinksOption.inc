@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/permalinks/classes/PermalinksMapHelper.clas
  * @author Pierre-Luc Paour <gallery@paour.com>
  * @version $Revision: 17580 $
  */
-class PermalinksOption extends ItemEditOption
-{
+class PermalinksOption extends ItemEditOption {
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		$warning = $error = array();
 
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'permalinks');
@@ -42,15 +40,17 @@ class PermalinksOption extends ItemEditOption
 		}
 
 		if (!empty($form['PermalinksOption']['aliasName'])) {
-			$ret = PermalinksMapHelper::createAlias($form['PermalinksOption']['aliasName'],
-							$item->getId());
+			$ret = PermalinksMapHelper::createAlias(
+				$form['PermalinksOption']['aliasName'],
+				$item->getId()
+			);
 			if ($ret) {
 				if (!($ret->getErrorCode() & ERROR_COLLISION)) {
 					return array($ret, null, null);
 				}
 
 		/* Set our error status and fall back to the view. */
-		$error[] = 'form[error][PermalinksOption][exists]';
+				$error[] = 'form[error][PermalinksOption][exists]';
 			} else {
 				/* don't do anything if we're successful */
 			}
@@ -74,8 +74,7 @@ class PermalinksOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		list($ret, $aliases) = PermalinksMapHelper::fetchAliasesForItem($item->getId());
 		if ($ret) {
 			return array($ret, null, null);
@@ -90,8 +89,7 @@ class PermalinksOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		list($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 		if ($ret) {
 			return array($ret, null);

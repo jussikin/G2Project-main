@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryChildEntityHelper_simple
-{
+class GalleryChildEntityHelper_simple {
 	/**
 	 * @see GalleryCoreApi::fetchChildItemIdsWithPermission
 	 */
-	public static function fetchChildItemIdsWithPermission($itemId, $permissionId)
-	{
+	public static function fetchChildItemIdsWithPermission($itemId, $permissionId) {
 		list($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 		if ($ret) {
 			return array(
@@ -62,8 +60,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchLinkableChildItemIdsWithPermission
 	 */
-	public static function fetchLinkableChildItemIdsWithPermission($itemId, $permissionId)
-	{
+	public static function fetchLinkableChildItemIdsWithPermission($itemId, $permissionId) {
 		list($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 		if ($ret) {
 			return array(
@@ -93,8 +90,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchChildItemIds
 	 */
-	public static function fetchChildItemIds($item, $offset = null, $count = null, $userId = null)
-	{
+	public static function fetchChildItemIds($item, $offset = null, $count = null, $userId = null) {
 		list($ret, $ids) = self::_fetchChildItemIds($item, $offset, $count, 'GalleryItem', 'core.view', false, $userId);
 		if ($ret) {
 			return array(
@@ -112,8 +108,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchChildDataItemIds
 	 */
-	public static function fetchChildDataItemIds($item, $offset = null, $count = null, $userId = null)
-	{
+	public static function fetchChildDataItemIds($item, $offset = null, $count = null, $userId = null) {
 		list($ret, $ids) = self::_fetchChildItemIds($item, $offset, $count, 'GalleryDataItem', 'core.view', false, $userId);
 		if ($ret) {
 			return array(
@@ -131,8 +126,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchChildAlbumItemIds
 	 */
-	public static function fetchChildAlbumItemIds($item, $offset = null, $count = null, $userId = null)
-	{
+	public static function fetchChildAlbumItemIds($item, $offset = null, $count = null, $userId = null) {
 		list($ret, $ids) = self::_fetchChildItemIds($item, $offset, $count, 'GalleryAlbumItem', 'core.view', false, $userId);
 		if ($ret) {
 			return array(
@@ -150,8 +144,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchChildItemIdsIgnorePermissions
 	 */
-	public static function fetchChildItemIdsIgnorePermissions($item, $offset = null, $count = null)
-	{
+	public static function fetchChildItemIdsIgnorePermissions($item, $offset = null, $count = null) {
 		list($ret, $ids) = self::_fetchChildItemIds($item, $offset, $count, 'GalleryItem', null, false, null);
 		if ($ret) {
 			return array(
@@ -181,8 +174,7 @@ class GalleryChildEntityHelper_simple
 	 *               array of item ids
 	 * @access private
 	 */
-	public function _fetchChildItemIds($item, $offset, $count, $class, $requiredPermission, $linkableOnly, $userId)
-	{
+	public function _fetchChildItemIds($item, $offset, $count, $class, $requiredPermission, $linkableOnly, $userId) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		if (!isset($userId)) {
@@ -239,8 +231,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::buildItemQuery
 	 */
-	public static function buildItemQuery($baseTable, $baseIdColumn, $baseQuery, $orderBy, $orderDirection, $class, $requiredPermission, $linkableOnly, $userId)
-	{
+	public static function buildItemQuery($baseTable, $baseIdColumn, $baseQuery, $orderBy, $orderDirection, $class, $requiredPermission, $linkableOnly, $userId) {
 		list($ret, $select, $join, $where, $order) = self::_getOrderInfo($orderBy, $orderDirection);
 		if ($ret) {
 			return array(
@@ -312,8 +303,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchParents
 	 */
-	public static function fetchParents($item, $permission = null, $filterBreadcrumb = false)
-	{
+	public static function fetchParents($item, $permission = null, $filterBreadcrumb = false) {
 		global $gallery;
 		
 		if (!GalleryUtilities::isA($item, 'GalleryItem')) {
@@ -393,8 +383,7 @@ class GalleryChildEntityHelper_simple
 	 *               array of ids
 	 * @access private
 	 */
-	public function _fetchDescendentItemIds($item, $offset, $count, $class, $requiredPermission)
-	{
+	public function _fetchDescendentItemIds($item, $offset, $count, $class, $requiredPermission) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -495,8 +484,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchDescendentItemIds
 	 */
-	public static function fetchDescendentItemIds($item, $offset, $count, $requiredPermission)
-	{
+	public static function fetchDescendentItemIds($item, $offset, $count, $requiredPermission) {
 		list($ret, $ids) = self::_fetchDescendentItemIds($item, $offset, $count, 'GalleryItem', $requiredPermission);
 		if ($ret) {
 			return array(
@@ -514,8 +502,7 @@ class GalleryChildEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchDescendentAlbumItemIds
 	 */
-	public static function fetchDescendentAlbumItemIds($item, $offset, $count, $requiredPermission)
-	{
+	public static function fetchDescendentAlbumItemIds($item, $offset, $count, $requiredPermission) {
 		list($ret, $ids) = self::_fetchDescendentItemIds($item, $offset, $count, 'GalleryAlbumItem', $requiredPermission);
 		if ($ret) {
 			return array(
@@ -548,8 +535,7 @@ class GalleryChildEntityHelper_simple
 	 *               string optional join clause
 	 * @access private
 	 */
-	public function _getOrderInfo($orderBy, $orderDirection)
-	{
+	public function _getOrderInfo($orderBy, $orderDirection) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		

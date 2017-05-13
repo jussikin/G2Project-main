@@ -29,16 +29,14 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class CartPluginInterface_1_0
-{
+class CartPluginInterface_1_0 {
 	/**
 	 * Return the item types that this cart plugin can fulfill, e.g.
 	 * array('GalleryPhotoItem', 'GalleryMovieItem')
 	 *
 	 * @return array item types
 	 */
-	public function getSupportedItemTypes()
-	{
+	public function getSupportedItemTypes() {
 		return array();
 	}
 	
@@ -48,8 +46,7 @@ class CartPluginInterface_1_0
 	 * @return array GalleryStatus a status code
 	 *               string the action display name
 	 */
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -62,8 +59,7 @@ class CartPluginInterface_1_0
 	 * @return array GalleryStatus a status code
 	 *               array url components that can be passed to the UrlGenerator
 	 */
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null

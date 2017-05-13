@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryEntityHelper_simple
-{
+class GalleryEntityHelper_simple {
 	/**
 	 * @see GalleryCoreApi::loadEntitiesById
 	 */
-	public static function loadEntitiesById($ids, $requiredEntityType)
-	{
+	public static function loadEntitiesById($ids, $requiredEntityType) {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(5);
 		
@@ -168,8 +166,7 @@ class GalleryEntityHelper_simple
 	/**
 	 * @see GalleryCoreApi::loadEntityByExternalId
 	 */
-	public static function loadEntityByExternalId($externalId, $entityType)
-	{
+	public static function loadEntityByExternalId($externalId, $entityType) {
 		global $gallery;
 		
 		list($ret, $results) = GalleryCoreApi::getMapEntry('ExternalIdMap', array(

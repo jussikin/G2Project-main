@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryUrlGenerator.class');
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class RewriteUrlGenerator extends GalleryUrlGenerator
-{
+class RewriteUrlGenerator extends GalleryUrlGenerator {
 	/**
 	 * If there's an error, use parent GalleryUrlGenerator functions.
 	 * @var bool has an error occured?
@@ -48,8 +47,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	 * @param array $params URL params
 	 * @return array first short URL to match URL params
 	 */
-	public function _getShortUrl($params)
-	{
+	public function _getShortUrl($params) {
 		foreach ($this->_shortUrls as $shortUrl) {
 			foreach ($shortUrl['match'] as $key => $value) {
 				if (!isset($params[$key]) || $params[$key] != $value) {
@@ -65,8 +63,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::init
 	 */
-	public function init($baseUri=null, $g2Uri=null, $embedSessionString=null)
-	{
+	public function init($baseUri=null, $g2Uri=null, $embedSessionString=null) {
 		$ret = parent::init($baseUri, $g2Uri, $embedSessionString);
 		if ($ret) {
 			return $ret;
@@ -89,8 +86,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	 * @return GalleryStatus a status code
 	 * @private
 	 */
-	public function _onLoad()
-	{
+	public function _onLoad() {
 		$variables = GalleryUtilities::getAllRequestVariables();
 
 	/* Make sure the onLoad function is called even if the default view is omitted */
@@ -115,8 +111,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::generateUrl
 	 */
-	public function generateUrl($params=array(), $options=array())
-	{
+	public function generateUrl($params=array(), $options=array()) {
 		if ($this->_error || !empty($params['href'])) {
 			return parent::generateUrl($params, $options);
 		}
@@ -171,8 +166,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	 * @return boolean true on success
 	 * @access private
 	 */
-	public function _parseShortUrl(&$url, &$params, $options, $functions)
-	{
+	public function _parseShortUrl(&$url, &$params, $options, $functions) {
 		$entity = null;
 
 		preg_match_all('/%([a-zA-Z]+)%/', $url, $regs);
@@ -218,8 +212,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	 * @param int $itemId itemId of the entity to load
 	 * @return GalleryEntity or null on failure
 	 */
-	public function loadEntity(&$itemId)
-	{
+	public function loadEntity(&$itemId) {
 		/* Assume rootAlbum if itemId not specified */
 	if (empty($itemId)) {
 		list($ret, $itemId) = GalleryCoreApi::getDefaultAlbumId();
@@ -243,8 +236,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	 * @return string the base URL
 	 * @access private
 	 */
-	public function _getBaseUrl($forceDirect=false)
-	{
+	public function _getBaseUrl($forceDirect=false) {
 		return $this->getCurrentUrlDir($forceDirect);
 	}
 
@@ -255,8 +247,7 @@ class RewriteUrlGenerator extends GalleryUrlGenerator
 	 * @return string the base URL parameters
 	 * @access private
 	 */
-	public function _getBaseParamString($forceDirect=false)
-	{
+	public function _getBaseParamString($forceDirect=false) {
 		return '';
 	}
 }

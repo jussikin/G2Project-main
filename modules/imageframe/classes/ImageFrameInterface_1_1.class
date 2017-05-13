@@ -28,16 +28,14 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class ImageFrameInterface_1_1
-{
+class ImageFrameInterface_1_1 {
 	/**
 	 * Get list of available image frames
 	 *
 	 * @return array GalleryStatus a status code,
 	 *               array(frame_id=>localized_frame_name)
 	 */
-	public function getImageFrameList()
-	{
+	public function getImageFrameList() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -55,8 +53,7 @@ class ImageFrameInterface_1_1
 	 * @param mixed $frameIds array of frame ids to prepare for use or single frame id
 	 * @return GalleryStatus a status code
 	 */
-	public function init(&$template, $frameIds)
-	{
+	public function init(&$template, $frameIds) {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 	
@@ -67,8 +64,7 @@ class ImageFrameInterface_1_1
 	 * @return array GalleryStatus a status code,
 	 *               string view url
 	 */
-	public function getSampleUrl($itemId = null)
-	{
+	public function getSampleUrl($itemId = null) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null

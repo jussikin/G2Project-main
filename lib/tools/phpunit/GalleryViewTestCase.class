@@ -25,8 +25,7 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class GalleryViewTestCase extends GalleryTestCase
-{
+class GalleryViewTestCase extends GalleryTestCase {
 	/**
 	 * The view instance
 	 * @var GalleryView
@@ -41,8 +40,7 @@ class GalleryViewTestCase extends GalleryTestCase
 	 */
 	public $_template;
 	
-	public function GalleryViewTestCase($methodName, $viewName)
-	{
+	public function GalleryViewTestCase($methodName, $viewName) {
 		$this->GalleryTestCase($methodName);
 		
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
@@ -54,8 +52,7 @@ class GalleryViewTestCase extends GalleryTestCase
 		$this->_template = new UnitTestTemplate();
 	}
 	
-	public function loadTemplate($errorCode = null)
-	{
+	public function loadTemplate($errorCode = null) {
 		/* Get our form variables */
 		$form = GalleryUtilities::getFormVariables('form');
 		if (!isset($form['formName'])) {

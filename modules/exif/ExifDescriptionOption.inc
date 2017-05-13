@@ -29,13 +29,11 @@
  * @author Jozsef R.Nagy <jozsef.rnagy@site.hu>
  * @version $Revision: 17580 $
  */
-class ExifDescriptionOption extends ItemAddOption
-{
+class ExifDescriptionOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $addOption) = GalleryCoreApi::getPluginParameter('module', 'exif', 'addOption');
 		if ($ret) {
 			return array(
@@ -53,8 +51,7 @@ class ExifDescriptionOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		GalleryCoreApi::requireOnce('modules/exif/classes/ExifExtractor.class');
 		GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');
 		$errors = $warnings = $needed = array();

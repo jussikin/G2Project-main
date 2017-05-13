@@ -37,8 +37,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryDataItem extends GalleryItem
-{
+class GalleryDataItem extends GalleryItem {
 	/**
 	 * The mime type of the data file
 	 * @var string
@@ -74,8 +73,7 @@ class GalleryDataItem extends GalleryItem
 	 *
 	 * @return boolean true if this data item can be viewed inline
 	 */
-	public function canBeViewedInline()
-	{
+	public function canBeViewedInline() {
 		return $this->_canBeViewedInline();
 	}
 	
@@ -86,8 +84,7 @@ class GalleryDataItem extends GalleryItem
 	 * @return boolean true if this data item can be viewed inline
 	 * @access protected
 	 */
-	public function _canBeViewedInline($mimeList = null)
-	{
+	public function _canBeViewedInline($mimeList = null) {
 		$renderer = $this->getRenderer();
 		if (!empty($renderer)) {
 			list($ret, $renderer) = GalleryCoreApi::newFactoryInstanceById('GalleryRenderer', $renderer);
@@ -113,8 +110,7 @@ class GalleryDataItem extends GalleryItem
 	 *        of copy (default is false).
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId, $inputFileName, $mimeType, $targetName = null, $symlink = false)
-	{
+	public function create($parentId, $inputFileName, $mimeType, $targetName = null, $symlink = false) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -189,8 +185,7 @@ class GalleryDataItem extends GalleryItem
 	/**
 	 * @see GalleryEntity::detachLink
 	 */
-	public function detachLink()
-	{
+	public function detachLink() {
 		global $gallery;
 		
 		/* Stash the linked entity because the super class is going to get rid of it */
@@ -231,8 +226,7 @@ class GalleryDataItem extends GalleryItem
 	 * Delete this GalleryEntity
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 		
 		/* Delete myself */
@@ -264,8 +258,7 @@ class GalleryDataItem extends GalleryItem
 	 * Scan this item's data for changes.
 	 * @return GalleryStatus a status code
 	 */
-	public function rescan()
-	{
+	public function rescan() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -286,8 +279,7 @@ class GalleryDataItem extends GalleryItem
 	 * @param string $newName the path component
 	 * @return GalleryStatus a status code
 	 */
-	public function rename($newName)
-	{
+	public function rename($newName) {
 		global $gallery;
 		
 		if ($newName == $this->getPathComponent()) {
@@ -364,8 +356,7 @@ class GalleryDataItem extends GalleryItem
 	 * @return array GalleryStatus a status code,
 	 *               string a path where children can store their data files
 	 */
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		global $gallery;
 		
 		/*
@@ -397,36 +388,30 @@ class GalleryDataItem extends GalleryItem
 	 * @see GalleryRenderer::render
 	 *
 	 */
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		return null;
 	}
 	
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryDataItem';
 	}
 	
-	public function getMimeType()
-	{
+	public function getMimeType() {
 		return $this->mimeType;
 	}
 	
-	public function setMimeType($mimeType)
-	{
+	public function setMimeType($mimeType) {
 		$this->mimeType = $mimeType;
 	}
 	
-	public function getSize()
-	{
+	public function getSize() {
 		return $this->size;
 	}
 	
-	public function setSize($size)
-	{
+	public function setSize($size) {
 		$this->size = $size;
 	}
 }

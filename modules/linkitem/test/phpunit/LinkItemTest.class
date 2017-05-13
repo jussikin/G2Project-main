@@ -25,10 +25,8 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class LinkItemTest extends GalleryTestCase
-{
-	public function setUp()
-	{
+class LinkItemTest extends GalleryTestCase {
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -61,8 +59,7 @@ class LinkItemTest extends GalleryTestCase
 		}
 	}
 	
-	public function _createLinkItem($parentId, $target)
-	{
+	public function _createLinkItem($parentId, $target) {
 		list($ret, $link) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryLinkItem');
 		if ($ret) {
 			return array(
@@ -97,8 +94,7 @@ class LinkItemTest extends GalleryTestCase
 		);
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		if (isset($this->_lockId)) {
 			$ret = GalleryCoreApi::releaseLocks($this->_lockId);
 			if ($ret) {
@@ -112,8 +108,7 @@ class LinkItemTest extends GalleryTestCase
 		}
 	}
 	
-	public function testMoveLink()
-	{
+	public function testMoveLink() {
 		/* We don't really have anything on the filesystem; make sure move() works ok */
 		$this->_markForCleanup($this->_targetAlbum);
 		
@@ -133,8 +128,7 @@ class LinkItemTest extends GalleryTestCase
 		), $parentSequence, 'parent sequence');
 	}
 	
-	public function testDeleteAlbum()
-	{
+	public function testDeleteAlbum() {
 		/* Verify delete of an album also deletes links that point to it */
 		list($ret, $link) = $this->_createLinkItem($this->_album->getId(), $this->_targetAlbum->getId());
 		if ($ret) {
@@ -160,8 +154,7 @@ class LinkItemTest extends GalleryTestCase
 		}
 	}
 	
-	public function testDeleteSubalbum()
-	{
+	public function testDeleteSubalbum() {
 		/* Verify delete of an album also deletes links that point to its subalbums */
 		list($ret, $subalbum) = $this->_createRandomAlbum($this->_targetAlbum->getId());
 		if ($ret) {
@@ -191,8 +184,7 @@ class LinkItemTest extends GalleryTestCase
 		}
 	}
 	
-	public function testShowLinkItemNoPersistentSession()
-	{
+	public function testShowLinkItemNoPersistentSession() {
 		global $gallery;
 		$backup = $gallery->_session;
 		/* Make sure the redirect has no sessionId in it */
@@ -253,8 +245,7 @@ class LinkItemTest extends GalleryTestCase
 		$gallery->_session = $backup;
 	}
 	
-	public function testToolkit()
-	{
+	public function testToolkit() {
 		global $gallery;
 		$this->_markForCleanup($this->_targetAlbum);
 		
@@ -363,17 +354,14 @@ class LinkItemTest extends GalleryTestCase
 	}
 }
 
-class LinkItemTestMockPhpVm extends GalleryPhpVm
-{
-	public function header($string, $replace = null)
-	{
+class LinkItemTestMockPhpVm extends GalleryPhpVm {
+	public function header($string, $replace = null) {
 		if ($pos = strpos($string, ':')) {
 			$_REQUEST['phpVmHeaders'][substr($string, 0, $pos)] = substr($string, $pos + 1);
 		}
 	}
 	
-	public function exit_($status = null)
-	{
+	public function exit_($status = null) {
 		$_REQUEST['phpVmExitCalls']++;
 	}
 }

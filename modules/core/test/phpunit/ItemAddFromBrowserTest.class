@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemAddFromBrowserTest extends ItemAddPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAddFromBrowserTest extends ItemAddPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddPluginTestCase($methodName, 'core', 'ItemAddFromBrowser');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -51,8 +48,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::releaseLocks($this->_lockIds);
 		if ($ret) {
 			return $ret;
@@ -64,8 +60,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddChildrenFromBrowser()
-	{
+	public function testAddChildrenFromBrowser() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -155,8 +150,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddUnknownChildFromBrowser()
-	{
+	public function testAddUnknownChildFromBrowser() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -201,8 +195,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		$this->assertEquals('', $item->getDescription(), 'description');
 	}
 	
-	public function testAddWithEmptyTitle()
-	{
+	public function testAddWithEmptyTitle() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -242,8 +235,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		$this->assertEquals('', $item->getDescription(), 'description');
 	}
 	
-	public function testAddWithSpaces()
-	{
+	public function testAddWithSpaces() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -285,8 +277,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		$this->assertEquals(trim($name), basename($path), 'file name: "' . basename($path) . '"');
 	}
 	
-	public function testAddFromBrowserFail()
-	{
+	public function testAddFromBrowserFail() {
 		GalleryUtilities::putRequestVariable('form[action][addFromBrowser]', 1);
 		$files = array(
 			1 => array(
@@ -327,8 +318,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 	}
 	
 	/* One file upload fails and one succeeds */
-	public function testAddFromBrowserMix()
-	{
+	public function testAddFromBrowserMix() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		GalleryUtilities::putRequestVariable('form[action][addFromBrowser]', 1);
@@ -369,8 +359,7 @@ class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 		$this->assert(!empty($results[1]['addedFiles'][1]['id']), 'id');
 	}
 	
-	public function testMaliciousMarkup()
-	{
+	public function testMaliciousMarkup() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$ret = $this->_setMarkupType('html', true);

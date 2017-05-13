@@ -38,8 +38,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryUnknownItem extends GalleryDataItem
-{
+class GalleryUnknownItem extends GalleryDataItem {
 	/**
 	 * Create a new GalleryUnknownItem from an image file
 	 *
@@ -51,8 +50,7 @@ class GalleryUnknownItem extends GalleryDataItem
 	 *        of copy (default is false).
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId, $inputFileName, $mimeType, $targetName = null, $symlink = false)
-	{
+	public function create($parentId, $inputFileName, $mimeType, $targetName = null, $symlink = false) {
 		/* Create our data item */
 		$ret = parent::create($parentId, $inputFileName, $mimeType, $targetName, $symlink);
 		if ($ret) {
@@ -69,8 +67,7 @@ class GalleryUnknownItem extends GalleryDataItem
 	 * @see GalleryEntity::itemTypeName
 	 * @staticvar mimeMap array(mimeTypePattern => array(CapName,name))
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		global $gallery;
 		static $mimeMap;
 		
@@ -123,8 +120,7 @@ class GalleryUnknownItem extends GalleryDataItem
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryUnknownItem';
 	}
 }

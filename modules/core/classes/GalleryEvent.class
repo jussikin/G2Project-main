@@ -25,8 +25,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryEvent
-{
+class GalleryEvent {
 	/**
 	 * Event name
 	 * @var string
@@ -48,13 +47,11 @@ class GalleryEvent
 	 */
 	public $_data;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->GalleryEvent();
 	}
 	
-	public function GalleryEvent()
-	{
+	public function GalleryEvent() {
 		$temp = null;
 		$this->setEventName(null);
 		$this->setEntity($temp);
@@ -65,8 +62,7 @@ class GalleryEvent
 	 * Set this event's name
 	 * @param string $eventName
 	 */
-	public function setEventName($eventName)
-	{
+	public function setEventName($eventName) {
 		$this->_eventName = $eventName;
 	}
 	
@@ -74,8 +70,7 @@ class GalleryEvent
 	 * Return the event name
 	 * @return string the event name
 	 */
-	public function getEventName()
-	{
+	public function getEventName() {
 		return $this->_eventName;
 	}
 	
@@ -83,8 +78,7 @@ class GalleryEvent
 	 * Set this event's entity
 	 * @param GalleryEntity $entity
 	 */
-	public function setEntity(&$entity)
-	{
+	public function setEntity(&$entity) {
 		$this->_entity =& $entity;
 	}
 	
@@ -92,8 +86,7 @@ class GalleryEvent
 	 * Return the event's entity
 	 * @return GalleryEntity
 	 */
-	public function &getEntity()
-	{
+	public function &getEntity() {
 		return $this->_entity;
 	}
 	
@@ -101,8 +94,7 @@ class GalleryEvent
 	 * Set this event's data
 	 * @param mixed $data
 	 */
-	public function setData($data)
-	{
+	public function setData($data) {
 		$this->_data = $data;
 	}
 	
@@ -110,8 +102,7 @@ class GalleryEvent
 	 * Return the event's data
 	 * @return mixed
 	 */
-	public function getData()
-	{
+	public function getData() {
 		return $this->_data;
 	}
 }

@@ -27,10 +27,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PluginTest extends GalleryTestCase
-{
-	public function testCoreApiTooNew()
-	{
+class PluginTest extends GalleryTestCase {
+	public function testCoreApiTooNew() {
 		$plugin = new PluginTestPlugin();
 		$plugin->setPluginType('theme');
 		$version = GalleryCoreApi::getApiVersion();
@@ -42,8 +40,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert(!GalleryCoreApi::isPluginCompatibleWithApis($plugin), 'should not be compatible');
 	}
 	
-	public function testCoreApiOldMinorButOkMajor()
-	{
+	public function testCoreApiOldMinorButOkMajor() {
 		$plugin = new PluginTestPlugin();
 		$plugin->setPluginType('theme');
 		$version = GalleryCoreApi::getApiVersion();
@@ -55,8 +52,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert(GalleryCoreApi::isPluginCompatibleWithApis($plugin), 'should be compatible');
 	}
 	
-	public function testCompatibleTheme()
-	{
+	public function testCompatibleTheme() {
 		$plugin = new PluginTestPlugin();
 		$plugin->setPluginType('theme');
 		$plugin->setRequiredCoreApi(GalleryCoreApi::getApiVersion());
@@ -64,8 +60,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert(GalleryCoreApi::isPluginCompatibleWithApis($plugin), 'should be compatible');
 	}
 	
-	public function testThemeTooNew()
-	{
+	public function testThemeTooNew() {
 		$plugin = new PluginTestPlugin();
 		$plugin->setPluginType('theme');
 		$plugin->setRequiredCoreApi(GalleryCoreApi::getApiVersion());
@@ -77,8 +72,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert(!GalleryCoreApi::isPluginCompatibleWithApis($plugin), 'should not be compatible');
 	}
 	
-	public function testCompatibleModule()
-	{
+	public function testCompatibleModule() {
 		$plugin = new PluginTestPlugin();
 		$plugin->setPluginType('module');
 		$plugin->setRequiredCoreApi(GalleryCoreApi::getApiVersion());
@@ -86,8 +80,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert(GalleryCoreApi::isPluginCompatibleWithApis($plugin), 'should be compatible');
 	}
 	
-	public function testModuleTooNew()
-	{
+	public function testModuleTooNew() {
 		$plugin = new PluginTestPlugin();
 		$plugin->setPluginType('module');
 		$plugin->setRequiredCoreApi(GalleryCoreApi::getApiVersion());
@@ -99,8 +92,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert(!GalleryCoreApi::isPluginCompatibleWithApis($plugin), 'should not be compatible');
 	}
 	
-	public function testLoadBadPluginType()
-	{
+	public function testLoadBadPluginType() {
 		list($ret, $plugin) = GalleryCoreApi::loadPlugin('wrong_value', 'Anything');
 		if (!$ret) {
 			return $this->assert(false, 'Should have been an error');
@@ -109,22 +101,19 @@ class PluginTest extends GalleryTestCase
 		$this->assert($ret->getErrorCode() & ERROR_BAD_PARAMETER);
 	}
 	
-	public function testLoadPlugin()
-	{
+	public function testLoadPlugin() {
 		list($ret, $plugin) = GalleryCoreApi::loadPlugin('module', 'PluginTestCompatible');
 		if ($ret) {
 			return $ret;
 		}
 	}
 	
-	public function testFetchPluginStatusForWrongPluginType()
-	{
+	public function testFetchPluginStatusForWrongPluginType() {
 		list($ret, $status) = GalleryCoreApi::fetchPluginStatus('foo');
 		$this->assert(ERROR_BAD_PARAMETER & $ret->getErrorCode(), 'Wrong status code');
 	}
 	
-	public function testGetAllPluginIds()
-	{
+	public function testGetAllPluginIds() {
 		global $gallery;
 		
 		foreach (array(
@@ -189,8 +178,7 @@ class PluginTest extends GalleryTestCase
 		}
 	}
 	
-	public function testActivateFlushesTemplateCacheAndLocalUrlMap()
-	{
+	public function testActivateFlushesTemplateCacheAndLocalUrlMap() {
 		global $gallery;
 		
 		/* Test preparation */
@@ -256,8 +244,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert($gallery->_storage->isComplete(), $gallery->_storage->getRemaining());
 	}
 	
-	public function testInstallIgnoresPluginScanErrors()
-	{
+	public function testInstallIgnoresPluginScanErrors() {
 		global $gallery;
 		
 		GalleryDataCache::reset(true);
@@ -291,8 +278,7 @@ class PluginTest extends GalleryTestCase
 		$this->assert($testRepository->isComplete(), $testRepository->getRemaining());
 	}
 	
-	public function testInstallDoesNotIgnoreStorageError()
-	{
+	public function testInstallDoesNotIgnoreStorageError() {
 		global $gallery;
 		
 		GalleryDataCache::reset(true);
@@ -330,39 +316,31 @@ class PluginTest extends GalleryTestCase
 	}
 }
 
-class PluginTestCompatibleModule extends GalleryModule
-{
+class PluginTestCompatibleModule extends GalleryModule {
 }
 
-class PluginTestPlugin extends GalleryPlugin
-{
-	public function setPluginType($type)
-	{
+class PluginTestPlugin extends GalleryPlugin {
+	public function setPluginType($type) {
 		$this->_type = $type;
 	}
 	
-	public function getPluginType()
-	{
+	public function getPluginType() {
 		return $this->_type;
 	}
 	
-	public function setRequiredModuleApi($requirement)
-	{
+	public function setRequiredModuleApi($requirement) {
 		$this->_requiredModuleApi = $requirement;
 	}
 	
-	public function getRequiredModuleApi()
-	{
+	public function getRequiredModuleApi() {
 		return $this->_requiredModuleApi;
 	}
 	
-	public function setRequiredThemeApi($requirement)
-	{
+	public function setRequiredThemeApi($requirement) {
 		$this->_requiredThemeApi = $requirement;
 	}
 	
-	public function getRequiredThemeApi()
-	{
+	public function getRequiredThemeApi() {
 		return $this->_requiredThemeApi;
 	}
 }

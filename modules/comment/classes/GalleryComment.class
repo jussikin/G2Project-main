@@ -38,8 +38,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryChildEntity.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryComment extends GalleryChildEntity
-{
+class GalleryComment extends GalleryChildEntity {
 	/**
 	 * Id of the commenter
 	 *
@@ -152,16 +151,14 @@ class GalleryComment extends GalleryChildEntity
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryComment';
 	}
 	
 	/**
 	 * @see GalleryEntity::create
 	 */
-	public function create($parentId)
-	{
+	public function create($parentId) {
 		$ret = parent::create($parentId);
 		if ($ret) {
 			return $ret;
@@ -185,73 +182,59 @@ class GalleryComment extends GalleryChildEntity
 		}
 	}
 	
-	public function getCommenterId()
-	{
+	public function getCommenterId() {
 		return $this->commenterId;
 	}
 	
-	public function setCommenterId($commenterId)
-	{
+	public function setCommenterId($commenterId) {
 		$this->commenterId = $commenterId;
 	}
 	
-	public function getHost()
-	{
+	public function getHost() {
 		return $this->host;
 	}
 	
-	public function setHost($host)
-	{
+	public function setHost($host) {
 		$this->host = $host;
 	}
 	
-	public function getSubject()
-	{
+	public function getSubject() {
 		return $this->subject;
 	}
 	
-	public function setSubject($subject)
-	{
+	public function setSubject($subject) {
 		$this->subject = $subject;
 	}
 	
-	public function getComment()
-	{
+	public function getComment() {
 		return $this->comment;
 	}
 	
-	public function setComment($comment)
-	{
+	public function setComment($comment) {
 		$this->comment = $comment;
 	}
 	
-	public function getDate()
-	{
+	public function getDate() {
 		return $this->date;
 	}
 	
-	public function setDate($date)
-	{
+	public function setDate($date) {
 		$this->date = $date;
 	}
 	
-	public function setAuthor($author)
-	{
+	public function setAuthor($author) {
 		$this->author = $author;
 	}
 	
-	public function getAuthor()
-	{
+	public function getAuthor() {
 		return $this->author;
 	}
 	
-	public function setPublishStatus($publishStatus)
-	{
+	public function setPublishStatus($publishStatus) {
 		$this->publishStatus = $publishStatus;
 	}
 	
-	public function getPublishStatus()
-	{
+	public function getPublishStatus() {
 		return $this->publishStatus;
 	}
 }

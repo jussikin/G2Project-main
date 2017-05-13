@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class')
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class IsapiRewriteUrlGenerator extends RewriteUrlGenerator
-{
+class IsapiRewriteUrlGenerator extends RewriteUrlGenerator {
 	/**
 	 * @see GalleryUrlGenerator::init
 	 */
-	public function init($baseUri=null, $g2Uri=null, $embedSessionString=null)
-	{
+	public function init($baseUri=null, $g2Uri=null, $embedSessionString=null) {
 		/* Verify that we're configured to work in this mode.  Else disable short-URLs. */
 	$location = GalleryUtilities::isEmbedded() ? 'embeddedLocation' : 'galleryLocation';
 		list($ret, $configuredLocation) =
@@ -53,8 +51,7 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::initNavigation
 	 */
-	public function initNavigation()
-	{
+	public function initNavigation() {
 		$ret = $this->_onLoad();
 		if ($ret) {
 			return $ret;
@@ -71,8 +68,7 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::generateUrl
 	 */
-	public function generateUrl($params=array(), $options=array())
-	{
+	public function generateUrl($params=array(), $options=array()) {
 		if ($this->_error) {
 			return parent::generateUrl($params, $options);
 		}
@@ -93,8 +89,7 @@ class IsapiRewriteUrlGenerator extends RewriteUrlGenerator
 	 * But we want to add a check if the RewriteUrlGenerator has been configured
 	 * and force a fallback if that is not the case.
 	 */
-	public function getCurrentUrlDir($forceDirect=false)
-	{
+	public function getCurrentUrlDir($forceDirect=false) {
 		if ($this->_error) {
 			return parent::getCurrentUrlDir($forceDirect);
 		}

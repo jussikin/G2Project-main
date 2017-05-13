@@ -37,16 +37,14 @@ function countTestCases();
 }
 */
 
-function trace($msg)
-{
+function trace($msg) {
 	return;
 	echo($msg);
 	flush();
 }
 
 if (phpversion() >= '4') {
-	function PHPUnit_error_handler($errno, $errstr, $errfile, $errline)
-	{
+	function PHPUnit_error_handler($errno, $errstr, $errfile, $errline) {
 		global $PHPUnit_testRunning;
 		
 		if ($errno == 2048) {
@@ -114,40 +112,33 @@ if (phpversion() >= '4') {
 	}
 }
 
-class PHPUnitException
-{
+class PHPUnitException {
 	/* Emulate a Java exception, sort of... */
 	public $message;
 	public $type;
 
-	public function PHPUnitException($message, $type = 'FAILURE')
-	{
+	public function PHPUnitException($message, $type = 'FAILURE') {
 		$this->message = $message;
 		$this->type = $type;
 	}
 
-	public function getMessage()
-	{
+	public function getMessage() {
 		return $this->message;
 	}
 
-	public function getType()
-	{
+	public function getType() {
 		return $this->type;
 	}
 }
 
-class Assert
-{
-	public function assert($boolean, $message = 0)
-	{
+class Assert {
+	public function assert($boolean, $message = 0) {
 		if (!$boolean) {
 			$this->fail($message);
 		}
 	}
 	
-	public function assertEquals($expected, $actual, $message = 0)
-	{
+	public function assertEquals($expected, $actual, $message = 0) {
 		if (gettype($expected) != gettype($actual)) {
 			$this->failNotEquals($expected, $actual, "expected", $message);
 
@@ -186,15 +177,13 @@ class Assert
 		}
 	}
 	
-	public function assertRegexp($regexp, $actual, $message = false)
-	{
+	public function assertRegexp($regexp, $actual, $message = false) {
 		if (!preg_match($regexp, $actual)) {
 			$this->failNotEquals($regexp, $actual, "pattern", $message);
 		}
 	}
 	
-	public function assertEqualsMultilineStrings($string0, $string1, $message = "")
-	{
+	public function assertEqualsMultilineStrings($string0, $string1, $message = "") {
 		$lines0 = explode("\n", $string0);
 		$lines1 = explode("\n", $string1);
 		if (sizeof($lines0) != sizeof($lines1)) {
@@ -205,8 +194,7 @@ class Assert
 		}
 	}
 	
-	public function _formatValue($value, $class = "")
-	{
+	public function _formatValue($value, $class = "") {
 		if (phpversion() >= '4.0.0') {
 			if (is_object($value)) {
 				if (method_exists($value, "toString")) {
@@ -242,8 +230,7 @@ class Assert
 		return $htmlValue;
 	}
 	
-	public function failNotEquals($expected, $actual, $expected_label, $message = 0)
-	{
+	public function failNotEquals($expected, $actual, $expected_label, $message = 0) {
 		// Private function for reporting failure to match.
 		$str = $message ? ($message . ' <br>') : '';
 		//$str .= "($expected_label/actual)<br>";
@@ -252,8 +239,9 @@ class Assert
 	}
 }
 
-class TestCase extends Assert /* implements Test */
-{
+class TestCase extends Assert {
+	/* implements Test */
+
 	/* Defines context for running tests.  Specific context -- such as
 	instance variables, global variables, global state -- is defined
 	by creating a subclass that specializes the setUp() and
@@ -268,23 +256,19 @@ class TestCase extends Assert /* implements Test */
 	public $fLifeCycle = array();
 	public $fSkipped = false;
 	
-	public function TestCase($name)
-	{
+	public function TestCase($name) {
 		$this->fName = $name;
 	}
 	
-	public function setModuleId($moduleId)
-	{
+	public function setModuleId($moduleId) {
 		$this->fModuleId = $moduleId;
 	}
 	
-	public function getModuleId()
-	{
+	public function getModuleId() {
 		return $this->fModuleId;
 	}
 	
-	public function run(&$testResult, $ranges)
-	{
+	public function run(&$testResult, $ranges) {
 		/* Run this single test, by calling the run() method of the
 	    TestResult object which will in turn call the runBare() method
 	    of this object.  That complication allows the TestResult object
@@ -299,8 +283,7 @@ class TestCase extends Assert /* implements Test */
 		return $testResult;
 	}
 	
-	public function classname()
-	{
+	public function classname() {
 		if (isset($this->fClassName)) {
 			return $this->fClassName;
 		} else {
@@ -308,13 +291,11 @@ class TestCase extends Assert /* implements Test */
 		}
 	}
 	
-	public function countTestCases()
-	{
+	public function countTestCases() {
 		return 1;
 	}
 	
-	public function runTest()
-	{
+	public function runTest() {
 		if (phpversion() >= '4') {
 			global $PHPUnit_testRunning;
 			eval('$PHPUnit_testRunning[0] = & $this;');
@@ -362,16 +343,16 @@ class TestCase extends Assert /* implements Test */
 		}
 	}
 	
-	public function setUp() /* expect override */
-	{
+	public function setUp() {
+	/* expect override */
 		//print("TestCase::setUp()<br>\n");
 		$this->fLifeCycle['setUp'] = 1;
 
 		return null;
 	}
 	
-	public function tearDown() /* possible override */
-	{
+	public function tearDown() {
+	/* possible override */
 		//print("TestCase::tearDown()<br>\n");
 		$this->fLifeCycle['tearDown'] = 1;
 
@@ -380,30 +361,27 @@ class TestCase extends Assert /* implements Test */
 	
 	////////////////////////////////////////////////////////////////
 	
-	public function _createResult() /* protected */
-	{
+	public function _createResult() {
+	/* protected */
 		/* override this to use specialized subclass of TestResult */
 		return new TestResult();
 	}
 	
-	public function fail($message = 0)
-	{
+	public function fail($message = 0) {
 		//printf("TestCase::fail(%s)<br>\n", ($message) ? $message : '');
 		/* JUnit throws AssertionFailedError here.  We just record the
 	    failure and carry on */
 		$this->fExceptions[] = new PHPUnitException($message, 'FAILURE');
 	}
 	
-	public function error($message)
-	{
+	public function error($message) {
 		/* report error that requires correction in the test script
 	    itself, or (heaven forbid) in this testing infrastructure */
 		$this->fExceptions[] = new PHPUnitException($message, 'ERROR');
 		$this->fResult->stop(); // [does not work]
 	}
 	
-	public function failed()
-	{
+	public function failed() {
 		reset($this->fExceptions);
 		while (list($key, $exception) = each($this->fExceptions)) {
 			if ($exception->type == 'FAILURE') {
@@ -414,8 +392,7 @@ class TestCase extends Assert /* implements Test */
 		return false;
 	}
 
-	public function errored()
-	{
+	public function errored() {
 		reset($this->fExceptions);
 		while (list($key, $exception) = each($this->fExceptions)) {
 			if ($exception->type == 'ERROR') {
@@ -426,36 +403,30 @@ class TestCase extends Assert /* implements Test */
 		return false;
 	}
 	
-	public function elapsed()
-	{
+	public function elapsed() {
 		list($startMicro, $startSecs) = explode(' ', $this->fTiming['start']);
 		list($stopMicro, $stopSecs) = explode(' ', $this->fTiming['stop']);
 
 		return ($stopSecs - $startSecs) + ($stopMicro - $startMicro);
 	}
 	
-	public function getExceptions()
-	{
+	public function getExceptions() {
 		return $this->fExceptions;
 	}
 	
-	public function name()
-	{
+	public function name() {
 		return $this->fName;
 	}
 	
-	public function skip()
-	{
+	public function skip() {
 		$this->fSkipped = true;
 	}
 	
-	public function wasSkipped()
-	{
+	public function wasSkipped() {
 		return $this->fSkipped;
 	}
 	
-	public function runBare()
-	{
+	public function runBare() {
 		global $gallery;
 		$this->fTiming['start'] = microtime();
 		$ret = $this->setUp();
@@ -475,16 +446,16 @@ class TestCase extends Assert /* implements Test */
 	}
 }
 
-class TestSuite /* implements Test */
-{
+class TestSuite {
+	/* implements Test */
+
 	/* Compose a set of Tests (instances of TestCase or TestSuite), and
 	run them all. */
 	public $fTests = array();
 	public $fClassname;
 	public $fModuleId;
 	
-	public function TestSuite($classname = false, $moduleid = false, $filter = null)
-	{
+	public function TestSuite($classname = false, $moduleid = false, $filter = null) {
 		// Find all methods of the given class whose name starts with
 		// "test" and add them to the test suite.
 		
@@ -539,14 +510,12 @@ class TestSuite /* implements Test */
 		}
 	}
 	
-	public function addTest($test)
-	{
+	public function addTest($test) {
 		/* Add TestCase or TestSuite to this TestSuite */
 		$this->fTests[] = $test;
 	}
 	
-	public function run(&$testResult, $ranges)
-	{
+	public function run(&$testResult, $ranges) {
 		/* Run all TestCases and TestSuites comprising this TestSuite,
 	    accumulating results in the given TestResult object. */
 		reset($this->fTests);
@@ -558,8 +527,7 @@ class TestSuite /* implements Test */
 		}
 	}
 	
-	public function countTestCases()
-	{
+	public function countTestCases() {
 		/* Number of TestCases comprising this TestSuite (including those
 	    in any constituent TestSuites) */
 		$count = 0;
@@ -572,47 +540,40 @@ class TestSuite /* implements Test */
 	}
 }
 
-class TestFailure
-{
+class TestFailure {
 	/* Record failure of a single TestCase, associating it with the
 	exception that occurred */
 	public $fFailedTestName;
 	public $fFailedClassName;
 	public $fException;
 	
-	public function TestFailure(&$test, &$exception)
-	{
+	public function TestFailure(&$test, &$exception) {
 		$this->fFailedClassName = $test->classname();
 		$this->fFailedTestName = $test->name();
 		$this->fException = $exception;
 	}
 	
-	public function getExceptions()
-	{
+	public function getExceptions() {
 		// deprecated
 		return array(
 			$this->fException
 		);
 	}
 
-	public function getException()
-	{
+	public function getException() {
 		return $this->fException;
 	}
 	
-	public function getTestName()
-	{
+	public function getTestName() {
 		return $this->fFailedTestName;
 	}
 	
-	public function getClassName()
-	{
+	public function getClassName() {
 		return $this->fFailedClassName;
 	}
 }
 
-class TestResult
-{
+class TestResult {
 	/* Collect the results of running a set of TestCases. */
 	public $fFailures = array();
 	public $fErrors = array();
@@ -620,33 +581,28 @@ class TestResult
 	public $fUnskippedTests = 0;
 	public $fStop = false;
 	
-	public function TestResult()
-	{
+	public function TestResult() {
 	}
 	
-	public function _endTest(&$test) /* protected */
-	{
+	public function _endTest(&$test) {
+	/* protected */
 		/* specialize this for end-of-test action, such as progress
 	    reports  */
 	}
 	
-	public function addError($test, $exception)
-	{
+	public function addError($test, $exception) {
 		$this->fErrors[] = new TestFailure($test, $exception);
 	}
 	
-	public function addFailure($test, $exception)
-	{
+	public function addFailure($test, $exception) {
 		$this->fFailures[] = new TestFailure($test, $exception);
 	}
 	
-	public function getFailures()
-	{
+	public function getFailures() {
 		return $this->fFailures;
 	}
 	
-	public function run(&$test, $ranges)
-	{
+	public function run(&$test, $ranges) {
 		/* Run a single TestCase in the context of this TestResult */
 		$count = ++$this->fRunTests;
 		$skipFlag = true;
@@ -680,54 +636,45 @@ class TestResult
 		$this->_endTest($test);
 	}
 	
-	public function countTests()
-	{
+	public function countTests() {
 		return $this->fUnskippedTests;
 	}
 	
-	public function shouldStop()
-	{
+	public function shouldStop() {
 		return $this->fStop;
 	}
 	
-	public function _startTest($test) /* protected */
-	{
+	public function _startTest($test) {
+	/* protected */
 		/* specialize this for start-of-test actions */
 	}
 	
-	public function stop()
-	{
+	public function stop() {
 		/* set indication that the test sequence should halt */
 		$fStop = true;
 	}
 	
-	public function errorCount()
-	{
+	public function errorCount() {
 		return count($this->fErrors);
 	}
 
-	public function failureCount()
-	{
+	public function failureCount() {
 		return count($this->fFailures);
 	}
 
-	public function countFailures()
-	{
+	public function countFailures() {
 		// deprecated
 		return $this->failureCount();
 	}
 }
 
-class TextTestResult extends TestResult
-{
+class TextTestResult extends TestResult {
 	/* Specialize TestResult to produce text/html report */
-	public function TextTestResult()
-	{
+	public function TextTestResult() {
 		$this->TestResult(); // call superclass constructor
 	}
 	
-	public function report()
-	{
+	public function report() {
 		/* report result of test run */
 		$nRun = $this->countTests();
 		$nFailures = $this->failureCount();
@@ -771,8 +718,7 @@ class TextTestResult extends TestResult
 		}
 	}
 	
-	public function _startTest($test)
-	{
+	public function _startTest($test) {
 		if (phpversion() > '4') {
 			printf("%s - %s ", get_class($test), $test->name());
 		} else {
@@ -781,8 +727,7 @@ class TextTestResult extends TestResult
 		flush();
 	}
 	
-	public function _endTest($test)
-	{
+	public function _endTest($test) {
 		$outcome = $test->failed() ? "<font color=\"red\">FAIL</font>" : "<font color=\"green\">ok</font>";
 		printf("$outcome<br>\n");
 		flush();
@@ -792,13 +737,11 @@ class TextTestResult extends TestResult
 // PrettyTestResult created by BJG 17/11/01
 // beacuse the standard test result provided looks
 // rubbish.
-class PrettyTestResult extends TestResult
-{
+class PrettyTestResult extends TestResult {
 	public $_totalElapsed = 0;
 	
 	/* Specialize TestResult to produce text/html report */
-	public function PrettyTestResult()
-	{
+	public function PrettyTestResult() {
 		$this->TestResult(); // call superclass constructor
 		echo "<h2>Test Results</h2>";
 		
@@ -806,8 +749,7 @@ class PrettyTestResult extends TestResult
 		echo "<TR><TH>#</TH><TH>Module</TH><TH>Class</TH><TH>Function</TH><TH>Success?</TH><TH>Time</TH></TR>";
 	}
 	
-	public function report()
-	{
+	public function report() {
 		echo "</TABLE>";
 		/* report result of test run */
 		$nRun = $this->countTests();
@@ -845,8 +787,7 @@ class PrettyTestResult extends TestResult
 		echo("</ol>\n");
 	}
 	
-	public function _startTest($test)
-	{
+	public function _startTest($test) {
 		if ($test->wasSkipped()) {
 			$style = ' style="text-decoration: line-through;"';
 		} else {
@@ -856,8 +797,7 @@ class PrettyTestResult extends TestResult
 		flush();
 	}
 	
-	public function _endTest($test)
-	{
+	public function _endTest($test) {
 		$outcome = $test->failed() ? " class=\"Failure\">FAIL" : " class=\"Pass\">OK";
 		
 		if ($test->wasSkipped()) {
@@ -872,11 +812,9 @@ class PrettyTestResult extends TestResult
 	}
 }
 
-class TestRunner
-{
+class TestRunner {
 	/* Run a suite of tests and report results. */
-	public function run(&$suite, $ranges)
-	{
+	public function run(&$suite, $ranges) {
 		$result = new TextTestResult();
 		$suite->run($result, $ranges);
 		$result->report();

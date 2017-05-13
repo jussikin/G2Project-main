@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemPermissionsControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemPermissionsControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemPermissions');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -63,8 +60,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_user);
 	}
 	
-	public function testChangeOwner()
-	{
+	public function testChangeOwner() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][changeOwner]', 1);
@@ -95,8 +91,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($this->_user->getId(), $this->_albumParent->getOwnerId());
 	}
 	
-	public function testChangeOwnerCascade()
-	{
+	public function testChangeOwnerCascade() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][changeOwner]', 'on');
@@ -134,8 +129,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($this->_user->getId(), $this->_albumChild->getOwnerId());
 	}
 	
-	public function testChangeOwnerMissingUser()
-	{
+	public function testChangeOwnerMissingUser() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][changeOwner]', 1);
@@ -154,8 +148,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testChangeOwnerInvalidUser()
-	{
+	public function testChangeOwnerInvalidUser() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][changeOwner]', 1);
@@ -175,8 +168,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddGroupPermission()
-	{
+	public function testAddGroupPermission() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addGroupPermission]', 1);
@@ -218,8 +210,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, $count);
 	}
 	
-	public function testAddGroupPermissionCascade()
-	{
+	public function testAddGroupPermissionCascade() {
 		global $gallery;
 		/*
 	     * Create a 3rd album with a different permission on it so that we can
@@ -288,8 +279,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(3, $count);
 	}
 	
-	public function testAddGroupPermissionInvalidGroup()
-	{
+	public function testAddGroupPermissionInvalidGroup() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addGroupPermission]', 1);
@@ -309,8 +299,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddGroupPermissionMissingGroup()
-	{
+	public function testAddGroupPermissionMissingGroup() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addGroupPermission]', 1);
@@ -331,8 +320,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddGroupPermissionInvalidPermission()
-	{
+	public function testAddGroupPermissionInvalidPermission() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addGroupPermission]', 1);
@@ -353,8 +341,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddGroupPermissionRedundant()
-	{
+	public function testAddGroupPermissionRedundant() {
 		global $gallery;
 		
 		/* Add a group permission */
@@ -383,8 +370,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testDeleteGroupPermission()
-	{
+	public function testDeleteGroupPermission() {
 		
 		/* Add a group permission */
 		$ret = GalleryCoreApi::addGroupPermission($this->_albumParent->getId(), $this->_group->getId(), 'core.edit', false);
@@ -429,8 +415,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testDeleteGroupPermissionCascade()
-	{
+	public function testDeleteGroupPermissionCascade() {
 		/* Add a group permission */
 		$ret = GalleryCoreApi::addGroupPermission($this->_albumParent->getId(), $this->_group->getId(), 'core.edit', true);
 		if ($ret) {
@@ -480,8 +465,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testAddUserPermission()
-	{
+	public function testAddUserPermission() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addUserPermission]', 1);
@@ -523,8 +507,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, $count);
 	}
 	
-	public function testAddUserPermissionCascade()
-	{
+	public function testAddUserPermissionCascade() {
 		global $gallery;
 		/*
 	     * Create a 3rd album with a different permission on it so that we can
@@ -593,8 +576,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(3, $count);
 	}
 	
-	public function testAddUserPermissionInvalidUser()
-	{
+	public function testAddUserPermissionInvalidUser() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addUserPermission]', 1);
@@ -614,8 +596,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUserPermissionMissingUser()
-	{
+	public function testAddUserPermissionMissingUser() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addUserPermission]', 1);
@@ -636,8 +617,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUserPermissionInvalidPermission()
-	{
+	public function testAddUserPermissionInvalidPermission() {
 		/* Use invalid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_albumParent->getId());
 		GalleryUtilities::putRequestVariable('form[action][addUserPermission]', 1);
@@ -658,8 +638,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUserPermissionRedundant()
-	{
+	public function testAddUserPermissionRedundant() {
 		global $gallery;
 		
 		/* Add a user permission */
@@ -688,8 +667,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testDeleteUserPermission()
-	{
+	public function testDeleteUserPermission() {
 		
 		/* Add a user permission */
 		$ret = GalleryCoreApi::addUserPermission($this->_albumParent->getId(), $this->_user->getId(), 'core.edit', false);
@@ -734,8 +712,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testDeleteUserPermissionCascade()
-	{
+	public function testDeleteUserPermissionCascade() {
 		/* Add a user permission */
 		$ret = GalleryCoreApi::addUserPermission($this->_albumParent->getId(), $this->_user->getId(), 'core.edit', true);
 		if ($ret) {
@@ -785,8 +762,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testUnauthorizedPermissionChange()
-	{
+	public function testUnauthorizedPermissionChange() {
 		global $gallery;
 		$gallery->setActiveUser($this->_user);
 		
@@ -799,8 +775,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 	
-	public function testUnauthorizedOwnerChange()
-	{
+	public function testUnauthorizedOwnerChange() {
 		global $gallery;
 		$gallery->setActiveUser($this->_user);
 		
@@ -817,8 +792,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 	
-	public function testRemoveEditPermissionFromSelf()
-	{
+	public function testRemoveEditPermissionFromSelf() {
 		/* Verify that we can't remove our own ability to change permissions */
 		global $gallery;
 		$gallery->setActiveUser($this->_user);
@@ -863,8 +837,7 @@ class ItemPermissionsControllerTest extends GalleryControllerTestCase
 		$this->assert($canChange, 'user should have core.changePermissios permission');
 	}
 	
-	public function testRemoveSelfEditPermissionViaGroup()
-	{
+	public function testRemoveSelfEditPermissionViaGroup() {
 		/* Verify we get user-assigned edit permissions if we remove our access via group perm */
 		global $gallery;
 		$gallery->setActiveUser($this->_user);

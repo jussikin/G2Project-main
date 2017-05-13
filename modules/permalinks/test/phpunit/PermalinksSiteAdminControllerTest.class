@@ -26,15 +26,12 @@
 * @author Pierre-Luc Paour <paour@users.sf.net>
 * @version $Revision: 17580 $
 */
-class PermalinksSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class PermalinksSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'permalinks.PermalinksSiteAdmin');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class PermalinksSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testPermalinksSiteAdminController()
-	{
+	public function testPermalinksSiteAdminController() {
 		/* test toggling autoPermalink */
 	$ret = GalleryCoreApi::setPluginParameter('module', 'permalinks', 'autoPermalink', 1);
 		if ($ret) {

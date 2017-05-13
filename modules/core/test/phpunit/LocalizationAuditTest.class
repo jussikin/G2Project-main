@@ -25,12 +25,10 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class LocalizationAuditTest extends CodeAuditTestCase
-{
+class LocalizationAuditTest extends CodeAuditTestCase {
 	public $_idMap = array();
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->CodeAuditTestCase($methodName);
 		$this->_errorCount = 0;
 	}
@@ -38,8 +36,7 @@ class LocalizationAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::shouldCheckFile
 	 */
-	public function shouldCheckFile($fileName)
-	{
+	public function shouldCheckFile($fileName) {
 		if (substr($fileName, -3) == '.po') {
 			return true;
 		}
@@ -56,8 +53,7 @@ class LocalizationAuditTest extends CodeAuditTestCase
 	 * 4. Check charset header is UTF-8
 	 * 5. Make sure translator hints and __TOKEN__ things aren't translated
 	 */
-	public function checkFile($fileName, $buffer)
-	{
+	public function checkFile($fileName, $buffer) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -121,8 +117,7 @@ class LocalizationAuditTest extends CodeAuditTestCase
 	 * @see CodeAuditTestCase::finishScan
 	 * Collate our Project-Id-Version info and make sure they're consistent in every localization.
 	 */
-	public function finishScan($halted)
-	{
+	public function finishScan($halted) {
 		if (!$halted) {
 			foreach ($this->_idMap as $dir => $dirMap) {
 				$hash = $flavors = $wrongFormat = array();

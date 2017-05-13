@@ -26,8 +26,7 @@
  * Purpose:  Dump out the object, reasonably formatted
  * -------------------------------------------------------------
  */
-function smarty_modifier_print_r($object)
-{
+function smarty_modifier_print_r($object) {
 	echo "<pre>";
 	print_r($object);
 	echo "</pre>";

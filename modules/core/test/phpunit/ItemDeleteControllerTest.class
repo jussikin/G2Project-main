@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemDeleteControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemDeleteControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemDelete');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -51,8 +48,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create a random album and verify that we can delete it.
 	 */
-	public function testDeleteItem()
-	{
+	public function testDeleteItem() {
 		global $gallery;
 		
 		/* Create a random album */
@@ -90,8 +86,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testDeleteNextPageOutOfRange()
-	{
+	public function testDeleteNextPageOutOfRange() {
 		global $gallery;
 		
 		/* create random items */
@@ -132,8 +127,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testDeletePreviousPageOutOfRange()
-	{
+	public function testDeletePreviousPageOutOfRange() {
 		global $gallery;
 		
 		/* create random items */
@@ -176,8 +170,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create a random album and verify that we can delete multiple items
 	 */
-	public function testDeleteMultipleItems()
-	{
+	public function testDeleteMultipleItems() {
 		global $gallery;
 		
 		/* create random items */
@@ -230,8 +223,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 	 * try to delete a bunch of items some of which we don't have permission
 	 * to do so
 	 */
-	public function testDeleteMultipleItemsWithoutPermission()
-	{
+	public function testDeleteMultipleItemsWithoutPermission() {
 		global $gallery;
 		
 		/* create random items */
@@ -275,8 +267,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test deleting the root album We should get a bad parameter error
 	 */
-	public function testDeleteRootAlbum()
-	{
+	public function testDeleteRootAlbum() {
 		global $gallery;
 		
 		/* Use invalid inputs */
@@ -295,8 +286,7 @@ class ItemDeleteControllerTest extends GalleryControllerTestCase
 	 * permission denied (since the permission check happens before we even
 	 * verify that it's a valid item to prevent information leakage)
 	 */
-	public function testDeleteBogusItem()
-	{
+	public function testDeleteBogusItem() {
 		list($ret, $bogusId) = $this->_getUnusedId();
 		if ($ret) {
 			return $ret;

@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17714 $
  */
-class MainTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MainTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -61,8 +58,7 @@ class MainTest extends GalleryTestCase
 		$headers = array();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		
@@ -83,8 +79,7 @@ class MainTest extends GalleryTestCase
 		}
 	}
 	
-	public function _getResponseHeaders()
-	{
+	public function _getResponseHeaders() {
 		$headers = GalleryUtilities::_getResponseHeaders();
 		/* We're not interested in the status header */
 		unset($headers['status']);
@@ -95,8 +90,7 @@ class MainTest extends GalleryTestCase
 	/**
 	 * Test embed-only mode with simple permission denied error.
 	 */
-	public function testEmbedOnly()
-	{
+	public function testEmbedOnly() {
 		global $gallery;
 		$gallery->setConfig('mode.embed.only', true);
 		
@@ -111,8 +105,7 @@ class MainTest extends GalleryTestCase
 	/**
 	 * Test embed-only mode with configured redirect URL.
 	 */
-	public function testEmbedOnlyUrl()
-	{
+	public function testEmbedOnlyUrl() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$expectedUrl = $urlGenerator->makeUrl('/embedApp/index.php');
@@ -132,8 +125,7 @@ class MainTest extends GalleryTestCase
 	/**
 	 * Test maintenance mode controller redirect with standard redirect URL.
 	 */
-	public function testMaintenanceMode()
-	{
+	public function testMaintenanceMode() {
 		global $gallery;
 		$gallery->_session->_sessionId = 'fakeSID';
 		$gallery->setConfig('mode.maintenance', true);
@@ -161,8 +153,7 @@ class MainTest extends GalleryTestCase
 	/**
 	 * Test maintenance mode view redirect with configured redirect URL.
 	 */
-	public function testMaintenanceModeUrl()
-	{
+	public function testMaintenanceModeUrl() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -183,8 +174,7 @@ class MainTest extends GalleryTestCase
 	/**
 	 * Test that we only append the GALLERYSID to Location URLs if really needed.
 	 */
-	public function testDoRedirectIisBugFix()
-	{
+	public function testDoRedirectIisBugFix() {
 		global $gallery;
 		
 		/* Prepare test cases */
@@ -284,8 +274,7 @@ class MainTest extends GalleryTestCase
 		}
 	}
 	
-	public function testDoRedirectConvertsToAbsoluteUrl()
-	{
+	public function testDoRedirectConvertsToAbsoluteUrl() {
 		global $gallery;
 		GalleryDataCache::reset();
 		/* Ensure getCurrentRequestUri result isn't cached */
@@ -316,8 +305,7 @@ class MainTest extends GalleryTestCase
 		), $this->_getResponseHeaders(), 'Wrong header');
 	}
 	
-	public function testDoRedirectRemoveTrailingQMark()
-	{
+	public function testDoRedirectRemoveTrailingQMark() {
 		/* Make sure the redirect has no sessionId in it */
 		GalleryUtilities::removeRequestVariable(SESSION_ID_PARAMETER);
 		unset($_COOKIE[SESSION_ID_PARAMETER]);
@@ -344,8 +332,7 @@ class MainTest extends GalleryTestCase
 		), $this->_getResponseHeaders(), 'Wrong header');
 	}
 	
-	public function testAuthTokenCheckIsEnforcedForControllers()
-	{
+	public function testAuthTokenCheckIsEnforcedForControllers() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -366,8 +353,7 @@ class MainTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAuthTokenCheckIsEnforcedForControllerLikeViews()
-	{
+	public function testAuthTokenCheckIsEnforcedForControllerLikeViews() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -388,8 +374,7 @@ class MainTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAuthTokenCheckIsOmittedForSpecificControllers()
-	{
+	public function testAuthTokenCheckIsOmittedForSpecificControllers() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -410,8 +395,7 @@ class MainTest extends GalleryTestCase
 		}
 	}
 	
-	public function testRedirectViewForGuestWithoutPermissions()
-	{
+	public function testRedirectViewForGuestWithoutPermissions() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$session =& $gallery->getSession();
@@ -460,8 +444,7 @@ class MainTest extends GalleryTestCase
 		), $this->_getResponseHeaders(), 'headers');
 	}
 	
-	public function testRedirectViewForAlternateGuestWithoutPermissions()
-	{
+	public function testRedirectViewForAlternateGuestWithoutPermissions() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$session =& $gallery->getSession();
@@ -507,8 +490,7 @@ class MainTest extends GalleryTestCase
 		), $this->_getResponseHeaders(), 'headers');
 	}
 	
-	public function testViewForUserWithoutPermission()
-	{
+	public function testViewForUserWithoutPermission() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -554,8 +536,7 @@ class MainTest extends GalleryTestCase
 		$this->assertEquals(array(), $this->_getResponseHeaders(), 'headers');
 	}
 	
-	public function testImmediateViewNormalizesError()
-	{
+	public function testImmediateViewNormalizesError() {
 		GalleryUtilities::putRequestVariable('view', 'core.MainTestImmediate');
 		
 		$ret = $this->_becomeGuestUser();
@@ -577,8 +558,7 @@ class MainTest extends GalleryTestCase
 		$this->assertEquals(array(), $this->_getResponseHeaders(), 'headers');
 	}
 	
-	public function testPostBeforeDisplayEvent()
-	{
+	public function testPostBeforeDisplayEvent() {
 		GalleryUtilities::putRequestVariable('view', 'core.MainTest_Fake');
 		
 		$ret = $this->_registerFactoryImplementationForTest('GalleryEventListener', 'MainTest_BeforeDisplayListener', 'MainTest_BeforeDisplayListener', __FILE__, 'MainTest', array(
@@ -602,8 +582,7 @@ class MainTest extends GalleryTestCase
 		$this->assertEquals('maintest_fakeview', strtolower(get_class($receivedData['view'])));
 	}
 	
-	public function testImmediateViewRequestSetsCacheControl()
-	{
+	public function testImmediateViewRequestSetsCacheControl() {
 		GalleryUtilities::putRequestVariable('view', 'core.MainTestImmediateItem');
 		
 		list($ret, $g2Data) = _GalleryMain();
@@ -616,8 +595,7 @@ class MainTest extends GalleryTestCase
 		$this->assert($this->_hasCacheControlNoCacheHeader($_REQUEST['header']), 'wrong Cache-Control header: ' . $_REQUEST['header']);
 	}
 	
-	public function _hasCacheControlNoCacheHeader($headers)
-	{
+	public function _hasCacheControlNoCacheHeader($headers) {
 		foreach ($headers as $header) {
 			if ($header === 'Cache-Control: no-cache') {
 				return true;
@@ -627,8 +605,7 @@ class MainTest extends GalleryTestCase
 		return false;
 	}
 	
-	public function testImmediateViewRequestWithoutAutoCacheControl()
-	{
+	public function testImmediateViewRequestWithoutAutoCacheControl() {
 		GalleryUtilities::putRequestVariable('view', 'core.MainTestImmediateItemNoAutoCache');
 		$_REQUEST['header'] = array();
 		
@@ -643,32 +620,26 @@ class MainTest extends GalleryTestCase
 	}
 }
 
-class MainTestPhpVm extends GalleryPhpVm
-{
-	public function header($header, $replace = null)
-	{
+class MainTestPhpVm extends GalleryPhpVm {
+	public function header($header, $replace = null) {
 		/* Avoid modifying actual header information */
 		$_REQUEST['header'][] = $header;
 	}
 	
-	public function headers_sent()
-	{
+	public function headers_sent() {
 		return false;
 	}
 }
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
-class FooView extends GalleryView
-{
+class FooView extends GalleryView {
 }
 
 /**
  * Fake view that returns a bogus body template path so that it seems like a real view.
  */
-class MainTest_FakeView extends GalleryView
-{
-	public function loadTemplate()
-	{
+class MainTest_FakeView extends GalleryView {
+	public function loadTemplate() {
 		return array(
 			null,
 			array(
@@ -678,10 +649,8 @@ class MainTest_FakeView extends GalleryView
 	}
 }
 
-class MainTest_BeforeDisplayListener
-{
-	public function handleEvent($event)
-	{
+class MainTest_BeforeDisplayListener {
+	public function handleEvent($event) {
 		$_GET['testEvent'] = $event;
 
 		return array(
@@ -694,15 +663,12 @@ class MainTest_BeforeDisplayListener
 /**
  * Fake GalleryTemplate that doesn't actually fetch the data.
  */
-class MainTest_FakeTemplate extends GalleryTemplate
-{
-	public function MainTest_FakeTemplate()
-	{
+class MainTest_FakeTemplate extends GalleryTemplate {
+	public function MainTest_FakeTemplate() {
 		$this->GalleryTemplate('.');
 	}
 	
-	public function fetch()
-	{
+	public function fetch() {
 		return array(
 			null,
 			''
@@ -710,55 +676,43 @@ class MainTest_FakeTemplate extends GalleryTemplate
 	}
 }
 
-class MainTestImmediateView extends GalleryView
-{
-	public function renderImmediate($status, $error)
-	{
+class MainTestImmediateView extends GalleryView {
+	public function renderImmediate($status, $error) {
 		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 	}
 	
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 }
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryController.class');
-class FooControllerController extends GalleryController
-{
-	public function omitAuthTokenCheck()
-	{
+class FooControllerController extends GalleryController {
+	public function omitAuthTokenCheck() {
 		return true;
 	}
 }
 
-class MainTestImmediateItemView extends GalleryView
-{
-	public function getViewType()
-	{
+class MainTestImmediateItemView extends GalleryView {
+	public function getViewType() {
 		return VIEW_TYPE_MODULE;
 	}
 	
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 }
 
-class MainTestImmediateItemNoAutoCacheView extends GalleryView
-{
-	public function getViewType()
-	{
+class MainTestImmediateItemNoAutoCacheView extends GalleryView {
+	public function getViewType() {
 		return VIEW_TYPE_MODULE;
 	}
 	
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return false;
 	}
 }

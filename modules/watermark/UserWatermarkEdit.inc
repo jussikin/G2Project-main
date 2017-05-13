@@ -27,15 +27,17 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UserWatermarkEditController extends GalleryController
-{
+class UserWatermarkEditController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
-		list($ret, $results) = WatermarkHelper::handleEditRequest($form,
-		'core.UserAdmin', 'watermark.UserWatermarks', 'watermark.UserWatermarkEdit');
+	public function handleRequest($form) {
+		list($ret, $results) = WatermarkHelper::handleEditRequest(
+			$form,
+			'core.UserAdmin',
+			'watermark.UserWatermarks',
+			'watermark.UserWatermarkEdit'
+		);
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -47,15 +49,17 @@ class UserWatermarkEditController extends GalleryController
 /**
  * Edit default placement and settings for a watermark image
  */
-class UserWatermarkEditView extends GalleryView
-{
+class UserWatermarkEditView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
-		$ret = WatermarkHelper::loadEditTemplate($template, $form,
-						 'UserWatermarkEdit', 'UserAdmin');
+	public function loadTemplate(&$template, &$form) {
+		$ret = WatermarkHelper::loadEditTemplate(
+			$template,
+			$form,
+			'UserWatermarkEdit',
+			'UserAdmin'
+		);
 		if ($ret) {
 			return array($ret, null);
 		}

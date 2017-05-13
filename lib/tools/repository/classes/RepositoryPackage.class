@@ -25,8 +25,7 @@
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 18677 $
  */
-class RepositoryPackage extends RepositoryObject
-{
+class RepositoryPackage extends RepositoryObject {
 	/**
 	 * A RepositoryDescriptor object, used for getting meta data for package generation.
 	 *
@@ -45,8 +44,7 @@ class RepositoryPackage extends RepositoryObject
 	 * @param string $outputDir output directory
 	 * @return GalleryStatus a status code
 	 */
-	public function init($descriptor, $outputDir)
-	{
+	public function init($descriptor, $outputDir) {
 		parent::init();
 		
 		$ret = $this->setOutputDir($outputDir);
@@ -71,8 +69,7 @@ class RepositoryPackage extends RepositoryObject
 	 * @return array GalleryStatus a status code
 	 *		     array packages created for this plugin
 	 */
-	public function writeAllPackagesToDisk($overwritePackages = false, $compressToo = false)
-	{
+	public function writeAllPackagesToDisk($overwritePackages = false, $compressToo = false) {
 		$packagesWritten = array();
 		$packagesSkipped = array();
 		
@@ -108,8 +105,7 @@ class RepositoryPackage extends RepositoryObject
 	 * @param boolean $compressToo write a compressed version also?
 	 * @return GalleryStatus a status code
 	 */
-	public function writeSinglePackageToDisk($packageType, $overwritePackage = false, $compressToo = false)
-	{
+	public function writeSinglePackageToDisk($packageType, $overwritePackage = false, $compressToo = false) {
 		global $gallery;
 		
 		$randomString = $this->getPackageHash($packageType, 10);
@@ -168,8 +164,7 @@ class RepositoryPackage extends RepositoryObject
 	 * @param string $package package name
 	 * @return string package file name
 	 */
-	public function getPackageFileName($package)
-	{
+	public function getPackageFileName($package) {
 		if (preg_match('/^lang-(.*)$/', $package, $locale)) {
 			$stringsRevision = $this->_descriptor->getStringsRevision();
 			$locale = $locale[1];
@@ -190,8 +185,7 @@ class RepositoryPackage extends RepositoryObject
 	 * @param int $length desired length
 	 * @return string random string
 	 */
-	public function getPackageHash($packageType, $length)
-	{
+	public function getPackageHash($packageType, $length) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 		$key = $this->getPackageFileName($packageType) . GalleryUtilities::getRequestVariables('repositoryName');

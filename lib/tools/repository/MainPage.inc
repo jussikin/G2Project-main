@@ -28,15 +28,13 @@
  * @subpackage Controllers
  * @module MainPageController
  */
-class MainPageControllerAndView extends RepositoryControllerAndView
-{
+class MainPageControllerAndView extends RepositoryControllerAndView {
 	/**
 	 * Displays the available actions in the repository tools.
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function showAvailableActions()
-	{
+	public function showAvailableActions() {
 		global $gallery;
 		$data = array();
 		$urlGenerator =& $gallery->getUrlGenerator();

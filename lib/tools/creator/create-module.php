@@ -154,8 +154,7 @@ echo "Then you can go to the Site Admin -> Modules \n";
 echo "page and install and activate your module!\n";
 echo "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
 
-function ask($prompt, $default = '')
-{
+function ask($prompt, $default = '') {
 	echo $prompt;
 	if (!empty($default)) {
 		echo " [$default]";
@@ -169,31 +168,27 @@ function ask($prompt, $default = '')
 	return $line;
 }
 
-function error($message)
-{
+function error($message) {
 	fwrite(stderr(), "$message\n");
 	fwrite(stderr(), "*** Exiting!\n");
 	cleanup();
 	exit(1);
 }
 
-function cleanup()
-{
+function cleanup() {
 	global $tmpdir;
 	if (file_exists($tmpdir)) {
 		system("rm -rf $tmpdir");
 	}
 }
 
-function safe_fopen($path)
-{
+function safe_fopen($path) {
 	($fd = fopen($path, 'wb')) || error("Can't write to $path");
 
 	return $fd;
 }
 
-function stdin()
-{
+function stdin() {
 	static $stdin;
 	if (!defined('STDERR')) {
 		/* Already defined for CLI but not for CGI */
@@ -204,8 +199,7 @@ function stdin()
 	return STDERR;
 }
 
-function stderr()
-{
+function stderr() {
 	static $stderr;
 	if (!defined('STDERR')) {
 		/* Already defined for CLI but not for CGI */

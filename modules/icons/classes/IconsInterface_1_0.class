@@ -26,16 +26,14 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class IconsInterface_1_0
-{
+class IconsInterface_1_0 {
 	/**
 	 * Get list of available iconpacks
 	 *
 	 * @return array GalleryStatus a status code,
 	 *               array of iconpack_id => localized_iconpack_name
 	 */
-	public function getIconPacks()
-	{
+	public function getIconPacks() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -47,8 +45,7 @@ class IconsInterface_1_0
 	 * @param GalleryTemplate $template
 	 * @return GalleryStatus a status code
 	 */
-	public function init(&$template)
-	{
+	public function init(&$template) {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 }

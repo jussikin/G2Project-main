@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Interface_1_0.class');
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 17580 $
  */
-class Getid3Extractor extends Getid3Interface_1_0
-{
+class Getid3Extractor extends Getid3Interface_1_0 {
 	/**
 	 * @see Getid3Interface_1_0::getMetaData
 	 */
-	public static function getMetaData($itemIds, $properties = array())
-	{
+	public static function getMetaData($itemIds, $properties = array()) {
 		if (!is_array($itemIds)) {
 			$itemIds = array(
 				$itemIds

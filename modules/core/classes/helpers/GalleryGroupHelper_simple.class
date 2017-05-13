@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryGroupHelper_simple
-{
+class GalleryGroupHelper_simple {
 	/**
 	 * @see GalleryCoreApi::fetchGroupNames
 	 */
-	public static function fetchGroupNames($count = null, $offset = null, $substring = null)
-	{
+	public static function fetchGroupNames($count = null, $offset = null, $substring = null) {
 		global $gallery;
 		
 		$data = array();
@@ -84,8 +82,7 @@ class GalleryGroupHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchGroupCount
 	 */
-	public static function fetchGroupCount($substring = null)
-	{
+	public static function fetchGroupCount($substring = null) {
 		global $gallery;
 		
 		$data = array();
@@ -124,8 +121,7 @@ class GalleryGroupHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchGroupByGroupName
 	 */
-	public static function fetchGroupByGroupName($groupName = null)
-	{
+	public static function fetchGroupByGroupName($groupName = null) {
 		global $gallery;
 		
 		$query = '

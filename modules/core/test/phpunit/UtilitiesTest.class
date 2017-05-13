@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UtilitiesTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class UtilitiesTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -60,8 +57,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->_responseHeaders = null;
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$_COOKIE = $this->_saveCookie;
 		$_SERVER['HTTP_COOKIE'] = $this->_saveServerHttpCookie;
 		
@@ -71,45 +67,38 @@ class UtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetFileNameComponents()
-	{
+	public function testGetFileNameComponents() {
 		list($base, $extension) = GalleryUtilities::getFileNameComponents('base.extension');
 		$this->assertEquals('base', $base);
 		$this->assertEquals('extension', $extension);
 	}
 	
-	public function testGetFileNameComponents2()
-	{
+	public function testGetFileNameComponents2() {
 		list($base, $extension) = GalleryUtilities::getFileNameComponents('base_without_extension');
 		$this->assertEquals('base_without_extension', $base);
 		$this->assertEquals('', $extension);
 	}
 	
-	public function testGetFileNameComponents3()
-	{
+	public function testGetFileNameComponents3() {
 		list($base, $extension) = GalleryUtilities::getFileNameComponents('base_ending_in_.');
 		$this->assertEquals('base_ending_in_', $base);
 		$this->assertEquals('', $extension);
 	}
 	
-	public function testGetFileExtension()
-	{
+	public function testGetFileExtension() {
 		$this->assertEquals('extension', GalleryUtilities::getFileExtension('base.extension'));
 	}
 	
-	public function testGetFileBase()
-	{
+	public function testGetFileBase() {
 		$this->assertEquals('base', GalleryUtilities::getFileBase('base.extension'));
 	}
 	
-	public function testMaliciousBrowserInput1()
-	{
+	public function testMaliciousBrowserInput1() {
 		GalleryUtilities::putRequestVariable('test[a]', '<a href="javascript:alert(\'hi\')">yo</a>');
 		$this->assertEquals('&lt;a href=&quot;javascript:alert(\'hi\')&quot;&gt;yo&lt;/a&gt;', GalleryUtilities::getRequestVariables('test[a]'));
 	}
 	
-	public function testArrayInput()
-	{
+	public function testArrayInput() {
 		GalleryUtilities::putRequestVariable('test[a]', array(
 			'goodvalue' => 'foo bar',
 			'badvalue' => '<a href="javascript:alert(\'hi\')">yo</a>'
@@ -120,8 +109,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::getRequestVariables('test[a]'));
 	}
 	
-	public function testGetFormVariables()
-	{
+	public function testGetFormVariables() {
 		GalleryUtilities::putRequestVariable('utilitiestest[outer1][inner1]', '1');
 		GalleryUtilities::putRequestVariable('utilitiestest[outer1][inner\'2][a]', '2');
 		GalleryUtilities::putRequestVariable('utilitiestest[outer1][inner\'2][b]', '3\'3');
@@ -145,8 +133,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::getFormVariables('utilitiestest'));
 	}
 	
-	public function testGetFormVariables2()
-	{
+	public function testGetFormVariables2() {
 		/* Test windows and unix style tmp names */
 		$_FILES[GalleryUtilities::prefixFormVariable('utilitiestest')] = array(
 			'name' => array(
@@ -219,8 +206,7 @@ class UtilitiesTest extends GalleryTestCase
 	 * Test the error condition where we have a value in _POST and we put the same value back via
 	 * putRequestVariable -- make sure that the new value overwrites the old
 	 */
-	public function testGetFormVariables3()
-	{
+	public function testGetFormVariables3() {
 		$_POST[GalleryUtilities::prefixFormVariable('utilitiestest')]['list']['filter'] = 'x';
 		GalleryUtilities::putRequestVariable('utilitiestest[list][filter]', 'y');
 		
@@ -231,8 +217,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::getFormVariables('utilitiestest'));
 	}
 	
-	public function testGetFormVariables4()
-	{
+	public function testGetFormVariables4() {
 		$_POST[GalleryUtilities::prefixFormVariable('utilitiestest')]['entities'] = '<b> bold </b> <script> foo </script>';
 		
 		$this->assertEquals(array(
@@ -240,8 +225,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::getFormVariables('utilitiestest'));
 	}
 	
-	public function testGetFormVariablesNoPrefix()
-	{
+	public function testGetFormVariablesNoPrefix() {
 		GalleryUtilities::putRequestVariable('utilitiestest[outer1][inner1]', '1', false);
 		GalleryUtilities::putRequestVariable('utilitiestest[outer1][inner\'2][a]', '2', false);
 		GalleryUtilities::putRequestVariable('utilitiestest[outer1][inner\'2][b]', '3\'3', false);
@@ -265,8 +249,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::getFormVariables('utilitiestest', false));
 	}
 	
-	public function testGetFormVariablesNoPrefix2()
-	{
+	public function testGetFormVariablesNoPrefix2() {
 		$_POST['utilitiestest']['entities'] = '<b> bold </b> <script> foo </script>';
 		
 		$this->assertEquals(array(
@@ -274,8 +257,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::getFormVariables('utilitiestest', false));
 	}
 	
-	public function testGetRequestVariables()
-	{
+	public function testGetRequestVariables() {
 		GalleryUtilities::putRequestVariable('utilitiestest[x]', 'blah');
 		$this->assertEquals('blah', GalleryUtilities::getRequestVariables('utilitiestest[x]'));
 		
@@ -283,8 +265,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('blah', GalleryUtilities::getRequestVariablesNoPrefix('testutilities'));
 	}
 	
-	public function testGetAllRequestVariables()
-	{
+	public function testGetAllRequestVariables() {
 		$expectedValues = array();
 		$prefixLength = strlen(GALLERY_FORM_VARIABLE_PREFIX);
 		foreach ($_POST as $key => $value) {
@@ -301,8 +282,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedValues, GalleryUtilities::getAllRequestVariables());
 	}
 	
-	public function testSetResponseHeader()
-	{
+	public function testSetResponseHeader() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -323,8 +303,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSetResponseHeaderWithReplace()
-	{
+	public function testSetResponseHeaderWithReplace() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -350,8 +329,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSetResponseHeaderNoReplace()
-	{
+	public function testSetResponseHeaderNoReplace() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -373,8 +351,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSetLocationResponseHeader()
-	{
+	public function testSetLocationResponseHeader() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -396,8 +373,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSetLocationResponseHeaderWithReplace()
-	{
+	public function testSetLocationResponseHeaderWithReplace() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -424,8 +400,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSetLocationResponseHeaderNoReplace()
-	{
+	public function testSetLocationResponseHeaderNoReplace() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -447,8 +422,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSetLocationResponseHeaderNoReplace3xx()
-	{
+	public function testSetLocationResponseHeaderNoReplace3xx() {
 		global $gallery;
 		
 		/* Use UtilitiesTestSetResponseHeaderPhpVm */
@@ -475,24 +449,21 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals($expectedCalls, $phpVm->getHeaderCalls(), 'Header calls');
 	}
 	
-	public function testSanitizeInputValue1()
-	{
+	public function testSanitizeInputValue1() {
 		$rawInput = '<ScRiPt foo=bar>blah</SCRIPT> test test <IFRAME> <b> foo </b> </IFRAME>';
 		GalleryUtilities::sanitizeInputValues($rawInput);
 		$this->assertEquals('&lt;ScRiPt foo=bar&gt;blah&lt;/SCRIPT&gt; test test &lt;IFRAME&gt; ' . '&lt;b&gt; foo &lt;/b&gt; &lt;/IFRAME&gt;', $rawInput);
 	}
 	
 	/* We don't convert UTF-8 to entities (we used to) */
-	public function testSanitizeInputValue2()
-	{
+	public function testSanitizeInputValue2() {
 		$rawInput = "Op\xf0\x88\xb4\xa5s de Administra\xf0\x88\xa2\xaf";
 		GalleryUtilities::sanitizeInputValues($rawInput);
 		$this->assertEquals("Op\xf0\x88\xb4\xa5s de Administra\xf0\x88\xa2\xaf", $rawInput);
 	}
 	
 	/* Verify that UTF-8 values can be sanitized and unsanitized safely */
-	public function testSanitizeRoundTrip()
-	{
+	public function testSanitizeRoundTrip() {
 		foreach (array(
 			"t\xc3\xa9st" => "t\xc3\xa9st",
 			"\x47\x32\xce\x93\xce\xb2\xc3\x80" => "G2\xce\x93\xce\xb2\xc3\x80",
@@ -511,15 +482,13 @@ class UtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testUnsanitizeInputValues()
-	{
+	public function testUnsanitizeInputValues() {
 		$result = '&lt;a href=&quot;javascript:alert(\'hi\')&quot;&gt;yo&lt;/a&gt;';
 		GalleryUtilities::unsanitizeInputValues($result, false);
 		$this->assertEquals('<a href="javascript:alert(\'hi\')">yo</a>', $result);
 	}
 	
-	public function testMakeMarkers()
-	{
+	public function testMakeMarkers() {
 		$this->assertEquals('?,?,?,?,?', GalleryUtilities::makeMarkers(5));
 		$this->assertEquals('?,?,?,?,?', GalleryUtilities::makeMarkers(array(
 			1,
@@ -542,8 +511,7 @@ class UtilitiesTest extends GalleryTestCase
 		)));
 	}
 	
-	public function testConvertPathToUrl()
-	{
+	public function testConvertPathToUrl() {
 		global $gallery;
 		
 		/* Simulate UNIX to line up with our mock platform */
@@ -589,8 +557,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('modules/core/test/phpunit/UtilitiesTest.class', GalleryUtilities::convertPathToUrl($file), 'alias');
 	}
 	
-	public function testShrinkDimensionsToFit()
-	{
+	public function testShrinkDimensionsToFit() {
 		$results = GalleryUtilities::shrinkDimensionsToFit(1024, 768, 341);
 		$this->assertEquals(array(
 			341,
@@ -618,8 +585,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals(150, $results[1]);
 	}
 	
-	public function testScaleDimensionsToFit()
-	{
+	public function testScaleDimensionsToFit() {
 		$results = GalleryUtilities::scaleDimensionsToFit(1024, 768, 921);
 		$this->assertEquals(array(
 			921,
@@ -633,15 +599,13 @@ class UtilitiesTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testIsA()
-	{
+	public function testIsA() {
 		$this->assert(GalleryUtilities::isA(new self("x"), 'GalleryTestCase'));
 		$this->assert(GalleryUtilities::isA(new self("x"), 'UtilitiesTest'));
 		$this->assert(!GalleryUtilities::isA(new self("x"), 'GalleryEntity'));
 	}
 	
-	public function testIsExactlyA()
-	{
+	public function testIsExactlyA() {
 		$this->assert(GalleryUtilities::isExactlyA(new self("x"), 'UtilitiesTest'), 'exact');
 		$this->assert(!GalleryUtilities::isExactlyA(new self("x"), 'GalleryTestCase'), 'parent class');
 		$this->assert(!GalleryUtilities::isExactlyA(new self("x"), 'GalleryEntity'), 'other class');
@@ -654,8 +618,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(!GalleryUtilities::isExactlyA($album, 'GalleryItem'), 'item');
 	}
 	
-	public function testHasRequestVariable()
-	{
+	public function testHasRequestVariable() {
 		$key = 'TESTKEY';
 		$this->assert(!GalleryUtilities::hasRequestVariable($key));
 		GalleryUtilities::putRequestVariable($key, 'TESTVALUE');
@@ -665,8 +628,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(GalleryUtilities::hasRequestVariable($key, false));
 	}
 	
-	public function testHasRequestVariable2()
-	{
+	public function testHasRequestVariable2() {
 		$key = 'foo[TEST][KEY]';
 		$this->assert(!GalleryUtilities::hasRequestVariable($key));
 		GalleryUtilities::putRequestVariable($key, 'TESTVALUE');
@@ -676,8 +638,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(GalleryUtilities::hasRequestVariable($key, false));
 	}
 	
-	public function testRemoveRequestVariable()
-	{
+	public function testRemoveRequestVariable() {
 		$key = 'TESTKEY';
 		GalleryUtilities::putRequestVariable($key, 'TESTVALUE');
 		$this->assert(GalleryUtilities::hasRequestVariable($key));
@@ -689,8 +650,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(!GalleryUtilities::hasRequestVariable($key, false));
 	}
 	
-	public function testRemoveRequestVariable2()
-	{
+	public function testRemoveRequestVariable2() {
 		$key = 'foo[TEST][KEY]';
 		GalleryUtilities::putRequestVariable($key, 'TESTVALUE');
 		$this->assert(GalleryUtilities::hasRequestVariable($key));
@@ -698,8 +658,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(!GalleryUtilities::hasRequestVariable($key));
 	}
 	
-	public function testRemoveFormVariables()
-	{
+	public function testRemoveFormVariables() {
 		GalleryUtilities::putRequestVariable('utilitiestest[a]', 'b');
 		GalleryUtilities::putRequestVariable('utilitiestest[c]', 'd');
 		
@@ -723,16 +682,14 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals(array(), GalleryUtilities::getFormVariables('utilitiestest', false));
 	}
 	
-	public function testGetRemoteHostAddress1()
-	{
+	public function testGetRemoteHostAddress1() {
 		global $gallery;
 		
 		$addr = GalleryUtilities::getRemoteHostAddress();
 		$this->assertEquals(null, $addr, 'Unavailable IP');
 	}
 	
-	public function testGetRemoteHostAddress2()
-	{
+	public function testGetRemoteHostAddress2() {
 		$_SERVER['HTTP_CLIENT_IP'] = '1.2.3.4';
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '5.6.7.8';
 		$_SERVER['REMOTE_ADDR'] = '2.2.2.2';
@@ -740,8 +697,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('2.2.2.2', $addr, 'Remote addr is untrusted, header IPs ignored');
 	}
 	
-	public function testGetRemoteHostAddress3()
-	{
+	public function testGetRemoteHostAddress3() {
 		$_SERVER['HTTP_CLIENT_IP'] = '1.2.3.4';
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '5.6.7.8';
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
@@ -749,40 +705,35 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('5.6.7.8', $addr, 'Trusted remote addr, prefer HTTP_X_FORWARDED_FOR');
 	}
 	
-	public function testGetRemoteHostAddress4()
-	{
+	public function testGetRemoteHostAddress4() {
 		$_SERVER['HTTP_CLIENT_IP'] = '1.2.3.4';
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
 		$addr = GalleryUtilities::getRemoteHostAddress();
 		$this->assertEquals('1.2.3.4', $addr, 'Trusted remote addr, use HTTP_CLIENT_IP ');
 	}
 	
-	public function testGetRemoteHostAddress5()
-	{
+	public function testGetRemoteHostAddress5() {
 		$_SERVER['HTTP_CLIENT_IP'] = '1.2.3.4';
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
 		$addr = GalleryUtilities::getRemoteHostAddress();
 		$this->assertEquals('1.2.3.4', $addr, 'Trusted remote addr, use HTTP_CLIENT_IP ');
 	}
 	
-	public function testMalformedRemoteHostAddress()
-	{
+	public function testMalformedRemoteHostAddress() {
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '1.2';
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
 		$addr = GalleryUtilities::getRemoteHostAddress();
 		$this->assertEquals('10.0.0.0', $addr, 'Use remote addr if header is malformed');
 	}
 	
-	public function testMalformedRemoteHostAddress2()
-	{
+	public function testMalformedRemoteHostAddress2() {
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = "1.2.3.4\n<evil/>";
 		$_SERVER['REMOTE_ADDR'] = '10.0.0.0';
 		$addr = GalleryUtilities::getRemoteHostAddress();
 		$this->assertEquals('10.0.0.0', $addr, 'Use remote addr if header is malformed');
 	}
 	
-	public function testMaliciousRemoteHostAddress()
-	{
+	public function testMaliciousRemoteHostAddress() {
 		foreach (array(
 			'HTTP_X_FORWARDED_FOR',
 			'HTTP_CLIENT_IP',
@@ -798,8 +749,7 @@ class UtilitiesTest extends GalleryTestCase
 	}
 	
 	/* Right now we only trust RFC1918 addresses */
-	public function testIsTrustedProxy()
-	{
+	public function testIsTrustedProxy() {
 		/*
 	     * Hard to verify this completely because it takes too long to test 2^32 addresses.  Try the
 	     * approach of testing 15^4 (50625) addresses at random instead.
@@ -840,8 +790,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(GalleryUtilities::isTrustedProxy('192.168.1.2'), '192.168/16 failed');
 	}
 	
-	public function testIsPathInList()
-	{
+	public function testIsPathInList() {
 		global $gallery;
 		
 		$this->assert(GalleryUtilities::isPathInList('/foo', array(
@@ -888,14 +837,12 @@ class UtilitiesTest extends GalleryTestCase
 		)), 'test 7');
 	}
 	
-	public function testProcessingPaths()
-	{
+	public function testProcessingPaths() {
 		GalleryUtilities::putRequestVariable('test', __FILE__);
 		$this->assertEquals(__FILE__, GalleryUtilities::getRequestVariables('test'));
 	}
 	
-	public function testEntitySubstr()
-	{
+	public function testEntitySubstr() {
 		$this->assertEquals(array(
 			6,
 			'abcdef'
@@ -978,8 +925,7 @@ class UtilitiesTest extends GalleryTestCase
 		), GalleryUtilities::entitySubstr('&amp;abcdef', 1, 3), 20);
 	}
 	
-	public function testCreateAlbumTree()
-	{
+	public function testCreateAlbumTree() {
 		/* Make up some bogus albums that we can use to simulate our tree */
 		for ($i = 0; $i < 7; $i++) {
 			list($ret, $albums[$i]) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryAlbumItem');
@@ -1014,8 +960,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert($tree[6]['data']['id'] == 2);
 	}
 	
-	public function testGetFile()
-	{
+	public function testGetFile() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -1054,8 +999,7 @@ class UtilitiesTest extends GalleryTestCase
 		), $file);
 	}
 	
-	public function testGetHttpDate()
-	{
+	public function testGetHttpDate() {
 		$regexp = '/(Mon|Tue|Wed|Thu|Fri|Sat|Sun), ';
 		$regexp .= '\d\d (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d\d\d\d ';
 		$regexp .= '\d\d:\d\d:\d\d GMT/';
@@ -1070,8 +1014,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert($isCorrect, 'date-string ' . $date . ' is not RFC 2616 conformant');
 	}
 	
-	public function testIsCompatibleWithApi()
-	{
+	public function testIsCompatibleWithApi() {
 		$this->assert(GalleryUtilities::isCompatibleWithApi(array(
 			0,
 			8
@@ -1141,8 +1084,7 @@ class UtilitiesTest extends GalleryTestCase
 		)), 'input error 4');
 	}
 	
-	public function testGetPhpIniBool()
-	{
+	public function testGetPhpIniBool() {
 		$iniVal = ini_get('define_syslog_variables');
 		
 		$oldval = ini_set('define_syslog_variables', '');
@@ -1169,8 +1111,7 @@ class UtilitiesTest extends GalleryTestCase
 		$oldval = ini_set('define_syslog_variables', $iniVal);
 	}
 	
-	public function testIdentifySearchEngineCrawlerFromRequest()
-	{
+	public function testIdentifySearchEngineCrawlerFromRequest() {
 		$data['google'][] = 'Googlebot/2.1 (+http://www.google.com/bot.html)';
 		$data['google'][] = 'Googlebot/2.1 (+http://www.googlebot.com/bot.html)';
 		$data['google'][] = 'Mediapartners-Google/2.1 (+http://www.googlebot.com/bot.html)';
@@ -1225,8 +1166,7 @@ class UtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testUnicodeValueToUtf8Value()
-	{
+	public function testUnicodeValueToUtf8Value() {
 		$this->assertEquals("\xe0\xac\x93", GalleryUtilities::unicodeValueToUtf8Value('2835'), 'decimal');
 		$this->assertEquals("\xe0\xac\x93", GalleryUtilities::unicodeValueToUtf8Value('x0B13'), 'hex');
 		$this->assertEquals("\xc3\xb1", GalleryUtilities::unicodeValueToUtf8Value('241'), 'decimal');
@@ -1238,15 +1178,13 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals("\xe8\x80\x80", GalleryUtilities::unicodeValueToUtf8Value('x8000'), '2^15');
 	}
 	
-	public function testUnicodeEntitiesToUtf8()
-	{
+	public function testUnicodeEntitiesToUtf8() {
 		$this->assertEquals("foo \xe0\xac\x93 bar", GalleryUtilities::unicodeEntitiesToUtf8('foo &#2835; bar'));
 		
 		$this->assertEquals("accentu\xc3\xa9s. \xc3\xa7\xc3\xa0 donne", GalleryUtilities::unicodeEntitiesToUtf8('accentu&#233;s. &#231;&#224; donne'));
 	}
 	
-	public function testUtf8ToUnicodeEntities()
-	{
+	public function testUtf8ToUnicodeEntities() {
 		$this->assertEquals('foo &#2835; bar', GalleryUtilities::utf8ToUnicodeEntities("foo \xe0\xac\x93 bar"));
 		
 		$this->assertEquals('accentu&#233;s. &#231;&#224; donne', GalleryUtilities::utf8ToUnicodeEntities("accentu\xc3\xa9s. \xc3\xa7\xc3\xa0 donne"));
@@ -1255,15 +1193,13 @@ class UtilitiesTest extends GalleryTestCase
 	/**
 	 * @todo Remove this test on next core API bump
 	 */
-	public function testUtf8Substring()
-	{
+	public function testUtf8Substring() {
 		/* Russian */
 		$utf8 = ("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81\xd0\xba\xd0" . "\xb8\xd0\xb9\xd0\x97\xd0\xb4\xd1\x80\xd0\xb0" . "\xd0\xb2\xd1\x81\xd1\x82\xd0\xb2\xd1\x83");
 		$this->assertEquals("\xd0\xa0\xd1\x83\xd1\x81\xd1\x81", GalleryUtilities::utf8Substring($utf8, 0, 4), '4 chars (ru), standard version');
 	}
 	
-	public function testIsEmbedded()
-	{
+	public function testIsEmbedded() {
 		$key = 'G2_EMBED';
 		$backupValue = null;
 		if (GalleryDataCache::containsKey($key)) {
@@ -1285,8 +1221,7 @@ class UtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetServerVar()
-	{
+	public function testGetServerVar() {
 		/* Normal */
 		$_SERVER['foo'] = 'foo';
 		$this->assertEquals('foo', GalleryUtilities::getServerVar('foo'));
@@ -1300,8 +1235,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('&lt;script&gt;bar&lt;/script&gt;', GalleryUtilities::getServerVar('foo'));
 	}
 	
-	public function testGetCookieVar()
-	{
+	public function testGetCookieVar() {
 		/* Normal */
 		$key = 'foo' . rand(1, 9999);
 		$_COOKIE[$key] = 'foo';
@@ -1338,8 +1272,7 @@ class UtilitiesTest extends GalleryTestCase
 	}
 	
 	/* Test if we correctly fix the superglobal $_COOKIE */
-	public function testFixCookieVars()
-	{
+	public function testFixCookieVars() {
 		/* Only 1 cookie with the same NAME */
 		$key = 'foo' . rand(1, 9999);
 		$_SERVER['HTTP_COOKIE'] .= !empty($_SERVER['HTTP_COOKIE']) ? ' ; ' : '';
@@ -1469,8 +1402,7 @@ class UtilitiesTest extends GalleryTestCase
 	}
 	
 	/* Check some edge cases of _registerCookieAttr */
-	public function testRegisterCookieAttr()
-	{
+	public function testRegisterCookieAttr() {
 		global $gallery;
 		
 		/* Test cases */
@@ -1777,8 +1709,7 @@ class UtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGuaranteeDirExists()
-	{
+	public function testGuaranteeDirExists() {
 		list($success, $created) = GalleryUtilities::guaranteeDirExists('/test/one/two');
 		$this->assert($success, 'guaranteeDirExists');
 		$this->assertEquals(array(
@@ -1787,8 +1718,7 @@ class UtilitiesTest extends GalleryTestCase
 		), $created);
 	}
 	
-	public function testGuaranteeDirExistsLoop()
-	{
+	public function testGuaranteeDirExistsLoop() {
 		global $gallery;
 		
 		/*
@@ -1810,8 +1740,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assert(isset($this->_mkdir['/testcache/module/core/0/0']) && $this->_mkdir['/testcache/module/core/0/0'] == '', 'mkdir for cache, but without specific perms');
 	}
 	
-	public function testGuaranteeDirExistsLoop2()
-	{
+	public function testGuaranteeDirExistsLoop2() {
 		global $gallery;
 		
 		/*
@@ -1840,8 +1769,7 @@ class UtilitiesTest extends GalleryTestCase
 	 * Also note that dirname(__FILE__) returns the filename without path if any parent folder
 	 * is missing the read permission.
 	 */
-	public function testGuaranteeDirExistsLoop3()
-	{
+	public function testGuaranteeDirExistsLoop3() {
 		global $gallery;
 		
 		/* Assume we don't have r+w permission for the root directory '/'. */
@@ -1851,8 +1779,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals(array(), $created);
 	}
 	
-	public function testRoundToString()
-	{
+	public function testRoundToString() {
 		$this->assertEquals('12', GalleryUtilities::roundToString(12.34), 'no decimal');
 		$this->assertEquals('12.34', GalleryUtilities::roundToString(12.3432, 2), 'decimal');
 		
@@ -1875,8 +1802,7 @@ class UtilitiesTest extends GalleryTestCase
 		setlocale(LC_ALL, $currentLocale);
 	}
 	
-	public function testCastToFloat()
-	{
+	public function testCastToFloat() {
 		$this->assertEquals(12.34, GalleryUtilities::castToFloat(12.34), 'no cast');
 		$this->assertEquals(12.34, GalleryUtilities::castToFloat('12.34'), 'string');
 		
@@ -1899,8 +1825,7 @@ class UtilitiesTest extends GalleryTestCase
 		setlocale(LC_ALL, $currentLocale);
 	}
 	
-	public function testGetPseudoFileName()
-	{
+	public function testGetPseudoFileName() {
 		global $gallery;
 		$gallery->setPlatform($this->_savePlatform);
 		
@@ -2015,8 +1940,7 @@ class UtilitiesTest extends GalleryTestCase
 		}
 	}
 	
-	public function testHtmlSafe()
-	{
+	public function testHtmlSafe() {
 		$this->assertEquals('script src ', GalleryUtilities::htmlSafe('script src <script src="http://evil.com/bad.js">'));
 		$this->assertEquals('script type ', GalleryUtilities::htmlSafe('script type <script type="text/javascript">alert("bad");</script>'));
 		$this->assertEquals('applet ', GalleryUtilities::htmlSafe('applet <applet code="http://evil.com/bad.class"></applet>'));
@@ -2039,8 +1963,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('<tt><b>closed</b>  <i>open</i></tt>', GalleryUtilities::htmlSafe('<tt><b>closed</b> </td> <i>open'));
 	}
 	
-	public function testHtmlSafeWithDecode()
-	{
+	public function testHtmlSafeWithDecode() {
 		/*
 	     * I don't fully understand why htmlSafe does this particular transform, so I'm
 	     * documenting it here in case it changes.
@@ -2048,8 +1971,7 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('December &amp;lt;#952&gt;', GalleryUtilities::htmlSafe('December <#952>', true));
 	}
 	
-	public function testHtmlSafeUtf7()
-	{
+	public function testHtmlSafeUtf7() {
 		/*
 	     * HTML_Safe 0.9.9beta strips "invalid UTF-7": a+b-c -> ac
 	     * We removed UTF-7 handling to avoid this
@@ -2057,20 +1979,17 @@ class UtilitiesTest extends GalleryTestCase
 		$this->assertEquals('a+b-c', GalleryUtilities::htmlSafe('a+b-c'));
 	}
 	
-	public function testStrToLower()
-	{
+	public function testStrToLower() {
 		/* For tr_TR as locale, I translates to y with an accent when using PHP's strtolower */
 		$this->assertEquals('abcdefghijklmnopqrstuvwxyz0123456789=)(/&%', GalleryUtilities::strToLower('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789=)(/&%'));
 	}
 	
-	public function testStrToUpper()
-	{
+	public function testStrToUpper() {
 		/* For tr_TR as locale, i translates to Y with an accent when using PHP's strtoupper */
 		$this->assertEquals('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789=)(/&%', GalleryUtilities::strToUpper('abcdefghijklmnopqrstuvwxyz0123456789=)(/&%'));
 	}
 	
-	public function testIsSafeHttpHeader()
-	{
+	public function testIsSafeHttpHeader() {
 		$test = array();
 		$test[] = array(
 			true,
@@ -2139,8 +2058,7 @@ class UtilitiesTest extends GalleryTestCase
 	 $this->assertEquals(serialize($expected), serialize($actual));
 	 }
 	 */
-	public function testIsValidEmailString()
-	{
+	public function testIsValidEmailString() {
 		foreach (array(
 			'blah@blah.com',
 			'aqy-BMZ+09_test@ary_BNZ-059.test-2B.Test',
@@ -2165,15 +2083,12 @@ class UtilitiesTest extends GalleryTestCase
 	}
 }
 
-class UtilitiesTestPlatform
-{
-	public function UtilitiesTestPlatform(&$testCase)
-	{
+class UtilitiesTestPlatform {
+	public function UtilitiesTestPlatform(&$testCase) {
 		$this->_testCase =& $testCase;
 	}
 	
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		/* These are used in testIsPathInList */
 		switch ($file) {
 			case '/foo':
@@ -2199,13 +2114,11 @@ class UtilitiesTestPlatform
 		return str_replace('\\', '/', $path);
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		if (isset($this->_testCase->_mkdir[$path])) {
 			return true;
 		}
@@ -2232,13 +2145,11 @@ class UtilitiesTestPlatform
 		}
 	}
 	
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		return filesize($file);
 	}
 	
-	public function mkdir($dir, $stringPerms = '')
-	{
+	public function mkdir($dir, $stringPerms = '') {
 		if (isset($this->_testCase->_mkdir[$dir])) {
 			return false;
 		}
@@ -2247,8 +2158,7 @@ class UtilitiesTestPlatform
 		return true;
 	}
 	
-	public function is_dir($dir)
-	{
+	public function is_dir($dir) {
 		if (isset($this->_testCase->_mkdir[$dir])) {
 			return true;
 		}
@@ -2262,17 +2172,14 @@ class UtilitiesTestPlatform
 		}
 	}
 	
-	public function atomicWrite($filename, $data)
-	{
+	public function atomicWrite($filename, $data) {
 		return true;
 	}
 }
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform/WinNtPlatform.class');
-class UtilitiesTestWinPlatform extends WinNtPlatform
-{
-	public function realpath($file)
-	{
+class UtilitiesTestWinPlatform extends WinNtPlatform {
+	public function realpath($file) {
 		/* These are used in testIsPathInList */
 		switch ($file) {
 			case 'c:\foo\bar':
@@ -2284,8 +2191,7 @@ class UtilitiesTestWinPlatform extends WinNtPlatform
 		return false;
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '\\';
 	}
 }
@@ -2293,31 +2199,24 @@ class UtilitiesTestWinPlatform extends WinNtPlatform
 /**
  * Used by UtilitiesTest::testRegisterCookieAttr
  */
-class UtilitiesTestAddSlashesPhpVm extends GalleryPhpVm
-{
-	public function get_magic_quotes_gpc()
-	{
+class UtilitiesTestAddSlashesPhpVm extends GalleryPhpVm {
+	public function get_magic_quotes_gpc() {
 		return true;
 	}
 }
 
-class UtilitiesTestDoNotAddSlashesPhpVm extends GalleryPhpVm
-{
-	public function get_magic_quotes_gpc()
-	{
+class UtilitiesTestDoNotAddSlashesPhpVm extends GalleryPhpVm {
+	public function get_magic_quotes_gpc() {
 		return false;
 	}
 }
 
-class UtilitiesTestSetResponseHeaderPhpVm extends GalleryPhpVm
-{
-	public function UtilitiesTestSetResponseHeaderPhpVm()
-	{
+class UtilitiesTestSetResponseHeaderPhpVm extends GalleryPhpVm {
+	public function UtilitiesTestSetResponseHeaderPhpVm() {
 		$this->getHeaderCalls(true);
 	}
 	
-	public function &getHeaderCalls($reset = false)
-	{
+	public function &getHeaderCalls($reset = false) {
 		static $headerCalls = array();
 		if ($reset) {
 			$headerCalls = array();
@@ -2326,8 +2225,7 @@ class UtilitiesTestSetResponseHeaderPhpVm extends GalleryPhpVm
 		return $headerCalls;
 	}
 	
-	public function header($header, $replace = null)
-	{
+	public function header($header, $replace = null) {
 		$headerCalls =& $this->getHeaderCalls();
 		$headerCalls[] = array(
 			$header,

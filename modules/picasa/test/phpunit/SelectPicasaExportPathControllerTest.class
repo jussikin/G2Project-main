@@ -25,17 +25,14 @@
  * @author Waldemar Schlackow <gallery@schlackow.de>
  * @version $Revision: 17580 $
  */
-class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase
-{
+class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase {
 	public $_platform;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'picasa.SelectPicasaExportPath');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -45,8 +42,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase
 		$this->_platform = new UnitTestPlatform();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 
 		$ret = parent::tearDown();
@@ -58,8 +54,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test what the controller does when you enter a bad Picasa export path
 	 */
-	public function testBadpicasaXmlPath()
-	{
+	public function testBadpicasaXmlPath() {
 		global $gallery;
 
 	/* Activate the mock platform */
@@ -82,8 +77,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test what the controller does when you enter a valid Picasa export path
 	 */
-	public function testGoodPicasaXmlPath()
-	{
+	public function testGoodPicasaXmlPath() {
 		global $gallery;
 	/* Activate the mock platform */
 	$gallery->setPlatform($this->_platform);
@@ -110,8 +104,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test what the controller does when you enter a missing Picasa export path
 	 */
-	public function testMissingpicasaXmlPath()
-	{
+	public function testMissingpicasaXmlPath() {
 		GalleryUtilities::putRequestVariable('form[picasaXmlPath]', '');
 		GalleryUtilities::putRequestVariable('form[action][select]', 1);
 

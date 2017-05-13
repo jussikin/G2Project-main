@@ -37,8 +37,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDerivative.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryDerivativeImage extends GalleryDerivative
-{
+class GalleryDerivativeImage extends GalleryDerivative {
 	/**
 	 * The width of the image.
 	 * @var int
@@ -66,8 +65,7 @@ class GalleryDerivativeImage extends GalleryDerivative
 	/**
 	 * @see GalleryDerivative::canBeViewedInline
 	 */
-	public function canBeViewedInline()
-	{
+	public function canBeViewedInline() {
 		return true;
 	}
 	
@@ -78,8 +76,7 @@ class GalleryDerivativeImage extends GalleryDerivative
 	 * @param int $derivativeType the type of derivative image
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId, $derivativeType)
-	{
+	public function create($parentId, $derivativeType) {
 		global $gallery;
 		$parentId = (int) $parentId;
 		
@@ -134,8 +131,7 @@ class GalleryDerivativeImage extends GalleryDerivative
 	 *
 	 * @return GalleryStatus a status code
 	 **/
-	public function rebuildCache()
-	{
+	public function rebuildCache() {
 		global $gallery;
 		
 		/* Figure out our target path */
@@ -172,8 +168,7 @@ class GalleryDerivativeImage extends GalleryDerivative
 	/**
 	 * @see GalleryDataItem::render
 	 **/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		global $gallery;
 		
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -220,28 +215,23 @@ class GalleryDerivativeImage extends GalleryDerivative
 	/**
 	 * @see GalleryEntity::getClassName
 	 **/
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryDerivativeImage';
 	}
 	
-	public function getWidth()
-	{
+	public function getWidth() {
 		return $this->width;
 	}
 	
-	public function setWidth($width)
-	{
+	public function setWidth($width) {
 		$this->width = $width;
 	}
 	
-	public function getHeight()
-	{
+	public function getHeight() {
 		return $this->height;
 	}
 	
-	public function setHeight($height)
-	{
+	public function setHeight($height) {
 		$this->height = $height;
 	}
 }

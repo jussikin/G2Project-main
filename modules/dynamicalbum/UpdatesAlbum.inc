@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class UpdatesAlbumView extends GalleryView
-{
-	public function __construct()
-	{
+class UpdatesAlbumView extends GalleryView {
+	public function __construct() {
 		$this->UpdatesAlbumView();
 	}
 
-	public function UpdatesAlbumView()
-	{
+	public function UpdatesAlbumView() {
 		global $gallery;
 		$this->_view = 'dynamicalbum.UpdatesAlbum';
 		$this->_title = $gallery->i18n('Recent Updates');
@@ -45,16 +42,14 @@ class UpdatesAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_SHOW_ITEM;
 	}
 
 	/**
 	 * @see GalleryView::loadThemeAndParameters
 	 */
-	public function loadThemeAndParameters()
-	{
+	public function loadThemeAndParameters() {
 		list($ret, $item) = GalleryCoreApi::newFactoryInstance('GalleryDynamicAlbum');
 		if ($ret) {
 			return array($ret, null, null, null);
@@ -126,8 +121,7 @@ class UpdatesAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($itemId, $show, $albumId) =
 		GalleryUtilities::getRequestVariables('itemId', 'show', 'albumId');
 		$theme =& $template->getVariableByReference('theme');
@@ -279,8 +273,7 @@ class UpdatesAlbumView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'dynamicalbum');
 		if ($ret) {
 			return array($ret, null);

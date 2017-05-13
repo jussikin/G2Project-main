@@ -25,8 +25,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryStatus
-{
+class GalleryStatus {
 	/**
 	 * The stack trace, if possible.
 	 * @var array
@@ -53,13 +52,11 @@ class GalleryStatus
 	 * @param int $errorCode an error code
 	 * @param string $errorMessage (optional) descriptive message of the error
 	 */
-	public function __construct($errorCode, $errorMessage = null)
-	{
+	public function __construct($errorCode, $errorMessage = null) {
 		$this->GalleryStatus($errorCode, $errorMessage);
 	}
 	
-	public function GalleryStatus($errorCode, $errorMessage = null)
-	{
+	public function GalleryStatus($errorCode, $errorMessage = null) {
 		$this->_errorCode = $errorCode;
 		$this->_errorMessage = $errorMessage;
 	}
@@ -68,8 +65,7 @@ class GalleryStatus
 	 * Set the stack trace
 	 * @param array $trace (array, array)
 	 */
-	public function setStackTrace($trace)
-	{
+	public function setStackTrace($trace) {
 		$this->_stackTrace = $trace;
 	}
 	
@@ -77,8 +73,7 @@ class GalleryStatus
 	 * Return the actual error code
 	 * @return int
 	 */
-	public function getErrorCode()
-	{
+	public function getErrorCode() {
 		return $this->_errorCode;
 	}
 	
@@ -86,8 +81,7 @@ class GalleryStatus
 	 * Return the error message
 	 * @return string
 	 */
-	public function getErrorMessage()
-	{
+	public function getErrorMessage() {
 		return $this->_errorMessage;
 	}
 	
@@ -95,8 +89,7 @@ class GalleryStatus
 	 * Add a new code to our set of codes
 	 * @param int $code an error code
 	 */
-	public function addErrorCode($code)
-	{
+	public function addErrorCode($code) {
 		$this->_errorCode |= $code;
 	}
 	
@@ -106,8 +99,7 @@ class GalleryStatus
 	 * @param boolean $showMessage (optional) false to omit errorMessage
 	 * @return string
 	 */
-	public function getAsHtml($showMessage = true)
-	{
+	public function getAsHtml($showMessage = true) {
 		list($codes, $trace) = $this->_getAsArray();
 		
 		$message = $showMessage ? $this->_errorMessage : '';
@@ -136,8 +128,7 @@ class GalleryStatus
 	 * @param boolean $showMessage (optional) false to omit errorMessage
 	 * @return string
 	 */
-	public function getAsText($showMessage = true)
-	{
+	public function getAsText($showMessage = true) {
 		list($codes, $trace) = $this->_getAsArray();
 		
 		$message = $showMessage ? $this->_errorMessage : '';
@@ -161,8 +152,7 @@ class GalleryStatus
 	/**
 	 * Store error in session for reporting after a redirect
 	 */
-	public function putInSession()
-	{
+	public function putInSession() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -177,8 +167,7 @@ class GalleryStatus
 	 * Break down an error code into a list of constants
 	 * @return array of strings
 	 */
-	public function getErrorCodeConstants($errorCode)
-	{
+	public function getErrorCodeConstants($errorCode) {
 		if ($errorCode == 0) {
 			$codes = array(
 				'GALLERY_SUCCESS'
@@ -207,8 +196,7 @@ class GalleryStatus
 	 * Internal function collect error code and stack trace info
 	 * @access private
 	 */
-	public function _getAsArray()
-	{
+	public function _getAsArray() {
 		global $gallery;
 		
 		$codes = $this->getErrorCodeConstants($this->_errorCode);

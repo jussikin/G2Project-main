@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/search/classes/SearchUtilities.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SearchShowAllController extends GalleryController
-{
+class SearchShowAllController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 		if (isset($form['action']['scan'])) {
@@ -52,17 +50,15 @@ class SearchShowAllController extends GalleryController
 /**
  * Perform a search; show all results from a particular search provider
  */
-class SearchShowAllView extends GalleryView
-{
+class SearchShowAllView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 	/* TODO: Parameterize this */
-	$pageSize = 20;
+		$pageSize = 20;
 
 		$items = array();
 		$thumbnails = array();
@@ -79,14 +75,13 @@ class SearchShowAllView extends GalleryView
 			if (empty($form['searchCriteria'])) {
 				$form['error']['searchCriteria']['missing'] = 1;
 			} else {
-
 		/* If we click next/previous, make sure we don't change search criteria */
-		if (!empty($form['lastSearchCriteria']) &&
-			$form['lastSearchCriteria'] != $form['searchCriteria'] &&
-			(isset($form['action']['nextPage']) ||
-			 isset($form['action']['previousPage']))) {
-			$form['searchCriteria'] = $form['lastSearchCriteria'];
-		}
+				if (!empty($form['lastSearchCriteria']) &&
+				$form['lastSearchCriteria'] != $form['searchCriteria'] &&
+				(isset($form['action']['nextPage']) ||
+				isset($form['action']['previousPage']))) {
+					$form['searchCriteria'] = $form['lastSearchCriteria'];
+				}
 
 				if (isset($form['action']['showAll'])) {
 					$showAll = array_keys($form['action']['showAll']);
@@ -95,9 +90,9 @@ class SearchShowAllView extends GalleryView
 				}
 
 		/* Reset the page number if we start a new search */
-		if (isset($form['action']['search'])) {
-			$form['page'] = 1;
-		}
+				if (isset($form['action']['search'])) {
+					$form['page'] = 1;
+				}
 
 				if (isset($form['action']['nextPage'])) {
 					$form['page']++;
@@ -111,17 +106,20 @@ class SearchShowAllView extends GalleryView
 
 				$moduleId = $form['moduleId'];
 				GalleryCoreApi::requireOnce(
-			'modules/search/classes/GallerySearchInterface_1_0.class');
+					'modules/search/classes/GallerySearchInterface_1_0.class'
+				);
 				list($ret, $searchInstance) =
-			GalleryCoreApi::newFactoryInstanceById('GallerySearchInterface_1_0',
-							   $form['moduleId']);
+				GalleryCoreApi::newFactoryInstanceById(
+					'GallerySearchInterface_1_0',
+					$form['moduleId']
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
 
 				if (!isset($searchInstance)) {
 					return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT),
-				 null);
+					null);
 				}
 
 				list($ret, $moduleInfo) = $searchInstance->getSearchModuleInfo();
@@ -131,10 +129,12 @@ class SearchShowAllView extends GalleryView
 
 				if (isset($form['options'][$moduleId])) {
 					list($ret, $results) =
-			$searchInstance->search($form['options'][$moduleId],
-				SearchUtilities::sanitizeSearchCriteria($form['searchCriteria']),
-				($form['page']-1) * $pageSize,
-				$pageSize);
+					$searchInstance->search(
+						$form['options'][$moduleId],
+						SearchUtilities::sanitizeSearchCriteria($form['searchCriteria']),
+						($form['page']-1) * $pageSize,
+						$pageSize
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -154,8 +154,8 @@ class SearchShowAllView extends GalleryView
 
 				if (!empty($itemIds)) {
 					/* Fetch items */
-			list($ret, $itemList) =
-			GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
+					list($ret, $itemList) =
+					GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryItem');
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -164,8 +164,8 @@ class SearchShowAllView extends GalleryView
 					}
 
 			/* Fetch thumbnails */
-			list($ret, $thumbnailList) =
-			GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
+					list($ret, $thumbnailList) =
+					GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
 					if ($ret) {
 						return array($ret, null);
 					}
@@ -179,7 +179,7 @@ class SearchShowAllView extends GalleryView
 		}
 
 	/* Render the HTML body */
-	$template->setVariable('SearchShowAll', array(
+		$template->setVariable('SearchShowAll', array(
 		'controller' => 'search.SearchShowAll',
 		'maxPages' => $maxPages,
 		'moduleInfo' => $moduleInfo,

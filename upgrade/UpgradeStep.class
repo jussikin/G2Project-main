@@ -23,90 +23,73 @@
  * @package Upgrade
  * @abstract
  */
-class UpgradeStep
-{
+class UpgradeStep {
 	public $_stepNumber;
 	public $_isComplete;
 	public $_isInError;
 	public $_isLastStep;
 	
-	public function isComplete()
-	{
+	public function isComplete() {
 		return $this->_isComplete;
 	}
 	
-	public function isRedoable()
-	{
+	public function isRedoable() {
 		return false;
 	}
 	
-	public function setComplete($complete)
-	{
+	public function setComplete($complete) {
 		$this->_isComplete = $complete;
 	}
 	
-	public function canBeVisited()
-	{
+	public function canBeVisited() {
 		return true;
 	}
 	
-	public function setInError($inError)
-	{
+	public function setInError($inError) {
 		$this->_isInError = $inError;
 	}
 	
-	public function isInError()
-	{
+	public function isInError() {
 		return $this->_isInError;
 	}
 	
-	public function stepName()
-	{
+	public function stepName() {
 		return _('Unknown');
 	}
 	
-	public function setStepNumber($stepNumber)
-	{
+	public function setStepNumber($stepNumber) {
 		$this->_stepNumber = $stepNumber;
 	}
 	
-	public function getStepNumber()
-	{
+	public function getStepNumber() {
 		return $this->_stepNumber;
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		return true;
 		/* true means continue rendering the page */
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		return null;
 	}
 	
-	public function getActions()
-	{
+	public function getActions() {
 		return array();
 	}
 	
-	public function setIsLastStep($lastStep)
-	{
+	public function setIsLastStep($lastStep) {
 		$this->_isLastStep = $lastStep;
 	}
 	
-	public function isLastStep()
-	{
+	public function isLastStep() {
 		return $this->_isLastStep;
 	}
 	
-	public function loadGalleryConfig($config)
-	{
+	public function loadGalleryConfig($config) {
 	}
 	
-	public function sanitize($string)
-	{
+	public function sanitize($string) {
 		if (get_magic_quotes_gpc()) {
 			$string = stripslashes($string);
 		}
@@ -114,26 +97,22 @@ class UpgradeStep
 		return $string;
 	}
 	
-	public function isRelevant()
-	{
+	public function isRelevant() {
 		return true;
 	}
 	
-	public function isOptional()
-	{
+	public function isOptional() {
 		return false;
 	}
 	
-	public function resetL10Domain()
-	{
+	public function resetL10Domain() {
 		/* Reset to installer domain in case we called some code that may have done translation */
 		if (function_exists('textdomain')) {
 			textdomain('gallery2_upgrade');
 		}
 	}
 	
-	public function _startDebugLog($header)
-	{
+	public function _startDebugLog($header) {
 		global $gallery;
 		$gallery->setDebug('logged');
 		if (!isset($_SESSION['debugLogFile'])) {

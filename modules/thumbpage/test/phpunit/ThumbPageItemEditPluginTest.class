@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ThumbPageItemEditPluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ThumbPageItemEditPluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'thumbpage', 'ItemEditThumbPage');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -70,8 +67,7 @@ class ThumbPageItemEditPluginTest extends ItemEditPluginTestCase
 		}
 	}
 
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 
 		$preferred = null;
@@ -79,8 +75,7 @@ class ThumbPageItemEditPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals(array(array(), null), $results);
 	}
 
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[page]', 2);
 
@@ -119,10 +114,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @package ThumbPage
  * @subpackage PHPUnit
  */
-class ThumbPageTestToolkit extends GalleryToolkit
-{
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+class ThumbPageTestToolkit extends GalleryToolkit {
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		if ($propertyName != 'page-count') {
 			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__,
 						  "$propertyName $sourceFilename"), null);

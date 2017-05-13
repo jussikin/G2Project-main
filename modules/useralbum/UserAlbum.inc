@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class UserAlbumController extends GalleryController
-{
+class UserAlbumController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$activeUserId = $gallery->getActiveUserId();
 
@@ -69,10 +67,10 @@ class UserAlbumController extends GalleryController
 
 		if (!isset($album) && $createMode == 'access') {
 			/* If userId matches active user then create the user album */
-		if ($userId != $activeUserId) {
-			return
-			array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
-		}
+			if ($userId != $activeUserId) {
+				return
+				array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+			}
 			GalleryCoreApi::requireOnce('modules/useralbum/classes/UserAlbumHelper.class');
 
 			$ret = UserAlbumHelper::createUserAlbum($gallery->getActiveUser());
@@ -81,7 +79,7 @@ class UserAlbumController extends GalleryController
 			}
 
 			list($ret, $albumId) =
-		GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
+			GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
 			if ($ret) {
 				return array($ret, null);
 			}

@@ -31,8 +31,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::fetchAllItemIds
 	 */
-	public static function fetchAllItemIds($itemType, $permission = 'core.view')
-	{
+	public static function fetchAllItemIds($itemType, $permission = 'core.view') {
 		global $gallery;
 		
 		if (empty($itemType)) {
@@ -99,8 +98,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::fetchAllItemIdsByOwnerId
 	 */
-	public static function fetchAllItemIdsByOwnerId($ownerId)
-	{
+	public static function fetchAllItemIdsByOwnerId($ownerId) {
 		global $gallery;
 		
 		if (empty($ownerId)) {
@@ -144,8 +142,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::newItemByMimeType
 	 */
-	public static function newItemByMimeType($mimeType)
-	{
+	public static function newItemByMimeType($mimeType) {
 		
 		/* Try the whole mime type first, fallback to major type only */
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstanceByHint('GalleryItem', array(
@@ -168,8 +165,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::addItemToAlbum
 	 */
-	public static function addItemToAlbum($fileName, $itemName, $title, $summary, $description, $mimeType, $albumId, $symlink = false)
-	{
+	public static function addItemToAlbum($fileName, $itemName, $title, $summary, $description, $mimeType, $albumId, $symlink = false) {
 		global $gallery;
 		
 		/*
@@ -253,8 +249,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::fetchOriginationTimestamp
 	 */
-	public static function fetchOriginationTimestamp($item)
-	{
+	public static function fetchOriginationTimestamp($item) {
 		if (!GalleryUtilities::isA($item, 'GalleryDataItem')) {
 			return array(
 				null,
@@ -304,8 +299,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::addExistingItemToAlbum
 	 */
-	public static function addExistingItemToAlbum($item, $albumId, $isNew = false)
-	{
+	public static function addExistingItemToAlbum($item, $albumId, $isNew = false) {
 		
 		/* Set the order weight */
 		list($ret, $maxWeight) = GalleryCoreApi::fetchExtremeChildWeight($albumId, HIGHER_WEIGHT);
@@ -328,8 +322,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::applyDerivativePreferences
 	 */
-	public static function applyDerivativePreferences($item, $albumId, $isNew = false)
-	{
+	public static function applyDerivativePreferences($item, $albumId, $isNew = false) {
 		list($ret, $preferences) = GalleryCoreApi::fetchDerivativePreferencesForItem($albumId);
 		if ($ret) {
 			return $ret;
@@ -618,8 +611,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	/**
 	 * @see GalleryCoreApi::setThumbnailFromItem
 	 */
-	public static function setThumbnailFromItem($itemId, $fromItemId)
-	{
+	public static function setThumbnailFromItem($itemId, $fromItemId) {
 		global $gallery;
 		
 		/* Load the current album thumbnail. */
@@ -958,8 +950,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	 * @param mixed $itemId item id or array of ids or null
 	 * @return GalleryStatus a status code
 	 */
-	public function invalidateDescendentCountCaches($userId, $itemId)
-	{
+	public function invalidateDescendentCountCaches($userId, $itemId) {
 		if (!empty($userId) && empty($itemId)) {
 			$ret = GalleryCoreApi::removeMapEntry('GalleryDescendentCountsMap', array(
 				'userId' => $userId
@@ -1019,8 +1010,7 @@ class GalleryItemHelper_medium /* extends GalleryEventListener */
 	 *
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$param = $event->getData();
 		if ($event->getEventName() == 'Gallery::ViewableTreeChange') {
 			$ret = self::invalidateDescendentCountCaches($param['userId'], $param['itemId']);

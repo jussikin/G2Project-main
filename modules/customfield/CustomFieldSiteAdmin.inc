@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldSiteAdminController extends GalleryController
-{
+class CustomFieldSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		/* Make sure we have adequate permissions */
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
@@ -67,13 +65,11 @@ class CustomFieldSiteAdminController extends GalleryController
 /**
  * Settings for custom fields
  */
-class CustomFieldSiteAdminView extends GalleryView
-{
+class CustomFieldSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

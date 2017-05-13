@@ -25,15 +25,12 @@
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class AdminMaintenanceControllerModeTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminMaintenanceControllerModeTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminMaintenance');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -57,8 +54,7 @@ class AdminMaintenanceControllerModeTest extends GalleryControllerTestCase
 		GalleryDataCache::remove('CoreModule::installedVersions');
 	}
 
-	public function testSetMaintenanceModeOnNoUrl()
-	{
+	public function testSetMaintenanceModeOnNoUrl() {
 		global $gallery;
 
 		$gallery->setConfig('mode.maintenance', false);
@@ -97,8 +93,7 @@ class AdminMaintenanceControllerModeTest extends GalleryControllerTestCase
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 	}
 
-	public function testSetMaintenanceModeOnUrl()
-	{
+	public function testSetMaintenanceModeOnUrl() {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$url = $urlGenerator->makeAbsoluteUrl('/maintenance.html');
@@ -137,8 +132,7 @@ class AdminMaintenanceControllerModeTest extends GalleryControllerTestCase
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 	}
 
-	public function testSetMaintenanceModeOff()
-	{
+	public function testSetMaintenanceModeOff() {
 		global $gallery;
 		$gallery->setConfig('mode.maintenance', true);
 
@@ -175,8 +169,7 @@ class AdminMaintenanceControllerModeTest extends GalleryControllerTestCase
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 	}
 
-	public function testSetMaintenanceModeEqual()
-	{
+	public function testSetMaintenanceModeEqual() {
 		global $gallery;
 
 		$gallery->setConfig('mode.maintenance', false);

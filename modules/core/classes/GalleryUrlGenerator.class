@@ -39,8 +39,7 @@ if (!defined('GALLERY_MAIN_PHP')) {
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18158 $
  */
-class GalleryUrlGenerator
-{
+class GalleryUrlGenerator {
 	/**
 	 * URL base filename of Gallery, defaults to 'main.php'.  Can also include some parameters, eg.
 	 * main.php?foo=bar.
@@ -143,15 +142,14 @@ class GalleryUrlGenerator
 	 * @return string the current URL path component plus query parameters
 	 * @static
 	 */
-	public static function getCurrentRequestUri()
-	{
+	public static function getCurrentRequestUri() {
 		$cacheKey = 'GalleryUrlGenerator::currentRequestUri';
 		if (GalleryDataCache::containsKey($cacheKey)) {
 			$path = GalleryDataCache::get($cacheKey);
 		} else {
 			if ($path = GalleryUtilities::getServerVar('REQUEST_URI')) {
 				/* Sometimes, REQUEST_URI has a host part. Remove it. */
-				if ($path{0} != '/') {
+				if ($path[0] != '/') {
 					$components = parse_url($path);
 					$path = $components['path'];
 					$path .= empty($components['query']) ? '' : '?' . $components['query'];
@@ -183,8 +181,7 @@ class GalleryUrlGenerator
 	 * @return string the new URL (&amp; separates added params)
 	 * @static
 	 */
-	public static function appendParamsToUrl($url, $params, $addPrefix = true, $htmlEntities = true, $urlEncode = true)
-	{
+	public static function appendParamsToUrl($url, $params, $addPrefix = true, $htmlEntities = true, $urlEncode = true) {
 		if (empty($params)) {
 			return $url;
 		}
@@ -222,8 +219,7 @@ class GalleryUrlGenerator
 	 * @static
 	 * @access private
 	 */
-	public static function _flattenParamsArray($nestedParams, &$flatParams, $keyBase = null)
-	{
+	public static function _flattenParamsArray($nestedParams, &$flatParams, $keyBase = null) {
 		foreach ($nestedParams as $key => $value) {
 			$key = empty($keyBase) ? $key : $keyBase . '[' . $key . ']';
 			if (is_array($value)) {
@@ -245,8 +241,7 @@ class GalleryUrlGenerator
 	 * @access private
 	 * @static
 	 */
-	public function _parseUri($uri)
-	{
+	public function _parseUri($uri) {
 		/*
 	     * baseUri / g2Uri can have the following patterns:
 	     *    - Everything before the two last '/' is interpreted as path
@@ -313,8 +308,7 @@ class GalleryUrlGenerator
 	 *        cookieless browsing, key=value string for CMS session key and id
 	 * @return GalleryStatus a status code
 	 */
-	public function init($baseUri = null, $g2Uri = null, $embedSessionString = null)
-	{
+	public function init($baseUri = null, $g2Uri = null, $embedSessionString = null) {
 		$this->_embedSessionString = $embedSessionString;
 		
 		if (isset($baseUri)) {
@@ -400,8 +394,7 @@ class GalleryUrlGenerator
 	 * @param boolean $forceDirect (optional) if true, ensure Gallery base protocol/host is used
 	 * @return string the host name
 	 */
-	public function getHostName($forceDirect = false)
-	{
+	public function getHostName($forceDirect = false) {
 		return $this->_host[$forceDirect];
 	}
 	
@@ -412,11 +405,10 @@ class GalleryUrlGenerator
 	 * @param boolean $forceDirect (optional) if true, ensure Gallery base protocol/host is used
 	 * @return string the URL
 	 */
-	public function makeUrl($path, $forceDirect = false)
-	{
+	public function makeUrl($path, $forceDirect = false) {
 		if (empty($path)) {
 			$path = '/';
-		} elseif ($path{0} != '/') {
+		} elseif ($path[0] != '/') {
 			$path = '/' . $path;
 		}
 		
@@ -432,8 +424,7 @@ class GalleryUrlGenerator
 	 *                             the URL isn't absolute already
 	 * @return string the absolute URL
 	 */
-	public function makeAbsoluteUrl($url, $forceDirect = false)
-	{
+	public function makeAbsoluteUrl($url, $forceDirect = false) {
 		$url = trim($url);
 		if (!preg_match('#^[A-Za-z0-9+.\-]+://#', $url)) {
 			if (substr($url, 0, 1) == '/') {
@@ -455,8 +446,7 @@ class GalleryUrlGenerator
 	 * @param boolean $forceDirect (optional) if true, ensure Gallery base protocol/host is used
 	 * @return string the current URL
 	 */
-	public function getCurrentUrl($forceDirect = false)
-	{
+	public function getCurrentUrl($forceDirect = false) {
 		if (!isset($this->_currentUrl[$forceDirect])) {
 			/* Allow overriding protocol / host part, but keep request string unchanged */
 			$this->_currentUrl[$forceDirect] = $this->makeUrl(self::getCurrentRequestUri(), $forceDirect);
@@ -471,8 +461,7 @@ class GalleryUrlGenerator
 	 *
 	 * @return string
 	 */
-	public function getCacheableUrl()
-	{
+	public function getCacheableUrl() {
 		$url = $this->getCurrentUrl();
 		$parsed = parse_url($url);
 		$url = !empty($parsed['scheme']) ? $parsed['scheme'] . ':' . '//' : '';
@@ -508,8 +497,7 @@ class GalleryUrlGenerator
 	 *        (different when embedded)
 	 * @return string the base URL directory
 	 */
-	public function getCurrentUrlDir($forceDirect = false)
-	{
+	public function getCurrentUrlDir($forceDirect = false) {
 		if (!isset($this->_currentUrlBaseDir[$forceDirect])) {
 			if (!empty($this->_path[$forceDirect])) {
 				/* An override for the path was defined (most likely an embedded Gallery request) */
@@ -566,8 +554,7 @@ class GalleryUrlGenerator
 	 *     'protocol' => string; to override the URL scheme
 	 * @return string URL
 	 */
-	public function generateUrl($params = array(), $options = array())
-	{
+	public function generateUrl($params = array(), $options = array()) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$currentView = $gallery->getCurrentView();
@@ -711,8 +698,7 @@ class GalleryUrlGenerator
 	 * @param string $url absolute URL
 	 * @return string relative URL (or unchanged absolute URL)
 	 */
-	public function makeRelativeUrl($url, $forceServerRelativeUrl = false)
-	{
+	public function makeRelativeUrl($url, $forceServerRelativeUrl = false) {
 		if (!isset($this->_hasRequestUriShortUrlPrefix)) {
 			$requestUri = $this->getCurrentRequestUri();
 			/* When embedded, file can be empty */
@@ -752,8 +738,7 @@ class GalleryUrlGenerator
 	 *                (different when embedded)
 	 * @return array (object Gallery status, string path)
 	 */
-	public function getCookiePath($forceDirect = false)
-	{
+	public function getCookiePath($forceDirect = false) {
 		if (!isset($this->_cookiePath[$forceDirect])) {
 			/* Return the configured path is it is set */
 			list($ret, $path) = GalleryCoreApi::getPluginParameter('module', 'core', 'cookie.path');
@@ -791,8 +776,7 @@ class GalleryUrlGenerator
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function initNavigation()
-	{
+	public function initNavigation() {
 		foreach (array(
 			'return',
 			'formUrl'
@@ -812,8 +796,7 @@ class GalleryUrlGenerator
 	 * @param string $url URL to check
 	 * @return GalleryStatus a status code
 	 */
-	public function assertIsInternalUrl($url)
-	{
+	public function assertIsInternalUrl($url) {
 		global $gallery;
 		
 		if (!empty($url)) {
@@ -852,8 +835,7 @@ class GalleryUrlGenerator
 	 *
 	 * @return string the URL
 	 */
-	public function getNavigationReturnUrl()
-	{
+	public function getNavigationReturnUrl() {
 		global $gallery;
 		
 		$formUrl = GalleryUtilities::getRequestVariables('formUrl');
@@ -885,8 +867,7 @@ class GalleryUrlGenerator
 	 * @return boolean forceSessionId
 	 * @access protected
 	 */
-	public function embedForceSessionId($params)
-	{
+	public function embedForceSessionId($params) {
 		if (isset($params['view']) && $params['view'] == 'core.DownloadItem' && GalleryUtilities::isEmbedded() && empty($this->_isCookiePathConfigured)) {
 			/*
 	         * It is assumed that the Gallery session is initiated before generateUrl() is called
@@ -904,8 +885,7 @@ class GalleryUrlGenerator
 	 * @return string path to local override, or given path if override not found
 	 * @access private
 	 */
-	public function _getLocalPath($href)
-	{
+	public function _getLocalPath($href) {
 		global $gallery;
 		if (!isset($this->_localUrlMap)) {
 			$this->_localUrlMap = GalleryDataCache::getFromDisk(array(
@@ -955,8 +935,7 @@ class GalleryUrlGenerator
 	 * @access private
 	 * @static
 	 */
-	public function _saveLocalUrlMap(&$urlGenerator)
-	{
+	public function _saveLocalUrlMap(&$urlGenerator) {
 		if (!empty($urlGenerator->_localUrlMapDirty)) {
 			GalleryDataCache::putToDisk(array(
 				'type' => 'local-url-map'
@@ -968,8 +947,7 @@ class GalleryUrlGenerator
 	/**
 	 * Compatibility function for PHP 5.3.  See comment in GalleryUrlGenerator::_getLocalPath.
 	 */
-	public function _saveLocalUrlMapPhp5()
-	{
+	public function _saveLocalUrlMapPhp5() {
 		self::_saveLocalUrlMap($this);
 	}
 }

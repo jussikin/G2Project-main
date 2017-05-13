@@ -26,16 +26,14 @@
  * @version $Revision: 17580 $
  * @static
  */
-class NewItemsHelper
-{
+class NewItemsHelper {
 	/**
 	 * Count number of albums with NewItems sort
 	 *
 	 * @return array GalleryStatus a status code
 	 *               int count
 	 */
-	public static function fetchAlbumCount()
-	{
+	public static function fetchAlbumCount() {
 		global $gallery;
 		$query = 'SELECT COUNT([GalleryAlbumItem::id]) FROM [GalleryAlbumItem] ' . 'WHERE [GalleryAlbumItem::orderBy] LIKE \'%NewItems%\'';
 		
@@ -63,8 +61,7 @@ class NewItemsHelper
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public static function resetNewItemSorts()
-	{
+	public static function resetNewItemSorts() {
 		global $gallery;
 		$query = 'SELECT [GalleryAlbumItem::id] FROM [GalleryAlbumItem] ' . 'WHERE [GalleryAlbumItem::orderBy] LIKE \'%NewItems%\'';
 		

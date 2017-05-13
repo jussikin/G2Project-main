@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminImageMagickControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminImageMagickControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'imagemagick.AdminImageMagick');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -55,8 +52,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		$this->_slash = $platform->getDirectorySeparator();
 	}
 	
-	public function testSaveGoodPath()
-	{
+	public function testSaveGoodPath() {
 		$slash = $this->_slash;
 		$path = $slash . 'validPath' . $slash;
 		
@@ -100,8 +96,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(3, $this->_ranIdentify, 'ran identify');
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 		
 		$results = $this->handleRequest();
@@ -115,8 +110,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
 		$results = $this->handleRequest();
@@ -130,8 +124,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveTestErrorPath()
-	{
+	public function testSaveTestErrorPath() {
 		$slash = $this->_slash;
 		
 		/* Use valid inputs */
@@ -154,8 +147,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveBadPath()
-	{
+	public function testSaveBadPath() {
 		$slash = $this->_slash;
 		
 		/* Use valid inputs */
@@ -178,8 +170,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveMissingPath()
-	{
+	public function testSaveMissingPath() {
 		$slash = $this->_slash;
 		
 		/* Use valid inputs */
@@ -202,8 +193,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSaveVulnerablePath()
-	{
+	public function testSaveVulnerablePath() {
 		$slash = $this->_slash;
 		
 		/* Use valid inputs */
@@ -226,8 +216,7 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testForceSaveGoodPath()
-	{
+	public function testForceSaveGoodPath() {
 		$slash = $this->_slash;
 		$path = $slash . 'vulnerablePath' . $slash;
 		
@@ -279,16 +268,13 @@ class AdminImageMagickControllerTest extends GalleryControllerTestCase
  * @package ImageMagick
  * @subpackage PHPUnit
  */
-class AdminImageMagickControllerTestPlatform
-{
-	public function AdminImageMagickControllerTestPlatform($originalPlatform, &$unitTest)
-	{
+class AdminImageMagickControllerTestPlatform {
+	public function AdminImageMagickControllerTestPlatform($originalPlatform, &$unitTest) {
 		$this->_platform = $originalPlatform;
 		$this->_unitTest =& $unitTest;
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		$slash = $this->getDirectorySeparator();
 		switch ($path) {
 			case "${slash}validPath":
@@ -307,8 +293,7 @@ class AdminImageMagickControllerTestPlatform
 		return false;
 	}
 	
-	public function is_dir($dir)
-	{
+	public function is_dir($dir) {
 		$slash = $this->getDirectorySeparator();
 		switch ($dir) {
 			case "${slash}validPath${slash}":
@@ -320,28 +305,23 @@ class AdminImageMagickControllerTestPlatform
 		return false;
 	}
 	
-	public function unlink($args)
-	{
+	public function unlink($args) {
 		/* do nothing */
 	}
 	
-	public function tempnam($dir, $prefix)
-	{
+	public function tempnam($dir, $prefix) {
 		return 'TEMPFILE';
 	}
 	
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		return 10;
 	}
 	
-	public function isRestrictedByOpenBaseDir($path)
-	{
+	public function isRestrictedByOpenBaseDir($path) {
 		return false;
 	}
 	
-	public function exec($args)
-	{
+	public function exec($args) {
 		/*
 	     * We're going to test all of this in detail in the ImageMagickToolkitTest,
 	     * so for now let's just aim for success.
@@ -394,23 +374,19 @@ class AdminImageMagickControllerTestPlatform
 		}
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_platform->getDirectorySeparator();
 	}
 	
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		return $this->_platform->realpath($file);
 	}
 	
-	public function chdir($path)
-	{
+	public function chdir($path) {
 		return true;
 	}
 	
-	public function getcwd()
-	{
+	public function getcwd() {
 		return '/tmp';
 	}
 }

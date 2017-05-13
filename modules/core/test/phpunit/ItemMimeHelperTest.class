@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/mime/classes/helpers/ItemMimeHelper_simple.
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemMimeHelper_simpleTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemMimeHelper_simpleTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodname);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -48,8 +45,7 @@ class ItemMimeHelper_simpleTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMimeType(array(
 			'mimeType' => 'test/test'
 		));
@@ -63,8 +59,7 @@ class ItemMimeHelper_simpleTest extends GalleryTestCase
 		}
 	}
 	
-	public function testMimeTypeMap()
-	{
+	public function testMimeTypeMap() {
 		list($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
 		if ($ret) {
 			return $ret;

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17627 $
  */
-class UserPreferencesControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UserPreferencesControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.UserPreferences');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -58,8 +55,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$gallery->setActiveUser($this->_user);
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->put('core.language', $this->_currentLanguage);
@@ -69,8 +65,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
 		$results = $this->handleRequest();
@@ -85,8 +80,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testUndo()
-	{
+	public function testUndo() {
 		GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 		
 		$results = $this->handleRequest();
@@ -100,8 +94,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEditAll()
-	{
+	public function testEditAll() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -134,8 +127,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('language', $session->get('core.language'), 'Language');
 	}
 	
-	public function testEditRequiredOnly()
-	{
+	public function testEditRequiredOnly() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
 		GalleryUtilities::putRequestVariable('form[email]', '  email_with-leading@space.test-o.com');
@@ -163,8 +155,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('email_with-leading@space.test-o.com', $this->_user->getEmail());
 	}
 	
-	public function testEditMissingEmail()
-	{
+	public function testEditMissingEmail() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
 		GalleryUtilities::putRequestVariable('form[currentPassword]', 'TestPassword');
@@ -198,8 +189,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEditInvalidEmail()
-	{
+	public function testEditInvalidEmail() {
 		foreach (array(
 			'user',
 			'admin'
@@ -285,8 +275,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* No password is needed for non-email changes */
-	public function testEditOtherThanEmailWithoutPassword()
-	{
+	public function testEditOtherThanEmailWithoutPassword() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -322,8 +311,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* If you provide an email, then return a error message if it's invalid */
-	public function testEditOtherThanEmailInvalidPassword()
-	{
+	public function testEditOtherThanEmailInvalidPassword() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -365,8 +353,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		));
 	}
 	
-	public function testEditEmailWithInvalidPassword()
-	{
+	public function testEditEmailWithInvalidPassword() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -408,8 +395,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		));
 	}
 	
-	public function testEditEmailWithoutPassword()
-	{
+	public function testEditEmailWithoutPassword() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -440,8 +426,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('te', $this->_user->getLanguage());
 	}
 	
-	public function testGuestPreferences()
-	{
+	public function testGuestPreferences() {
 		global $gallery;
 		$gallery->setConfig('anonymousUserId', $this->_user->getId());
 		
@@ -453,8 +438,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 	
-	public function testLockedUserPreferences()
-	{
+	public function testLockedUserPreferences() {
 		global $gallery;
 		
 		list($ret, $this->_user2) = $this->_createUser(array(
@@ -480,8 +464,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 	
-	public function testEditEmailWithEntityPassword()
-	{
+	public function testEditEmailWithEntityPassword() {
 		global $gallery;
 		list($ret, $user) = $this->_createRandomUser(null, 'pass&word');
 		if ($ret) {
@@ -517,8 +500,7 @@ class UserPreferencesControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('new-email@example.com', $user->getEmail());
 	}
 	
-	public function _addUserToAdminGroup()
-	{
+	public function _addUserToAdminGroup() {
 		/* Make ourselves an admin */
 		list($ret, $adminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 		if ($ret) {

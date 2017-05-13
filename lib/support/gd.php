@@ -40,8 +40,7 @@ if (!defined('G2_SUPPORT')) {
  * Gets a lot of information about our GD installation and return it as a
  * giant string, which can be eval'ed to an array.
  */
-function getGdLibraryInfo()
-{
+function getGdLibraryInfo() {
 	if (!extension_loaded('gd')) {
 		return '';
 	}
@@ -222,22 +221,22 @@ $gdInfo = getGdLibraryInfo();
 
 ?>
 <html lang="en">
-  <head>
-    <title>Gallery Support | GD Library Info</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>support.css">
-  </head>
-  <body>
-    <div id="content">
-      <div id="title">
-    <a href="../../">Gallery</a> &raquo;
-    <a href="<?php generateUrl('index.php'); ?>">Support</a> &raquo; GD Library Info
-      </div>
-        <?php if ($gdInfo == '') : ?>
-      <h2>No GD library found.</h2>
-        <?php else : ?>
-      <h2>This information might be useful for the GD module developers:</h2>
-      <pre style="padding-left: 20px"><?php echo $gdInfo; ?></pre>
-        <?php endif; ?>
-    </div>
-  </body>
+	<head>
+	<title>Gallery Support | GD Library Info</title>
+	<link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>support.css">
+	</head>
+	<body>
+	<div id="content">
+	  <div id="title">
+	<a href="../../">Gallery</a> &raquo;
+	<a href="<?php generateUrl('index.php'); ?>">Support</a> &raquo; GD Library Info
+	  </div>
+		<?php if ($gdInfo == '') : ?>
+	  <h2>No GD library found.</h2>
+		<?php else : ?>
+	  <h2>This information might be useful for the GD module developers:</h2>
+	  <pre style="padding-left: 20px"><?php echo $gdInfo; ?></pre>
+		<?php endif; ?>
+	</div>
+	</body>
 </html>

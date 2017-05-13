@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UploadItemsControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UploadItemsControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'publishxp.UploadItems');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -55,8 +52,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$this->_saveSession =& $gallery->getSession();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$ret = GalleryCoreApi::removeMimeType(array('extension' => 'phpunit_ext'));
 		if ($ret) {
@@ -71,8 +67,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testUploadItems()
-	{
+	public function testUploadItems() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = 'test/file';
@@ -100,8 +95,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
 
-	public function testUploadItemsXssFilename()
-	{
+	public function testUploadItemsXssFilename() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		GalleryUtilities::putRequestVariable('form[setCaptions]', 1);
@@ -131,8 +125,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
 
-	public function testUploadItemsPermissionDenied()
-	{
+	public function testUploadItemsPermissionDenied() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', 0);
 		$_FILES['userFile']['type'] = 'application/unknown';
@@ -142,8 +135,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 
-	public function testUploadItemsMissingFileName()
-	{
+	public function testUploadItemsMissingFileName() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = 'application/unknown';
@@ -152,8 +144,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
 
-	public function testUploadItemsMissingMimeType()
-	{
+	public function testUploadItemsMissingMimeType() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = '';
@@ -180,8 +171,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
 
-	public function testUploadItemsSetCaptionsAndStripExtensions()
-	{
+	public function testUploadItemsSetCaptionsAndStripExtensions() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		GalleryUtilities::putRequestVariable('form[setCaptions]', 1);
@@ -210,8 +200,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
 
-	public function testUploadItemsWithOption()
-	{
+	public function testUploadItemsWithOption() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->put('publishxp.extraOptionsForm',
@@ -250,8 +239,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
 
-	public function testGetCharsetFromRequest()
-	{
+	public function testGetCharsetFromRequest() {
 		$controller = new UploadItemsController();
 
 		GalleryUtilities::putRequestVariable('lcid', 1033, false);
@@ -268,18 +256,15 @@ class UploadItemsControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class UploadItemsControllerTestAddOption
-{
-	public function handleRequestAfterAdd($form, $items)
-	{
+class UploadItemsControllerTestAddOption {
+	public function handleRequestAfterAdd($form, $items) {
 		GalleryUtilities::putRequestVariable(
 		'requestData', array($items[0]->getId(), $form['optionValue']));
 
 		return array(null, array(), array());
 	}
 
-	public function getRequestData()
-	{
+	public function getRequestData() {
 		return GalleryUtilities::getRequestVariables('requestData');
 	}
 }

@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @static
  */
-class PanoramaUpgradeHelper
-{
+class PanoramaUpgradeHelper {
 	/**
 	 * Switch back from using PanoramaPhotoItem and PanoramaDerivativeImage to
 	 * the base classes, now that we're using renderers.  This can get deleted
@@ -39,8 +38,7 @@ class PanoramaUpgradeHelper
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public static function revertEntities()
-	{
+	public static function revertEntities() {
 		global $gallery;
 
 		$query = '

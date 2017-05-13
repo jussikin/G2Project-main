@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class ThumbnailImageTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ThumbnailImageTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -88,8 +85,7 @@ class ThumbnailImageTest extends GalleryTestCase
 		$this->_mimeTypeThumbnail = array_shift($thumbnailImages);
 	}
 
-	public function testFetchLogicalPathForCustomThumbnail()
-	{
+	public function testFetchLogicalPathForCustomThumbnail() {
 		list($ret, $logicalPath) = $this->_customThumbnail->fetchLogicalPath();
 		if ($ret) {
 			return $ret;
@@ -97,13 +93,12 @@ class ThumbnailImageTest extends GalleryTestCase
 		$id = (string)$this->_customThumbnail->getid();
 
 		$this->assertEquals(sprintf('%s/%s',
-					$id{0},
+					$id[0],
 					$id . '.jpg'),
 				$logicalPath);
 	}
 
-	public function testMimeTypeThumbnailHasThumbContainerAsParent()
-	{
+	public function testMimeTypeThumbnailHasThumbContainerAsParent() {
 		list($ret, $thumbnailContainerId) =
 		GalleryCoreApi::getPluginParameter('module', 'thumbnail', 'id.container');
 		if ($ret) {
@@ -112,13 +107,11 @@ class ThumbnailImageTest extends GalleryTestCase
 		$this->assertEquals((int)$thumbnailContainerId, $this->_mimeTypeThumbnail->getParentId());
 	}
 
-	public function testCustomThumbnailHasItemAsParent()
-	{
+	public function testCustomThumbnailHasItemAsParent() {
 		$this->assertEquals($this->_item->getId(), $this->_customThumbnail->getParentId());
 	}
 
-	public function testFetchLogicalPathForMimeTypeThumbnail()
-	{
+	public function testFetchLogicalPathForMimeTypeThumbnail() {
 		list($ret, $logicalPath) = $this->_mimeTypeThumbnail->fetchLogicalPath();
 		if ($ret) {
 			return $ret;
@@ -127,8 +120,7 @@ class ThumbnailImageTest extends GalleryTestCase
 		$this->assertEquals($this->_mimeTypeThumbnail->getPathComponent(), $logicalPath);
 	}
 
-	public function testCustomThumbForRootAlbum()
-	{
+	public function testCustomThumbForRootAlbum() {
 		$existingPathComponent = $this->_mimeTypeThumbnail->getPathComponent();
 		list($ret, $rootAlbumId) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');

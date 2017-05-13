@@ -27,17 +27,14 @@ GalleryCoreApi::requireOnce('modules/picasa/test/phpunit/MockLockSystem.class');
  * @author Waldemar Schlackow <waldemar@opencodes.org>
  * @version $Revision: 17580 $
  */
-class ItemAddFromPicasaTest extends ItemAddPluginTestCase
-{
+class ItemAddFromPicasaTest extends ItemAddPluginTestCase {
 	public $_temporaryAlbum;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->ItemAddPluginTestCase($methodName, 'picasa', 'ItemAddFromPicasa');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -82,8 +79,7 @@ class ItemAddFromPicasaTest extends ItemAddPluginTestCase
 		$gallery->setPlatform($this->_platform);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::releaseLocks($this->_lockIds);
 		if ($ret) {
 			return $ret;
@@ -99,8 +95,7 @@ class ItemAddFromPicasaTest extends ItemAddPluginTestCase
 	/**
 	 * Test whether the importing routine works; NOTE: archiveupload module is required
 	 */
-	public function testImportFromPicasaSuccessful()
-	{
+	public function testImportFromPicasaSuccessful() {
 		/* Test with the loosest markup type */
 	$ret = $this->_setMarkupType('html', true);
 		if ($ret) {
@@ -294,8 +289,7 @@ class ItemAddFromPicasaTest extends ItemAddPluginTestCase
 	/**
 	 * Test what happens if an unknown file type is uploaded
 	 */
-	public function testImportFromPicasaFailed_unknowntype()
-	{
+	public function testImportFromPicasaFailed_unknowntype() {
 
 	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromPicasa]', 1);
@@ -318,8 +312,7 @@ class ItemAddFromPicasaTest extends ItemAddPluginTestCase
 	/**
 	 * Test what happens if no file input is given
 	 */
-	public function testImportFromPicasaFailed_emptypath()
-	{
+	public function testImportFromPicasaFailed_emptypath() {
 
 	/* Use valid inputs */
 	GalleryUtilities::putRequestVariable('form[action][addFromPicasa]', 1);
@@ -343,11 +336,9 @@ class ItemAddFromPicasaTest extends ItemAddPluginTestCase
 	}
 }
 
-class ItemAddFromPicasaTestToolkit
-{
+class ItemAddFromPicasaTestToolkit {
 	public function performOperation($mimeType, $operationName, $sourceFilename,
-				  $destFilename, $parameters, $context=array())
-	{
+				  $destFilename, $parameters, $context=array()) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 

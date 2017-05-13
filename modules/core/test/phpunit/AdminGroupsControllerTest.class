@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminGroupsControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminGroupsControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminGroups');
 	}
 
-	public function testFilterClear()
-	{
+	public function testFilterClear() {
 		GalleryUtilities::putRequestVariable('form[action][filterClear]', 1);
 		GalleryUtilities::putRequestVariable('form[list][filter]', 'foo');
 
@@ -42,8 +39,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', GalleryUtilities::getRequestVariables('form[list][filter]'));
 	}
 
-	public function testCreate()
-	{
+	public function testCreate() {
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 
 		$results = $this->handleRequest();
@@ -58,8 +54,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testEditFromText()
-	{
+	public function testEditFromText() {
 		/* Normal */
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
@@ -114,8 +109,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testDeleteFromText()
-	{
+	public function testDeleteFromText() {
 		/* Normal */
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
@@ -170,8 +164,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testDeleteSiteAdminGroupFromText()
-	{
+	public function testDeleteSiteAdminGroupFromText() {
 		global $gallery;
 		list($ret, $id) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 		if ($ret) {
@@ -199,8 +192,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testDeleteAllUsersGroupFromText()
-	{
+	public function testDeleteAllUsersGroupFromText() {
 		global $gallery;
 		list($ret, $id) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
 		if ($ret) {
@@ -228,8 +220,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testEditAllUsersGroupUsersFromText()
-	{
+	public function testEditAllUsersGroupUsersFromText() {
 		global $gallery;
 		list($ret, $id) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
 		if ($ret) {
@@ -257,8 +248,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testDeleteEverybodyGroupFromText()
-	{
+	public function testDeleteEverybodyGroupFromText() {
 		global $gallery;
 		list($ret, $id) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
 		if ($ret) {
@@ -286,8 +276,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testEditUsersFromText()
-	{
+	public function testEditUsersFromText() {
 		/* Normal */
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
@@ -342,8 +331,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function _createGroup()
-	{
+	public function _createGroup() {
 		global $gallery;
 
 		list($ret, $group) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryGroup');
@@ -382,8 +370,7 @@ class AdminGroupsControllerTest extends GalleryControllerTestCase
 		);
 	}
 
-	public function _deleteGroup($group)
-	{
+	public function _deleteGroup($group) {
 		global $gallery;
 		$ret = GalleryCoreApi::deleteEntityById($group->getId(), 'GalleryGroup');
 		if ($ret) {

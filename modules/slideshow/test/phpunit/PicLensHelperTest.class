@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PicLensHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PicLensHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -45,8 +42,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$gallery->setConfig('data.gallery.plugins_data', '/');
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 		$this->assert($gallery->_platform->isComplete(), $gallery->_platform->getRemaining());
@@ -61,8 +57,7 @@ class PicLensHelperTest extends GalleryTestCase
 	 *
 	 * @todo refactor this method out into GalleryTestCase, and add support for optional headers.
 	 */
-	public function _setDownload($url, $data, $outputFile=null, $responseCode='200 OK')
-	{
+	public function _setDownload($url, $data, $outputFile=null, $responseCode='200 OK') {
 		global $gallery;
 
 		$urlInfo = parse_url($url);
@@ -92,8 +87,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$platform->setReply('fclose', array('IN'), true);
 	}
 
-	public function testInstall()
-	{
+	public function testInstall() {
 		global $gallery;
 
 		$this->_setDownload(
@@ -118,8 +112,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertEquals('VERSION', $version);
 	}
 
-	public function testInstallMissingVersion()
-	{
+	public function testInstallMissingVersion() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release',
 		"version=\njsUrl=http://host/path/js\nswfUrl=http://host/path/swf\n");
@@ -128,8 +121,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_VALUE, $ret);
 	}
 
-	public function testInstallMissingJsUrl()
-	{
+	public function testInstallMissingJsUrl() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release',
 		"version=VERSION\njsUrl=\nswfUrl=http://host/path/swf\n");
@@ -138,8 +130,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_VALUE, $ret);
 	}
 
-	public function testInstallMissingSwfUrl()
-	{
+	public function testInstallMissingSwfUrl() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release',
 		"version=VERSION\njsUrl=http://host/path/js\nswfUrl=\n");
@@ -148,8 +139,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_MISSING_VALUE, $ret);
 	}
 
-	public function testInstallMissingEverything()
-	{
+	public function testInstallMissingEverything() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release',
 		'');
@@ -158,8 +148,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_PLATFORM_FAILURE, $ret);
 	}
 
-	public function testInstallFailedToRename()
-	{
+	public function testInstallFailedToRename() {
 		global $gallery;
 
 		$this->_setDownload(
@@ -180,8 +169,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_PLATFORM_FAILURE, $ret);
 	}
 
-	public function testInstallFailedToFetch()
-	{
+	public function testInstallFailedToFetch() {
 		global $gallery;
 
 		$this->_setDownload(
@@ -206,8 +194,7 @@ class PicLensHelperTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_PLATFORM_FAILURE, $ret);
 	}
 
-	public function testGetLatestPicLensInfo()
-	{
+	public function testGetLatestPicLensInfo() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release',
 		"version=VERSION\njsUrl=http://host/path/js\nswfUrl=http://host/path/swf\n");
@@ -223,8 +210,7 @@ class PicLensHelperTest extends GalleryTestCase
 	 * Perhaps we should fail if the result is not a legitimate url?
 	 * Seems like a low priority since we own gallery.menalto.com
 	 */
-	public function testGetLatestPicLensInfoUnsanitaryReply()
-	{
+	public function testGetLatestPicLensInfoUnsanitaryReply() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release',
 		"version=<evil>\njsUrl=<eviler>\nswfUrl=<evilest>\n");
@@ -236,15 +222,13 @@ class PicLensHelperTest extends GalleryTestCase
 		PicLensHelper::getLatestPicLensInfo());
 	}
 
-	public function testGetLatestPicLensInfoFailedToFetch()
-	{
+	public function testGetLatestPicLensInfoFailedToFetch() {
 		$this->_setDownload(
 		'http://gallery.menalto.com/versioncheck/piclens/release', '', null, '404 Not Found');
 		$this->assertEquals(null, PicLensHelper::getLatestPicLensInfo());
 	}
 
-	public function testUninstall()
-	{
+	public function testUninstall() {
 		global $gallery;
 
 		$gallery->_platform->setReply(

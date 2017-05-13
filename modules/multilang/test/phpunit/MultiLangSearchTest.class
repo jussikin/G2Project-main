@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/multilang/classes/MultiLangHelper.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class MultiLangSearchTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MultiLangSearchTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -96,8 +93,7 @@ class MultiLangSearchTest extends GalleryTestCase
 		$this->_saveLanguage = $session->get('core.language');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		$session =& $gallery->getSession();
@@ -113,8 +109,7 @@ class MultiLangSearchTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetSearchModuleInfoDefaultLanguage()
-	{
+	public function testGetSearchModuleInfoDefaultLanguage() {
 		global $gallery;
 		list($ret, $defaultLanguage) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
 		if ($ret) {
@@ -134,8 +129,7 @@ class MultiLangSearchTest extends GalleryTestCase
 		), $info);
 	}
 	
-	public function testGetSearchModuleInfoActiveLanguage()
-	{
+	public function testGetSearchModuleInfoActiveLanguage() {
 		global $gallery;
 		list($ret, $defaultLanguage) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
 		if ($ret) {
@@ -177,8 +171,7 @@ class MultiLangSearchTest extends GalleryTestCase
 		), $info);
 	}
 	
-	public function testSearchAll()
-	{
+	public function testSearchAll() {
 		global $gallery;
 		$gallery->setActiveLocale('zq_RX');
 		
@@ -236,8 +229,7 @@ class MultiLangSearchTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testLimitedSearch()
-	{
+	public function testLimitedSearch() {
 		global $gallery;
 		$gallery->setActiveLocale('zq_RX');
 		
@@ -278,8 +270,7 @@ class MultiLangSearchTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testEmptySearch()
-	{
+	public function testEmptySearch() {
 		global $gallery;
 		$gallery->setActiveLocale('zq_RX');
 		

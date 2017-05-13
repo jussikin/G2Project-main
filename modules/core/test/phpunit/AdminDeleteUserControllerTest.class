@@ -27,16 +27,13 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataCache.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminDeleteUserControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminDeleteUserControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminDeleteUser');
 	}
 
 	/* We're creating a tree of test items owned by the user */
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -57,8 +54,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 		$this->_activeUserBackup = $gallery->getActiveUser();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 		/* Remove all user mappings in case of error */
@@ -83,8 +79,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
@@ -100,8 +95,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create and delete a user, no items created/deleted
 	 */
-	public function testDeleteUser()
-	{
+	public function testDeleteUser() {
 
 		/* Create a user that we can delete */
 		list($ret, $user) = $this->_createRandomUser();
@@ -141,8 +135,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Try to delete the active user (this will fail silently)
 	 */
-	public function testDeleteActiveUser()
-	{
+	public function testDeleteActiveUser() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('userId', $gallery->getActiveUserId());
@@ -163,8 +156,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Try to delete the anonymous user (this will fail silently)
 	 */
-	public function testDeleteAnonymousUser()
-	{
+	public function testDeleteAnonymousUser() {
 		global $gallery;
 
 		list($ret, $anonymousUserId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
@@ -192,8 +184,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Try to delete a user and assign items to nonexistent userName
 	 */
-	public function testDeleteUserAndAssignItemsToNonexistentUser()
-	{
+	public function testDeleteUserAndAssignItemsToNonexistentUser() {
 		global $gallery;
 
 		/* Create a user that we can delete */
@@ -251,8 +242,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Try to delete a user and assign items to nonexistent userName
 	 */
-	public function testDeleteUserAndAssignItemsToSameUser()
-	{
+	public function testDeleteUserAndAssignItemsToSameUser() {
 		global $gallery;
 
 		/* Create a user that we can delete */
@@ -298,8 +288,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Try to delete a user and assign items to anonymous user
 	 */
-	public function testDeleteUserAndAssignItemsToAnonymousUser()
-	{
+	public function testDeleteUserAndAssignItemsToAnonymousUser() {
 		global $gallery;
 
 		/* Create a user that we can delete */
@@ -355,8 +344,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create a user, add 1 item, delete the user and the item
 	 */
-	public function testDeleteUserDeleteItemWithDirectPermission()
-	{
+	public function testDeleteUserDeleteItemWithDirectPermission() {
 		global $gallery;
 
 		/* Create a user that we can delete */
@@ -422,8 +410,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	 * The user doesn't have the permission to delete the item
 	 * The item should have a new owner, Site Admin
 	 */
-	public function testDeleteUserDeleteItemWithoutPermission()
-	{
+	public function testDeleteUserDeleteItemWithoutPermission() {
 		global $gallery;
 
 		/* Create a user that we can delete */
@@ -498,8 +485,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	 * Create a user, add 1 subalbum, add another user, delete the user
 	 * with variant "assign all items to a new owner"
 	 */
-	public function testDeleteUserNewOwnerForItem()
-	{
+	public function testDeleteUserNewOwnerForItem() {
 		global $gallery;
 
 		/* Create a user that we can delete */
@@ -582,8 +568,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	 * All Delete requests have in common that the user,
 	 * all his permissions and his group mappings should be gone
 	 */
-	public function _verifyMissingAll($userId)
-	{
+	public function _verifyMissingAll($userId) {
 		global $gallery;
 
 		/* Verify the group mappings are for this user are gone */
@@ -622,8 +607,7 @@ class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 	}
 
 	/* Register a user for permission and group map cleanup */
-	public function _markUserForCleanup($user)
-	{
+	public function _markUserForCleanup($user) {
 		$this->_userIds[] = $user->getId();
 	}
 }

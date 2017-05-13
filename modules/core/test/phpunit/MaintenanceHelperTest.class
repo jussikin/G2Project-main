@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/MaintenanceHelper_simp
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class MaintenanceHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MaintenanceHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -50,8 +47,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		$this->_markFactoryModuleForCleanup('coreTest');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMapEntry('GalleryMaintenanceMap', array(
 			'taskId' => 'MaintenanceHelperTestTask'
 		));
@@ -65,8 +61,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		}
 	}
 	
-	public function testFetchTasks()
-	{
+	public function testFetchTasks() {
 		list($ret, $tasks) = MaintenanceHelper_simple::fetchTasks();
 		if ($ret) {
 			return $ret;
@@ -75,8 +70,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		$this->assert(GalleryUtilities::isA($tasks['MaintenanceHelperTestTask'], 'MaintenanceHelperTestTask'));
 	}
 	
-	public function testAddAndFetchLastRun()
-	{
+	public function testAddAndFetchLastRun() {
 		/* Add a task entry */
 		$time = time() - 5;
 		/* Choose an arbitrary time */
@@ -115,8 +109,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		), $info['details'], 'details 2');
 	}
 	
-	public function testSetMaintenanceModeTrue()
-	{
+	public function testSetMaintenanceModeTrue() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -156,8 +149,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testSetMaintenanceModeFalse()
-	{
+	public function testSetMaintenanceModeFalse() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -197,8 +189,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testSetMaintenanceModeUrl()
-	{
+	public function testSetMaintenanceModeUrl() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		$platform =& $gallery->getPlatform();
@@ -238,8 +229,7 @@ class MaintenanceHelperTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testSetMaintenanceModeEqual()
-	{
+	public function testSetMaintenanceModeEqual() {
 		global $gallery;
 		$gallery->setPlatform(new UnitTestPlatform());
 		
@@ -253,10 +243,8 @@ class MaintenanceHelperTest extends GalleryTestCase
 	}
 }
 
-class MaintenanceHelperTestTask extends MaintenanceTask
-{
-	public function getInfo()
-	{
+class MaintenanceHelperTestTask extends MaintenanceTask {
+	public function getInfo() {
 		return array(
 			'title' => 'MaintenanceHelperTestTask title',
 			'description' => 'MaintenanceHelperTestTask description',
@@ -264,8 +252,7 @@ class MaintenanceHelperTestTask extends MaintenanceTask
 		);
 	}
 	
-	public function run()
-	{
+	public function run() {
 		return array(
 			null,
 			false,

@@ -1,10 +1,10 @@
-/* <?php $colorpackName = $gallery->i18n('Gold Leaf'); ?>
+/* ^PHPCS_CSS_T_OPEN_TAG^ $colorpackName = $gallery->i18n('Gold Leaf'); ^PHPCS_CSS_T_CLOSE_TAG^
  * $Revision: 15342 $
  */
 
 #gallery {
-  color: black !important;
-  background-color: gold !important;
+	color: black !important;
+	background-color: gold !important;
 }
 body.gallery { background-color: gold !important; }
 

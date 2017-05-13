@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditAlbum extends ItemEditPlugin
-{
+class ItemEditAlbum extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		global $gallery;
 		
 		$status = null;
@@ -304,8 +302,7 @@ class ItemEditAlbum extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		if ($form['formName'] != 'ItemEditAlbum') {
 			$tmp = explode('|', $item->getOrderBy(), 2);
 			if (count($tmp) < 2) {
@@ -422,8 +419,7 @@ class ItemEditAlbum extends ItemEditPlugin
 		);
 	}
 	
-	public function runRecreateResizes($form, $item, $preferred)
-	{
+	public function runRecreateResizes($form, $item, $preferred) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$templateAdapter =& $gallery->getTemplateAdapter();
@@ -631,8 +627,7 @@ class ItemEditAlbum extends ItemEditPlugin
 		return null;
 	}
 	
-	public function runRecreateThumbnails($form, $item, $preferred)
-	{
+	public function runRecreateThumbnails($form, $item, $preferred) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$templateAdapter =& $gallery->getTemplateAdapter();
@@ -850,16 +845,14 @@ class ItemEditAlbum extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		return (GalleryUtilities::isA($item, 'GalleryAlbumItem'));
 	}
 	
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20951 $
  */
-class NetPbmModule extends GalleryModule
-{
-	public function __construct()
-	{
+class NetPbmModule extends GalleryModule {
+	public function __construct() {
 		$this->NetPbmModule();
 	}
 	
-	public function NetPbmModule()
-	{
+	public function NetPbmModule() {
 		global $gallery;
 		
 		$this->setId('netpbm');
@@ -56,8 +53,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'netpbm');
 		if ($ret) {
 			return $ret;
@@ -83,8 +79,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our graphics class with the factory */
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'NetPbmToolkit', 'NetPBM', 'modules/netpbm/classes/NetPbmToolkit.class', 'netpbm', null);
 		if ($ret) {
@@ -97,8 +92,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		global $gallery;
 		
 		/* This module requires exec() */
@@ -138,7 +132,7 @@ class NetPbmModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path;
@@ -160,7 +154,7 @@ class NetPbmModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path;
@@ -251,8 +245,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		/* Load any classes we require */
 		GalleryCoreApi::requireOnce('modules/netpbm/classes/NetPbmToolkitHelper.class');
 		
@@ -322,8 +315,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires exec() */
 		if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -364,8 +356,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -380,8 +371,7 @@ class NetPbmModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'netpbm.AdminNetPbm';
 	}
 }

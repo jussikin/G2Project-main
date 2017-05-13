@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldItemEdit extends ItemEditPlugin
-{
+class CustomFieldItemEdit extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		$status = null;
 		$error = array();
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'customfield');
@@ -129,8 +127,7 @@ class CustomFieldItemEdit extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$tmp = $session->get(CUSTOM_FIELD_SESSION_KEY);
@@ -193,8 +190,7 @@ class CustomFieldItemEdit extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 			return true;
 		}
@@ -212,8 +208,7 @@ class CustomFieldItemEdit extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'customfield');
 		if ($ret) {
 			return array(

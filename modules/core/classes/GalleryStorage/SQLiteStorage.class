@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @author Brian Kirchoff <briankircho@gmail.com>
  * @version $Revision: 17580 $
  */
-class SQLiteStorage extends GalleryStorage
-{
-	public function __construct($config)
-	{
+class SQLiteStorage extends GalleryStorage {
+	public function __construct($config) {
 		$this->SQLiteStorage($config);
 	}
 	
-	public function SQLiteStorage($config)
-	{
+	public function SQLiteStorage($config) {
 		$this->GalleryStorage($config);
 		/**
 	     * SQLite supports transactions, but they seem to hang on some pages and some select
@@ -51,16 +48,14 @@ class SQLiteStorage extends GalleryStorage
 	 * Return the type of this database
 	 * @return string
 	 */
-	public function getType()
-	{
+	public function getType() {
 		return 'sqlite';
 	}
 	
 	/**
 	 * @see GalleryStorage::removeAllMapEntries
 	 */
-	public function removeAllMapEntries($mapName, $useNonTransactionalConnection = false)
-	{
+	public function removeAllMapEntries($mapName, $useNonTransactionalConnection = false) {
 		$extras =& $this->_getExtras();
 		/* SQLite does not support TRUNCATE */
 		return $extras->removeAllMapEntries($mapName, $useNonTransactionalConnection, false);
@@ -69,8 +64,7 @@ class SQLiteStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::getFunctionsSql
 	 */
-	public function getFunctionSql($functionName, $args)
-	{
+	public function getFunctionSql($functionName, $args) {
 		static $has64bitRandomValues;
 		
 		switch ($functionName) {
@@ -172,8 +166,7 @@ class SQLiteStorage extends GalleryStorage
 	 * Get database version.
 	 * @return string version
 	 */
-	public function getVersion()
-	{
+	public function getVersion() {
 		if ($this->_db) {
 			return $this->getType() . ' ' . $this->_db->GetOne('SELECT sqlite_version(*)');
 		} else {
@@ -184,24 +177,21 @@ class SQLiteStorage extends GalleryStorage
 	/**
 	 * @see GalleryStorage::encodeBlob
 	 */
-	public function encodeBlob($blob)
-	{
+	public function encodeBlob($blob) {
 		return base64_encode($blob);
 	}
 	
 	/**
 	 * @see GalleryStorage::decodeBlob
 	 */
-	public function decodeBlob($blob)
-	{
+	public function decodeBlob($blob) {
 		return base64_decode($blob);
 	}
 	
 	/**
 	 * @see GalleryStorage::getOptimizeStatements
 	 */
-	public function _getOptimizeStatements()
-	{
+	public function _getOptimizeStatements() {
 		return array(
 			'VACUUM `%s`;',
 			'ANALYZE `%s`;'

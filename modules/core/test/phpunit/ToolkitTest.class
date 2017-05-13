@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ToolkitTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ToolkitTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -56,8 +53,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->_markToolkitForCleanup('TestToolkit2');
 	}
 	
-	public function testOperation()
-	{
+	public function testOperation() {
 		$params = array(
 			array(
 				'type' => 'test-type1',
@@ -132,8 +128,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(null, $toolkit);
 	}
 	
-	public function testProperty()
-	{
+	public function testProperty() {
 		$ret = GalleryCoreApi::registerToolkitProperty('TestToolkit', array(
 			'test/type'
 		), 'test-property', 'int', 'test-description');
@@ -175,8 +170,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(null, $toolkit);
 	}
 	
-	public function testPropertyMultipleToolkits()
-	{
+	public function testPropertyMultipleToolkits() {
 		$ret = GalleryCoreApi::registerToolkitProperty('TestToolkit', array(
 			'test/type'
 		), 'test-property', 'int', 'test-description');
@@ -218,8 +212,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(null, $toolkitIds);
 	}
 	
-	public function testOperationSequence()
-	{
+	public function testOperationSequence() {
 		$params = array(
 			array(
 				'type' => 'test-type1',
@@ -297,8 +290,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assert(!$isSupported, '4-1');
 	}
 	
-	public function testGetOperationMimeTypes()
-	{
+	public function testGetOperationMimeTypes() {
 		$params = array(
 			array(
 				'type' => 'test-type1',
@@ -324,8 +316,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assert(isset($data['test/type']) && in_array('TestToolkit', $data['test/type']), 'Operation mime type');
 	}
 	
-	public function testEstimateDerivativeDimensions()
-	{
+	public function testEstimateDerivativeDimensions() {
 		list($ret, $source) = GalleryCoreApi::newItemByMimeType('image/jpeg');
 		if ($ret) {
 			return $ret;
@@ -354,8 +345,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(150, $derivative->getHeight());
 	}
 	
-	public function testEstimateDerivativeDimensions2()
-	{
+	public function testEstimateDerivativeDimensions2() {
 		list($ret, $source) = GalleryCoreApi::newItemByMimeType('image/jpeg');
 		if ($ret) {
 			return $ret;
@@ -384,8 +374,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(113, $derivative->getHeight());
 	}
 	
-	public function testEstimateDerivativeDimensions3()
-	{
+	public function testEstimateDerivativeDimensions3() {
 		list($ret, $source) = GalleryCoreApi::newItemByMimeType('image/jpeg');
 		if ($ret) {
 			return $ret;
@@ -414,8 +403,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(0, $derivative->getHeight());
 	}
 	
-	public function testEstimateDerivativeDimensions4()
-	{
+	public function testEstimateDerivativeDimensions4() {
 		/*
 	     * Test that if the direct source is a derivative too and has smaller dimensions
 	     * then we assume the "real" source is larger and allow upscaling in our estimate.
@@ -475,8 +463,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(66, $derivative->getHeight(), 'height 2');
 	}
 	
-	public function testApplyTransform()
-	{
+	public function testApplyTransform() {
 		$toolkit = new GalleryToolkit();
 		
 		/* Rotate transform of cropped operation results in rotated coordinates*/
@@ -500,8 +487,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals('rotate|90;crop|15,45,50,40', $result, 'test 4');
 	}
 	
-	public function testApplyTransformLocale()
-	{
+	public function testApplyTransformLocale() {
 		/*
 	     * Verify that percentages don't get written like 12,5 if the current locale
 	     * uses a comma for the fraction separator.
@@ -529,8 +515,7 @@ class ToolkitTest extends GalleryTestCase
 		setlocale(LC_ALL, $currentLocale);
 	}
 	
-	public function testGetMaximumManagedPriority()
-	{
+	public function testGetMaximumManagedPriority() {
 		$ret = GalleryCoreApi::registerToolkitOperation('TestToolkit', array(
 			'test/type'
 		), 'test-operation', array(), 'test-description', 'test/outputType', 40);
@@ -546,8 +531,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(40, $priority);
 	}
 	
-	public function testGetRedundantPriorities()
-	{
+	public function testGetRedundantPriorities() {
 		$ret = GalleryCoreApi::registerToolkitOperation('TestToolkit', array(
 			'test/type'
 		), 'test-operation', array(), 'test-description', 'test/outputType', 30);
@@ -572,8 +556,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(27, $list['TestToolkit2'], 'TestToolkit2');
 	}
 	
-	public function testGetToolkitPriorityById()
-	{
+	public function testGetToolkitPriorityById() {
 		$ret = GalleryCoreApi::registerToolkitOperation('TestToolkit', array(
 			'test/type'
 		), 'test-operation', array(), 'test-description', 'test/outputType', 30);
@@ -596,8 +579,7 @@ class ToolkitTest extends GalleryTestCase
 		$this->assertEquals(null, $priority, 'Returned value for undefined toolkit');
 	}
 	
-	public function testMergeOperations()
-	{
+	public function testMergeOperations() {
 		$toolkit = new TestToolkit();
 		$this->assertEquals(array(
 			true,
@@ -760,8 +742,7 @@ class ToolkitTest extends GalleryTestCase
 		)), 'rotate 180 180');
 	}
 	
-	public function testUnregisterToolkitsByModuleId()
-	{
+	public function testUnregisterToolkitsByModuleId() {
 		$params = array(
 			array(
 				'type' => 'test-type1',
@@ -808,9 +789,7 @@ class ToolkitTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class TestToolkit extends GalleryToolkit
-{
+class TestToolkit extends GalleryToolkit {
 }
-class TestToolkit2
-{
+class TestToolkit2 {
 }

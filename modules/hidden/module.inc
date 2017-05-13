@@ -29,15 +29,12 @@
  * @author Jess Martin <jmartin@cs.unc.edu>
  * @version $Revision: 17588 $
  */
-class HiddenModule extends GalleryModule
-{
-	public function __construct()
-	{
+class HiddenModule extends GalleryModule {
+	public function __construct() {
 		$this->HiddenModule();
 	}
 	
-	public function HiddenModule()
-	{
+	public function HiddenModule() {
 		global $gallery;
 		
 		$this->setId('hidden');
@@ -59,8 +56,7 @@ class HiddenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $statusMonitor = null)
-	{
+	public function upgrade($currentVersion, $statusMonitor = null) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -95,8 +91,7 @@ class HiddenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'HiddenModule', 'HiddenModule', 'modules/hidden/module.inc', 'hidden', array(
 			'Gallery::ViewableTreeChange',
 			'GalleryEntity::save',
@@ -129,8 +124,7 @@ class HiddenModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getOnLoadHandlerIds
 	 */
-	public function getOnLoadHandlerIds()
-	{
+	public function getOnLoadHandlerIds() {
 		return array(
 			'Hidden'
 		);
@@ -140,8 +134,7 @@ class HiddenModule extends GalleryModule
 	 * Unhide all hidden items.
 	 * @see GalleryModule::uninstall
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		GalleryCoreApi::requireOnce('modules/hidden/classes/HiddenHelper.class');
 		
 		list($ret, $searchResults) = GalleryCoreApi::getMapEntry('ItemHiddenMap', array(
@@ -178,8 +171,7 @@ class HiddenModule extends GalleryModule
 	/**
 	 * Add session based permission when core.ShowItem accessed directly for this item
 	 */
-	public function onLoad(&$item, $duringUpgrade)
-	{
+	public function onLoad(&$item, $duringUpgrade) {
 		list($view, $itemId) = GalleryUtilities::getRequestVariables('view', 'itemId');
 		if ($view == 'core.ShowItem' && $itemId == $item->getId()) {
 			list($ret, $permissions) = GalleryCoreApi::getPermissions($itemId);
@@ -201,8 +193,7 @@ class HiddenModule extends GalleryModule
 	 * Update permissions when items move in/out of hidden albums
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/hidden/classes/HiddenHelper.class');
 		switch ($event->getEventName()) {

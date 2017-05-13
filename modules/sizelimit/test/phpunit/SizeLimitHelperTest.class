@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class SizeLimitHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SizeLimitHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodname);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -96,8 +93,7 @@ class SizeLimitHelperTest extends GalleryTestCase
 	}
 
 	/* change dimensions, keep original */
-	public function testKeepOriginal()
-	{
+	public function testKeepOriginal() {
 		foreach (array('width' => 768, 'height' => 1024)
 		as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
@@ -129,16 +125,14 @@ class SizeLimitHelperTest extends GalleryTestCase
 		$this->assertEquals(1024, $resized->getHeight(), 'Height');
 	}
 
-	public function testIllegalLimitOperation()
-	{
+	public function testIllegalLimitOperation() {
 		$ret = SizeLimitHelper::buildDerivativeWithLimits(
 		$this->_item, 'unsupported', array('anything'));
 		$this->assert($ret->getErrorCode() & ERROR_UNSUPPORTED_FILE_TYPE);
 	}
 
 	/* change size, replace original */
-	public function testNoOriginal()
-	{
+	public function testNoOriginal() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
 		'size', 1000, $this->_album->getId());
 		if ($ret) {
@@ -156,8 +150,7 @@ class SizeLimitHelperTest extends GalleryTestCase
 	}
 
 	/* try to change size and dimensions for unsupported file format */
-	public function testUnknownFormat()
-	{
+	public function testUnknownFormat() {
 		foreach (array('width' => 768, 'height' => 1024, 'size' => 1000)
 		as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
@@ -184,31 +177,26 @@ class SizeLimitHelperTest extends GalleryTestCase
  * @package SizeLimit
  * @subpackage PHPUnit
  */
-class SizeLimitHelperTestPlatform extends GalleryPlatform
-{
-	public function SizeLimitHelperTestPlatform($originalPlatform)
-	{
+class SizeLimitHelperTestPlatform extends GalleryPlatform {
+	public function SizeLimitHelperTestPlatform($originalPlatform) {
 		$this->_savedPlatform = $originalPlatform;
 		GalleryUtilities::putRequestVariable('resizePerformed', false);
 		GalleryUtilities::putRequestVariable('compressPerformed', false);
 	}
 
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		$compressPerformed = GalleryUtilities::getRequestVariables('compressPerformed');
 
 		return $compressPerformed ? 1000 : 26031966;
 	}
 
-	public function getimagesize($file)
-	{
+	public function getimagesize($file) {
 		$resizePerformed = GalleryUtilities::getRequestVariables('resizePerformed');
 
 		return $resizePerformed ? array(768, 1024) : array(1728, 2304);
 	}
 
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		$compressPerformed = GalleryUtilities::getRequestVariables('compressPerformed');
 		$resizePerformed = GalleryUtilities::getRequestVariables('resizePerformed');
 
@@ -220,8 +208,7 @@ class SizeLimitHelperTestPlatform extends GalleryPlatform
 	}
 	}
 
-	public function unlink($filename)
-	{
+	public function unlink($filename) {
 		/* if it is a derivative - we didn't really create it */
 	if ($this->_savedPlatform->file_exists($filename)) {
 		return $this->_savedPlatform->unlink($filename);
@@ -234,14 +221,12 @@ class SizeLimitHelperTestPlatform extends GalleryPlatform
 /**
  * Test toolkit
  */
-class SizeLimitHelperTestToolkit extends GalleryToolkit
-{
+class SizeLimitHelperTestToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
 	public function performOperation($mimeType, $operationName, $sourceFilename,
-		  $destFilename, $parameters, $context=array())
-	{
+		  $destFilename, $parameters, $context=array()) {
 		/* Here we are pretending that conversion happened by setting the flag */
 	switch ($operationName) {
 	case 'test':
@@ -261,8 +246,7 @@ class SizeLimitHelperTestToolkit extends GalleryToolkit
 	/**
 	 * @see GalleryToolkit::getProperty
 	 */
-	public function getProperty($mimeType, $propertyName, $file)
-	{
+	public function getProperty($mimeType, $propertyName, $file) {
 		global $gallery;
 
 	/* Our 'mime type' has to support dimensions */

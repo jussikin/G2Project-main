@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 20947 $
  */
-class ZipCartAdminController extends GalleryController
-{
+class ZipCartAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -57,13 +55,13 @@ class ZipCartAdminController extends GalleryController
 			}
 			if (empty($error)) {
 				/* Try zipping something */
-		$zipBase = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'zip_');
+				$zipBase = $platform->tempnam($gallery->getConfig('data.gallery.tmp'), 'zip_');
 				$zipFile = $zipBase . '.zip';
 				$gallery->guaranteeTimeLimit(30);
 				$gallery->startRecordingDebugSnippet();
 				if ($success = $platform->copy(__FILE__, $zipBase)) {
 					list($success) =
-			$platform->exec(array(array($form['path'], $zipFile, $zipBase)));
+					$platform->exec(array(array($form['path'], $zipFile, $zipBase)));
 				}
 				$debugSnippet = $gallery->stopRecordingDebugSnippet();
 				if (!$success || !$platform->file_exists($zipFile)) {
@@ -122,13 +120,11 @@ class ZipCartAdminController extends GalleryController
 /**
  * Settings for Zip Cart
  */
-class ZipCartAdminView extends GalleryView
-{
+class ZipCartAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -157,8 +153,10 @@ class ZipCartAdminView extends GalleryView
 		}
 
 		$ZipCartAdmin = array('isConfigure' => !$isActive,
-				  'canExec' => !in_array('exec',
-						preg_split('/,\s*/', ini_get('disable_functions'))));
+				  'canExec' => !in_array(
+					  'exec',
+					  preg_split('/,\s*/', ini_get('disable_functions'))
+				  ));
 		if (isset($form['error']['path']['badZip']) > 0) {
 			$ZipCartAdmin['debugSnippet'] = GalleryUtilities::getRequestVariables('debugSnippet');
 			$template->javascript('lib/javascript/BlockToggle.js');

@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class DownloadItemTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DownloadItemTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -58,8 +55,7 @@ class DownloadItemTest extends GalleryTestCase
 		$gallery->_phpVm = new DownloadItemTestPhpVm();
 	}
 
-	public function _download()
-	{
+	public function _download() {
 		set_error_handler('DownloadItemTest_error_handler');
 		ob_start();
 		$ret = $this->_view->renderImmediate(array(), array());
@@ -72,14 +68,12 @@ class DownloadItemTest extends GalleryTestCase
 		);
 	}
 
-	public function testNoItemId()
-	{
+	public function testNoItemId() {
 		list($ret, $output) = $this->_download();
 		$this->assert($ret && $ret->getErrorCode() & ERROR_BAD_PARAMETER, 'expected error');
 	}
 
-	public function testMaliciousFilename()
-	{
+	public function testMaliciousFilename() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('fileName', 'voodoo');
 
@@ -114,8 +108,7 @@ class DownloadItemTest extends GalleryTestCase
 		}
 	}
 
-	public function testItemPermission()
-	{
+	public function testItemPermission() {
 		/* Item needs core.viewSource */
 		$ret = GalleryCoreApi::addUserPermission($this->_item->getId(), $this->_userId, 'core.view');
 		if ($ret) {
@@ -139,8 +132,7 @@ class DownloadItemTest extends GalleryTestCase
 		$this->assert(!$ret, 'expected success');
 	}
 
-	public function testPreferredPermission()
-	{
+	public function testPreferredPermission() {
 		/* Preferred needs core.viewSource */
 		list($ret, $derivative) = $this->_createDerivative($this->_item, $this->_item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED);
 		if ($ret) {
@@ -168,8 +160,7 @@ class DownloadItemTest extends GalleryTestCase
 		$this->assert(!$ret, 'expected success');
 	}
 
-	public function testResizePermission()
-	{
+	public function testResizePermission() {
 		/* Resize needs core.viewResizes */
 		list($ret, $derivative) = $this->_createDerivative($this->_item, $this->_item->getId(), DERIVATIVE_TYPE_IMAGE_RESIZE);
 		if ($ret) {
@@ -197,8 +188,7 @@ class DownloadItemTest extends GalleryTestCase
 		$this->assert(!$ret, 'expected success');
 	}
 
-	public function testThumbnailPermission()
-	{
+	public function testThumbnailPermission() {
 		/* Thumbnail needs core.view */
 		list($ret, $derivative) = $this->_createDerivative($this->_item, $this->_item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL);
 		if ($ret) {
@@ -226,8 +216,7 @@ class DownloadItemTest extends GalleryTestCase
 		$this->assert(!$ret, 'expected success');
 	}
 
-	public function testPrintService()
-	{
+	public function testPrintService() {
 		/* Flag in session allows print service to bypass viewResizes/viewSource for set of ids */
 		global $gallery;
 		$session =& $gallery->getSession();
@@ -262,8 +251,7 @@ class DownloadItemTest extends GalleryTestCase
 		$this->assert(!$ret, 'expected success');
 	}
 
-	public function testDownloadBogusEntityFailsWithErrorMissingObject()
-	{
+	public function testDownloadBogusEntityFailsWithErrorMissingObject() {
 		/* GalleryUser doesn't implement the required interface (fetchPath, getMimeType) */
 		GalleryUtilities::putRequestVariable('itemId', $this->_userId);
 
@@ -278,8 +266,7 @@ class DownloadItemTest extends GalleryTestCase
 		}
 	}
 
-	public function testDownloadEntityWithAssociatedPermission()
-	{
+	public function testDownloadEntityWithAssociatedPermission() {
 		/*
 	     * Create a GalleryEntity that has permissions associated with it directly instead of
 	     * through an association with an item (like WatermarkImage or ThumbnailImage).
@@ -333,22 +320,17 @@ class DownloadItemTest extends GalleryTestCase
 /**
  * Test PhpVm to ignore header() calls
  */
-class DownloadItemTestPhpVm extends GalleryPhpVm
-{
-	public function header($string, $replace = null)
-	{
+class DownloadItemTestPhpVm extends GalleryPhpVm {
+	public function header($string, $replace = null) {
 	}
 }
 
-class DownloadItemTestChildEntity extends GalleryChildEntity
-{
-	public function getMimeType()
-	{
+class DownloadItemTestChildEntity extends GalleryChildEntity {
+	public function getMimeType() {
 		return 'image/jpeg';
 	}
 
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		return array(
 			null,
 			__FILE__
@@ -356,31 +338,26 @@ class DownloadItemTestChildEntity extends GalleryChildEntity
 	}
 }
 
-class DownloadItemTestEntity extends GalleryEntity
-{
+class DownloadItemTestEntity extends GalleryEntity {
 	public $className;
 
-	public function getMimeType()
-	{
+	public function getMimeType() {
 		return 'image/jpeg';
 	}
 
-	public function fetchPath()
-	{
+	public function fetchPath() {
 		return array(
 			null,
 			__FILE__
 		);
 	}
 
-	public function getClassName()
-	{
+	public function getClassName() {
 		return $this->className;
 	}
 }
 
-function DownloadItemTest_error_handler($errorNumber, $errorString, $file, $line, $context)
-{
+function DownloadItemTest_error_handler($errorNumber, $errorString, $file, $line, $context) {
 	if ($errorNumber == 2048) {
 		return;
 		/* E_STRICT */

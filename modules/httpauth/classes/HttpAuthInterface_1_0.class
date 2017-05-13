@@ -30,8 +30,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class HttpAuthInterface_1_0
-{
+class HttpAuthInterface_1_0 {
 	/**
 	 * Checks if HTTP authentication is enabled.
 	 * @return array GalleryStatus a status code,
@@ -40,8 +39,7 @@ class HttpAuthInterface_1_0
 	 *               bool true if it is enabled globally or
 	 *                    false if it is only enabled for specific modules
 	 */
-	public function getConfiguration()
-	{
+	public function getConfiguration() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -59,8 +57,7 @@ class HttpAuthInterface_1_0
 	 *                                     require modules to opt-in for HTTP auth (default),
 	 * @return GalleryStatus a status code
 	 */
-	public function setConfiguration($enableHttpAuth, $enableServerAuth = false, $useGlobally = false)
-	{
+	public function setConfiguration($enableHttpAuth, $enableServerAuth = false, $useGlobally = false) {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 	
@@ -68,8 +65,7 @@ class HttpAuthInterface_1_0
 	 * Prompt the user via HTTP authentication for username / password.
 	 * @return GalleryStatus a status code
 	 */
-	public function requestAuthentication()
-	{
+	public function requestAuthentication() {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 }

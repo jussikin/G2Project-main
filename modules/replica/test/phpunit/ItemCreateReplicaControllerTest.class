@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemCreateReplicaControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'replica.ItemCreateReplica');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -53,8 +50,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an item
 	 */
-	public function testReplicaSuccessful()
-	{
+	public function testReplicaSuccessful() {
 		list($ret, $childAlbum) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;
@@ -84,8 +80,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an album (this should fail)
 	 */
-	public function testAlbumReplicaUnsuccessful()
-	{
+	public function testAlbumReplicaUnsuccessful() {
 		list($ret, $childAlbum) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;
@@ -109,8 +104,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an item without view permission (this should fail)
 	 */
-	public function testReplicaWithoutViewFullPermissions()
-	{
+	public function testReplicaWithoutViewFullPermissions() {
 		global $gallery;
 		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
 		if ($ret) {
@@ -134,8 +128,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test linking an item to a bogus destination
 	 */
-	public function testReplicaIntoBogusDestination()
-	{
+	public function testReplicaIntoBogusDestination() {
 		list($ret, $childAlbum) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;
@@ -163,8 +156,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into a container where we have no add permissions
 	 */
-	public function testReplicaIntoAlbumWithNoAddPermissions()
-	{
+	public function testReplicaIntoAlbumWithNoAddPermissions() {
 		global $gallery;
 
 		list($ret, $childAlbum) = $this->_createRandomAlbum($this->_album->getId());
@@ -197,8 +189,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 
-	public function testCreateReplicaNextPageOutOfRange()
-	{
+	public function testCreateReplicaNextPageOutOfRange() {
 		global $gallery;
 
 	/* create random items */
@@ -232,8 +223,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testCreateReplicaPreviousPageOutOfRange()
-	{
+	public function testCreateReplicaPreviousPageOutOfRange() {
 		global $gallery;
 
 	/* create random items */
@@ -270,8 +260,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	 * Bug #995734
 	 * Cancel button should return to the current album view
 	 */
-	public function testCreateReplicaCancelButton()
-	{
+	public function testCreateReplicaCancelButton() {
 		list($ret, $childAlbum) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;
@@ -298,8 +287,7 @@ class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 	/*
 	 * Bug 1165669: Create link with no selection
 	 */
-	public function testReplicaNoSelection()
-	{
+	public function testReplicaNoSelection() {
 		list($ret, $childAlbum) = $this->_createRandomAlbum($this->_album->getId());
 		if ($ret) {
 			return $ret;

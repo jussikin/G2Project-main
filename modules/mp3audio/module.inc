@@ -25,15 +25,12 @@
  * @author MP3 Audio player: Wayne Patterson <suprsidr@gmail.com>
  * @version $Revision: 18172 $
  */
-class MP3AudioModule extends GalleryModule
-{
-	public function __construct()
-	{
+class MP3AudioModule extends GalleryModule {
+	public function __construct() {
 		$this->MP3AudioModule();
 	}
 	
-	public function MP3AudioModule()
-	{
+	public function MP3AudioModule() {
 		global $gallery;
 		$this->setId('mp3audio');
 		$this->setName($gallery->i18n('MP3 Audio'));
@@ -55,8 +52,7 @@ class MP3AudioModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryRenderer', 'MP3AudioRenderer', 'MP3AudioRenderer', 'modules/mp3audio/classes/MP3AudioRenderer.class', 'mp3audio', null);
 		if ($ret) {
 			return $ret;
@@ -73,8 +69,7 @@ class MP3AudioModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -174,8 +169,7 @@ class MP3AudioModule extends GalleryModule
 	/**
 	 * @see GalleryPlugin::uninstall
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		$ret = GalleryCoreApi::deleteRenderer('MP3AudioRenderer');
 		if ($ret) {
 			return $ret;

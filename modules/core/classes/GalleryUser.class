@@ -39,8 +39,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17691 $
  */
-class GalleryUser extends GalleryEntity
-{
+class GalleryUser extends GalleryEntity {
 	/**
 	 * The User's username
 	 * @var string
@@ -123,8 +122,7 @@ class GalleryUser extends GalleryEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function create($userName = null, $x1 = null, $x2 = null)
-	{
+	public function create($userName = null, $x1 = null, $x2 = null) {
 		global $gallery;
 		
 		$query = '
@@ -174,8 +172,7 @@ class GalleryUser extends GalleryEntity
 	 * @param string $password a plaintext password
 	 * @return boolean true if the password is correct
 	 */
-	public function isCorrectPassword($password)
-	{
+	public function isCorrectPassword($password) {
 		$valid = $this->getHashedPassword();
 		$salt = substr($valid, 0, 4);
 		/* Support both old (G1 thru 1.4.0; G2 thru alpha-4) and new password schemes: */
@@ -283,8 +280,7 @@ class GalleryUser extends GalleryEntity
 	 *
 	 * @param string $newPassword a plaintext password
 	 */
-	public function changePassword($newPassword)
-	{
+	public function changePassword($newPassword) {
 		$this->setHashedPassword(GalleryUtilities::md5Salt($newPassword));
 	}
 	
@@ -294,8 +290,7 @@ class GalleryUser extends GalleryEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function save($postEvent = true, $x1 = null)
-	{
+	public function save($postEvent = true, $x1 = null) {
 		$isNew = $this->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
 		
 		$ret = parent::save($postEvent);
@@ -331,8 +326,7 @@ class GalleryUser extends GalleryEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 		$activeUserId = $gallery->getActiveUserId();
 		if ($activeUserId == $this->getId()) {
@@ -413,8 +407,7 @@ class GalleryUser extends GalleryEntity
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		if ($localized) {
 			list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 			if (!$ret) {
@@ -434,68 +427,55 @@ class GalleryUser extends GalleryEntity
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryUser';
 	}
 	
-	public function getUserName()
-	{
+	public function getUserName() {
 		return $this->userName;
 	}
 	
-	public function setUserName($userName)
-	{
+	public function setUserName($userName) {
 		$this->userName = $userName;
 	}
 	
-	public function getFullName()
-	{
+	public function getFullName() {
 		return $this->fullName;
 	}
 	
-	public function setFullName($fullName)
-	{
+	public function setFullName($fullName) {
 		$this->fullName = $fullName;
 	}
 	
-	public function getHashedPassword()
-	{
+	public function getHashedPassword() {
 		return $this->hashedPassword;
 	}
 	
-	public function setHashedPassword($hashedPassword)
-	{
+	public function setHashedPassword($hashedPassword) {
 		$this->hashedPassword = $hashedPassword;
 	}
 	
-	public function getEmail()
-	{
+	public function getEmail() {
 		return $this->email;
 	}
 	
-	public function setEmail($email)
-	{
+	public function setEmail($email) {
 		$this->email = $email;
 	}
 	
-	public function getLanguage()
-	{
+	public function getLanguage() {
 		return $this->language;
 	}
 	
-	public function setLanguage($language)
-	{
+	public function setLanguage($language) {
 		$this->language = $language;
 	}
 	
-	public function isLocked()
-	{
+	public function isLocked() {
 		return (bool) $this->locked;
 	}
 	
-	public function setLocked($lock)
-	{
+	public function setLocked($lock) {
 		$this->locked = (bool) $lock;
 	}
 }

@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class FulfillmentErrorView extends GalleryView
-{
+class FulfillmentErrorView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'photoaccess');
 		if ($ret) {
 			return array($ret, null);

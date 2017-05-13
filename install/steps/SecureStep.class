@@ -22,15 +22,12 @@
  * Security check
  * @package Install
  */
-class SecureStep extends InstallStep
-{
-	public function stepName()
-	{
+class SecureStep extends InstallStep {
+	public function stepName() {
 		return _('Check Security');
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		$templateData['secure'] = 0;
 		
 		/* For non-MS Windows, we show permission warnings too */
@@ -48,9 +45,9 @@ class SecureStep extends InstallStep
 				
 				$templateData['configFilePath'] = realpath($configFilePath);
 				$templateData['file']['mode'] = $fileMode;
-				$templateData['file']['secure'] = !((int) $fileMode{1} & 2 || (int) $fileMode{2} & 2);
+				$templateData['file']['secure'] = !((int) $fileMode[1] & 2 || (int) $fileMode[2] & 2);
 				$templateData['dir']['mode'] = $dirMode;
-				$templateData['dir']['secure'] = !((int) $dirMode{1} & 2 || (int) $dirMode{2} & 2);
+				$templateData['dir']['secure'] = !((int) $dirMode[1] & 2 || (int) $dirMode[2] & 2);
 				$templateData['secure'] = $templateData['file']['secure'] && $templateData['dir']['secure'];
 			}
 		}

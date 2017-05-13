@@ -22,34 +22,27 @@
  * Fake $gallery global used in early install steps
  * @package Install
  */
-class GalleryStub
-{
+class GalleryStub {
 	public $_hash;
 	public $_debug;
 
-	public function setConfig($key, $value)
-	{
+	public function setConfig($key, $value) {
 		$this->_hash[$key] = $value;
 	}
 	
-	public function getConfig($key)
-	{
+	public function getConfig($key) {
 		return isset($this->_hash[$key]) ? $this->_hash[$key] : '';
 	}
 	
-	public function setDebug()
-	{
+	public function setDebug() {
 	}
 
-	public function setDebugLogFile()
-	{
+	public function setDebugLogFile() {
 	}
 
-	public function setProfile()
-	{
+	public function setProfile() {
 	}
 
-	public function debug()
-	{
+	public function debug() {
 	}
 }

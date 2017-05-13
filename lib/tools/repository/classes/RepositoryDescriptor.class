@@ -25,8 +25,7 @@
  * @author Jozef Selesi <selesi at gmail dot com>
  * @version $Revision: 18676 $
  */
-class RepositoryDescriptor extends RepositoryObject
-{
+class RepositoryDescriptor extends RepositoryObject {
 	/**
 	 * Plugin version.
 	 *
@@ -66,8 +65,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * @param string $outputDir directory to write the descriptor to
 	 * @return GalleryStatus a status code
 	 */
-	public function init($outputDir)
-	{
+	public function init($outputDir) {
 		parent::init();
 		
 		/* Set output path. */
@@ -86,8 +84,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * @param GalleryPlugin $plugin the plugin
 	 * @return GalleryStatus a status code
 	 */
-	public function generate($plugin)
-	{
+	public function generate($plugin) {
 		global $gallery;
 		
 		/* Get basic plugin meta data. */
@@ -205,8 +202,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * @param array $data array to write meta data to
 	 * @return GalleryStatus a status code
 	 */
-	public function getFileMetaData($pluginDir, &$data)
-	{
+	public function getFileMetaData($pluginDir, &$data) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -266,8 +262,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * @param string $path path relative to the plugin directory
 	 * @return array packages that apply to the specified file or directory.
 	 */
-	public function getPackageNames($path)
-	{
+	public function getPackageNames($path) {
 		$packages = array();
 		
 		if (preg_match('/^test\b/', $path)) {
@@ -292,8 +287,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * @param string $package package name
 	 * @return array directory list
 	 */
-	public function getDirectoriesInPackage($package)
-	{
+	public function getDirectoriesInPackage($package) {
 		$directories = array();
 		
 		foreach ($this->_data['directories'] as $dir => $directoryMetaData) {
@@ -313,8 +307,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * @param string $package package name
 	 * @return array file list
 	 */
-	public function getFilesInPackage($package)
-	{
+	public function getFilesInPackage($package) {
 		$files = array();
 		foreach ($this->_data['files'] as $file => $fileMetaData) {
 			if (in_array($package, $fileMetaData['packages'])) {
@@ -331,8 +324,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 *
 	 * @return array package list
 	 */
-	public function getPackages()
-	{
+	public function getPackages() {
 		$packageTypes = array();
 		
 		if (!empty($this->_data['files'])) {
@@ -351,8 +343,7 @@ class RepositoryDescriptor extends RepositoryObject
 	 * they're up to date.  Return an empty array if there are no errors.
 	 * @return array (error, error, error)
 	 */
-	public function checkIntegrity()
-	{
+	public function checkIntegrity() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
@@ -398,33 +389,27 @@ class RepositoryDescriptor extends RepositoryObject
 		return $errors;
 	}
 	
-	public function getPluginVersion()
-	{
+	public function getPluginVersion() {
 		return $this->_pluginVersion;
 	}
 	
-	public function getPluginId()
-	{
+	public function getPluginId() {
 		return $this->_pluginId;
 	}
 	
-	public function getPluginDir()
-	{
+	public function getPluginDir() {
 		return $this->_pluginDir;
 	}
 	
-	public function getStringsRevision()
-	{
+	public function getStringsRevision() {
 		return $this->_data['header']['stringsRevision'];
 	}
 	
-	public function getBuildTimestamp()
-	{
+	public function getBuildTimestamp() {
 		return $this->_data['header']['buildTimestamp'];
 	}
 	
-	public function getLanguageRevision($locale)
-	{
+	public function getLanguageRevision($locale) {
 		return $this->_data['languages'][$this->getStringsRevision()][$locale];
 	}
 }

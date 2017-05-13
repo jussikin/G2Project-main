@@ -25,12 +25,10 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17774 $
  */
-class GalleryTestCase extends TestCase
-{
+class GalleryTestCase extends TestCase {
 	public $_cleanup;
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->TestCase($methodName);
 		$this->_cleanup = array(
 			'entity' => array(),
@@ -48,8 +46,7 @@ class GalleryTestCase extends TestCase
 	 * @return EntityCounterEventListener
 	 * @static
 	 */
-	public function &getEntityCounter()
-	{
+	public function &getEntityCounter() {
 		static $_counter;
 		if (!isset($_counter)) {
 			$_counter = new EntityCounterEventListener();
@@ -65,8 +62,7 @@ class GalleryTestCase extends TestCase
 	 * @param string $classname (optional) event handler class name. Default is NullEventListener.
 	 * @return GalleryStatus object
 	 */
-	public function _registerEventListener($events, $className = 'NullEventListener')
-	{
+	public function _registerEventListener($events, $className = 'NullEventListener') {
 		if (!is_array($events)) {
 			$events = array(
 				$events
@@ -81,8 +77,7 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		GalleryDataCache::setFileCachingEnabled(false);
@@ -167,8 +162,7 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		/* Restore saved vars */
@@ -306,26 +300,22 @@ class GalleryTestCase extends TestCase
 	}
 	
 	/** @return int id */
-	public function _getRootId()
-	{
+	public function _getRootId() {
 		return (int) $this->_rootAlbumId;
 	}
 	
 	/** @param GalleryEntity $entity to delete in tearDown */
-	public function _markForCleanup($entity)
-	{
+	public function _markForCleanup($entity) {
 		$this->_cleanup['entity'][] = $entity;
 	}
 	
 	/** @param string $moduleId to unregister from factory in tearDown */
-	public function _markFactoryModuleForCleanup($moduleId)
-	{
+	public function _markFactoryModuleForCleanup($moduleId) {
 		$this->_cleanup['factoryModuleId'][] = $moduleId;
 	}
 	
 	/** @param string $toolkitId to unregister in tearDown */
-	public function _markToolkitForCleanup($toolkitId)
-	{
+	public function _markToolkitForCleanup($toolkitId) {
 		$this->_cleanup['toolkitId'][] = $toolkitId;
 	}
 	
@@ -336,8 +326,7 @@ class GalleryTestCase extends TestCase
 	 * @param string $pluginId
 	 * @return GalleryStatus
 	 */
-	public function _markPluginParametersForCleanup($pluginType, $pluginId)
-	{
+	public function _markPluginParametersForCleanup($pluginType, $pluginId) {
 		list($ret, $pluginParams) = GalleryCoreApi::fetchAllPluginParameters($pluginType, $pluginId);
 		if ($ret) {
 			return $ret;
@@ -358,8 +347,7 @@ class GalleryTestCase extends TestCase
 	 * @param bool $saveParams (optional) true to first mark core parameters for cleanup
 	 * @return GalleryStatus
 	 */
-	public function _setMarkupType($markup, $saveParams = false)
-	{
+	public function _setMarkupType($markup, $saveParams = false) {
 		if ($saveParams) {
 			$ret = $this->_markPluginParametersForCleanup('module', 'core');
 			if ($ret) {
@@ -374,15 +362,13 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function assert($boolean, $message = null)
-	{
+	public function assert($boolean, $message = null) {
 		global $gallery;
 		$message = $gallery->getDebugBuffer() . $message;
 		parent::assert($boolean, $message);
 	}
 	
-	public function assertEquals($expected, $actual, $message = null)
-	{
+	public function assertEquals($expected, $actual, $message = null) {
 		global $gallery;
 		$message = $gallery->getDebugBuffer() . $message;
 		$err = $this->DeepCompare($expected, $actual);
@@ -401,8 +387,7 @@ class GalleryTestCase extends TestCase
 	 *               GalleryAlbumItem
 	 * @access protected
 	 */
-	public function _createRandomAlbum($parentId, $fields = array())
-	{
+	public function _createRandomAlbum($parentId, $fields = array()) {
 		global $gallery;
 		
 		if (empty($parentId)) {
@@ -488,8 +473,7 @@ class GalleryTestCase extends TestCase
 	 *               GalleryDataItem
 	 * @access protected
 	 */
-	public function _createRandomDataItem($parentId, $mimeType = 'application/unknown', $fields = array(), $inputFile = __FILE__, $itemClass = null)
-	{
+	public function _createRandomDataItem($parentId, $mimeType = 'application/unknown', $fields = array(), $inputFile = __FILE__, $itemClass = null) {
 		global $gallery;
 		
 		if (isset($itemClass)) {
@@ -586,8 +570,7 @@ class GalleryTestCase extends TestCase
 	 *               GalleryDataItem
 	 * @access protected
 	 */
-	public function _createLinkedItem($parentId, $targetItem)
-	{
+	public function _createLinkedItem($parentId, $targetItem) {
 		global $gallery;
 		
 		if (!isset($targetItem)) {
@@ -653,8 +636,7 @@ class GalleryTestCase extends TestCase
 	 *               GalleryUser
 	 * @access protected
 	 */
-	public function _createRandomUser($userTag = null, $password = 'password')
-	{
+	public function _createRandomUser($userTag = null, $password = 'password') {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return array(
@@ -715,8 +697,7 @@ class GalleryTestCase extends TestCase
 	 *               GalleryGroup
 	 * @access protected
 	 */
-	public function _createRandomGroup($groupTag = null)
-	{
+	public function _createRandomGroup($groupTag = null) {
 		list($ret, $group) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryGroup');
 		if ($ret) {
 			return array(
@@ -765,8 +746,7 @@ class GalleryTestCase extends TestCase
 		);
 	}
 	
-	public function _createDerivative(&$parent, $sourceId, $type, $operations = 'test-operation|100', $mimeType = 'test/file', $fields = array())
-	{
+	public function _createDerivative(&$parent, $sourceId, $type, $operations = 'test-operation|100', $mimeType = 'test/file', $fields = array()) {
 		global $gallery;
 		$parentId = $parent->getId();
 		
@@ -818,8 +798,7 @@ class GalleryTestCase extends TestCase
 		);
 	}
 	
-	public function _deleteAndVerifyEntity($id)
-	{
+	public function _deleteAndVerifyEntity($id) {
 		global $gallery;
 		
 		$ret = GalleryCoreApi::deleteEntityById($id);
@@ -835,8 +814,7 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function _verifyMissing($id)
-	{
+	public function _verifyMissing($id) {
 		global $gallery;
 		
 		GalleryDataCache::reset();
@@ -854,8 +832,7 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function _verifyEntity($entity)
-	{
+	public function _verifyEntity($entity) {
 		global $gallery;
 		
 		GalleryDataCache::reset();
@@ -872,8 +849,7 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function _createUser($fields = array())
-	{
+	public function _createUser($fields = array()) {
 		global $gallery;
 		
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
@@ -936,8 +912,7 @@ class GalleryTestCase extends TestCase
 	/**
 	 * Get an id that is not used for anything.
 	 */
-	public function _getUnusedId()
-	{
+	public function _getUnusedId() {
 		global $gallery;
 		static $unusedId;
 		if (!isset($unusedId)) {
@@ -957,8 +932,7 @@ class GalleryTestCase extends TestCase
 		);
 	}
 	
-	public function _becomeGuestUser()
-	{
+	public function _becomeGuestUser() {
 		global $gallery;
 		
 		list($ret, $anonymousUserId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
@@ -979,8 +953,7 @@ class GalleryTestCase extends TestCase
 	/**
 	 * @static
 	 */
-	public function DeepCompare($obj1, $obj2, $context = null)
-	{
+	public function DeepCompare($obj1, $obj2, $context = null) {
 		if (gettype($obj1) !== gettype($obj2)) {
 			return "[$context] $obj1 type (" . gettype($obj1) . ") !== $obj2 type (" . gettype($obj2) . ')';
 		}
@@ -1042,8 +1015,7 @@ class GalleryTestCase extends TestCase
 		return null;
 	}
 	
-	public function _verifyFields($entity, $fields)
-	{
+	public function _verifyFields($entity, $fields) {
 		$vars = get_class_vars(get_class($entity));
 		foreach ($fields as $field) {
 			if (!array_key_exists($field, $vars)) {
@@ -1060,8 +1032,7 @@ class GalleryTestCase extends TestCase
 	 * @param bool $htmlEntities whether to use HTML entities or not, defaults to true
 	 * @return string URL with authToken
 	 */
-	public function _signUrl($url, $htmlEntities = true)
-	{
+	public function _signUrl($url, $htmlEntities = true) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -1083,8 +1054,7 @@ class GalleryTestCase extends TestCase
 	 * @param string $userName the username
 	 * @return GalleryStatus a status code
 	 */
-	public function _disableUserName($userName)
-	{
+	public function _disableUserName($userName) {
 		return GalleryCoreApi::addMapEntry('FailedLoginsMap', array(
 			'userName' => $userName,
 			'count' => 100,
@@ -1095,8 +1065,7 @@ class GalleryTestCase extends TestCase
 	/**
 	 * Create a backup of the factory data which will be restored in tearDown.
 	 */
-	public function _markFactoryForCleanup()
-	{
+	public function _markFactoryForCleanup() {
 		GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryFactoryHelper_simple.class');
 		/* Don't use references here */
 		list($ret, $registry) = GalleryFactoryHelper_simple::_getFactoryData();
@@ -1106,8 +1075,7 @@ class GalleryTestCase extends TestCase
 	/**
 	 * Create a backup of the registered event listeners which will be restored in tearDown.
 	 */
-	public function _markEventListenersForCleanup()
-	{
+	public function _markEventListenersForCleanup() {
 		static $listenersAreRegistered;
 		if (empty($listenersAreRegistered)) {
 			GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryEventHelper_simple.class');
@@ -1130,8 +1098,7 @@ class GalleryTestCase extends TestCase
 	/**
 	 * Disable all but some core event listeners by default.
 	 */
-	public function _initEventListenersForTest()
-	{
+	public function _initEventListenersForTest() {
 		/* First unregister all event listeners that are registered through the deprecated API */
 		$ret = $this->_markEventListenersForCleanup();
 		if ($ret) {
@@ -1165,8 +1132,7 @@ class GalleryTestCase extends TestCase
 	 * Will register the new implementation always with top priority.
 	 * @see GalleryCoreApi::registerFactoryImplementation
 	 */
-	public function _registerFactoryImplementationForTest($classType, $className, $implId, $implPath, $implModuleId, $hints = array())
-	{
+	public function _registerFactoryImplementationForTest($classType, $className, $implId, $implPath, $implModuleId, $hints = array()) {
 		$ret = GalleryCoreApi::registerFactoryImplementationForRequest($classType, $className, $implId, $implPath, $implModuleId, $hints);
 		if ($ret) {
 			return $ret;
@@ -1177,8 +1143,7 @@ class GalleryTestCase extends TestCase
 	 * Utility method to array_unshift a single key => value pair.
 	 * @access private
 	 */
-	public function _array_unshift_key_value(&$array, $key, $value)
-	{
+	public function _array_unshift_key_value(&$array, $key, $value) {
 		unset($array[$key]);
 		$array = array_merge(array(
 			$key => $value
@@ -1195,8 +1160,7 @@ class GalleryTestCase extends TestCase
 	 * @param string $className (optional)
 	 * @access private
 	 */
-	public function _unregisterFactoryImplementationForTest($classType, $implId = null, $className = null)
-	{
+	public function _unregisterFactoryImplementationForTest($classType, $implId = null, $className = null) {
 		GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryFactoryHelper_simple.class');
 		$registryData =& GalleryFactoryHelper_simple::_getFactoryData();
 		$registry =& $registryData[1];
@@ -1249,8 +1213,7 @@ class GalleryTestCase extends TestCase
 	 *                                      the expected error code exactly. Default false.
 	 * @param string $message (optional) Message to be shown on failure
 	 */
-	public function assertErrorEquals($errorCode, $ret, $exactMatch = false, $message = null)
-	{
+	public function assertErrorEquals($errorCode, $ret, $exactMatch = false, $message = null) {
 		if (!$ret) {
 			$this->fail(sprintf('Failed to get error %s%s', join(', ', GalleryStatus::getErrorCodeConstants($errorCode)), $message ? '<br/>' . $message : ''));
 
@@ -1270,8 +1233,7 @@ class GalleryTestCase extends TestCase
 	 * @param GalleryEntity $eventEntity (optional) default is null
 	 * @param array $eventData (optional) default is null. should match the expected event data
 	 */
-	public function assertEventFired($eventName, $eventEntity = null, $eventData = null)
-	{
+	public function assertEventFired($eventName, $eventEntity = null, $eventData = null) {
 		$this->assert(!empty($_SERVER['NullEventListener'][$eventName]), $eventName . ' did not fire');
 		
 		if (!empty($_SERVER['NullEventListener'][$eventName])) {
@@ -1290,8 +1252,7 @@ class GalleryTestCase extends TestCase
 	 * Fail if the provided event name was fired
 	 * @param string $eventName
 	 */
-	public function assertEventNotFired($eventName)
-	{
+	public function assertEventNotFired($eventName) {
 		$this->assert(empty($_SERVER['NullEventListener'][$eventName]), $eventName . ' was fired unexpectedly');
 	}
 }
@@ -1302,14 +1263,12 @@ class GalleryTestCase extends TestCase
  */
 class EntityCounterEventListener /* extends GalleryEventListener */
 {
-	public function EntityCounterEventListener()
-	{
+	public function EntityCounterEventListener() {
 		$this->_count = 0;
 		$this->_ids = array();
 	}
 	
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		switch ($event->getEventName()) {
 			case 'GalleryEntity::delete':
 				$entity = $event->getEntity();
@@ -1331,18 +1290,15 @@ class EntityCounterEventListener /* extends GalleryEventListener */
 		);
 	}
 	
-	public function getRecentEntityId($className)
-	{
+	public function getRecentEntityId($className) {
 		return $this->_ids[$className][sizeof($this->_ids[$className]) - 1];
 	}
 	
-	public function setCount($count)
-	{
+	public function setCount($count) {
 		$this->_count = $count;
 	}
 	
-	public function getCount()
-	{
+	public function getCount() {
 		return $this->_count;
 	}
 }
@@ -1357,8 +1313,7 @@ class NullEventListener /* implements GalleryEventListener */
 	/**
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$_SERVER['NullEventListener'][$event->getEventName()][] = $event;
 
 		return array(

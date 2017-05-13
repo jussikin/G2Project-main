@@ -25,26 +25,22 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17829 $
  */
-class ErrorPageView extends GalleryView
-{
-	public function setError($error)
-	{
+class ErrorPageView extends GalleryView {
+	public function setError($error) {
 		$this->_error = $error;
 	}
 	
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_ERROR;
 	}
 	
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$theme =& $template->getVariableByReference('theme');
 		
@@ -140,8 +136,7 @@ class ErrorPageView extends GalleryView
 	 *                 not be considered an error.
 	 * @static
 	 */
-	public static function errorHandler($error, $g2Data = null, $initOk = null)
-	{
+	public static function errorHandler($error, $g2Data = null, $initOk = null) {
 		global $gallery;
 		$failsafe = false;
 		

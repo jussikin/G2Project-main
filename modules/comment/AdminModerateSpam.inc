@@ -28,13 +28,11 @@ GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class'
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17784 $
  */
-class AdminModerateSpamController extends GalleryController
-{
+class AdminModerateSpamController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -103,13 +101,11 @@ class AdminModerateSpamController extends GalleryController
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17784 $
  */
-class AdminModerateSpamView extends GalleryView
-{
+class AdminModerateSpamView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -298,8 +294,7 @@ class AdminModerateSpamView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'comment');
 		if ($ret) {
 			return array(

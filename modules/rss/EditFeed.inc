@@ -30,13 +30,11 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssHelper.class');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17580 $
  */
-class EditFeedController extends GalleryController
-{
+class EditFeedController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$status = $results = $error = array();
 
@@ -54,7 +52,7 @@ class EditFeedController extends GalleryController
 		}
 		if (!$canView) {
 			/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 		}
 
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
@@ -68,23 +66,23 @@ class EditFeedController extends GalleryController
 		}
 
 	/* Check which button was pressed */
-	if (isset($form['action']['create']) || isset($form['action']['update'])) {
-		/*
-	     * Either new feed settings where created or existing where updated.
-	     * First do some error checking,
-	     * if check fails display error on page
-	     * first numerical values.
-	     */
-		foreach (array('itemId',
+		if (isset($form['action']['create']) || isset($form['action']['update'])) {
+			/*
+			 * Either new feed settings where created or existing where updated.
+			 * First do some error checking,
+			 * if check fails display error on page
+			 * first numerical values.
+			 */
+			foreach (array('itemId',
 			   'count',
 			   'ttl') as $value) {
-			if (!isset($form[$value]) || ((int)$form[$value]) < 0) {
-				$error[] = 'form[error][' . $value . ']';
+				if (!isset($form[$value]) || ((int)$form[$value]) < 0) {
+					$error[] = 'form[error][' . $value . ']';
+				}
 			}
-		}
 
-		/* check strings may be '' or contain a value */
-		foreach (array('version',
+			/* check strings may be '' or contain a value */
+			foreach (array('version',
 			   'category',
 			   'description',
 			   'cloudDomain',
@@ -94,116 +92,120 @@ class EditFeedController extends GalleryController
 			   'cloudPort',
 			   'language',
 			   'feedName') as $value) {
-			if (!isset($form[$value])) {
-				$error[] = 'form[error][' . $value . ']';
+				if (!isset($form[$value])) {
+					$error[] = 'form[error][' . $value . ']';
+				}
 			}
-		}
 
-		/* Force podcast compatibility items */
-		if (isset($form['usePodcast'])) {
-			//FIXME Maybe we should inform the user that we are doing this.
-		$form['version'] = '2.0';
-			$form['useEnclosure'] = '1';
-			unset($form['useMedia']);
-		}
+			/* Force podcast compatibility items */
+			if (isset($form['usePodcast'])) {
+				//FIXME Maybe we should inform the user that we are doing this.
+				$form['version'] = '2.0';
+				$form['useEnclosure'] = '1';
+				unset($form['useMedia']);
+			}
 
-		/* check the name */
-		if (empty($form['feedName'])) {
-			$error[] = 'form[error][feedName]';
-		}
+			/* check the name */
+			if (empty($form['feedName'])) {
+				$error[] = 'form[error][feedName]';
+			}
 
-		/* conditionally check the recursive limit */
-		if ($form['feedType'] == 'photosRecursive' &&
+			/* conditionally check the recursive limit */
+			if ($form['feedType'] == 'photosRecursive' &&
 			(!isset($form['photosRecursiveLimit']) ||
 			((int)$form['photosRecursiveLimit']) < 0)) {
-			$error[] = 'form[error][photosRecursiveLimit]';
-		}
-
-		/* If there are no form errors, create array to be saved to DB */
-		if (empty($error)) {
-			$parameters = array('itemId' => $form['itemId'],
-			'feedType' => $form['feedType'],
-			'feedDate' => $form['feedDate'],
-			'version' => $form['version'],
-			'count' => $form['count'],
-			'ttl' => $form['ttl'],
-			'category' => $form['category'],
-			'language' => $form['language'],
-			'copyright' => $form['copyright'],
-			'description' => $form['description'],
-			'useImage' => (isset($form['useImage']) ? '1' : '0'),
-			'useEnclosure' => (isset($form['useEnclosure']) ? '1' : '0'),
-			'useCloud' => (isset($form['useCloud']) ? '1' : '0'),
-			'useMedia' => (isset($form['useMedia']) ? '1' : '0'),
-			'usePodcast' => (isset($form['usePodcast']) ? '1' : '0'));
-
-			if ($parameters['feedType'] == 'photosRecursive') {
-				$parameters['photosRecursiveLimit'] = $form['photosRecursiveLimit'];
+					$error[] = 'form[error][photosRecursiveLimit]';
 			}
 
-			if (isset($form['useCloud'])) {
-				$parameters = array_merge($parameters,
-			array('cloudDomain' => $form['cloudDomain'],
-				  'cloudPort' => $form['cloudPort'],
-				  'cloudPath' => $form['cloudPath'],
-				  'cloudRegisterProcedure' => $form['cloudRegisterProcedure'],
-				  'cloudProtocol' => $form['cloudProtocol']));
+			/* If there are no form errors, create array to be saved to DB */
+			if (empty($error)) {
+				$parameters = array('itemId' => $form['itemId'],
+				'feedType' => $form['feedType'],
+				'feedDate' => $form['feedDate'],
+				'version' => $form['version'],
+				'count' => $form['count'],
+				'ttl' => $form['ttl'],
+				'category' => $form['category'],
+				'language' => $form['language'],
+				'copyright' => $form['copyright'],
+				'description' => $form['description'],
+				'useImage' => (isset($form['useImage']) ? '1' : '0'),
+				'useEnclosure' => (isset($form['useEnclosure']) ? '1' : '0'),
+				'useCloud' => (isset($form['useCloud']) ? '1' : '0'),
+				'useMedia' => (isset($form['useMedia']) ? '1' : '0'),
+				'usePodcast' => (isset($form['usePodcast']) ? '1' : '0'));
+
+				if ($parameters['feedType'] == 'photosRecursive') {
+						$parameters['photosRecursiveLimit'] = $form['photosRecursiveLimit'];
+				}
+
+				if (isset($form['useCloud'])) {
+						$parameters = array_merge(
+							$parameters,
+							array('cloudDomain' => $form['cloudDomain'],
+							'cloudPort' => $form['cloudPort'],
+							'cloudPath' => $form['cloudPath'],
+							'cloudRegisterProcedure' => $form['cloudRegisterProcedure'],
+							'cloudProtocol' => $form['cloudProtocol'])
+						);
+				}
+
+				if (isset($form['usePodcast'])) {
+						$parameters = array_merge(
+							$parameters,
+							array('podcastSubtitle' => $form['podcastSubtitle'],
+							'podcastAuthor' => $form['podcastAuthor'],
+							'podcastOwnerName' => $form['podcastOwnerName'],
+							'podcastOwnerEmail' => $form['podcastOwnerEmail'])
+						);
+				}
+
+			/* Check if we need to update a current feed, or create a new one */
+				if (isset($form['action']['create'])) {
+						$ret = RssMapHelper::createFeed($form['feedName'], $parameters);
+				} else {
+						$ret = RssMapHelper::updateFeed($form['feedName'], $parameters);
+				}
+
+			/* Check to see if DB update was successful */
+				if ($ret) {
+						/* If we got anything other than a ERROR_COLLISION, exit */
+					if (!($ret->getErrorCode() & ERROR_COLLISION)) {
+						return array($ret, null);
+					}
+
+						/*
+						 * If it is state it is a 'feedNameCollision'
+						 * Set our error status and fall back to the view.
+						 */
+						$error[] = 'form[error][feedNameCollision]';
+				} else {
+						/* Save was successful change status to refect this */
+						$status['saved'] = 1;
+						$mode = 'edit';
+				}
+			} else {
+				$mode = isset($form['action']['create'])?'new':'edit';
 			}
-
-			if (isset($form['usePodcast'])) {
-				$parameters = array_merge($parameters,
-			array('podcastSubtitle' => $form['podcastSubtitle'],
-				  'podcastAuthor' => $form['podcastAuthor'],
-				  'podcastOwnerName' => $form['podcastOwnerName'],
-				  'podcastOwnerEmail' => $form['podcastOwnerEmail']));
-			}
-
-		/* Check if we need to update a current feed, or create a new one */
-		if (isset($form['action']['create'])) {
-			$ret = RssMapHelper::createFeed($form['feedName'], $parameters);
-		} else {
-			$ret = RssMapHelper::updateFeed($form['feedName'], $parameters);
-		}
-
-		/* Check to see if DB update was successful */
-		if ($ret) {
-			/* If we got anything other than a ERROR_COLLISION, exit */
-			if (!($ret->getErrorCode() & ERROR_COLLISION)) {
+		} elseif (isset($form['action']['cancel'])) {
+			/* Cancel button was pressed, do nothing, return to feedlist */
+			$mode = 'list';
+		} elseif (isset($form['action']['delete'])) {
+			/*
+			 * Delete button was pressed, delete feed, return to feedlist.
+			 * We might want to provide an 'are you sure' here in the future.
+			 */
+			$ret = RssMapHelper::deleteFeed($form['action']['delete']);
+			if ($ret) {
 				return array($ret, null);
 			}
 
-			/*
-	         * If it is state it is a 'feedNameCollision'
-	         * Set our error status and fall back to the view.
-	         */
-			$error[] = 'form[error][feedNameCollision]';
-		} else {
-			/* Save was successful change status to refect this */
-			$status['saved'] = 1;
-			$mode = 'edit';
+			$status['deleted'] = 1;
+			$mode = 'list';
 		}
-		} else {
-			$mode = isset($form['action']['create'])?'new':'edit';
-		}
-	} elseif (isset($form['action']['cancel'])) {
-		/* Cancel button was pressed, do nothing, return to feedlist */
-		$mode = 'list';
-	} elseif (isset($form['action']['delete'])) {
-		/*
-	     * Delete button was pressed, delete feed, return to feedlist.
-	     * We might want to provide an 'are you sure' here in the future.
-	     */
-		$ret = RssMapHelper::deleteFeed($form['action']['delete']);
-		if ($ret) {
-			return array($ret, null);
-		}
-
-		$status['deleted'] = 1;
-		$mode = 'list';
-	}
 
 	/* figure out the method we will use */
-	$method = empty($error) ? 'redirect' : 'delegate';
+		$method = empty($error) ? 'redirect' : 'delegate';
 		$results['status'] = $status;
 		$results['error'] = $error;
 		$results[$method]['view'] = 'core.ItemAdmin';
@@ -222,23 +224,21 @@ class EditFeedController extends GalleryController
 /**
  * This view will show a form to generate an URL to an RSS feed.
  */
-class EditFeedView extends GalleryView
-{
+class EditFeedView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 	/* Load the item */
-	list($ret, $item) = $this->getItem();
+		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* Fetch module parameters and save them in an array passed to the template engine */
-	list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
+		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -252,7 +252,7 @@ class EditFeedView extends GalleryView
 		$EditFeed['itemId'] = $item->getId();
 
 	/* Fetch all feed definitions */
-	list($ret, $feeds) = RssMapHelper::fetchFeedsForItem($EditFeed['itemId']);
+		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem($EditFeed['itemId']);
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -260,38 +260,38 @@ class EditFeedView extends GalleryView
 		$EditFeed['mode'] = GalleryUtilities::getRequestVariables('mode');
 		if (empty($EditFeed['mode'])) {
 			/* Entering this module, pick the first page */
-		if (empty($feeds)) {
-			/* No feeds defined yet: show new */
-		$EditFeed['mode'] = 'new';
-		} else {
-			/* Otherwise show the list */
-		$EditFeed['mode'] = 'list';
-		}
+			if (empty($feeds)) {
+				/* No feeds defined yet: show new */
+				$EditFeed['mode'] = 'new';
+			} else {
+				/* Otherwise show the list */
+				$EditFeed['mode'] = 'list';
+			}
 		}
 
 	/* Switching on which page to display */
-	if ($EditFeed['mode'] == 'new') {
-		/* Create new feed */
-		if (empty($form['error'])) {
-			/* no error: load default parameters */
-		$form['formName'] = 'EditFeed';
+		if ($EditFeed['mode'] == 'new') {
+			/* Create new feed */
+			if (empty($form['error'])) {
+				/* no error: load default parameters */
+				$form['formName'] = 'EditFeed';
 
-			if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-				$EditFeed['type'] = 'album';
-				$EditFeed['feedType'] = 'photos';
-			} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
-				$EditFeed['type'] = 'photo';
-				$EditFeed['feedType'] = 'commentsPhoto';
-			}
+				if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
+					$EditFeed['type'] = 'album';
+					$EditFeed['feedType'] = 'photos';
+				} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
+					$EditFeed['type'] = 'photo';
+					$EditFeed['feedType'] = 'commentsPhoto';
+				}
 
-			$feedDate = 'updated';
+				$feedDate = 'updated';
 
-		/*
-	     * Set some default values
-	     * Use the default settings from the DB.
-	     * All these settings can be overwritten by user.
-	     */
-		foreach (array('version' => $param['defaultVersion'],
+			/*
+			 * Set some default values
+			 * Use the default settings from the DB.
+			 * All these settings can be overwritten by user.
+			 */
+				foreach (array('version' => $param['defaultVersion'],
 				   'count' => $param['defaultCount'],
 				   'useImage' => true,
 				   'useEnclosure' => false,
@@ -314,58 +314,59 @@ class EditFeedView extends GalleryView
 				   'language' => 'en-us',
 				   'copyright' => $param['defaultCopyright'],
 				   'feedDate' => 'updated') as $key => $value) {
-			$EditFeed[$key] = $value;
-		}
+					$EditFeed[$key] = $value;
+				}
+			} else {
+				/* There was an error: just leave the form the same it was */
+				$EditFeed = array_merge($EditFeed, $form);
+			}
+		} elseif ($EditFeed['mode'] == 'edit') {
+			/*
+			 * Editing a feed.
+			 * Load the feed parameters
+			 */
+			if (empty($form['error'])) {
+				/* no error: load parameters from DB using the 'feedName' */
+				list($ret, $feed) = RssMapHelper::fetchFeed($form['feedName']);
+				if ($ret) {
+					return array($ret, null);
+				}
+
+				$EditFeed = array_merge($EditFeed, $feed);
+
+				if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
+					$EditFeed['type'] = 'album';
+				} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
+					$EditFeed['type'] = 'photo';
+				}
+
+				$urlgenerator = $gallery->GetUrlGenerator();
+				$EditFeed['feedUrl'] = $urlgenerator->generateUrl(
+					array('view' => 'rss.Render', 'name' => $form['feedName']),
+					array('forceSessionId' => false, 'forceFullUrl' => true)
+				);
+			} else {
+				/* There was an error: just leave the form the same it was */
+				$EditFeed = array_merge($EditFeed, $form);
+			}
 		} else {
-			/* There was an error: just leave the form the same it was */
-		$EditFeed = array_merge($EditFeed, $form);
-		}
-	} elseif ($EditFeed['mode'] == 'edit') {
-		/*
-	     * Editing a feed.
-	     * Load the feed parameters
-	     */
-		if (empty($form['error'])) {
-			/* no error: load parameters from DB using the 'feedName' */
-		list($ret, $feed) = RssMapHelper::fetchFeed($form['feedName']);
+			/*
+			 * No mode stated.
+			 * Retieving all the feeds for this 'itemId'
+			 * Fetch all feed definitions
+			 */
+			list($ret, $feeds) = RssMapHelper::fetchFeedsForItem($EditFeed['itemId']);
 			if ($ret) {
 				return array($ret, null);
 			}
 
-			$EditFeed = array_merge($EditFeed, $feed);
-
-			if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-				$EditFeed['type'] = 'album';
-			} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
-				$EditFeed['type'] = 'photo';
+			list($ret, $EditFeed['types']) = RssHelper::getFeedTypeTranslation();
+			if ($ret) {
+				return array($ret, null);
 			}
 
-			$urlgenerator = $gallery->GetUrlGenerator();
-			$EditFeed['feedUrl'] = $urlgenerator->generateUrl(
-			array('view' => 'rss.Render', 'name' => $form['feedName']),
-			array('forceSessionId' => false, 'forceFullUrl' => true));
-		} else {
-			/* There was an error: just leave the form the same it was */
-		$EditFeed = array_merge($EditFeed, $form);
+			$EditFeed['feeds'] = $feeds;
 		}
-	} else {
-		/*
-	     * No mode stated.
-	     * Retieving all the feeds for this 'itemId'
-	     * Fetch all feed definitions
-	     */
-		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem($EditFeed['itemId']);
-		if ($ret) {
-			return array($ret, null);
-		}
-
-		list($ret, $EditFeed['types']) = RssHelper::getFeedTypeTranslation();
-		if ($ret) {
-			return array($ret, null);
-		}
-
-		$EditFeed['feeds'] = $feeds;
-	}
 
 		$EditFeed['rssVersionList'] = array('0.91', '2.0');
 		$template->setVariable('EditFeed', $EditFeed);

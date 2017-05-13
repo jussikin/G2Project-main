@@ -25,15 +25,12 @@
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 20957 $
  */
-class HttpAuthModuleTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class HttpAuthModuleTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -129,8 +126,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		$this->_registerEventListener('Gallery::Logout', $this->_module);
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		GalleryDataCache::reset();
 		$ret = parent::tearDown();
 		if ($ret) {
@@ -138,14 +134,12 @@ class HttpAuthModuleTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetRewriteRules()
-	{
+	public function testGetRewriteRules() {
 		$rules = $this->_module->getRewriteRules();
 		$this->assertEquals(array(), array_keys($rules));
 	}
 	
-	public function testGetRewriteRulesAuthorizationRuleActive()
-	{
+	public function testGetRewriteRulesAuthorizationRuleActive() {
 		$this->_activeRules = array(
 			'authorization'
 		);
@@ -156,8 +150,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		), array_keys($rules));
 	}
 	
-	public function testGetRewriteRulesMissingAuthorization()
-	{
+	public function testGetRewriteRulesMissingAuthorization() {
 		$this->_platform->_messages[$this->_httpAuthWorksRequest] = $this->_missingAuthorizationResponse;
 		
 		$rules = $this->_module->getRewriteRules();
@@ -166,8 +159,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		), array_keys($rules));
 	}
 	
-	public function testHandleEventActivatePlugin()
-	{
+	public function testHandleEventActivatePlugin() {
 		$event = GalleryCoreApi::newEvent('Gallery::ActivatePlugin');
 		$event->setData(array(
 			'pluginType' => 'module',
@@ -185,8 +177,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		), $this->_activateCalls);
 	}
 	
-	public function testHandleEventErrorPermissionDenied()
-	{
+	public function testHandleEventErrorPermissionDenied() {
 		$error = GalleryCoreApi::error(ERROR_PERMISSION_DENIED);
 		$event = GalleryCoreApi::newEvent('Gallery::Error');
 		$event->setData(array(
@@ -208,8 +199,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		), $this->_headers);
 	}
 	
-	public function testHandleEventErrorPermissionDeniedIgnoredIfUseGloballyDisabled()
-	{
+	public function testHandleEventErrorPermissionDeniedIgnoredIfUseGloballyDisabled() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'httpauth', 'useGlobally', false);
 		if ($ret) {
 			return $ret;
@@ -228,8 +218,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		$this->assertEquals(array(), $this->_headers);
 	}
 	
-	public function testHandleEventLogoutNoUsername()
-	{
+	public function testHandleEventLogoutNoUsername() {
 		global $gallery;
 		
 		$activeUser = $gallery->getActiveUser();
@@ -243,8 +232,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		$this->assertEquals(array(), $results);
 	}
 	
-	public function testHandleEventLogoutWithHttpUsername()
-	{
+	public function testHandleEventLogoutWithHttpUsername() {
 		global $gallery;
 		
 		$activeUser = $gallery->getActiveUser();
@@ -266,8 +254,7 @@ class HttpAuthModuleTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testHandleEventLogoutWithRemoteUser()
-	{
+	public function testHandleEventLogoutWithRemoteUser() {
 		global $gallery;
 		
 		$activeUser = $gallery->getActiveUser();
@@ -290,50 +277,42 @@ class HttpAuthModuleTest extends GalleryTestCase
 	}
 }
 
-class HttpAuthModuleTestPhpVm extends GalleryPhpVm
-{
-	public function header($header, $replace = null)
-	{
+class HttpAuthModuleTestPhpVm extends GalleryPhpVm {
+	public function header($header, $replace = null) {
 		/* Avoid modifying actual header information */
 	}
 }
 
-class HttpAuthModuleTestRewriteApi
-{
+class HttpAuthModuleTestRewriteApi {
 	public $foo;
 	
-	public function &_fetchActiveRulesForModule($moduleId)
-	{
+	public function &_fetchActiveRulesForModule($moduleId) {
 		static $activeRules;
 
 		return $activeRules;
 	}
 	
-	public function &_getActivateCalls()
-	{
+	public function &_getActivateCalls() {
 		static $activateCalls;
 
 		return $activateCalls;
 	}
 	
-	public function isCompatibleWithApi($version)
-	{
+	public function isCompatibleWithApi($version) {
 		return array(
 			null,
 			true
 		);
 	}
 	
-	public function fetchActiveRulesForModule($moduleId)
-	{
+	public function fetchActiveRulesForModule($moduleId) {
 		return array(
 			null,
 			self::_fetchActiveRulesForModule($moduleId)
 		);
 	}
 	
-	public function activateRewriteRulesForModule($moduleId)
-	{
+	public function activateRewriteRulesForModule($moduleId) {
 		$activateCalls =& self::_getActivateCalls();
 		$activateCalls[] = array(
 			$moduleId
@@ -341,23 +320,19 @@ class HttpAuthModuleTestRewriteApi
 	}
 }
 
-class HttpAuthModuleTestPlatform extends GalleryPlatform
-{
+class HttpAuthModuleTestPlatform extends GalleryPlatform {
 	public $_messages;
 	public $_buffer;
 	
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		return 'test';
 	}
 	
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		return empty($this->_buffer);
 	}
 	
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if (empty($this->_buffer)) {
 			return null;
 		}
@@ -369,8 +344,7 @@ class HttpAuthModuleTestPlatform extends GalleryPlatform
 		return $this->fread($handle, $length);
 	}
 	
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if (empty($this->_buffer)) {
 			return null;
 		}
@@ -381,8 +355,7 @@ class HttpAuthModuleTestPlatform extends GalleryPlatform
 		return $buffer;
 	}
 	
-	public function fwrite($handle, $string, $length = 0)
-	{
+	public function fwrite($handle, $string, $length = 0) {
 		if (isset($this->_messages[$string])) {
 			$this->_buffer = $this->_messages[$string];
 
@@ -390,13 +363,11 @@ class HttpAuthModuleTestPlatform extends GalleryPlatform
 		}
 	}
 	
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		return true;
 	}
 	
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		return true;
 	}
 }

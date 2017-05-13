@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @static
  */
-class MimeHelper
-{
+class MimeHelper {
 	/**
 	 * Return mime types and applicable file extensions
 	 *
@@ -35,8 +34,7 @@ class MimeHelper
 	 *               array('ext' => array(string mime type => array of string extensions)
 	 *                     'viewable' => array(string mime type => boolean is viewable))
 	 */
-	public static function getMimeTypeMap()
-	{
+	public static function getMimeTypeMap() {
 		list($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryMimeTypeMap', array(
 			'mimeType',
 			'extension',

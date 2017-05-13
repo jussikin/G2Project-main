@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryDerivativeHelper_simple
-{
+class GalleryDerivativeHelper_simple {
 	/**
 	 * @see GalleryCoreApi::rebuildDerivativeCacheIfNotCurrent
 	 */
-	public static function rebuildCacheIfNotCurrent($derivativeId, $fixBroken = false)
-	{
+	public static function rebuildCacheIfNotCurrent($derivativeId, $fixBroken = false) {
 		global $gallery;
 		
 		list($ret, $derivative) = GalleryCoreApi::loadEntitiesById($derivativeId, 'GalleryDerivative');
@@ -74,8 +72,7 @@ class GalleryDerivativeHelper_simple
 	/**
 	 * @see GalleryCoreApi::fetchThumbnailsByItemIds
 	 */
-	public static function fetchThumbnailsByItemIds($ids)
-	{
+	public static function fetchThumbnailsByItemIds($ids) {
 		if (!is_array($ids)) {
 			return array(
 				GalleryCoreApi::error(ERROR_BAD_PARAMETER),
@@ -119,8 +116,7 @@ class GalleryDerivativeHelper_simple
 	 *               array(GalleryItem id => GalleryDerivativeImage, ...)
 	 * @access private
 	 */
-	public static function _loadDerivatives($itemIds, $sourceIds, $types = array())
-	{
+	public static function _loadDerivatives($itemIds, $sourceIds, $types = array()) {
 		global $gallery;
 		
 		if (empty($itemIds) && empty($sourceIds) || empty($itemIds) && !is_array($sourceIds) || empty($sourceIds) && !is_array($itemIds)) {

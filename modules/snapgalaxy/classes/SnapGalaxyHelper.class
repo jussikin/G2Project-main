@@ -26,16 +26,14 @@
  * @version $Revision: 17580 $
  * @static
  */
-class SnapGalaxyHelper
-{
+class SnapGalaxyHelper {
 	/**
 	 * Print the items on snapgalaxy.com and provide them with the given return url
 	 *
 	 * @return array GalleryStatus a status code
 	 *               string the url to the snapgalaxy.com cart
 	 */
-	public static function printPhotos($cartItemIds, $returnUrl)
-	{
+	public static function printPhotos($cartItemIds, $returnUrl) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$session =& $gallery->getSession();

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/AdminEventLogViewerCallback.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminEventLogViewerCallbackTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminEventLogViewerCallbackTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -108,8 +105,7 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase
 		$gallery->_platform =& $this->_platform;
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$translator =& $gallery->getTranslator();
 		list($ret) = $translator->init($this->_locale);
@@ -125,8 +121,7 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetRecords()
-	{
+	public function testGetRecords() {
 		GalleryUtilities::putRequestVariable('command', 'getRecords');
 		GalleryUtilities::putRequestVariable('pageNumber', '1');
 		GalleryUtilities::putRequestVariable('pageSize', '3');
@@ -205,8 +200,7 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase
 		$this->assertEquals('{"records":[' . '{"id":1,"date":"DATE1","type":"TYPE","location":"LOCATION",' . '"client":"CLIENT","summary":"SUMMARY"},' . '{"id":2,"date":"DATE2","type":"TYPE","location":"LOCATION",' . '"client":"CLIENT","summary":"SUMMARY"}],' . '"pageMessage":"Page 1 of 1","totalPages":1}', $results);
 	}
 
-	public function testGetRecordsBogusInputs()
-	{
+	public function testGetRecordsBogusInputs() {
 		GalleryUtilities::putRequestVariable('command', 'getRecords');
 		GalleryUtilities::putRequestVariable('pageNumber', 'cats');
 		GalleryUtilities::putRequestVariable('pageSize', 'dogs');
@@ -286,8 +280,7 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase
 		$this->assertEquals('{"records":[' . '{"id":1,"date":"DATE1","type":"TYPE","location":"LOCATION",' . '"client":"CLIENT","summary":"SUMMARY"},' . '{"id":2,"date":"DATE2","type":"TYPE","location":"LOCATION",' . '"client":"CLIENT","summary":"SUMMARY"}],' . '"pageMessage":"Page 1 of 1","totalPages":1}', $results);
 	}
 
-	public function testGetRecordDetails()
-	{
+	public function testGetRecordDetails() {
 		GalleryUtilities::putRequestVariable('command', 'getRecordDetails');
 		GalleryUtilities::putRequestVariable('id', '1');
 
@@ -339,8 +332,7 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase
 		$this->assertEquals('{"id":1,"userId":"USERID","type":"TYPE","summary":"SUMMARY",' . '"details":"DETAILS","location":"LOCATION","client":"CLIENT",' . '"date":"DATE","referer":"REFERER"}', $results);
 	}
 
-	public function testGetRecordDetailsBogusId()
-	{
+	public function testGetRecordDetailsBogusId() {
 		/* Use a non-numeric id */
 		GalleryUtilities::putRequestVariable('command', 'getRecordDetails');
 		GalleryUtilities::putRequestVariable('id', 'bananas');
@@ -361,8 +353,7 @@ class AdminEventLogViewerCallbackTest extends GalleryTestCase
 		$this->assertEquals('[]', $results);
 	}
 
-	public function testGetRecordDetailsInvalidId()
-	{
+	public function testGetRecordDetailsInvalidId() {
 		/* Use an id that doesn't exist */
 		GalleryUtilities::putRequestVariable('command', 'getRecordDetails');
 		GalleryUtilities::putRequestVariable('id', 123456789);

@@ -26,13 +26,11 @@ GalleryCoreApi::requireOnce('modules/nokiaupload/classes/ImageUploadHelper.class
  * @author Jerome Rannikko <jeromer@hotpop.com>
  * @version $Revision: 17580 $
  */
-class NewDirectoryController extends GalleryController
-{
+class NewDirectoryController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		ImageUploadHelper::logRequest('CreateAlbumController');
 		
 		/* Request forgery protection */
@@ -59,8 +57,7 @@ class NewDirectoryController extends GalleryController
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
-	public function omitAuthTokenCheck()
-	{
+	public function omitAuthTokenCheck() {
 		return true;
 	}
 }
@@ -68,13 +65,11 @@ class NewDirectoryController extends GalleryController
 /**
  * This view implements the Nokia Image Uploader API's 'New Directory' command.
  */
-class NewDirectoryView extends GalleryView
-{
+class NewDirectoryView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
@@ -82,8 +77,7 @@ class NewDirectoryView extends GalleryView
 	 * API defines the output very specifically so we can't allow any global templating to be used.
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$gallery->debug("##### NewDirectoryView #####\n\$status = ");
 		$gallery->debug_r($status);

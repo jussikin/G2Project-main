@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'useralbum.UserAlbumSiteAdmin');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -54,8 +51,7 @@ class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_parentAlbum);
 	}
 
-	public function testUserAlbumSiteAdminControllerReset()
-	{
+	public function testUserAlbumSiteAdminControllerReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 
 	/* Perform the request and verify that we succeeded */
@@ -67,8 +63,7 @@ class UserAlbumSiteAdminControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testUserAlbumSiteAdminControllerSave()
-	{
+	public function testUserAlbumSiteAdminControllerSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[create]', 'immediate');
 		GalleryUtilities::putRequestVariable('form[view]', 'allusers');

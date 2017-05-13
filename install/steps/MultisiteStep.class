@@ -22,24 +22,20 @@
  * Select install type
  * @package Install
  */
-class MultisiteStep extends InstallStep
-{
+class MultisiteStep extends InstallStep {
 	public $_isMultisite;
 	public $_configPath;
 	public $_baseUri;
 	
-	public function stepName()
-	{
+	public function stepName() {
 		return _('Installation Type');
 	}
 	
-	public function isRedoable()
-	{
+	public function isRedoable() {
 		return true;
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		global $galleryStub;
 		
 		if (!empty($_GET['doAutoComplete'])) {
@@ -80,8 +76,7 @@ class MultisiteStep extends InstallStep
 		return true;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $galleryStub;
 		
 		if (!isset($this->_isMultisite)) {
@@ -140,8 +135,7 @@ class MultisiteStep extends InstallStep
 		$templateData['bodyFile'] = $this->isComplete() ? 'MultisiteSuccess.html' : 'Multisite.html';
 	}
 	
-	public function populateMultisiteDirectory($dir)
-	{
+	public function populateMultisiteDirectory($dir) {
 		umask(0022);
 		$galleryDir = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR;
 		if (!$out = @fopen("$dir/main.php", 'w')) {
@@ -176,8 +170,7 @@ class MultisiteStep extends InstallStep
 		return true;
 	}
 	
-	public function readConfigFile()
-	{
+	public function readConfigFile() {
 		/* Load existing config.php (if found), which requires $gallery to be valid */
 		$configFile = $_SESSION['configPath'] . DIRECTORY_SEPARATOR . 'config.php';
 		$gallery = new GalleryStub();

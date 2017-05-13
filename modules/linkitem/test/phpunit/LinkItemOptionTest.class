@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('lib/tools/phpunit/ItemEditOptionTestCase.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class LinkItemOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class LinkItemOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'linkitem', 'LinkItemOption');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -76,8 +73,7 @@ class LinkItemOptionTest extends ItemEditOptionTestCase
 		}
 	}
 	
-	public function testSetUrl()
-	{
+	public function testSetUrl() {
 		$form = array(
 			'LinkItemOption' => array(
 				'link' => 'http://test.net/'
@@ -95,8 +91,7 @@ class LinkItemOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals('http://test.net/', $link->getLink());
 	}
 	
-	public function testMissingUrl()
-	{
+	public function testMissingUrl() {
 		$form = array(
 			'LinkItemOption' => array(
 				'link' => ''

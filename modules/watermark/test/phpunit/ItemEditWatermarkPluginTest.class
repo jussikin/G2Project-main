@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'watermark', 'ItemEditWatermark');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -98,8 +95,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 		$gallery->_templateAdapter =& $this->_templateAdapter;
 	}
 
-	public function _createItem($parentId, $mimeType, $usePreferred, $numResizes, $useThumbnail)
-	{
+	public function _createItem($parentId, $mimeType, $usePreferred, $numResizes, $useThumbnail) {
 		/* Initialize with watermark for remove tests */
 	$field = (strpos($this->name(), 'emove') === false || $mimeType != 'test/file') ? array()
 		: array('postFilterOperations' => 'composite|plugins_data/modules/watermark/'
@@ -143,8 +139,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 		return array(null, $item, $preferred, $resizes, $thumbnail);
 	}
 
-	public function testWatermarkEverything()
-	{
+	public function testWatermarkEverything() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[whichDerivative][thumbnail]', 1);
 		GalleryUtilities::putRequestVariable('form[whichDerivative][resize]', 1);
@@ -172,8 +167,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 	}
 	}
 
-	public function testWatermarkNothingSelected()
-	{
+	public function testWatermarkNothingSelected() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[watermarkId]', $this->_watermark->getId());
 		GalleryUtilities::putRequestVariable('form[xPercent]', 25);
@@ -184,8 +178,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 				$results);
 	}
 
-	public function testRemoveWatermark()
-	{
+	public function testRemoveWatermark() {
 		GalleryUtilities::putRequestVariable('form[action][remove]', 1);
 
 		$results = $this->handleRequest($this->_item, $this->_preferred);
@@ -203,8 +196,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 	}
 	}
 
-	public function testWatermarkCreatePreferred()
-	{
+	public function testWatermarkCreatePreferred() {
 		/* Remap and get rid of the preferred to start */
 	$ret = GalleryCoreApi::remapSourceIds($this->_preferred->getId(), $this->_item->getId());
 		if ($ret) {
@@ -258,8 +250,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 		}
 	}
 
-	public function testRemoveWatermarkDeletePreferred()
-	{
+	public function testRemoveWatermarkDeletePreferred() {
 		/* Give our preferred a watermark but no operation */
 	list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_preferred->getId());
 		if ($ret) {
@@ -306,8 +297,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 	}
 	}
 
-	public function testBulkWatermark()
-	{
+	public function testBulkWatermark() {
 		$this->_registerTestToolkit('test/file');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[whichDerivative][thumbnail]', 1);
@@ -320,8 +310,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 		$this->_runBulkTest('Watermark applied successfully', false, true, '75.000,25.000');
 	}
 
-	public function testBulkWatermarkRecursive()
-	{
+	public function testBulkWatermarkRecursive() {
 		$this->_registerTestToolkit('test/file');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[whichDerivative][resize]', 1);
@@ -334,8 +323,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 		$this->_runBulkTest('Watermark applied successfully', true, false, '100.000,0.000');
 	}
 
-	public function _runBulkTest($message, $recursive, $applyToThumbnail, $location, $isApply=true)
-	{
+	public function _runBulkTest($message, $recursive, $applyToThumbnail, $location, $isApply=true) {
 		$preferred = null;
 		$results = $this->handleRequest($this->_album, $preferred);
 		$this->assertEquals(array(array(), $this->_translate($message)), $results);
@@ -384,43 +372,37 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 	}
 	}
 
-	public function testBulkRemoveWatermark()
-	{
+	public function testBulkRemoveWatermark() {
 		GalleryUtilities::putRequestVariable('form[action][remove]', 1);
 
 		$this->_runBulkTest('Watermark removed successfully', false, true, '25.000,50.000', false);
 	}
 
-	public function testBulkRemoveWatermarkRecursive()
-	{
+	public function testBulkRemoveWatermarkRecursive() {
 		GalleryUtilities::putRequestVariable('form[action][remove]', 1);
 		GalleryUtilities::putRequestVariable('form[recursive]', 1);
 
 		$this->_runBulkTest('Watermark removed successfully', true, true, '25.000,50.000', false);
 	}
 
-	public function testIsSupportedItem()
-	{
+	public function testIsSupportedItem() {
 		$this->_registerTestToolkit('test/file');
 		$this->assert($this->_plugin->isSupported($this->_item, $this->_thumbnail),
 			  'test/file should be supported because we registered a toolkit for it');
 	}
 
-	public function testIsNotSupportedItem()
-	{
+	public function testIsNotSupportedItem() {
 		$this->assert(!$this->_plugin->isSupported($this->_item, $this->_thumbnail),
 			  'test/file should not be a supported mime type');
 	}
 
-	public function testIsNotSupportedItemButSupportedPreferred()
-	{
+	public function testIsNotSupportedItemButSupportedPreferred() {
 		$this->_registerTestToolkit('test/file2');
 		$this->assert($this->_plugin->isSupported($this->_item, $this->_thumbnail),
 			  'test/file2 should be a supported mime type');
 	}
 
-	public function testIsSupportedAlbum()
-	{
+	public function testIsSupportedAlbum() {
 		list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation('image/jpeg', 'composite');
 		if ($ret) {
 			return $ret;
@@ -429,8 +411,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 				'album should be supported if we can watermark image/jpeg');
 	}
 
-	public function testPermission()
-	{
+	public function testPermission() {
 		global $gallery;
 		$ret = $this->_markPluginParametersForCleanup('module', 'watermark');
 		if ($ret) {
@@ -462,8 +443,7 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 		$results = $this->handleRequest($this->_item, $this->_preferred, ERROR_PERMISSION_DENIED);
 	}
 
-	public function _registerTestToolkit($mimeType)
-	{
+	public function _registerTestToolkit($mimeType) {
 		/* Register a composite operation for test/file */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
 		'GalleryToolkit', 'ItemEditWatermarkPluginTestToolkit',
@@ -492,6 +472,5 @@ class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 	}
 }
 
-class ItemEditWatermarkPluginTestToolkit
-{
+class ItemEditWatermarkPluginTestToolkit {
 }

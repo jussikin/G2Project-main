@@ -34,10 +34,8 @@ GalleryCoreApi::requireOnce('lib/tools/repository/test/phpunit/RepositoryTestTem
  * @package RepositoryTools
  * @subpackage PHPUnit
  */
-class RepositoryObjectTest extends GalleryTestCase
-{
-	public function testOutputDir()
-	{
+class RepositoryObjectTest extends GalleryTestCase {
+	public function testOutputDir() {
 		global $gallery;
 		
 		$object = new RepositoryObject();
@@ -69,8 +67,7 @@ class RepositoryObjectTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testWriteToDisk()
-	{
+	public function testWriteToDisk() {
 		global $gallery;
 		
 		$outputPath = 'outputDirectory/output.file';
@@ -130,8 +127,7 @@ class RepositoryObjectTest extends GalleryTestCase
 		$this->assert($platform->isComplete(), $platform->getRemaining());
 	}
 	
-	public function testFilterManifestForBasePackage()
-	{
+	public function testFilterManifestForBasePackage() {
 		$manifest = implode("\n", array(
 			'# $' . 'Revision: 15342 $',
 			'# File crc32 crc32(crlf) size size(crlf)  or  R File',

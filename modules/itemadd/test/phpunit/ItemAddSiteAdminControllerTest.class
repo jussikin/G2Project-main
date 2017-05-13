@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'itemadd.ItemAddSiteAdmin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _setUploadDirs($data)
-	{
+	public function _setUploadDirs($data) {
 		foreach ($data as $i => $value) {
 			$key = 'uploadLocalServer.dir.' . $i;
 			if (isset($value)) {
@@ -66,8 +62,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		return null;
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 		
 		$results = $this->handleRequest();
@@ -81,8 +76,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[fromweb]', 'admin');
 		GalleryUtilities::putRequestVariable('form[fromserver]', 'off');
@@ -108,8 +102,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('off', $params['fromserver'], 'fromserver');
 	}
 	
-	public function testAddUploadLocalServerDir()
-	{
+	public function testAddUploadLocalServerDir() {
 		/* Add should save other settings on the page too */
 		GalleryUtilities::putRequestVariable('form[fromweb]', 'on');
 		GalleryUtilities::putRequestVariable('form[fromserver]', 'admin');
@@ -157,8 +150,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testAddUploadLocalServerDirMissing()
-	{
+	public function testAddUploadLocalServerDirMissing() {
 		GalleryUtilities::putRequestVariable('form[uploadLocalServer][newDir]', '');
 		GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 		
@@ -176,8 +168,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirNotDir()
-	{
+	public function testAddUploadLocalServerDirNotDir() {
 		GalleryUtilities::putRequestVariable('form[uploadLocalServer][newDir]', __FILE__);
 		GalleryUtilities::putRequestVariable('form[action][addUploadLocalServerDir]', 1);
 		
@@ -195,8 +186,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirBogus()
-	{
+	public function testAddUploadLocalServerDirBogus() {
 		global $gallery;
 		$gallery->_phpVm = new ItemAddSiteAdminControllerTestPhpVm('');
 		
@@ -233,8 +223,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results, 'with open_basedir');
 	}
 	
-	public function testAddUploadLocalServerDirNotReadable()
-	{
+	public function testAddUploadLocalServerDirNotReadable() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		$platform->setReply('splitPath', array(
@@ -269,8 +258,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirRestricted()
-	{
+	public function testAddUploadLocalServerDirRestricted() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		$platform->setReply('splitPath', array(
@@ -302,8 +290,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirDotDotPath()
-	{
+	public function testAddUploadLocalServerDirDotDotPath() {
 		/* Apply realpath to paths with .. */
 		global $gallery;
 		$platform = new UnitTestPlatform();
@@ -349,8 +336,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirRelativePath()
-	{
+	public function testAddUploadLocalServerDirRelativePath() {
 		/* Relative path should be converted to absolute (with realpath) */
 		global $gallery;
 		$platform =& $gallery->getPlatform();
@@ -394,8 +380,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($platform->realpath(dirname(__FILE__)), $param['uploadLocalServer.dir.2'], 'new dir');
 	}
 	
-	public function testAddUploadLocalServerDirWithEntity()
-	{
+	public function testAddUploadLocalServerDirWithEntity() {
 		global $gallery;
 		$platform = new UnitTestPlatform();
 		$platform->setReply('splitPath', array(
@@ -435,8 +420,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirWithUmlaut()
-	{
+	public function testAddUploadLocalServerDirWithUmlaut() {
 		global $gallery;
 		
 		/* Fake a specific charset to isolate this test */
@@ -484,8 +468,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddUploadLocalServerDirWithSymlink()
-	{
+	public function testAddUploadLocalServerDirWithSymlink() {
 		/* If symlink in the path check open_basedir with realpath but store given path */
 		global $gallery;
 		$ret = $this->_setUploadDirs(array(
@@ -543,8 +526,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('/link/dir', $param['uploadLocalServer.dir.2'], 'new dir');
 	}
 	
-	public function testRemoveUploadLocalServerDir()
-	{
+	public function testRemoveUploadLocalServerDir() {
 		GalleryUtilities::putRequestVariable('form[uploadLocalServer][selectedDir]', '2');
 		GalleryUtilities::putRequestVariable('form[action][removeUploadLocalServerDir]', 1);
 		
@@ -583,8 +565,7 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 		$this->assert(!isset($param['uploadLocalServer.dir.4']), 'end of list');
 	}
 	
-	public function testRemoveUploadLocalServerDirMissing()
-	{
+	public function testRemoveUploadLocalServerDirMissing() {
 		GalleryUtilities::putRequestVariable('form[uploadLocalServer][selectedDir]', '');
 		GalleryUtilities::putRequestVariable('form[action][removeUploadLocalServerDir]', 1);
 		
@@ -607,15 +588,12 @@ class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
  * @package ItemAdd
  * @subpackage PHPUnit
  */
-class ItemAddSiteAdminControllerTestPhpVm extends GalleryPhpVm
-{
-	public function ItemAddSiteAdminControllerTestPhpVm($iniVal)
-	{
+class ItemAddSiteAdminControllerTestPhpVm extends GalleryPhpVm {
+	public function ItemAddSiteAdminControllerTestPhpVm($iniVal) {
 		$this->_iniVal = $iniVal;
 	}
 	
-	public function ini_get($varname)
-	{
+	public function ini_get($varname) {
 		if ($varname == 'open_basedir') {
 			return $this->_iniVal;
 		}
@@ -624,8 +602,7 @@ class ItemAddSiteAdminControllerTestPhpVm extends GalleryPhpVm
 	}
 	
 	/* For the upload directory test */
-	public function function_exists($functionName)
-	{
+	public function function_exists($functionName) {
 		/* make it use our charset tables, they work on all platforms */
 		switch ($functionName) {
 			case 'iconv':
@@ -639,8 +616,7 @@ class ItemAddSiteAdminControllerTestPhpVm extends GalleryPhpVm
 		}
 	}
 	
-	public function setlocale($category, $locale)
-	{
+	public function setlocale($category, $locale) {
 		return '';
 	}
 	
@@ -648,8 +624,7 @@ class ItemAddSiteAdminControllerTestPhpVm extends GalleryPhpVm
 	 * Other test cases might define CODESET on Windows. In this case we need to declare
 	 * the method as well.
 	 */
-	public function nl_langinfo($item)
-	{
+	public function nl_langinfo($item) {
 		return 'ISO-8859-1';
 	}
 }

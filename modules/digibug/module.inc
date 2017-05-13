@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class DigibugModule extends GalleryModule
-{
-	public function __construct()
-	{
+class DigibugModule extends GalleryModule {
+	public function __construct() {
 		$this->DigibugModule();
 	}
 	
-	public function DigibugModule()
-	{
+	public function DigibugModule() {
 		global $gallery;
 		
 		$this->setId('digibug');
@@ -57,8 +54,7 @@ class DigibugModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		if (!isset($currentVersion)) {
 			$currentVersion = '0';
@@ -129,8 +125,7 @@ class DigibugModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		foreach (array(
 			'1_0',
 			'1_1'
@@ -147,8 +142,7 @@ class DigibugModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
-	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null)
-	{
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -177,8 +171,7 @@ class DigibugModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -193,8 +186,7 @@ class DigibugModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'digibug.AdminDigibug';
 	}
 	
@@ -202,8 +194,7 @@ class DigibugModule extends GalleryModule
 	 * Initialize digibug module with default settings (Gallery project id and price list id)
 	 * @return GalleryStatus a status code
 	 */
-	public function _setGalleryDefaultId()
-	{
+	public function _setGalleryDefaultId() {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'digibug');
 		if ($ret) {
 			return $ret;

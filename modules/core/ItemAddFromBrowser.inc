@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemAddFromBrowser extends ItemAddPlugin
-{
+class ItemAddFromBrowser extends ItemAddPlugin {
 	/**
 	 * @see ItemAddPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item)
-	{
+	public function handleRequest($form, &$item) {
 		global $gallery;
 		
 		$status = array();
@@ -196,8 +194,7 @@ class ItemAddFromBrowser extends ItemAddPlugin
 	/**
 	 * @see ItemAdd:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		$fileUploadsBool = GalleryUtilities::getPhpIniBool('file_uploads');
 		$totalUploadSize = ini_get('post_max_size');
 		if (preg_match("/(\d+)M/", $totalUploadSize, $matches)) {
@@ -282,8 +279,7 @@ class ItemAddFromBrowser extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

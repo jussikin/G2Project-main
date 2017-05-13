@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/quotas/Callbacks.inc');
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class QuotasHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class QuotasHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -95,8 +92,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_GB = $this->_module->translate('GB');
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		foreach ($this->_saveQuota as $groupId => $quota) {
 			$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
@@ -111,8 +107,7 @@ class QuotasHelperTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetUserDiskUsage()
-	{
+	public function testGetUserDiskUsage() {
 
 	/* check the user's usage, it should be zero */
 	list($ret, $userDiskUsage) = GalleryQuotasHelper::getUserDiskUsage($this->_user->getId());
@@ -154,8 +149,7 @@ class QuotasHelperTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetUserLargeDiskUsage()
-	{
+	public function testGetUserLargeDiskUsage() {
 		/* check the user's usage, it should be zero */
 	list($ret, $userDiskUsage) =
 		GalleryQuotasHelper::getUserDiskUsage($this->_user->getId());
@@ -197,8 +191,7 @@ class QuotasHelperTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetUserDiskQuota()
-	{
+	public function testGetUserDiskQuota() {
 		/* user doesn't have a quota yet */
 	list($ret, $quotaExists, $userDiskQuota) =
 		GalleryQuotasHelper::getUserDiskQuota($this->_user->getId());
@@ -275,8 +268,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->assert($quotaExists == false, 'A quota should not exist');
 	}
 
-	public function testFetchHighestGroupQuota()
-	{
+	public function testFetchHighestGroupQuota() {
 		/* Add our dummy user to our dummy group, dummy */
 	$ret = GalleryCoreApi::addUserToGroup($this->_user->getId(), $this->_group->getId());
 		if ($ret) {
@@ -311,8 +303,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_removeMapEntry(array('userOrGroupId' => $this->_group->getId()));
 	}
 
-	public function testHumanReadableFromKilobytes()
-	{
+	public function testHumanReadableFromKilobytes() {
 		$conversion = array('1024' => array(1.00, $this->_MB),
 				'2048' => array(2.00, $this->_MB),
 				'2.00' => array(2.00, $this->_KB),
@@ -331,8 +322,7 @@ class QuotasHelperTest extends GalleryTestCase
 		}
 	}
 
-	public function testFetchQuotaGroupIdList()
-	{
+	public function testFetchQuotaGroupIdList() {
 		/* get the actual number of group quotas there is */
 	list($ret, $groupCount) = GalleryQuotasHelper::fetchQuotaGroupCount();
 		if ($ret) {
@@ -359,8 +349,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_removeMapEntry(array('userOrGroupId' => $this->_group->getId()));
 	}
 
-	public function testFetchQuotaGroupCount()
-	{
+	public function testFetchQuotaGroupCount() {
 		list($ret, $preGroupCount) = GalleryQuotasHelper::fetchQuotaGroupCount();
 		if ($ret) {
 			return $ret;
@@ -376,8 +365,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_removeMapEntry(array('userOrGroupId' => $this->_group->getId()));
 	}
 
-	public function testFetchQuotaUserIdList()
-	{
+	public function testFetchQuotaUserIdList() {
 		/* get the actual number of User quotas there is */
 	list($ret, $userCount) = GalleryQuotasHelper::fetchQuotaUserCount();
 		if ($ret) {
@@ -404,8 +392,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_removeMapEntry(array('userOrGroupId' => $this->_user->getId()));
 	}
 
-	public function testFetchQuotaUserCount()
-	{
+	public function testFetchQuotaUserCount() {
 		list($ret, $preUserCount) = GalleryQuotasHelper::fetchQuotaUserCount();
 		if ($ret) {
 			return $ret;
@@ -421,8 +408,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_removeMapEntry(array('userOrGroupId' => $this->_user->getId()));
 	}
 
-	public function testFetchGroupQuota()
-	{
+	public function testFetchGroupQuota() {
 		list($ret, $quotaExists, $groupQuotaInfo) =
 		GalleryQuotasHelper::FetchGroupQuota($this->_group->getId());
 		if ($ret) {
@@ -448,8 +434,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->_removeMapEntry(array('userOrGroupId' => $this->_group->getId()));
 	}
 
-	public function testFetchUserQuota()
-	{
+	public function testFetchUserQuota() {
 		list($ret, $quotaExists, $userQuotaInfo) =
 		GalleryQuotasHelper::FetchUserQuota($this->_user->getId());
 		if ($ret) {
@@ -476,8 +461,7 @@ class QuotasHelperTest extends GalleryTestCase
 	}
 
 	/* Test the Callback function */
-	public function testLoadQuotasCallbacksNoQuotaNoItems()
-	{
+	public function testLoadQuotasCallbacksNoQuotaNoItems() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -501,8 +485,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->assert(!isset($data['currentUnusedPerfcent']), 'Unused percent should not be set');
 	}
 
-	public function testLoadQuotasCallbacksNoQuotaItems()
-	{
+	public function testLoadQuotasCallbacksNoQuotaItems() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -541,8 +524,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->assert(!isset($data['currentUnusedPerfcent']), 'Unused percent should not be set');
 	}
 
-	public function testLoadQuotasCallbacksGroupQuotaItems()
-	{
+	public function testLoadQuotasCallbacksGroupQuotaItems() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -593,8 +575,7 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->assertEquals(40, $data['currentUnusedPercent'], 'Incorrect Unused percent');
 	}
 
-	public function testLoadQuotasCallbacksUserQuotaItems()
-	{
+	public function testLoadQuotasCallbacksUserQuotaItems() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -637,16 +618,14 @@ class QuotasHelperTest extends GalleryTestCase
 		$this->assertEquals(24, $data['currentUnusedPercent'], 'Incorrect Unused percent');
 	}
 
-	public function _removeMapEntry($remove)
-	{
+	public function _removeMapEntry($remove) {
 		$ret = GalleryCoreApi::removeMapEntry('QuotasMap', $remove);
 		if ($ret) {
 			return ($ret);
 		}
 	}
 
-	public function _addMapEntry($add)
-	{
+	public function _addMapEntry($add) {
 		$ret = GalleryCoreApi::addMapEntry('QuotasMap', $add);
 		if ($ret) {
 			return ($ret);

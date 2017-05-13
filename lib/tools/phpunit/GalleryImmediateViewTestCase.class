@@ -25,16 +25,14 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryImmediateViewTestCase extends GalleryTestCase
-{
+class GalleryImmediateViewTestCase extends GalleryTestCase {
 	/**
 	 * The view instance
 	 * @access protected
 	 */
 	public $_view;
 	
-	public function GalleryImmediateViewTestCase($methodName, $viewName)
-	{
+	public function GalleryImmediateViewTestCase($methodName, $viewName) {
 		$this->GalleryTestCase($methodName);
 		
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
@@ -43,8 +41,7 @@ class GalleryImmediateViewTestCase extends GalleryTestCase
 		return $ret;
 	}
 	
-	public function _renderImmediate()
-	{
+	public function _renderImmediate() {
 		ob_start();
 		$ret = $this->_view->renderImmediate(array(), array());
 		$results = ob_get_contents();

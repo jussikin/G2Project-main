@@ -58,16 +58,14 @@ define('EXIF_ITEM_ROTATE_PRESERVE', 16);
  * declared private, must only be used internally in this class or subclasses.
  * @static
  */
-class ExifHelper
-{
+class ExifHelper {
 	/**
 	 * Reset the given view mode back to its default settings
 	 *
 	 * @param int $viewMode
 	 * @return GalleryStatus a status code
 	 */
-	public static function setDefaultProperties($viewMode)
-	{
+	public static function setDefaultProperties($viewMode) {
 		switch ($viewMode) {
 			case EXIF_SUMMARY:
 				/* This is an initial install; make sure that we have some reasonable defaults */
@@ -139,8 +137,7 @@ class ExifHelper
 	 * @param int $viewMode
 	 * @return GalleryStatus a status code
 	 */
-	public static function addDefaultIptcProperties($viewMode)
-	{
+	public static function addDefaultIptcProperties($viewMode) {
 		list($ret, $properties) = self::getProperties($viewMode);
 		if ($ret) {
 			return $ret;
@@ -177,8 +174,7 @@ class ExifHelper
 	 * @param array $rawExifData reference to an array where to store the results
 	 *        as returned by read_exif_data_raw() from exifer
 	 */
-	public function _fetchRawExifData($path, &$rawExifData)
-	{
+	public function _fetchRawExifData($path, &$rawExifData) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/exif/lib/exifer/exif.inc');
 		
@@ -207,8 +203,7 @@ class ExifHelper
 	 * @todo (xlerb) reduce size of lib/JPEG: 1. remove whitespace/comments; 2. refactor according
 	 *      to lazy reading. Before refactoring, add timing tests.
 	 */
-	public static function getIptcObject($path)
-	{
+	public static function getIptcObject($path) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -245,8 +240,7 @@ class ExifHelper
 	 * @return array GalleryStatus a status code
 	 *               array title/value pairs
 	 */
-	public static function getExifData($path, $viewMode)
-	{
+	public static function getExifData($path, $viewMode) {
 		$rawExifData = array();
 		self::_fetchRawExifData($path, $rawExifData);
 		list($ret, $iptcObj) = self::getIptcObject($path);
@@ -302,8 +296,7 @@ class ExifHelper
 	 * @param string $value the value (eg. "f 2.8")
 	 * @return string the result (eg. "f/2.8")
 	 */
-	public static function postProcessValue($property, $value)
-	{
+	public static function postProcessValue($property, $value) {
 		global $gallery;
 		
 		GalleryUtilities::sanitizeInputValues($value, false);
@@ -359,8 +352,7 @@ class ExifHelper
 	 *      has it: it was explicitely set by the editor, thus first priority? Or to be considered
 	 *      just before IFD0.DateTime == last modification time?
 	 */
-	public static function getOriginationTimestamp($path)
-	{
+	public static function getOriginationTimestamp($path) {
 		$rawExifData = array();
 		self::_fetchRawExifData($path, $rawExifData);
 		/*
@@ -391,8 +383,7 @@ class ExifHelper
 	 * Parse date string into unix timestamp.
 	 * @access private
 	 */
-	public function _parseDate($value)
-	{
+	public function _parseDate($value) {
 		/* Ignore "blank" value */
 		if ($value == '0000:00:00 00:00:00') {
 			return null;
@@ -439,8 +430,7 @@ class ExifHelper
 	 * @return array GalleryStatus a status code
 	 *               string value
 	 */
-	public static function getExifValue(&$source, $keyPath)
-	{
+	public static function getExifValue(&$source, $keyPath) {
 		$key = array_shift($keyPath);
 		if (!isset($source[$key])) {
 			return null;
@@ -469,8 +459,7 @@ class ExifHelper
 	 *      where users from different countries can upload images with IPTC data. It is such a
 	 *      pain, that the charset used isn't recorded in IPTC headers.
 	 */
-	public static function getIptcValue(&$object, $keyPath, $sourceEncoding = null)
-	{
+	public static function getIptcValue(&$object, $keyPath, $sourceEncoding = null) {
 		if ($keyPath[0] != 'IPTC') {
 			return null;
 		}
@@ -493,8 +482,7 @@ class ExifHelper
 	 * @return array GalleryStatus a status code
 	 *               array logical exif property names
 	 */
-	public static function getProperties($viewMode)
-	{
+	public static function getProperties($viewMode) {
 		list($ret, $searchResults) = GalleryCoreApi::getMapEntry('ExifPropertiesMap', array(
 			'property',
 			'sequence'
@@ -530,8 +518,7 @@ class ExifHelper
 	 * @param array $properties logical property key/value pairs
 	 * @return GalleryStatus a status code
 	 */
-	public static function setProperties($viewMode, $properties)
-	{
+	public static function setProperties($viewMode, $properties) {
 		
 		/* Remove all old map entries */
 		$ret = GalleryCoreApi::removeMapEntry('ExifPropertiesMap', array(
@@ -575,8 +562,7 @@ class ExifHelper
 	 *
 	 * @return array exif keys
 	 */
-	public static function getExifKeys()
-	{
+	public static function getExifKeys() {
 		global $gallery;
 		static $data;
 		

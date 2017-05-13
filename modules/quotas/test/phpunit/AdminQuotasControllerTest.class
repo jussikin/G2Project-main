@@ -25,15 +25,12 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminQuotasControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminQuotasControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminQuotas');
 	}
 
-	public function testGroupQuotaCreate()
-	{
+	public function testGroupQuotaCreate() {
 		list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
 			return $ret;
@@ -53,8 +50,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testUserQuotaCreate()
-	{
+	public function testUserQuotaCreate() {
 		list($ret, $user) = $this->_createRandomUser();
 		if ($ret) {
 			return $ret;
@@ -74,8 +70,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testEditGroupQuotaFromText()
-	{
+	public function testEditGroupQuotaFromText() {
 		/* Normal */
 	list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
@@ -121,8 +116,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testEditUserQuotaFromText()
-	{
+	public function testEditUserQuotaFromText() {
 		/* Normal */
 	list($ret, $user) = $this->_createRandomUser();
 		if ($ret) {
@@ -168,8 +162,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testDeleteGroupFromText()
-	{
+	public function testDeleteGroupFromText() {
 		/* Normal */
 	list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
@@ -215,8 +208,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testDeleteUserFromText()
-	{
+	public function testDeleteUserFromText() {
 		/* Normal */
 	list($ret, $user) = $this->_createRandomUser();
 		if ($ret) {
@@ -262,8 +254,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function _createUserOrGroupQuota($userOrGroupId, $quota)
-	{
+	public function _createUserOrGroupQuota($userOrGroupId, $quota) {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap', array('userOrGroupId' => $userOrGroupId, 'quotaSize' => $quota));
 		if ($ret) {
@@ -271,8 +262,7 @@ class AdminQuotasControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _deleteUserOrGroupQuota($userOrGroupId)
-	{
+	public function _deleteUserOrGroupQuota($userOrGroupId) {
 		$ret = GalleryCoreApi::removeMapEntry(
 		'QuotasMap', array('userOrGroupId' => $userOrGroupId));
 		if ($ret) {

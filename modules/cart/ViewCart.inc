@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ViewCartView extends GalleryView
-{
+class ViewCartView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		$returnItemId = GalleryUtilities::getRequestVariables('itemId');
@@ -164,8 +162,7 @@ class ViewCartView extends GalleryView
 	 *               array string plugin id => array plugin data
 	 * @access private
 	 */
-	public function _loadAllCartPlugins()
-	{
+	public function _loadAllCartPlugins() {
 		GalleryCoreApi::requireOnce('modules/cart/classes/CartPluginInterface_1_0.class');
 		list($ret, $basicInterfaceIds) = GalleryCoreApi::getAllFactoryImplementationIds('CartPluginInterface_1_0');
 		if ($ret) {
@@ -228,8 +225,7 @@ class ViewCartView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'cart');
 		if ($ret) {
 			return array(

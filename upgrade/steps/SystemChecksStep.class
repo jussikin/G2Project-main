@@ -22,10 +22,8 @@
  * System checks
  * @package Upgrade
  */
-class SystemChecksStep extends UpgradeStep
-{
-	public function stepName()
-	{
+class SystemChecksStep extends UpgradeStep {
+	public function stepName() {
 		return _('System Checks');
 	}
 	
@@ -33,10 +31,9 @@ class SystemChecksStep extends UpgradeStep
 	 * Returns the exact bytes value from a php.ini setting
 	 * Copied from PHP.net's manual entry for ini_get()
 	 */
-	public function _getBytes($val)
-	{
+	public function _getBytes($val) {
 		$val = trim($val);
-		$last = $val{strlen($val) - 1};
+		$last = $val[strlen($val) - 1];
 		switch ($last) {
 			case 'g':
 			case 'G':
@@ -52,8 +49,7 @@ class SystemChecksStep extends UpgradeStep
 		return $val;
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		if (!empty($_GET['zendtest'])) {
 			header("Content-Type: text/plain");
 			header("Content-Length: 8");
@@ -516,8 +512,7 @@ class SystemChecksStep extends UpgradeStep
 		return false;
 	}
 	
-	public function CheckFileDirective()
-	{
+	public function CheckFileDirective() {
 		if (strstr(__FILE__, 'upgrade/steps/SystemChecksStep.class') || strstr(__FILE__, '\\upgrade\\steps\\SystemChecksStep.class')) {
 			return true;
 		} else {
@@ -526,8 +521,7 @@ class SystemChecksStep extends UpgradeStep
 	}
 	
 	/* Check if the files / dirs in the storage directory are writeable */
-	public function CheckStorageDirectory()
-	{
+	public function CheckStorageDirectory() {
 		global $gallery;
 		
 		$storagePath = $gallery->getConfig('data.gallery.base');
@@ -536,7 +530,7 @@ class SystemChecksStep extends UpgradeStep
 			return array(
 				sprintf(_('The storage folder path is not defined in config.php (%s)'), 'data.gallery.base')
 			);
-		} elseif ($storagePath{strlen($storagePath) - 1} != $platform->getDirectorySeparator()) {
+		} elseif ($storagePath[strlen($storagePath) - 1] != $platform->getDirectorySeparator()) {
 			$storagePath .= $platform->getDirectorySeparator();
 		}
 		
@@ -570,8 +564,7 @@ class SystemChecksStep extends UpgradeStep
 	 * @param int $max max files/dirs to check
 	 * @return array a list of files with insufficient permissions
 	 */
-	public function _checkStorageSubDirectory($dirname, &$tested, $max)
-	{
+	public function _checkStorageSubDirectory($dirname, &$tested, $max) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -604,8 +597,7 @@ class SystemChecksStep extends UpgradeStep
 		return $storageFiles;
 	}
 	
-	public static function CheckManifest(&$statusMonitor, $useSetTimeLimit)
-	{
+	public static function CheckManifest(&$statusMonitor, $useSetTimeLimit) {
 		$base = realpath(dirname(__FILE__) . '/../..') . '/';
 		
 		if ($useSetTimeLimit) {
@@ -678,8 +670,7 @@ class SystemChecksStep extends UpgradeStep
 	 * @param string $heading Heading for the block
 	 * @param string $notice (optional) A longer notice to be shown on top of the file list
 	 */
-	public function renderFileList($files, $blockId, $heading, $notice = null)
-	{
+	public function renderFileList($files, $blockId, $heading, $notice = null) {
 		ob_start();
 		include dirname(__FILE__) . '/../templates/SystemCheckFileList.html';
 		$html = ob_get_contents();
@@ -697,8 +688,7 @@ class SystemChecksStep extends UpgradeStep
 	 *
 	 * @return array (boolean success, string errors)
 	 */
-	public function _testPrivileges()
-	{
+	public function _testPrivileges() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$storageExtras = $storage->_getExtras();
@@ -806,8 +796,7 @@ class SystemChecksStep extends UpgradeStep
 	 * @param string $tablePrefix prefix for table names
 	 * @return array(boolean success, string error message)
 	 */
-	public function _executeSql($buffer, $tablePrefix)
-	{
+	public function _executeSql($buffer, $tablePrefix) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		

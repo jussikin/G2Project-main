@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminEditGroupControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminEditGroupControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminEditGroup');
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
 			return $ret;
@@ -54,8 +51,7 @@ class AdminEditGroupControllerTest extends GalleryControllerTestCase
 		$this->_deleteGroup($group);
 	}
 
-	public function testUndo()
-	{
+	public function testUndo() {
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
 			return $ret;
@@ -78,8 +74,7 @@ class AdminEditGroupControllerTest extends GalleryControllerTestCase
 		$this->_deleteGroup($group);
 	}
 
-	public function testEditGroup()
-	{
+	public function testEditGroup() {
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
 			return $ret;
@@ -104,8 +99,7 @@ class AdminEditGroupControllerTest extends GalleryControllerTestCase
 		$this->_deleteGroup($group);
 	}
 
-	public function testEditGroupMissingName()
-	{
+	public function testEditGroupMissingName() {
 		list($ret, $group) = $this->_createGroup();
 		if ($ret) {
 			return $ret;
@@ -129,8 +123,7 @@ class AdminEditGroupControllerTest extends GalleryControllerTestCase
 		$this->_deleteGroup($group);
 	}
 
-	public function _createGroup()
-	{
+	public function _createGroup() {
 		global $gallery;
 
 		list($ret, $group) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryGroup');
@@ -169,8 +162,7 @@ class AdminEditGroupControllerTest extends GalleryControllerTestCase
 		);
 	}
 
-	public function _deleteGroup($group)
-	{
+	public function _deleteGroup($group) {
 		global $gallery;
 		$ret = GalleryCoreApi::deleteEntityById($group->getId(), 'GalleryGroup');
 		if ($ret) {

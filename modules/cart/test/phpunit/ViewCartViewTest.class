@@ -25,15 +25,12 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 17580 $
  */
-class ViewCartViewTest extends GalleryViewTestCase
-{
-	public function __construct($methodName)
-	{
+class ViewCartViewTest extends GalleryViewTestCase {
+	public function __construct($methodName) {
 		$this->GalleryViewTestCase($methodName, 'cart.ViewCart');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -85,8 +82,7 @@ class ViewCartViewTest extends GalleryViewTestCase
 		$this->_unregisterFactoryImplementationForTest('CartPluginInterface_1_0');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		/* Restore the existing cart */
 		$ret = CartHelper::setCartItemCounts($this->_saveCartItemCounts);
 		if ($ret) {
@@ -99,8 +95,7 @@ class ViewCartViewTest extends GalleryViewTestCase
 		}
 	}
 	
-	public function testLoadTemplate()
-	{
+	public function testLoadTemplate() {
 		$this->_registerFactoryImplementationForTest('CartPluginInterface_1_1', 'ViewCartTestCartPlugin', 'ViewCartTestCartPlugin', __FILE__, 'cart');
 		$this->_registerFactoryImplementationForTest('CartPluginInterface_1_0', 'ViewCartTestCartPlugin1_0', 'ViewCartTestCartPlugin1_0', __FILE__, 'cart');
 		
@@ -129,8 +124,7 @@ class ViewCartViewTest extends GalleryViewTestCase
 		), $this->_filterRelevantPluginData($templateData['plugins']), 'plugins');
 	}
 	
-	public function testFilterAvailableActionsByRequiredPermission()
-	{
+	public function testFilterAvailableActionsByRequiredPermission() {
 		global $gallery;
 		
 		$this->_registerFactoryImplementationForTest('CartPluginInterface_1_1', 'ViewCartTestCartPlugin', 'ViewCartTestCartPlugin', __FILE__, 'cart');
@@ -169,8 +163,7 @@ class ViewCartViewTest extends GalleryViewTestCase
 		), $this->_filterRelevantPluginData($templateData['plugins']), 'plugins');
 	}
 	
-	public function testFilterAvailableActionsByItemType()
-	{
+	public function testFilterAvailableActionsByItemType() {
 		$this->_registerFactoryImplementationForTest('CartPluginInterface_1_1', 'ViewCartTestCartPlugin', 'ViewCartTestCartPlugin', __FILE__, 'cart');
 		$this->_registerFactoryImplementationForTest('CartPluginInterface_1_0', 'ViewCartTestCartPlugin1_0', 'ViewCartTestCartPlugin1_0', __FILE__, 'cart');
 		$this->_registerFactoryImplementationForTest('CartPluginInterface_1_1', 'ViewCartTestCartPlugin1_1', 'ViewCartTestCartPlugin1_1', __FILE__, 'cart');
@@ -209,8 +202,7 @@ class ViewCartViewTest extends GalleryViewTestCase
 		), $this->_filterRelevantPluginData($templateData['plugins']), 'plugins');
 	}
 	
-	public function _filterRelevantPluginData($plugins)
-	{
+	public function _filterRelevantPluginData($plugins) {
 		foreach ($plugins as $id => $data) {
 			foreach (array(
 				'supported',
@@ -228,17 +220,14 @@ class ViewCartViewTest extends GalleryViewTestCase
 }
 
 GalleryCoreApi::requireOnce('modules/cart/classes/CartPluginInterface_1_1.class');
-class ViewCartTestCartPlugin extends CartPluginInterface_1_1
-{
-	public function getSupportedItemTypes()
-	{
+class ViewCartTestCartPlugin extends CartPluginInterface_1_1 {
+	public function getSupportedItemTypes() {
 		return array(
 			'*'
 		);
 	}
 	
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		return array(
 			null,
 			'cart plugin',
@@ -246,8 +235,7 @@ class ViewCartTestCartPlugin extends CartPluginInterface_1_1
 		);
 	}
 	
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -256,17 +244,14 @@ class ViewCartTestCartPlugin extends CartPluginInterface_1_1
 }
 
 GalleryCoreApi::requireOnce('modules/cart/classes/CartPluginInterface_1_0.class');
-class ViewCartTestCartPlugin1_0 extends CartPluginInterface_1_0
-{
-	public function getSupportedItemTypes()
-	{
+class ViewCartTestCartPlugin1_0 extends CartPluginInterface_1_0 {
+	public function getSupportedItemTypes() {
 		return array(
 			'GalleryMovieItem'
 		);
 	}
 	
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		return array(
 			null,
 			'cart plugin 1.0',
@@ -274,8 +259,7 @@ class ViewCartTestCartPlugin1_0 extends CartPluginInterface_1_0
 		);
 	}
 	
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -283,25 +267,21 @@ class ViewCartTestCartPlugin1_0 extends CartPluginInterface_1_0
 	}
 }
 
-class ViewCartTestCartPlugin1_1 extends CartPluginInterface_1_1
-{
-	public function getSupportedItemTypes()
-	{
+class ViewCartTestCartPlugin1_1 extends CartPluginInterface_1_1 {
+	public function getSupportedItemTypes() {
 		return array(
 			'GalleryPhotoItem'
 		);
 	}
 	
-	public function getRequiredPermissions()
-	{
+	public function getRequiredPermissions() {
 		return array(
 			'core.edit',
 			'core.delete'
 		);
 	}
 	
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		return array(
 			null,
 			'cart plugin 1.1',
@@ -309,8 +289,7 @@ class ViewCartTestCartPlugin1_1 extends CartPluginInterface_1_1
 		);
 	}
 	
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null

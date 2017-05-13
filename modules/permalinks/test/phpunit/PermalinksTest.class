@@ -28,17 +28,14 @@ GalleryCoreApi::requireOnce('modules/permalinks/classes/PermalinksMapHelper.clas
  * @author Pierre-Luc Paour
  * @version $Revision: 17580 $
  */
-class PermalinksTest extends GalleryTestCase
-{
+class PermalinksTest extends GalleryTestCase {
 	public $_aliasNamesToDelete;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -82,8 +79,7 @@ class PermalinksTest extends GalleryTestCase
 		$this->_aliasNamesToDelete[] = 'testAlias1';
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		foreach ($this->_aliasNamesToDelete as $name) {
 			$ret = PermalinksMapHelper::deleteAlias($name);
 			if ($ret) {
@@ -97,8 +93,7 @@ class PermalinksTest extends GalleryTestCase
 		}
 	}
 
-	public function testFetchItemIdForAlias()
-	{
+	public function testFetchItemIdForAlias() {
 		list($ret, $destId) = PermalinksMapHelper::fetchItemIdForAlias('testAlias');
 		if ($ret) {
 			return $ret;
@@ -114,8 +109,7 @@ class PermalinksTest extends GalleryTestCase
 		$this->assertEquals($this->_album->getId(), (int) $destId);
 	}
 
-	public function testFetchAliasesForItem()
-	{
+	public function testFetchAliasesForItem() {
 		list($ret, $aliases) = PermalinksMapHelper::fetchAliasesForItem($this->_item->getId());
 		if ($ret) {
 			return $ret;
@@ -131,8 +125,7 @@ class PermalinksTest extends GalleryTestCase
 		$this->assertEquals(array('testAlias1'), $aliases);
 	}
 
-	public function testCollision()
-	{
+	public function testCollision() {
 		$ret = PermalinksMapHelper::createAlias('testAlias', $this->_item->getId());
 
 	/* we expect an error */
@@ -143,8 +136,7 @@ class PermalinksTest extends GalleryTestCase
 		'No collision reported, but expected one');
 	}
 
-	public function testDeleteAlias()
-	{
+	public function testDeleteAlias() {
 		/* delete */
 	$ret = PermalinksMapHelper::deleteAlias('testAlias');
 		if ($ret) {
@@ -187,8 +179,7 @@ class PermalinksTest extends GalleryTestCase
 		$this->assertEquals(array(), $aliases);
 	}
 
-	public function testListener()
-	{
+	public function testListener() {
 		/* The event listener is deactivated during unit tests, register it */
 	GalleryCoreApi::registerEventListener('GalleryEntity::delete', new PermalinksModule());
 		GalleryCoreApi::registerEventListener('GalleryEntity::save', new PermalinksModule());
@@ -243,8 +234,7 @@ class PermalinksTest extends GalleryTestCase
 		$this->assert(empty($destId), "2. Destid not empty ($destId)");
 	}
 
-	public function testListenerCollision()
-	{
+	public function testListenerCollision() {
 		/* The event listener is deactivated during unit tests, register it */
 	GalleryCoreApi::registerEventListener('GalleryEntity::save', new PermalinksModule());
 

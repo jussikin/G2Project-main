@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemAddFromWeb extends ItemAddPlugin
-{
+class ItemAddFromWeb extends ItemAddPlugin {
 	/**
 	 * @see ItemAddPlugin::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $param) = GalleryCoreApi::getPluginParameter('module', 'itemadd', 'fromweb');
 		if ($ret) {
 			return array(
@@ -59,8 +57,7 @@ class ItemAddFromWeb extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$addController)
-	{
+	public function handleRequest($form, &$item, &$addController) {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$storage =& $gallery->getStorage();
@@ -194,8 +191,7 @@ class ItemAddFromWeb extends ItemAddPlugin
 	/**
 	 * @see ItemAdd:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		global $gallery;
 		
 		if ($form['formName'] != 'ItemAddFromWeb') {
@@ -423,8 +419,7 @@ class ItemAddFromWeb extends ItemAddPlugin
 	 *               string filename or null if not requested
 	 * @access private
 	 */
-	public function _getMimeType($url, $headers = null, $getFileName = false)
-	{
+	public function _getMimeType($url, $headers = null, $getFileName = false) {
 		$urlComponents = parse_url($url);
 		
 		$fileName = null;
@@ -530,8 +525,7 @@ class ItemAddFromWeb extends ItemAddPlugin
 	 *               string type name
 	 * @access private
 	 */
-	public function _getTypeName($url, $htmlAttribute = null, $headers = null)
-	{
+	public function _getTypeName($url, $htmlAttribute = null, $headers = null) {
 		if (isset($htmlAttribute) && strtolower($htmlAttribute) == 'src') {
 			/* For <img> src attribute just assume "Photo" and don't examine mime type */
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'itemadd');
@@ -584,8 +578,7 @@ class ItemAddFromWeb extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'itemadd');
 		if ($ret) {
 			return array(

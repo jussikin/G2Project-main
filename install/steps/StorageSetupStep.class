@@ -22,15 +22,12 @@
  * Setup filesytem storage directory
  * @package Install
  */
-class StorageSetupStep extends InstallStep
-{
-	public function stepName()
-	{
+class StorageSetupStep extends InstallStep {
+	public function stepName() {
 		return _('Storage Setup');
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $galleryStub;
 		
 		if (empty($this->_dir)) {
@@ -136,8 +133,7 @@ class StorageSetupStep extends InstallStep
 		}
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		if (!empty($_GET['doAutoComplete'])) {
 			processAutoCompleteRequest();
 
@@ -147,8 +143,7 @@ class StorageSetupStep extends InstallStep
 		return true;
 	}
 	
-	public function isRedoable()
-	{
+	public function isRedoable() {
 		return true;
 	}
 	
@@ -160,8 +155,7 @@ class StorageSetupStep extends InstallStep
 	 * @return array(boolean false if check procedure failed due to platform issues,
 	 *               boolean true if the folder is accessible from the web (=insecure))
 	 */
-	public function _isStoragePathWebAccessible($dir)
-	{
+	public function _isStoragePathWebAccessible($dir) {
 		/* Check if we can use fsockopen. Else we can't test it at all. */
 		if (!function_exists('fsockopen') || in_array('fsockopen', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -262,8 +256,7 @@ class StorageSetupStep extends InstallStep
 	 * @return array(boolean false if check procedure failed due to platform issues,
 	 *               boolean true if the folder is accessible from the web (=insecure))
 	 */
-	public function _isUrlAccessible($url, $probeString)
-	{
+	public function _isUrlAccessible($url, $probeString) {
 		$components = @parse_url($url);
 		if (!$components) {
 			return array(

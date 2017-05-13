@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CommentSearchTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CommentSearchTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -162,8 +159,7 @@ class CommentSearchTest extends GalleryTestCase
 		$this->_user = $gallery->getActiveUser();
 	}
 	
-	public function testFetchSearchModuleInfo()
-	{
+	public function testFetchSearchModuleInfo() {
 		list($ret, $info) = $this->_commentSearch->getSearchModuleInfo();
 		if ($ret) {
 			return $ret;
@@ -177,8 +173,7 @@ class CommentSearchTest extends GalleryTestCase
 		$this->assert(!empty($info['options']['comments']['enabled']), 'options:comments not enabled');
 	}
 	
-	public function testSearchAll()
-	{
+	public function testSearchAll() {
 		list($ret, $results) = $this->_commentSearch->search(array(
 			'comments' => 1
 		), $this->_randomKey);
@@ -274,8 +269,7 @@ class CommentSearchTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testLimitedSearch()
-	{
+	public function testLimitedSearch() {
 		list($ret, $results) = $this->_commentSearch->search(array(
 			'comments' => 1
 		), $this->_randomKey, 1, 2);
@@ -335,8 +329,7 @@ class CommentSearchTest extends GalleryTestCase
 		), $results);
 	}
 	
-	public function testEmptySearch()
-	{
+	public function testEmptySearch() {
 		list($ret, $results) = $this->_commentSearch->search(array(
 			'comments' => 1
 		), 'some string that will never show up');

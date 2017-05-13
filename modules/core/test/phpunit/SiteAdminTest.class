@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SiteAdminTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SiteAdminTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -45,8 +42,7 @@ class SiteAdminTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGuestRedirect()
-	{
+	public function testGuestRedirect() {
 		/* Verify redirect to login view if guest access SiteAdmin view */
 		$ret = $this->_becomeGuestUser();
 		if ($ret) {

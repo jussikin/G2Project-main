@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PhotoAccessCartPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PhotoAccessCartPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -142,8 +139,7 @@ class PhotoAccessCartPluginTest extends GalleryTestCase
 	$gallery->_urlGenerator = new PhotoAccessCartPluginTestUrlGenerator();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 	/* Restore session id */
@@ -159,8 +155,7 @@ class PhotoAccessCartPluginTest extends GalleryTestCase
 		}
 	}
 
-	public function testFulfillCart()
-	{
+	public function testFulfillCart() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryCoreApi::requireOnce('modules/cart/classes/CartPluginInterface_1_0.class');
@@ -214,10 +209,8 @@ class PhotoAccessCartPluginTest extends GalleryTestCase
  * @package PhotoAccess
  * @subpackage PHPUnit
  */
-class PhotoAccessCartPluginTestUrlGenerator
-{
-	public function generateUrl($params=array(), $options=array())
-	{
+class PhotoAccessCartPluginTestUrlGenerator {
+	public function generateUrl($params=array(), $options=array()) {
 		$lines = array();
 		foreach ($params as $key => $value) {
 			$lines[] = "$key=$value";

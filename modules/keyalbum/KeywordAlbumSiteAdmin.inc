@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class KeywordAlbumSiteAdminController extends GalleryController
-{
+class KeywordAlbumSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -118,13 +116,11 @@ class KeywordAlbumSiteAdminController extends GalleryController
 /**
  * Settings for Keyword Albums
  */
-class KeywordAlbumSiteAdminView extends GalleryView
-{
+class KeywordAlbumSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -165,8 +161,8 @@ class KeywordAlbumSiteAdminView extends GalleryView
 			$split = $form['split'];
 			$form['split'] = array();
 			for ($i = 0; $i < strlen($split); $i++) {
-				if (isset($map[$split{$i}])) {
-					$form['split'][$map[$split{$i}]] = 1;
+				if (isset($map[$split[$i]])) {
+					$form['split'][$map[$split[$i]]] = 1;
 				}
 			}
 		} else {

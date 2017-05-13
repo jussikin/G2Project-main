@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CommentSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class CommentSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'comment.CommentSiteAdmin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -57,8 +54,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCommentSiteAdminControllerReset()
-	{
+	public function testCommentSiteAdminControllerReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		
 		$results = $this->handleRequest();
@@ -72,8 +68,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCommentSiteAdminControllerSave()
-	{
+	public function testCommentSiteAdminControllerSave() {
 		GalleryUtilities::putRequestVariable('form[latest]', 1);
 		GalleryUtilities::putRequestVariable('form[show]', '12');
 		GalleryUtilities::putRequestVariable('form[moderate]', 1);
@@ -108,8 +103,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCommentSiteAdminControllerSaveNoShow()
-	{
+	public function testCommentSiteAdminControllerSaveNoShow() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		
 		$results = $this->handleRequest();
@@ -125,8 +119,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCommentSiteAdminControllerSaveBadShow()
-	{
+	public function testCommentSiteAdminControllerSaveBadShow() {
 		GalleryUtilities::putRequestVariable('form[show]', 'abc5000');
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		
@@ -143,8 +136,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testEmptyAkismetApiKeyDisablesAkismet()
-	{
+	public function testEmptyAkismetApiKeyDisablesAkismet() {
 		GalleryUtilities::putRequestVariable('form[latest]', 1);
 		GalleryUtilities::putRequestVariable('form[show]', '12');
 		GalleryUtilities::putRequestVariable('form[apiKey]', '');
@@ -175,8 +167,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testMalformedAkismetApiKeyCausesError()
-	{
+	public function testMalformedAkismetApiKeyCausesError() {
 		GalleryUtilities::putRequestVariable('form[latest]', 1);
 		GalleryUtilities::putRequestVariable('form[show]', '12');
 		GalleryUtilities::putRequestVariable('form[apiKey]', 'somethinginvalid');
@@ -207,8 +198,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCommentSiteAdminControllerSaveAksimetKeyValidatedLocallyToo()
-	{
+	public function testCommentSiteAdminControllerSaveAksimetKeyValidatedLocallyToo() {
 		GalleryUtilities::putRequestVariable('form[show]', '12');
 		GalleryUtilities::putRequestVariable('form[apiKey]', '3:15/s');
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
@@ -229,8 +219,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCheckAllWithAkismet()
-	{
+	public function testCheckAllWithAkismet() {
 		GalleryUtilities::putRequestVariable('form[action][checkAllWithAkismet]', '1');
 		
 		$results = $this->handleRequest();
@@ -243,8 +232,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCheckAllWithAkismetCallback()
-	{
+	public function testCheckAllWithAkismetCallback() {
 		global $gallery;
 		$mockTemplateAdapter = new MockTemplateAdapter();
 		$gallery->_templateAdapter =& $mockTemplateAdapter;
@@ -312,8 +300,7 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 	/**
 	 * This should probably get moved into GalleryTestCase
 	 */
-	public function _getStatusFromProgressBar()
-	{
+	public function _getStatusFromProgressBar() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -324,23 +311,19 @@ class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class CommentSiteAdminControllerTest_FakeAkismetApi
-{
-	public function CommentSiteAdminControllerTest_FakeAkismetApi($legal = false)
-	{
+class CommentSiteAdminControllerTest_FakeAkismetApi {
+	public function CommentSiteAdminControllerTest_FakeAkismetApi($legal = false) {
 		$this->_legal = $legal;
 	}
 	
-	public function verifyApiKey($apiKey)
-	{
+	public function verifyApiKey($apiKey) {
 		return array(
 			null,
 			$this->_legal
 		);
 	}
 	
-	public function checkComment(&$comment)
-	{
+	public function checkComment(&$comment) {
 		return array(
 			null,
 			true

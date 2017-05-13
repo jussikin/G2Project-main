@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17769 $
  */
-class SiteAdminView extends GalleryView
-{
+class SiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		/**
@@ -282,8 +280,7 @@ class SiteAdminView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		/* Get the description from the current subView */
 		$subViewName = GalleryUtilities::getRequestVariables('subView');
 		if (empty($subViewName)) {
@@ -322,13 +319,11 @@ class SiteAdminView extends GalleryView
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_ADMIN;
 	}
 	
-	public function groupSort($a, $b)
-	{
+	public function groupSort($a, $b) {
 		static $groupOrder;
 		if (!isset($groupOrder)) {
 			/* gallery first, toolkits second, other last */
@@ -352,8 +347,7 @@ class SiteAdminView extends GalleryView
 		return ($ag > $bg) ? 1 : -1;
 	}
 	
-	public function nameSort($a, $b)
-	{
+	public function nameSort($a, $b) {
 		$an = $a['name'];
 		$bn = $b['name'];
 		if ($an == $bn) {

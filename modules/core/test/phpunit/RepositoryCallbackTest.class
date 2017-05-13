@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/RepositoryCallback.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class RepositoryCallbackTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class RepositoryCallbackTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function testSaveRepositoryList()
-	{
+	public function testSaveRepositoryList() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('form[repositories][released]', 1);
 		GalleryUtilities::putRequestVariable('form[repositories][experimental]', '<script>something malicious</script>');

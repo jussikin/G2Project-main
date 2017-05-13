@@ -27,17 +27,14 @@ GalleryCoreApi::requireOnce("modules/core/AdminLanguageManager.inc");
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17606 $
  */
-class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
-{
+class AdminLanguageManagerControllerTest extends GalleryControllerTestCase {
 	public $_galleryTemplateAdapter;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminLanguageManager');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -92,8 +89,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_templateAdapter = $this->_galleryTemplateAdapter;
 		$platform =& $gallery->getPlatform();
@@ -109,8 +105,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testUpdateBrowserPreference()
-	{
+	public function testUpdateBrowserPreference() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -158,8 +153,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		), $results, 'Language general settings not updated');
 	}
 
-	public function testUpdateDefaultLanguage()
-	{
+	public function testUpdateDefaultLanguage() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -211,8 +205,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		), $results, 'Language general settings not updated');
 	}
 
-	public function testGetFormLanguages()
-	{
+	public function testGetFormLanguages() {
 		global $gallery;
 
 		list($ret, $defaultLanguage) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
@@ -258,8 +251,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($expected, $deletePackages, 'Unexpected delete package list');
 	}
 
-	public function testDeleteLanguagePackages()
-	{
+	public function testDeleteLanguagePackages() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -309,8 +301,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		), $gallery->_templateAdapter->getProgressBarDump(), 'Incorrect progress');
 	}
 
-	public function testUpdateLanguagePackages()
-	{
+	public function testUpdateLanguagePackages() {
 		$this->_testRepository->setReply('downloadAndUnpackPackages', array(
 			array(
 				'modules/testModule.descriptor',
@@ -394,8 +385,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		), $status, 'Incorrect status returned');
 	}
 
-	public function testHandleRequest()
-	{
+	public function testHandleRequest() {
 		global $gallery;
 
 		list($ret, $defaultLanguage) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
@@ -425,8 +415,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 		), $results, 'language general settings not updated');
 	}
 
-	public function testUpdateLanguageSettings()
-	{
+	public function testUpdateLanguageSettings() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 

@@ -25,21 +25,18 @@
  * @author Johannes Schmittat <Johannes@Schmittat.com>
  * @version $Revision: 17657 $
  */
-class ShowAllCommentsView extends GalleryView
-{
+class ShowAllCommentsView extends GalleryView {
 	/**
 	 * @see GalleryView::autoCacheControl
 	 */
-	public function autoCacheControl()
-	{
+	public function autoCacheControl() {
 		return false;
 	}
 	
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class');
 		
 		list($ret, $item) = $this->getItem();
@@ -258,8 +255,7 @@ class ShowAllCommentsView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'comment');
 		if ($ret) {
 			return array(

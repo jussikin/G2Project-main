@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class MovieTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MovieTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -62,8 +59,7 @@ class MovieTest extends GalleryTestCase
 		$this->_markForCleanup($this->_movie);
 	}
 	
-	public function testRescanMovie()
-	{
+	public function testRescanMovie() {
 		$this->_movie->setWidth(1);
 		$this->_movie->setHeight(2);
 		$this->_movie->setDuration(3);
@@ -77,8 +73,7 @@ class MovieTest extends GalleryTestCase
 		$this->assertEquals(10.0, $this->_movie->getDuration(), 'duration');
 	}
 	
-	public function testRescanMovieWithToolkitFailure()
-	{
+	public function testRescanMovieWithToolkitFailure() {
 		$this->_movie->setWidth(1);
 		$this->_movie->setHeight(2);
 		$this->_movie->setDuration(3);
@@ -95,8 +90,7 @@ class MovieTest extends GalleryTestCase
 		$this->assertEquals(0.0, $this->_movie->getDuration(), 'duration');
 	}
 	
-	public function testRescanMovieWithStorageFailure()
-	{
+	public function testRescanMovieWithStorageFailure() {
 		$this->_movie->setWidth(1);
 		$this->_movie->setHeight(2);
 		$this->_movie->setDuration(3);
@@ -119,10 +113,8 @@ class MovieTest extends GalleryTestCase
 	}
 }
 
-class MovieTestToolkit
-{
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+class MovieTestToolkit {
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		if (empty($_REQUEST['toolkitError'])) {
 			return array(
 				null,

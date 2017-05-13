@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class LinkItemSiteAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class LinkItemSiteAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'linkitem.LinkItemSiteAdmin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class LinkItemSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		
 		$results = $this->handleRequest();
@@ -61,8 +57,7 @@ class LinkItemSiteAdminControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[urlSnapshot]', '1');
 		GalleryUtilities::putRequestVariable('form[snapshotExec]', 'khtml2png %URL%');
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');

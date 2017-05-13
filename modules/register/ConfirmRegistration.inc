@@ -25,19 +25,18 @@
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 17580 $
  */
-class ConfirmRegistrationController extends GalleryController
-{
+class ConfirmRegistrationController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		GalleryCoreApi::requireOnce(
-		'modules/register/classes/GalleryPendingUserHelper.class');
+			'modules/register/classes/GalleryPendingUserHelper.class'
+		);
 		$results = array('status' => array(), 'error' => array());
 
 	/* turn the pending user into a real user */
-	list($username, $regKey) = GalleryUtilities::getRequestVariables('username', 'key');
+		list($username, $regKey) = GalleryUtilities::getRequestVariables('username', 'key');
 
 		list($ret, $user) = GalleryPendingUserHelper::fetchPendingUserByUsername($username);
 		if ($ret) {
@@ -46,7 +45,7 @@ class ConfirmRegistrationController extends GalleryController
 	     * If the username is now a real user then maybe we got here via return-url
 	     * after login.. let's just return to previous url instead of showing error msg.
 	     */
-		list($ret, $user) = GalleryCoreApi::fetchUserByUsername($username);
+				list($ret, $user) = GalleryCoreApi::fetchUserByUsername($username);
 				if (!$ret) {
 					$results['redirect'] = array('return' => true);
 				} else {
@@ -57,14 +56,14 @@ class ConfirmRegistrationController extends GalleryController
 			}
 		} else {
 			/* verify registration key: */
-		if ($regKey != $user->getRegistrationKey()) {
-			$results['error'][] = 'form[error][unknownUser]';
-		} else {
-			$ret = GalleryPendingUserHelper::createGalleryUser($user);
-			if ($ret) {
-				return array($ret, null);
+			if ($regKey != $user->getRegistrationKey()) {
+				$results['error'][] = 'form[error][unknownUser]';
+			} else {
+				$ret = GalleryPendingUserHelper::createGalleryUser($user);
+				if ($ret) {
+					return array($ret, null);
+				}
 			}
-		}
 		}
 
 		if (empty($results['redirect'])) {
@@ -79,13 +78,11 @@ class ConfirmRegistrationController extends GalleryController
 /**
  * This view shows a confirmation that the users account was activated
  */
-class ConfirmRegistrationView extends GalleryView
-{
+class ConfirmRegistrationView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$template->setVariable('controller', 'register.ConfirmRegistration');
 
 		return array(null, array('body' => 'modules/register/templates/ConfirmRegistration.tpl'));

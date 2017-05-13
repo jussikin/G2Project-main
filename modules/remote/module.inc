@@ -23,15 +23,12 @@
  * @author Pierre-Luc Paour <paour@users.sourceforge.net>
  * @version $Revision: 20951 $
  */
-class RemoteModule extends GalleryModule
-{
-	public function __construct()
-	{
+class RemoteModule extends GalleryModule {
+	public function __construct() {
 		$this->RemoteModule();
 	}
 
-	public function RemoteModule()
-	{
+	public function RemoteModule() {
 		global $gallery;
 		$this->setId('remote');
 		$this->setName($gallery->i18n('Remote'));
@@ -47,8 +44,7 @@ class RemoteModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'remote');
 		if ($ret) {
 			return $ret;
@@ -68,12 +64,16 @@ class RemoteModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our item add plugins */
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemAddPlugin', 'ItemAddGalleryRemote', 'ItemAddGalleryRemote',
-		'modules/remote/ItemAddGalleryRemote.inc', 'remote', null);
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+			'ItemAddPlugin',
+			'ItemAddGalleryRemote',
+			'ItemAddGalleryRemote',
+			'modules/remote/ItemAddGalleryRemote.inc',
+			'remote',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -84,8 +84,7 @@ class RemoteModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null,
 			 array(array('name' => $this->translate('Remote'),
 				 'view' => 'remote.RemoteSiteAdmin')));

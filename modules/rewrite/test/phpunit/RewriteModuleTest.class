@@ -26,18 +26,15 @@
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class RewriteModuleTest extends GalleryTestCase
-{
+class RewriteModuleTest extends GalleryTestCase {
 	public $_module;
 	public $_activeRules;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -100,8 +97,7 @@ class RewriteModuleTest extends GalleryTestCase
 	$this->_activeRules['rewritemodulemock'][0] = 'phpunit/dummy/%itemId%.html';
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removePlugin('module', 'rewritemodulemock');
 		if ($ret) {
 			return $ret;
@@ -113,8 +109,7 @@ class RewriteModuleTest extends GalleryTestCase
 		}
 	}
 
-	public function testHandleEvent1()
-	{
+	public function testHandleEvent1() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite',
 		'history.rewritemodulemock',
 		serialize(array('phpunit/dummy/%itemId%.html')));
@@ -190,8 +185,7 @@ class RewriteModuleTest extends GalleryTestCase
 		$this->assertEquals(array(), unserialize($activeRules), 'active rules (uninstall)');
 	}
 
-	public function testHandleEvent2()
-	{
+	public function testHandleEvent2() {
 		/* Activate the module */
 	list($ret, $redirect) = $this->_module->activate();
 		if ($ret) {
@@ -229,8 +223,7 @@ class RewriteModuleTest extends GalleryTestCase
 		}
 	}
 
-	public function testHandleEventWithDupes()
-	{
+	public function testHandleEventWithDupes() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite',
 		'history.rewritemodulemock',
 		serialize(array('phpunit/dummy/%itemId%.html')));
@@ -305,10 +298,8 @@ class RewriteModuleTest extends GalleryTestCase
  * @package Rewrite
  * @subpackage PHPUnit
  */
-class RewriteModuleMockModule extends GalleryModule
-{
-	public function RewriteModuleMockModule()
-	{
+class RewriteModuleMockModule extends GalleryModule {
+	public function RewriteModuleMockModule() {
 		global $gallery;
 
 		$this->setId('rewritemodulemock');
@@ -321,8 +312,7 @@ class RewriteModuleMockModule extends GalleryModule
 		$this->setRequiredModuleApi(GalleryModule::getApiVersion());
 	}
 
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		return array(array('pattern' => 'phpunit/dummy/%itemId%.htm'));
 	}
 }
@@ -332,16 +322,13 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteParser.class');
 /**
  * Mock rewrite parser for this test
  */
-class RewriteModuleMockParser extends RewriteParser
-{
-	public function RewriteModuleMockParser()
-	{
+class RewriteModuleMockParser extends RewriteParser {
+	public function RewriteModuleMockParser() {
 		$this->_setParserId('rewritemodulemock');
 		$this->_setParserType('mock');
 	}
 
-	public function saveActiveRules($activeRules=null, $rewriteModule=null)
-	{
+	public function saveActiveRules($activeRules=null, $rewriteModule=null) {
 		if (is_null($activeRules)) {
 			list($ret, $activeRules) = GalleryCoreApi::getPluginParameter(
 		'module', 'rewrite', 'activeRules');
@@ -383,10 +370,8 @@ class RewriteModuleMockParser extends RewriteParser
 /**
  * Test platform for this test
  */
-class RewriteModuleMockPlatform extends GalleryPlatform
-{
-	public function file_exists($file)
-	{
+class RewriteModuleMockPlatform extends GalleryPlatform {
+	public function file_exists($file) {
 		if (strpos($file, 'modules/rewritemodulemock/module.inc') !== false) {
 			return true;
 		}
@@ -394,8 +379,7 @@ class RewriteModuleMockPlatform extends GalleryPlatform
 		return parent::file_exists($file);
 	}
 
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		if (strpos($path, 'modules/') !== false) {
 			$this->_list = array();
 			if ($dir = parent::opendir($path)) {
@@ -411,8 +395,7 @@ class RewriteModuleMockPlatform extends GalleryPlatform
 		return parent::opendir($path);
 	}
 
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if (strpos($path, 'modules/rewritemodulemock') !== false) {
 			return true;
 		}
@@ -420,8 +403,7 @@ class RewriteModuleMockPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 
-	public function readdir($handle)
-	{
+	public function readdir($handle) {
 		if ($handle == 'rewritemodulemock') {
 			return array_shift($this->_list);
 		}
@@ -429,8 +411,7 @@ class RewriteModuleMockPlatform extends GalleryPlatform
 		return parent::readdir($handle);
 	}
 
-	public function closedir($handle)
-	{
+	public function closedir($handle) {
 		if ($handle == 'rewritemodulemock') {
 			unset($this->_list);
 
@@ -440,8 +421,7 @@ class RewriteModuleMockPlatform extends GalleryPlatform
 		return parent::closedir($handle);
 	}
 
-	public function recursiveRmdir($path)
-	{
+	public function recursiveRmdir($path) {
 		return true;
 	}
 }

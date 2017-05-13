@@ -27,15 +27,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20951 $
  */
-class DcrawModule extends GalleryModule
-{
-	public function __construct()
-	{
+class DcrawModule extends GalleryModule {
+	public function __construct() {
 		$this->DcrawModule();
 	}
 	
-	public function DcrawModule()
-	{
+	public function DcrawModule() {
 		global $gallery;
 		
 		$this->setId('dcraw');
@@ -58,8 +55,7 @@ class DcrawModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our graphics class with the factory */
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'DcrawToolkit', 'Dcraw', 'modules/dcraw/classes/DcrawToolkit.class', 'dcraw', null);
 		if ($ret) {
@@ -72,8 +68,7 @@ class DcrawModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/dcraw/classes/DcrawToolkitHelper.class');
 		
@@ -197,8 +192,7 @@ class DcrawModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires exec() */
 		if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -231,8 +225,7 @@ class DcrawModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		global $gallery;
 		
 		/* This module requires exec() */
@@ -272,7 +265,7 @@ class DcrawModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path;
@@ -291,7 +284,7 @@ class DcrawModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path;
@@ -353,8 +346,7 @@ class DcrawModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -369,8 +361,7 @@ class DcrawModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'dcraw.AdminDcraw';
 	}
 }

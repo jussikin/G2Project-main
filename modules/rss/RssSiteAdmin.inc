@@ -30,17 +30,15 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssHelper.class');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17580 $
  */
-class RssSiteAdminController extends GalleryController
-{
+class RssSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 	/* Make sure the user has permission to do this operation */
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -51,73 +49,85 @@ class RssSiteAdminController extends GalleryController
 		if (isset($form['action']['save'])) {
 			if ($mode == 'settings') {
 				/* error checking */
-		   if (!isset($form['defaultVersion']) ||
-			!($form['defaultVersion'] == '0.91' ||
-			$form['defaultVersion'] == '2.0')) {
-		   	$error[] = 'form[error][defaultVersion]';
-		   } elseif (!isset($form['defaultCount']) || ((int)$form['defaultCount']) <= 0) {
-		   	$error[] = 'form[error][defaultCount]';
-		   } elseif (!isset($form['maxCount']) || ((int)$form['maxCount']) <= 0) {
-		   	$error[] = 'form[error][maxCount]';
-		   } elseif (!isset($form['maxAge']) || ((int)$form['maxAge']) <= 0) {
-		   	$error[] = 'form[error][maxAge]';
-		   } elseif (!isset($form['defaultTtl']) || ((int)$form['defaultTtl']) < 0) {
-		   	$error[] = 'form[error][defaultTtl]';
-		   } elseif (!isset($form['defaultCopyright'])) {
-		   	$error[] = 'form[error][defaultCopyright]';
-		   } else {
-		   	/* save parameters */
-			foreach (array('defaultVersion',
-				   'defaultCount',
-				   'maxCount',
-				   'maxAge',
-				   'defaultCopyright',
-				   'defaultTtl') as $setting) {
-				$ret = GalleryCoreApi::setPluginParameter('module', 'rss',
-								  $setting, $form[$setting]);
-				if ($ret) {
-					return array($ret, null);
+				if (!isset($form['defaultVersion']) ||
+				!($form['defaultVersion'] == '0.91' ||
+				$form['defaultVersion'] == '2.0')) {
+					  $error[] = 'form[error][defaultVersion]';
+				} elseif (!isset($form['defaultCount']) || ((int)$form['defaultCount']) <= 0) {
+					  $error[] = 'form[error][defaultCount]';
+				} elseif (!isset($form['maxCount']) || ((int)$form['maxCount']) <= 0) {
+					  $error[] = 'form[error][maxCount]';
+				} elseif (!isset($form['maxAge']) || ((int)$form['maxAge']) <= 0) {
+					  $error[] = 'form[error][maxAge]';
+				} elseif (!isset($form['defaultTtl']) || ((int)$form['defaultTtl']) < 0) {
+					  $error[] = 'form[error][defaultTtl]';
+				} elseif (!isset($form['defaultCopyright'])) {
+					  $error[] = 'form[error][defaultCopyright]';
+				} else {
+					  /* save parameters */
+					foreach (array('defaultVersion',
+						'defaultCount',
+						'maxCount',
+						'maxAge',
+						'defaultCopyright',
+						'defaultTtl') as $setting) {
+						$ret = GalleryCoreApi::setPluginParameter(
+							'module',
+							'rss',
+							$setting,
+							$form[$setting]
+						);
+						if ($ret) {
+							   return array($ret, null);
+						}
+					}
+
+					foreach (array('allowSimpleFeed',
+						'allowConfigurableFeed',
+						'allowAlbums',
+						'allowPhotos',
+						'allowPhotosRecursive',
+						'allowCommentsPhoto',
+						'allowCommentsAlbum',
+						'allowCommentsRecursive',
+						'allowPhotosRandom',
+						'allowPhotosRandomRecursive') as $setting) {
+						$ret = GalleryCoreApi::setPluginParameter(
+							'module',
+							'rss',
+							$setting,
+							(isset($form[$setting]) && $form[$setting]) ? 1 : 0
+						);
+						if ($ret) {
+							   return array($ret, null);
+						}
+					}
+
+					  $status['saved'] = 1;
 				}
-			}
-
-		   	foreach (array('allowSimpleFeed',
-				   'allowConfigurableFeed',
-				   'allowAlbums',
-				   'allowPhotos',
-				   'allowPhotosRecursive',
-				   'allowCommentsPhoto',
-				   'allowCommentsAlbum',
-				   'allowCommentsRecursive',
-				   'allowPhotosRandom',
-				   'allowPhotosRandomRecursive') as $setting) {
-		   		$ret = GalleryCoreApi::setPluginParameter('module', 'rss', $setting,
-				(isset($form[$setting]) && $form[$setting]) ? 1 : 0);
-		   		if ($ret) {
-		   			return array($ret, null);
-		   		}
-		   	}
-
-		   	$status['saved'] = 1;
-		   }
 			} elseif ($mode == 'simplefeedsettings') {
 				/* error checking */
-		if (!isset($form['sfPhotosRecursiveLimit'])
-			|| ((int)$form['sfPhotosRecursiveLimit']) < 0) {
-			$error[] = 'form[error][sfPhotosRecursiveLimit]';
-		} else {
-			/* save parameters */
-			foreach (array('sfAlbumType',
-				   'sfPhotosRecursiveLimit',
-				   'sfDate') as $setting) {
-				$ret = GalleryCoreApi::setPluginParameter('module', 'rss',
-								  $setting, $form[$setting]);
-				if ($ret) {
-					return array($ret, null);
-				}
-			}
+				if (!isset($form['sfPhotosRecursiveLimit'])
+				|| ((int)$form['sfPhotosRecursiveLimit']) < 0) {
+					$error[] = 'form[error][sfPhotosRecursiveLimit]';
+				} else {
+					/* save parameters */
+					foreach (array('sfAlbumType',
+						   'sfPhotosRecursiveLimit',
+						   'sfDate') as $setting) {
+						$ret = GalleryCoreApi::setPluginParameter(
+							'module',
+							'rss',
+							$setting,
+							$form[$setting]
+						);
+						if ($ret) {
+									return array($ret, null);
+						}
+					}
 
-			$status['saved'] = 1;
-		}
+					$status['saved'] = 1;
+				}
 			}
 		} elseif (isset($form['action']['reset'])) {
 			/* do nothing */
@@ -133,7 +143,7 @@ class RssSiteAdminController extends GalleryController
 		}
 
 	/* figure out the method we will use */
-	$method = empty($error) ? 'redirect' : 'delegate';
+		$method = empty($error) ? 'redirect' : 'delegate';
 		$results['status'] = $status;
 		$results['error'] = $error;
 		$results[$method]['view'] = 'core.SiteAdmin';
@@ -147,13 +157,11 @@ class RssSiteAdminController extends GalleryController
 /**
  * Settings for RSS
  */
-class RssSiteAdminView extends GalleryView
-{
+class RssSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$form['formName'] = 'RssSiteAdmin';
 		$RssSiteAdmin = array();
 		$RssSiteAdmin['rssVersionList'] = array('0.91', '2.0');
@@ -169,7 +177,7 @@ class RssSiteAdminView extends GalleryView
 		}
 
 	/* fetch module parameters and save them in form variable */
-	list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
+		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -179,7 +187,7 @@ class RssSiteAdminView extends GalleryView
 
 		if ($RssSiteAdmin['mode'] == 'list') {
 			/* fetch all feed definitions */
-		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
+			list($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -191,7 +199,7 @@ class RssSiteAdminView extends GalleryView
 
 			if (!empty($feeds)) {
 				/* replace item Ids with actual items */
-		$itemIds = array();
+				$itemIds = array();
 				foreach ($feeds as $feed) {
 					$itemIds[] = $feed['itemId'];
 				}

@@ -26,13 +26,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SwitchDetailModeController extends GalleryController
-{
+class SwitchDetailModeController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest()
-	{
+	public function handleRequest() {
 		global $gallery;
 		
 		$mode = GalleryUtilities::getRequestVariables('mode');
@@ -60,29 +58,25 @@ class SwitchDetailModeController extends GalleryController
  * This view provides raw html for the exif block, used in ajax calls to switch mode.
  * @author Alan Harder <alan.harder@sun.com>
  */
-class SwitchDetailModeView extends GalleryView
-{
+class SwitchDetailModeView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

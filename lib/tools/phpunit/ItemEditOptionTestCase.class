@@ -29,8 +29,7 @@ require_once dirname(__FILE__) . '/../../../modules/core/ItemEdit.inc';
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ItemEditOptionTestCase extends GalleryTestCase
-{
+class ItemEditOptionTestCase extends GalleryTestCase {
 	/**
 	 * The option instance
 	 * @access protected
@@ -43,8 +42,7 @@ class ItemEditOptionTestCase extends GalleryTestCase
 	 */
 	public $_statusMonitor;
 	
-	public function ItemEditOptionTestCase($methodName, $moduleName, $optionName)
-	{
+	public function ItemEditOptionTestCase($methodName, $moduleName, $optionName) {
 		$this->GalleryTestCase($methodName);
 		
 		list($ret, $this->_option) = GalleryCoreApi::newFactoryInstanceById('ItemEditOption', $optionName);
@@ -62,8 +60,7 @@ class ItemEditOptionTestCase extends GalleryTestCase
 		$this->_statusMonitor = new ItemEditOptionTestImmediateStatusView();
 	}
 	
-	public function _handleRequestAfterEdit($form, &$item, $errorCode = null)
-	{
+	public function _handleRequestAfterEdit($form, &$item, $errorCode = null) {
 		list($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array(
 			$item->getId()
 		));
@@ -96,8 +93,7 @@ class ItemEditOptionTestCase extends GalleryTestCase
 		);
 	}
 	
-	public function _translate($message)
-	{
+	public function _translate($message) {
 		return $this->_module->translate($message);
 	}
 }
@@ -105,38 +101,31 @@ class ItemEditOptionTestCase extends GalleryTestCase
 /**
  * Test ImmediateStatusView implementation
  */
-class ItemEditOptionTestImmediateStatusView extends GalleryView
-{
-	public function doLoadImmediateTemplate()
-	{
+class ItemEditOptionTestImmediateStatusView extends GalleryView {
+	public function doLoadImmediateTemplate() {
 		$this->_l10Domain = 'test';
 		$this->_template = 'test';
 
 		return null;
 	}
 	
-	public function renderHeader()
-	{
+	public function renderHeader() {
 		return null;
 	}
 	
-	public function renderStatusMessage($statusMessage)
-	{
+	public function renderStatusMessage($statusMessage) {
 		return null;
 	}
 	
-	public function renderRedirect($redirectUrl)
-	{
+	public function renderRedirect($redirectUrl) {
 		return null;
 	}
 	
-	public function renderFooter()
-	{
+	public function renderFooter() {
 		return null;
 	}
 	
-	public function setMain($main)
-	{
+	public function setMain($main) {
 		return null;
 	}
 }

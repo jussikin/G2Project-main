@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminEditUserQuota');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -48,8 +45,7 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_user);
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
@@ -61,8 +57,7 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testUndo()
-	{
+	public function testUndo() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 
@@ -75,8 +70,7 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testEditUserQuota()
-	{
+	public function testEditUserQuota() {
 		$this->_createUserQuota($this->_user->getId(), 4096);
 
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
@@ -104,8 +98,7 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteUserQuota($this->_user->getId());
 	}
 
-	public function testEditUserQuotaMissingValues()
-	{
+	public function testEditUserQuotaMissingValues() {
 		/* No Values */
 	GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
@@ -138,8 +131,7 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 	/**
 	 * Edit a non-existant user quota
 	 */
-	public function testEditUserQuotaNonExistantQuota()
-	{
+	public function testEditUserQuotaNonExistantQuota() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
@@ -155,14 +147,12 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testEditUserQuotaUserIdMissing()
-	{
+	public function testEditUserQuotaUserIdMissing() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
 
-	public function _createUserQuota($userId, $quota)
-	{
+	public function _createUserQuota($userId, $quota) {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap', array('userOrGroupId' => $userId, 'quotaSize' => $quota));
 		if ($ret) {
@@ -170,8 +160,7 @@ class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _deleteUserQuota($userId)
-	{
+	public function _deleteUserQuota($userId) {
 		$ret = GalleryCoreApi::removeMapEntry('QuotasMap', array('userOrGroupId' => $userId));
 		if ($ret) {
 			return $ret;

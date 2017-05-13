@@ -28,17 +28,14 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  * @author Pierre-Luc Paour
  * @version $Revision: 17580 $
  */
-class RssSiteAdminControllerTest extends GalleryControllerTestCase
-{
+class RssSiteAdminControllerTest extends GalleryControllerTestCase {
 	public $_feedsToDelete;
 
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'rss.RssSiteAdmin');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -50,8 +47,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		if (!empty($this->_feedsToDelete)) {
 			foreach ($this->_feedsToDelete as $name) {
 				$ret = RssMapHelper::deleteFeed($name);
@@ -67,8 +63,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testRssSiteAdminControllerReset()
-	{
+	public function testRssSiteAdminControllerReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		GalleryUtilities::putRequestVariable('form[mode]', 'settings');
 
@@ -83,8 +78,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 		$results);
 	}
 
-	public function testRssSiteAdminControllerResetSimple()
-	{
+	public function testRssSiteAdminControllerResetSimple() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		GalleryUtilities::putRequestVariable('form[mode]', 'simplefeedsettings');
 
@@ -99,8 +93,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 		$results);
 	}
 
-	public function testRssSiteAdminControllerSaveSettings()
-	{
+	public function testRssSiteAdminControllerSaveSettings() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[mode]', 'settings');
 
@@ -141,8 +134,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testRssSiteAdminControllerSaveSFSettings()
-	{
+	public function testRssSiteAdminControllerSaveSFSettings() {
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[mode]', 'simplefeedsettings');
 
@@ -174,8 +166,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testRssSiteAdminControllerDelete()
-	{
+	public function testRssSiteAdminControllerDelete() {
 		/* create a test feed */
 	$name = 'test' . rand();
 		$params = array('itemId' => $this->_getRootId());

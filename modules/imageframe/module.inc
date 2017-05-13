@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ImageFrameModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ImageFrameModule extends GalleryModule {
+	public function __construct() {
 		$this->ImageFrameModule();
 	}
 	
-	public function ImageFrameModule()
-	{
+	public function ImageFrameModule() {
 		global $gallery;
 		$this->setId('imageframe');
 		$this->setName($gallery->i18n('ImageFrame'));
@@ -55,8 +52,7 @@ class ImageFrameModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('ImageFrameInterface_1_1', 'ImageFrameImpl', 'ImageFrame', 'modules/imageframe/classes/ImageFrameImpl.class', 'imageframe', null);
 		if ($ret) {
 			return $ret;

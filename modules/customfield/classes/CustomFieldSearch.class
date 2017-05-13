@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/search/classes/GallerySearchInterface_1_0.c
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldSearch extends GallerySearchInterface_1_0
-{
+class CustomFieldSearch extends GallerySearchInterface_1_0 {
 	/**
 	 * @see GallerySearchInterface_1_0::getSearchModuleInfo
 	 */
-	public function getSearchModuleInfo()
-	{
+	public function getSearchModuleInfo() {
 		global $gallery;
 		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'customfield');
@@ -64,8 +62,7 @@ class CustomFieldSearch extends GallerySearchInterface_1_0
 	/**
 	 * @see GallerySearchInterface_1_0::search
 	 */
-	public function search($options, $criteria, $offset = 0, $count = -1)
-	{
+	public function search($options, $criteria, $offset = 0, $count = -1) {
 		global $gallery;
 		
 		list($ret, $aclIds) = GalleryCoreApi::fetchAccessListIds('core.view', $gallery->getActiveUserId());

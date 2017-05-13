@@ -36,15 +36,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryUnknownItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20940 $
  */
-class ItemAddFromWebTest extends ItemAddPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAddFromWebTest extends ItemAddPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddPluginTestCase($methodName, 'itemadd', 'ItemAddFromWeb');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -80,8 +77,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		list($this->_audio) = $audio->itemTypeName();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->setPlatform($this->_savePlatform);
 		
@@ -103,8 +99,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testIsAppropriate()
-	{
+	public function testIsAppropriate() {
 		$ret = $this->_markPluginParametersForCleanup('module', 'itemadd');
 		if ($ret) {
 			return $ret;
@@ -148,8 +143,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		$this->assertEquals(true, $isAppropriate, 'on');
 	}
 	
-	public function testAddFromWebPageCallsIsAppropriate()
-	{
+	public function testAddFromWebPageCallsIsAppropriate() {
 		$ret = $this->_markPluginParametersForCleanup('module', 'itemadd');
 		if ($ret) {
 			return $ret;
@@ -166,8 +160,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $results);
 	}
 	
-	public function testAddChildrenFromWebPage()
-	{
+	public function testAddChildrenFromWebPage() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -223,8 +216,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		}
 	}
 	
-	public function testAddMaliciousFilename()
-	{
+	public function testAddMaliciousFilename() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -268,8 +260,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 	/*
 	 * Test how the controller reacts when the Add Urls button was pushed with no items selected.
 	 */
-	public function testAddEmptyListFromWebPage()
-	{
+	public function testAddEmptyListFromWebPage() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -286,8 +277,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		$this->assertEquals('1', GalleryUtilities::getRequestVariables('form[error][webPage][nothingSelected]'));
 	}
 	
-	public function testParserHtml()
-	{
+	public function testParserHtml() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -364,8 +354,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form, 'form data');
 	}
 	
-	public function testParserNoUrls()
-	{
+	public function testParserNoUrls() {
 		$this->_session->put('itemadd.view.ItemAddFromWeb.recentUrls', array(
 			'http://www.test.com/page.php' => 1,
 			'http://blah.com/other.html' => 1
@@ -416,8 +405,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form, 'form data');
 	}
 	
-	public function testParserDirectToImage()
-	{
+	public function testParserDirectToImage() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -459,8 +447,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form);
 	}
 	
-	public function testParserDirectToImageMalformedContentTypeHeader()
-	{
+	public function testParserDirectToImageMalformedContentTypeHeader() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -502,8 +489,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form);
 	}
 	
-	public function testParserRedirectToImage()
-	{
+	public function testParserRedirectToImage() {
 		$this->_session->put('itemadd.view.ItemAddFromWeb.recentUrls', array(
 			'http://blah.com/other.html' => 1
 		));
@@ -553,8 +539,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form, 'form data');
 	}
 	
-	public function testParserMissingUrl()
-	{
+	public function testParserMissingUrl() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -585,8 +570,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form);
 	}
 	
-	public function testParserInvalidUrl()
-	{
+	public function testParserInvalidUrl() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -619,8 +603,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form);
 	}
 	
-	public function testParserUnavailable()
-	{
+	public function testParserUnavailable() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -653,8 +636,7 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
 		), $form);
 	}
 	
-	public function testParserBaseElement()
-	{
+	public function testParserBaseElement() {
 		$template = new UnitTestTemplate();
 		$form = array(
 			'formName' => 'ItemAddFromWeb',
@@ -718,20 +700,16 @@ class ItemAddFromWebTest extends ItemAddPluginTestCase
  * @package ItemAdd
  * @subpackage PHPUnit
  */
-class ItemAddFromWebTestPlatform
-{
-	public function ItemAddFromWebTestPlatform(&$testCase)
-	{
+class ItemAddFromWebTestPlatform {
+	public function ItemAddFromWebTestPlatform(&$testCase) {
 		$this->_testCase = $testCase;
 	}
 	
-	public function tempnam($tmpDir, $base)
-	{
+	public function tempnam($tmpDir, $base) {
 		return "/test/$base";
 	}
 	
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		if ($target == 'www.test.com' && $port == '80') {
 			return 'test-resource-1';
 		}
@@ -740,8 +718,7 @@ class ItemAddFromWebTestPlatform
 		$errstring = 'test failure';
 	}
 	
-	public function fwrite($handle, $string, $length = 0)
-	{
+	public function fwrite($handle, $string, $length = 0) {
 		if ($handle == 'test-resource-1') {
 			switch ($string) {
 				case "GET /test1.gif HTTP/1.0\r\nHost: www.test.com\r\n" . "Referer: http://www.test.com/index.php?foo=bar&a=b\r\n\r\n":
@@ -929,13 +906,11 @@ class ItemAddFromWebTestPlatform
 		return 0;
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 	
-	public function legalizePathComponent($component)
-	{
+	public function legalizePathComponent($component) {
 		switch ($component) {
 			case 'test1.gif':
 			case 'test2.jpg':
@@ -956,8 +931,7 @@ class ItemAddFromWebTestPlatform
 		}
 	}
 	
-	public function copy($fromFile, $toFile)
-	{
+	public function copy($fromFile, $toFile) {
 		if ($fromFile == '/test/add') {
 			switch (basename($toFile)) {
 				case 'test1.gif':
@@ -975,8 +949,7 @@ class ItemAddFromWebTestPlatform
 		return false;
 	}
 	
-	public function getimagesize($filename)
-	{
+	public function getimagesize($filename) {
 		switch (basename($filename)) {
 			case 'test1.gif':
 			case 'test2.jpg':
@@ -998,8 +971,7 @@ class ItemAddFromWebTestPlatform
 		);
 	}
 	
-	public function filesize($filename)
-	{
+	public function filesize($filename) {
 		switch (basename($filename)) {
 			case 'test1.gif':
 			case 'test2.jpg':
@@ -1015,15 +987,13 @@ class ItemAddFromWebTestPlatform
 		return 0;
 	}
 	
-	public function mkdir($dirname)
-	{
+	public function mkdir($dirname) {
 		echo "unexpected mkdir($dirname)";
 
 		return false;
 	}
 	
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		switch ($filename) {
 			case '/test/add':
 				return 1;
@@ -1032,8 +1002,7 @@ class ItemAddFromWebTestPlatform
 		return 0;
 	}
 	
-	public function unlink($filename)
-	{
+	public function unlink($filename) {
 		switch ($filename) {
 			case '/test/add':
 				return 1;
@@ -1049,8 +1018,7 @@ class ItemAddFromWebTestPlatform
 		return 0;
 	}
 	
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		switch ($handle) {
 			case 'test-resource-1':
 				return true;
@@ -1060,8 +1028,7 @@ class ItemAddFromWebTestPlatform
 		}
 	}
 	
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if (empty($this->_readBuffer[$handle])) {
 			return null;
 		}
@@ -1069,8 +1036,7 @@ class ItemAddFromWebTestPlatform
 		return array_shift($this->_readBuffer[$handle]) . "\n";
 	}
 	
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if (empty($this->_readBuffer[$handle])) {
 			return null;
 		}
@@ -1093,19 +1059,16 @@ class ItemAddFromWebTestPlatform
 		}
 	}
 	
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		return (empty($this->_readBuffer[$handle]));
 	}
 	
-	public function flock($handle, $operation, &$wouldblock)
-	{
+	public function flock($handle, $operation, &$wouldblock) {
 		/* Pass lock requests */
 		return flock($handle, $operation, $wouldblock);
 	}
 	
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		if ($handle == 'test-resource-1') {
 			unset($this->_readBuffer[$handle]);
 
@@ -1120,13 +1083,11 @@ class ItemAddFromWebTestPlatform
 		return false;
 	}
 	
-	public function is_uploaded_file($filename)
-	{
+	public function is_uploaded_file($filename) {
 		return false;
 	}
 	
-	public function fopen($filename, $modes)
-	{
+	public function fopen($filename, $modes) {
 		if ($filename == '/test/add' && $modes == 'wb') {
 			return $filename;
 		}
@@ -1141,13 +1102,11 @@ class ItemAddFromWebTestPlatform
 		return null;
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return realpath($path);
 	}
 	
-	public function exec($cmd)
-	{
+	public function exec($cmd) {
 		/* In case add of jpeg tries to get 'colorspace' property */
 		return array(
 			true,

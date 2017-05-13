@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'watermark.WatermarkSiteAdminEdit');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -66,8 +63,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 		$this->_watermark = $watermark;
 	}
 
-	public function testEditWatermarkEverything()
-	{
+	public function testEditWatermarkEverything() {
 		GalleryUtilities::putRequestVariable('watermarkId', $this->_watermark->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[watermarkName]', 'foo bar');
@@ -98,8 +94,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 		$this->assert($this->_watermark->getApplyToThumbnail(), 'missing thumbnail');
 	}
 
-	public function testEditWatermarkThumbnailOnly()
-	{
+	public function testEditWatermarkThumbnailOnly() {
 		GalleryUtilities::putRequestVariable('watermarkId', $this->_watermark->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[watermarkName]', 'foo bar');
@@ -128,8 +123,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 		$this->assert($this->_watermark->getApplyToThumbnail(), 'missing thumbnail');
 	}
 
-	public function testEditMissingEverything()
-	{
+	public function testEditMissingEverything() {
 		GalleryUtilities::putRequestVariable('watermarkId', $this->_watermark->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
@@ -151,8 +145,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, $this->_watermark->getSerialNumber());
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('watermarkId', $this->_watermark->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
@@ -172,8 +165,7 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, $this->_watermark->getSerialNumber());
 	}
 
-	public function testBadCoordinates()
-	{
+	public function testBadCoordinates() {
 		GalleryUtilities::putRequestVariable('watermarkId', $this->_watermark->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[watermarkName]', 'foo bar');
@@ -198,18 +190,15 @@ class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('0', $this->_watermark->getYPercentage());
 	}
 
-	public function testReplaceImage()
-	{
+	public function testReplaceImage() {
 		$this->_replaceImageTest('test/file');
 	}
 
-	public function testReplaceImageWrongType()
-	{
+	public function testReplaceImageWrongType() {
 		$this->_replaceImageTest('test/blah', 'zzz');
 	}
 
-	public function _replaceImageTest($postMimeType, $ext='yyy')
-	{
+	public function _replaceImageTest($postMimeType, $ext='yyy') {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 

@@ -28,10 +28,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySmarty.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CallbacksTest extends GalleryTestCase
-{
-	public function setUp()
-	{
+class CallbacksTest extends GalleryTestCase {
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -40,8 +38,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->_smarty = new CoreCallbacks();
 	}
 
-	public function testLoadLanguageSelector()
-	{
+	public function testLoadLanguageSelector() {
 		global $gallery;
 
 		$supportedLanguages = GalleryCoreApi::getSupportedLanguages();
@@ -64,8 +61,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->assertEquals($activeLocale, $LanguageSelector['language']);
 	}
 
-	public function testShouldShowEmergencyEditItemLink1()
-	{
+	public function testShouldShowEmergencyEditItemLink1() {
 		$this->_smarty->_tpl_vars['theme']['params'] = array(
 			'sidebarBlocks' => array(),
 			'albumBlocks' => array(),
@@ -84,8 +80,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->assertEquals(true, $this->_smarty->_tpl_vars['block']['core']['ShouldShowEmergencyEditItemLink'], 'we should be showing the link');
 	}
 
-	public function testShouldShowEmergencyEditItemLink2()
-	{
+	public function testShouldShowEmergencyEditItemLink2() {
 		$this->_smarty->_tpl_vars['theme']['params'] = array(
 			'sidebarBlocks' => array(
 				array(
@@ -109,8 +104,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->assertEquals(false, $this->_smarty->_tpl_vars['block']['core']['ShouldShowEmergencyEditItemLink'], 'we should not be showing the link');
 	}
 
-	public function testShouldShowEmergencyEditItemLink3()
-	{
+	public function testShouldShowEmergencyEditItemLink3() {
 		$this->_smarty->_tpl_vars['theme']['params'] = array(
 			'sidebarBlocks' => array(),
 			'albumBlocks' => array(
@@ -139,8 +133,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->assertEquals(false, $this->_smarty->_tpl_vars['block']['core']['ShouldShowEmergencyEditItemLink'], 'we should not be showing the link');
 	}
 
-	public function testShouldShowEmergencyEditItemLink4()
-	{
+	public function testShouldShowEmergencyEditItemLink4() {
 		$this->_smarty->_tpl_vars['theme']['params'] = array(
 			'sidebarBlocks' => array(),
 			'albumBlocks' => array(
@@ -169,8 +162,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->assertEquals(true, $this->_smarty->_tpl_vars['block']['core']['ShouldShowEmergencyEditItemLink'], 'we should be showing the link');
 	}
 
-	public function testShouldShowEmergencyEditItemLinkNoPermissions()
-	{
+	public function testShouldShowEmergencyEditItemLinkNoPermissions() {
 		$this->_smarty->_tpl_vars['theme']['params'] = array(
 			'myBlocks' => array(),
 			'photoBlocks' => array()
@@ -186,8 +178,7 @@ class CallbacksTest extends GalleryTestCase
 		$this->assertEquals(false, $this->_smarty->_tpl_vars['block']['core']['ShouldShowEmergencyEditItemLink'], 'we should not be showing the link');
 	}
 
-	public function _assertPeers($returnCount, $allCount, $thisIndex, $indexList, $msg)
-	{
+	public function _assertPeers($returnCount, $allCount, $thisIndex, $indexList, $msg) {
 		$this->assert(isset($this->_smarty->_tpl_vars['block']['core']['LoadPeers']), $msg . ': set');
 		$data =& $this->_smarty->_tpl_vars['block']['core']['LoadPeers'];
 		$this->assertEquals(array(
@@ -206,8 +197,7 @@ class CallbacksTest extends GalleryTestCase
 		}
 	}
 
-	public function testLoadPeers()
-	{
+	public function testLoadPeers() {
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
@@ -370,8 +360,7 @@ class CallbacksTest extends GalleryTestCase
 		), 'unbalanced end');
 	}
 
-	public function testLoadValidationPlugins()
-	{
+	public function testLoadValidationPlugins() {
 		$ret = $this->_callback->callback(array(), $this->_smarty, 'LoadValidationPlugins');
 		if ($ret) {
 			return $ret;

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/AdminPerformance.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminPerformanceControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminPerformanceControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminPerformance');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -61,16 +58,14 @@ class AdminPerformanceControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = parent::tearDown();
 		if ($ret) {
 			return $ret;
 		}
 	}
 
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[acceleration][guest][type]', 'partial');
 		GalleryUtilities::putRequestVariable('form[acceleration][guest][expiration]', '1234');
@@ -114,16 +109,14 @@ class AdminPerformanceControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, (int) $compileCheck, 'compile check');
 	}
 
-	public function testSaveError()
-	{
+	public function testSaveError() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 
 		/* Leave out any form parameters and you get an error */
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
 
-	public function testClear()
-	{
+	public function testClear() {
 		global $gallery;
 
 		$ret = GalleryDataCache::putPageData('test-key', 0, 'key', 'test-value');

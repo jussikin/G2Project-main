@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/webdav/classes/WebDavHelper.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 20940 $
  */
-class WebDavTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class WebDavTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -125,8 +122,7 @@ class WebDavTest extends GalleryTestCase
 	 * @param array $permissions (optional) An array of Gallery permission ids.
 	 * @return GalleryStatus
 	 */
-	public function _becomeGuestUserWithPermission($permissions=array())
-	{
+	public function _becomeGuestUserWithPermission($permissions=array()) {
 		list($ret, $anonymousUserId) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 		if ($ret) {
@@ -147,8 +143,7 @@ class WebDavTest extends GalleryTestCase
 		return $this->_becomeGuestUser();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$this->_streamWrapperRegistration(true);
 		$ret = parent::tearDown();
 		if ($ret) {
@@ -156,15 +151,13 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function skip()
-	{
+	public function skip() {
 		echo "Webdav test(s) skipped because function stream_wrapper_register not found\n";
 
 		return parent::skip();
 	}
 
-	public function _streamWrapperRegistration($unregister=false)
-	{
+	public function _streamWrapperRegistration($unregister=false) {
 		static $registered = false;
 
 	/* Guard from re-registering the same wrapper again */
@@ -179,8 +172,7 @@ class WebDavTest extends GalleryTestCase
 	}
 	}
 
-	public function _getHref($path, $addController=true)
-	{
+	public function _getHref($path, $addController=true) {
 		/* Assuming that the WebDAV rewrite rules are enabled */
 	if (GalleryUtilities::isA($this->_urlGenerator, 'PathInfoUrlGenerator')) {
 		return '/gallery2/main.php/w/' . $path;
@@ -193,8 +185,7 @@ class WebDavTest extends GalleryTestCase
 		: '/gallery2/main.php/' . $path;
 	}
 
-	public function testOptions()
-	{
+	public function testOptions() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'OPTIONS';
 
@@ -218,8 +209,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('', $output);
 	}
 
-	public function testPropfind()
-	{
+	public function testPropfind() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -291,8 +281,7 @@ class WebDavTest extends GalleryTestCase
 '), preg_split("/\r?\n/", $output));
 	}
 
-	public function testPropfindWithoutViewPermission()
-	{
+	public function testPropfindWithoutViewPermission() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -336,8 +325,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('', $output, 'output');
 	}
 
-	public function testPropfindCollectionDepthInfinityWithoutViewPermission()
-	{
+	public function testPropfindCollectionDepthInfinityWithoutViewPermission() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -418,8 +406,7 @@ class WebDavTest extends GalleryTestCase
 '), preg_split("/\r?\n/", $output));
 	}
 
-	public function testPropfindCollectionDepth0()
-	{
+	public function testPropfindCollectionDepth0() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -477,8 +464,7 @@ class WebDavTest extends GalleryTestCase
 '), preg_split("/\r?\n/", $output));
 	}
 
-	public function testPropfindCollectionDepth1()
-	{
+	public function testPropfindCollectionDepth1() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -582,8 +568,7 @@ class WebDavTest extends GalleryTestCase
 '), preg_split("/\r?\n/", $output));
 	}
 
-	public function testProppatch()
-	{
+	public function testProppatch() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -659,8 +644,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('new keywords', $this->_item->getKeywords());
 	}
 
-	public function testProppatchWithXss()
-	{
+	public function testProppatchWithXss() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -736,8 +720,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('new&lt;script&gt; keywords', $this->_item->getKeywords());
 	}
 
-	public function testProppatchWithoutEditPermission()
-	{
+	public function testProppatchWithoutEditPermission() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -788,8 +771,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals($summary, $item->getSummary(), 'item summary changed');
 	}
 
-	public function testMkcol()
-	{
+	public function testMkcol() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'MKCOL';
 
@@ -837,8 +819,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('', $newAlbum->getKeywords());
 	}
 
-	public function testMkcolWithoutAddAlbumPermission()
-	{
+	public function testMkcolWithoutAddAlbumPermission() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'MKCOL';
 
@@ -872,8 +853,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testDelete()
-	{
+	public function testDelete() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
@@ -910,8 +890,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testDeleteWithoutDeletePermission()
-	{
+	public function testDeleteWithoutDeletePermission() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'DELETE';
 
@@ -942,8 +921,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testAdd()
-	{
+	public function testAdd() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -1009,8 +987,7 @@ class WebDavTest extends GalleryTestCase
 	/**
 	 * Mac OS X and GNOME both make PUT requests with empty bodies.
 	 */
-	public function testAddEmptyBody()
-	{
+	public function testAddEmptyBody() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -1059,8 +1036,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals(0, $newItem->getSize());
 	}
 
-	public function testAddMustBePutRequest()
-	{
+	public function testAddMustBePutRequest() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
@@ -1076,8 +1052,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assert($ret, 'HTTP PUT check was not enforced');
 	}
 
-	public function testPutWithoutAddItemPermission()
-	{
+	public function testPutWithoutAddItemPermission() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -1127,8 +1102,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testReplace()
-	{
+	public function testReplace() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -1182,8 +1156,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals($originalPathComponent, $this->_item->getPathComponent());
 	}
 
-	public function testReplaceWithoutEditPermissions()
-	{
+	public function testReplaceWithoutEditPermissions() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -1227,8 +1200,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals($mimeType, $this->_item->getMimeType(), 'mimetype changed');
 	}
 
-	public function testReplaceLinkedItemFails()
-	{
+	public function testReplaceLinkedItemFails() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -1282,8 +1254,7 @@ class WebDavTest extends GalleryTestCase
 	/**
 	 * @todo What does a query-string based WebDAV client send in HTTP_DESTINATION?
 	 */
-	public function testMove()
-	{
+	public function testMove() {
 		global $gallery;
 
 		$ret = $this->_becomeGuestUser();
@@ -1350,8 +1321,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testMoveWithoutDeletePermission()
-	{
+	public function testMoveWithoutDeletePermission() {
 		global $gallery;
 
 		$ret = $this->_becomeGuestUser();
@@ -1416,8 +1386,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testMoveWithoutAddPermission()
-	{
+	public function testMoveWithoutAddPermission() {
 		global $gallery;
 
 		$ret = $this->_becomeGuestUser();
@@ -1482,8 +1451,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testRename()
-	{
+	public function testRename() {
 		global $gallery;
 
 		$ret = $this->_becomeGuestUser();
@@ -1539,8 +1507,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testRenameWithoutEditPermission()
-	{
+	public function testRenameWithoutEditPermission() {
 		global $gallery;
 
 	/* Become a user without core.edit permission */
@@ -1597,8 +1564,7 @@ class WebDavTest extends GalleryTestCase
 	 * @return array GalleryStatus a status code
 	 *               array new WebDAV lock (scope, type, depth, owner, expires, token, path)
 	 */
-	public function _testLock($path=null)
-	{
+	public function _testLock($path=null) {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'LOCK';
 
@@ -1671,8 +1637,7 @@ class WebDavTest extends GalleryTestCase
 	 * @param array $lock WebDAV lock to unlock (scope, type, depth, owner, expires, token, path)
 	 * @return GalleryStatus a status code
 	 */
-	public function _testUnlock($lock)
-	{
+	public function _testUnlock($lock) {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'UNLOCK';
 
@@ -1699,8 +1664,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testLockUnlock()
-	{
+	public function testLockUnlock() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -1723,8 +1687,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testLockRefresh()
-	{
+	public function testLockRefresh() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -1797,8 +1760,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testLockConflict()
-	{
+	public function testLockConflict() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -1874,8 +1836,7 @@ class WebDavTest extends GalleryTestCase
 		}
 	}
 
-	public function testLockWithoutPermission()
-	{
+	public function testLockWithoutPermission() {
 		if (!function_exists('stream_wrapper_register')) {
 			return $this->skip();
 		}
@@ -1890,8 +1851,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertErrorEquals(ERROR_PERMISSION_DENIED, $ret);
 	}
 
-	public function testMissingObject()
-	{
+	public function testMissingObject() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'GET';
 
@@ -1933,8 +1893,7 @@ class WebDavTest extends GalleryTestCase
 	 * so if you PUT an illegal path, a subsequent GET of the same path will refer to
 	 * the same item.
 	 */
-	public function testPutAndGetIllegalPathComponent()
-	{
+	public function testPutAndGetIllegalPathComponent() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -2011,8 +1970,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals($fileSize, $newItem->getSize(), 'size');
 	}
 
-	public function testIllegalDestination()
-	{
+	public function testIllegalDestination() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'MOVE';
 
@@ -2053,24 +2011,21 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('', $output);
 	}
 
-	public function testIgnoreMacDotUnderscoreFiles()
-	{
+	public function testIgnoreMacDotUnderscoreFiles() {
 		$ret = $this->_testIgnoreFile('._testItem-' . rand());
 		if ($ret) {
 			return $ret;
 		}
 	}
 
-	public function testIgnoreMacDotDsStoreFiles()
-	{
+	public function testIgnoreMacDotDsStoreFiles() {
 		$ret = $this->_testIgnoreFile('.DS_Store');
 		if ($ret) {
 			return $ret;
 		}
 	}
 
-	public function _testIgnoreFile($pathComponent)
-	{
+	public function _testIgnoreFile($pathComponent) {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'PUT';
 
@@ -2125,8 +2080,7 @@ class WebDavTest extends GalleryTestCase
 		$this->assertEquals('', $output);
 	}
 
-	public function testMkcolIllegalPathComponent()
-	{
+	public function testMkcolIllegalPathComponent() {
 		/* Use valid inputs */
 	$_SERVER['REQUEST_METHOD'] = 'MKCOL';
 
@@ -2173,21 +2127,17 @@ class WebDavTest extends GalleryTestCase
 	}
 }
 
-class WebDavTestPhpVm extends GalleryPhpVm
-{
-	public function header($header, $replace=null)
-	{
+class WebDavTestPhpVm extends GalleryPhpVm {
+	public function header($header, $replace=null) {
 		/* Avoid modifying actual header information */
 	}
 }
 
-class WebDavTestPlatform extends GalleryPlatform
-{
+class WebDavTestPlatform extends GalleryPlatform {
 	public $_platform;
 	public $_streams;
 
-	public function fopen($filename, $modes, $use_include_path=0)
-	{
+	public function fopen($filename, $modes, $use_include_path=0) {
 		if (empty($this->_streams[$filename])) {
 			return $this->_platform->fopen($filename, $modes, $use_include_path);
 		}
@@ -2198,35 +2148,30 @@ class WebDavTestPlatform extends GalleryPlatform
 		return $handle;
 	}
 
-	public function exec($cmdArray)
-	{
+	public function exec($cmdArray) {
 		/* Pass exec requests to the real platform */
 	return $this->_platform->exec($cmdArray);
 	}
 }
 
-class WebDavTestStream
-{
+class WebDavTestStream {
 	public $_filename;
 	public $_position;
 
-	public function &_getStreams()
-	{
+	public function &_getStreams() {
 		static $streams;
 
 		return $streams;
 	}
 
-	public function stream_open($filename, $modes, $options, &$opened_path)
-	{
+	public function stream_open($filename, $modes, $options, &$opened_path) {
 		$this->_filename = $filename;
 		$this->_position = 0;
 
 		return true;
 	}
 
-	public function stream_read($count)
-	{
+	public function stream_read($count) {
 		$streams = self::_getStreams();
 		$buffer = substr($streams[$this->_filename], $this->_position, $count);
 		$this->_position += strlen($buffer);
@@ -2234,8 +2179,7 @@ class WebDavTestStream
 		return $buffer;
 	}
 
-	public function stream_eof()
-	{
+	public function stream_eof() {
 		$streams = self::_getStreams();
 		$eof = $this->_position >= strlen($streams[$this->_filename]);
 	/* Buggy PHP 5.0.x, see www.php.net/manual/en/function.stream-wrapper-register.php#71057 */
@@ -2251,8 +2195,7 @@ class WebDavTestStream
  * Our default unit test error_handler doesn't allow the suppression of errors, but getImageSize()
  * returns a PHP error when operating on an empty file.
  */
-function WebDavTest_error_handler($errno, $errstr, $errfile, $errline)
-{
+function WebDavTest_error_handler($errno, $errstr, $errfile, $errline) {
 	/* Usually E_WARNING(2), but PHP 5.2.3 gets E_NOTICE(8) from getimagesize */
 	if ($errno == 2 || $errno == 8) {
 		$expected1 = '{getimagesize().*: Read error}';

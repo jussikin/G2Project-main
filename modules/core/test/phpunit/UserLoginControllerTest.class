@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17924 $
  */
-class UserLoginControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UserLoginControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.UserLogin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -76,8 +73,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->_originalLoginRedirect = $gallery->getConfig('loginRedirect');
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$gallery->_session = $this->_saveSession;
 		
@@ -93,8 +89,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testLogin()
-	{
+	public function testLogin() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
@@ -119,8 +114,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->assertEventFired('Gallery::Login', $this->_user);
 	}
 	
-	public function testLoginDisabledUserName()
-	{
+	public function testLoginDisabledUserName() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
@@ -155,8 +149,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		));
 	}
 	
-	public function testEntityPassword()
-	{
+	public function testEntityPassword() {
 		global $gallery;
 		list($ret, $user) = $this->_createRandomUser(null, 'pass&word');
 		if ($ret) {
@@ -178,8 +171,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->assert($this->_mockSession->regenerateWasCalled(), '$session->regenerate() was not called');
 	}
 	
-	public function testLoginInvalidUser()
-	{
+	public function testLoginInvalidUser() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', 'some-bogus-user');
 		/* From _createRandomUser */
@@ -208,8 +200,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		));
 	}
 	
-	public function testLoginValidUserInvalidPassword()
-	{
+	public function testLoginValidUserInvalidPassword() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'wrong password');
@@ -227,8 +218,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMissingInputs()
-	{
+	public function testMissingInputs() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', '');
 		GalleryUtilities::putRequestVariable('form[password]', '');
@@ -247,8 +237,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		
 		$results = $this->handleRequest();
@@ -263,8 +252,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 	 * Bogus user/password, and an error from the plugin.  Plugin set to halt on failure so we
 	 * shouldn't even try to log in which means we won't see the incorrect password error
 	 */
-	public function testPlugins1()
-	{
+	public function testPlugins1() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', 'bogus-user');
 		GalleryUtilities::putRequestVariable('form[password]', 'wrong-password');
@@ -296,8 +284,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 	 * plugin allows the flow to continue.  We should see the error from both plugins, but not the
 	 * invalid password
 	 */
-	public function testPlugins2()
-	{
+	public function testPlugins2() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'totally-wrong-password');
@@ -337,8 +324,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 	 * plugin stops the flow from continuing.  We should see the error from only the first plugin,
 	 * and not the invalid password error
 	 */
-	public function testPlugins3()
-	{
+	public function testPlugins3() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'totally-wrong-password');
@@ -375,8 +361,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 	/**
 	 * Correct password, but an error from the plugin
 	 */
-	public function testPlugins4()
-	{
+	public function testPlugins4() {
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
 		GalleryUtilities::putRequestVariable('form[username]', $this->_user->getUserName());
 		/* from _createRandomUser: */
@@ -407,8 +392,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 	/**
 	 * Correct password, no error from the plugin
 	 */
-	public function testPlugins5()
-	{
+	public function testPlugins5() {
 		global $gallery;
 		
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
@@ -433,8 +417,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->assert($this->_mockSession->regenerateWasCalled(), '$session->regenerate() was not called');
 	}
 	
-	public function testPluginsOff()
-	{
+	public function testPluginsOff() {
 		global $gallery;
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'validation.level', 'OFF');
 		if ($ret) {
@@ -465,8 +448,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->assert($this->_mockSession->regenerateWasCalled(), '$session->regenerate() was not called');
 	}
 	
-	public function testLoginRedirect()
-	{
+	public function testLoginRedirect() {
 		global $gallery;
 		$gallery->_phpVm = new UserLoginTestPhpVm($this);
 		
@@ -483,8 +465,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, $this->_exitCalls, 'exit call');
 	}
 	
-	public function testLoginRedirectUrlIsAbsolute()
-	{
+	public function testLoginRedirectUrlIsAbsolute() {
 		global $gallery;
 		$gallery->_phpVm = new UserLoginTestPhpVm($this);
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -501,8 +482,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(1, $this->_exitCalls, 'exit call');
 	}
 	
-	public function testLoginRedirectIgnoredWhenAlreadyLoggedIn()
-	{
+	public function testLoginRedirectIgnoredWhenAlreadyLoggedIn() {
 		global $gallery;
 		$gallery->_phpVm = new UserLoginTestPhpVm($this);
 		
@@ -520,8 +500,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		), $results, 'loadTemplate results');
 	}
 	
-	public function testLoginRedirectDoesNotRedirectByDefault()
-	{
+	public function testLoginRedirectDoesNotRedirectByDefault() {
 		global $gallery;
 		$gallery->_phpVm = new UserLoginTestPhpVm($this);
 		
@@ -539,8 +518,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		), $results, 'loadTemplate results');
 	}
 	
-	public function testLoginRedirectDoesNotRedirectIfRedirectNotDefined()
-	{
+	public function testLoginRedirectDoesNotRedirectIfRedirectNotDefined() {
 		global $gallery;
 		$gallery->_phpVm = new UserLoginTestPhpVm($this);
 		
@@ -559,8 +537,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 		), $results, 'loadTemplate results');
 	}
 	
-	public function testLoginRedirectWithSubView()
-	{
+	public function testLoginRedirectWithSubView() {
 		global $gallery;
 		$gallery->_phpVm = new UserLoginTestPhpVm($this);
 		$urlGenerator =& $gallery->getUrlGenerator();
@@ -583,8 +560,7 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 	 * Helper method to load the UserLoginView template data.
 	 * @see UserLoginView::loadTemplate
 	 */
-	public function _loadTemplate()
-	{
+	public function _loadTemplate() {
 		$view = new UserLoginView();
 		$form = array(
 			'formName' => ''
@@ -598,20 +574,16 @@ class UserLoginControllerTest extends GalleryControllerTestCase
 /**
  * Mock ValidationPlugin
  */
-class UserLoginControllerTestPlugin extends GalleryValidationPlugin
-{
-	public function setContinue($continue)
-	{
+class UserLoginControllerTestPlugin extends GalleryValidationPlugin {
+	public function setContinue($continue) {
 		$this->_continue = $continue;
 	}
 	
-	public function setErrors($errors)
-	{
+	public function setErrors($errors) {
 		$this->_errors = $errors;
 	}
 	
-	public function performValidation(&$form, $options = array())
-	{
+	public function performValidation(&$form, $options = array()) {
 		return array(
 			null,
 			$this->_errors,
@@ -623,46 +595,37 @@ class UserLoginControllerTestPlugin extends GalleryValidationPlugin
 /**
  * Mock session
  */
-class UserLoginControllerTestSession
-{
-	public function UserLoginControllerTestSession()
-	{
+class UserLoginControllerTestSession {
+	public function UserLoginControllerTestSession() {
 		$this->_regenerateWasCalled = false;
 		$this->_hash = array();
 	}
 	
-	public function getId()
-	{
+	public function getId() {
 		return '123';
 	}
 	
-	public function isPersistent()
-	{
+	public function isPersistent() {
 		return false;
 	}
 	
-	public function get($key)
-	{
+	public function get($key) {
 		return isset($this->_hash[$key]) ? $this->_hash[$key] : null;
 	}
 	
-	public function put($key, $value)
-	{
+	public function put($key, $value) {
 		$this->_hash[$key] = $value;
 	}
 	
-	public function regenerate()
-	{
+	public function regenerate() {
 		$this->_regenerateWasCalled = true;
 	}
 	
-	public function regenerateWasCalled()
-	{
+	public function regenerateWasCalled() {
 		return $this->_regenerateWasCalled;
 	}
 	
-	public function getUserId()
-	{
+	public function getUserId() {
 		if (isset($this->_sessionData['core.id.activeUser'])) {
 			return $this->_sessionData['core.id.activeUser'];
 		}
@@ -670,13 +633,11 @@ class UserLoginControllerTestSession
 		return null;
 	}
 	
-	public function setUserId($userId)
-	{
+	public function setUserId($userId) {
 		$this->_sessionData['core.id.activeUser'] = $userId;
 	}
 	
-	public function hasSiteAdminSessionExpired()
-	{
+	public function hasSiteAdminSessionExpired() {
 		return array(
 			null,
 			true
@@ -687,28 +648,23 @@ class UserLoginControllerTestSession
 /**
  * Mock PHP VM
  */
-class UserLoginTestPhpVm
-{
-	public function UserLoginTestPhpVm(&$test, $headersSent = false)
-	{
+class UserLoginTestPhpVm {
+	public function UserLoginTestPhpVm(&$test, $headersSent = false) {
 		$this->_test =& $test;
 		$this->_headersSent = $headersSent;
 		$this->_test->_exitCalls = 0;
 		$this->_test->_headers = array();
 	}
 	
-	public function header($header, $replace = null)
-	{
+	public function header($header, $replace = null) {
 		$this->_test->_headers[] = $header;
 	}
 	
-	public function headers_sent()
-	{
+	public function headers_sent() {
 		return $this->_headersSent;
 	}
 	
-	public function exit_($status = null)
-	{
+	public function exit_($status = null) {
 		$this->_test->_exitCalls++;
 	}
 }

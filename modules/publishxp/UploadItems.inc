@@ -30,8 +30,7 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-class UploadItemsController extends GalleryController
-{
+class UploadItemsController extends GalleryController {
 	/**
 	 * ItemAddOption instances to use when handling this request.  Only used by test code.
 	 * @var array (optionId => ItemAddOption) $_optionInstances
@@ -46,16 +45,14 @@ class UploadItemsController extends GalleryController
 	 *
 	 * @param array $optionInstances (optionId => ItemAddOption, ...)
 	 */
-	public function setOptionInstances($optionInstances)
-	{
+	public function setOptionInstances($optionInstances) {
 		$this->_optionInstances = $optionInstances;
 	}
 
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 		$results = $error = $status = array();
@@ -66,20 +63,20 @@ class UploadItemsController extends GalleryController
 			$form['albumId'] = (int)$form['albumId'];
 
 			list($ret, $canView) =
-		GalleryCoreApi::hasItemPermission($form['albumId'], 'core.view');
+			GalleryCoreApi::hasItemPermission($form['albumId'], 'core.view');
 			if ($ret) {
 				/* Avoid information disclosure, act as if the item didn't exist. */
-		return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+				return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
 			}
 
 		/* Check the user has permissions in this album */
-		$ret = GalleryCoreApi::assertHasItemPermission($form['albumId'], 'core.addDataItem');
+			$ret = GalleryCoreApi::assertHasItemPermission($form['albumId'], 'core.addDataItem');
 			if ($ret) {
 				return array($ret, null);
 			}
 
 		/* Get the file passed in this submission */
-		$file = GalleryUtilities::getFile('userFile', false);
+			$file = GalleryUtilities::getFile('userFile', false);
 			list($ret, $lockIds[]) = GalleryCoreApi::acquireReadLock($form['albumId']);
 			if ($ret) {
 				return array($ret, null);
@@ -92,14 +89,14 @@ class UploadItemsController extends GalleryController
 			}
 
 		/* The Windows Web Publishing Wizard does not send the file name in UTF-8 */
-		$sourceEncoding = $this->_getCharsetFromRequest();
+			$sourceEncoding = $this->_getCharsetFromRequest();
 			if ($gallery->getDebug()) {
 				$gallery->debug("Source encoding from Windows client: $sourceEncoding");
 			}
 			$file['name'] = GalleryCoreApi::convertToUtf8($file['name'], $sourceEncoding);
 
 		/* Get the mime type. */
-		list($ret, $mimeType) = GalleryCoreApi::getMimeType($file['name'], $file['type']);
+			list($ret, $mimeType) = GalleryCoreApi::getMimeType($file['name'], $file['type']);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -114,8 +111,14 @@ class UploadItemsController extends GalleryController
 				$caption = $title;
 			}
 			list($ret, $newItem) = GalleryCoreApi::addItemToAlbum(
-		$file['tmp_name'], basename($file['name']), $title, $caption, $description,
-		$mimeType, $form['albumId']);
+				$file['tmp_name'],
+				basename($file['name']),
+				$title,
+				$caption,
+				$description,
+				$mimeType,
+				$form['albumId']
+			);
 			if ($ret) {
 				GalleryCoreApi::releaseLocks($lockIds);
 
@@ -137,7 +140,7 @@ class UploadItemsController extends GalleryController
 			}
 
 		/* Allow ItemAddOptions to process added item(s) */
-		$session =& $gallery->getSession();
+			$session =& $gallery->getSession();
 			if ($session->exists('publishxp.extraOptionsForm')) {
 				$extraOptionsForm = unserialize($session->get('publishxp.extraOptionsForm'));
 			} else {
@@ -145,7 +148,7 @@ class UploadItemsController extends GalleryController
 			}
 			foreach ($optionInstances as $option) {
 				list($ret, $optionErrors, $optionWarnings) =
-			$option->handleRequestAfterAdd($extraOptionsForm, array($newItem));
+				$option->handleRequestAfterAdd($extraOptionsForm, array($newItem));
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -181,77 +184,77 @@ class UploadItemsController extends GalleryController
 	 * @return string charset (MS Windows code page)
 	 * @access private
 	 */
-	public function _getCharsetFromRequest()
-	{
+	public function _getCharsetFromRequest() {
 		$lcid = (int)GalleryUtilities::getRequestVariablesNoPrefix('lcid');
 	/*
 	 * Lookup table: Locale ID to Code Page. Source:
 	 * http://www.microsoft.com/globaldev/reference/oslocversion.mspx
 	 */
-	switch ($lcid) {
-		case 1054: /* Thai */
-		$codePage = 874;
-		break;
-		case 1041: /* Japanese */
-		$codePage = 932;
-		break;
-		case 2052: /* Chinese (Simplified) */
-		$codePage = 936;
-		break;
-		case 1042: /* Korean */
-		$codePage = 949;
-		break;
-		case 1028: /* Chinese (Traditional) */
-		case 3076: /* Chinese (Hong Kong) */
-		$codePage = 950;
-		break;
-		case 1050: /* Croatian */
-		case 1029: /* Czech */
-		case 1038: /* Hungarian */
-		case 1045: /* Polish */
-		case 1048: /* Romanian */
-		case 1051: /* Slovak */
-		case 1060: /* Slovenian */
-		$codePage = 1250;
-		break;
-		case 1026: /* Bulgarian */
-		case 1049: /* Russian */
-		$codePage = 1251;
-		break;
-		case 1046: /* Brazilian */
-		case 1027: /* Catalan */
-		case 1030: /* Danish */
-		case 1043: /* Dutch */
-		case 1033: /* English */
-		case 1035: /* Finnish */
-		case 1036: /* French */
-		case 1031: /* German */
-		case 1040: /* Italian */
-		case 1044: /* Norwegian */
-		case 2070: /* Portuguese */
-		case 3082: /* Spanish */
-		case 1053: /* Swedish */
-		$codePage = 1252;
-		break;
-		case 1032: /* Greek */
-		$codePage = 1253;
-		break;
-		case 1055: /* Turkish */
-		$codePage = 1254;
-		break;
-		case 1037: /* Hebrew */
-		$codePage = 1255;
-		break;
-		case 1025: /* Arabic */
-		$codePage = 1256;
-		break;
-		case 1061: /* Estonian */
-		case 1062: /* Latvian */
-		case 1063: /* Lithuanian */
-		$codePage = 1257;
-		break;
-		default: $codePage = 1252;
-	}
+		switch ($lcid) {
+			case 1054: /* Thai */
+				$codePage = 874;
+				break;
+			case 1041: /* Japanese */
+				$codePage = 932;
+				break;
+			case 2052: /* Chinese (Simplified) */
+				$codePage = 936;
+				break;
+			case 1042: /* Korean */
+				$codePage = 949;
+				break;
+			case 1028: /* Chinese (Traditional) */
+			case 3076: /* Chinese (Hong Kong) */
+				$codePage = 950;
+				break;
+			case 1050: /* Croatian */
+			case 1029: /* Czech */
+			case 1038: /* Hungarian */
+			case 1045: /* Polish */
+			case 1048: /* Romanian */
+			case 1051: /* Slovak */
+			case 1060: /* Slovenian */
+				$codePage = 1250;
+				break;
+			case 1026: /* Bulgarian */
+			case 1049: /* Russian */
+				$codePage = 1251;
+				break;
+			case 1046: /* Brazilian */
+			case 1027: /* Catalan */
+			case 1030: /* Danish */
+			case 1043: /* Dutch */
+			case 1033: /* English */
+			case 1035: /* Finnish */
+			case 1036: /* French */
+			case 1031: /* German */
+			case 1040: /* Italian */
+			case 1044: /* Norwegian */
+			case 2070: /* Portuguese */
+			case 3082: /* Spanish */
+			case 1053: /* Swedish */
+				$codePage = 1252;
+				break;
+			case 1032: /* Greek */
+				$codePage = 1253;
+				break;
+			case 1055: /* Turkish */
+				$codePage = 1254;
+				break;
+			case 1037: /* Hebrew */
+				$codePage = 1255;
+				break;
+			case 1025: /* Arabic */
+				$codePage = 1256;
+				break;
+			case 1061: /* Estonian */
+			case 1062: /* Latvian */
+			case 1063: /* Lithuanian */
+				$codePage = 1257;
+				break;
+			default:
+				$codePage = 1252;
+		}
 
 		return 'CP' . $codePage;
 	}
@@ -264,13 +267,11 @@ class UploadItemsController extends GalleryController
  * the photos.  Subsequent requests from Windows include the photo data and text.
  * This page processes the data and applies the options to be used while uploading.
  */
-class UploadItemsView extends GalleryView
-{
+class UploadItemsView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		if ($form['formName'] != 'UploadItems') {
 			$form['formName'] = 'UploadItems';
 		}
@@ -278,7 +279,10 @@ class UploadItemsView extends GalleryView
 		list($UploadItems['albumId'],
 		  $UploadItems['stripExtensions'],
 		  $UploadItems['setCaptions']) = GalleryUtilities::getRequestVariables(
-		  'albumId', 'stripExtensions', 'setCaptions');
+			  'albumId',
+			  'stripExtensions',
+			  'setCaptions'
+		  );
 
 		if (empty($UploadItems['stripExtensions'])) {
 			$UploadItems['stripExtensions'] = 0;

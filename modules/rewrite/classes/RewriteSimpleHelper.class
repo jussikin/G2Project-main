@@ -26,16 +26,14 @@
  * @version $Revision: 17580 $
  * @static
  */
-class RewriteSimpleHelper
-{
+class RewriteSimpleHelper {
 	/**
 	 * This is an onLoad function called by RewriteUrlGenerator::init if there's a path keyword
 	 * that needs to be parsed to an itemId. Used by other modules that has %path%.
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public static function loadItemIdFromPath()
-	{
+	public static function loadItemIdFromPath() {
 		list($path, $itemId) = GalleryUtilities::getRequestVariables('path', 'itemId');
 
 		if (!empty($path) && empty($itemId)) {
@@ -61,8 +59,7 @@ class RewriteSimpleHelper
 	 * @param GalleryEntity $entity loaded entity with item id = $params['itemId'], or null
 	 * @return boolean true on success
 	 */
-	public static function parsePath(&$url, &$params, &$entity)
-	{
+	public static function parsePath(&$url, &$params, &$entity) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -100,8 +97,7 @@ class RewriteSimpleHelper
 	/**
 	 * @see RewriteSimpleHelper::parsePath
 	 */
-	public static function parsePage(&$url, &$params, &$entity)
-	{
+	public static function parsePage(&$url, &$params, &$entity) {
 		$page = isset($params['page']) ? $params['page'] : '';
 		$url = str_replace('%page%', $page, $url);
 		unset($params['page']);
@@ -112,8 +108,7 @@ class RewriteSimpleHelper
 	/**
 	 * @see RewriteSimpleHelper::parsePath
 	 */
-	public static function parseLanguage(&$url, &$params, &$entity)
-	{
+	public static function parseLanguage(&$url, &$params, &$entity) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -144,8 +139,7 @@ class RewriteSimpleHelper
 	/**
 	 * @see RewriteSimpleHelper::parsePath
 	 */
-	public static function parseSerialNumber(&$url, &$params, &$entity)
-	{
+	public static function parseSerialNumber(&$url, &$params, &$entity) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -161,8 +155,7 @@ class RewriteSimpleHelper
 	/**
 	 * @see RewriteSimpleHelper::parsePath
 	 */
-	public static function parseFileName(&$url, &$params, &$entity)
-	{
+	public static function parseFileName(&$url, &$params, &$entity) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 

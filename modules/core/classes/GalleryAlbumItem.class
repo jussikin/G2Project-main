@@ -38,8 +38,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17589 $
  */
-class GalleryAlbumItem extends GalleryItem
-{
+class GalleryAlbumItem extends GalleryItem {
 	/**
 	 * The theme to use for this item
 	 * @var string
@@ -83,8 +82,7 @@ class GalleryAlbumItem extends GalleryItem
 	 * @param int $parentId the id of the parent of this object
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId = null, $albumName = null, $x1 = null)
-	{
+	public function create($parentId = null, $albumName = null, $x1 = null) {
 		global $gallery;
 		
 		if (empty($albumName) || empty($parentId)) {
@@ -159,8 +157,7 @@ class GalleryAlbumItem extends GalleryItem
 	 * Create a new root level album
 	 * @return GalleryStatus a status code
 	 */
-	public function createRoot()
-	{
+	public function createRoot() {
 		global $gallery;
 		
 		/* See if we already have a root */
@@ -206,8 +203,7 @@ class GalleryAlbumItem extends GalleryItem
 	 * Internal function to create the album directory
 	 * @access private
 	 */
-	public function _createDir($albumDir)
-	{
+	public function _createDir($albumDir) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -233,16 +229,14 @@ class GalleryAlbumItem extends GalleryItem
 	 *
 	 * @return true if this item can contain other file system items
 	 */
-	public function isContainer()
-	{
+	public function isContainer() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryItem::save()
 	 */
-	public function save($postEvent = true, $x1 = null)
-	{
+	public function save($postEvent = true, $x1 = null) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -278,8 +272,7 @@ class GalleryAlbumItem extends GalleryItem
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 		
 		/* Delete myself from the store */
@@ -324,8 +317,7 @@ class GalleryAlbumItem extends GalleryItem
 	 * @param string $newName the path component
 	 * @return GalleryStatus a status code
 	 */
-	public function rename($newName)
-	{
+	public function rename($newName) {
 		global $gallery;
 		
 		if ($newName == $this->getPathComponent()) {
@@ -401,8 +393,7 @@ class GalleryAlbumItem extends GalleryItem
 	 * @param int $newParentId the id of the GalleryItem parent
 	 * @return GalleryStatus a status code
 	 */
-	public function move($newParentId)
-	{
+	public function move($newParentId) {
 		/* Get the current parent sequence */
 		list($ret, $oldParentSequence) = GalleryCoreApi::fetchParentSequence($this->getId());
 		if ($ret) {
@@ -443,8 +434,7 @@ class GalleryAlbumItem extends GalleryItem
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		global $gallery;
 		if ($localized) {
 			list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -465,38 +455,31 @@ class GalleryAlbumItem extends GalleryItem
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryAlbumItem';
 	}
 	
-	public function getTheme()
-	{
+	public function getTheme() {
 		return $this->theme;
 	}
 	
-	public function setTheme($theme)
-	{
+	public function setTheme($theme) {
 		$this->theme = $theme;
 	}
 	
-	public function getOrderBy()
-	{
+	public function getOrderBy() {
 		return $this->orderBy;
 	}
 	
-	public function setOrderBy($orderBy)
-	{
+	public function setOrderBy($orderBy) {
 		$this->orderBy = $orderBy;
 	}
 	
-	public function getOrderDirection()
-	{
+	public function getOrderDirection() {
 		return $this->orderDirection;
 	}
 	
-	public function setOrderDirection($orderDirection)
-	{
+	public function setOrderDirection($orderDirection) {
 		$this->orderDirection = $orderDirection;
 	}
 }

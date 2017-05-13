@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CoreCaptchaAdminOption extends CaptchaAdminOption
-{
+class CoreCaptchaAdminOption extends CaptchaAdminOption {
 	/**
 	 * @see CaptchaAdminOption::getOptionData
 	 */
-	public function getOptionData()
-	{
+	public function getOptionData() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

@@ -25,15 +25,12 @@
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminGetid3ControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminGetid3ControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'getid3:AdminGetid3');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -61,8 +58,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$ret = parent::tearDown();
 		if ($ret) {
@@ -80,8 +76,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testSaveAvailableToSummary()
-	{
+	public function testSaveAvailableToSummary() {
 		GalleryUtilities::putRequestVariable('form[available][0]', 'Genre');
 		GalleryUtilities::putRequestVariable('form[available][1]', 'Year');
 		GalleryUtilities::putRequestVariable('form[action][availableToSummary]', 1);
@@ -110,8 +105,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assert(in_array('Year', $properties));
 	}
 	
-	public function testRemoveFromSummary()
-	{
+	public function testRemoveFromSummary() {
 		GalleryUtilities::putRequestVariable('form[summary][0]', 'Artist');
 		GalleryUtilities::putRequestVariable('form[summary][1]', 'Title');
 		GalleryUtilities::putRequestVariable('form[action][removeFromSummary]', 1);
@@ -140,8 +134,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assert(!in_array('Title', $properties));
 	}
 	
-	public function testRemoveFromSummaryMissing()
-	{
+	public function testRemoveFromSummaryMissing() {
 		GalleryUtilities::putRequestVariable('form[action][removeFromSummary]', 1);
 		
 		$results = $this->handleRequest();
@@ -157,8 +150,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMoveUpSummary()
-	{
+	public function testMoveUpSummary() {
 		GalleryUtilities::putRequestVariable('form[summary][0]', 'Album');
 		GalleryUtilities::putRequestVariable('form[summary][1]', 'Track');
 		GalleryUtilities::putRequestVariable('form[action][moveUpSummary]', 1);
@@ -189,8 +181,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('Title', $properties[3]);
 	}
 	
-	public function testMoveUpSummaryMissing()
-	{
+	public function testMoveUpSummaryMissing() {
 		GalleryUtilities::putRequestVariable('form[action][moveUpSummary]', 1);
 		
 		$results = $this->handleRequest();
@@ -206,8 +197,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMoveDownSummary()
-	{
+	public function testMoveDownSummary() {
 		GalleryUtilities::putRequestVariable('form[summary][0]', 'Album');
 		GalleryUtilities::putRequestVariable('form[summary][1]', 'Track');
 		GalleryUtilities::putRequestVariable('form[action][moveDownSummary]', 1);
@@ -238,8 +228,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('Title', $properties[3]);
 	}
 	
-	public function testMoveDownSummaryMissing()
-	{
+	public function testMoveDownSummaryMissing() {
 		GalleryUtilities::putRequestVariable('form[action][moveDownSummary]', 1);
 		
 		$results = $this->handleRequest();
@@ -255,8 +244,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testResetSummary()
-	{
+	public function testResetSummary() {
 		/* Remove all properties */
 		$ret = Getid3Helper::setProperties(GETID3_SUMMARY, array());
 		if ($ret) {
@@ -290,8 +278,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('DateTime', $properties[4]);
 	}
 	
-	public function testSaveAvailableToDetailed()
-	{
+	public function testSaveAvailableToDetailed() {
 		GalleryUtilities::putRequestVariable('form[available][0]', 'Playtime (Seconds)');
 		GalleryUtilities::putRequestVariable('form[available][1]', 'Playtime');
 		GalleryUtilities::putRequestVariable('form[action][availableToDetailed]', 1);
@@ -320,8 +307,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assert(in_array('Playtime', $properties));
 	}
 	
-	public function testRemoveFromDetailed()
-	{
+	public function testRemoveFromDetailed() {
 		GalleryUtilities::putRequestVariable('form[detailed][0]', 'Artist');
 		GalleryUtilities::putRequestVariable('form[detailed][1]', 'Album');
 		GalleryUtilities::putRequestVariable('form[action][removeFromDetailed]', 1);
@@ -350,8 +336,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assert(!in_array('Album', $properties));
 	}
 	
-	public function testRemoveFromDetailedMissing()
-	{
+	public function testRemoveFromDetailedMissing() {
 		GalleryUtilities::putRequestVariable('form[action][removeFromDetailed]', 1);
 		
 		$results = $this->handleRequest();
@@ -367,8 +352,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMoveUpDetailed()
-	{
+	public function testMoveUpDetailed() {
 		GalleryUtilities::putRequestVariable('form[detailed][0]', 'Album');
 		GalleryUtilities::putRequestVariable('form[detailed][1]', 'Genre');
 		GalleryUtilities::putRequestVariable('form[detailed][2]', 'ChannelMode');
@@ -399,8 +383,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('AudioChannels', $properties[9]);
 	}
 	
-	public function testMoveUpDetailedMissing()
-	{
+	public function testMoveUpDetailedMissing() {
 		GalleryUtilities::putRequestVariable('form[action][moveUpDetailed]', 1);
 		
 		$results = $this->handleRequest();
@@ -416,8 +399,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMoveDownDetailed()
-	{
+	public function testMoveDownDetailed() {
 		GalleryUtilities::putRequestVariable('form[detailed][0]', 'Artist');
 		GalleryUtilities::putRequestVariable('form[detailed][1]', 'Year');
 		GalleryUtilities::putRequestVariable('form[detailed][2]', 'AudioChannels');
@@ -448,8 +430,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('AudioChannels', $properties[10]);
 	}
 	
-	public function testMoveDownDetailedMissing()
-	{
+	public function testMoveDownDetailedMissing() {
 		GalleryUtilities::putRequestVariable('form[action][moveDownDetailed]', 1);
 		
 		$results = $this->handleRequest();
@@ -465,8 +446,7 @@ class AdminGetid3ControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testResetDetailed()
-	{
+	public function testResetDetailed() {
 		/* Remove all properties */
 		$ret = Getid3Helper::setProperties(GETID3_DETAILED, array());
 		if ($ret) {

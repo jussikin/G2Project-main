@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CaptchaValidationPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CaptchaValidationPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -64,8 +61,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		$this->_form = array();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		if (isset($this->_saveSessionCount)) {
@@ -83,8 +79,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		}
 	}
 	
-	public function testLoadTemplateDefault()
-	{
+	public function testLoadTemplateDefault() {
 		/* With no options, level defaults to HIGH */
 		$result = $this->_plugin->loadTemplate($this->_form);
 		$this->assertEquals(array(
@@ -94,8 +89,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		), $result);
 	}
 	
-	public function testLoadTemplateHigh()
-	{
+	public function testLoadTemplateHigh() {
 		$result = $this->_plugin->loadTemplate($this->_form, array(
 			'level' => 'HIGH'
 		));
@@ -107,8 +101,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		$this->assertEquals(array(), $this->_form);
 	}
 	
-	public function testLoadTemplateMedium()
-	{
+	public function testLoadTemplateMedium() {
 		$result = $this->_plugin->loadTemplate($this->_form, array(
 			'level' => 'MEDIUM',
 			'key' => 'captcha.UnitTest'
@@ -136,8 +129,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		$this->assertEquals(array(), $this->_form);
 	}
 	
-	public function testLoadTemplateLow()
-	{
+	public function testLoadTemplateLow() {
 		global $gallery;
 		$result = $this->_plugin->loadTemplate($this->_form, array(
 			'level' => 'LOW'
@@ -162,8 +154,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		$this->assertEquals(array(), $this->_form);
 	}
 	
-	public function testValidateMissingCode()
-	{
+	public function testValidateMissingCode() {
 		/* With no options, level defaults to HIGH */
 		$result = $this->_plugin->performValidation($this->_form);
 		$this->assertEquals(array(
@@ -175,8 +166,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		), $result);
 	}
 	
-	public function testValidateHigh()
-	{
+	public function testValidateHigh() {
 		/* Test with HIGH level */
 		$this->_form['CaptchaValidationPlugin']['word'] = '1234';
 		$result = $this->_plugin->performValidation($this->_form, array(
@@ -201,8 +191,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		), $result, 'fail');
 	}
 	
-	public function testValidateMedium()
-	{
+	public function testValidateMedium() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -285,8 +274,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		$this->assertEquals(null, $count, 'failure count 4');
 	}
 	
-	public function testValidateLow()
-	{
+	public function testValidateLow() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		
@@ -318,8 +306,7 @@ class CaptchaValidationPluginTest extends GalleryTestCase
 		), $result);
 	}
 	
-	public function testSecurity()
-	{
+	public function testSecurity() {
 		/* Make sure to clear/repick key value on validation failure to thwart automated attacks */
 		global $gallery;
 		$session =& $gallery->getSession();

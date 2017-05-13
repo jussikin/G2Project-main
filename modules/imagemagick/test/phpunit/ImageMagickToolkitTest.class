@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/imagemagick/classes/ImageMagickToolkit.clas
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20957 $
  */
-class ImageMagickToolkitTest extends GalleryTestCase
-{
+class ImageMagickToolkitTest extends GalleryTestCase {
 	/*
 	 * The array with environment information, from ImEnvironments.inc
 	 */
@@ -47,8 +46,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 */
 	public $_files = array();
 	
-	public function __construct($methodName)
-	{
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 		
 		/* Load our environments */
@@ -56,8 +54,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		$this->_environments = $imEnvironment;
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -93,8 +90,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 * @param array $environment the array item of the environment
 	 * @access private
 	 */
-	public function _setEnvironment($environment)
-	{
+	public function _setEnvironment($environment) {
 		$environment['path'] = '/' . $environment['name'] . $environment['version'] . '/';
 		
 		$ret = GalleryCoreApi::setPluginParameter('module', 'imagemagick', 'path', $environment['path']);
@@ -113,8 +109,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		return true;
 	}
 	
-	public function _envName()
-	{
+	public function _envName() {
 		return $this->_currentEnvironment['name'] . ' ' . $this->_currentEnvironment['version'];
 	}
 	
@@ -131,8 +126,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 * @return GalleryStatus
 	 * @access private
 	 */
-	public function _testOperation($mimeType, $operation, $src, $dst, $params, $namedParams, $quality = null)
-	{
+	public function _testOperation($mimeType, $operation, $src, $dst, $params, $namedParams, $quality = null) {
 		$this->_chmodWasCalled = false;
 		list($ret, $outputMimeType) = $this->_toolkit->performOperation($mimeType, $operation, $src, $dst, $params);
 		if ($ret) {
@@ -209,8 +203,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		return null;
 	}
 	
-	public function testPerformOperations()
-	{
+	public function testPerformOperations() {
 		global $gallery;
 		foreach ($this->_environments as $environment) {
 			$this->_setEnvironment($environment);
@@ -354,8 +347,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPercentParameters()
-	{
+	public function testPercentParameters() {
 		foreach ($this->_environments as $environment) {
 			$this->_setEnvironment($environment);
 			
@@ -393,8 +385,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testPngQuality()
-	{
+	public function testPngQuality() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'imagemagick', 'jpegQuality', 94);
 		if ($ret) {
 			return $ret;
@@ -426,8 +417,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 * crop first, however that causes problems with some versions of ImageMagick, and this still
 	 * serves as a good test for our sequences.
 	 */
-	public function testOperationSequence()
-	{
+	public function testOperationSequence() {
 		$this->_platform->_copyOk = true;
 		
 		foreach ($this->_environments as $environment) {
@@ -499,8 +489,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 * comment in the mock platform for more details.  So make sure that these are NOT done in a
 	 * single operation.
 	 */
-	public function testOperationSequenceCropAndGeometrySeparate()
-	{
+	public function testOperationSequenceCropAndGeometrySeparate() {
 		$this->_platform->_copyOk = true;
 		
 		foreach ($this->_environments as $environment) {
@@ -573,8 +562,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 * Ensure queued operations that affect image size are taken into account
 	 * for subsequent operations..
 	 */
-	public function testOperationSequenceSizeChange()
-	{
+	public function testOperationSequenceSizeChange() {
 		$this->_platform->_copyOk = true;
 		
 		foreach ($this->_environments as $environment) {
@@ -666,8 +654,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	}
 	
 	/* Ensure queued operations handle change of mime type correctly */
-	public function testOperationSequenceMimeChange()
-	{
+	public function testOperationSequenceMimeChange() {
 		$this->_platform->_copyOk = true;
 		
 		foreach ($this->_environments as $environment) {
@@ -724,8 +711,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetProperties()
-	{
+	public function testGetProperties() {
 		foreach ($this->_environments as $environment) {
 			$this->_setEnvironment($environment);
 			
@@ -761,8 +747,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testMergeOperations()
-	{
+	public function testMergeOperations() {
 		list($success, $operation, $args) = $this->_toolkit->mergeOperations('crop', array(
 			1,
 			2,
@@ -913,8 +898,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		$this->assert(!$success);
 	}
 	
-	public function testDiscoverMimeTypes()
-	{
+	public function testDiscoverMimeTypes() {
 		foreach ($this->_environments as $environment) {
 			$this->_setEnvironment($environment);
 			
@@ -926,8 +910,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetOperationsAndProperties()
-	{
+	public function testGetOperationsAndProperties() {
 		foreach ($this->_environments as $environment) {
 			$this->_setEnvironment($environment);
 			
@@ -1130,8 +1113,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 		}
 	}
 	
-	public function testBinaries()
-	{
+	public function testBinaries() {
 		foreach ($this->_environments as $environment) {
 			$this->_setEnvironment($environment);
 			
@@ -1170,25 +1152,21 @@ class ImageMagickToolkitTest extends GalleryTestCase
  * @package ImageMagick
  * @subpackage PHPUnit
  */
-class ImageMagickToolkitTestPlatform
-{
+class ImageMagickToolkitTestPlatform {
 	public $_environment = array();
 	public $_files;
 	
-	public function ImageMagickToolkitTestPlatform($originalPlatform, &$files, &$test)
-	{
+	public function ImageMagickToolkitTestPlatform($originalPlatform, &$files, &$test) {
 		$this->_platform = $originalPlatform;
 		$this->_files =& $files;
 		$this->_test =& $test;
 	}
 	
-	public function setEnvironment($environment)
-	{
+	public function setEnvironment($environment) {
 		$this->_environment = $environment;
 	}
 	
-	public function exec($cmd)
-	{
+	public function exec($cmd) {
 		list($ret, $imageMagickPath) = GalleryCoreApi::getPluginParameter('module', 'imagemagick', 'path');
 		if ($ret) {
 			return array(
@@ -1309,8 +1287,7 @@ class ImageMagickToolkitTestPlatform
 		);
 	}
 	
-	public function rename($oldName, $newName)
-	{
+	public function rename($oldName, $newName) {
 		$oldBase = basename($oldName);
 		$newBase = basename($newName);
 		if (isset($this->_files[$oldBase])) {
@@ -1337,14 +1314,12 @@ class ImageMagickToolkitTestPlatform
 		return false;
 	}
 	
-	public function isRestrictedByOpenBaseDir($path)
-	{
+	public function isRestrictedByOpenBaseDir($path) {
 		/* echo $this->_environment['path'] . ": isRestrictedByOpenBaseDir($path)<br>\n"; */
 		return false;
 	}
 	
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		if ($path == $this->_environment['path']) {
 			return true;
 		}
@@ -1362,8 +1337,7 @@ class ImageMagickToolkitTestPlatform
 		return false;
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if ($path == $this->_environment['path']) {
 			return true;
 		}
@@ -1371,8 +1345,7 @@ class ImageMagickToolkitTestPlatform
 		return false;
 	}
 	
-	public function is_executable($file)
-	{
+	public function is_executable($file) {
 		$dirName = dirname($file) . '/';
 		$baseName = basename($file);
 		if ($dirName == $this->_environment['path']) {
@@ -1389,16 +1362,14 @@ class ImageMagickToolkitTestPlatform
 		return false;
 	}
 	
-	public function copy($file1, $file2)
-	{
+	public function copy($file1, $file2) {
 		if (isset($this->_copyOk)) {
 			return 1;
 		}
 		echo $this->_environment['path'] . ": copy($file1, $file2)<br>\n";
 	}
 	
-	public function filesize($file)
-	{
+	public function filesize($file) {
 		$basename = basename($file);
 		if ($basename == 'testProfile.jpg') {
 			return 100000;
@@ -1421,16 +1392,14 @@ class ImageMagickToolkitTestPlatform
 		return 0;
 	}
 	
-	public function tempnam($dir, $prefix)
-	{
+	public function tempnam($dir, $prefix) {
 		$fileName = $dir . $prefix . md5(rand());
 		$this->_files[basename($fileName)] = 'temp';
 		/*echo $this->_environment['path'] . ": tempnam($dir, $prefix) = $fileName<br>\n"; */
 		return $fileName;
 	}
 	
-	public function unlink($path)
-	{
+	public function unlink($path) {
 		$baseName = basename($path);
 		if (isset($this->_files[$baseName])) {
 			unset($this->_files[$baseName]);
@@ -1442,8 +1411,7 @@ class ImageMagickToolkitTestPlatform
 		return false;
 	}
 	
-	public function getimagesize($path)
-	{
+	public function getimagesize($path) {
 		$basename = basename($path);
 		if (preg_match('#\[(\d+)x(\d+)\]#', $basename, $matches)) {
 			$result = array(
@@ -1460,28 +1428,23 @@ class ImageMagickToolkitTestPlatform
 		return $result;
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_platform->getDirectorySeparator();
 	}
 	
-	public function realpath($path)
-	{
+	public function realpath($path) {
 		return $this->_platform->realpath($path);
 	}
 	
-	public function chdir($path)
-	{
+	public function chdir($path) {
 		return true;
 	}
 	
-	public function getcwd()
-	{
+	public function getcwd() {
 		return '/tmp';
 	}
 	
-	public function chmod($path, $mode = null)
-	{
+	public function chmod($path, $mode = null) {
 		$this->_test->_chmodWasCalled = true;
 
 		return true;

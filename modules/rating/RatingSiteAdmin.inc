@@ -25,13 +25,11 @@
  * @author  Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingSiteAdminController extends GalleryController
-{
+class RatingSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -88,13 +86,11 @@ class RatingSiteAdminController extends GalleryController
 /**
  * Settings for Ratings
  */
-class RatingSiteAdminView extends GalleryView
-{
+class RatingSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

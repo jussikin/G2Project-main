@@ -28,13 +28,11 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-class PublishXpLoginController extends GalleryController
-{
+class PublishXpLoginController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$results = $error = array();
 		if (isset($form['action']['login'])) {
@@ -100,13 +98,11 @@ class PublishXpLoginController extends GalleryController
  * Allows the user to log in to Gallery to begin the process of uploading
  * photos through Windows XP's publishing mechanism.
  */
-class PublishXpLoginView extends GalleryView
-{
+class PublishXpLoginView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		if ($form['formName'] != 'PublishXpLogin') {
 			$form['userName'] = '';
@@ -120,7 +116,7 @@ class PublishXpLoginView extends GalleryView
 
 		if (!$isAnonymous) {
 			/* No need to log in */
-		return array(null, array('redirect' => array('view' => 'publishxp.SelectAlbum')));
+			return array(null, array('redirect' => array('view' => 'publishxp.SelectAlbum')));
 		}
 
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');

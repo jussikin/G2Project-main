@@ -26,16 +26,14 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PicLensHelper
-{
+class PicLensHelper {
 	/**
 	 * Download the latest Javascript and Shockwave code from the PicLens site.
 	 * @return array object GalleryStatus a status code
 	 *               string the version of PicLens we just installed
 	 * @static
 	 */
-	public static function install()
-	{
+	public static function install() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -79,8 +77,7 @@ class PicLensHelper
 	 *               'swfUrl' => url to the SWF file)
 	 * @static
 	 */
-	public static function getLatestPicLensInfo()
-	{
+	public static function getLatestPicLensInfo() {
 		$url = 'http://gallery.menalto.com/versioncheck/piclens/release';
 		list($success, $body) = GalleryCoreApi::fetchWebPage($url);
 		if (!$success) {
@@ -102,8 +99,7 @@ class PicLensHelper
 	/**
 	 * Remove PicLens.
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 

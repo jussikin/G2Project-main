@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class DatabaseExportTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DatabaseExportTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			echo $ret->getAsHtml();
@@ -68,8 +65,7 @@ class DatabaseExportTest extends GalleryTestCase
 		$this->_export = new GalleryDatabaseExport();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$storage =& $gallery->getStorage();
@@ -85,12 +81,10 @@ class DatabaseExportTest extends GalleryTestCase
 		}
 	}
 
-	public function progressCallback($percentage)
-	{
+	public function progressCallback($percentage) {
 	}
 
-	public function testExportPluginStatus()
-	{
+	public function testExportPluginStatus() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -225,8 +219,7 @@ class DatabaseExportTest extends GalleryTestCase
 		}
 	}
 
-	public function testExportSequences()
-	{
+	public function testExportSequences() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -259,8 +252,7 @@ class DatabaseExportTest extends GalleryTestCase
 		}
 	}
 
-	public function testExportTableIgnoreData()
-	{
+	public function testExportTableIgnoreData() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -353,8 +345,7 @@ class DatabaseExportTest extends GalleryTestCase
 		$this->assertEquals(0, count($warnings), 'Warnings were issued');
 	}
 
-	public function testExportTableNoCreateSql()
-	{
+	public function testExportTableNoCreateSql() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -399,8 +390,7 @@ class DatabaseExportTest extends GalleryTestCase
 		$this->assertEquals($expected, $warnings[0], 'The message was not equal');
 	}
 
-	public function testExportDataNoError()
-	{
+	public function testExportDataNoError() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -601,8 +591,7 @@ class DatabaseExportTest extends GalleryTestCase
 		return null;
 	}
 
-	public function testExportDataDescribeFailure()
-	{
+	public function testExportDataDescribeFailure() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$platform =& $gallery->getPlatform();
@@ -674,8 +663,7 @@ class DatabaseExportTest extends GalleryTestCase
 		return null;
 	}
 
-	public function testOpenBackupFileForWriting()
-	{
+	public function testOpenBackupFileForWriting() {
 		global $gallery;
 		$gallery->setConfig('data.gallery.backup', '/path/');
 		$gallery->setConfig('storage.config', array(
@@ -714,8 +702,7 @@ class DatabaseExportTest extends GalleryTestCase
 		$this->assertEquals('/path/TEST-DB_MD5MD_DATE.xml', $fileName);
 	}
 
-	public function testOpenBackupFileForWritingSqLitePathsGetTrimmed()
-	{
+	public function testOpenBackupFileForWritingSqLitePathsGetTrimmed() {
 		global $gallery;
 		$gallery->setConfig('data.gallery.backup', '/path/');
 		$gallery->setConfig('storage.config', array(
@@ -754,8 +741,7 @@ class DatabaseExportTest extends GalleryTestCase
 		$this->assertEquals('/path/TEST-DB_MD5MD_DATE.xml', $fileName);
 	}
 
-	public function testOpenBackupFileForWritingWithSpecificFilename()
-	{
+	public function testOpenBackupFileForWritingWithSpecificFilename() {
 		global $gallery;
 		$gallery->setConfig('data.gallery.backup', '/path');
 		$gallery->_platform->setReply('fopen', array(

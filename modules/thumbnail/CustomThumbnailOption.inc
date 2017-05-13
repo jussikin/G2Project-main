@@ -25,25 +25,22 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomThumbnailOption extends ItemEditOption
-{
+class CustomThumbnailOption extends ItemEditOption {
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
-	public function isAppropriate($item, $thumbnail)
-	{
+	public function isAppropriate($item, $thumbnail) {
 		return array(null, GalleryUtilities::isA($item, 'GalleryItem'));
 	}
 
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 
 	/* Is this item already using a custom thumbnail.. */
-	list($ret, $thumbnailImage) = ThumbnailHelper::fetchThumbnail($item->getId());
+		list($ret, $thumbnailImage) = ThumbnailHelper::fetchThumbnail($item->getId());
 		if ($ret) {
 			return array($ret, null, null);
 		}
@@ -51,24 +48,26 @@ class CustomThumbnailOption extends ItemEditOption
 			$thumbnailImage = (array)$thumbnailImage;
 		} else {
 			/* Set the form's encoding type since we're uploading binary files */
-		if ($template->hasVariable('ItemAdmin')) {
-			$ItemAdmin =& $template->getVariableByReference('ItemAdmin');
-			$ItemAdmin['enctype'] = 'multipart/form-data';
-		} else {
-			$ItemAdmin = array('enctype' => 'multipart/form-data');
-			$template->setVariable('ItemAdmin', $ItemAdmin);
-		}
+			if ($template->hasVariable('ItemAdmin')) {
+				$ItemAdmin =& $template->getVariableByReference('ItemAdmin');
+				$ItemAdmin['enctype'] = 'multipart/form-data';
+			} else {
+				$ItemAdmin = array('enctype' => 'multipart/form-data');
+				$template->setVariable('ItemAdmin', $ItemAdmin);
+			}
 		}
 
 	/* Check toolkit support for jpeg thumbnails */
-	list($ret, $mimeList) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
+		list($ret, $mimeList) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
 		if ($ret) {
 			return array($ret, null, null);
 		}
 
-		$template->setVariable('CustomThumbnailOption',
-				   array('thumbnail' => $thumbnailImage,
-					 'canResize' => isset($mimeList['image/jpeg'])));
+		$template->setVariable(
+			'CustomThumbnailOption',
+			array('thumbnail' => $thumbnailImage,
+			'canResize' => isset($mimeList['image/jpeg']))
+		);
 
 		return array(null,
 			'modules/thumbnail/templates/CustomThumbnail.tpl',
@@ -78,8 +77,7 @@ class CustomThumbnailOption extends ItemEditOption
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
 
 		$error = $warning = array();
@@ -90,7 +88,12 @@ class CustomThumbnailOption extends ItemEditOption
 			}
 
 			list($ret, $thumbnailId) = ThumbnailHelper::addItem(
-		null, $item->getId(), $form['name'][1], $form['tmp_name'][1], $form['type'][1]);
+				null,
+				$item->getId(),
+				$form['name'][1],
+				$form['tmp_name'][1],
+				$form['type'][1]
+			);
 			if ($ret && ($ret->getErrorCode() & ERROR_UNSUPPORTED_FILE_TYPE)) {
 				$error[] = 'form[CustomThumbnailOption][error][imageMime]';
 			} elseif ($ret) {

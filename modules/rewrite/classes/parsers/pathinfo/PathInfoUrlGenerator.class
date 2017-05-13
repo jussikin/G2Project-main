@@ -27,8 +27,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class')
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class PathInfoUrlGenerator extends RewriteUrlGenerator
-{
+class PathInfoUrlGenerator extends RewriteUrlGenerator {
 	/**
 	 * Base parameter string for all generated URLs, e.g. 'module=gallery'.  Index of array =
 	 * $forceDirect (true/false) only relevant for embedded Gallery.
@@ -49,8 +48,7 @@ class PathInfoUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::init
 	 */
-	public function init($baseUri=null, $g2Uri=null, $embedSessionString=null)
-	{
+	public function init($baseUri=null, $g2Uri=null, $embedSessionString=null) {
 		$ret = parent::init($baseUri, $g2Uri, $embedSessionString);
 		if ($ret) {
 			return $ret;
@@ -131,8 +129,7 @@ class PathInfoUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::initNavigation
 	 */
-	public function initNavigation()
-	{
+	public function initNavigation() {
 		$ret = $this->_onLoad();
 		if ($ret) {
 			return $ret;
@@ -149,8 +146,7 @@ class PathInfoUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see GalleryUrlGenerator::generateUrl
 	 */
-	public function generateUrl($params=array(), $options=array())
-	{
+	public function generateUrl($params=array(), $options=array()) {
 		if ($this->_error) {
 			return parent::generateUrl($params, $options);
 		}
@@ -169,8 +165,7 @@ class PathInfoUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see RewriteUrlGenerator::_getBaseUrl
 	 */
-	public function _getBaseUrl($forceDirect=false)
-	{
+	public function _getBaseUrl($forceDirect=false) {
 		if (!isset($this->_baseUrl[$forceDirect])) {
 			$url = $this->getCurrentUrlDir($forceDirect) . $this->_piFile[$forceDirect];
 			$url .= (substr($url, -1) != '/') ? '/' : '';
@@ -183,8 +178,7 @@ class PathInfoUrlGenerator extends RewriteUrlGenerator
 	/**
 	 * @see RewriteUrlGenerator::_getBaseParamString
 	 */
-	public function _getBaseParamString($forceDirect=false)
-	{
+	public function _getBaseParamString($forceDirect=false) {
 		return $this->_baseParamString[$forceDirect];
 	}
 
@@ -200,8 +194,7 @@ class PathInfoUrlGenerator extends RewriteUrlGenerator
 	 *        (different when embedded)
 	 * @return string the base URL directory
 	 */
-	public function getCurrentUrlDir($forceDirect=false)
-	{
+	public function getCurrentUrlDir($forceDirect=false) {
 		if (!isset($this->_currentUrlBaseDir[$forceDirect])) {
 			if (!empty($this->_path[$forceDirect])) {
 				/* An override for the path was defined (most likely an embedded Gallery request) */

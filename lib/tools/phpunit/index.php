@@ -98,8 +98,7 @@ ob_end_clean();
  * g2data directory.  We only save the output when there's a filter value set which indicates that
  * there's an actual test run in progress.
  */
-function PhpUnitOutputInterceptor($message)
-{
+function PhpUnitOutputInterceptor($message) {
 	global $gallery;
 	global $testReportDir;
 	
@@ -147,8 +146,7 @@ require_once 'UnitTestTemplate.class';
 require_once 'UnitTestRepository.class';
 require_once 'UnitTestRepositoryUtilities.class';
 
-function PhpUnitGalleryMain(&$testSuite, $filter)
-{
+function PhpUnitGalleryMain(&$testSuite, $filter) {
 	$ret = GalleryInitFirstPass();
 	if ($ret) {
 		return $ret;
@@ -239,8 +237,7 @@ function PhpUnitGalleryMain(&$testSuite, $filter)
 	return null;
 }
 
-function loadTests($moduleId, $testDir, $filter)
-{
+function loadTests($moduleId, $testDir, $filter) {
 	global $gallery;
 	$moduleArray = array();
 	
@@ -271,19 +268,16 @@ function loadTests($moduleId, $testDir, $filter)
 	return $moduleArray;
 }
 
-class GalleryTestResult extends TestResult
-{
+class GalleryTestResult extends TestResult {
 	public $_totalElapsed = 0;
 	public $_testsFailed = 0;
 	public $_testsRunThenSkipped = 0;
 	
-	public function GalleryTestResult()
-	{
+	public function GalleryTestResult() {
 		$this->TestResult();
 	}
 	
-	public function report()
-	{
+	public function report() {
 		/* report result of test run */
 		global $compactView;
 		$nRun = $this->countTests();
@@ -320,8 +314,7 @@ class GalleryTestResult extends TestResult
 		printf('<script type="text/javascript">var failedTestFilter="(%s)$";%s</script>', implode('|', array_keys($newFilter)), "document.getElementById('runBrokenButton').style.display='block';");
 	}
 	
-	public function _getTestResultRecord()
-	{
+	public function _getTestResultRecord() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$translator =& $gallery->getTranslator();
@@ -363,8 +356,7 @@ class GalleryTestResult extends TestResult
 		return $buf;
 	}
 	
-	public function _startTest($test)
-	{
+	public function _startTest($test) {
 		if ($this->fRunTests == 1) {
 			echo '<script text="text/javascript">showStatus();</script>';
 		}
@@ -372,8 +364,7 @@ class GalleryTestResult extends TestResult
 		flush();
 	}
 	
-	public function _endTest($test)
-	{
+	public function _endTest($test) {
 		$failure = $extra = '';
 		$usedMemory = (function_exists('memory_get_usage')) ? memory_get_usage() : '"unknown"';
 		

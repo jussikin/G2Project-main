@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ConfirmDeleteControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ConfirmDeleteControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'watermark.ConfirmDelete');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -94,8 +91,7 @@ class ConfirmDeleteControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testUserCancel()
-	{
+	public function testUserCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		GalleryUtilities::putRequestVariable('form[watermarkId]', $this->_watermark->getId());
 
@@ -107,8 +103,7 @@ class ConfirmDeleteControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testAdminCancel()
-	{
+	public function testAdminCancel() {
 		global $gallery;
 		$gallery->setActiveUser($this->_saveUser);
 
@@ -124,8 +119,7 @@ class ConfirmDeleteControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testUserDelete()
-	{
+	public function testUserDelete() {
 		GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 		GalleryUtilities::putRequestVariable('form[watermarkId]', $this->_watermark->getId());
 
@@ -148,8 +142,7 @@ class ConfirmDeleteControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $derivative->getPostfilterOperations(), 'not watermarked');
 	}
 
-	public function testAdminDelete()
-	{
+	public function testAdminDelete() {
 		global $gallery;
 		$gallery->setActiveUser($this->_saveUser);
 

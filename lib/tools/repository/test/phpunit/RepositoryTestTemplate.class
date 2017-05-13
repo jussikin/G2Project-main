@@ -34,13 +34,11 @@
  * @package RepositoryTools
  * @subpackage PHPUnit
  */
-class RepositoryTestTemplate
-{
+class RepositoryTestTemplate {
 	public $_templateContents;
 	public $_variables;
 	
-	public function RepositoryTestTemplate($templateContents = '', $contentsVariable = '')
-	{
+	public function RepositoryTestTemplate($templateContents = '', $contentsVariable = '') {
 		$this->_templateContents = $templateContents;
 		
 		if (!empty($contentsVariable)) {
@@ -48,8 +46,7 @@ class RepositoryTestTemplate
 		}
 	}
 	
-	public function setVariable($key, $value)
-	{
+	public function setVariable($key, $value) {
 		$this->_variables[] = $key == 'random' ? array(
 			$key => 'random'
 		) : array(
@@ -57,23 +54,19 @@ class RepositoryTestTemplate
 		);
 	}
 	
-	public function hasVariable($key)
-	{
+	public function hasVariable($key) {
 		return isset($this->_variables[$key]);
 	}
 	
-	public function getVariable($key)
-	{
+	public function getVariable($key) {
 		return $this->_variables[$key];
 	}
 	
-	public function getVariables()
-	{
+	public function getVariables() {
 		return $this->_variables;
 	}
 	
-	public function fetch($template)
-	{
+	public function fetch($template) {
 		return array(
 			null,
 			$this->_templateContents

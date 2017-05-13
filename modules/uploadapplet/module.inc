@@ -23,15 +23,12 @@
  * @author Pierre-Luc Paour <paour@users.sourceforge.net>
  * @version $Revision: 20951 $
  */
-class UploadAppletModule extends GalleryModule
-{
-	public function __construct()
-	{
+class UploadAppletModule extends GalleryModule {
+	public function __construct() {
 		$this->UploadAppletModule();
 	}
 
-	public function UploadAppletModule()
-	{
+	public function UploadAppletModule() {
 		global $gallery;
 		$this->setId('uploadapplet');
 		$this->setName($gallery->i18n('Upload Applet'));
@@ -47,8 +44,7 @@ class UploadAppletModule extends GalleryModule
 	/**
 	 * @see GalleryPlugin::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 
 		list($ret, $params) =
@@ -65,8 +61,10 @@ class UploadAppletModule extends GalleryModule
 		}
 
 		if (!isset($params['uploadoverrideVariables'])) {
-			$ret = $this->setParameter('uploadoverrideVariables',
-			'toSysOut=true|htmlEscapeCaptions=true');
+			$ret = $this->setParameter(
+				'uploadoverrideVariables',
+				'toSysOut=true|htmlEscapeCaptions=true'
+			);
 			if ($ret) {
 				return $ret;
 			}
@@ -78,11 +76,15 @@ class UploadAppletModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemAddPlugin', 'ItemAddUploadApplet', 'ItemAddUploadApplet',
-		'modules/uploadapplet/ItemAddUploadApplet.inc', 'uploadapplet', null);
+			'ItemAddPlugin',
+			'ItemAddUploadApplet',
+			'ItemAddUploadApplet',
+			'modules/uploadapplet/ItemAddUploadApplet.inc',
+			'uploadapplet',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -93,8 +95,7 @@ class UploadAppletModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null, array(array('name' => $this->translate('Upload Applet'),
 					   'view' => 'uploadapplet.UploadAppletSiteAdmin')));
 	}

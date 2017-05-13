@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class FileSystemTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class FileSystemTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -58,8 +55,7 @@ class FileSystemTest extends GalleryTestCase
 		$this->_markForCleanup($this->_albums[0]);
 	}
 
-	public function testFetchItemIdByPath()
-	{
+	public function testFetchItemIdByPath() {
 		$path = '/';
 		for ($i = 0; $i < sizeof($this->_albums); $i++) {
 			$path .= $this->_albums[$i]->getPathComponent() . '/';
@@ -72,8 +68,7 @@ class FileSystemTest extends GalleryTestCase
 		$this->assertEquals($this->_albums[2]->getId(), $id);
 	}
 
-	public function testFetchLogicalPath()
-	{
+	public function testFetchLogicalPath() {
 		list($ret, $root) = GalleryCoreApi::loadEntitiesById($this->_getRootId(), 'GalleryAlbumItem');
 		if ($ret) {
 			return $ret;
@@ -106,8 +101,7 @@ class FileSystemTest extends GalleryTestCase
 		$this->assertEquals(sprintf('/%s/%s/%s', $this->_albums[0]->getPathComponent(), $this->_albums[1]->getPathComponent(), $item->getPathComponent()), $logicalPath);
 	}
 
-	public function testFetchPath()
-	{
+	public function testFetchPath() {
 		global $gallery;
 		$originalPlatform =& $gallery->getPlatform();
 		$gallery->setPlatform(new FileSystemTestPlatform('/'));
@@ -134,8 +128,7 @@ class FileSystemTest extends GalleryTestCase
 		$gallery->setConfig('data.gallery.albums', $originalAlbumsDir);
 	}
 
-	public function testFetchChildIdByPathComponent()
-	{
+	public function testFetchChildIdByPathComponent() {
 		list($ret, $id) = GalleryCoreApi::fetchChildIdByPathComponent($this->_albums[1]->getId(), $this->_albums[2]->getPathComponent());
 
 		$this->assertEquals($this->_albums[2]->getId(), $id);
@@ -145,8 +138,7 @@ class FileSystemTest extends GalleryTestCase
 	 * Verify that creating a second filesystem entity with the same path as
 	 * an existing one throws a collision error.
 	 */
-	public function testCreateCollision()
-	{
+	public function testCreateCollision() {
 		global $gallery;
 
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_albums[0]->getId());
@@ -177,8 +169,7 @@ class FileSystemTest extends GalleryTestCase
 		}
 	}
 
-	public function testMoveCollision()
-	{
+	public function testMoveCollision() {
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock(array(
 			$this->_albums[0]->getId(),
 			$this->_albums[1]->getId(),
@@ -224,8 +215,7 @@ class FileSystemTest extends GalleryTestCase
 	 * FileSystemEntity::move uses valid paths (no incorrect slashes) in its call to the platform
 	 * specific "rename($oldname, $newname)" function.
 	 */
-	public function testMoveRenameCall()
-	{
+	public function testMoveRenameCall() {
 		global $gallery;
 		/* Use a windows alike mock platfrom */
 		$originalPlatform =& $gallery->getPlatform();
@@ -265,8 +255,7 @@ class FileSystemTest extends GalleryTestCase
 		}
 	}
 
-	public function testGetLegalPathComponent()
-	{
+	public function testGetLegalPathComponent() {
 		/* Simple case, no collision */
 		list($ret, $path) = GalleryCoreApi::getLegalPathComponent('testpath', $this->_albums[2]->getId());
 		if ($ret) {
@@ -303,8 +292,7 @@ class FileSystemTest extends GalleryTestCase
 		$this->assertEquals(strftime('%Y%m%d') . '.jpg', $path, 'extended characters');
 	}
 
-	public function testPathComponentLength()
-	{
+	public function testPathComponentLength() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 
@@ -322,8 +310,7 @@ class FileSystemTest extends GalleryTestCase
 	}
 
 	/* Verify that too long path components get truncated and that the extension gets preserved. */
-	public function testGetLegalPathComponentForTruncatedName()
-	{
+	public function testGetLegalPathComponentForTruncatedName() {
 		/* Prepare by setting the name of an existing album to a string with max length. */
 		$component = '1234567890123456789012345678901234567890123456789012345678901234567890' . '1234567890123456789012345678901234567890123456789012345678';
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_albums[0]->getId());
@@ -350,8 +337,7 @@ class FileSystemTest extends GalleryTestCase
 		$this->assertEquals($expectedPathComponent, $path);
 	}
 
-	public function testGetLegalPathComponentForTruncatedNameWithCollision()
-	{
+	public function testGetLegalPathComponentForTruncatedNameWithCollision() {
 		/* Prepare the 2nd case, where we try to fix a collision. */
 		$component = '1234567890123456789012345678901234567890123456789012345678901234567890' . '123456789012345678901234567890123456789012345678901234.jpg';
 		list($ret, $item) = $this->_createRandomDataItem($this->_albums[0]->getId());
@@ -391,8 +377,7 @@ class FileSystemTest extends GalleryTestCase
 	 * Verify that a path component that would be truncated is detected as one that would
 	 * collide with an existing path component of max length.
 	 */
-	public function testCheckPathCollisionTruncation()
-	{
+	public function testCheckPathCollisionTruncation() {
 		/* Prepare by setting the name of an existing album to a string with max length. */
 		$component = '1234567890123456789012345678901234567890123456789012345678901234567890' . '1234567890123456789012345678901234567890123456789012345678';
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($this->_albums[0]->getId());
@@ -418,8 +403,7 @@ class FileSystemTest extends GalleryTestCase
 		$this->assertEquals(true, $isCollision);
 	}
 
-	public function testCheckPathCollisionCaseSensitivity()
-	{
+	public function testCheckPathCollisionCaseSensitivity() {
 		$pathComponentA = 'test';
 		$pathComponentB = 'TEST';
 		list($ret, $item) = $this->_createRandomAlbum($this->_albums[0]->getId());
@@ -458,15 +442,12 @@ class FileSystemTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class FileSystemTestPlatform
-{
-	public function FileSystemTestPlatform($separator)
-	{
+class FileSystemTestPlatform {
+	public function FileSystemTestPlatform($separator) {
 		$this->_separator = $separator;
 	}
 
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_separator;
 	}
 }
@@ -479,15 +460,12 @@ class FileSystemTestPlatform
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class FileSystemTestPlatformForRename extends GalleryPlatform
-{
-	public function FileSystemTestPlatformForRename($separator)
-	{
+class FileSystemTestPlatformForRename extends GalleryPlatform {
+	public function FileSystemTestPlatformForRename($separator) {
 		$this->_separator = $separator;
 	}
 
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_separator;
 	}
 
@@ -497,8 +475,7 @@ class FileSystemTestPlatformForRename extends GalleryPlatform
 	 * Override rename method for the testMoveRenamePaths
 	 * It won't rename the item actually, just check if the paths contain no invalid slashs
 	 */
-	public function rename($oldname, $newname)
-	{
+	public function rename($oldname, $newname) {
 		global $gallery;
 		if ($gallery->getDebug()) {
 			$gallery->debug("rename($oldname, $newname)");

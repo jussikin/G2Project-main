@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditAnimationPluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditAnimationPluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditAnimation');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -54,8 +51,7 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase
 		$this->_preferred = null;
 	}
 	
-	public function testChangeSize()
-	{
+	public function testChangeSize() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', 123);
 		GalleryUtilities::putRequestVariable('form[height]', 456);
@@ -79,8 +75,7 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals(456, $this->_item->getHeight());
 	}
 	
-	public function testChangeSizeMissingValues()
-	{
+	public function testChangeSizeMissingValues() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', '');
 		GalleryUtilities::putRequestVariable('form[height]', '');
@@ -104,8 +99,7 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase
 		$this->assertEquals(0, $this->_item->getHeight());
 	}
 	
-	public function testChangeSizeInvalidValues()
-	{
+	public function testChangeSizeInvalidValues() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', -123);
 		GalleryUtilities::putRequestVariable('form[height]', -456);
@@ -122,8 +116,7 @@ class ItemEditAnimationPluginTest extends ItemEditPluginTestCase
 		), $results);
 	}
 	
-	public function testInvalidSerialNumber()
-	{
+	public function testInvalidSerialNumber() {
 		
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[width]', 123);

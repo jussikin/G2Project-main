@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminToolkitPriority');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -56,8 +53,7 @@ class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase
 		$this->_markToolkitForCleanup('TestToolkitPriority2');
 	}
 
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 
 		$results = $this->handleRequest();
@@ -72,8 +68,7 @@ class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testSave()
-	{
+	public function testSave() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[priority][27]', 'TestToolkitPriority');
 		GalleryUtilities::putRequestVariable('form[priority][30]', 'TestToolkitPriority2');
@@ -108,8 +103,7 @@ class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class TestToolkitPriority
-{
+class TestToolkitPriority {
 }
 
 /**
@@ -118,6 +112,5 @@ class TestToolkitPriority
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class TestToolkitPriority2
-{
+class TestToolkitPriority2 {
 }

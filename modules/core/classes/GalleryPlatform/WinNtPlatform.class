@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPlatform.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class WinNtPlatform extends GalleryPlatform
-{
+class WinNtPlatform extends GalleryPlatform {
 	/**
 	 * @see GalleryPlatform::rename
 	 */
-	public function rename($oldname, $newname)
-	{
+	public function rename($oldname, $newname) {
 		/*
 	     * Windows gets upset if the new file already exists.  If that's
 	     * the case, remove the new file before renaming.
@@ -48,8 +46,7 @@ class WinNtPlatform extends GalleryPlatform
 	/**
 	 * @see GalleryPlatform::exec
 	 */
-	public function exec($cmdArray, $returnErrorOutput = false)
-	{
+	public function exec($cmdArray, $returnErrorOutput = false) {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(5);
 		
@@ -146,16 +143,14 @@ class WinNtPlatform extends GalleryPlatform
 	/**
 	 * @see GalleryPlatform::isRestrictedByOpenBaseDir
 	 */
-	public function isRestrictedByOpenBaseDir($path)
-	{
+	public function isRestrictedByOpenBaseDir($path) {
 		return $this->_isRestrictedByOpenBaseDir($path, ';', false);
 	}
 	
 	/**
 	 * @see GalleryPlatform::is_executable
 	 */
-	public function is_executable($filename)
-	{
+	public function is_executable($filename) {
 		/* Any existing file is considered executable on Windows */
 		return $this->file_exists($filename);
 	}
@@ -163,8 +158,7 @@ class WinNtPlatform extends GalleryPlatform
 	/**
 	 * @see GalleryPlatform::splitPath
 	 */
-	public function splitPath($path)
-	{
+	public function splitPath($path) {
 		$list = array();
 		if (preg_match('|^([A-Za-z]:)?[\\\/]|', $path, $match)) {
 			$list[] = $match[0];
@@ -182,24 +176,21 @@ class WinNtPlatform extends GalleryPlatform
 	/**
 	 * @see GalleryPlatform::isSymlinkSupported
 	 */
-	public function isSymlinkSupported()
-	{
+	public function isSymlinkSupported() {
 		return false;
 	}
 	
 	/**
 	 * @see GalleryPlatform::getLineEnding
 	 */
-	public function getLineEnding()
-	{
+	public function getLineEnding() {
 		return "\r\n";
 	}
 	
 	/**
 	 * @see GalleryPlatform::strftime
 	 */
-	public function strftime($format, $timestamp = null)
-	{
+	public function strftime($format, $timestamp = null) {
 		/* Windows doesn't have %e but has %#d, same thing but without leading space for 1-9 */
 		if (($pos = strpos($format, '%e')) !== false) {
 			/* %#d doesn't work on 2 out of 2 tested WinXP platforms */
@@ -208,8 +199,8 @@ class WinNtPlatform extends GalleryPlatform
 	         * %d returns always 2 digits, 01 - 31
 	         * Replace leading 0 for single digit months with a space
 	         */
-			$format{$pos} = ($replacement{0} == '0') ? ' ' : $replacement{0};
-			$format{$pos + 1} = $replacement{1};
+			$format[$pos] = ($replacement[0] == '0') ? ' ' : $replacement[0];
+			$format[$pos + 1] = $replacement[1];
 		}
 
 		return parent::strftime($format, $timestamp);

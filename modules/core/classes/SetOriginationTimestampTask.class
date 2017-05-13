@@ -29,13 +29,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SetOriginationTimestampTask extends MaintenanceTask
-{
+class SetOriginationTimestampTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		return array(
@@ -49,8 +47,7 @@ class SetOriginationTimestampTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		
@@ -191,8 +188,7 @@ class SetOriginationTimestampTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::requiresProgressBar
 	 */
-	public function requiresProgressBar()
-	{
+	public function requiresProgressBar() {
 		return true;
 	}
 }

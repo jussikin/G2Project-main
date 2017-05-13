@@ -25,10 +25,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ModuleTest extends GalleryTestCase
-{
-	public function setUp()
-	{
+class ModuleTest extends GalleryTestCase {
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -62,8 +60,7 @@ class ModuleTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		/* If a unittest fails it might not deactivate/uninstall the mock module properly */
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest', true);
 		if ($ret) {
@@ -97,8 +94,7 @@ class ModuleTest extends GalleryTestCase
 		}
 	}
 	
-	public function testModuleCycle()
-	{
+	public function testModuleCycle() {
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 		if ($ret) {
@@ -349,8 +345,7 @@ class ModuleTest extends GalleryTestCase
 		/* TODO: How do we verify that the tables are removed successfully? */
 	}
 	
-	public function testInstallBadModuleApi()
-	{
+	public function testInstallBadModuleApi() {
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 		if ($ret) {
@@ -370,8 +365,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assert($ret && ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH), 'success?');
 	}
 	
-	public function testActivateBadModuleApiActivate()
-	{
+	public function testActivateBadModuleApiActivate() {
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 		if ($ret) {
@@ -402,8 +396,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assert(!$isActive, 'is active');
 	}
 	
-	public function testInstallBadCoreApi()
-	{
+	public function testInstallBadCoreApi() {
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 		if ($ret) {
@@ -423,8 +416,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assert($ret && ($ret->getErrorCode() & ERROR_PLUGIN_VERSION_MISMATCH), 'success?');
 	}
 	
-	public function testActivateBadCoreApiActivate()
-	{
+	public function testActivateBadCoreApiActivate() {
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
 		if ($ret) {
@@ -455,8 +447,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assert(!$isActive, 'is active');
 	}
 	
-	public function testPermissionsCleanup()
-	{
+	public function testPermissionsCleanup() {
 		/* Test against bug where module uninstall can leave AccessMap rows with g_permission=0 */
 		global $gallery;
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'moduletest');
@@ -498,8 +489,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assert($bits > 0, 'bits');
 	}
 	
-	public function testInstallOrUpgradeSetsNewModuleVersion()
-	{
+	public function testInstallOrUpgradeSetsNewModuleVersion() {
 		/* Manually set the version to an older one */
 		$module = new ModuleTestModule();
 		$ret = $module->setParameter('_version', '0.5.0');
@@ -529,8 +519,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assertEquals('1.0.0', $version, 'version not set after upgrade');
 	}
 	
-	public function testDeactivatePostsEventAfterFactoryUnregistration()
-	{
+	public function testDeactivatePostsEventAfterFactoryUnregistration() {
 		global $gallery;
 		
 		/* Prepare the test by activating a test module with some factory registrations */
@@ -575,8 +564,7 @@ class ModuleTest extends GalleryTestCase
 		$this->assertEquals(false, $testEventListener->isOnLoadHandlerRegistered[0], 'Deactivation event was posted before unregistering factory implementations');
 	}
 	
-	public function _fetchPermissionBitsForItem($itemId)
-	{
+	public function _fetchPermissionBitsForItem($itemId) {
 		global $gallery;
 		
 		$userId = $gallery->getActiveUserId();
@@ -652,12 +640,10 @@ class ModuleTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ModuleTestModule extends GalleryModule
-{
+class ModuleTestModule extends GalleryModule {
 	public $_activate;
 	
-	public function ModuleTestModule()
-	{
+	public function ModuleTestModule() {
 		global $gallery;
 		
 		$this->setId('moduletest');
@@ -671,8 +657,7 @@ class ModuleTestModule extends GalleryModule
 		$this->_activate = true;
 	}
 	
-	public function upgrade($currentVersion)
-	{
+	public function upgrade($currentVersion) {
 		global $gallery;
 		
 		if (!isset($currentVersion)) {
@@ -690,8 +675,7 @@ class ModuleTestModule extends GalleryModule
 		return null;
 	}
 	
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		if (!$this->_activate) {
 			return array(
 				GalleryCoreApi::error(ERROR_CONFIGURATION_REQUIRED),
@@ -713,8 +697,7 @@ class ModuleTestModule extends GalleryModule
 		);
 	}
 	
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryOnLoadHandler', 'ModuleTestOnLoadHandler', 'ModuleTestOnLoadHandler', 'modules/core/test/phpunit/ModuleTest.class', 'moduletest', null);
 		if ($ret) {
 			return $ret;
@@ -729,15 +712,13 @@ class ModuleTestModule extends GalleryModule
 		return null;
 	}
 	
-	public function getOnLoadHandlerIds()
-	{
+	public function getOnLoadHandlerIds() {
 		return array(
 			'ModuleTestOnLoadHandler'
 		);
 	}
 	
-	public function getModuleEntityTypes()
-	{
+	public function getModuleEntityTypes() {
 		return array(
 			'ModuleTestEntity'
 		);
@@ -748,10 +729,8 @@ class ModuleTestModule extends GalleryModule
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ModuleTestOnLoadHandler
-{
-	public function onLoad(&$entity, $duringUpgrade)
-	{
+class ModuleTestOnLoadHandler {
+	public function onLoad(&$entity, $duringUpgrade) {
 		return null;
 	}
 }
@@ -760,10 +739,8 @@ class ModuleTestOnLoadHandler
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ModuleTestEntity extends GalleryEntity
-{
-	public function getClassName()
-	{
+class ModuleTestEntity extends GalleryEntity {
+	public function getClassName() {
 		return 'ModuleTestEntity';
 	}
 }
@@ -774,15 +751,12 @@ class ModuleTestEntity extends GalleryEntity
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ModuleTestPlatform extends GalleryPlatform
-{
-	public function ModuleTestPlatform(&$test)
-	{
+class ModuleTestPlatform extends GalleryPlatform {
+	public function ModuleTestPlatform(&$test) {
 		$this->_test =& $test;
 	}
 	
-	public function opendir($path)
-	{
+	public function opendir($path) {
 		if (strpos($path, 'modules/') !== false) {
 			$this->_list = array();
 			if ($dir = parent::opendir($path)) {
@@ -798,8 +772,7 @@ class ModuleTestPlatform extends GalleryPlatform
 		return parent::opendir($path);
 	}
 	
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if (strpos($path, 'modules/moduletest') !== false) {
 			return true;
 		}
@@ -807,8 +780,7 @@ class ModuleTestPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 	
-	public function readdir($handle)
-	{
+	public function readdir($handle) {
 		if ($handle == 'moduletest') {
 			return array_shift($this->_list);
 		}
@@ -816,8 +788,7 @@ class ModuleTestPlatform extends GalleryPlatform
 		return parent::readdir($handle);
 	}
 	
-	public function closedir($handle)
-	{
+	public function closedir($handle) {
 		if ($handle == 'moduletest') {
 			unset($this->_list);
 
@@ -827,8 +798,7 @@ class ModuleTestPlatform extends GalleryPlatform
 		return parent::closedir($handle);
 	}
 	
-	public function file_exists($file)
-	{
+	public function file_exists($file) {
 		if (strpos($file, 'modules/moduletest/module.inc') !== false) {
 			return true;
 		}
@@ -836,8 +806,7 @@ class ModuleTestPlatform extends GalleryPlatform
 		return parent::file_exists($file);
 	}
 	
-	public function recursiveRmdir($path)
-	{
+	public function recursiveRmdir($path) {
 		if (strpos($path, 'modules/moduletest') !== false) {
 			$this->_test->_removedDir = true;
 
@@ -847,18 +816,15 @@ class ModuleTestPlatform extends GalleryPlatform
 		return false;
 	}
 	
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return '/';
 	}
 }
 
-class ModuleTestEventListener
-{
+class ModuleTestEventListener {
 	public $isOnLoadHandlerRegistered = array();
 
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		if ($event->getEventName() == 'Gallery::DeactivatePlugin') {
 			list($ret, $handler) = GalleryCoreApi::newFactoryInstanceById('GalleryOnLoadHandler', 'ModuleTestOnLoadHandler');
 			if ($ret) {

@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UserAdminView extends GalleryView
-{
+class UserAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$user = $gallery->getActiveUser();
 		
@@ -160,16 +158,14 @@ class UserAdminView extends GalleryView
 	/**
 	 * @see GalleryView::isAllowedInMaintenance
 	 */
-	public function isAllowedInMaintenance()
-	{
+	public function isAllowedInMaintenance() {
 		return (GalleryUtilities::getRequestVariables('subView') == 'core.UserLogin');
 	}
 	
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		global $gallery;
 		
 		/* Get the description from the current subView */
@@ -202,8 +198,7 @@ class UserAdminView extends GalleryView
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_ADMIN;
 	}
 }

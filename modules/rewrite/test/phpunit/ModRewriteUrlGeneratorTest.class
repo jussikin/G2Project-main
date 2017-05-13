@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteUrlGeneratorTes
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
-{
-	public function __construct($methodName)
-	{
+class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -64,8 +61,7 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 		}
 	}
 
-	public function testGenerateUrlOverrideBaseUri()
-	{
+	public function testGenerateUrlOverrideBaseUri() {
 		/* Override the expected URLs, not server-relative, but with relative ones */
 	$this->_expectedUrl[0] = 'index.php?page=photos&amp;g2_view=rand164.NonShort'
 		. '&amp;g2_foo=bar';
@@ -94,8 +90,7 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 		parent::testGenerateUrlOverrideBaseUri();
 	}
 
-	public function testGetCurrentUrlEmbeddedQueryString()
-	{
+	public function testGetCurrentUrlEmbeddedQueryString() {
 		GalleryDataCache::put('G2_EMBED', 1, true);
 	/* ModRewrite constructs url from baseUri and QUERY_STRING */
 	$_SERVER['REQUEST_URI'] = '/not/used';
@@ -109,8 +104,7 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 		$this->assertEquals(false, $this->_urlGenerator->_error, 'error');
 	}
 
-	public function testDisablesShortUrlsInEmbeddedModeWhenNotConfigured()
-	{
+	public function testDisablesShortUrlsInEmbeddedModeWhenNotConfigured() {
 		$ret = GalleryCoreApi::removePluginParameter(
 		'module', 'rewrite', 'modrewrite.embeddedLocation');
 		if ($ret) {
@@ -134,8 +128,7 @@ class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 		$this->assert($this->_urlGenerator->_error, 'no init error when embedded');
 	}
 
-	public function testDisablesShortUrlsInStandaloneModeWhenNotConfigured()
-	{
+	public function testDisablesShortUrlsInStandaloneModeWhenNotConfigured() {
 		$ret = GalleryCoreApi::removePluginParameter(
 		'module', 'rewrite', 'modrewrite.galleryLocation');
 		if ($ret) {

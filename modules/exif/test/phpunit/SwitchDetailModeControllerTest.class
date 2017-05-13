@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/exif/Callbacks.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SwitchDetailModeControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class SwitchDetailModeControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'exif.SwitchDetailMode');
 	}
 	
-	public function testSwitchToSummary()
-	{
+	public function testSwitchToSummary() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('mode', 'summary');
 		
@@ -59,8 +56,7 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('summary', $session->get('exif.module.LoadExifInfo.mode'));
 	}
 	
-	public function testSwitchToDetailed()
-	{
+	public function testSwitchToDetailed() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('mode', 'detailed');
 		
@@ -83,8 +79,7 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('detailed', $session->get('exif.module.LoadExifInfo.mode'));
 	}
 	
-	public function testSwitchToBogus()
-	{
+	public function testSwitchToBogus() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('mode', 'BoGuS');
 		
@@ -108,8 +103,7 @@ class SwitchDetailModeControllerTest extends GalleryControllerTestCase
 	}
 	
 	/* Test the Callback function */
-	public function testLoadExifInfoCallback()
-	{
+	public function testLoadExifInfoCallback() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

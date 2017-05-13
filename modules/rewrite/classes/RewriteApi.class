@@ -25,8 +25,7 @@
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class RewriteApi
-{
+class RewriteApi {
 	/**
 	 * If this is set an error has occured where we couldn't report it.
 	 *
@@ -41,13 +40,11 @@ class RewriteApi
 	 */
 	public $_parser;
 
-	public function __construct()
-	{
+	public function __construct() {
 		$this->RewriteApi();
 	}
 
-	public function RewriteApi()
-	{
+	public function RewriteApi() {
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 		list($ret, $this->_parser) = RewriteHelper::getRewriteParser();
 		if ($ret) {
@@ -62,8 +59,7 @@ class RewriteApi
 	 * @return array GalleryStatus a status code
 	 *               boolean true if compatible with given version
 	 */
-	public function isCompatibleWithApi($version)
-	{
+	public function isCompatibleWithApi($version) {
 		if (isset($this->_error)) {
 			return array($this->_error, null);
 		}
@@ -83,8 +79,7 @@ class RewriteApi
 	 * @return array GalleryStatus a status code
 	 *               boolean true if configuration is needed
 	 */
-	public function needsEmbedConfig()
-	{
+	public function needsEmbedConfig() {
 		if (isset($this->_error)) {
 			return array($this->_error, null);
 		}
@@ -108,8 +103,7 @@ class RewriteApi
 	 * @return array GalleryStatus a status code
 	 *               array configuration settings (key => value)
 	 */
-	public function fetchEmbedConfig()
-	{
+	public function fetchEmbedConfig() {
 		if (isset($this->_error)) {
 			return array($this->_error, null);
 		}
@@ -135,8 +129,7 @@ class RewriteApi
 	 *               int Rewrite Status code
 	 *               string translated error message
 	 */
-	public function saveEmbedConfig($params)
-	{
+	public function saveEmbedConfig($params) {
 		if (isset($this->_error)) {
 			return array($this->_error, null, null);
 		}
@@ -161,8 +154,7 @@ class RewriteApi
 	 * @return array GalleryStatus a status code
 	 *               array $ruleIds list of the active rewrite rule ids
 	 */
-	public function fetchActiveRulesForModule($moduleId)
-	{
+	public function fetchActiveRulesForModule($moduleId) {
 		list($ret, $activeRules) =
 		GalleryCoreApi::getPluginParameter('module', 'rewrite', 'activeRules');
 		if ($ret) {
@@ -196,8 +188,7 @@ class RewriteApi
 	 *               boolean true if the operation was successful, false if not (e.g. if the
 	 *               .htaccess could not be written or if the rules are invalid)
 	 */
-	public function activateRewriteRulesForModule($moduleId, $ruleIds=null, $replacePatterns=false)
-	{
+	public function activateRewriteRulesForModule($moduleId, $ruleIds=null, $replacePatterns=false) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId, true);
 		if ($ret) {
 			return array($ret, null);
@@ -256,24 +247,21 @@ class RewriteApi
 	/**
 	 * @return array api version
 	 */
-	public function getApiVersion()
-	{
+	public function getApiVersion() {
 		return array(1, 1);
 	}
 
 	/**
 	 * @return string parser id
 	 */
-	public function getParserId()
-	{
+	public function getParserId() {
 		return $this->_parser->getParserId();
 	}
 
 	/**
 	 * @return string parser type
 	 */
-	public function getParserType()
-	{
+	public function getParserType() {
 		return $this->_parser->getParserType();
 	}
 }

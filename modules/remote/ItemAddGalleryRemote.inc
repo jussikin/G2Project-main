@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemAddGalleryRemote extends ItemAddPlugin
-{
+class ItemAddGalleryRemote extends ItemAddPlugin {
 	/**
 	 * @see ItemAdd:loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item)
-	{
+	public function loadTemplate(&$template, &$form, $item) {
 		if ($form['formName'] != 'ItemAddGalleryRemote') {
 			$form['formName'] = 'ItemAddGalleryRemote';
 		}
@@ -44,8 +42,7 @@ class ItemAddGalleryRemote extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'remote');
 		if ($ret) {
 			return array($ret, null);
@@ -57,8 +54,7 @@ class ItemAddGalleryRemote extends ItemAddPlugin
 	/**
 	 * @see ItemAddPlugin::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		list($ret, $showItemAdd) =
 		GalleryCoreApi::getPluginParameter('module', 'remote', 'showItemAdd');
 		if ($ret) {

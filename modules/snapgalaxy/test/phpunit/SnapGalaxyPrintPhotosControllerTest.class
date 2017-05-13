@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'snapgalaxy.SnapGalaxyPrintPhotos');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -125,8 +122,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
 	$gallery->_urlGenerator = new SnapGalaxyPrintPhotosControllerTestUrlGenerator();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 	/* Restore session id */
@@ -143,8 +139,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function &_getTestPlatform($fragment, $requestUrl, $redirectUrl)
-	{
+	public function &_getTestPlatform($fragment, $requestUrl, $redirectUrl) {
 		$platform = new UnitTestPlatform();
 		$platform->setReply('fsockopen', array('www.snapgalaxy.com', 80, '', '', 5), 'testFd');
 		$platform->setReply('fwrite',
@@ -162,8 +157,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
 		return $platform;
 	}
 
-	public function testSnapGalaxyPrintPhotos()
-	{
+	public function testSnapGalaxyPrintPhotos() {
 		global $gallery;
 		$gallery->setPlatform(
 		$this->_getTestPlatform('pt/ptcartpost', '/REQUEST_URL', '/REDIRECT_URL'));
@@ -183,8 +177,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('/REQUEST_URL', $session->get('snapgalaxy.cartUrlFragment'));
 	}
 
-	public function testPrintSecondPhoto()
-	{
+	public function testPrintSecondPhoto() {
 		global $gallery;
 		$gallery->setPlatform($this->_getTestPlatform('EXISTING_FRAGMENT',
 		'/REQUEST_URL2', '/REDIRECT_URL2'));
@@ -207,8 +200,7 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
 			$session->get('snapgalaxy.cartUrlFragment'));
 	}
 
-	public function testPrintProtectedPhoto()
-	{
+	public function testPrintProtectedPhoto() {
 		global $gallery;
 
 		$itemId = $this->_photo->getId();
@@ -282,10 +274,8 @@ class SnapGalaxyPrintPhotosControllerTest extends GalleryControllerTestCase
  * @package SnapGalaxy
  * @subpackage PHPUnit
  */
-class SnapGalaxyPrintPhotosControllerTestUrlGenerator extends GalleryUrlGenerator
-{
-	public function generateUrl($params=array(), $options=array())
-	{
+class SnapGalaxyPrintPhotosControllerTestUrlGenerator extends GalleryUrlGenerator {
+	public function generateUrl($params=array(), $options=array()) {
 		$lines = array();
 		foreach ($params as $key => $value) {
 			$lines[] = "$key=$value";

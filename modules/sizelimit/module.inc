@@ -25,15 +25,12 @@
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 18172 $
  */
-class SizeLimitModule extends GalleryModule
-{
-	public function __construct()
-	{
+class SizeLimitModule extends GalleryModule {
+	public function __construct() {
 		$this->SizeLimitModule();
 	}
 
-	public function SizeLimitModule()
-	{
+	public function SizeLimitModule() {
 		global $gallery;
 
 		$this->setId('sizelimit');
@@ -49,25 +46,39 @@ class SizeLimitModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'GalleryEventListener', 'SizelimitModule', 'SizelimitModule',
-		'modules/sizelimit/module.inc', 'sizelimit', array('GalleryEntity::save'));
+			'GalleryEventListener',
+			'SizelimitModule',
+			'SizelimitModule',
+			'modules/sizelimit/module.inc',
+			'sizelimit',
+			array('GalleryEntity::save')
+		);
 		if ($ret) {
 			return $ret;
 		}
 
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemEditOption', 'SizeLimitOption', 'SizeLimitOption',
-		'modules/sizelimit/SizeLimitOption.inc', 'sizelimit', array('ItemEditAlbum'));
+			'ItemEditOption',
+			'SizeLimitOption',
+			'SizeLimitOption',
+			'modules/sizelimit/SizeLimitOption.inc',
+			'sizelimit',
+			array('ItemEditAlbum')
+		);
 		if ($ret) {
 			return $ret;
 		}
 
 		$ret = GalleryCoreApi::registerFactoryImplementation(
-		'ItemAddOption', 'SetSizeOption', 'SetSizeOption',
-		'modules/sizelimit/SetSizeOption.inc', 'sizelimit', null);
+			'ItemAddOption',
+			'SetSizeOption',
+			'SetSizeOption',
+			'modules/sizelimit/SetSizeOption.inc',
+			'sizelimit',
+			null
+		);
 		if ($ret) {
 			return $ret;
 		}
@@ -82,21 +93,28 @@ class SizeLimitModule extends GalleryModule
 	 * @param GalleryEvent $event
 	 * @return GalleryStatus a status code
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		if ($event->getEventName() == 'GalleryEntity::save') {
 			$album = $event->getEntity();
 			if (GalleryUtilities::isA($album, 'GalleryAlbumItem') &&
 			$album->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
 				$parentId = (int)$album->getParentId();
 				list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters(
-			'module', 'sizelimit', $parentId);
+					'module',
+					'sizelimit',
+					$parentId
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
 				foreach ($params as $param => $value) {
-					$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
-			$param, $value, $album->getId());
+					$ret = GalleryCoreApi::setPluginParameter(
+						'module',
+						'sizelimit',
+						$param,
+						$value,
+						$album->getId()
+					);
 					if ($ret) {
 						return array($ret, null);
 					}

@@ -26,8 +26,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GallerySortInterface_1_2
-{
+class GallerySortInterface_1_2 {
 	/**
 	 * Return information about this sort
 	 *
@@ -35,8 +34,7 @@ class GallerySortInterface_1_2
 	 *               string localized name
 	 *               boolean true for presort
 	 */
-	public function getSortInfo()
-	{
+	public function getSortInfo() {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -59,8 +57,7 @@ class GallerySortInterface_1_2
 	 *               string optional row matching condition
 	 *               string optional join clause
 	 */
-	public function getSortOrder($direction)
-	{
+	public function getSortOrder($direction) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -80,8 +77,7 @@ class GallerySortInterface_1_2
 	 *               array of orderDirection => localized name for direction
 	 * @static
 	 */
-	public static function getAllSortOrders($includeDefault = true)
-	{
+	public static function getAllSortOrders($includeDefault = true) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

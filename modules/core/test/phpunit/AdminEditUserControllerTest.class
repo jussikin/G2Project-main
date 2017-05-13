@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminEditUserControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminEditUserControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminEditUser');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -54,8 +51,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_user[1]);
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
@@ -70,8 +66,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testUndo()
-	{
+	public function testUndo() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 
@@ -87,8 +82,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testEditUserSameUsername()
-	{
+	public function testEditUserSameUsername() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user[0]->getUserName());
@@ -112,8 +106,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testEditUserNewUsername()
-	{
+	public function testEditUserNewUsername() {
 		$newUserName = 'newname-' . rand();
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -138,8 +131,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testEditUserDuplicateUsername()
-	{
+	public function testEditUserDuplicateUsername() {
 		$newUserName = $this->_user[1]->getUserName();
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -164,8 +156,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testMissingFields()
-	{
+	public function testMissingFields() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', '');
@@ -190,8 +181,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testInvalidEmail()
-	{
+	public function testInvalidEmail() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user[0]->getUserName());
@@ -214,8 +204,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testChangePassword()
-	{
+	public function testChangePassword() {
 		$password = '<test"pass &word;>' . rand(1, 999) . "'";
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -246,8 +235,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		$this->assert($user->isCorrectPassword($password), 'check password');
 	}
 
-	public function testTrailingSpace()
-	{
+	public function testTrailingSpace() {
 		/* Trailing space on full/username with no other changes used to give db error on mysql */
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -282,8 +270,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($fullName, $user->getFullName());
 	}
 
-	public function testEditUserSetLocked()
-	{
+	public function testEditUserSetLocked() {
 		list($ret, $user) = $this->_user[0]->refresh();
 		if ($ret) {
 			return $ret;
@@ -350,8 +337,7 @@ class AdminEditUserControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(false, $user->isLocked());
 	}
 
-	public function testResetFailedLoginAttempts()
-	{
+	public function testResetFailedLoginAttempts() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user[0]->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user[0]->getUserName());

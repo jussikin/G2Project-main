@@ -27,7 +27,6 @@
  *           character set to UTF-8
  * -------------------------------------------------------------
  */
-function smarty_modifier_utf8($string)
-{
+function smarty_modifier_utf8($string) {
 	return GalleryCoreApi::convertToUtf8($string);
 }

@@ -29,16 +29,14 @@ require_once dirname(__FILE__) . '/../../../modules/core/ItemAdd.inc';
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18065 $
  */
-class ItemAddPluginTestCase extends GalleryTestCase
-{
+class ItemAddPluginTestCase extends GalleryTestCase {
 	/**
 	 * The plugin instance
 	 * @access protected
 	 */
 	public $_plugin;
 	
-	public function ItemAddPluginTestCase($methodName, $moduleName, $pluginName)
-	{
+	public function ItemAddPluginTestCase($methodName, $moduleName, $pluginName) {
 		$this->GalleryTestCase($methodName);
 		
 		list($ret, $this->_plugin) = GalleryCoreApi::newFactoryInstanceById('ItemAddPlugin', $pluginName);
@@ -55,8 +53,7 @@ class ItemAddPluginTestCase extends GalleryTestCase
 		}
 	}
 	
-	public function handleRequest(&$item, $errorCode = null)
-	{
+	public function handleRequest(&$item, $errorCode = null) {
 		/* Get our form variables */
 		$form = GalleryUtilities::getFormVariables('form');
 		
@@ -86,8 +83,7 @@ class ItemAddPluginTestCase extends GalleryTestCase
 		);
 	}
 	
-	public function _translate($message)
-	{
+	public function _translate($message) {
 		return $this->_module->translate($message);
 	}
 }
@@ -95,17 +91,14 @@ class ItemAddPluginTestCase extends GalleryTestCase
 /**
  * Mock ItemAddController to observe post-processing calls.
  */
-class ItemAddPluginTestItemAddController
-{
+class ItemAddPluginTestItemAddController {
 	public $_calls = array();
 	
-	public function getCalls()
-	{
+	public function getCalls() {
 		return $this->_calls;
 	}
 	
-	public function postprocessItems($form, &$status)
-	{
+	public function postprocessItems($form, &$status) {
 		$this->_calls[] = array(
 			$form,
 			$status

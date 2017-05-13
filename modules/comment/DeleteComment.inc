@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DeleteCommentController extends GalleryController
-{
+class DeleteCommentController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		list($ret, $item) = $this->getItem();
@@ -111,13 +109,11 @@ class DeleteCommentController extends GalleryController
 /**
  * This view will ask for a confirmation to delete a comment
  */
-class DeleteCommentView extends GalleryView
-{
+class DeleteCommentView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		
 		/* Load our item */

@@ -27,10 +27,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20940 $
  */
-class TemplateAuditTest extends CodeAuditTestCase
-{
-	public function __construct($methodName)
-	{
+class TemplateAuditTest extends CodeAuditTestCase {
+	public function __construct($methodName) {
 		global $gallery;
 		
 		$this->CodeAuditTestCase($methodName);
@@ -73,8 +71,7 @@ class TemplateAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::shouldCheckFile
 	 */
-	public function shouldCheckFile($fileName)
-	{
+	public function shouldCheckFile($fileName) {
 		if (preg_match('#Storage.schema\.tpl$|tools/repository/.*tpl#', $fileName) || !parent::shouldCheckFile($fileName)) {
 			return false;
 		}
@@ -88,8 +85,7 @@ class TemplateAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::checkFile
 	 */
-	public function checkFile($fileName, $buffer)
-	{
+	public function checkFile($fileName, $buffer) {
 		$truncatedFileName = substr($fileName, strlen(dirname(dirname(dirname(dirname($fileName))))) + 1);
 		$lines = preg_split("/(\r\n|\n)/", $buffer);
 		
@@ -139,8 +135,7 @@ class TemplateAuditTest extends CodeAuditTestCase
 		}
 	}
 	
-	public function _checkHiddenFormVars($fileName, &$lines)
-	{
+	public function _checkHiddenFormVars($fileName, &$lines) {
 		$inHtmlForm = $hasHiddenFormVars = false;
 		
 		for ($i = $formStartLine = 0; $i < count($lines); $i++) {
@@ -158,8 +153,7 @@ class TemplateAuditTest extends CodeAuditTestCase
 		}
 	}
 	
-	public function _checkTextInJavascript($fileName, &$lines)
-	{
+	public function _checkTextInJavascript($fileName, &$lines) {
 		$inScriptTag = false;
 		/* Parsing for the closing brace of {g->text } is too complex. Using check-sum instead. */
 		$scriptStartLine = $textCount = $forJsCount = 0;
@@ -183,8 +177,7 @@ class TemplateAuditTest extends CodeAuditTestCase
 		}
 	}
 	
-	public function _checkTrailingIfs($fileName, &$lines)
-	{
+	public function _checkTrailingIfs($fileName, &$lines) {
 		for ($i = 0; $i < count($lines); $i++) {
 			if (preg_match('/[^\s}]{if[^}]*}$/', $lines[$i])) {
 				$this->fail("Warning: newline will be stripped at $fileName:$i");

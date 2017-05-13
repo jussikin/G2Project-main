@@ -25,15 +25,12 @@
  * @author Nico Kaiser <nico@siriux.net>
  * @version $Revision: 18172 $
  */
-class SiriuxTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class SiriuxTheme extends GalleryTheme {
+	public function __construct() {
 		$this->SiriuxTheme();
 	}
 	
-	public function SiriuxTheme()
-	{
+	public function SiriuxTheme() {
 		global $gallery;
 		
 		$this->setId('siriux');
@@ -76,8 +73,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'owner',
 			'viewCount',
@@ -133,8 +129,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'owner',
 			'parents',
@@ -170,8 +165,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -197,8 +191,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -223,8 +216,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -234,8 +226,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -256,8 +247,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = null)
-	{
+	public function getSettings($itemId = null) {
 		list($ret, $settings, $params) = parent::getSettings($itemId);
 		if ($ret) {
 			return array(
@@ -300,8 +290,7 @@ class SiriuxTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::validateSettings
 	 */
-	public function validateSettings($settings)
-	{
+	public function validateSettings($settings) {
 		$error = parent::validateSettings($settings);
 		if (!is_numeric($settings['contentWidth'])) {
 			$error['contentWidth'] = $this->translate('You must enter a number');

@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RearrangeItemsControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class RearrangeItemsControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'rearrange.RearrangeItems');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -76,8 +73,7 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testReset()
-	{
+	public function testReset() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
 
@@ -90,8 +86,7 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testRearrangeItems()
-	{
+	public function testRearrangeItems() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[list]', '3,2,0,1');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -127,8 +122,7 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase
 				$weightList, 'orderWeights');
 	}
 
-	public function testBadList()
-	{
+	public function testBadList() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[list]', '1,4,2,3,0');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);

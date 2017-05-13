@@ -26,15 +26,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SnapGalaxyCartPluginTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class SnapGalaxyCartPluginTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -142,8 +139,7 @@ class SnapGalaxyCartPluginTest extends GalleryTestCase
 	$gallery->_urlGenerator = new SnapGalaxyCartPluginTestUrlGenerator();
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 
 	/* Restore session id */
@@ -159,8 +155,7 @@ class SnapGalaxyCartPluginTest extends GalleryTestCase
 		}
 	}
 
-	public function testFulfillCart()
-	{
+	public function testFulfillCart() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		GalleryCoreApi::requireOnce('modules/cart/classes/CartPluginInterface_1_0.class');
@@ -204,10 +199,8 @@ class SnapGalaxyCartPluginTest extends GalleryTestCase
  * @package SnapGalaxy
  * @subpackage PHPUnit
  */
-class SnapGalaxyCartPluginTestUrlGenerator
-{
-	public function generateUrl($params=array(), $options=array())
-	{
+class SnapGalaxyCartPluginTestUrlGenerator {
+	public function generateUrl($params=array(), $options=array()) {
 		$lines = array();
 		foreach ($params as $key => $value) {
 			$lines[] = "$key=$value";

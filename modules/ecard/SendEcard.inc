@@ -28,8 +28,7 @@ GalleryCoreApi::requireOnce('modules/ecard/classes/EcardHelper.class');
  * @author Dariush Molavi <dari@nukedgallery.net>
  * @version $Revision: 17580 $
  */
-class SendEcardController extends GalleryController
-{
+class SendEcardController extends GalleryController {
 	/**
 	 * ValidationPlugin instances to use when handling this request.  Only used by test code.
 	 *
@@ -41,8 +40,7 @@ class SendEcardController extends GalleryController
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$redirect = $status = $error = array();
@@ -248,8 +246,8 @@ class SendEcardController extends GalleryController
 				$hdrs .= $key . ': ' . $value . "\n";
 			}
 			for ($buf = '', $i = 0; $i < strlen($headers['subject']); $i++) {
-				$val = ord($headers['subject']{$i});
-				$buf .= ($val > 127) ? '=' . dechex($val) : $headers['subject']{$i};
+				$val = ord($headers['subject'][$i]);
+				$buf .= ($val > 127) ? '=' . dechex($val) : $headers['subject'][$i];
 			}
 			if ($buf != $headers['subject']) {
 				/* Encode subject for UTF-8 display if any extended characters are present */
@@ -301,8 +299,7 @@ class SendEcardController extends GalleryController
 	 *
 	 * @param array $pluginInstances of GalleryValidationPlugin
 	 */
-	public function setPluginInstances($pluginInstances)
-	{
+	public function setPluginInstances($pluginInstances) {
 		$this->_pluginInstances = $pluginInstances;
 	}
 }
@@ -310,13 +307,11 @@ class SendEcardController extends GalleryController
 /**
  * This view will show an eCard form
  */
-class SendEcardView extends GalleryView
-{
+class SendEcardView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -457,8 +452,7 @@ class SendEcardView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'ecard');
 		if ($ret) {
 			return array(

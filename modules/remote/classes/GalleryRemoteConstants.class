@@ -27,14 +27,12 @@
  * @version $Revision: 20934 $
  * @static
  */
-class GalleryRemoteConstants
-{
+class GalleryRemoteConstants {
 	/**
 	 * Return the current Major/Minor version codes
 	 * @return array (MAJ => ##, MIN => ##)
 	 */
-	public static function getVersionCodes()
-	{
+	public static function getVersionCodes() {
 		static $grVersionCodes;
 
 		if (empty($grVersionCodes)) {
@@ -49,8 +47,7 @@ class GalleryRemoteConstants
 	 * Return remote protocol status codes
 	 * @return array (SUCCESS => ##, PASSWORD_WRONG => ##, ...)
 	 */
-	public static function getStatusCodes()
-	{
+	public static function getStatusCodes() {
 		static $grStatusCodes;
 
 		if (empty($grStatusCodes)) {

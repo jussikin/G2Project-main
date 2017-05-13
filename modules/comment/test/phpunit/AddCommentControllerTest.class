@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class'
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AddCommentControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AddCommentControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'comment.AddComment');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -67,8 +64,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		$this->_startTime = time();
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'misc.markup', $this->_saveMarkup);
 		if ($ret) {
 			return $ret;
@@ -80,8 +76,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testAddComment()
-	{
+	public function testAddComment() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -120,8 +115,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testAddCommentFlood()
-	{
+	public function testAddCommentFlood() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -156,8 +150,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results, 'Flood Comment');
 	}
 	
-	public function testAddCommentDifferentIp()
-	{
+	public function testAddCommentDifferentIp() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -195,8 +188,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results, 'Second Comment');
 	}
 	
-	public function testAddCommentGuest()
-	{
+	public function testAddCommentGuest() {
 		global $gallery;
 		
 		list($ret, $everybodyGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
@@ -248,8 +240,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testPreviewComment()
-	{
+	public function testPreviewComment() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -269,8 +260,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testPreviewCommentGuest()
-	{
+	public function testPreviewCommentGuest() {
 		global $gallery;
 		
 		list($ret, $everybodyGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
@@ -302,8 +292,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testAddEmptyComment()
-	{
+	public function testAddEmptyComment() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -334,8 +323,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		$this->assert(empty($counts[$this->_item->getId()]));
 	}
 	
-	public function testPreviewEmptyComment()
-	{
+	public function testPreviewEmptyComment() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -366,8 +354,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		$this->assert(empty($counts[$this->_item->getId()]));
 	}
 	
-	public function testAddMaliciousComment()
-	{
+	public function testAddMaliciousComment() {
 		global $gallery;
 		$gallery->_phpVm = new CommentTestPhpVm();
 		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'misc.markup', 'bbcode');
@@ -440,8 +427,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($_SERVER['REMOTE_ADDR'], $comments[1]->getHost(), 'host 2');
 	}
 	
-	public function testAddMaliciousCommentGuest()
-	{
+	public function testAddMaliciousCommentGuest() {
 		global $gallery;
 		
 		list($ret, $everybodyGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
@@ -501,8 +487,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testCancelComment()
-	{
+	public function testCancelComment() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
@@ -520,8 +505,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testValidationPlugin()
-	{
+	public function testValidationPlugin() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'comment', 'validation.level', 'HIGH');
 		if ($ret) {
 			return $ret;
@@ -556,8 +540,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testValidationAlternateGuest()
-	{
+	public function testValidationAlternateGuest() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'comment', 'validation.level', 'HIGH');
 		if ($ret) {
 			return $ret;
@@ -588,8 +571,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testValidationPluginOff()
-	{
+	public function testValidationPluginOff() {
 		$this->_controller->_pluginInstances = array(
 			new AddCommentTestValidation()
 		);
@@ -636,8 +618,7 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testAddCommentRequiresViewPermission()
-	{
+	public function testAddCommentRequiresViewPermission() {
 		global $gallery;
 		
 		/* Use valid inputs */
@@ -672,10 +653,8 @@ class AddCommentControllerTest extends GalleryControllerTestCase
 /**
  * Mock PHP VM
  */
-class CommentTestPhpVm
-{
-	public function time()
-	{
+class CommentTestPhpVm {
+	public function time() {
 		list($ret, $commentTime) = GalleryCommentHelper::getLatestCommentTime(GalleryUtilities::getRemoteHostAddress());
 		if ($ret) {
 			return $ret;
@@ -687,10 +666,8 @@ class CommentTestPhpVm
 }
 
 GalleryCoreApi::requireOnce('modules/core/classes/GalleryValidationPlugin.class');
-class AddCommentTestValidation extends GalleryValidationPlugin
-{
-	public function performValidation(&$form, $options = array())
-	{
+class AddCommentTestValidation extends GalleryValidationPlugin {
+	public function performValidation(&$form, $options = array()) {
 		return array(
 			null,
 			array(

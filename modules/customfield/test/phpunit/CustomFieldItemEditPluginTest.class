@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'customfield', 'CustomFieldItemEdit');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -143,8 +140,7 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase
 		}
 	}
 	
-	public function testCustomFieldPlugin()
-	{
+	public function testCustomFieldPlugin() {
 		/* Reset */
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
 		$results = $this->handleRequest($this->itemG, $this->_itemG);
@@ -453,8 +449,7 @@ class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase
 		), $data[$this->_albumS->getId()], 'Field values');
 	}
 	
-	public function testMaliciousMarkup()
-	{
+	public function testMaliciousMarkup() {
 		$ret = $this->_setMarkupType('html', true);
 		if ($ret) {
 			return $ret;

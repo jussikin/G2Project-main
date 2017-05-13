@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditAlbumPluginTest extends ItemEditPluginTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditAlbum');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -131,8 +128,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		$this->_markForCleanup($this->_album);
 	}
 	
-	public function testUndo()
-	{
+	public function testUndo() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][undo]', 1);
 		
@@ -144,8 +140,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		), $results);
 	}
 	
-	public function testSave()
-	{
+	public function testSave() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[orderBy]', 'baz');
@@ -203,8 +198,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		), $preferences);
 	}
 	
-	public function testInvalidSave()
-	{
+	public function testInvalidSave() {
 		
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -232,8 +226,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		), $results);
 	}
 	
-	public function testInvalidSave2()
-	{
+	public function testInvalidSave2() {
 		
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
@@ -254,8 +247,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		), $results);
 	}
 	
-	public function testInvalidSerialNumber()
-	{
+	public function testInvalidSerialNumber() {
 		/* valid inputs */
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[orderBy]', 'baz');
@@ -276,8 +268,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		$results = $this->handleRequest($this->_album, $this->_preferred, ERROR_OBSOLETE_DATA);
 	}
 	
-	public function testSaveAndRecreate()
-	{
+	public function testSaveAndRecreate() {
 		global $gallery;
 		
 		/* Create some children */
@@ -478,8 +469,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 	 * Add a small (dimension wise) photo to an album and make sure that we don't create resizes
 	 * that are larger (dimension wise) than the original.
 	 */
-	public function testRecreateResizesForSmallPhoto()
-	{
+	public function testRecreateResizesForSmallPhoto() {
 		global $gallery;
 		
 		list($ret, $lockId) = GalleryCoreApi::acquireReadLock($this->_album->getId());
@@ -571,8 +561,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 		}
 	}
 	
-	public function testRemoveResizes()
-	{
+	public function testRemoveResizes() {
 		/* Recreate resizes for album with no resizes selected used to get error */
 		global $gallery;
 		$ret = GalleryCoreApi::removeDerivativePreferenceForItemType($this->_album->getId(), array(
@@ -695,8 +684,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 	/**
 	 * Test applying options from 'Album' tab to sub-albums
 	 */
-	public function testChangeInDescendents()
-	{
+	public function testChangeInDescendents() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[thumbnail][size]', 123);
 		GalleryUtilities::putRequestVariable('form[orderBy]', 'baz');
@@ -809,8 +797,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 	/**
 	 * Test applying options from 'Album' tab to sub-albums with no subalbums
 	 */
-	public function testChangeInDescendentsLeaf()
-	{
+	public function testChangeInDescendentsLeaf() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		GalleryUtilities::putRequestVariable('form[thumbnail][size]', 123);
 		GalleryUtilities::putRequestVariable('form[orderBy]', 'baz');
@@ -863,8 +850,7 @@ class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 	}
 }
 
-function ItemEditAlbumPluginTestCmp($a, $b)
-{
+function ItemEditAlbumPluginTestCmp($a, $b) {
 	return $a['derivativeType'] - $b['derivativeType'];
 }
 
@@ -874,13 +860,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
 /**
  * Mock data item
  */
-class ItemEditAlbumPluginTestDataItem extends GalleryDataItem
-{
+class ItemEditAlbumPluginTestDataItem extends GalleryDataItem {
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'ItemEditAlbumPluginTestDataItem';
 	}
 }
@@ -888,13 +872,11 @@ class ItemEditAlbumPluginTestDataItem extends GalleryDataItem
 /**
  * Mock toolkit
  */
-class ItemEditAlbumPluginTestToolkit extends GalleryToolkit
-{
+class ItemEditAlbumPluginTestToolkit extends GalleryToolkit {
 	/**
 	 * @see GalleryToolkit::performOperation
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		if ($mimeType == 'test/file' && in_array($operationName, array(
 			'thumbnail',
 			'scale',

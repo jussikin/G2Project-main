@@ -24,15 +24,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20951 $
  */
-class SitemapModule extends GalleryModule
-{
-	public function __construct()
-	{
+class SitemapModule extends GalleryModule {
+	public function __construct() {
 		$this->SitemapModule();
 	}
 
-	public function SitemapModule()
-	{
+	public function SitemapModule() {
 		global $gallery;
 		$this->setId('sitemap');
 		$this->setName($gallery->i18n('Sitemap'));
@@ -48,8 +45,7 @@ class SitemapModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		$data = array(array('name' => $this->translate('Google Sitemap'),
 				'view' => 'sitemap.AdminSitemap'));
 
@@ -59,8 +55,7 @@ class SitemapModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		$rules = array();
 
 		$rule = array();

@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/dynamicalbum/UpdatesAlbum.inc');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RandomAlbumView extends UpdatesAlbumView
-{
-	public function __construct()
-	{
+class RandomAlbumView extends UpdatesAlbumView {
+	public function __construct() {
 		$this->RandomAlbumView();
 	}
 
-	public function RandomAlbumView()
-	{
+	public function RandomAlbumView() {
 		global $gallery;
 		$this->_view = 'dynamicalbum.RandomAlbum';
 		$this->_title = $gallery->i18n('Random Items');
@@ -51,8 +48,7 @@ class RandomAlbumView extends UpdatesAlbumView
 	 *               array of item ids
 	 * @static
 	 */
-	public function getChildIds($userId)
-	{
+	public function getChildIds($userId) {
 		return parent::getChildIds($userId, 'random', 'random', ORDER_ASCENDING, null, 'id');
 	}
 }

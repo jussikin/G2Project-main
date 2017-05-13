@@ -25,15 +25,12 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminCreateGroupQuota');
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		/* Create a group to add a quota to */
 	list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
@@ -53,8 +50,7 @@ class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteEntity($group);
 	}
 
-	public function testCreateGroupQuota()
-	{
+	public function testCreateGroupQuota() {
 		/* Create a group to add a quota to */
 	list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
@@ -76,8 +72,7 @@ class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteEntity($group);
 	}
 
-	public function testCreateGroupQuotaMissingValues()
-	{
+	public function testCreateGroupQuotaMissingValues() {
 		/* Create a group for our tests */
 	list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
@@ -120,14 +115,12 @@ class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteEntity($group);
 	}
 
-	public function testCreateGroupQuotaGroupIdMissing()
-	{
+	public function testCreateGroupQuotaGroupIdMissing() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
 
-	public function testCreateGroupQuotaDuplicateQuota()
-	{
+	public function testCreateGroupQuotaDuplicateQuota() {
 		/* Create a group to add a quota to */
 	list($ret, $group) = $this->_createRandomGroup();
 		if ($ret) {
@@ -158,8 +151,7 @@ class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
 		$this->_deleteEntity($group);
 	}
 
-	public function _deleteEntity($entity)
-	{
+	public function _deleteEntity($entity) {
 		global $gallery;
 		$ret = GalleryCoreApi::deleteEntityById($entity->getId(), $entity->getEntityType());
 		if ($ret) {
@@ -167,8 +159,7 @@ class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _createGroupQuota($groupId, $quota)
-	{
+	public function _createGroupQuota($groupId, $quota) {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
 		array('userOrGroupId' => $groupId, 'quotaSize' => $quota));
@@ -177,8 +168,7 @@ class AdminCreateGroupQuotaControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function _deleteGroupQuota($groupId)
-	{
+	public function _deleteGroupQuota($groupId) {
 		$ret = GalleryCoreApi::removeMapEntry('QuotasMap', array('userOrGroupId' => $groupId));
 		if ($ret) {
 			return $ret;

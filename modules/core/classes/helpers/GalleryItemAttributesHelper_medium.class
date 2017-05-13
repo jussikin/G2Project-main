@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryItemAttributesHelper_medium
-{
+class GalleryItemAttributesHelper_medium {
 	/**
 	 * @see GalleryCoreApi::fetchItemOrderWeight
 	 */
-	public static function fetchOrderWeight($itemId)
-	{
+	public static function fetchOrderWeight($itemId) {
 		list($ret, $orderWeights) = self::fetchOrderWeights(array(
 			$itemId
 		));
@@ -59,8 +57,7 @@ class GalleryItemAttributesHelper_medium
 	/**
 	 * @see GalleryCoreApi::fetchItemOrderWeights
 	 */
-	public static function fetchOrderWeights($itemIds)
-	{
+	public static function fetchOrderWeights($itemIds) {
 		global $gallery;
 		
 		foreach ($itemIds as $idx => $id) {

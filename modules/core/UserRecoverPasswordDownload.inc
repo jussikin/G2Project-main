@@ -25,29 +25,25 @@
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17785 $
  */
-class UserRecoverPasswordDownloadView extends GalleryView
-{
+class UserRecoverPasswordDownloadView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
-	public function isAllowedInEmbedOnly()
-	{
+	public function isAllowedInEmbedOnly() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

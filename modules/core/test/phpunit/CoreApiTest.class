@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CoreApiTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class CoreApiTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function testGetDefaultAlbumId()
-	{
+	public function testGetDefaultAlbumId() {
 		$expectedId = $this->_getRootId();
 
 		list($ret, $defaultId) = GalleryCoreApi::getDefaultAlbumId();
@@ -44,8 +41,7 @@ class CoreApiTest extends GalleryTestCase
 		$this->assertEquals($expectedId, $defaultId);
 	}
 
-	public function testGetDefaultAlbumIdNotRoot()
-	{
+	public function testGetDefaultAlbumIdNotRoot() {
 		global $gallery;
 
 		$expectedId = rand();
@@ -59,8 +55,7 @@ class CoreApiTest extends GalleryTestCase
 		$this->assertEquals($expectedId, $defaultId);
 	}
 
-	public function testLoadAvailableBlocks()
-	{
+	public function testLoadAvailableBlocks() {
 		list($ret, $blocks) = GalleryCoreApi::loadAvailableBlocks();
 		if ($ret) {
 			return $ret;

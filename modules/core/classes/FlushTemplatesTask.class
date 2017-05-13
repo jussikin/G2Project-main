@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class FlushTemplatesTask extends MaintenanceTask
-{
+class FlushTemplatesTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		$info['l10Domain'] = 'modules_core';
@@ -46,8 +44,7 @@ class FlushTemplatesTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$dir = $gallery->getConfig('data.smarty.templates_c');

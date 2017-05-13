@@ -36,7 +36,7 @@ if (!@$gallery->getConfig('setup.password')) {
 }
 
 if ($gallery->isEmbedded()) {
-	 require_once(dirname(__FILE__) . '/init.inc');
+	require_once dirname(__FILE__) . '/init.inc';
 } else {
 	/* If this is a request for a public data file, give it to the user immediately */
 	$unsanitizedView = isset($_GET[GALLERY_FORM_VARIABLE_PREFIX . 'view']) ? $_GET[GALLERY_FORM_VARIABLE_PREFIX . 'view'] : null;
@@ -72,7 +72,7 @@ if ($gallery->isEmbedded()) {
 		}
 	}
 	
-	/* Otherwise, proceed with our regular process */ require_once(dirname(__FILE__) . '/init.inc');
+	/* Otherwise, proceed with our regular process */ require_once dirname(__FILE__) . '/init.inc';
 	$ret = GalleryInitFirstPass();
 	if ($ret) {
 		_GalleryMain_errorHandler($ret, null);
@@ -93,8 +93,7 @@ if (!empty($gallerySetErrorHandler)) {
  * Main handler for all Gallery pages/requests.
  * @return array
  */
-function GalleryMain($embedded = false)
-{
+function GalleryMain($embedded = false) {
 	global $gallery;
 	
 	/* Process the request */
@@ -157,8 +156,7 @@ function GalleryMain($embedded = false)
  * @return array GalleryStatus a status code
  *			   array
  */
-function _GalleryMain($embedded = false, $template = null)
-{
+function _GalleryMain($embedded = false, $template = null) {
 	global $gallery;
 	$urlGenerator =& $gallery->getUrlGenerator();
 	
@@ -722,8 +720,7 @@ function _GalleryMain($embedded = false, $template = null)
 	);
 }
 
-function _GalleryMain_doRedirect($redirectUrl, $template = null, $controller = null, $ignoreErrors = false)
-{
+function _GalleryMain_doRedirect($redirectUrl, $template = null, $controller = null, $ignoreErrors = false) {
 	global $gallery;
 	$session =& $gallery->getSession();
 	$urlGenerator =& $gallery->getUrlGenerator();
@@ -817,8 +814,7 @@ function _GalleryMain_doRedirect($redirectUrl, $template = null, $controller = n
  * @param GalleryStatus a status code
  * @param array $g2Data the results from _GalleryMain
  */
-function _GalleryMain_errorHandler($error, $g2Data = null)
-{
+function _GalleryMain_errorHandler($error, $g2Data = null) {
 	global $gallery;
 	
 	GalleryCoreApi::requireOnce('modules/core/ErrorPage.inc');

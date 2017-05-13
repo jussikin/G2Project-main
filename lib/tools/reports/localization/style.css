@@ -1,33 +1,33 @@
 h1 {
-  font-size: 150%;
-  text-align: center;
+	font-size: 150%;
+	text-align: center;
 }
 
 h3 {
-  font-size: 110%;
-  text-align: center;
+	font-size: 110%;
+	text-align: center;
 }
 
 BODY {
-  font-family: verdana, sans-serif;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  text-decoration: none;
-  letter-spacing: normal;
-  margin: 0;
-  padding: 0;
-  background-color : #eeeeee;
-  color : #000000;
+	font-family: verdana, sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-decoration: none;
+	letter-spacing: normal;
+	margin: 0;
+	padding: 0;
+	background-color : #eeeeee;
+	color : #000000;
 }
 
 td, th          {   border: 1px solid black;    }
 
 th                      {
-  background-color: #5555FF;
-  color: #FFFF55;
-  font-size: 85%;
-  font-variant: small-caps;
+	background-color: #5555FF;
+	color: #FFFF55;
+	font-size: 85%;
+	font-variant: small-caps;
 }
 
 table, tr, td, p    {   font-size: 90%;         }

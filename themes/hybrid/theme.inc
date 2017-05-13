@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 19627 $
  */
-class HybridTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class HybridTheme extends GalleryTheme {
+	public function __construct() {
 		$this->HybridTheme();
 	}
 	
-	public function HybridTheme()
-	{
+	public function HybridTheme() {
 		global $gallery;
 		
 		$this->setId('hybrid');
@@ -107,8 +104,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = null)
-	{
+	public function getSettings($itemId = null) {
 		list($ret, $settings, $params) = parent::getSettings($itemId);
 		if ($ret) {
 			return array(
@@ -180,8 +176,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -260,8 +255,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		list($detail, $renderId) = GalleryUtilities::getRequestVariables('detail', 'renderId');
 		if (!empty($renderId)) {
 			/* Render this item */
@@ -370,8 +364,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -392,8 +385,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -414,8 +406,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -425,8 +416,7 @@ class HybridTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -448,8 +438,7 @@ class HybridTheme extends GalleryTheme
 	 * Prepare data about items in this album.
 	 * @access private
 	 */
-	public function _buildItemList($childIds, &$children)
-	{
+	public function _buildItemList($childIds, &$children) {
 		$imageWidths = $imageHeights = $childItems = array();
 		if (!empty($childIds)) {
 			$ret = GalleryCoreApi::studyPermissions($childIds);

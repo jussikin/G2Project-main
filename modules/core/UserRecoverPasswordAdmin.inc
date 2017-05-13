@@ -26,13 +26,11 @@
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 20992 $
  */
-class UserRecoverPasswordAdminController extends GalleryController
-{
+class UserRecoverPasswordAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$session =& $gallery->getSession();
@@ -156,13 +154,11 @@ class UserRecoverPasswordAdminController extends GalleryController
 /**
  * This view shows information about password recovery
  */
-class UserRecoverPasswordAdminView extends GalleryView
-{
+class UserRecoverPasswordAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$session =& $gallery->getSession();
@@ -215,8 +211,7 @@ class UserRecoverPasswordAdminView extends GalleryView
 	 * Generate the authorization string used for login.txt
 	 * @access private
 	 */
-	public function _generateAuthString()
-	{
+	public function _generateAuthString() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

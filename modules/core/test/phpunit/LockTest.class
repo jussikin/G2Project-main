@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlockLockSystem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class LockTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class LockTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -61,8 +58,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function _tryAllLockSystems($testFunction)
-	{
+	public function _tryAllLockSystems($testFunction) {
 		global $gallery;
 		$testFunction = '_' . $testFunction;
 		
@@ -77,13 +73,11 @@ class LockTest extends GalleryTestCase
 		$gallery->_lockSystem->releaseQueue();
 	}
 	
-	public function testOneWriteLock()
-	{
+	public function testOneWriteLock() {
 		return $this->_tryAllLockSystems('testOneWriteLock');
 	}
 	
-	public function _testOneWriteLock($lockSystem)
-	{
+	public function _testOneWriteLock($lockSystem) {
 		$targetId = $this->_item->getId();
 		
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($targetId);
@@ -101,13 +95,11 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testManyWriteLocks()
-	{
+	public function testManyWriteLocks() {
 		return $this->_tryAllLockSystems('testManyWriteLocks');
 	}
 	
-	public function _testManyWriteLocks($lockSystem)
-	{
+	public function _testManyWriteLocks($lockSystem) {
 		global $gallery;
 		
 		$ids = array(
@@ -133,13 +125,11 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testOneReadLock()
-	{
+	public function testOneReadLock() {
 		return $this->_tryAllLockSystems('testOneReadLock');
 	}
 	
-	public function _testOneReadLock($lockSystem)
-	{
+	public function _testOneReadLock($lockSystem) {
 		$targetId = $this->_album->getId();
 		
 		list($ret, $lockId) = GalleryCoreApi::acquireReadLock($targetId);
@@ -157,13 +147,11 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testManyReadLocks()
-	{
+	public function testManyReadLocks() {
 		return $this->_tryAllLockSystems('testManyReadLocks');
 	}
 	
-	public function _testManyReadLocks($lockSystem)
-	{
+	public function _testManyReadLocks($lockSystem) {
 		global $gallery;
 		
 		$ids = array(
@@ -189,13 +177,11 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAcquireReadLockParents()
-	{
+	public function testAcquireReadLockParents() {
 		return $this->_tryAllLockSystems('testAcquireReadLockParents');
 	}
 	
-	public function _testAcquireReadLockParents($lockSystem)
-	{
+	public function _testAcquireReadLockParents($lockSystem) {
 		global $gallery;
 		
 		/* Create a hierarchy */
@@ -229,13 +215,11 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAcquireReadLockParentsOnRoot()
-	{
+	public function testAcquireReadLockParentsOnRoot() {
 		return $this->_tryAllLockSystems('testAcquireReadLockParentsOnRoot');
 	}
 	
-	public function _testAcquireReadLockParentsOnRoot($lockSystem)
-	{
+	public function _testAcquireReadLockParentsOnRoot($lockSystem) {
 		global $gallery;
 		
 		list($ret, $lockId) = GalleryCoreApi::acquireReadLockParents($this->_getRootId());
@@ -266,8 +250,7 @@ class LockTest extends GalleryTestCase
 	}
 	*/
 	
-	public function _testReadLockToWriteLock($lockSystem)
-	{
+	public function _testReadLockToWriteLock($lockSystem) {
 		/* Read lock parents, then attempt to write lock direct parent */
 		list($ret, $lockId) = GalleryCoreApi::acquireReadLockParents($this->_item->getId());
 		if ($ret) {
@@ -306,13 +289,11 @@ class LockTest extends GalleryTestCase
 	 * handling code can pass in whatever array it has and not worry about cleaning it up to have
 	 * only valid locks.
 	 */
-	public function testReleaseNull()
-	{
+	public function testReleaseNull() {
 		return $this->_tryAllLockSystems('testReleaseNull');
 	}
 	
-	public function _testReleaseNull($lockSystem)
-	{
+	public function _testReleaseNull($lockSystem) {
 		$targetId = $this->_item->getId();
 		$lockIds = array();
 		
@@ -335,13 +316,11 @@ class LockTest extends GalleryTestCase
 	}
 	
 	/* See comment above */
-	public function testReleaseEmpty()
-	{
+	public function testReleaseEmpty() {
 		return $this->_tryAllLockSystems('testReleaseEmpty');
 	}
 	
-	public function _testReleaseEmpty($lockSystem)
-	{
+	public function _testReleaseEmpty($lockSystem) {
 		$ret = GalleryCoreApi::releaseLocks(array());
 		if ($ret) {
 			$this->assert(false, $lockSystem);
@@ -354,8 +333,7 @@ class LockTest extends GalleryTestCase
 	 * Verify that locks are not being released before commit on transactional databases.
 	 * http://sourceforge.net/tracker/index.php?func=detail&aid=1345508&group_id=7130&atid=107130
 	 */
-	public function testReleaseLocksNotBeforeCommit()
-	{
+	public function testReleaseLocksNotBeforeCommit() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -409,8 +387,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testRelockRead()
-	{
+	public function testRelockRead() {
 		/* Read lock, release, relock before committing transaction */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -446,8 +423,7 @@ class LockTest extends GalleryTestCase
 		$this->assert(count($gallery->_lockSystem->_releaseQueue) == 2 || !$storage->isTransactional(), 'release second lock');
 	}
 	
-	public function testWriteThenRead()
-	{
+	public function testWriteThenRead() {
 		/* Write lock, release, then acquire read lock before committing transaction */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -480,8 +456,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testWriteThenReadPartial()
-	{
+	public function testWriteThenReadPartial() {
 		/* Write lock, release, then acquire a read lock for one entity in that write lock */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -517,8 +492,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testRelockWrite()
-	{
+	public function testRelockWrite() {
 		/* Write lock, release, relock before committing transaction */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -550,8 +524,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testRelockWritePartial()
-	{
+	public function testRelockWritePartial() {
 		/* Write lock, release, then acquire new write lock for one id in previous lock */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -587,8 +560,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testRelockWriteMore()
-	{
+	public function testRelockWriteMore() {
 		/* Write lock, release, then acquire new write lock with more ids than previous lock */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -624,8 +596,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testReadThenWrite()
-	{
+	public function testReadThenWrite() {
 		/* Read lock, release, then acquire write lock before committing transaction */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -658,8 +629,7 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testReadThenWritePartial()
-	{
+	public function testReadThenWritePartial() {
 		/* Read lock, release, then acquire a write lock for one entity in that read lock */
 		global $gallery;
 		$storage =& $gallery->getStorage();
@@ -695,14 +665,12 @@ class LockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testReadReadAgainThenWrite()
-	{
+	public function testReadReadAgainThenWrite() {
 		return $this->_tryAllLockSystems('testReadReadAgainThenWrite');
 	}
 	
 	/* Acquire a write lock when item is in multiple locks in the release queue */
-	public function _testReadReadAgainThenWrite($lockSystem)
-	{
+	public function _testReadReadAgainThenWrite($lockSystem) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		

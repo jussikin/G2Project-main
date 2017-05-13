@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemMoveControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemMoveControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMove');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -183,8 +180,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _setDerivativePreferences()
-	{
+	public function _setDerivativePreferences() {
 		$args = func_get_args();
 		$itemId = array_shift($args);
 		$thumbSize = array_shift($args);
@@ -204,8 +200,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function _getDerivativeSizes($itemIds)
-	{
+	public function _getDerivativeSizes($itemIds) {
 		if (!is_array($itemIds)) {
 			$itemIds = array(
 				$itemIds
@@ -241,8 +236,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item
 	 */
-	public function testMoveItem()
-	{
+	public function testMoveItem() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[1]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -281,8 +275,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into a peer.  This is to find a regression in the parent sequence code.
 	 */
-	public function testMoveItemIntoPeer()
-	{
+	public function testMoveItemIntoPeer() {
 		global $gallery;
 		
 		list($ret, $peer) = $this->_createRandomAlbum($this->_album[0]->getId());
@@ -344,8 +337,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test changing pages with to an invalid page number
 	 */
-	public function testMoveNextPageOutOfRange()
-	{
+	public function testMoveNextPageOutOfRange() {
 		global $gallery;
 		
 		/* create random items */
@@ -386,8 +378,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testMovePreviousPageOutOfRange()
-	{
+	public function testMovePreviousPageOutOfRange() {
 		global $gallery;
 		
 		/* create random items */
@@ -430,8 +421,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item to a bogus destination
 	 */
-	public function testMoveItemIntoBogusDestination()
-	{
+	public function testMoveItemIntoBogusDestination() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[2]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -455,8 +445,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into itself
 	 */
-	public function testMoveItemIntoSelf()
-	{
+	public function testMoveItemIntoSelf() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[0]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -481,8 +470,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into its own child
 	 */
-	public function testMoveItemIntoChild()
-	{
+	public function testMoveItemIntoChild() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[0]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -507,8 +495,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item into a container where we have no add permissions
 	 */
-	public function testMoveItemIntoAlbumWithNoAddPermissions()
-	{
+	public function testMoveItemIntoAlbumWithNoAddPermissions() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[3]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -533,8 +520,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item that we can't delete
 	 */
-	public function testMoveItemWithNoDeletePermissions()
-	{
+	public function testMoveItemWithNoDeletePermissions() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[3]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -559,8 +545,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an album into a container where we have no add album permissions
 	 */
-	public function testMoveAlbumIntoDestinationWithNoAddAlbumPermissions()
-	{
+	public function testMoveAlbumIntoDestinationWithNoAddAlbumPermissions() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[2]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -585,8 +570,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an album into a container where we have no add album permissions
 	 */
-	public function testMoveDataItemIntoDestinationWithNoAddDataItemPermissions()
-	{
+	public function testMoveDataItemIntoDestinationWithNoAddDataItemPermissions() {
 		global $gallery;
 		GalleryUtilities::putRequestVariable('itemId', $this->_album[3]->getId());
 		GalleryUtilities::putRequestVariable('form[selectedIds]', array(
@@ -611,8 +595,7 @@ class ItemMoveControllerTest extends GalleryControllerTestCase
 	/**
 	 * Test moving an item to an album with different derivative preferences
 	 */
-	public function testMoveItemWithDerivatives()
-	{
+	public function testMoveItemWithDerivatives() {
 		global $gallery;
 		
 		// Set derivative preferences for old and new parent..
@@ -689,6 +672,5 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemMoveTestToolkit extends GalleryToolkit
-{
+class ItemMoveTestToolkit extends GalleryToolkit {
 }

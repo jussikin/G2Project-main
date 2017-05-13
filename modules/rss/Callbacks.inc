@@ -23,51 +23,49 @@
  * @author Pierre-Luc Paour
  * @version $Revision: 17580 $
  */
-class RssCallbacks
-{
-	public function callback($params, $smarty, $callback, $userId=null)
-	{
+class RssCallbacks {
+	public function callback($params, $smarty, $callback, $userId = null) {
 		static $feeds;
 
 		GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
 		switch ($callback) {
-	case 'FeedList':
-		if (empty($params['number'])) {
-			/* we're called during preload, so we have to find the params another way */
-			$tpl_vars = $smarty->getTemplateVars();
-			if (!empty($tpl_vars['theme']['params']['sidebarBlocks'])) {
-				$blocks = $tpl_vars['theme']['params']['sidebarBlocks'];
+			case 'FeedList':
+				if (empty($params['number'])) {
+					/* we're called during preload, so we have to find the params another way */
+					$tpl_vars = $smarty->getTemplateVars();
+					if (!empty($tpl_vars['theme']['params']['sidebarBlocks'])) {
+						$blocks = $tpl_vars['theme']['params']['sidebarBlocks'];
 
-				foreach ($blocks as $block) {
-					if ($block[0] == 'rss.RssBlock') {
-						$params = $block[1];
-						break;
+						foreach ($blocks as $block) {
+							if ($block[0] == 'rss.RssBlock') {
+								$params = $block[1];
+								break;
+							}
+						}
+					}
+
+					if (empty($params['number'])) {
+						/* still empty, probably because the user never changed the default */
+						$params['number'] = '5';
 					}
 				}
-			}
 
-			if (empty($params['number'])) {
-				/* still empty, probably because the user never changed the default */
-			$params['number'] = '5';
-			}
-		}
+				/* since we get called twice (once for the block, once for the head), cache the feeds */
+				if (!isset($feeds)) {
+					list($ret, $feeds) = RssMapHelper::fetchFeedNames((int) $params['number']);
+					if ($ret) {
+						return $ret;
+					}
+				}
 
-		/* since we get called twice (once for the block, once for the head), cache the feeds */
-		if (!isset($feeds)) {
-			list($ret, $feeds) = RssMapHelper::fetchFeedNames((int) $params['number']);
-			if ($ret) {
-				return $ret;
-			}
-		}
-
-		$block = $smarty->getTemplateVars('block');
-		$smarty->assignByRef('block', $block);
+				$block = $smarty->getTemplateVars('block');
+				$smarty->assignByRef('block', $block);
 		
-		$block['rss']['feeds'] = $feeds;
-		$block['rss']['showMore'] = !empty($feeds);
+				$block['rss']['feeds'] = $feeds;
+				$block['rss']['showMore'] = !empty($feeds);
 
-		return null;
-	}
+		        return null;
+		}
 
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}

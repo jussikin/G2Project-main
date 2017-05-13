@@ -27,15 +27,12 @@
  * @author Don Willingham <donwillingham@users.sf.net>
  * @version $Revision: 20958 $
  */
-class Getid3Module extends GalleryModule
-{
-	public function __construct()
-	{
+class Getid3Module extends GalleryModule {
+	public function __construct() {
 		$this->Getid3Module();
 	}
 	
-	public function Getid3Module()
-	{
+	public function Getid3Module() {
 		global $gallery;
 		
 		$this->setId('getid3');
@@ -59,8 +56,7 @@ class Getid3Module extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		
 		if (!isset($currentVersion)) {
@@ -108,8 +104,7 @@ class Getid3Module extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our graphics class with the factory */
 		$ret = GalleryCoreApi::registerFactoryImplementation('Getid3Interface_1_0', 'Getid3Extractor', 'Getid3', 'modules/getid3/classes/Getid3Extractor.class', 'getid3', null);
 		if ($ret) {
@@ -133,8 +128,7 @@ class Getid3Module extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		$ret = GalleryCoreApi::registerToolkitProperty('Getid3', array(
 			'video/x-msvideo'
@@ -180,8 +174,7 @@ class Getid3Module extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -196,8 +189,7 @@ class Getid3Module extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'getid3.CantActivate';
 	}
 }

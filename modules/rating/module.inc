@@ -24,15 +24,12 @@
  * @author  Don Seiler <don@seiler.us>
  * @version $Revision: 18172 $
  */
-class RatingModule extends GalleryModule
-{
-	public function __construct()
-	{
+class RatingModule extends GalleryModule {
+	public function __construct() {
 		$this->RatingModule();
 	}
 
-	public function RatingModule()
-	{
+	public function RatingModule() {
 		global $gallery;
 
 		$this->setId('rating');
@@ -49,8 +46,7 @@ class RatingModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation(
 		'GalleryEventListener', 'RatingModule', 'RatingModule',
 		'modules/rating/module.inc', 'rating', array('GalleryEntity::delete'));
@@ -78,8 +74,7 @@ class RatingModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getItemSummaries
 	 */
-	public function getItemSummaries($items, $permissions, &$template)
-	{
+	public function getItemSummaries($items, $permissions, &$template) {
 		global $gallery;
 
 		$itemIds = array();
@@ -176,8 +171,7 @@ class RatingModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
-	{
+	public function upgrade($currentVersion, $x1=null) {
 		global $gallery;
 
 		if (!isset($currentVersion)) {
@@ -286,8 +280,7 @@ class RatingModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(null, array(array('name' => $this->translate('Rating'),
 					   'view' => 'rating.RatingSiteAdmin')));
 	}
@@ -295,8 +288,7 @@ class RatingModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
-	public function getRewriteRules()
-	{
+	public function getRewriteRules() {
 		return array(
 		array('comment' => $this->translate('Rating Album'),
 			  'match' => array('view' => 'rating.RatingAlbum'),
@@ -313,8 +305,7 @@ class RatingModule extends GalleryModule
 	 *
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		$result = null;
 		if ($event->getEventName() == 'GalleryEntity::delete') {
 			$entity = $event->getEntity();
@@ -339,8 +330,7 @@ class RatingModule extends GalleryModule
 	/**
 	 * @see GalleryModule::uninstall
 	 */
-	public function uninstall()
-	{
+	public function uninstall() {
 		$ret = GalleryCoreApi::deleteSortOrder('RatingSortOrder');
 		if ($ret) {
 			return $ret;

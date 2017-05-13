@@ -28,17 +28,15 @@ GalleryCoreApi::requireOnce('modules/picasa/classes/Picasa2DataParser.class');
  * @author Waldemar Schlackow <gallery@schlackow.de> based on the migrate module by Jesse Mullan
  * @version $Revision: 17580 $
  */
-class SelectPicasaExportPathController extends GalleryController
-{
+class SelectPicasaExportPathController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 	/* Verify that active user is an admin */
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -95,13 +93,11 @@ class SelectPicasaExportPathController extends GalleryController
 /**
  * First step of import process
  */
-class SelectPicasaExportPathView extends GalleryView
-{
+class SelectPicasaExportPathView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -116,7 +112,7 @@ class SelectPicasaExportPathView extends GalleryView
 		}
 
 	/* Load our recent paths from the session */
-	$session =& $gallery->getSession();
+		$session =& $gallery->getSession();
 		$recentPaths = $session->get('picasa.view.SelectPicasaExportPath.recentPaths');
 
 		if (empty($recentPaths)) {
@@ -136,14 +132,14 @@ class SelectPicasaExportPathView extends GalleryView
 			}
 		}
 	/* Get ids of all all albums where we can add new album items */
-	list($ret, $albumIds) =
+		list($ret, $albumIds) =
 		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}
 
 	/* Load all the album entities */
-	list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
+		list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds, 'GalleryAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}

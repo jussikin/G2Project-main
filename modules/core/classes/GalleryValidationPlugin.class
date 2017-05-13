@@ -29,8 +29,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryValidationPlugin
-{
+class GalleryValidationPlugin {
 	/**
 	 * Perform validation for this request.
 	 *
@@ -43,8 +42,7 @@ class GalleryValidationPlugin
 	 *               array of error keys
 	 *               boolean true/false should we continue processing this request?
 	 */
-	public function performValidation(&$form, $options = array())
-	{
+	public function performValidation(&$form, $options = array()) {
 		return array(
 			null,
 			array(),
@@ -63,8 +61,7 @@ class GalleryValidationPlugin
 	 *               string the path to a template file to include or null
 	 *               string localization domain for the template file or null
 	 */
-	public function loadTemplate(&$form, $options = array())
-	{
+	public function loadTemplate(&$form, $options = array()) {
 		return array(
 			null,
 			null,

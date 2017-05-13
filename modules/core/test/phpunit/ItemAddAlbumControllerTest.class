@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemAddAlbumControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemAddAlbumControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemAddAlbum');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -46,8 +43,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($this->_parentAlbum);
 	}
 
-	public function testAddAlbum()
-	{
+	public function testAddAlbum() {
 		/* Use valid inputs */
 		$name = 'testalbum-' . rand();
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
@@ -79,8 +75,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testAddDuplicateAlbum()
-	{
+	public function testAddDuplicateAlbum() {
 		/* Create an album */
 		list($ret, $subAlbum) = $this->_createRandomAlbum($this->_parentAlbum->getId());
 		if ($ret) {
@@ -128,8 +123,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		$this->assertEquals($subAlbum->getPathComponent() . '_001', $newAlbum->getPathComponent());
 	}
 
-	public function testAddAlbumMissingName()
-	{
+	public function testAddAlbumMissingName() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
@@ -153,8 +147,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testAddAlbumInvalidName()
-	{
+	public function testAddAlbumInvalidName() {
 		/* Use valid inputs */
 		GalleryUtilities::putRequestVariable('itemId', $this->_parentAlbum->getId());
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
@@ -178,8 +171,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testAddAlbumWithSpaces()
-	{
+	public function testAddAlbumWithSpaces() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -227,8 +219,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(trim($name), basename($path), 'directory name: "' . basename($path) . '"');
 	}
 
-	public function testAddAlbumWithPeriodInName()
-	{
+	public function testAddAlbumWithPeriodInName() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -276,16 +267,14 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(trim($name), basename($path), 'directory name: "' . basename($path) . '"');
 	}
 
-	public function _getChildId()
-	{
+	public function _getChildId() {
 		list($ret, $ids) = GalleryCoreApi::fetchChildItemIds($this->_parentAlbum);
 		$this->assertEquals(1, count($ids));
 
 		return $ids[0];
 	}
 
-	public function _getSecondChildId()
-	{
+	public function _getSecondChildId() {
 		list($ret, $ids) = GalleryCoreApi::fetchChildItemIds($this->_parentAlbum);
 		$this->assertEquals(2, sizeof($ids));
 
@@ -293,8 +282,7 @@ class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 		return max($ids[0], $ids[1]);
 	}
 
-	public function testMaliciousMarkup()
-	{
+	public function testMaliciousMarkup() {
 		$ret = $this->_setMarkupType('html', true);
 		if ($ret) {
 			return $ret;

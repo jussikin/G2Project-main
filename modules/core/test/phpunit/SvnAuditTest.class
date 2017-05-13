@@ -25,10 +25,8 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class SvnAuditTest extends CodeAuditTestCase
-{
-	public function __construct($methodName)
-	{
+class SvnAuditTest extends CodeAuditTestCase {
+	public function __construct($methodName) {
 		global $gallery;
 		$this->_platform =& $gallery->getPlatform();
 		
@@ -96,8 +94,7 @@ class SvnAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::shouldCheckFile
 	 */
-	public function shouldCheckFile($fileName)
-	{
+	public function shouldCheckFile($fileName) {
 		$base = basename($fileName);
 
 		return in_array($base, array(
@@ -110,8 +107,7 @@ class SvnAuditTest extends CodeAuditTestCase
 	/**
 	 * @see CodeAuditTestCase::checkFile
 	 */
-	public function checkFile($fileName, $buffer)
-	{
+	public function checkFile($fileName, $buffer) {
 		$slash = $this->_platform->getDirectorySeparator();
 		$base = basename($fileName);
 		$propsFile = dirname($fileName) . "${slash}.svn${slash}props${slash}${base}.svn-work";

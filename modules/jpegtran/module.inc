@@ -28,15 +28,12 @@
  * @author Andy Staudacher <ast@gmx.ch>
  * @version $Revision: 20951 $
  */
-class JpegtranModule extends GalleryModule
-{
-	public function __construct()
-	{
+class JpegtranModule extends GalleryModule {
+	public function __construct() {
 		$this->JpegtranModule();
 	}
 	
-	public function JpegtranModule()
-	{
+	public function JpegtranModule() {
 		global $gallery;
 		
 		$this->setId('jpegtran');
@@ -59,8 +56,7 @@ class JpegtranModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations()
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		/* Register our graphics class with the factory */
 		
 		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'JpegtranToolkit', $this->getId(), 'modules/jpegtran/classes/JpegtranToolkit.class', $this->getId(), null);
@@ -75,8 +71,7 @@ class JpegtranModule extends GalleryModule
 	 * @see GalleryModule::activate
 	 * @todo Add getMinimumManagedToolkitPriority() method to core API and use it here.
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		GalleryCoreApi::requireOnce('modules/jpegtran/classes/JpegtranToolkitHelper.class');
 		
 		/* Test for available operations */
@@ -132,8 +127,7 @@ class JpegtranModule extends GalleryModule
 	/**
 	 * @see GalleryModule::deactivate
 	 */
-	public function deactivate($postDeactivationEvent = true)
-	{
+	public function deactivate($postDeactivationEvent = true) {
 		/*
 	     * Unregister all our operations.  Do this before the parent deactivates
 	     * so that any event handlers triggered by the deactivation will see the world as it will
@@ -155,8 +149,7 @@ class JpegtranModule extends GalleryModule
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
-	public function needsConfiguration()
-	{
+	public function needsConfiguration() {
 		/* This module requires exec() */
 		if (in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))) {
 			return array(
@@ -182,8 +175,7 @@ class JpegtranModule extends GalleryModule
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
-	public function autoConfigure()
-	{
+	public function autoConfigure() {
 		global $gallery;
 		
 		/* This module requires exec() */
@@ -223,7 +215,7 @@ class JpegtranModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path . 'jpegtran.exe';
@@ -245,7 +237,7 @@ class JpegtranModule extends GalleryModule
 				if (empty($path)) {
 					continue;
 				}
-				if ($path{strlen($path) - 1} != $slash) {
+				if ($path[strlen($path) - 1] != $slash) {
 					$path .= $slash;
 				}
 				$paths[] = $path . 'jpegtran';
@@ -314,8 +306,7 @@ class JpegtranModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(
@@ -330,8 +321,7 @@ class JpegtranModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
-	public function getConfigurationView()
-	{
+	public function getConfigurationView() {
 		return 'jpegtran.AdminJpegtran';
 	}
 }

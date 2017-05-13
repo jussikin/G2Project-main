@@ -22,15 +22,12 @@
  * Upgrade plugins
  * @package Upgrade
  */
-class UpgradeOtherModulesStep extends UpgradeStep
-{
-	public function stepName()
-	{
+class UpgradeOtherModulesStep extends UpgradeStep {
+	public function stepName() {
 		return _('Upgrade Plugins');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		global $gallery;
 		
 		if (!isset($_REQUEST['upgrade'])) {
@@ -153,8 +150,7 @@ class UpgradeOtherModulesStep extends UpgradeStep
 		return false;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $gallery;
 		if (!$gallery->getDebug()) {
 			$gallery->setDebug('buffered');
@@ -387,13 +383,11 @@ class UpgradeOtherModulesStep extends UpgradeStep
 		}
 	}
 	
-	public function isRedoable()
-	{
+	public function isRedoable() {
 		return false;
 	}
 	
-	public function isOptional()
-	{
+	public function isOptional() {
 		return true;
 	}
 	
@@ -403,8 +397,7 @@ class UpgradeOtherModulesStep extends UpgradeStep
 	 *
 	 * Note: we do the same in the installer
 	 */
-	public function _sortModules($a, $b)
-	{
+	public function _sortModules($a, $b) {
 		if ($a == 'gd' && $b == 'gd') {
 			return 0;
 		} elseif ($a == 'gd') {

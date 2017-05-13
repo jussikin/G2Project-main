@@ -25,29 +25,25 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class PrintPhotosView extends GalleryView
-{
+class PrintPhotosView extends GalleryView {
 	/**
 	 * @see GalleryView::isImmediate
 	 */
-	public function isImmediate()
-	{
+	public function isImmediate() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
-	public function isControllerLike()
-	{
+	public function isControllerLike() {
 		return true;
 	}
 
 	/**
 	 * @see GalleryView::renderImmedate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 
@@ -68,7 +64,7 @@ class PrintPhotosView extends GalleryView
 		}
 
 	/* Load the necessary item data */
-	$itemIds = array_keys($cartItemIds);
+		$itemIds = array_keys($cartItemIds);
 		list($ret, $items) = GalleryCoreApi::loadEntitiesById($itemIds, 'GalleryPhotoItem');
 		if ($ret) {
 			return $ret;
@@ -81,7 +77,7 @@ class PrintPhotosView extends GalleryView
 		foreach ($itemIds as $id) {
 			if (empty($permissions[$id]['core.view'])) {
 				/* Avoid information disclosure, act as if the item didn't exist. */
-		return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
+				return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 			}
 		}
 
@@ -101,7 +97,7 @@ class PrintPhotosView extends GalleryView
 		}
 
 	/* We want to know which are viewable to guests */
-	list($ret, $anonymousUserId) =
+		list($ret, $anonymousUserId) =
 		GalleryCoreApi::getPluginParameter('module', 'core', 'id.anonymousUser');
 		if ($ret) {
 			return $ret;
@@ -113,14 +109,14 @@ class PrintPhotosView extends GalleryView
 		}
 
 	/* Assemble all our data */
-	$i = 1;
+		$i = 1;
 		$entries = $protectedIds = array();
 		foreach ($items as $item) {
 			$itemId = $item->getId();
 
 			if (!isset($permissions[$itemId]['shutterfly.print'])) {
 				/* Skip any cart items for which we don't have print permission */
-		continue;
+				continue;
 			}
 
 			$source = isset($preferreds[$itemId]) ? $preferreds[$itemId] : $item;
@@ -133,7 +129,7 @@ class PrintPhotosView extends GalleryView
 	     * plus the current user could logout before shutterfly retrieves the images.
 	     * Create a new session with the rights of current user for shutterfly to use.
 	     */
-		$sfSession = new GallerySession();
+				$sfSession = new GallerySession();
 				$ret = $sfSession->initEmpty(true, $gallery->getActiveUserId());
 				if ($ret) {
 					return $ret;
@@ -148,22 +144,26 @@ class PrintPhotosView extends GalleryView
 
 			$entry = array('item' => (array)$item);
 			$entry['imageUrl'] = $urlGenerator->generateUrl(
-		array_merge(array('view' => 'core.DownloadItem', 'itemId' => $source->getId()),
-				$sessionParam),
-		array('forceSessionId' => false, 'forceFullUrl' => true));
+				array_merge(
+					array('view' => 'core.DownloadItem', 'itemId' => $source->getId()),
+					$sessionParam
+				),
+				array('forceSessionId' => false, 'forceFullUrl' => true)
+			);
 			$entry['imageWidth'] = $source->getWidth();
 			$entry['imageHeight'] = $source->getHeight();
 
 			if (!isset($thumbnails[$itemId]) || $thumbnails[$itemId]->getPostFilterOperations()) {
 				/* Use the source if the thumbnail has a postfilter (like a watermark) */
-		$thumbSource = $source;
+				$thumbSource = $source;
 			} else {
 				$thumbSource = $thumbnails[$itemId];
 			}
 
 			$entry['thumbUrl'] = $urlGenerator->generateUrl(
-		array('view' => 'core.DownloadItem', 'itemId' => $thumbSource->getId()),
-		array('forceSessionId' => $needSession, 'forceFullUrl' => true));
+				array('view' => 'core.DownloadItem', 'itemId' => $thumbSource->getId()),
+				array('forceSessionId' => $needSession, 'forceFullUrl' => true)
+			);
 			$entry['thumbWidth'] = $thumbSource->getWidth();
 			$entry['thumbHeight'] = $thumbSource->getHeight();
 
@@ -171,14 +171,14 @@ class PrintPhotosView extends GalleryView
 	     * Ugh, the Shutterfly api doesn't have a parameter for quantity.
 	     * Repeat the same entry multiple times to get desired quantity!
 	     */
-		for ($j = 0; $j < $cartItemIds[$itemId]; $j++) {
-			$entries[$i++] = $entry;
-		}
+			for ($j = 0; $j < $cartItemIds[$itemId]; $j++) {
+				$entries[$i++] = $entry;
+			}
 		}
 
 		if (isset($sfSession)) {
 			/* Mark this session so that it can be treated specially */
-		$sfSession->put('core.isPrintService', $protectedIds);
+			$sfSession->put('core.isPrintService', $protectedIds);
 
 		/*
 	     * TODO: Would like to enforce a particular session timeout to ensure this session
@@ -186,7 +186,7 @@ class PrintPhotosView extends GalleryView
 	     * sessionid in this session so we can reuse it for multiple print requests (and
 	     * just bump timeout each time).
 	     */
-		$ret = $sfSession->save();
+			$ret = $sfSession->save();
 			if ($ret) {
 				return $ret;
 			}
@@ -198,10 +198,10 @@ class PrintPhotosView extends GalleryView
 	 * render a form and submit it.. here we set our own cookie that will be
 	 * checked to ensure we submit our form only once.
 	 */
-	if (!headers_sent() /* Should only skip cookie in unit test */) {
-		setcookie('G2_shutterfly', '1');
-		header("Content-type: text/html; charset=UTF-8");
-	}
+		if (!headers_sent() /* Should only skip cookie in unit test */) {
+			setcookie('G2_shutterfly', '1');
+			header("Content-type: text/html; charset=UTF-8");
+		}
 
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 		$template = new GalleryTemplate(dirname(dirname(dirname(__FILE__))));

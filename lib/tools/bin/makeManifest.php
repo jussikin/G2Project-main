@@ -51,8 +51,7 @@ if (empty($SRCDIR)) {
 	 * If quiet mode is not enabled, display the message on standard out.
 	 * @param string $message Message to display.
 	 */
-	function quiet_print($message)
-	{
+	function quiet_print($message) {
 		global $quiet;
 		if (!$quiet) {
 			echo "$message\n";
@@ -61,8 +60,7 @@ if (empty($SRCDIR)) {
 	makeManifest($path);
 }
 
-function makeManifest($filterPath = '')
-{
+function makeManifest($filterPath = '') {
 	global $SRCDIR;
 	$startTime = time();
 	
@@ -194,8 +192,7 @@ function makeManifest($filterPath = '')
  * @param string $filterpath Path to create retrieve the SVN entries for.
  * @return array List of SVN entries
  */
-function listSvn($filterpath)
-{
+function listSvn($filterpath) {
 	$entries = array();
 	
 	$binaryList = array();

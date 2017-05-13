@@ -29,8 +29,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryLockSystem
-{
+class GalleryLockSystem {
 	/**
 	 * Information about all the locks we currently hold.
 	 * array of (lockId => array('lockId' => lock id, 'type' => LOCK_READ or LOCK_WRITE,
@@ -49,13 +48,11 @@ class GalleryLockSystem
 	 */
 	public $_releaseQueue;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->GalleryLockSystem();
 	}
 	
-	public function GalleryLockSystem()
-	{
+	public function GalleryLockSystem() {
 		$this->_locks = $this->_releaseQueue = array();
 	}
 	
@@ -67,8 +64,7 @@ class GalleryLockSystem
 	 * @return array GalleryStatus a status code
 	 *               mixed the lock id
 	 */
-	public function acquireReadLock($ids, $timeout = 10)
-	{
+	public function acquireReadLock($ids, $timeout = 10) {
 		if (!is_array($ids)) {
 			$ids = array(
 				$ids
@@ -130,8 +126,7 @@ class GalleryLockSystem
 	 * @return array GalleryStatus a status code
 	 *               mixed the lock id
 	 */
-	public function acquireWriteLock($ids, $timeout = 10)
-	{
+	public function acquireWriteLock($ids, $timeout = 10) {
 		if (!is_array($ids)) {
 			$ids = array(
 				$ids
@@ -225,8 +220,7 @@ class GalleryLockSystem
 	 * @access protected
 	 * @abstract
 	 */
-	public function _acquireLock($ids, $timeout, $lockType)
-	{
+	public function _acquireLock($ids, $timeout, $lockType) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -239,8 +233,7 @@ class GalleryLockSystem
 	 * @param int $id an object id
 	 * @return boolean true if the object is read locked
 	 */
-	public function isReadLocked($id)
-	{
+	public function isReadLocked($id) {
 		foreach ($this->_locks as $lockId => $lock) {
 			if (isset($lock['ids'][$id])) {
 				return true;
@@ -256,8 +249,7 @@ class GalleryLockSystem
 	 * @param int $id an object id
 	 * @return boolean true if the object is write locked
 	 */
-	public function isWriteLocked($id)
-	{
+	public function isWriteLocked($id) {
 		foreach ($this->_locks as $lockId => $lock) {
 			if ($lock['type'] == LOCK_WRITE && isset($lock['ids'][$id])) {
 				return true;
@@ -275,8 +267,7 @@ class GalleryLockSystem
 	 * @param mixed $lockIds array of lock ids, or a single lock id
 	 * @return GalleryStatus a status code
 	 */
-	public function releaseLocks($lockIds)
-	{
+	public function releaseLocks($lockIds) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -313,8 +304,7 @@ class GalleryLockSystem
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function releaseQueue()
-	{
+	public function releaseQueue() {
 		if (!empty($this->_releaseQueue)) {
 			$ret = $this->_releaseLocksNow($this->_releaseQueue);
 			if ($ret) {
@@ -334,8 +324,7 @@ class GalleryLockSystem
 	 * @access protected
 	 * @abstract
 	 */
-	public function _releaseLocksNow($locks)
-	{
+	public function _releaseLocksNow($locks) {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 	
@@ -348,8 +337,7 @@ class GalleryLockSystem
 	 * @access protected
 	 * @abstract
 	 */
-	public function _removeObjectsFromLock(&$lock, $ids)
-	{
+	public function _removeObjectsFromLock(&$lock, $ids) {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 	
@@ -362,8 +350,7 @@ class GalleryLockSystem
 	 * @return GalleryStatus a status code
 	 * @access protected
 	 */
-	public function _moveObjectsBetweenLocks($relock, $newLockId)
-	{
+	public function _moveObjectsBetweenLocks($relock, $newLockId) {
 		foreach ($relock as $lockId => $ids) {
 			foreach ($ids as $id) {
 				$this->_locks[$newLockId]['ids'][$id] = $this->_releaseQueue[$lockId]['ids'][$id];
@@ -385,8 +372,7 @@ class GalleryLockSystem
 	 * @access protected
 	 * @abstract
 	 */
-	public function _newLockId()
-	{
+	public function _newLockId() {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 	
@@ -395,8 +381,7 @@ class GalleryLockSystem
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function releaseAllLocks()
-	{
+	public function releaseAllLocks() {
 		$ret = $this->releaseLocks(array_keys($this->_locks));
 		if ($ret) {
 			return $ret;
@@ -412,8 +397,7 @@ class GalleryLockSystem
 	 * @return GalleryStatus a status code
 	 * @abstract
 	 */
-	public function refreshLocks($freshUntil)
-	{
+	public function refreshLocks($freshUntil) {
 		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
 	}
 	
@@ -422,8 +406,7 @@ class GalleryLockSystem
 	 *
 	 * @return array lock ids
 	 */
-	public function getLockIds()
-	{
+	public function getLockIds() {
 		return array_keys($this->_locks);
 	}
 }

@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class NewItemsSiteAdminController extends GalleryController
-{
+class NewItemsSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -111,13 +109,11 @@ class NewItemsSiteAdminController extends GalleryController
 /**
  * Settings for New Items
  */
-class NewItemsSiteAdminView extends GalleryView
-{
+class NewItemsSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/newitems/classes/NewItemsHelper.class');
 		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();

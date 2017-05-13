@@ -32,8 +32,7 @@
  * @version $Revision: 20940 $
  * @abstract
  */
-class GalleryToolkit
-{
+class GalleryToolkit {
 	/**
 	 * Get a certain property of a file
 	 *
@@ -43,8 +42,7 @@ class GalleryToolkit
 	 * @return array GalleryStatus a status code,
 	 *	       mixed the value of the property
 	 */
-	public function getProperty($mimeType, $propertyName, $sourceFilename)
-	{
+	public function getProperty($mimeType, $propertyName, $sourceFilename) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null
@@ -71,8 +69,7 @@ class GalleryToolkit
 	 *               string the output mime type
 	 *               array context data
 	 */
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null,
@@ -93,8 +90,7 @@ class GalleryToolkit
 	 * @return array boolean success or failure
 	 *               string the new set of operations
 	 */
-	public function applyTransform($transformOperation, $targetOperations, $reverse = false)
-	{
+	public function applyTransform($transformOperation, $targetOperations, $reverse = false) {
 		$transformedOperations = $targetOperations;
 		
 		/* Right now, only the rotate operation will cause issues */
@@ -182,8 +178,7 @@ class GalleryToolkit
 	 *                $mergedOperation,
 	 *                $mergedArgs)
 	 */
-	public function mergeOperations($operation1, $args1, $operation2, $args2)
-	{
+	public function mergeOperations($operation1, $args1, $operation2, $args2) {
 		/* We can only merge like operations */
 		if ($operation1 != $operation2) {
 			/* But not all like operations have the same name */
@@ -255,8 +250,7 @@ class GalleryToolkit
 	 * @param GalleryEntity $source (probably a GalleryPhotoItem or GalleryMovieItem)
 	 * @static
 	 */
-	public static function estimateDimensions(&$derivative, $source)
-	{
+	public static function estimateDimensions(&$derivative, $source) {
 		if (method_exists($source, 'getwidth') && method_exists($source, 'getheight')) {
 			$width = $source->getWidth();
 			$height = $source->getHeight();

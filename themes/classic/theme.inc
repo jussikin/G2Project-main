@@ -26,15 +26,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class ClassicTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class ClassicTheme extends GalleryTheme {
+	public function __construct() {
 		$this->ClassicTheme();
 	}
 	
-	public function ClassicTheme()
-	{
+	public function ClassicTheme() {
 		global $gallery;
 		
 		$this->setId('classic');
@@ -106,8 +103,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getSettings
 	 */
-	public function getSettings($itemId = null)
-	{
+	public function getSettings($itemId = null) {
 		list($ret, $settings, $params) = parent::getSettings($itemId);
 		if ($ret) {
 			return array(
@@ -150,8 +146,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::validateSettings
 	 */
-	public function validateSettings($settings)
-	{
+	public function validateSettings($settings) {
 		$error = parent::validateSettings($settings);
 		if (!is_numeric($settings['subalbumDepth'])) {
 			$error['subalbumDepth'] = $this->translate('You must enter a number');
@@ -163,8 +158,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'owner',
 			'viewCount',
@@ -211,8 +205,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$dataTypes = array(
 			'owner',
 			'parents',
@@ -243,8 +236,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -265,8 +257,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -287,8 +278,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -298,8 +288,7 @@ class ClassicTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -322,8 +311,7 @@ class ClassicTheme extends GalleryTheme
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _buildTree($childIds, &$treeList, &$treeItems, $maxDepth, $subalbumSort, $userId)
-	{
+	public function _buildTree($childIds, &$treeList, &$treeItems, $maxDepth, $subalbumSort, $userId) {
 		list($ret, $items) = GalleryCoreApi::loadEntitiesById($childIds, 'GalleryItem');
 		if ($ret) {
 			return $ret;
@@ -367,8 +355,7 @@ class ClassicTheme extends GalleryTheme
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _doBuildTree($album, $branchId, &$treeList, &$treeItems, $maxDepth, $userId, $depth)
-	{
+	public function _doBuildTree($album, $branchId, &$treeList, &$treeItems, $maxDepth, $userId, $depth) {
 		list($ret, $subAlbumIds) = GalleryCoreApi::fetchChildAlbumItemIds($album, null, null, $userId);
 		if ($ret) {
 			return $ret;
@@ -401,8 +388,7 @@ class ClassicTheme extends GalleryTheme
 	 * Helper function for _buildTree
 	 * @access private
 	 */
-	public function _parseTree($tree, &$treeList, &$treeIds, $depth = 1)
-	{
+	public function _parseTree($tree, &$treeList, &$treeIds, $depth = 1) {
 		foreach ($tree as $id => $list) {
 			$treeIds[] = $id;
 			$treeList[] = array(

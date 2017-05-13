@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ResetFailureCountsTask extends MaintenanceTask
-{
+class ResetFailureCountsTask extends MaintenanceTask {
 	/**
 	 * @see MaintenanceTask::getInfo
 	 */
-	public function getInfo()
-	{
+	public function getInfo() {
 		global $gallery;
 		
 		$info['l10Domain'] = 'modules_captcha';
@@ -46,8 +44,7 @@ class ResetFailureCountsTask extends MaintenanceTask
 	/**
 	 * @see MaintenanceTask::run
 	 */
-	public function run()
-	{
+	public function run() {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'captcha');
 		if ($ret) {
 			return array(

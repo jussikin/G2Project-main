@@ -27,15 +27,12 @@
  * @version $Revision: 20940 $
  */
 GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
-class PathInfoHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PathInfoHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -61,8 +58,7 @@ class PathInfoHelperTest extends GalleryTestCase
 		$gallery->setPlatform($this->_platform);
 	}
 
-	public function testCheckPathInfo()
-	{
+	public function testCheckPathInfo() {
 		GalleryUtilities::putRequestVariable('pathInfoTest', 'pass');
 		list($ret, $status, $trueStatus) = PathInfoHelper::checkPathInfo();
 		if ($ret) {
@@ -72,8 +68,7 @@ class PathInfoHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_OK, $trueStatus, 'trueStatus');
 	}
 
-	public function testCheckPathInfoFail()
-	{
+	public function testCheckPathInfoFail() {
 		GalleryUtilities::putRequestVariable('pathInfoTest', 'fail');
 		list($ret, $status, $trueStatus) = PathInfoHelper::checkPathInfo();
 		if ($ret) {
@@ -91,8 +86,7 @@ class PathInfoHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_NO_PATH_INFO, $trueStatus, 'trueStatus');
 	}
 
-	public function testCheckPathInfoForced()
-	{
+	public function testCheckPathInfoForced() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'pathinfo.forced', '1');
 		if ($ret) {
 			return $ret;
@@ -114,12 +108,10 @@ class PathInfoHelperTest extends GalleryTestCase
  * @package Rewrite
  * @subpackage PHPUnit
  */
-class PathInfoHelperMockPlatform extends GalleryPlatform
-{
+class PathInfoHelperMockPlatform extends GalleryPlatform {
 	public $_readBuffer = array();
 
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 	/* The hostName can include the port part */
@@ -131,8 +123,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform
 		return parent::fsockopen($target, $port, $errno, $errstr, $timeout);
 	}
 
-	public function fwrite($handle, $string, $length=0)
-	{
+	public function fwrite($handle, $string, $length=0) {
 		$buffer = array(
 		'pass' => array('HTTP/1.1 200 OK',
 				'Content-Type: text/html; charset=ISO-8859-1',
@@ -157,8 +148,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform
 		return parent::fwrite($handle, $string, $length=0);
 	}
 
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		if ($handle == 'phpunit') {
 			return empty($this->_readBuffer);
 		}
@@ -166,8 +156,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform
 		return parent::feof($handle);
 	}
 
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if ($handle == 'phpunit') {
 			if (empty($this->_readBuffer)) {
 				return null;
@@ -179,8 +168,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform
 		return parent::fgets($handle, $length);
 	}
 
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if ($handle == 'phpunit') {
 			if (empty($this->_readBuffer)) {
 				return null;
@@ -203,8 +191,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform
 		return parent::fread($handle, $length);
 	}
 
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		if ($handle == 'phpunit') {
 			$this->_readBuffer = array();
 
@@ -214,8 +201,7 @@ class PathInfoHelperMockPlatform extends GalleryPlatform
 		return parent::fclose($handle);
 	}
 
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		if ($handle == 'phpunit') {
 			return true;
 		}

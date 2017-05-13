@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class PluginParameterTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PluginParameterTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -49,8 +46,7 @@ class PluginParameterTest extends GalleryTestCase
 		$this->_markForCleanup($this->_parentAlbum);
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeAllPluginParameters('module', 'unitTestModule');
 		if ($ret) {
 			return $ret;
@@ -62,8 +58,7 @@ class PluginParameterTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAddParameter()
-	{
+	public function testAddParameter() {
 		global $gallery;
 		$key = 'testParameter';
 		$value = 'testValue';
@@ -91,8 +86,7 @@ class PluginParameterTest extends GalleryTestCase
 		$this->assertEquals($value, $newValue);
 	}
 	
-	public function testUpdateParameter()
-	{
+	public function testUpdateParameter() {
 		global $gallery;
 		$key = 'testParameter';
 		$value = 'testValue';
@@ -112,8 +106,7 @@ class PluginParameterTest extends GalleryTestCase
 		$this->assertEquals("${value}-2", $newValue);
 	}
 	
-	public function testFetchAllParameters()
-	{
+	public function testFetchAllParameters() {
 		global $gallery;
 		$key = 'testParameter';
 		$value = 'testValue';
@@ -135,8 +128,7 @@ class PluginParameterTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAddItemParameters()
-	{
+	public function testAddItemParameters() {
 		global $gallery;
 		$key = 'testParameter';
 		$value = 'testValue';
@@ -158,8 +150,7 @@ class PluginParameterTest extends GalleryTestCase
 		}
 	}
 	
-	public function testCleanupAfterDeleteEntity()
-	{
+	public function testCleanupAfterDeleteEntity() {
 		list($ret, $album) = $this->_createRandomAlbum($this->_parentAlbum->getId());
 		if ($ret) {
 			return $ret;
@@ -183,8 +174,7 @@ class PluginParameterTest extends GalleryTestCase
 		$this->assertEquals(array(), $params);
 	}
 	
-	public function testRemovePluginParameterByValue()
-	{
+	public function testRemovePluginParameterByValue() {
 		$beforeArray = array(
 			'0' => 'bar',
 			'1' => 'bar',
@@ -228,8 +218,7 @@ class PluginParameterTest extends GalleryTestCase
 		}
 	}
 	
-	public function testAddPluginParameterFieldTypes()
-	{
+	public function testAddPluginParameterFieldTypes() {
 		global $gallery;
 		$gallery->_storage = new PluginParameterTestMockStorage($this);
 		/* Prevent a db query by mocking up some GDC data */
@@ -245,8 +234,7 @@ class PluginParameterTest extends GalleryTestCase
 		GalleryCoreApi::setPluginParameter('module', 'foo', 'bar', '99', 2);
 	}
 	
-	public function testUpdatePluginParameterFieldTypes()
-	{
+	public function testUpdatePluginParameterFieldTypes() {
 		global $gallery;
 		$gallery->_storage = new PluginParameterTestMockStorage($this);
 		/* Prevent a db query by mocking up some GDC data */
@@ -263,17 +251,14 @@ class PluginParameterTest extends GalleryTestCase
 	}
 }
 
-class PluginParameterTestMockStorage
-{
+class PluginParameterTestMockStorage {
 	public $_testCase;
 	
-	public function PluginParameterTestMockStorage(&$testCase)
-	{
+	public function PluginParameterTestMockStorage(&$testCase) {
 		$this->_testCase =& $testCase;
 	}
 	
-	public function addMapEntry($map, $entry)
-	{
+	public function addMapEntry($map, $entry) {
 		$tc =& $this->_testCase;
 		/* Make sure all fields but the itemId are of type string */
 		foreach (array(
@@ -292,8 +277,7 @@ class PluginParameterTestMockStorage
 		return null;
 	}
 	
-	public function updateMapEntry($map, $match, $change)
-	{
+	public function updateMapEntry($map, $match, $change) {
 		$tc =& $this->_testCase;
 		foreach (array(
 			'pluginType' => 'module',
@@ -311,8 +295,7 @@ class PluginParameterTestMockStorage
 		return null;
 	}
 	
-	public function removeMapEntry($map, $match)
-	{
+	public function removeMapEntry($map, $match) {
 		return null;
 	}
 }

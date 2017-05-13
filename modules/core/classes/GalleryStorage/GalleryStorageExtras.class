@@ -31,13 +31,11 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @param GalleryStorage $galleryStorage the database storage instance
 	 */
-	public function __construct(&$galleryStorage)
-	{
+	public function __construct(&$galleryStorage) {
 		$this->GalleryStorageExtras($galleryStorage);
 	}
 	
-	public function GalleryStorageExtras(&$galleryStorage)
-	{
+	public function GalleryStorageExtras(&$galleryStorage) {
 		$this->_gs =& $galleryStorage;
 	}
 	
@@ -48,8 +46,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return array GalleryStatus a status code
 	 *               ADOdb a database connection
 	 */
-	public function _getNonTransactionalDatabaseConnection()
-	{
+	public function _getNonTransactionalDatabaseConnection() {
 		if ($this->_gs->_isTransactional) {
 			if (empty($this->_gs->_nonTransactionalDb)) {
 				list($ret, $this->_gs->_nonTransactionalDb) = $this->_gs->_getConnection(true);
@@ -86,8 +83,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _dbInit($transaction = false)
-	{
+	public function _dbInit($transaction = false) {
 		if (!isset($this->_gs->_db)) {
 			list($ret, $this->_gs->_db) = $this->_gs->_getConnection();
 			if ($ret) {
@@ -107,8 +103,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::loadEntities
 	 */
-	public function loadEntities($ids)
-	{
+	public function loadEntities($ids) {
 		global $gallery;
 		$ret = $this->_dbInit();
 		if ($ret) {
@@ -261,8 +256,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::saveEntity
 	 */
-	public function saveEntity(&$entity)
-	{
+	public function saveEntity(&$entity) {
 		$ret = $this->_dbInit(true);
 		if ($ret) {
 			return $ret;
@@ -429,8 +423,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::deleteEntity
 	 */
-	public function deleteEntity(&$entity)
-	{
+	public function deleteEntity(&$entity) {
 		$ret = $this->_dbInit(true);
 		if ($ret) {
 			return $ret;
@@ -488,8 +481,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::newEntity
 	 */
-	public function newEntity(&$entity)
-	{
+	public function newEntity(&$entity) {
 		$ret = $this->_dbInit();
 		if ($ret) {
 			return $ret;
@@ -510,8 +502,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::getUniqueId
 	 */
-	public function getUniqueId($sequence = DATABASE_SEQUENCE_ID)
-	{
+	public function getUniqueId($sequence = DATABASE_SEQUENCE_ID) {
 		$ret = $this->_dbInit();
 		if ($ret) {
 			return array(
@@ -535,8 +526,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @param string $sequence A sequence name
 	 * @see GalleryStorage::getUniqueId
 	 */
-	public function _getUniqueIdWithConnection($dbConn, $sequence)
-	{
+	public function _getUniqueIdWithConnection($dbConn, $sequence) {
 		/* In case we're embedded in an app that sets adodb hasGenID to false (xaraya/postnuke) */
 		if (isset($dbConn->hasGenID) && !$dbConn->hasGenID) {
 			$dbConn->hasGenID = $setGenID = true;
@@ -566,8 +556,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::refreshEntity
 	 */
-	public function refreshEntity($entity)
-	{
+	public function refreshEntity($entity) {
 		$ret = $this->_dbInit();
 		if ($ret) {
 			return array(
@@ -610,8 +599,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::acquireReadLock
 	 */
-	public function acquireReadLock($entityIds, $timeout)
-	{
+	public function acquireReadLock($entityIds, $timeout) {
 		/* It's ok to pass in a single id */
 		if (!is_array($entityIds)) {
 			$entityIds = array(
@@ -761,8 +749,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::acquireWriteLock
 	 */
-	public function acquireWriteLock($entityIds, $timeout)
-	{
+	public function acquireWriteLock($entityIds, $timeout) {
 		/* It's ok to pass in a single id */
 		if (!is_array($entityIds)) {
 			$entityIds = array(
@@ -915,8 +902,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::refreshLocks
 	 */
-	public function refreshLocks($lockIds, $freshUntil)
-	{
+	public function refreshLocks($lockIds, $freshUntil) {
 		if (!empty($lockIds)) {
 			foreach ($lockIds as $idx => $id) {
 				$lockIds[$idx] = (int) $id;
@@ -954,8 +940,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _expireLocks()
-	{
+	public function _expireLocks() {
 		/* Acquire a non-transactional connection to use for this request */
 		list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 		if ($ret) {
@@ -982,8 +967,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::releaseLocks
 	 */
-	public function releaseLocks($lockIds)
-	{
+	public function releaseLocks($lockIds) {
 		if (!is_array($lockIds)) {
 			$lockIds = array(
 				$lockIds
@@ -1019,8 +1003,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::removeIdsFromLock
 	 */
-	public function removeIdsFromLock($lock, $ids)
-	{
+	public function removeIdsFromLock($lock, $ids) {
 		list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 		if ($ret) {
 			return $ret;
@@ -1047,8 +1030,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::moveIdsBetweenLocks
 	 */
-	public function moveIdsBetweenLocks($relock, $newLockId, $lockType)
-	{
+	public function moveIdsBetweenLocks($relock, $newLockId, $lockType) {
 		list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 		if ($ret) {
 			return $ret;
@@ -1075,8 +1057,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::newLockId
 	 */
-	public function newLockId()
-	{
+	public function newLockId() {
 		list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 		if ($ret) {
 			return array(
@@ -1105,8 +1086,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::execute
 	 */
-	public function execute($statement, $data = array())
-	{
+	public function execute($statement, $data = array()) {
 		$ret = $this->_dbInit(true);
 		if ($ret) {
 			return $ret;
@@ -1127,8 +1107,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::addMapEntry
 	 */
-	public function addMapEntry($mapName, $entry, $useNonTransactionalConnection = false)
-	{
+	public function addMapEntry($mapName, $entry, $useNonTransactionalConnection = false) {
 		if ($useNonTransactionalConnection && $this->_gs->isTransactional()) {
 			list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 			if ($ret) {
@@ -1189,8 +1168,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return GalleryStatus a status code
 	 * @access private
 	 */
-	public function _addMapEntries($mapInfo, $tableName, $entry, $db)
-	{
+	public function _addMapEntries($mapInfo, $tableName, $entry, $db) {
 		$columns = array();
 		foreach ($mapInfo as $memberName => $memberData) {
 			$columns[$memberName] = $this->_gs->_translateColumnName($memberName);
@@ -1227,8 +1205,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::removeMapEntry
 	 */
-	public function removeMapEntry($mapName, $match)
-	{
+	public function removeMapEntry($mapName, $match) {
 		$ret = $this->_dbInit(true);
 		if ($ret) {
 			return $ret;
@@ -1286,8 +1263,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::removeAllMapEntries
 	 */
-	public function removeAllMapEntries($mapName, $useNonTransactionalConnection = false, $useTruncate = false)
-	{
+	public function removeAllMapEntries($mapName, $useNonTransactionalConnection = false, $useTruncate = false) {
 		if ($useNonTransactionalConnection && $this->_gs->isTransactional()) {
 			list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 			if ($ret) {
@@ -1325,8 +1301,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return array ('table' => array(), 'alter' => array(),
 	 *		      'remove' => array(), 'test' => array())
 	 */
-	public function getModuleSql($moduleId)
-	{
+	public function getModuleSql($moduleId) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$sqlFile = sprintf('%smodules/%s/classes/GalleryStorage/schema.tpl', GalleryCoreApi::getCodeBasePath(), $moduleId);
@@ -1356,8 +1331,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return array the parsed results
 	 * @static
 	 */
-	public static function parseSqlTemplate($sqlData, $dbType)
-	{
+	public static function parseSqlTemplate($sqlData, $dbType) {
 		$info = array(
 			'table' => array(),
 			'alter' => array(),
@@ -1410,8 +1384,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::configureStore
 	 */
-	public function configureStore($moduleId, $upgradeInfo = array())
-	{
+	public function configureStore($moduleId, $upgradeInfo = array()) {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(20);
 		
@@ -1593,8 +1566,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return array An array describing either the maps or entities for the module
 	 * @access private
 	 */
-	public function _getTableInfo($moduleId, $type)
-	{
+	public function _getTableInfo($moduleId, $type) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -1619,8 +1591,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @param bool $canStoreTableInfo (optional)
 	 * @return GalleryStatus
 	 */
-	public function _updateSchemaTableInfo($tableNameInSchema, $tableSql, $moduleId, $type = null, $info = null, $canStoreTableInfo = true)
-	{
+	public function _updateSchemaTableInfo($tableNameInSchema, $tableSql, $moduleId, $type = null, $info = null, $canStoreTableInfo = true) {
 		$data = array(
 			$tableSql
 		);
@@ -1651,8 +1622,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::updateTableInfo
 	 */
-	public function _updateTableInfo($moduleId)
-	{
+	public function _updateTableInfo($moduleId) {
 		$sql = $this->getModuleSql($moduleId);
 		
 		if (empty($sql['table'])) {
@@ -1726,8 +1696,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::configureStoreCleanup
 	 */
-	public function configureStoreCleanup($moduleId)
-	{
+	public function configureStoreCleanup($moduleId) {
 		global $gallery;
 		
 		$ret = $this->_dbInit(true);
@@ -1785,8 +1754,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::unconfigureStore
 	 */
-	public function unconfigureStore($moduleId)
-	{
+	public function unconfigureStore($moduleId) {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(20);
 		
@@ -1843,8 +1811,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::getTableVersions
 	 */
-	public function _loadTableVersions($ignoreCache = true)
-	{
+	public function _loadTableVersions($ignoreCache = true) {
 		$cacheKey = 'GalleryStorageExtras::_loadTableVersions()';
 		
 		/* If reset requested then ignore the cache and retrieve it again */
@@ -1892,8 +1859,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return GalleryStatus a status code
 	 * @access protected
 	 */
-	public function _executeSql($buffer)
-	{
+	public function _executeSql($buffer) {
 		/*
 	     * Split the file where semicolons are followed by a blank line..
 	     * PL/SQL blocks will have other semicolons, so we can't split on every one.
@@ -1922,8 +1888,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::executeSqlFile
 	 */
-	public function executeSqlFile($fileName)
-	{
+	public function executeSqlFile($fileName) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -1951,8 +1916,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::cleanStore
 	 */
-	public function cleanStore()
-	{
+	public function cleanStore() {
 		global $gallery;
 		$gallery->guaranteeTimeLimit(20);
 		
@@ -2006,8 +1970,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::getProfilingHtml
 	 */
-	public function getProfilingHtml()
-	{
+	public function getProfilingHtml() {
 		if (!isset($this->_gs->_db)) {
 			return '';
 		}
@@ -2023,8 +1986,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::isInstalled
 	 */
-	public function isInstalled()
-	{
+	public function isInstalled() {
 		$ret = $this->_dbInit();
 		if ($ret) {
 			return array(
@@ -2054,8 +2016,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::optimize
 	 */
-	public function optimize($tableNames = null)
-	{
+	public function optimize($tableNames = null) {
 		global $gallery;
 		
 		$ret = $this->_dbInit();
@@ -2104,8 +2065,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::getAffectedRows
 	 */
-	public function getAffectedRows($useNonTransactionalConnection)
-	{
+	public function getAffectedRows($useNonTransactionalConnection) {
 		if ($useNonTransactionalConnection && $this->_gs->isTransactional()) {
 			list($ret, $db) = $this->_getNonTransactionalDatabaseConnection();
 			if ($ret) {
@@ -2143,8 +2103,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @param int $cutoffTime the time to stop trying to get clearance
 	 * @return GalleryStatus a status code
 	 */
-	public function _getLockClearance($cutoffTime)
-	{
+	public function _getLockClearance($cutoffTime) {
 		/* Get the true name of the lock table */
 		list($lockTable, $unused) = $this->_gs->_translateTableName('Lock');
 		
@@ -2246,8 +2205,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @param mixed $ids array of ids or single int id
 	 * @return array a GalleryStatus and a string class name
 	 */
-	public function _identifyEntities($ids)
-	{
+	public function _identifyEntities($ids) {
 		assert('!empty($ids)');
 		
 		if (!is_array($ids)) {
@@ -2335,8 +2293,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return array GalleryStatus a status code
 	 *               entity associative array
 	 */
-	public function describeEntity($entityName, $tryAllModules = false)
-	{
+	public function describeEntity($entityName, $tryAllModules = false) {
 		global $gallery;
 		
 		/* Note: keep this cache key in sync with GalleryStorageExtras::_clearEntityAndMapCache() */
@@ -2408,8 +2365,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * Clear out the entity and map caches, which we should do any time we add or remove a table.
 	 */
-	public function _clearEntityAndMapCache()
-	{
+	public function _clearEntityAndMapCache() {
 		/* Note: keep this cache key in sync with GalleryStorage::describeMap() */
 		GalleryDataCache::remove('GalleryStorage::describeMap()');
 		
@@ -2422,8 +2378,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @return array GalleryStatus
 	 *               array of table names in lower-case
 	 */
-	public function _metaTables()
-	{
+	public function _metaTables() {
 		$this->_gs->_traceStart();
 		$metatables = $this->_gs->_db->MetaTables();
 		$this->_gs->_traceStop();
@@ -2456,8 +2411,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @param integer $startId (optional) The number to initialize the sequence to. (default 1)
 	 * @return GalleryStatus
 	 */
-	public function createSequence($sequenceId, $startId = 1)
-	{
+	public function createSequence($sequenceId, $startId = 1) {
 		$this->_gs->_traceStart();
 		$result = $this->_gs->_db->CreateSequence($this->_gs->_tablePrefix . $sequenceId, $startId);
 		$this->_gs->_traceStop();
@@ -2473,8 +2427,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	 * @param string $sequenceId Name of the sequence to drop.
 	 * @return GalleryStatus
 	 */
-	public function dropSequence($sequenceId)
-	{
+	public function dropSequence($sequenceId) {
 		$this->_gs->_traceStart();
 		$recordSet = $this->_gs->_db->DropSequence($this->_gs->_tablePrefix . $sequenceId);
 		$this->_gs->_traceStop();
@@ -2488,8 +2441,7 @@ class GalleryStorageExtras /* the other half of GalleryStorage */
 	/**
 	 * @see GalleryStorage::validateConnection
 	 */
-	public function validateConnection()
-	{
+	public function validateConnection() {
 		if (isset($this->_gs->_nonTransactionalDb)) {
 			$this->_gs->_traceStart();
 			$time = $this->_gs->_nonTransactionalDb->Time();

@@ -24,15 +24,12 @@
  * @author Felix Rabinovich <felix@rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemMimeAdminControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemMimeAdminControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMimeAdmin');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -48,8 +45,7 @@ class ItemMimeAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMimeType(array(
 			'mimeType' => 'test/test'
 		));
@@ -63,8 +59,7 @@ class ItemMimeAdminControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testSaveAllowAll()
-	{
+	public function testSaveAllowAll() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 'Save');
 		GalleryUtilities::putRequestVariable('form[allowMime]', 'all');
 		GalleryUtilities::putRequestVariable('form[upload][test/test]', 'on');
@@ -89,8 +84,7 @@ class ItemMimeAdminControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('', $params['mimeList'], 'mimeList');
 	}
 	
-	public function testSaveBlock()
-	{
+	public function testSaveBlock() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 'Save');
 		GalleryUtilities::putRequestVariable('form[allowMime]', 'block');
 		GalleryUtilities::putRequestVariable('form[upload][image/bmp]', 'on');
@@ -116,8 +110,7 @@ class ItemMimeAdminControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('image/bmp | test/test', $params['mimeList'], 'mimeList');
 	}
 	
-	public function testDelete()
-	{
+	public function testDelete() {
 		GalleryUtilities::putRequestVariable('form[action][delete]', 'test/test');
 		$results = $this->handleRequest();
 		$this->assertEquals(array(

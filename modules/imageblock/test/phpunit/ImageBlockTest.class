@@ -31,18 +31,15 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17679 $
  */
-class ImageBlockTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ImageBlockTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
 	/**
 	 * Create an album for testing
 	 */
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -140,8 +137,7 @@ class ImageBlockTest extends GalleryTestCase
 		}
 	}
 	
-	public function _addItem($parentId, $imagePath, $class, $mimeType, $timestampOffset)
-	{
+	public function _addItem($parentId, $imagePath, $class, $mimeType, $timestampOffset) {
 		list($ret, $item) = GalleryCoreApi::newFactoryInstance('GalleryEntity', $class);
 		if ($ret) {
 			return array(
@@ -195,8 +191,7 @@ class ImageBlockTest extends GalleryTestCase
 		);
 	}
 	
-	public function _addDerivative(&$item, &$src, $derivativeType, $size, $forceSize = false)
-	{
+	public function _addDerivative(&$item, &$src, $derivativeType, $size, $forceSize = false) {
 		list($ret, $derivative) = GalleryCoreApi::newFactoryInstanceByHint('GalleryDerivative', $src->getEntityType());
 		if ($ret) {
 			return array(
@@ -256,8 +251,7 @@ class ImageBlockTest extends GalleryTestCase
 		);
 	}
 	
-	public function assertBlock($block, $msg = 1, $hasTitle = true)
-	{
+	public function assertBlock($block, $msg = 1, $hasTitle = true) {
 		$this->assert(isset($block['id']), $msg . ': Missing id');
 		$this->assert(isset($block['viewCount']), $msg . ': Missing viewCount');
 		$this->assertEquals($hasTitle, isset($block['title']), $msg . ': Title/heading should ' . ($hasTitle ? '' : 'not ') . 'be present');
@@ -267,8 +261,7 @@ class ImageBlockTest extends GalleryTestCase
 		return $block['id'];
 	}
 	
-	public function testImageBlock()
-	{
+	public function testImageBlock() {
 		$data = $this->_doImageBlockCallback();
 		$this->assertEquals(1, count($data['ImageBlockData']['blocks']), 'Default block');
 		$this->assertBlock($data['ImageBlockData']['blocks'][0], 'default');
@@ -289,8 +282,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals(1, $gotPhoto, 'Test photo not in "newest photo" block');
 	}
 	
-	public function testRepeatBlock()
-	{
+	public function testRepeatBlock() {
 		$smarty = new GallerySmarty();
 		$callbacks = new ImageBlockCallbacks();
 		$params = array(
@@ -313,8 +305,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assert(empty($data[2]['title']), 'Third has no heading');
 	}
 	
-	public function testExternalImageBlock()
-	{
+	public function testExternalImageBlock() {
 		global $gallery;
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
@@ -473,8 +464,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assert($gallery->_phpVm->isComplete(), $gallery->_phpVm->getRemaining());
 	}
 	
-	public function testExternalImageBlockMaxSize()
-	{
+	public function testExternalImageBlockMaxSize() {
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
 			return $ret;
@@ -538,8 +528,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($this->_photo3Thumb->getId(), $data['ImageBlockData']['blocks'][0]['deriv']['id'], 'Derivative did not match thumbnail');
 	}
 	
-	public function testExternalImageBlockExactSize()
-	{
+	public function testExternalImageBlockExactSize() {
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
 			return $ret;
@@ -568,8 +557,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($resized->getId(), $data['ImageBlockData']['blocks'][0]['deriv']['id'], 'Derivative did not match resized');
 	}
 	
-	public function testExternalImageBlockExactSizeForAlbumItem()
-	{
+	public function testExternalImageBlockExactSizeForAlbumItem() {
 		/* See bug 1730427 */
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
@@ -619,8 +607,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($resized->getId(), $data['ImageBlockData']['blocks'][0]['deriv']['id'], 'Derivative did not match resized');
 	}
 	
-	public function testExternalImageBlockExactSizeUsePreferredNotOriginal()
-	{
+	public function testExternalImageBlockExactSizeUsePreferredNotOriginal() {
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
 			return $ret;
@@ -654,8 +641,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($preferred->getId(), $data['ImageBlockData']['blocks'][0]['deriv']['id'], 'Derivative did not match preferred');
 	}
 	
-	public function testExternalImageBlockExactSizeChooseResizeOfItemWithPreferred()
-	{
+	public function testExternalImageBlockExactSizeChooseResizeOfItemWithPreferred() {
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
 			return $ret;
@@ -689,8 +675,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($resized->getId(), $data['ImageBlockData']['blocks'][0]['deriv']['id'], 'Failed to choose resize');
 	}
 	
-	public function testOverrideUserId()
-	{
+	public function testOverrideUserId() {
 		/* Test override userId (used to support guest-preview mode) */
 		global $gallery;
 		$ret = GalleryCoreApi::removeItemPermissions($this->_photo->getId());
@@ -716,8 +701,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($this->_photo->getId(), $itemId, 'specific item');
 	}
 	
-	public function testPeriodicBlocks()
-	{
+	public function testPeriodicBlocks() {
 		$data = $this->_doImageBlockCallback('dailyImage');
 		$this->assertEquals(1, count($data['ImageBlockData']['blocks']), 'One block');
 		$itemId = $this->assertBlock($data['ImageBlockData']['blocks'][0], 1);
@@ -747,8 +731,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals($itemId, $nextItemId, 'keep same album id');
 	}
 	
-	public function testPeriodicPermission()
-	{
+	public function testPeriodicPermission() {
 		global $gallery;
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
@@ -838,8 +821,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assertEquals(array(), $template->_data, 'No block');
 	}
 	
-	public function testAlbumFullsize()
-	{
+	public function testAlbumFullsize() {
 		/* fullSize request for album item should trace back to preferred source of thumbnail */
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
@@ -865,8 +847,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assert(isset($data['ImageBlockData']['blocks'][0]['forceItem']), 'forceItem flag');
 	}
 	
-	public function testAlbumFullsizePreferred()
-	{
+	public function testAlbumFullsizePreferred() {
 		/* fullSize request for album item should trace back to preferred source of thumbnail */
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
@@ -902,8 +883,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assert(!isset($data['ImageBlockData']['blocks'][0]['forceItem']), 'forceItem flag');
 	}
 	
-	public function testPhotoFullsizePreferred()
-	{
+	public function testPhotoFullsizePreferred() {
 		/* verify we get preferred deriv for fullSize photo */
 		list($ret, $external) = GalleryView::loadView('imageblock.External');
 		if ($ret) {
@@ -939,8 +919,7 @@ class ImageBlockTest extends GalleryTestCase
 		$this->assert(!isset($data['ImageBlockData']['blocks'][0]['forceItem']), 'forceItem flag');
 	}
 	
-	public function testImageBlockDefaultsParentIdToDefaultAlbumId()
-	{
+	public function testImageBlockDefaultsParentIdToDefaultAlbumId() {
 		global $gallery;
 		
 		list($ret, $subAlbum) = $this->_createRandomAlbum($this->_album->getId());
@@ -986,8 +965,7 @@ class ImageBlockTest extends GalleryTestCase
 		}
 	}
 	
-	public function testEmbedImageBlock()
-	{
+	public function testEmbedImageBlock() {
 		/*
 	     * Simulate a call to GalleryEmbed::getBlock('imageblock', 'ImageBlock, $params) by
 	     * setting the method parameters as template variables and processing the template.
@@ -1045,8 +1023,7 @@ class ImageBlockTest extends GalleryTestCase
 		), $_REQUEST['ImageBlockTestFrame']);
 	}
 	
-	public function _doImageBlockCallback($blocks = null, $userId = null, $itemId = null)
-	{
+	public function _doImageBlockCallback($blocks = null, $userId = null, $itemId = null) {
 		$smarty = new GallerySmarty();
 		$callbacks = new ImageBlockCallbacks();
 		$params = isset($blocks) ? array(
@@ -1077,10 +1054,8 @@ class ImageBlockTest extends GalleryTestCase
 /**
  * Test toolkit
  */
-class ImageBlockToolkit extends GalleryToolkit
-{
-	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array())
-	{
+class ImageBlockToolkit extends GalleryToolkit {
+	public function performOperation($mimeType, $operationName, $sourceFilename, $destFilename, $parameters, $context = array()) {
 		/* Just copy file and return dummy mime type */
 		global $gallery;
 		if ($sourceFilename != $destFilename) {
@@ -1105,53 +1080,43 @@ class ImageBlockToolkit extends GalleryToolkit
 /**
  * Test template
  */
-class ImageBlockDummyGalleryTemplate extends UnitTestTemplate
-{
+class ImageBlockDummyGalleryTemplate extends UnitTestTemplate {
 	public $_path = null;
 	
-	public function &_getSmarty($trimWhitespace)
-	{
+	public function &_getSmarty($trimWhitespace) {
 		return $this;
 	}
 
-	public function display($path)
-	{
+	public function display($path) {
 		$this->_path = $path;
 	}
 
-	public function getPath()
-	{
+	public function getPath() {
 		return $this->_path;
 	}
 
-	public function register_block()
-	{
+	public function register_block() {
 	}
 
-	public function register_function()
-	{
+	public function register_function() {
 	}
 
-	public function head()
-	{
+	public function head() {
 	}
 }
 
 class ImageBlockTestFrame /* extends ImageBlockInterface_1_1 */
 {
-	public function init(&$template, $frameIds)
-	{
+	public function init(&$template, $frameIds) {
 		$_REQUEST['ImageBlockTestFrame'] = $frameIds;
 	}
 	
-	public function renderImageFrame($params, $content, $smarty)
-	{
+	public function renderImageFrame($params, $content, $smarty) {
 	}
 }
 
 /* Allow for suppressed php errors */
-function ImageBlockTest_error_handler($errno, $errstr, $errfile, $errline)
-{
+function ImageBlockTest_error_handler($errno, $errstr, $errfile, $errline) {
 	if (error_reporting() == 0) {
 		return;
 	}

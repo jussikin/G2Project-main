@@ -29,15 +29,12 @@
  * @author Jozsef R.Nagy <jozsef.rnagy@site.hu>
  * @version $Revision: 20958 $
  */
-class ExifModule extends GalleryModule
-{
-	public function __construct()
-	{
+class ExifModule extends GalleryModule {
+	public function __construct() {
 		$this->ExifModule();
 	}
 	
-	public function ExifModule()
-	{
+	public function ExifModule() {
 		global $gallery;
 		
 		$this->setId('exif');
@@ -61,8 +58,7 @@ class ExifModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
 		
 		if (!isset($currentVersion)) {
@@ -177,8 +173,7 @@ class ExifModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('ExifInterface_1_0', 'ExifExtractor', 'Exif', 'modules/exif/classes/ExifExtractor.class', 'exif', null);
 		if ($ret) {
 			return $ret;
@@ -200,8 +195,7 @@ class ExifModule extends GalleryModule
 	/**
 	 * @see GalleryModule::activate
 	 */
-	public function activate($postActivationEvent = true)
-	{
+	public function activate($postActivationEvent = true) {
 		global $gallery;
 		$ret = GalleryCoreApi::registerToolkitProperty('Exif', array(
 			'image/jpeg',
@@ -234,8 +228,7 @@ class ExifModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		global $gallery;
 		
 		return array(

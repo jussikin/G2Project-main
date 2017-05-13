@@ -21,9 +21,15 @@
 //   Credit: LyteBox was originally derived from the Lightbox class (v2.02) that was written by Lokesh Dhakar. For more
 //			 information please visit http://huddletogether.com/projects/lightbox2/
 //***********************************************************************************************************************************/
-Array.prototype.removeDuplicates = function () { for (var i = 1; i < this.length; i++) { if (this[i][0] == this[i-1][0]) { this.splice(i,1); } } }
-Array.prototype.empty = function () { for (var i = 0; i <= this.length; i++) { this.shift(); } }
-String.prototype.trim = function () { return this.replace(/^\s+|\s+$/g, ''); }
+Array.prototype.removeDuplicates = function () {
+	for (var i = 1; i < this.length; i++) {
+		if (this[i][0] == this[i-1][0]) {
+			this.splice(i,1); } } }
+Array.prototype.empty = function () {
+	for (var i = 0; i <= this.length; i++) {
+		this.shift(); } }
+String.prototype.trim = function () {
+	return this.replace(/^\s+|\s+$/g, ''); }
 
 function LyteBox() {
 	/*** Start Global Configuration ***/
@@ -47,11 +53,13 @@ function LyteBox() {
 		this.showPlayPause		= true;		// true to display pause/play buttons next to close button, false to hide
 		this.autoEnd			= true;		// true to automatically close Lytebox after the last image is reached, false to keep open
 		this.pauseOnNextClick	= false;	// true to pause the slideshow when the "Next" button is clicked
-        this.pauseOnPrevClick 	= true;		// true to pause the slideshow when the "Prev" button is clicked
+		this.pauseOnPrevClick 	= true;		// true to pause the slideshow when the "Prev" button is clicked
 	/*** End Slideshow Configuration ***/
 
-	if(this.resizeSpeed > 10) { this.resizeSpeed = 10; }
-	if(this.resizeSpeed < 1) { resizeSpeed = 1; }
+	if (this.resizeSpeed > 10) {
+		this.resizeSpeed = 10; }
+	if (this.resizeSpeed < 1) {
+		resizeSpeed = 1; }
 	this.resizeDuration = (11 - this.resizeSpeed) * 0.15;
 	this.resizeWTimerArray		= new Array();
 	this.resizeWTimerCount		= 0;
@@ -86,7 +94,7 @@ function LyteBox() {
 	this.ie7 = (this.ie && window.XMLHttpRequest);
 	this.initialize();
 }
-LyteBox.prototype.initialize = function() {
+LyteBox.prototype.initialize = function () {
 	this.updateLyteboxItems();
 	var objBody = this.doc.getElementsByTagName("body").item(0);
 	if (this.doc.getElementById('lbOverlay')) {
@@ -96,9 +104,9 @@ LyteBox.prototype.initialize = function() {
 	var objOverlay = this.doc.createElement("div");
 		objOverlay.setAttribute('id','lbOverlay');
 		objOverlay.setAttribute((this.ie ? 'className' : 'class'), this.theme);
-		if ((this.ie && !this.ie7) || (this.ie7 && this.doc.compatMode == 'BackCompat')) {
-			objOverlay.style.position = 'absolute';
-		}
+	if ((this.ie && !this.ie7) || (this.ie7 && this.doc.compatMode == 'BackCompat')) {
+		objOverlay.style.position = 'absolute';
+	}
 		objOverlay.style.display = 'none';
 		objBody.appendChild(objOverlay);
 	var objLytebox = this.doc.createElement("div");
@@ -182,25 +190,30 @@ LyteBox.prototype.initialize = function() {
 		objPlay.style.display = 'none';
 		objBottomNav.appendChild(objPlay);
 };
-LyteBox.prototype.updateLyteboxItems = function() {
+LyteBox.prototype.updateLyteboxItems = function () {
 	var anchors = (this.isFrame) ? window.parent.frames[window.name].document.getElementsByTagName('a') : document.getElementsByTagName('a');
 	for (var i = 0; i < anchors.length; i++) {
 		var anchor = anchors[i];
 		var relAttribute = String(anchor.getAttribute('rel'));
 		if (anchor.getAttribute('href')) {
 			if (relAttribute.toLowerCase().match('lytebox')) {
-				anchor.onclick = function () { myLytebox.start(this, false, false); return false; }
+				anchor.onclick = function () {
+					myLytebox.start(this, false, false); return false; }
 			} else if (relAttribute.toLowerCase().match('lyteshow')) {
-				anchor.onclick = function () { myLytebox.start(this, true, false); return false; }
+				anchor.onclick = function () {
+					myLytebox.start(this, true, false); return false; }
 			} else if (relAttribute.toLowerCase().match('lyteframe')) {
-				anchor.onclick = function () { myLytebox.start(this, false, true); return false; }
+				anchor.onclick = function () {
+					myLytebox.start(this, false, true); return false; }
 			}
 		}
 	}
 };
-LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
-	if (this.ie && !this.ie7) {	this.toggleSelects('hide');	}
-	if (this.hideFlash) { this.toggleFlash('hide'); }
+LyteBox.prototype.start = function (imageLink, doSlide, doFrame) {
+	if (this.ie && !this.ie7) {
+		this.toggleSelects('hide');	}
+	if (this.hideFlash) {
+		this.toggleFlash('hide'); }
 	this.isLyteframe = (doFrame ? true : false);
 	var pageSize	= this.getPageSize();
 	var objOverlay	= this.doc.getElementById('lbOverlay');
@@ -225,7 +238,8 @@ LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
 					}
 				}
 				this.frameArray.removeDuplicates();
-				while(this.frameArray[this.frameNum][0] != imageLink.getAttribute('href')) { this.frameNum++; }
+				while (this.frameArray[this.frameNum][0] != imageLink.getAttribute('href')) {
+					this.frameNum++; }
 			}
 		}
 	} else {
@@ -244,7 +258,8 @@ LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
 					}
 				}
 				this.imageArray.removeDuplicates();
-				while(this.imageArray[this.imageNum][0] != imageLink.getAttribute('href')) { this.imageNum++; }
+				while (this.imageArray[this.imageNum][0] != imageLink.getAttribute('href')) {
+					this.imageNum++; }
 			}
 			if (imageLink.getAttribute('rel').indexOf('lyteshow') != -1) {
 				for (var i = 0; i < anchors.length; i++) {
@@ -254,7 +269,8 @@ LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
 					}
 				}
 				this.slideArray.removeDuplicates();
-				while(this.slideArray[this.slideNum][0] != imageLink.getAttribute('href')) { this.slideNum++; }
+				while (this.slideArray[this.slideNum][0] != imageLink.getAttribute('href')) {
+					this.slideNum++; }
 			}
 		}
 	}
@@ -268,8 +284,9 @@ LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
 		this.doc.getElementById('lbOuterContainer').style.borderBottom = '';
 		this.doc.getElementById('lbOuterContainer').setAttribute((this.ie ? 'className' : 'class'), this.theme);
 	}
-	this.doc.getElementById('lbOverlay').onclick = function() { myLytebox.end(); return false; }
-	this.doc.getElementById('lbMain').onclick = function(e) {
+	this.doc.getElementById('lbOverlay').onclick = function () {
+		myLytebox.end(); return false; }
+	this.doc.getElementById('lbMain').onclick = function (e) {
 		var e = e;
 		if (!e) {
 			if (window.parent.frames[window.name] && (parent.document.getElementsByTagName('frameset').length <= 0)) {
@@ -279,11 +296,15 @@ LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
 			}
 		}
 		var id = (e.target ? e.target.id : e.srcElement.id);
-		if (id == 'lbMain') { myLytebox.end(); return false; }
+		if (id == 'lbMain') {
+			myLytebox.end(); return false; }
 	}
-	this.doc.getElementById('lbClose').onclick = function() { myLytebox.end(); return false; }
-	this.doc.getElementById('lbPause').onclick = function() { myLytebox.togglePlayPause("lbPause", "lbPlay"); return false; }
-	this.doc.getElementById('lbPlay').onclick = function() { myLytebox.togglePlayPause("lbPlay", "lbPause"); return false; }
+	this.doc.getElementById('lbClose').onclick = function () {
+		myLytebox.end(); return false; }
+	this.doc.getElementById('lbPause').onclick = function () {
+		myLytebox.togglePlayPause("lbPause", "lbPlay"); return false; }
+	this.doc.getElementById('lbPlay').onclick = function () {
+		myLytebox.togglePlayPause("lbPlay", "lbPause"); return false; }
 	this.isSlideshow = doSlide;
 	this.isPaused = (this.slideNum != 0 ? true : false);
 	if (this.isSlideshow && this.showPlayPause && this.isPaused) {
@@ -300,9 +321,10 @@ LyteBox.prototype.start = function(imageLink, doSlide, doFrame) {
 		}
 	}
 };
-LyteBox.prototype.changeContent = function(imageNum) {
+LyteBox.prototype.changeContent = function (imageNum) {
 	if (this.isSlideshow) {
-		for (var i = 0; i < this.slideshowIDCount; i++) { window.clearTimeout(this.slideshowIDArray[i]); }
+		for (var i = 0; i < this.slideshowIDCount; i++) {
+			window.clearTimeout(this.slideshowIDArray[i]); }
 	}
 	this.activeImage = this.activeSlide = this.activeFrame = imageNum;
 	if (!this.outerBorder) {
@@ -348,7 +370,7 @@ LyteBox.prototype.changeContent = function(imageNum) {
 		this.resizeContainer(parseInt(iframe.width), parseInt(iframe.height));
 	} else {
 		imgPreloader = new Image();
-		imgPreloader.onload = function() {
+		imgPreloader.onload = function () {
 			var imageWidth = imgPreloader.width;
 			var imageHeight = imgPreloader.height;
 			if (myLytebox.autoResize) {
@@ -376,12 +398,12 @@ LyteBox.prototype.changeContent = function(imageNum) {
 			lbImage.width = imageWidth;
 			lbImage.height = imageHeight;
 			myLytebox.resizeContainer(imageWidth, imageHeight);
-			imgPreloader.onload = function() {};
+			imgPreloader.onload = function () {};
 		}
 		imgPreloader.src = (this.isSlideshow ? this.slideArray[this.activeSlide][0] : this.imageArray[this.activeImage][0]);
 	}
 };
-LyteBox.prototype.resizeContainer = function(imgWidth, imgHeight) {
+LyteBox.prototype.resizeContainer = function (imgWidth, imgHeight) {
 	this.wCur = this.doc.getElementById('lbOuterContainer').offsetWidth;
 	this.hCur = this.doc.getElementById('lbOuterContainer').offsetHeight;
 	this.xScale = ((imgWidth  + (this.borderSize * 2)) / this.wCur) * 100;
@@ -401,16 +423,19 @@ LyteBox.prototype.resizeContainer = function(imgWidth, imgHeight) {
 		this.wDone = true;
 	}
 	if ((hDiff == 0) && (wDiff == 0)) {
-		if (this.ie){ this.pause(250); } else { this.pause(100); }
+		if (this.ie) {
+			this.pause(250); } else {
+			this.pause(100); }
 	}
 	this.doc.getElementById('lbPrev').style.height = imgHeight + "px";
 	this.doc.getElementById('lbNext').style.height = imgHeight + "px";
 	this.doc.getElementById('lbDetailsContainer').style.width = (imgWidth + (this.borderSize * 2) + (this.ie && this.doc.compatMode == "BackCompat" && this.outerBorder ? 2 : 0)) + "px";
 	this.showContent();
 };
-LyteBox.prototype.showContent = function() {
+LyteBox.prototype.showContent = function () {
 	if (this.wDone && this.hDone) {
-		for (var i = 0; i < this.showContentTimerCount; i++) { window.clearTimeout(this.showContentTimerArray[i]); }
+		for (var i = 0; i < this.showContentTimerCount; i++) {
+			window.clearTimeout(this.showContentTimerArray[i]); }
 		if (this.outerBorder) {
 			this.doc.getElementById('lbOuterContainer').style.borderBottom = 'none';
 		}
@@ -424,7 +449,7 @@ LyteBox.prototype.showContent = function() {
 			this.preloadNeighborImages();
 		}
 		if (this.isSlideshow) {
-			if(this.activeSlide == (this.slideArray.length - 1)) {
+			if (this.activeSlide == (this.slideArray.length - 1)) {
 				if (this.autoEnd) {
 					this.slideshowIDArray[this.slideshowIDCount++] = setTimeout("myLytebox.end('slideshow')", this.slideInterval);
 				}
@@ -455,12 +480,13 @@ LyteBox.prototype.showContent = function() {
 		this.doc.getElementById('lbIframeContainer').style.display = (this.isLyteframe ? '' : 'none');
 		try {
 			this.doc.getElementById('lbIframe').src = this.frameArray[this.activeFrame][0];
-		} catch(e) { }
+		} catch (e) {
+		}
 	} else {
 		this.showContentTimerArray[this.showContentTimerCount++] = setTimeout("myLytebox.showContent()", 200);
 	}
 };
-LyteBox.prototype.updateDetails = function() {
+LyteBox.prototype.updateDetails = function () {
 	var object = this.doc.getElementById('lbCaption');
 	var sTitle = (this.isSlideshow ? this.slideArray[this.activeSlide][1] : (this.isLyteframe ? this.frameArray[this.activeFrame][1] : this.imageArray[this.activeImage][1]));
 	object.style.display = '';
@@ -485,72 +511,80 @@ LyteBox.prototype.updateDetails = function() {
 	}
 	this.appear('lbDetailsContainer', (this.doAnimations ? 0 : 100));
 };
-LyteBox.prototype.updateNav = function() {
+LyteBox.prototype.updateNav = function () {
 	if (this.isSlideshow) {
 		if (this.activeSlide != 0) {
 			var object = (this.navType == 2 ? this.doc.getElementById('lbPrev2') : this.doc.getElementById('lbPrev'));
 				object.style.display = '';
-				object.onclick = function() {
-					if (myLytebox.pauseOnPrevClick) { myLytebox.togglePlayPause("lbPause", "lbPlay"); }
+				object.onclick = function () {
+					if (myLytebox.pauseOnPrevClick) {
+						myLytebox.togglePlayPause("lbPause", "lbPlay"); }
 					myLytebox.changeContent(myLytebox.activeSlide - 1); return false;
 				}
 		} else {
-			if (this.navType == 2) { this.doc.getElementById('lbPrev2_Off').style.display = ''; }
+			if (this.navType == 2) {
+				this.doc.getElementById('lbPrev2_Off').style.display = ''; }
 		}
 		if (this.activeSlide != (this.slideArray.length - 1)) {
 			var object = (this.navType == 2 ? this.doc.getElementById('lbNext2') : this.doc.getElementById('lbNext'));
 				object.style.display = '';
-				object.onclick = function() {
-					if (myLytebox.pauseOnNextClick) { myLytebox.togglePlayPause("lbPause", "lbPlay"); }
+				object.onclick = function () {
+					if (myLytebox.pauseOnNextClick) {
+						myLytebox.togglePlayPause("lbPause", "lbPlay"); }
 					myLytebox.changeContent(myLytebox.activeSlide + 1); return false;
 				}
 		} else {
-			if (this.navType == 2) { this.doc.getElementById('lbNext2_Off').style.display = ''; }
+			if (this.navType == 2) {
+				this.doc.getElementById('lbNext2_Off').style.display = ''; }
 		}
 	} else if (this.isLyteframe) {
-		if(this.activeFrame != 0) {
+		if (this.activeFrame != 0) {
 			var object = this.doc.getElementById('lbPrev2');
 				object.style.display = '';
-				object.onclick = function() {
+				object.onclick = function () {
 					myLytebox.changeContent(myLytebox.activeFrame - 1); return false;
 				}
 		} else {
 			this.doc.getElementById('lbPrev2_Off').style.display = '';
 		}
-		if(this.activeFrame != (this.frameArray.length - 1)) {
+		if (this.activeFrame != (this.frameArray.length - 1)) {
 			var object = this.doc.getElementById('lbNext2');
 				object.style.display = '';
-				object.onclick = function() {
+				object.onclick = function () {
 					myLytebox.changeContent(myLytebox.activeFrame + 1); return false;
 				}
 		} else {
 			this.doc.getElementById('lbNext2_Off').style.display = '';
 		}
 	} else {
-		if(this.activeImage != 0) {
+		if (this.activeImage != 0) {
 			var object = (this.navType == 2 ? this.doc.getElementById('lbPrev2') : this.doc.getElementById('lbPrev'));
 				object.style.display = '';
-				object.onclick = function() {
+				object.onclick = function () {
 					myLytebox.changeContent(myLytebox.activeImage - 1); return false;
 				}
 		} else {
-			if (this.navType == 2) { this.doc.getElementById('lbPrev2_Off').style.display = ''; }
+			if (this.navType == 2) {
+				this.doc.getElementById('lbPrev2_Off').style.display = ''; }
 		}
-		if(this.activeImage != (this.imageArray.length - 1)) {
+		if (this.activeImage != (this.imageArray.length - 1)) {
 			var object = (this.navType == 2 ? this.doc.getElementById('lbNext2') : this.doc.getElementById('lbNext'));
 				object.style.display = '';
-				object.onclick = function() {
+				object.onclick = function () {
 					myLytebox.changeContent(myLytebox.activeImage + 1); return false;
 				}
 		} else {
-			if (this.navType == 2) { this.doc.getElementById('lbNext2_Off').style.display = ''; }
+			if (this.navType == 2) {
+				this.doc.getElementById('lbNext2_Off').style.display = ''; }
 		}
 	}
 	this.enableKeyboardNav();
 };
-LyteBox.prototype.enableKeyboardNav = function() { document.onkeydown = this.keyboardAction; };
-LyteBox.prototype.disableKeyboardNav = function() { document.onkeydown = ''; };
-LyteBox.prototype.keyboardAction = function(e) {
+LyteBox.prototype.enableKeyboardNav = function () {
+	document.onkeydown = this.keyboardAction; };
+LyteBox.prototype.disableKeyboardNav = function () {
+	document.onkeydown = ''; };
+LyteBox.prototype.keyboardAction = function (e) {
 	var keycode = key = escape = null;
 	keycode	= (e == null) ? event.keyCode : e.which;
 	key		= String.fromCharCode(keycode).toLowerCase();
@@ -559,47 +593,47 @@ LyteBox.prototype.keyboardAction = function(e) {
 		myLytebox.end();
 	} else if ((key == 'p') || (keycode == 37)) {
 		if (myLytebox.isSlideshow) {
-			if(myLytebox.activeSlide != 0) {
+			if (myLytebox.activeSlide != 0) {
 				myLytebox.disableKeyboardNav();
 				myLytebox.changeContent(myLytebox.activeSlide - 1);
 			}
 		} else if (myLytebox.isLyteframe) {
-			if(myLytebox.activeFrame != 0) {
+			if (myLytebox.activeFrame != 0) {
 				myLytebox.disableKeyboardNav();
 				myLytebox.changeContent(myLytebox.activeFrame - 1);
 			}
 		} else {
-			if(myLytebox.activeImage != 0) {
+			if (myLytebox.activeImage != 0) {
 				myLytebox.disableKeyboardNav();
 				myLytebox.changeContent(myLytebox.activeImage - 1);
 			}
 		}
 	} else if ((key == 'n') || (keycode == 39)) {
 		if (myLytebox.isSlideshow) {
-			if(myLytebox.activeSlide != (myLytebox.slideArray.length - 1)) {
+			if (myLytebox.activeSlide != (myLytebox.slideArray.length - 1)) {
 				myLytebox.disableKeyboardNav();
 				myLytebox.changeContent(myLytebox.activeSlide + 1);
 			}
 		} else if (myLytebox.isLyteframe) {
-			if(myLytebox.activeFrame != (myLytebox.frameArray.length - 1)) {
+			if (myLytebox.activeFrame != (myLytebox.frameArray.length - 1)) {
 				myLytebox.disableKeyboardNav();
 				myLytebox.changeContent(myLytebox.activeFrame + 1);
 			}
 		} else {
-			if(myLytebox.activeImage != (myLytebox.imageArray.length - 1)) {
+			if (myLytebox.activeImage != (myLytebox.imageArray.length - 1)) {
 				myLytebox.disableKeyboardNav();
 				myLytebox.changeContent(myLytebox.activeImage + 1);
 			}
 		}
 	}
 };
-LyteBox.prototype.preloadNeighborImages = function() {
+LyteBox.prototype.preloadNeighborImages = function () {
 	if (this.isSlideshow) {
 		if ((this.slideArray.length - 1) > this.activeSlide) {
 			preloadNextImage = new Image();
 			preloadNextImage.src = this.slideArray[this.activeSlide + 1][0];
 		}
-		if(this.activeSlide > 0) {
+		if (this.activeSlide > 0) {
 			preloadPrevImage = new Image();
 			preloadPrevImage.src = this.slideArray[this.activeSlide - 1][0];
 		}
@@ -608,15 +642,16 @@ LyteBox.prototype.preloadNeighborImages = function() {
 			preloadNextImage = new Image();
 			preloadNextImage.src = this.imageArray[this.activeImage + 1][0];
 		}
-		if(this.activeImage > 0) {
+		if (this.activeImage > 0) {
 			preloadPrevImage = new Image();
 			preloadPrevImage.src = this.imageArray[this.activeImage - 1][0];
 		}
 	}
 };
-LyteBox.prototype.togglePlayPause = function(hideID, showID) {
+LyteBox.prototype.togglePlayPause = function (hideID, showID) {
 	if (this.isSlideshow && hideID == "lbPause") {
-		for (var i = 0; i < this.slideshowIDCount; i++) { window.clearTimeout(this.slideshowIDArray[i]); }
+		for (var i = 0; i < this.slideshowIDCount; i++) {
+			window.clearTimeout(this.slideshowIDArray[i]); }
 	}
 	this.doc.getElementById(hideID).style.display = 'none';
 	this.doc.getElementById(showID).style.display = '';
@@ -631,22 +666,25 @@ LyteBox.prototype.togglePlayPause = function(hideID, showID) {
 		this.isPaused = true;
 	}
 };
-LyteBox.prototype.end = function(caller) {
+LyteBox.prototype.end = function (caller) {
 	var closeClick = (caller == 'slideshow' ? false : true);
-	if (this.isSlideshow && this.isPaused && !closeClick) { return; }
+	if (this.isSlideshow && this.isPaused && !closeClick) {
+		return; }
 	this.disableKeyboardNav();
 	this.doc.getElementById('lbMain').style.display = 'none';
 	this.fade('lbOverlay', (this.doAnimations ? this.maxOpacity : 0));
 	this.toggleSelects('visible');
-	if (this.hideFlash) { this.toggleFlash('visible'); }
+	if (this.hideFlash) {
+		this.toggleFlash('visible'); }
 	if (this.isSlideshow) {
-		for (var i = 0; i < this.slideshowIDCount; i++) { window.clearTimeout(this.slideshowIDArray[i]); }
+		for (var i = 0; i < this.slideshowIDCount; i++) {
+			window.clearTimeout(this.slideshowIDArray[i]); }
 	}
 	if (this.isLyteframe) {
 		 this.initialize();
 	}
 };
-LyteBox.prototype.checkFrame = function() {
+LyteBox.prototype.checkFrame = function () {
 	if (window.parent.frames[window.name] && (parent.document.getElementsByTagName('frameset').length <= 0)) {
 		this.isFrame = true;
 		this.lytebox = "window.parent." + window.name + ".myLytebox";
@@ -657,33 +695,47 @@ LyteBox.prototype.checkFrame = function() {
 		this.doc = document;
 	}
 };
-LyteBox.prototype.getPixelRate = function(cur, img) {
+LyteBox.prototype.getPixelRate = function (cur, img) {
 	var diff = (img > cur) ? img - cur : cur - img;
-	if (diff >= 0 && diff <= 100) { return 10; }
-	if (diff > 100 && diff <= 200) { return 15; }
-	if (diff > 200 && diff <= 300) { return 20; }
-	if (diff > 300 && diff <= 400) { return 25; }
-	if (diff > 400 && diff <= 500) { return 30; }
-	if (diff > 500 && diff <= 600) { return 35; }
-	if (diff > 600 && diff <= 700) { return 40; }
-	if (diff > 700) { return 45; }
+	if (diff >= 0 && diff <= 100) {
+		return 10; }
+	if (diff > 100 && diff <= 200) {
+		return 15; }
+	if (diff > 200 && diff <= 300) {
+		return 20; }
+	if (diff > 300 && diff <= 400) {
+		return 25; }
+	if (diff > 400 && diff <= 500) {
+		return 30; }
+	if (diff > 500 && diff <= 600) {
+		return 35; }
+	if (diff > 600 && diff <= 700) {
+		return 40; }
+	if (diff > 700) {
+		return 45; }
 };
-LyteBox.prototype.appear = function(id, opacity) {
+LyteBox.prototype.appear = function (id, opacity) {
 	var object = this.doc.getElementById(id).style;
 	object.opacity = (opacity / 100);
 	object.MozOpacity = (opacity / 100);
 	object.KhtmlOpacity = (opacity / 100);
 	object.filter = "alpha(opacity=" + (opacity + 10) + ")";
 	if (opacity == 100 && (id == 'lbImage' || id == 'lbIframe')) {
-		try { object.removeAttribute("filter"); } catch(e) {}	/* Fix added for IE Alpha Opacity Filter bug. */
-		this.updateDetails();
+		try {
+			object.removeAttribute("filter"); } catch (e) {
+			}	/* Fix added for IE Alpha Opacity Filter bug. */
+			this.updateDetails();
 	} else if (opacity >= this.maxOpacity && id == 'lbOverlay') {
-		for (var i = 0; i < this.overlayTimerCount; i++) { window.clearTimeout(this.overlayTimerArray[i]); }
+		for (var i = 0; i < this.overlayTimerCount; i++) {
+			window.clearTimeout(this.overlayTimerArray[i]); }
 		return;
 	} else if (opacity >= 100 && id == 'lbDetailsContainer') {
-		try { object.removeAttribute("filter"); } catch(e) {}	/* Fix added for IE Alpha Opacity Filter bug. */
-		for (var i = 0; i < this.imageTimerCount; i++) { window.clearTimeout(this.imageTimerArray[i]); }
-		this.doc.getElementById('lbOverlay').style.height = this.getPageSize()[1] + "px";
+		try {
+			object.removeAttribute("filter"); } catch (e) {
+			}	/* Fix added for IE Alpha Opacity Filter bug. */
+			for (var i = 0; i < this.imageTimerCount; i++) {
+				window.clearTimeout(this.imageTimerArray[i]); }
+			this.doc.getElementById('lbOverlay').style.height = this.getPageSize()[1] + "px";
 	} else {
 		if (id == 'lbOverlay') {
 			this.overlayTimerArray[this.overlayTimerCount++] = setTimeout("myLytebox.appear('" + id + "', " + (opacity+20) + ")", 1);
@@ -692,7 +744,7 @@ LyteBox.prototype.appear = function(id, opacity) {
 		}
 	}
 };
-LyteBox.prototype.fade = function(id, opacity) {
+LyteBox.prototype.fade = function (id, opacity) {
 	var object = this.doc.getElementById(id).style;
 	object.opacity = (opacity / 100);
 	object.MozOpacity = (opacity / 100);
@@ -701,14 +753,15 @@ LyteBox.prototype.fade = function(id, opacity) {
 	if (opacity <= 0) {
 		try {
 			object.display = 'none';
-		} catch(err) { }
+		} catch (err) {
+		}
 	} else if (id == 'lbOverlay') {
 		this.overlayTimerArray[this.overlayTimerCount++] = setTimeout("myLytebox.fade('" + id + "', " + (opacity-20) + ")", 1);
 	} else {
 		this.timerIDArray[this.timerIDCount++] = setTimeout("myLytebox.fade('" + id + "', " + (opacity-10) + ")", 1);
 	}
 };
-LyteBox.prototype.resizeW = function(id, curW, maxW, pixelrate, speed) {
+LyteBox.prototype.resizeW = function (id, curW, maxW, pixelrate, speed) {
 	if (!this.hDone) {
 		this.resizeWTimerArray[this.resizeWTimerCount++] = setTimeout("myLytebox.resizeW('" + id + "', " + curW + ", " + maxW + ", " + pixelrate + ")", 100);
 		return;
@@ -725,10 +778,11 @@ LyteBox.prototype.resizeW = function(id, curW, maxW, pixelrate, speed) {
 	this.resizeWTimerArray[this.resizeWTimerCount++] = setTimeout("myLytebox.resizeW('" + id + "', " + newW + ", " + maxW + ", " + pixelrate + ", " + (timer+0.02) + ")", timer+0.02);
 	if (parseInt(object.style.width) == maxW) {
 		this.wDone = true;
-		for (var i = 0; i < this.resizeWTimerCount; i++) { window.clearTimeout(this.resizeWTimerArray[i]); }
+		for (var i = 0; i < this.resizeWTimerCount; i++) {
+			window.clearTimeout(this.resizeWTimerArray[i]); }
 	}
 };
-LyteBox.prototype.resizeH = function(id, curH, maxH, pixelrate, speed) {
+LyteBox.prototype.resizeH = function (id, curH, maxH, pixelrate, speed) {
 	var timer = speed ? speed : (this.resizeDuration/2);
 	var object = this.doc.getElementById(id);
 	var newH = (this.doAnimations ? curH : maxH);
@@ -741,24 +795,25 @@ LyteBox.prototype.resizeH = function(id, curH, maxH, pixelrate, speed) {
 	this.resizeHTimerArray[this.resizeHTimerCount++] = setTimeout("myLytebox.resizeH('" + id + "', " + newH + ", " + maxH + ", " + pixelrate + ", " + (timer+.02) + ")", timer+.02);
 	if (parseInt(object.style.height) == maxH) {
 		this.hDone = true;
-		for (var i = 0; i < this.resizeHTimerCount; i++) { window.clearTimeout(this.resizeHTimerArray[i]); }
+		for (var i = 0; i < this.resizeHTimerCount; i++) {
+			window.clearTimeout(this.resizeHTimerArray[i]); }
 	}
 };
-LyteBox.prototype.getPageScroll = function() {
+LyteBox.prototype.getPageScroll = function () {
 	if (self.pageYOffset) {
 		return this.isFrame ? parent.pageYOffset : self.pageYOffset;
-	} else if (this.doc.documentElement && this.doc.documentElement.scrollTop){
+	} else if (this.doc.documentElement && this.doc.documentElement.scrollTop) {
 		return this.doc.documentElement.scrollTop;
 	} else if (document.body) {
 		return this.doc.body.scrollTop;
 	}
 };
-LyteBox.prototype.getPageSize = function() {
+LyteBox.prototype.getPageSize = function () {
 	var xScroll, yScroll, windowWidth, windowHeight;
 	if (window.innerHeight && window.scrollMaxY) {
 		xScroll = this.doc.scrollWidth;
 		yScroll = (this.isFrame ? parent.innerHeight : self.innerHeight) + (this.isFrame ? parent.scrollMaxY : self.scrollMaxY);
-	} else if (this.doc.body.scrollHeight > this.doc.body.offsetHeight){
+	} else if (this.doc.body.scrollHeight > this.doc.body.offsetHeight) {
 		xScroll = this.doc.body.scrollWidth;
 		yScroll = this.doc.body.scrollHeight;
 	} else {
@@ -783,7 +838,7 @@ LyteBox.prototype.getPageSize = function() {
 	var pageWidth = (xScroll < windowWidth) ? windowWidth : xScroll;
 	return new Array(pageWidth, pageHeight, windowWidth, windowHeight);
 };
-LyteBox.prototype.toggleFlash = function(state) {
+LyteBox.prototype.toggleFlash = function (state) {
 	var objects = this.doc.getElementsByTagName("object");
 	for (var i = 0; i < objects.length; i++) {
 		objects[i].style.visibility = (state == "hide") ? 'hidden' : 'visible';
@@ -799,19 +854,21 @@ LyteBox.prototype.toggleFlash = function(state) {
 				for (var j = 0; j < objects.length; j++) {
 					objects[j].style.visibility = (state == "hide") ? 'hidden' : 'visible';
 				}
-			} catch(e) { }
+			} catch (e) {
+			}
 			try {
 				embeds = parent.frames[i].window.document.getElementsByTagName("embed");
 				for (var j = 0; j < embeds.length; j++) {
 					embeds[j].style.visibility = (state == "hide") ? 'hidden' : 'visible';
 				}
-			} catch(e) { }
+			} catch (e) {
+			}
 		}
 	}
 };
-LyteBox.prototype.toggleSelects = function(state) {
+LyteBox.prototype.toggleSelects = function (state) {
 	var selects = this.doc.getElementsByTagName("select");
-	for (var i = 0; i < selects.length; i++ ) {
+	for (var i = 0; i < selects.length; i++) {
 		selects[i].style.visibility = (state == "hide") ? 'hidden' : 'visible';
 	}
 	if (this.isFrame) {
@@ -821,16 +878,18 @@ LyteBox.prototype.toggleSelects = function(state) {
 				for (var j = 0; j < selects.length; j++) {
 					selects[j].style.visibility = (state == "hide") ? 'hidden' : 'visible';
 				}
-			} catch(e) { }
+			} catch (e) {
+			}
 		}
 	}
 };
-LyteBox.prototype.pause = function(numberMillis) {
+LyteBox.prototype.pause = function (numberMillis) {
 	var now = new Date();
 	var exitTime = now.getTime() + numberMillis;
 	while (true) {
 		now = new Date();
-		if (now.getTime() > exitTime) { return; }
+		if (now.getTime() > exitTime) {
+			return; }
 	}
 };
 if (window.addEventListener) {
@@ -838,6 +897,8 @@ if (window.addEventListener) {
 } else if (window.attachEvent) {
 	window.attachEvent("onload",initLytebox);
 } else {
-	window.onload = function() {initLytebox();}
+	window.onload = function () {
+		initLytebox();}
 }
-function initLytebox() { myLytebox = new LyteBox(); }
+function initLytebox() {
+	myLytebox = new LyteBox(); }

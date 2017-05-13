@@ -25,15 +25,12 @@
  * @author Jesse Mullan <jmullan@visi.com>
  * @version $Revision: 18172 $
  */
-class IconsModule extends GalleryModule
-{
-	public function __construct()
-	{
+class IconsModule extends GalleryModule {
+	public function __construct() {
 		$this->IconsModule();
 	}
 	
-	public function IconsModule()
-	{
+	public function IconsModule() {
 		global $gallery;
 		$this->setId('icons');
 		$this->setName($gallery->i18n('Icons'));
@@ -56,8 +53,7 @@ class IconsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1 = null)
-	{
+	public function upgrade($currentVersion, $x1 = null) {
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'icons');
 		if ($ret) {
 			return $ret;
@@ -125,8 +121,7 @@ class IconsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
-	public function performFactoryRegistrations()
-	{
+	public function performFactoryRegistrations() {
 		$ret = GalleryCoreApi::registerFactoryImplementation('IconsInterface_1_0', 'IconsImpl', 'Icons', 'modules/icons/classes/IconsImpl.class', 'icons', null);
 		if ($ret) {
 			return $ret;
@@ -138,8 +133,7 @@ class IconsModule extends GalleryModule
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
-	public function getSiteAdminViews()
-	{
+	public function getSiteAdminViews() {
 		return array(
 			null,
 			array(

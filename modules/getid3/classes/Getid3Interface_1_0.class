@@ -28,8 +28,7 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class Getid3Interface_1_0
-{
+class Getid3Interface_1_0 {
 	/**
 	 * Get metadata for the given items
 	 *
@@ -39,8 +38,7 @@ class Getid3Interface_1_0
 	 * @return array GalleryStatus a status code,
 	 *               array( id => array(property=>value,...) )
 	 */
-	public function getMetaData($itemIds, $properties = array())
-	{
+	public function getMetaData($itemIds, $properties = array()) {
 		return array(
 			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
 			null

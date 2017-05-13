@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ItemEditControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.ItemEdit');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -72,8 +69,7 @@ class ItemEditControllerTest extends GalleryControllerTestCase
 		));
 	}
 
-	public function testHandleRequestWithPreferred()
-	{
+	public function testHandleRequestWithPreferred() {
 		list($ret, $this->_preferred) = $this->_createDerivative($this->_item, $this->_item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED, 'rotate|90');
 		if ($ret) {
 			return $ret;
@@ -99,8 +95,7 @@ class ItemEditControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testHandleRequestWithoutPreferred()
-	{
+	public function testHandleRequestWithoutPreferred() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[serialNumber]', $this->_item->getSerialNumber());
 		GalleryUtilities::putRequestVariable('editPlugin', 'ItemEditControllerTestPluginSuccess');
@@ -121,8 +116,7 @@ class ItemEditControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testHandleRequestDelegate()
-	{
+	public function testHandleRequestDelegate() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
 		GalleryUtilities::putRequestVariable('form[serialNumber]', $this->_item->getSerialNumber());
 		GalleryUtilities::putRequestVariable('editPlugin', 'ItemEditControllerTestPluginFailAndWarn');
@@ -151,8 +145,7 @@ class ItemEditControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 
-	public function testHandleRequestPluginWithoutProgressBarOptionRequiresProgressBar()
-	{
+	public function testHandleRequestPluginWithoutProgressBarOptionRequiresProgressBar() {
 		global $gallery;
 
 		list($ret, $this->_preferred) = $this->_createDerivative($this->_item, $this->_item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED, 'rotate|90');
@@ -189,8 +182,7 @@ class ItemEditControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testHandleRequestPluginRequiresProgressBarOptionDoesNot()
-	{
+	public function testHandleRequestPluginRequiresProgressBarOptionDoesNot() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('itemId', $this->_item->getId());
@@ -229,10 +221,8 @@ class ItemEditControllerTest extends GalleryControllerTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemEditControllerTestPluginSuccess
-{
-	public function handleRequest($form, &$item, &$preferred)
-	{
+class ItemEditControllerTestPluginSuccess {
+	public function handleRequest($form, &$item, &$preferred) {
 		/* TODO: We should verify the item is legit here */
 
 		/* Check to see if we have a preferred source */
@@ -274,10 +264,8 @@ class ItemEditControllerTestPluginSuccess
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemEditControllerTestPluginFailAndWarn extends ItemEditPlugin
-{
-	public function handleRequest($form, &$item, &$preferred)
-	{
+class ItemEditControllerTestPluginFailAndWarn extends ItemEditPlugin {
+	public function handleRequest($form, &$item, &$preferred) {
 		return array(
 			null,
 			array(
@@ -295,10 +283,8 @@ class ItemEditControllerTestPluginFailAndWarn extends ItemEditPlugin
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemEditControllerTestPluginRequiresProgressBar extends ItemEditPlugin
-{
-	public function handleRequest($form, &$item, &$preferred)
-	{
+class ItemEditControllerTestPluginRequiresProgressBar extends ItemEditPlugin {
+	public function handleRequest($form, &$item, &$preferred) {
 		return array(
 			null,
 			array(),
@@ -314,18 +300,15 @@ class ItemEditControllerTestPluginRequiresProgressBar extends ItemEditPlugin
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemEditControllerTestOption extends ItemEditOption
-{
-	public function isAppropriate($item, $thumbnail)
-	{
+class ItemEditControllerTestOption extends ItemEditOption {
+	public function isAppropriate($item, $thumbnail) {
 		return array(
 			null,
 			true
 		);
 	}
 
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		return array(
 			null,
 			array(
@@ -344,18 +327,15 @@ class ItemEditControllerTestOption extends ItemEditOption
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class ItemEditControllerTestOptionWithProgressBar extends ItemEditOption
-{
-	public function isAppropriate($item, $thumbnail)
-	{
+class ItemEditControllerTestOptionWithProgressBar extends ItemEditOption {
+	public function isAppropriate($item, $thumbnail) {
 		return array(
 			null,
 			true
 		);
 	}
 
-	public function handleRequestAfterEdit($form, &$item, &$preferred)
-	{
+	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		return array(
 			null,
 			array(
@@ -367,8 +347,7 @@ class ItemEditControllerTestOptionWithProgressBar extends ItemEditOption
 		);
 	}
 
-	public function requiresProgressBar($form)
-	{
+	public function requiresProgressBar($form) {
 		return true;
 	}
 }

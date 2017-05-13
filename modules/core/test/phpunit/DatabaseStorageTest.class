@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage/GalleryStorageE
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DatabaseStorageTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DatabaseStorageTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -65,8 +62,7 @@ class DatabaseStorageTest extends GalleryTestCase
 		);
 	}
 
-	public function testParseSqlTemplate1()
-	{
+	public function testParseSqlTemplate1() {
 		$results = GalleryStorageExtras::parseSqlTemplate($this->_data, 'database_with_everything');
 		$this->assertEquals(array(
 			'table' => array(
@@ -96,8 +92,7 @@ class DatabaseStorageTest extends GalleryTestCase
 		), $results);
 	}
 
-	public function testParseSqlTemplate2()
-	{
+	public function testParseSqlTemplate2() {
 		$results = GalleryStorageExtras::parseSqlTemplate($this->_data, 'database_with_only_tables');
 		$this->assertEquals(array(
 			'table' => array(
@@ -109,8 +104,7 @@ class DatabaseStorageTest extends GalleryTestCase
 		), $results);
 	}
 
-	public function testParseSqlTemplate3()
-	{
+	public function testParseSqlTemplate3() {
 		$results = GalleryStorageExtras::parseSqlTemplate($this->_data, 'database_with_only_removes');
 		$this->assertEquals(array(
 			'table' => array(),
@@ -126,8 +120,7 @@ class DatabaseStorageTest extends GalleryTestCase
 		), $results);
 	}
 
-	public function testParseSqlTemplate4()
-	{
+	public function testParseSqlTemplate4() {
 		$results = GalleryStorageExtras::parseSqlTemplate($this->_data, 'database_with_nothing');
 		$this->assertEquals(array(
 			'table' => array(),

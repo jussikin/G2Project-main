@@ -29,16 +29,14 @@ require_once dirname(__FILE__) . '/../../../modules/core/ItemEdit.inc';
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditPluginTestCase extends GalleryTestCase
-{
+class ItemEditPluginTestCase extends GalleryTestCase {
 	/**
 	 * The plugin instance
 	 * @access protected
 	 */
 	public $_plugin;
 	
-	public function ItemEditPluginTestCase($methodName, $moduleName, $pluginName)
-	{
+	public function ItemEditPluginTestCase($methodName, $moduleName, $pluginName) {
 		$this->GalleryTestCase($methodName);
 		
 		list($ret, $this->_plugin) = GalleryCoreApi::newFactoryInstanceById('ItemEditPlugin', $pluginName);
@@ -52,8 +50,7 @@ class ItemEditPluginTestCase extends GalleryTestCase
 		}
 	}
 	
-	public function handleRequest(&$item, &$preferred, $errorCode = null)
-	{
+	public function handleRequest(&$item, &$preferred, $errorCode = null) {
 		/* Get our form variables */
 		$form = GalleryUtilities::getFormVariables('form');
 		
@@ -85,8 +82,7 @@ class ItemEditPluginTestCase extends GalleryTestCase
 		);
 	}
 	
-	public function _translate($message)
-	{
+	public function _translate($message) {
 		return $this->_module->translate($message);
 	}
 }

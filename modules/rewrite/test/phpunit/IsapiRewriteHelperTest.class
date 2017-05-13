@@ -29,15 +29,12 @@
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 GalleryCoreApi::requireOnce(
 	'modules/rewrite/classes/parsers/isapirewrite/IsapiRewriteHelper.class');
-class IsapiRewriteHelperTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class IsapiRewriteHelperTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -77,8 +74,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase
 		$gallery->setPlatform($this->_platform);
 	}
 
-	public function testHttpdiniPath()
-	{
+	public function testHttpdiniPath() {
 		list($ret, $path) = IsapiRewriteHelper::getHttpdiniPath();
 		if ($ret) {
 			return $ret;
@@ -87,8 +83,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals('C:\phpunit\gallery2\httpd.ini', $path);
 	}
 
-	public function testCheckFile()
-	{
+	public function testCheckFile() {
 		list($ret, $code) = IsapiRewriteHelper::checkFile();
 		if ($ret) {
 			return $ret;
@@ -117,8 +112,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_HTTPDINI_MISSING, $code, 'exists');
 	}
 
-	public function testWriteFile()
-	{
+	public function testWriteFile() {
 		list($ret, $code) = IsapiRewriteHelper::writeFile(array());
 		if ($ret) {
 			return $ret;
@@ -148,8 +142,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase
 		$this->assert(!isset($this->_fileContent), 'writeable fileContent');
 	}
 
-	public function testCheckIsapiRewrite()
-	{
+	public function testCheckIsapiRewrite() {
 		GalleryUtilities::putRequestVariable('isapiRewriteTest', 'pass');
 		list($ret, $status, $trueStatus) = IsapiRewriteHelper::checkIsapiRewrite();
 		if ($ret) {
@@ -178,8 +171,7 @@ class IsapiRewriteHelperTest extends GalleryTestCase
 		$this->assertEquals(REWRITE_STATUS_NO_ISAPI_REWRITE, $trueStatus, 'truestatus, 404');
 	}
 
-	public function testCheckIsapiRewriteForced()
-	{
+	public function testCheckIsapiRewriteForced() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'isapirewrite.forced', '1');
 		if ($ret) {
 			return $ret;
@@ -202,20 +194,17 @@ class IsapiRewriteHelperTest extends GalleryTestCase
  * @package Rewrite
  * @subpackage PHPUnit
  */
-class IsapiRewriteHelperMockPlatform extends GalleryPlatform
-{
+class IsapiRewriteHelperMockPlatform extends GalleryPlatform {
 	public $_isWriteable = true;
 	public $_isReadable = true;
 	public $_fileExists = true;
 	public $_previousContent = array();
 
-	public function init(&$test)
-	{
+	public function init(&$test) {
 		$this->_test =& $test;
 	}
 
-	public function fsockopen($target, $port, &$errno, &$errstr, $timeout)
-	{
+	public function fsockopen($target, $port, &$errno, &$errstr, $timeout) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 	/* The hostName can include the port part */
@@ -227,8 +216,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fsockopen($target, $port, $errno, $errstr, $timeout);
 	}
 
-	public function file_exists($file)
-	{
+	public function file_exists($file) {
 		if (strpos($file, 'httpd.ini') !== false) {
 			return $this->_fileExists;
 		}
@@ -236,8 +224,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::file_exists($file);
 	}
 
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		if ($path == 'phpunit/test') {
 			return true;
 		}
@@ -245,8 +232,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_dir($path);
 	}
 
-	public function fwrite($handle, $string, $length=0)
-	{
+	public function fwrite($handle, $string, $length=0) {
 		$buffer = array(
 		'pass' => array('HTTP/1.1 200 OK',
 				'Content-Type: text/html; charset=ISO-8859-1',
@@ -275,8 +261,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fwrite($handle, $string, $length=0);
 	}
 
-	public function feof($handle)
-	{
+	public function feof($handle) {
 		if ($handle == 'phpunit') {
 			return empty($this->_readBuffer);
 		}
@@ -284,8 +269,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::feof($handle);
 	}
 
-	public function fgets($handle, $length)
-	{
+	public function fgets($handle, $length) {
 		if ($handle == 'phpunit') {
 			if (empty($this->_readBuffer)) {
 				return null;
@@ -297,8 +281,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fgets($handle, $length);
 	}
 
-	public function fread($handle, $length)
-	{
+	public function fread($handle, $length) {
 		if ($handle == 'phpunit') {
 			if (empty($this->_readBuffer)) {
 				return null;
@@ -321,8 +304,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fread($handle, $length);
 	}
 
-	public function fflush($handle)
-	{
+	public function fflush($handle) {
 		if ($handle == 'phpunit') {
 			return true;
 		}
@@ -330,8 +312,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fflush($handle);
 	}
 
-	public function is_readable($file)
-	{
+	public function is_readable($file) {
 		if (strpos($file, 'httpd.ini') !== false) {
 			return $this->_isReadable;
 		}
@@ -339,8 +320,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_readable($file);
 	}
 
-	public function is_writeable($file)
-	{
+	public function is_writeable($file) {
 		if (strpos($file, 'httpd.ini') !== false) {
 			return $this->_isWriteable;
 		} elseif ($file == 'phpunit/gallery2') {
@@ -350,8 +330,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::is_writeable($file);
 	}
 
-	public function file($file)
-	{
+	public function file($file) {
 		if (strpos($file, 'httpd.ini') !== false) {
 			return $passCodeAudit = array();
 		}
@@ -359,8 +338,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::file($file);
 	}
 
-	public function fopen($file, $mode, $useIncludePath=null, $zcontext=null)
-	{
+	public function fopen($file, $mode, $useIncludePath=null, $zcontext=null) {
 		if (strpos($file, 'httpd.ini') !== false) {
 			if ($this->_isWriteable) {
 				$this->_test->_fileContent = '';
@@ -374,8 +352,7 @@ class IsapiRewriteHelperMockPlatform extends GalleryPlatform
 		return parent::fopen($file, $mode, $useIncludePath, $zcontext);
 	}
 
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		if ($handle == 'httpd.ini') {
 			return true;
 		} elseif ($handle == 'phpunit') {

@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminCreateUserControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminCreateUserControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminCreateUser');
 	}
 	
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
@@ -46,8 +43,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCreateUser()
-	{
+	public function testCreateUser() {
 		$userName = 'user-' . rand();
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $userName);
@@ -78,8 +74,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase
 		$this->assert($user->isCorrectPassword('password'), 'check password');
 	}
 	
-	public function testCreateEntityPassword()
-	{
+	public function testCreateEntityPassword() {
 		$userName = 'user-' . rand();
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $userName);
@@ -110,8 +105,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase
 		$this->assert($user->isCorrectPassword('pass&word'), 'check password');
 	}
 	
-	public function testMissingInputs()
-	{
+	public function testMissingInputs() {
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		
 		/* Create one user */
@@ -131,8 +125,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testPasswordMismatch()
-	{
+	public function testPasswordMismatch() {
 		$userName = 'user-' . rand();
 		
 		/* Create one user */
@@ -158,8 +151,7 @@ class AdminCreateUserControllerTest extends GalleryControllerTestCase
 		), $results);
 	}
 	
-	public function testCreateDuplicateUser()
-	{
+	public function testCreateDuplicateUser() {
 		$userName = 'user-' . rand();
 		
 		/* Create one user */

@@ -41,8 +41,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryFileSystemEntity.class'
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryItem extends GalleryFileSystemEntity
-{
+class GalleryItem extends GalleryFileSystemEntity {
 	/**
 	 * Can this item contain children?
 	 * @var boolean
@@ -172,8 +171,7 @@ class GalleryItem extends GalleryFileSystemEntity
 	 *        Defaults to false.
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId = null, $path = null, $canContainChildren = false)
-	{
+	public function create($parentId = null, $path = null, $canContainChildren = false) {
 		global $gallery;
 		
 		if (!isset($path) || !isset($parentId)) {
@@ -222,8 +220,7 @@ class GalleryItem extends GalleryFileSystemEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function createRoot()
-	{
+	public function createRoot() {
 		global $gallery;
 		
 		$ret = parent::createRoot();
@@ -246,8 +243,7 @@ class GalleryItem extends GalleryFileSystemEntity
 	/**
 	 * @see GalleryEntity::createLink
 	 */
-	public function createLink($entity, $parentId = null)
-	{
+	public function createLink($entity, $parentId = null) {
 		global $gallery;
 		
 		$ret = parent::createLink($entity, $parentId);
@@ -288,8 +284,7 @@ class GalleryItem extends GalleryFileSystemEntity
 	 * Delete this GalleryEntity.  Delete all of its children also, if it has any.
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -371,8 +366,7 @@ class GalleryItem extends GalleryFileSystemEntity
 	 * @param int $newParentId the id of the new parent GalleryItem
 	 * @return GalleryStatus a status code
 	 */
-	public function move($newParentId)
-	{
+	public function move($newParentId) {
 		$parentId = $this->getParentId();
 		$ret = parent::move($newParentId);
 		if ($ret) {
@@ -411,8 +405,7 @@ class GalleryItem extends GalleryFileSystemEntity
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function save($postEvent = true, $x1 = null)
-	{
+	public function save($postEvent = true, $x1 = null) {
 		global $gallery;
 		$isNew = $this->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
 		
@@ -488,98 +481,79 @@ class GalleryItem extends GalleryFileSystemEntity
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryItem';
 	}
 	
-	public function getCanContainChildren()
-	{
+	public function getCanContainChildren() {
 		return $this->canContainChildren;
 	}
 	
-	public function setCanContainChildren($canContainChildren)
-	{
+	public function setCanContainChildren($canContainChildren) {
 		$this->canContainChildren = $canContainChildren;
 	}
 	
-	public function getDescription()
-	{
+	public function getDescription() {
 		return $this->description;
 	}
 	
-	public function setDescription($description)
-	{
+	public function setDescription($description) {
 		$this->description = $description;
 	}
 	
-	public function getKeywords()
-	{
+	public function getKeywords() {
 		return $this->keywords;
 	}
 	
-	public function setKeywords($keywords)
-	{
+	public function setKeywords($keywords) {
 		$this->keywords = $keywords;
 	}
 	
-	public function getOwnerId()
-	{
+	public function getOwnerId() {
 		return $this->ownerId;
 	}
 	
-	public function setOwnerId($ownerId)
-	{
+	public function setOwnerId($ownerId) {
 		$this->ownerId = $ownerId;
 	}
 	
-	public function getRenderer()
-	{
+	public function getRenderer() {
 		return $this->renderer;
 	}
 	
-	public function setRenderer($renderer)
-	{
+	public function setRenderer($renderer) {
 		$this->renderer = $renderer;
 	}
 	
-	public function getSummary()
-	{
+	public function getSummary() {
 		return $this->summary;
 	}
 	
-	public function setSummary($summary)
-	{
+	public function setSummary($summary) {
 		$this->summary = $summary;
 	}
 	
-	public function getTitle()
-	{
+	public function getTitle() {
 		return $this->title;
 	}
 	
-	public function setTitle($title)
-	{
+	public function setTitle($title) {
 		$this->title = $title;
 	}
 	
-	public function getViewedSinceTimestamp()
-	{
+	public function getViewedSinceTimestamp() {
 		return $this->viewedSinceTimestamp;
 	}
 	
-	public function setViewedSinceTimestamp($viewedSinceTimestamp)
-	{
+	public function setViewedSinceTimestamp($viewedSinceTimestamp) {
 		$this->viewedSinceTimestamp = $viewedSinceTimestamp;
 	}
 	
-	public function getOriginationTimestamp()
-	{
+	public function getOriginationTimestamp() {
 		return $this->originationTimestamp;
 	}
 	
-	public function setOriginationTimestamp($originationTimestamp)
-	{
+	public function setOriginationTimestamp($originationTimestamp) {
 		$this->originationTimestamp = $originationTimestamp;
 	}
 }

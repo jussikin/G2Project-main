@@ -31,13 +31,11 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CustomFieldItemAdminController extends GalleryController
-{
+class CustomFieldItemAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest()
-	{
+	public function handleRequest() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		

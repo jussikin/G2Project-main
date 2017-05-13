@@ -27,13 +27,11 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySortInterface_1_2.class
  * @author Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingSortOrder extends GallerySortInterface_1_2
-{
+class RatingSortOrder extends GallerySortInterface_1_2 {
 	/**
 	 * @see GallerySortInterface_1_2::getSortInfo
 	 */
-	public function getSortInfo()
-	{
+	public function getSortInfo() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rating');
 		if ($ret) {
 			return array($ret, null, null);
@@ -45,8 +43,7 @@ class RatingSortOrder extends GallerySortInterface_1_2
 	/**
 	 * @see GallerySortInterface_1_2::getSortOrder
 	 */
-	public function getSortOrder($direction)
-	{
+	public function getSortOrder($direction) {
 		return array(null,
 		'[RatingCacheMap::averageRating]' . $direction . ', [RatingCacheMap::voteCount] DESC',
 		'[RatingCacheMap::averageRating], [RatingCacheMap::voteCount]', null,

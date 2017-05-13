@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class MP3AudioOption extends ItemAddOption
-{
+class MP3AudioOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
+	public function isAppropriate() {
 		return array(
 			null,
 			true
@@ -41,8 +39,7 @@ class MP3AudioOption extends ItemAddOption
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$errors = $mp3Items = array();

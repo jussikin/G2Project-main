@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPhpVm.class');
  * @author Jay Rossiter <cryptographite@users.sf.net>
  * @version $Revision: 17953 $
  */
-class PhpVmTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class PhpVmTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -44,37 +41,31 @@ class PhpVmTest extends GalleryTestCase
 		$this->_phpVm = new GalleryPhpVm();
 	}
 	
-	public function testMd5()
-	{
+	public function testMd5() {
 		$this->assertEquals(md5('foobar'), $this->_phpVm->md5('foobar'), 'PhpVm MD5 output doesn\'t match PHP output');
 	}
 	
-	public function testFunctionExists()
-	{
+	public function testFunctionExists() {
 		$this->assertEquals(function_exists('testFunctionExists'), $this->_phpVm->function_exists('testFunctionExists'), 'PhpVm function_exists output doesn\'t match PHP output');
 	}
 	
-	public function testExtensionLoaded()
-	{
+	public function testExtensionLoaded() {
 		$this->assertEquals(extension_loaded('test'), $this->_phpVm->extension_loaded('test'), 'PhpVm extension_loaded output doesn\'t match PHP output');
 	}
 	
-	public function testIconv()
-	{
+	public function testIconv() {
 		if (function_exists('iconv')) {
 			$this->assertEquals(iconv('ISO-8859-1', 'UTF-8', 'foo bar'), $this->_phpVm->iconv('ISO-8859-1', 'UTF-8', 'foo bar'));
 		}
 	}
 	
-	public function testMbConvertEncoding()
-	{
+	public function testMbConvertEncoding() {
 		if (function_exists('mb_convert_encoding')) {
 			$this->assertEquals(mb_convert_encoding('foo bar', 'ISO-8859-1', 'UTF8'), $this->_phpVm->mb_convert_encoding('foo bar', 'ISO-8859-1', 'UTF8'));
 		}
 	}
 	
-	public function testRecodeString()
-	{
+	public function testRecodeString() {
 		if (function_exists('recode_string')) {
 			$this->assertEquals(recode_string('ISO-8859-1..UTF8', 'foo bar'), $this->_phpVm->recode_string('ISO-8859-1..UTF8', 'foo bar'));
 		}
@@ -84,8 +75,7 @@ class PhpVmTest extends GalleryTestCase
 	 * header() can only be tested with an actual HTTP requests, that's why we added it
 	 * to the mock VM
 	 */
-	public function testHeader()
-	{
+	public function testHeader() {
 		global $gallery;
 		
 		/*
@@ -130,8 +120,7 @@ class PhpVmTest extends GalleryTestCase
 	}
 	
 	/* Check is only rudimentary, omit the optional parameters */
-	public function testHeadersSent()
-	{
+	public function testHeadersSent() {
 		global $gallery;
 		/* When this unit test is executed, we already sent some data to the user agent */
 		$phpVm = $gallery->getPhpVm();
@@ -140,8 +129,7 @@ class PhpVmTest extends GalleryTestCase
 		/* The other case, $phpVm->headers_sent() == false, is covered by testHeader() */
 	}
 	
-	public function testHeaderDetectsHeaderInjection()
-	{
+	public function testHeaderDetectsHeaderInjection() {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
 		
@@ -154,13 +142,11 @@ class PhpVmTest extends GalleryTestCase
 	}
 	
 	/* This setting can't be changed during runtime */
-	public function testGetMagicQuotesGpc()
-	{
+	public function testGetMagicQuotesGpc() {
 		$this->assertEquals(get_magic_quotes_gpc(), $this->_phpVm->get_magic_quotes_gpc(), 'The Vm function does not return the correct value');
 	}
 	
-	public function testTime()
-	{
+	public function testTime() {
 		/*
 	     * There's an incredibly slim chance that this will fail.  If it does, we should improve
 	     * this test.
@@ -168,8 +154,7 @@ class PhpVmTest extends GalleryTestCase
 		$this->assertEquals(time(), $this->_phpVm->time());
 	}
 	
-	public function testRand()
-	{
+	public function testRand() {
 		$this->assert(is_int(rand()), 'is int');
 		$this->assert(rand() > 0, 'is positive');
 		for ($i = 0; $i < 50; $i++) {
@@ -178,13 +163,11 @@ class PhpVmTest extends GalleryTestCase
 		}
 	}
 	
-	public function testCrc32()
-	{
+	public function testCrc32() {
 		$this->assertEquals(crc32('test'), $this->_phpVm->crc32('test'));
 	}
 	
-	public function testClassExists()
-	{
+	public function testClassExists() {
 		$this->assert($this->_phpVm->class_exists('PhpVmTest'));
 		$this->assert(!$this->_phpVm->class_exists('ThisIsAClassThatCanNeverExist'));
 	}

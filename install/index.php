@@ -58,8 +58,7 @@ define('INDEX_PHP', basename(__FILE__));
  * and just pass the string on through in English
  */
 if (!function_exists('_')) {
-	function _($s)
-	{
+	function _($s) {
 		return $s;
 	}
 }
@@ -176,8 +175,7 @@ if ($currentStep->processRequest()) {
 	$template->renderHeaderBodyAndFooter($templateData);
 }
 
-function processAutoCompleteRequest()
-{
+function processAutoCompleteRequest() {
 	$path = !empty($_GET['path']) ? $_GET['path'] : '';
 	/* Undo the damage caused by magic_quotes */
 	if (get_magic_quotes_gpc()) {
@@ -197,7 +195,7 @@ function processAutoCompleteRequest()
 	
 	$dirList = array( );
 	if ($dir = opendir($path)) {
-		if ($path{strlen($path) - 1} != DIRECTORY_SEPARATOR) {
+		if ($path[strlen($path) - 1] != DIRECTORY_SEPARATOR) {
 			$path .= DIRECTORY_SEPARATOR;
 		}
 		while (($file = readdir($dir)) !== false) {
@@ -223,12 +221,11 @@ function processAutoCompleteRequest()
  * @param string $dataBase absolute filesystem path of the storage directory
  * @return boolean success whether the structure was created successfully
  */
-function populateDataDirectory($dataBase)
-{
+function populateDataDirectory($dataBase) {
 	/* Use non-restrictive umask to create directories with lax permissions */
 	umask(0);
 	
-	if ($dataBase{strlen($dataBase) - 1} != DIRECTORY_SEPARATOR) {
+	if ($dataBase[strlen($dataBase) - 1] != DIRECTORY_SEPARATOR) {
 		$dataBase .= DIRECTORY_SEPARATOR;
 	}
 	
@@ -273,8 +270,7 @@ function populateDataDirectory($dataBase)
  * @param string $dataBase absolute filesystem path to the storage folder
  * @return boolean true if the .htaccess file has been created successfully
  */
-function secureStorageFolder($dataBase)
-{
+function secureStorageFolder($dataBase) {
 	$htaccessPath = $dataBase . '.htaccess';
 	$fh = @fopen($htaccessPath, 'w');
 	if ($fh) {
@@ -287,8 +283,7 @@ function secureStorageFolder($dataBase)
 }
 
 /* Returns something like https://example.com */
-function getBaseUrl()
-{
+function getBaseUrl() {
 	/* Can't use GalleryUrlGenerator::makeUrl since it's an object method */
 	if (!($hostName = GalleryUtilities::getServerVar('HTTP_X_FORWARDED_HOST'))) {
 		$hostName = GalleryUtilities::getServerVar('HTTP_HOST');
@@ -299,8 +294,7 @@ function getBaseUrl()
 }
 
 /** Returns the URL to the G2 folder, e.g. http://example.com/gallery2/. */
-function getGalleryDirUrl()
-{
+function getGalleryDirUrl() {
 	global $g2Base;
 	
 	require_once $g2Base . 'modules/core/classes/GalleryUrlGenerator.class';
@@ -312,8 +306,7 @@ function getGalleryDirUrl()
 /**
  * Mini url generator for the installer
  */
-function generateUrl($uri, $print = true)
-{
+function generateUrl($uri, $print = true) {
 	if (!strncmp($uri, 'index.php', 9)) {
 		/* Cookieless browsing: If session.use_trans_sid is on then it will add the session id. */
 		if (!GallerySetupUtilities::areCookiesSupported() && !ini_get('session.use_trans_sid')) {

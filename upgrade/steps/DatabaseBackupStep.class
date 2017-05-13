@@ -22,8 +22,7 @@
  * Allow the user to back up the database
  * @package Upgrade
  */
-class DatabaseBackupStep extends UpgradeStep
-{
+class DatabaseBackupStep extends UpgradeStep {
 	/**
 	 * Holds the instance of the StatusTemplate.
 	 */
@@ -34,13 +33,11 @@ class DatabaseBackupStep extends UpgradeStep
 	 */
 	public $_progressTitle;
 	
-	public function stepName()
-	{
+	public function stepName() {
 		return _('Database Backup');
 	}
 	
-	public function isOptional()
-	{
+	public function isOptional() {
 		return true;
 	}
 	
@@ -48,8 +45,7 @@ class DatabaseBackupStep extends UpgradeStep
 	 * Process the database export request.
 	 * @return boolean true to keep rendering the page, false to stop rendering.
 	 */
-	public function processRequest()
-	{
+	public function processRequest() {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		
@@ -126,13 +122,11 @@ class DatabaseBackupStep extends UpgradeStep
 	 * Update the progress bar with the current percent completion
 	 * @param float $percentage The current completion percentage.
 	 */
-	public function backupCallback($percentage)
-	{
+	public function backupCallback($percentage) {
 		$this->_template->renderStatusMessage($this->_progressTitle, '', $percentage);
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		global $gallery;
 		
 		$templateData['bodyFile'] = 'DatabaseBackupRequest.html';

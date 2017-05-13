@@ -26,13 +26,11 @@
  * @version $Revision: 17580 $
  * @static
  */
-class GalleryFactoryHelper_simple
-{
+class GalleryFactoryHelper_simple {
 	/**
 	 * Reset the static factory registry
 	 */
-	public static function deleteCache()
-	{
+	public static function deleteCache() {
 		$cacheParams = array(
 			'type' => 'module',
 			'itemId' => 'GalleryFactoryHelper_loadRegistry',
@@ -50,8 +48,7 @@ class GalleryFactoryHelper_simple
 	 * @return array factory registry data
 	 * @access private
 	 */
-	public static function &_getSingleton()
-	{
+	public static function &_getSingleton() {
 		static $registry = array();
 
 		return $registry;
@@ -64,8 +61,7 @@ class GalleryFactoryHelper_simple
 	 * @return array factory data
 	 * @access private
 	 */
-	public static function &_getFactoryData()
-	{
+	public static function &_getFactoryData() {
 		$registry =& self::_getSingleton();
 		if (empty($registry)) {
 			$cacheParams = array(
@@ -126,8 +122,7 @@ class GalleryFactoryHelper_simple
 	/**
 	 * @see GalleryCoreApi::newFactoryInstanceByHint
 	 */
-	public static function newInstanceByHint($classType, $hints)
-	{
+	public static function newInstanceByHint($classType, $hints) {
 		list($ret, $registry) = self::_getFactoryData();
 		if ($ret) {
 			return array(
@@ -175,8 +170,7 @@ class GalleryFactoryHelper_simple
 	/**
 	 * @see GalleryCoreApi::newFactoryInstance
 	 */
-	public static function newInstance($classType, $className = null)
-	{
+	public static function newInstance($classType, $className = null) {
 		global $gallery;
 		
 		list($ret, $registry) = self::_getFactoryData();
@@ -243,8 +237,7 @@ class GalleryFactoryHelper_simple
 	/**
 	 * @see GalleryCoreApi::newFactoryInstanceById
 	 */
-	public static function newInstanceById($classType, $id)
-	{
+	public static function newInstanceById($classType, $id) {
 		list($ret, $registry) = self::_getFactoryData();
 		if ($ret) {
 			return array(
@@ -278,8 +271,7 @@ class GalleryFactoryHelper_simple
 	/**
 	 * @see GalleryCoreApi::getAllFactoryImplementationIds
 	 */
-	public static function getAllImplementationIds($classType)
-	{
+	public static function getAllImplementationIds($classType) {
 		list($ret, $registry) = self::_getFactoryData();
 		if ($ret) {
 			return array(

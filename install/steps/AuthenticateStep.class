@@ -26,24 +26,20 @@ if (!class_exists("GallerySetupUtilities")) {
  * Authentication
  * @package Install
  */
-class AuthenticateStep extends InstallStep
-{
+class AuthenticateStep extends InstallStep {
 	public $_uniqueKey;
 	public $_firstTime;
 	
-	public function __construct()
-	{
+	public function __construct() {
 		$this->_uniqueKey = GallerySetupUtilities::generateAuthenticationKey();
 		$this->_firstTime = true;
 	}
 	
-	public function stepName()
-	{
+	public function stepName() {
 		return _('Authenticate');
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		if (!empty($_GET['downloadLogin'])) {
 			GallerySetupUtilities::generateTextFileForDownload('login.txt', $this->_uniqueKey);
 
@@ -53,8 +49,7 @@ class AuthenticateStep extends InstallStep
 		return true;
 	}
 	
-	public function loadTemplateData(&$templateData)
-	{
+	public function loadTemplateData(&$templateData) {
 		$authenticationDir = dirname(dirname(dirname(__FILE__)));
 		
 		if (!$this->isComplete()) {
@@ -90,8 +85,7 @@ class AuthenticateStep extends InstallStep
 		}
 	}
 	
-	public function getUniqueKey()
-	{
+	public function getUniqueKey() {
 		return $this->_uniqueKey;
 	}
 }

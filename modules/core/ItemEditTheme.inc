@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ItemEditTheme extends ItemEditPlugin
-{
+class ItemEditTheme extends ItemEditPlugin {
 	/**
 	 * @see ItemEditPlugin::handleRequest
 	 */
-	public function handleRequest($form, &$item, &$preferred)
-	{
+	public function handleRequest($form, &$item, &$preferred) {
 		if (isset($form['action']['chooseTheme'])) {
 			$error = array();
 			if (!empty($form['theme'])) {
@@ -196,8 +194,7 @@ class ItemEditTheme extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form, $item, $thumbnail)
-	{
+	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		$themeId = $themeSettingsThemeId = $item->getTheme();
 		if (empty($themeSettingsThemeId)) {
 			list($ret, $themeSettingsThemeId) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.theme');
@@ -292,16 +289,14 @@ class ItemEditTheme extends ItemEditPlugin
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
-	public function isSupported($item, $thumbnail)
-	{
+	public function isSupported($item, $thumbnail) {
 		return (GalleryUtilities::isA($item, 'GalleryAlbumItem'));
 	}
 	
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
-	public function getTitle()
-	{
+	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return array(

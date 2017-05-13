@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UserWatermarksControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UserWatermarksControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'watermark.UserWatermarks');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -65,8 +62,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		$gallery->setActiveUser($this->_user);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		if (isset($this->_idToDelete)) {
 			$ret = GalleryCoreApi::deleteEntityById($this->_idToDelete, 'WatermarkImage');
 			if ($ret) {
@@ -82,8 +78,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testAddWatermark()
-	{
+	public function testAddWatermark() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -117,8 +112,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		$this->assert(isset($map[$expectedName]), 'Watermark not added');
 	}
 
-	public function testAddWatermarkMissing()
-	{
+	public function testAddWatermarkMissing() {
 		GalleryUtilities::putRequestVariable('form[action][add]', 1);
 
 		$results = $this->handleRequest();
@@ -129,8 +123,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testDeleteWatermark()
-	{
+	public function testDeleteWatermark() {
 		/* Create a watermark (it'll be created as our active user) */
 	$watermark = new WatermarkImage();
 		$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
@@ -159,8 +152,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testDeleteWatermarkInUse()
-	{
+	public function testDeleteWatermarkInUse() {
 		/* Create a watermark (it'll be created as our active user) */
 	$watermark = new WatermarkImage();
 		$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
@@ -206,8 +198,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		}
 	}
 
-	public function testIllegalDeleteWatermark()
-	{
+	public function testIllegalDeleteWatermark() {
 		/* valid, but illegal */
 	GalleryUtilities::putRequestVariable('form[action][delete]', 1);
 		GalleryUtilities::putRequestVariable('form[delete][watermarkId]', 1);
@@ -221,8 +212,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_MISSING_OBJECT);
 	}
 
-	public function testAddMaliciousFile()
-	{
+	public function testAddMaliciousFile() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -266,8 +256,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 	$this->assertEquals($expectedName, basename($path));
 	}
 
-	public function testAddWatermarkSameFilenameAsOtherUser()
-	{
+	public function testAddWatermarkSameFilenameAsOtherUser() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 
@@ -323,8 +312,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		$this->assert(isset($map[$expectedName]), 'Second watermark not added');
 	}
 
-	public function testPermission()
-	{
+	public function testPermission() {
 		global $gallery;
 
 		GalleryUtilities::putRequestVariable('form[action][add]', 1);
@@ -355,8 +343,7 @@ class UserWatermarksControllerTest extends GalleryControllerTestCase
 		$results = $this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 
-	public function _fetchWatermarkMapByFilename()
-	{
+	public function _fetchWatermarkMapByFilename() {
 		list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 		if ($ret) {
 			return array($ret, null);

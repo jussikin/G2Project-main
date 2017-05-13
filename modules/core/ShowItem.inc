@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class ShowItemController extends GalleryController
-{
+class ShowItemController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		
 		/*
@@ -59,13 +57,11 @@ class ShowItemController extends GalleryController
 /**
  * Handle the rendering of an album or item.
  */
-class ShowItemView extends GalleryView
-{
+class ShowItemView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		list($ret, $item, $wasSpecified) = $this->getItem(true);
 		if ($ret) {
@@ -127,8 +123,7 @@ class ShowItemView extends GalleryView
 	/**
 	 * @see GalleryView::getItem
 	 */
-	public static function getItem($getOriginalSpecified = false)
-	{
+	public static function getItem($getOriginalSpecified = false) {
 		static $originalSpecified;
 		list($ret, $item, $wasSpecified) = parent::getItem();
 		if ($ret) {
@@ -156,8 +151,7 @@ class ShowItemView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return array(
@@ -177,8 +171,7 @@ class ShowItemView extends GalleryView
 	/**
 	 * @see GalleryView::getViewType
 	 */
-	public function getViewType()
-	{
+	public function getViewType() {
 		return VIEW_TYPE_SHOW_ITEM;
 	}
 }

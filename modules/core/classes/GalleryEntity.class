@@ -37,8 +37,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPersistent.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class GalleryEntity extends GalleryPersistent
-{
+class GalleryEntity extends GalleryPersistent {
 	/**
 	 * The id of this item
 	 * @var int
@@ -159,8 +158,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function create($x1 = null, $x2 = null, $x3 = null)
-	{
+	public function create($x1 = null, $x2 = null, $x3 = null) {
 		global $gallery;
 		
 		/* Create a new instance of this entity in the persistent store */
@@ -211,8 +209,7 @@ class GalleryEntity extends GalleryPersistent
 	 * @return array GalleryStatus a status code
 	 *               GalleryItem the linked item
 	 */
-	public function createLink($entity, $x1 = null)
-	{
+	public function createLink($entity, $x1 = null) {
 		global $gallery;
 		
 		if (get_class($this) != get_class($entity)) {
@@ -252,8 +249,7 @@ class GalleryEntity extends GalleryPersistent
 	 * @param int $setAclId (optional) ACL id to assign for new entity (used by subclasses)
 	 * @return GalleryStatus a status code
 	 */
-	public function save($postEvent = true, $setAclId = null)
-	{
+	public function save($postEvent = true, $setAclId = null) {
 		global $gallery;
 		
 		/*
@@ -332,8 +328,7 @@ class GalleryEntity extends GalleryPersistent
 	 * @return array GalleryStatus a status code,
 	 *               object the refreshed GalleryEntity
 	 */
-	public function refresh()
-	{
+	public function refresh() {
 		global $gallery;
 		
 		/* Are we trying to refresh an object that isn't in the database? */
@@ -365,8 +360,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function delete()
-	{
+	public function delete() {
 		global $gallery;
 		
 		if (!GalleryCoreApi::isWriteLocked($this->getId())) {
@@ -413,8 +407,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function onLoad()
-	{
+	public function onLoad() {
 		global $gallery;
 		
 		$linkId = $this->getLinkId();
@@ -498,8 +491,7 @@ class GalleryEntity extends GalleryPersistent
 	 * @param string $handlerId
 	 * @return boolean
 	 */
-	public function hasOnLoadHandler($handlerId)
-	{
+	public function hasOnLoadHandler($handlerId) {
 		return (strpos($this->getOnLoadHandlers(), "|$handlerId|") !== false);
 	}
 	
@@ -508,8 +500,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @param string $handlerId
 	 */
-	public function addOnLoadHandler($handlerId)
-	{
+	public function addOnLoadHandler($handlerId) {
 		$onLoadHandlers = $this->getOnLoadHandlers();
 		if (empty($onLoadHandlers)) {
 			$onLoadHandlers = '|';
@@ -522,8 +513,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @param string $handlerId
 	 */
-	public function removeOnLoadHandler($handlerId)
-	{
+	public function removeOnLoadHandler($handlerId) {
 		$onLoadHandlers = preg_replace('{\|' . preg_quote($handlerId) . '\|}', '|', $this->getOnLoadHandlers());
 		if (empty($onLoadHandlers) || $onLoadHandlers == '|') {
 			$onLoadHandlers = null;
@@ -538,8 +528,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function onSave()
-	{
+	public function onSave() {
 		return null;
 	}
 	
@@ -551,8 +540,7 @@ class GalleryEntity extends GalleryPersistent
 	 * @return array string to be used by itself ("Photo")
 	 *               string to be used in context ("photo")
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		assert(false);
 	}
 	
@@ -560,8 +548,7 @@ class GalleryEntity extends GalleryPersistent
 	 * Return true if this entity is linked to another
 	 * @return boolean
 	 */
-	public function isLinked()
-	{
+	public function isLinked() {
 		$linkedEntity = $this->getLinkedEntity();
 
 		return isset($linkedEntity);
@@ -573,8 +560,7 @@ class GalleryEntity extends GalleryPersistent
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function detachLink()
-	{
+	public function detachLink() {
 		if (!$this->isLinked()) {
 			return GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, 'Not a link!');
 		}
@@ -607,106 +593,86 @@ class GalleryEntity extends GalleryPersistent
 	 * in each entity.  The framework uses this as an index into entity related tables.
 	 * @return string
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryEntity';
 	}
 	
-	public function getId()
-	{
+	public function getId() {
 		return $this->id;
 	}
 	
-	public function setId($id)
-	{
+	public function setId($id) {
 		$this->id = $id;
 	}
 	
-	public function getCreationTimestamp()
-	{
+	public function getCreationTimestamp() {
 		return $this->creationTimestamp;
 	}
 	
-	public function setCreationTimestamp($creationTimestamp)
-	{
+	public function setCreationTimestamp($creationTimestamp) {
 		$this->creationTimestamp = $creationTimestamp;
 	}
 	
-	public function getIsLinkable()
-	{
+	public function getIsLinkable() {
 		return $this->isLinkable;
 	}
 	
-	public function setIsLinkable($isLinkable)
-	{
+	public function setIsLinkable($isLinkable) {
 		$this->isLinkable = $isLinkable;
 	}
 	
-	public function getLinkId()
-	{
+	public function getLinkId() {
 		return $this->linkId;
 	}
 	
-	public function setLinkId($linkId)
-	{
+	public function setLinkId($linkId) {
 		$this->linkId = $linkId;
 	}
 	
-	public function getLinkedEntity()
-	{
+	public function getLinkedEntity() {
 		return $this->linkedEntity;
 	}
 	
-	public function setLinkedEntity($linkedEntity)
-	{
+	public function setLinkedEntity($linkedEntity) {
 		$this->linkedEntity = $linkedEntity;
 	}
 	
-	public function getModificationTimestamp()
-	{
+	public function getModificationTimestamp() {
 		return $this->modificationTimestamp;
 	}
 	
-	public function setModificationTimestamp($modificationTimestamp)
-	{
+	public function setModificationTimestamp($modificationTimestamp) {
 		$this->modificationTimestamp = $modificationTimestamp;
 	}
 	
-	public function getSerialNumber()
-	{
+	public function getSerialNumber() {
 		return $this->serialNumber;
 	}
 	
-	public function setSerialNumber($serialNumber)
-	{
+	public function setSerialNumber($serialNumber) {
 		$this->serialNumber = $serialNumber;
 	}
 	
-	public function getEntityType()
-	{
+	public function getEntityType() {
 		return $this->entityType;
 	}
 	
-	public function setEntityType($entityType)
-	{
+	public function setEntityType($entityType) {
 		$this->entityType = $entityType;
 	}
 	
-	public function getOnLoadHandlers()
-	{
+	public function getOnLoadHandlers() {
 		return $this->onLoadHandlers;
 	}
 	
-	public function setOnLoadHandlers($onLoadHandlers)
-	{
+	public function setOnLoadHandlers($onLoadHandlers) {
 		$this->onLoadHandlers = $onLoadHandlers;
 	}
 	
 	/**
 	 * @todo Consider removing this method when refactoring the renderer code.
 	 */
-	public function getRenderer()
-	{
+	public function getRenderer() {
 		/* See bug 1662652 */
 		return null;
 	}

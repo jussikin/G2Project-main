@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class ShowItemTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class ShowItemTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -59,8 +56,7 @@ class ShowItemTest extends GalleryTestCase
 		$this->_template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
 	}
 	
-	public function _testViewCount($itemId)
-	{
+	public function _testViewCount($itemId) {
 		list($ret, $count) = GalleryCoreApi::fetchItemViewCount($itemId);
 		if ($ret) {
 			return $ret;
@@ -83,13 +79,11 @@ class ShowItemTest extends GalleryTestCase
 		$this->assertEquals(1, $count, 'count after');
 	}
 	
-	public function testViewCountAlbum()
-	{
+	public function testViewCountAlbum() {
 		$this->_testViewCount($this->_album->getId());
 	}
 	
-	public function testViewCountItem()
-	{
+	public function testViewCountItem() {
 		/*
 	     * If we change view-count back to counting data items on core.DownloadItem
 	     * instead of ShowItem then this test will need to be updated.
@@ -97,8 +91,7 @@ class ShowItemTest extends GalleryTestCase
 		$this->_testViewCount($this->_item->getId());
 	}
 	
-	public function testAlbumSourcePermission()
-	{
+	public function testAlbumSourcePermission() {
 		/* Verify viewing album contents requires ?? permission */
 		/*
 	     * We briefly put code in place to require core.viewSource to view album contents..
@@ -134,8 +127,7 @@ class ShowItemTest extends GalleryTestCase
 		$this->assert(isset($result['body']));
 	}
 	
-	public function testItemSourcePermission()
-	{
+	public function testItemSourcePermission() {
 		/* Verify data item does not require core.viewSource permission */
 		global $gallery;
 		$ret = GalleryCoreApi::removeItemPermissions($this->_item->getId());
@@ -157,8 +149,7 @@ class ShowItemTest extends GalleryTestCase
 		$this->assertEquals(substr($result['body'], 0, strlen($match)), $match, 'template should be inside a theme');
 	}
 	
-	public function testUseAlbumThemeForDefaultAlbum()
-	{
+	public function testUseAlbumThemeForDefaultAlbum() {
 		global $gallery;
 		
 		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
@@ -209,15 +200,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTheme.class');
 /**
  * Test theme
  */
-class ShowItemTestTheme extends GalleryTheme
-{
-	public function ShowItemTestTheme()
-	{
+class ShowItemTestTheme extends GalleryTheme {
+	public function ShowItemTestTheme() {
 		$this->setId('showItemTest');
 	}
 	
-	public function isActive()
-	{
+	public function isActive() {
 		return array(
 			null,
 			true

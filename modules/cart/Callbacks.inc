@@ -23,10 +23,8 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class CartCallbacks
-{
-	public function callback($params, $smarty, $callback, $userId = null)
-	{
+class CartCallbacks {
+	public function callback($params, $smarty, $callback, $userId = null) {
 		global $gallery;
 		
 		switch ($callback) {

@@ -26,8 +26,7 @@ GalleryCoreApi::requireOnce('modules/fotokasten/lib/nusoap.inc');
  * @author Ioana Ciocanescu <service@fotokasten.de>
  * @version $Revision: 17580 $
  */
-class PrintPhotosController extends GalleryController
-{
+class PrintPhotosController extends GalleryController {
 	/* Server URL configuration */
 	public $nserver = '.partner.fotokasten.de';
 	public $ftk_soap_path = '/affiliateapi/transfer_basket.php';
@@ -45,8 +44,7 @@ class PrintPhotosController extends GalleryController
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -286,8 +284,7 @@ class PrintPhotosController extends GalleryController
 	 * Initialize fotokasten session.
 	 * @return GalleryStatus a status code
 	 */
-	public function getFotokastenSession()
-	{
+	public function getFotokastenSession() {
 		global $gallery;
 		$session =& $gallery->getSession();
 		$endpoint = $session->get('fotokasten.endpoint');
@@ -335,8 +332,7 @@ class PrintPhotosController extends GalleryController
 	 * @return array GalleryStatus a status code
 	 *               string url for redirect to shopping basket
 	 */
-	public function sendFotokastenCart($basket)
-	{
+	public function sendFotokastenCart($basket) {
 		global $gallery;
 		
 		/* create new client with new endpoint */

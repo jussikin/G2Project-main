@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/comment/classes/AkismetApi.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17989 $
  */
-class AkismetApiTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class AkismetApiTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -54,15 +51,13 @@ class AkismetApiTest extends GalleryTestCase
 		$gallery->setUrlGenerator(new AkismetApiTest_MockUrlGenerator());
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$this->assert($this->_platform->isComplete(), $this->_platform->getRemaining());
 		
 		return parent::tearDown();
 	}
 	
-	public function testCheckComment_NotSpam()
-	{
+	public function testCheckComment_NotSpam() {
 		$this->_akismet->setReply('_request', array(
 			'comment-check',
 			$this->_comment,
@@ -80,8 +75,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $this->_akismet->checkComment($this->_comment));
 	}
 	
-	public function testCheckComment_Spam()
-	{
+	public function testCheckComment_Spam() {
 		$this->_akismet->setReply('_request', array(
 			'comment-check',
 			$this->_comment,
@@ -99,8 +93,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $this->_akismet->checkComment($this->_comment));
 	}
 	
-	public function testCheckComment_BadStatus()
-	{
+	public function testCheckComment_BadStatus() {
 		$this->_akismet->setReply('_request', array(
 			'comment-check',
 			$this->_comment,
@@ -118,8 +111,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $this->_akismet->checkComment($this->_comment));
 	}
 	
-	public function testCheckComment_RecheckExistingComment()
-	{
+	public function testCheckComment_RecheckExistingComment() {
 		$this->_comment->clearPersistentFlag(STORAGE_FLAG_NEWLY_CREATED);
 		$this->_akismet->setReply('_request', array(
 			'comment-check',
@@ -138,8 +130,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $this->_akismet->checkComment($this->_comment));
 	}
 	
-	public function testSubmitSpam()
-	{
+	public function testSubmitSpam() {
 		$this->_akismet->setReply('_request', array(
 			'submit-spam',
 			$this->_comment,
@@ -154,8 +145,7 @@ class AkismetApiTest extends GalleryTestCase
 		$this->assertEquals(null, $this->_akismet->submitSpam($this->_comment));
 	}
 	
-	public function testSubmitHam()
-	{
+	public function testSubmitHam() {
 		$this->_akismet->setReply('_request', array(
 			'submit-ham',
 			$this->_comment,
@@ -176,8 +166,7 @@ class AkismetApiTest extends GalleryTestCase
 	 * @todo This should get refactored up into UnitTestPlatform so that other tests can use it.
 	 * @access private
 	 */
-	public function _setHttpRequestResponse(&$platform, $host, $port, $requestArray, $response)
-	{
+	public function _setHttpRequestResponse(&$platform, $host, $port, $requestArray, $response) {
 		$request = $requestArray[0] . "\r\n";
 		$tmp = array();
 		foreach ($requestArray[1] as $key => $value) {
@@ -233,8 +222,7 @@ class AkismetApiTest extends GalleryTestCase
 		), true);
 	}
 	
-	public function testVerifyApiKey_Valid()
-	{
+	public function testVerifyApiKey_Valid() {
 		$this->_akismet->setReply('_getUserAgent', array(), array(
 			null,
 			'USER_AGENT'
@@ -257,8 +245,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $this->_akismet->verifyApiKey('GOOD_key'));
 	}
 	
-	public function testVerifyApiKey_Invalid()
-	{
+	public function testVerifyApiKey_Invalid() {
 		$this->_akismet->setReply('_getUserAgent', array(), array(
 			null,
 			'USER_AGENT'
@@ -281,8 +268,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $this->_akismet->verifyApiKey('BAD_key'));
 	}
 	
-	public function testRequest()
-	{
+	public function testRequest() {
 		$this->_markPluginParametersForCleanup('module', 'comment');
 		$ret = GalleryCoreApi::setPluginParameter('module', 'comment', 'akismet.apiKey', 'API_KEY');
 		if ($ret) {
@@ -357,8 +343,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $akismet->_request('AKISMET_REQUEST', $this->_comment, true));
 	}
 	
-	public function testRequest_WithoutRequestSpecificDetails()
-	{
+	public function testRequest_WithoutRequestSpecificDetails() {
 		$this->_markPluginParametersForCleanup('module', 'comment');
 		$ret = GalleryCoreApi::setPluginParameter('module', 'comment', 'akismet.apiKey', 'API_KEY');
 		if ($ret) {
@@ -419,8 +404,7 @@ class AkismetApiTest extends GalleryTestCase
 		), $akismet->_request('AKISMET_REQUEST', $this->_comment, false));
 	}
 	
-	public function testResponseHandledIndependentOfHttpVersion()
-	{
+	public function testResponseHandledIndependentOfHttpVersion() {
 		$this->_akismet->setReply('_request', array(
 			'submit-ham',
 			$this->_comment,
@@ -436,10 +420,8 @@ class AkismetApiTest extends GalleryTestCase
 	}
 }
 
-class AkismetApiTest_MockUrlGenerator
-{
-	public function generateUrl($args = array(), $options = array())
-	{
+class AkismetApiTest_MockUrlGenerator {
+	public function generateUrl($args = array(), $options = array()) {
 		$url = 'http://gallery2';
 		foreach ($args as $key => $val) {
 			$url .= "|$key=$val";
@@ -452,10 +434,8 @@ class AkismetApiTest_MockUrlGenerator
 	}
 }
 
-class AkismetApiTest_AkismetApiWithMockUserAgent extends AkismetApi
-{
-	public function _getUserAgent()
-	{
+class AkismetApiTest_AkismetApiWithMockUserAgent extends AkismetApi {
+	public function _getUserAgent() {
 		return array(
 			null,
 			'USER_AGENT'
@@ -463,15 +443,12 @@ class AkismetApiTest_AkismetApiWithMockUserAgent extends AkismetApi
 	}
 }
 
-class AkismetApiTest_AkismetApiWithMockRequest extends AkismetApi
-{
-	public function setReply($function, $args, $reply)
-	{
+class AkismetApiTest_AkismetApiWithMockRequest extends AkismetApi {
+	public function setReply($function, $args, $reply) {
 		$_REQUEST['mock'][$function][serialize($args)] = $reply;
 	}
 	
-	public function _request($type, $comment, $includeBrowserSpecificDetails)
-	{
+	public function _request($type, $comment, $includeBrowserSpecificDetails) {
 		return $_REQUEST['mock']['_request'][serialize(array(
 			$type,
 			$comment,
@@ -479,8 +456,7 @@ class AkismetApiTest_AkismetApiWithMockRequest extends AkismetApi
 		))];
 	}
 	
-	public function _getUserAgent()
-	{
+	public function _getUserAgent() {
 		return $_REQUEST['mock']['_getUserAgent'][serialize(array())];
 	}
 }

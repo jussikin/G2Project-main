@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class MimeTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class MimeTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -53,8 +50,7 @@ class MimeTest extends GalleryTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeMimeType(array(
 			'mimeType' => 'test/test'
 		));
@@ -82,8 +78,7 @@ class MimeTest extends GalleryTestCase
 		}
 	}
 	
-	public function testGetMimeType()
-	{
+	public function testGetMimeType() {
 		list($ret, $mimeType) = GalleryCoreApi::getMimeType('file.xxx');
 		if ($ret) {
 			return $ret;
@@ -91,8 +86,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('test/test', $mimeType);
 	}
 	
-	public function testGetMimeTypeExtensionIsValid()
-	{
+	public function testGetMimeTypeExtensionIsValid() {
 		list($ret, $mimeType) = GalleryCoreApi::getMimeType('file.xxx', 'test/test2');
 		if ($ret) {
 			return $ret;
@@ -106,8 +100,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('test/test', $mimeType, 'Upper case should still produce test/test');
 	}
 	
-	public function testGetMimeTypeExtensionAndMimeTypeUndefined()
-	{
+	public function testGetMimeTypeExtensionAndMimeTypeUndefined() {
 		list($ret, $mimeType) = GalleryCoreApi::getMimeType('file.abc', 'test/test2');
 		if ($ret) {
 			return $ret;
@@ -115,8 +108,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('application/unknown', $mimeType, 'Expected MimeType of application/unknown');
 	}
 	
-	public function testGetMimeTypeUsedMimeType()
-	{
+	public function testGetMimeTypeUsedMimeType() {
 		list($ret, $mimeData) = GalleryMimeTypeHelper_simple::_getMimeData();
 		if ($ret) {
 			return $ret;
@@ -129,8 +121,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('test/test3', $mimeType, 'Expected MimeType of test/test3');
 	}
 	
-	public function testGetMimeTypeWithoutRequestMimeType()
-	{
+	public function testGetMimeTypeWithoutRequestMimeType() {
 		list($ret, $mimeType) = GalleryCoreApi::getMimeType('file.xxxxunknown');
 		if ($ret) {
 			return $ret;
@@ -138,8 +129,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('application/unknown', $mimeType);
 	}
 	
-	public function testConvertExtensionToMime()
-	{
+	public function testConvertExtensionToMime() {
 		list($ret, $mimeType) = GalleryCoreApi::convertExtensionToMime('xxx');
 		if ($ret) {
 			return $ret;
@@ -153,8 +143,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('test/test', $mimeType);
 	}
 	
-	public function testConvertMimeToExtensions()
-	{
+	public function testConvertMimeToExtensions() {
 		list($ret, $exts) = GalleryCoreApi::convertMimeToExtensions('test/test');
 		if ($ret) {
 			return $ret;
@@ -183,8 +172,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals(array(), $exts);
 	}
 	
-	public function testIsViewableMimeType()
-	{
+	public function testIsViewableMimeType() {
 		list($ret, $isViewable) = GalleryCoreApi::isViewableMimeType('image/jpeg');
 		if ($ret) {
 			return $ret;
@@ -198,8 +186,7 @@ class MimeTest extends GalleryTestCase
 		$this->assert(!$isViewable, 'test');
 	}
 	
-	public function testAddMimeType()
-	{
+	public function testAddMimeType() {
 		$ret = GalleryCoreApi::addMimeType('xxx', 'test/test', 1);
 		$this->assert($ret && $ret->getErrorCode() & ERROR_COLLISION);
 		
@@ -216,8 +203,7 @@ class MimeTest extends GalleryTestCase
 		$this->assertEquals('test/test', $mime);
 	}
 	
-	public function testAddMimeTypeForLongMimeTypeString()
-	{
+	public function testAddMimeTypeForLongMimeTypeString() {
 		/* See bug 1634796 */
 		$mimeType = 'application/super.long.test.mime-type.test+html+application+test';
 		$ret = GalleryCoreApi::addMimeType('mimetest', $mimeType, 0);

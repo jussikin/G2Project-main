@@ -22,10 +22,8 @@
  * System checks
  * @package Install
  */
-class SystemChecksStep extends InstallStep
-{
-	public function stepName()
-	{
+class SystemChecksStep extends InstallStep {
+	public function stepName() {
 		return _('System Checks');
 	}
 	
@@ -33,10 +31,9 @@ class SystemChecksStep extends InstallStep
 	 * Returns the exact bytes value from a php.ini setting
 	 * Copied from PHP.net's manual entry for ini_get()
 	 */
-	public function _getBytes($val)
-	{
+	public function _getBytes($val) {
 		$val = trim($val);
-		$last = $val{strlen($val) - 1};
+		$last = $val[strlen($val) - 1];
 		switch ($last) {
 			case 'g':
 			case 'G':
@@ -52,8 +49,7 @@ class SystemChecksStep extends InstallStep
 		return $val;
 	}
 	
-	public function processRequest()
-	{
+	public function processRequest() {
 		/* Zend test */
 		if (!empty($_GET['zendtest'])) {
 			header("Content-Type: text/plain");
@@ -435,8 +431,7 @@ class SystemChecksStep extends InstallStep
 		return false;
 	}
 	
-	public function CheckFileDirective()
-	{
+	public function CheckFileDirective() {
 		if (strstr(__FILE__, 'install/steps/SystemChecksStep.class') || strstr(__FILE__, '\\install\\steps\\SystemChecksStep.class')) {
 			return true;
 		} else {
@@ -445,8 +440,7 @@ class SystemChecksStep extends InstallStep
 	}
 	
 	/** Verify that there is at least one themes/.../theme.inc file. */
-	public function AssertThemeIsAvailable()
-	{
+	public function AssertThemeIsAvailable() {
 		$themesFolder = dirname(dirname(dirname(__FILE__))) . '/themes/';
 		if (!file_exists($themesFolder)) {
 			return false;
@@ -470,8 +464,7 @@ class SystemChecksStep extends InstallStep
 		return false;
 	}
 	
-	public function CheckManifest(&$statusMonitor, $useSetTimeLimit)
-	{
+	public function CheckManifest(&$statusMonitor, $useSetTimeLimit) {
 		$base = realpath(dirname(__FILE__) . '/../..') . '/';
 		
 		if ($useSetTimeLimit) {

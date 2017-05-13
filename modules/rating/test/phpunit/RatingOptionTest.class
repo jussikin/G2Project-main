@@ -25,15 +25,12 @@
  * @author Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingOptionTest extends ItemEditOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class RatingOptionTest extends ItemEditOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemEditOptionTestCase($methodName, 'rating', 'RatingItemEdit');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -51,8 +48,7 @@ class RatingOptionTest extends ItemEditOptionTestCase
 		}
 	}
 
-	public function testEnableRatingForAlbum()
-	{
+	public function testEnableRatingForAlbum() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'enabled', 0,
 		$this->_album->getId());
 		if ($ret) {
@@ -72,8 +68,7 @@ class RatingOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(1, (int)$enabled, 'Rating not enabled.');
 	}
 
-	public function testDisableRatingForAlbum()
-	{
+	public function testDisableRatingForAlbum() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'enabled', 1,
 		$this->_album->getId());
 		if ($ret) {
@@ -92,8 +87,7 @@ class RatingOptionTest extends ItemEditOptionTestCase
 		$this->assertEquals(0, (int)$enabled, 'Rating enabled.');
 	}
 
-	public function testEnableInDescendents()
-	{
+	public function testEnableInDescendents() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'enabled', 0,
 		$this->_album->getId());
 		if ($ret) {

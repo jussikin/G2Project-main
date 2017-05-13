@@ -26,16 +26,14 @@
  * @version $Revision: 17580 $
  * @abstract
  */
-class GalleryRenderer
-{
+class GalleryRenderer {
 	/**
 	 * Can this renderer display the given item?
 	 *
 	 * @param GalleryDataItem $item
 	 * @return boolean true if this data item can be viewed inline
 	 **/
-	public function canBeViewedInline($item)
-	{
+	public function canBeViewedInline($item) {
 		return false;
 	}
 	
@@ -54,8 +52,7 @@ class GalleryRenderer
 	 * @param array $params format specific key value pairs
 	 * @return string formatted output
 	 **/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		return null;
 	}
 }

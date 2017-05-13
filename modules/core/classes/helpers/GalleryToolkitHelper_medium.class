@@ -30,13 +30,11 @@
  * @version $Revision: 20940 $
  * @static
  */
-class GalleryToolkitHelper_medium
-{
+class GalleryToolkitHelper_medium {
 	/**
 	 * @see GalleryCoreApi::registerToolkitOperation
 	 */
-	public static function registerOperation($toolkitId, $mimeTypes, $operationName, $parameterTypesArray, $description, $outputMimeType = '', $priority = 5)
-	{
+	public static function registerOperation($toolkitId, $mimeTypes, $operationName, $parameterTypesArray, $description, $outputMimeType = '', $priority = 5) {
 		global $gallery;
 		
 		/*
@@ -130,8 +128,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::registerToolkitProperty
 	 */
-	public static function registerProperty($toolkitId, $mimeTypes, $propertyName, $type, $description)
-	{
+	public static function registerProperty($toolkitId, $mimeTypes, $propertyName, $type, $description) {
 		global $gallery;
 		
 		/* Check to see if the property name exists, but with a different unique id. */
@@ -191,8 +188,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::unregisterToolkitOperation
 	 */
-	public static function unregisterOperation($toolkitId, $operationName, $mimeTypes = array())
-	{
+	public static function unregisterOperation($toolkitId, $operationName, $mimeTypes = array()) {
 		$entry = array(
 			'toolkitId' => $toolkitId,
 			'operationName' => $operationName
@@ -214,8 +210,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::unregisterToolkit
 	 */
-	public static function unregisterToolkit($toolkitId)
-	{
+	public static function unregisterToolkit($toolkitId) {
 		global $gallery;
 		
 		/* Remove our toolkit/operation mappings */
@@ -309,8 +304,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::unregisterToolkitsByModuleId
 	 */
-	public static function unregisterToolkitsByModuleId($moduleId)
-	{
+	public static function unregisterToolkitsByModuleId($moduleId) {
 		list($ret, $searchResults) = GalleryCoreApi::getMapEntry('GalleryFactoryMap', array(
 			'implId'
 		), array(
@@ -339,8 +333,7 @@ class GalleryToolkitHelper_medium
 	 * @see GalleryCoreApi::getToolkitOperations
 	 * @todo use priorities for choosing the correct toolkit
 	 */
-	public static function getOperations($mimeType)
-	{
+	public static function getOperations($mimeType) {
 		global $gallery;
 		
 		$cacheKey = "GalleryToolkitHelper::getOperations($mimeType)";
@@ -414,8 +407,7 @@ class GalleryToolkitHelper_medium
 	 * @see GalleryCoreApi::getToolkitProperties
 	 * @todo use priorities for choosing the correct toolkit
 	 */
-	public static function getProperties($mimeType)
-	{
+	public static function getProperties($mimeType) {
 		global $gallery;
 		
 		$cacheKey = "GalleryToolkitHelper::getProperties($mimeType)";
@@ -467,8 +459,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::getToolkitOperationMimeTypes
 	 */
-	public static function getOperationMimeTypes($operationName)
-	{
+	public static function getOperationMimeTypes($operationName) {
 		global $gallery;
 		
 		$cacheKey = "GalleryToolkitHelper::getOperationMimeTypes($operationName)";
@@ -512,8 +503,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::getRedundantToolkitPriorities
 	 */
-	public static function getRedundantPriorities()
-	{
+	public static function getRedundantPriorities() {
 		global $gallery;
 		
 		$cacheKey = "GalleryToolkitHelper::getRedundantPriorities()";
@@ -563,8 +553,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::isSupportedOperationSequence
 	 */
-	public static function isSupportedOperationSequence($mimeType, $operations)
-	{
+	public static function isSupportedOperationSequence($mimeType, $operations) {
 		$isSupported = true;
 		foreach (explode(';', $operations) as $operation) {
 			if (strpos($operation, '|') === false) {
@@ -602,8 +591,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::makeSupportedViewableOperationSequence
 	 */
-	public static function makeSupportedViewableOperationSequence($mimeType, $operations, $prependConversion = true)
-	{
+	public static function makeSupportedViewableOperationSequence($mimeType, $operations, $prependConversion = true) {
 		if (empty($operations)) {
 			$isSupported = true;
 			$outputMimeType = $mimeType;
@@ -692,8 +680,7 @@ class GalleryToolkitHelper_medium
 	/**
 	 * @see GalleryCoreApi::estimateDerivativeDimensions
 	 */
-	public static function estimateDerivativeDimensions(&$derivative, $source)
-	{
+	public static function estimateDerivativeDimensions(&$derivative, $source) {
 		if (preg_match('/^(thumbnail|scale|resize)\|/', $derivative->getDerivativeOperations(), $matches)) {
 			if (!empty($matches[1])) {
 				list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($source->getMimeType(), $matches[1]);

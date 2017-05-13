@@ -32,17 +32,15 @@ GalleryCoreApi::requireOnce('modules/rss/Render.inc');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17580 $
  */
-class SimpleRenderView extends RenderView
-{
+class SimpleRenderView extends RenderView {
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
-	public function renderImmediate($status, $error)
-	{
+	public function renderImmediate($status, $error) {
 		global $gallery;
 
 	/* get all parameters */
-	list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 		if ($ret) {
 			return $ret;
 		}
@@ -61,22 +59,22 @@ class SimpleRenderView extends RenderView
 		$params['itemId'] = $item->getId();
 
 	/* set feed type */
-	if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-		$params['feedType'] = $params['sfAlbumType'];
-	} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
-		$params['feedType'] = 'commentsPhoto';
-	}
+		if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
+			$params['feedType'] = $params['sfAlbumType'];
+		} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
+			$params['feedType'] = 'commentsPhoto';
+		}
 
 		$params['feedDate'] = $params['sfDate'];
 
 	/* apply defaults */
-	foreach (array('copyright' => 'defaultCopyright',
+		foreach (array('copyright' => 'defaultCopyright',
 			  'version' => 'defaultVersion',
 			  'count' => 'defaultCount',
 			  'photosRecursiveLimit' => 'sfPhotosRecursiveLimit',
 			  'ttl' => 'defaultTtl') as $name => $defaultName) {
-		$params[$name] = $params[$defaultName];
-	}
+			$params[$name] = $params[$defaultName];
+		}
 
 		$params['language'] = 'en-us';
 		$params['useImage'] = true;

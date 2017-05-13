@@ -25,15 +25,12 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class TileTheme extends GalleryTheme
-{
-	public function __construct()
-	{
+class TileTheme extends GalleryTheme {
+	public function __construct() {
 		$this->TileTheme();
 	}
 	
-	public function TileTheme()
-	{
+	public function TileTheme() {
 		global $gallery;
 		
 		$this->setId('tile');
@@ -77,8 +74,7 @@ class TileTheme extends GalleryTheme
 		));
 	}
 	
-	public function _setDefaultParameters(&$params)
-	{
+	public function _setDefaultParameters(&$params) {
 		foreach (array(
 			'backgroundId',
 			'rows',
@@ -95,8 +91,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAlbumPage
 	 */
-	public function showAlbumPage(&$template, $item, $params, $childIds, $showHead = true)
-	{
+	public function showAlbumPage(&$template, $item, $params, $childIds, $showHead = true) {
 		$this->_setDefaultParameters($params);
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
@@ -175,8 +170,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showPhotoPage
 	 */
-	public function showPhotoPage(&$template, $item, $params)
-	{
+	public function showPhotoPage(&$template, $item, $params) {
 		$renderId = GalleryUtilities::getRequestVariables('renderId');
 		if (!empty($renderId)) {
 			/* Render this item */
@@ -254,8 +248,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showModulePage
 	 */
-	public function showModulePage(&$template, $item, $params, $templateFile)
-	{
+	public function showModulePage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -276,8 +269,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showAdminPage
 	 */
-	public function showAdminPage(&$template, $item, $params, $templateFile)
-	{
+	public function showAdminPage(&$template, $item, $params, $templateFile) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -298,8 +290,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showErrorPage
 	 */
-	public function showErrorPage(&$template)
-	{
+	public function showErrorPage(&$template) {
 		return array(
 			null,
 			'error.tpl'
@@ -309,8 +300,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::showProgressBarPage
 	 */
-	public function showProgressBarPage(&$template, $item, $params)
-	{
+	public function showProgressBarPage(&$template, $item, $params) {
 		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
 			'parents',
 			'systemLinks'
@@ -328,8 +318,7 @@ class TileTheme extends GalleryTheme
 		);
 	}
 	
-	public function _buildItemList($childIds, &$children)
-	{
+	public function _buildItemList($childIds, &$children) {
 		$imageWidths = $imageHeights = $childItems = array();
 		if (!empty($childIds)) {
 			$ret = GalleryCoreApi::studyPermissions($childIds);
@@ -466,8 +455,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::getPageSize
 	 */
-	public function getPageSize($params)
-	{
+	public function getPageSize($params) {
 		/* This theme may not be configured yet... */
 		if (isset($params['rows']) && isset($params['cols'])) {
 			return $params['rows'] * $params['cols'];
@@ -479,16 +467,14 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::isAdvancedSettings
 	 */
-	public function isAdvancedSettings()
-	{
+	public function isAdvancedSettings() {
 		return true;
 	}
 	
 	/**
 	 * @see GalleryTheme::loadSettingsTemplate
 	 */
-	public function loadSettingsTemplate(&$template, &$form, $itemId = null)
-	{
+	public function loadSettingsTemplate(&$template, &$form, $itemId = null) {
 		global $gallery;
 		if (!isset($itemId)) {
 			/* Site admin settings -- we have none. */
@@ -557,8 +543,7 @@ class TileTheme extends GalleryTheme
 	/**
 	 * @see GalleryTheme::handleSettingsRequest
 	 */
-	public function handleSettingsRequest($form, $itemId = null)
-	{
+	public function handleSettingsRequest($form, $itemId = null) {
 		if (!isset($itemId)) {
 			/* No site admin settings */
 			return array(

@@ -36,8 +36,7 @@ define('TEMPLATE_DATA_VERSION', 15);
  * This is Gallery's templating class.  It hides the details of the implementation (eg, Smarty)
  * and provides a unified means of handling internationalization.
  */
-class GalleryTemplate
-{
+class GalleryTemplate {
 	/**
 	 * The Smarty instance
 	 * @var Smarty
@@ -59,13 +58,11 @@ class GalleryTemplate
 	 */
 	public $_compiledTemplateDir;
 	
-	public function __construct($templateDir, $initSmarty = true, $trimWhitespace = true)
-	{
+	public function __construct($templateDir, $initSmarty = true, $trimWhitespace = true) {
 		$this->GalleryTemplate($templateDir, $initSmarty, $trimWhitespace);
 	}
 	
-	public function GalleryTemplate($templateDir, $initSmarty = true, $trimWhitespace = true)
-	{
+	public function GalleryTemplate($templateDir, $initSmarty = true, $trimWhitespace = true) {
 		global $gallery;
 		$this->_templateDir = $templateDir;
 		
@@ -82,8 +79,7 @@ class GalleryTemplate
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setVariable($key, $value = null)
-	{
+	public function setVariable($key, $value = null) {
 		$this->_smarty->assign($key, $value);
 	}
 	
@@ -93,8 +89,7 @@ class GalleryTemplate
 	 * @param string $key
 	 * @return mixed value
 	 */
-	public function getVariable($key)
-	{
+	public function getVariable($key) {
 		$templateVars = $this->_smarty->get_template_vars();
 
 		return $templateVars[$key];
@@ -106,8 +101,7 @@ class GalleryTemplate
 	 * @param string $key
 	 * @return mixed value
 	 */
-	public function &getVariableByReference($key)
-	{
+	public function &getVariableByReference($key) {
 		$templateVars =& $this->_smarty->get_template_vars();
 
 		return $templateVars[$key];
@@ -119,8 +113,7 @@ class GalleryTemplate
 	 * @param string $key
 	 * @return boolean
 	 */
-	public function hasVariable($key)
-	{
+	public function hasVariable($key) {
 		$templateVars = $this->_smarty->get_template_vars();
 
 		return isset($templateVars[$key]);
@@ -132,8 +125,7 @@ class GalleryTemplate
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setVariableByReference($key, &$value)
-	{
+	public function setVariableByReference($key, &$value) {
 		$this->_smarty->assign_by_ref($key, $value);
 	}
 	
@@ -143,8 +135,7 @@ class GalleryTemplate
 	 * @param string $l10Domain (optional) localization domain
 	 *        default={1stdir}_{2nddir} from template path
 	 */
-	public function head($tpl, $l10Domain = null)
-	{
+	public function head($tpl, $l10Domain = null) {
 		$head =& $this->getVariableByReference('head');
 		if (!isset($l10Domain)) {
 			list($type, $id, $junk) = explode('/', $tpl, 3);
@@ -157,8 +148,7 @@ class GalleryTemplate
 	 * Set the title to include in the <head> section
 	 * @param string $title localized title
 	 */
-	public function title($title)
-	{
+	public function title($title) {
 		$head =& $this->getVariableByReference('head');
 		$head['title'] = $title;
 	}
@@ -167,8 +157,7 @@ class GalleryTemplate
 	 * Add a stylesheet to include in the <head> section
 	 * @param string $path stylesheet path relative to gallery2 dir
 	 */
-	public function style($path)
-	{
+	public function style($path) {
 		$head =& $this->getVariableByReference('head');
 		$head['stylesheet'][$path] = true;
 	}
@@ -177,8 +166,7 @@ class GalleryTemplate
 	 * Add a JavaScript to include in the <head> section
 	 * @param string $path script path relative to gallery2 dir
 	 */
-	public function javascript($path)
-	{
+	public function javascript($path) {
 		$head =& $this->getVariableByReference('head');
 		$head['javascript'][$path] = true;
 	}
@@ -187,8 +175,7 @@ class GalleryTemplate
 	 * Add a <link> element in the <head> section
 	 * @param string $path script path relative to gallery2 dir
 	 */
-	public function link($attributes)
-	{
+	public function link($attributes) {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		
@@ -213,8 +200,7 @@ class GalleryTemplate
 	 * @param unknown_type $isHttpEquiv (optional) Whether this is a http-equiv element.
 	 *                                             Default false.
 	 */
-	public function meta($name, $content, $isHttpEquiv = false)
-	{
+	public function meta($name, $content, $isHttpEquiv = false) {
 		$head =& $this->getVariableByReference('head');
 		$head['meta'][] = array(
 			'name' => $name,
@@ -230,8 +216,7 @@ class GalleryTemplate
 	 * @return array GalleryStatus the status of the call
 	 *         string the HTML content
 	 */
-	public function fetch($templateName)
-	{
+	public function fetch($templateName) {
 		$this->_smarty->template_dir = $this->_templateDir;
 		
 		list($ret, $this->_smarty->compile_dir) = $this->_initCompiledTemplateDir();
@@ -262,8 +247,7 @@ class GalleryTemplate
 	 * @param string $templateName
 	 * @return GalleryStatus the status of the call
 	 */
-	public function display($templateName)
-	{
+	public function display($templateName) {
 		$this->_smarty->template_dir = $this->_templateDir;
 		
 		list($ret, $this->_smarty->compile_dir) = $this->_initCompiledTemplateDir();
@@ -290,8 +274,7 @@ class GalleryTemplate
 	 * @return array GalleryStatus a status code
 	 * 		     string directory to use for complide templates
 	 */
-	public function _initCompiledTemplateDir()
-	{
+	public function _initCompiledTemplateDir() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -375,8 +358,7 @@ class GalleryTemplate
 	 * @static
 	 * @access private
 	 */
-	public static function _getSmarty($trimWhitespace)
-	{
+	public static function _getSmarty($trimWhitespace) {
 		global $gallery;
 		
 		GalleryCoreApi::requireOnce('modules/core/classes/GallerySmarty.class');
@@ -437,8 +419,7 @@ class GalleryTemplate
 	 * @return boolean false if the compiled templates should be used without any checking
 	 * @static
 	 */
-	public static function shouldDoCompileCheck()
-	{
+	public static function shouldDoCompileCheck() {
 		$cacheKey = 'GalleryTemplate::compileCheck';
 		if (!GalleryDataCache::containsKey($cacheKey)) {
 			$compileCheck = (GalleryUtilities::getServerVar('HTTP_PRAGMA') == 'no-cache' || GalleryUtilities::getServerVar('HTTP_CACHE_CONTROL') == 'no-cache');
@@ -462,8 +443,7 @@ class GalleryTemplate
 	 * @return string processed tpl content ready for compilation
 	 * @static
 	 */
-	public static function preFilter($source, &$smarty)
-	{
+	public static function preFilter($source, &$smarty) {
 		return preg_replace('/^\s+/m', '', $source);
 	}
 	
@@ -476,8 +456,7 @@ class GalleryTemplate
 	 *
 	 * @see function _getActualTemplatePath
 	 */
-	public static function resourceGetTemplate($templateName, &$templateSource, &$smarty)
-	{
+	public static function resourceGetTemplate($templateName, &$templateSource, &$smarty) {
 		$templatePath = self::_getActualTemplatePath($templateName, $smarty);
 		
 		$success = false;
@@ -502,8 +481,7 @@ class GalleryTemplate
 	 *
 	 * @see function _getActualTemplatePath
 	 */
-	public static function resourceGetTimestamp($templateName, &$templateTimestamp, &$smarty)
-	{
+	public static function resourceGetTimestamp($templateName, &$templateTimestamp, &$smarty) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -532,8 +510,7 @@ class GalleryTemplate
 	 * @static
 	 * @access private
 	 */
-	public static function _getActualTemplatePath($templateName, &$smarty)
-	{
+	public static function _getActualTemplatePath($templateName, &$smarty) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -601,8 +578,7 @@ class GalleryTemplate
 	 * @static
 	 * @access private
 	 */
-	public static function _getThemeId()
-	{
+	public static function _getThemeId() {
 		$view = new GalleryView();
 		list($ret, $itemId) = $view->getItem();
 		if ($ret) {
@@ -654,8 +630,7 @@ class GalleryTemplate
 	/**
 	 * @see http://smarty.php.net/manual/en/template.resources.php
 	 */
-	public function resourceGetSecure($templateName, &$smarty)
-	{
+	public function resourceGetSecure($templateName, &$smarty) {
 		/* Assume all templates are secure */
 		return true;
 	}
@@ -663,8 +638,7 @@ class GalleryTemplate
 	/**
 	 * @see http://smarty.php.net/manual/en/template.resources.php
 	 */
-	public function resourceGetTrusted($templateName, &$smarty)
-	{
+	public function resourceGetTrusted($templateName, &$smarty) {
 		/* Not used for templates */
 	}
 }

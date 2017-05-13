@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminModerateSpamControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminModerateSpamControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'comment.AdminModerateSpam');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -56,8 +53,7 @@ class AdminModerateSpamControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testSiteAdminsOnly()
-	{
+	public function testSiteAdminsOnly() {
 		$ret = $this->_becomeGuestUser();
 		if ($ret) {
 			return $ret;
@@ -66,8 +62,7 @@ class AdminModerateSpamControllerTest extends GalleryControllerTestCase
 		$this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
 	
-	public function testDeleteAllSpam()
-	{
+	public function testDeleteAllSpam() {
 		global $gallery;
 		
 		/* Create a comment of each type */

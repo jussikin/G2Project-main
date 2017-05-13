@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class DataCacheTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class DataCacheTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -60,8 +57,7 @@ class DataCacheTest extends GalleryTestCase
 		unset($_SERVER['HTTP_CACHE_CONTROL']);
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		$ret = GalleryCoreApi::removeAllMapEntries('GalleryCacheMap');
 		if ($ret) {
 			return $ret;
@@ -73,24 +69,21 @@ class DataCacheTest extends GalleryTestCase
 		}
 	}
 
-	public function testPutAndGet()
-	{
+	public function testPutAndGet() {
 		$key = 'test-key';
 		$value = 'test-value';
 		GalleryDataCache::put($key, $value);
 		$this->assertEquals($value, GalleryDataCache::get($key));
 	}
 
-	public function testContainsKey()
-	{
+	public function testContainsKey() {
 		$key = 'test-key';
 		$value = 'test-value';
 		GalleryDataCache::put($key, $value);
 		$this->assert(GalleryDataCache::containsKey($key));
 	}
 
-	public function testReset()
-	{
+	public function testReset() {
 		$key = 'test-key';
 		$value = 'test-value';
 		GalleryDataCache::put($key, $value);
@@ -107,8 +100,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assert(!GalleryDataCache::containsKey($pKey), 'Reset(true) did not delete protected vars');
 	}
 
-	public function testRemoveByPattern()
-	{
+	public function testRemoveByPattern() {
 		GalleryDataCache::put('foo(1, 2, 3, 4)', 'baz');
 		GalleryDataCache::put('foo(2, 3, 4)', 'baz');
 		GalleryDataCache::put('bar(3, 4)', 'baz');
@@ -123,8 +115,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assert(!GalleryDataCache::containsKey('bar(4)', 'baz'));
 	}
 
-	public function testGetCacheTuple()
-	{
+	public function testGetCacheTuple() {
 		$this->assertEquals(array(
 			'0',
 			'0'
@@ -155,8 +146,7 @@ class DataCacheTest extends GalleryTestCase
 		), GalleryDataCache::getCacheTuple('_all'));
 	}
 
-	public function testGetCachePath()
-	{
+	public function testGetCachePath() {
 		global $gallery;
 		$gallery->setConfig('data.gallery.cache', '/data/cache/');
 
@@ -271,8 +261,7 @@ class DataCacheTest extends GalleryTestCase
 		}
 	}
 
-	public function testPutToDisk()
-	{
+	public function testPutToDisk() {
 		global $gallery;
 
 		GalleryDataCache::setFileCachingEnabled(true);
@@ -323,8 +312,7 @@ class DataCacheTest extends GalleryTestCase
 		DataCacheTestPlatform::reset();
 	}
 
-	public function testRemoveFromDisk()
-	{
+	public function testRemoveFromDisk() {
 		global $gallery;
 
 		GalleryDataCache::setFileCachingEnabled(true);
@@ -385,8 +373,7 @@ class DataCacheTest extends GalleryTestCase
 		DataCacheTestPlatform::reset();
 	}
 
-	public function testGetFromDisk()
-	{
+	public function testGetFromDisk() {
 		global $gallery;
 
 		GalleryDataCache::setFileCachingEnabled(true);
@@ -413,8 +400,7 @@ class DataCacheTest extends GalleryTestCase
 		));
 	}
 
-	public function testPutAndGetFromDisk()
-	{
+	public function testPutAndGetFromDisk() {
 		GalleryDataCache::setFileCachingEnabled(true);
 
 		/* Put some content containing | and , and make sure it parses back ok */
@@ -450,8 +436,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assert(class_exists('DataCacheTest_class2'), 'class2 should exist');
 	}
 
-	public function testCachePermission()
-	{
+	public function testCachePermission() {
 		global $gallery;
 		GalleryDataCache::remove('GalleryDataCache::cachePermissions::newEntries');
 
@@ -473,8 +458,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assert(!GalleryDataCache::hasPermission('3', 'test.TestPermission'), '3 shouldn\'t have permission test.TestPermission');
 	}
 
-	public function testPutAndGetPageData()
-	{
+	public function testPutAndGetPageData() {
 		$value = '<html><head><title>foo</title><body>this is some content</body></html>';
 		$ret = GalleryDataCache::putPageData('test', 0, array(
 			'key'
@@ -493,8 +477,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals($value, $result);
 	}
 
-	public function testRemovePageData()
-	{
+	public function testRemovePageData() {
 		$ret = GalleryDataCache::putPageData('test', 0, array(
 			'key'
 		), 'test');
@@ -526,8 +509,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(null, $result);
 	}
 
-	public function testGetPageDataExpiredData()
-	{
+	public function testGetPageDataExpiredData() {
 		global $gallery;
 		$gallery->_phpVm = new DataCacheTestMockVm();
 
@@ -550,8 +532,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(null, $result);
 	}
 
-	public function testShouldCachePostRequest()
-	{
+	public function testShouldCachePostRequest() {
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		list($ret, $shouldCache) = GalleryDataCache::shouldCache('read', 'page');
 		if ($ret) {
@@ -561,8 +542,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(false, $shouldCache);
 	}
 
-	public function testShouldCacheReadNoCache1()
-	{
+	public function testShouldCacheReadNoCache1() {
 		global $gallery;
 
 		$_SERVER['HTTP_PRAGMA'] = 'no-cache';
@@ -575,8 +555,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(false, $shouldCache);
 	}
 
-	public function testShouldCacheReadNoCache2()
-	{
+	public function testShouldCacheReadNoCache2() {
 		global $gallery;
 
 		$_SERVER['HTTP_CACHE_CONTROL'] = 'no-cache';
@@ -589,8 +568,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(false, $shouldCache);
 	}
 
-	public function testShouldCacheReadUserOk()
-	{
+	public function testShouldCacheReadUserOk() {
 		global $gallery;
 
 		$acceleration['user']['type'] = 'full';
@@ -607,8 +585,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(true, $shouldCache);
 	}
 
-	public function testShouldCacheReadGuestOk()
-	{
+	public function testShouldCacheReadGuestOk() {
 		global $gallery;
 
 		$acceleration['user']['type'] = 'full';
@@ -626,8 +603,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(true, $shouldCache);
 	}
 
-	public function testShouldCacheReadUserNotOk()
-	{
+	public function testShouldCacheReadUserNotOk() {
 		global $gallery;
 
 		/* Make myself the anon user temporarily */
@@ -651,8 +627,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(false, $shouldCache);
 	}
 
-	public function testShouldCacheNone()
-	{
+	public function testShouldCacheNone() {
 		global $gallery;
 
 		$acceleration['user']['type'] = 'none';
@@ -672,8 +647,7 @@ class DataCacheTest extends GalleryTestCase
 		$this->assertEquals(false, $shouldCache);
 	}
 
-	public function testGetExtraPageCacheKey()
-	{
+	public function testGetExtraPageCacheKey() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -704,8 +678,7 @@ class DataCacheTest extends GalleryTestCase
 		$session->put('exif.module.LoadExifInfo.mode', $modeExif);
 	}
 
-	public function testGetExtraPageCacheKeyForStandalone()
-	{
+	public function testGetExtraPageCacheKeyForStandalone() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -735,8 +708,7 @@ class DataCacheTest extends GalleryTestCase
 	}
 
 	/* Same test as userOk, but in guest preview mode */
-	public function testShouldNotCacheGuestPreviewPages()
-	{
+	public function testShouldNotCacheGuestPreviewPages() {
 		global $gallery;
 		$session =& $gallery->getSession();
 
@@ -758,8 +730,7 @@ class DataCacheTest extends GalleryTestCase
 		$session->remove('theme.guestPreviewMode');
 	}
 
-	public function testCleanPageDataCache()
-	{
+	public function testCleanPageDataCache() {
 		global $gallery;
 		$gallery->_phpVm = new DataCacheTestMockVm();
 		/* We don't care about rand. */
@@ -934,8 +905,7 @@ class DataCacheTest extends GalleryTestCase
 	}
 
 	/* Test persisting the template path map to disk and removing it */
-	public function testSaveAndRemoveLocalUrlMap()
-	{
+	public function testSaveAndRemoveLocalUrlMap() {
 		global $gallery;
 		GalleryDataCache::setFileCachingEnabled(true);
 
@@ -966,25 +936,20 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPhpVm.class');
 /**
  * Mock VM
  */
-class DataCacheTestMockVm extends GalleryPhpVm
-{
-	public function setTime($time)
-	{
+class DataCacheTestMockVm extends GalleryPhpVm {
+	public function setTime($time) {
 		$this->_time = $time;
 	}
 
-	public function time()
-	{
+	public function time() {
 		return $this->_time;
 	}
 
-	public function setRand($rand)
-	{
+	public function setRand($rand) {
 		$this->_randValue = $rand;
 	}
 
-	public function genRandInt($min = null, $max = null)
-	{
+	public function genRandInt($min = null, $max = null) {
 		if (isset($this->_randValue)) {
 			return $this->_randValue;
 		}
@@ -998,10 +963,8 @@ class DataCacheTestMockVm extends GalleryPhpVm
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class DataCacheTestPlatform_testGetFromDisk
-{
-	public function file_exists($path)
-	{
+class DataCacheTestPlatform_testGetFromDisk {
+	public function file_exists($path) {
 		return false;
 	}
 }
@@ -1012,21 +975,17 @@ class DataCacheTestPlatform_testGetFromDisk
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class DataCacheTestPlatform
-{
-	public function DataCacheTestPlatform()
-	{
+class DataCacheTestPlatform {
+	public function DataCacheTestPlatform() {
 		$this->reset();
 	}
 
-	public function reset()
-	{
+	public function reset() {
 		$record =& self::getRecord();
 		$record = array();
 	}
 
-	public function &getRecord()
-	{
+	public function &getRecord() {
 		static $record;
 		if (!isset($record)) {
 			$record = array();
@@ -1035,13 +994,11 @@ class DataCacheTestPlatform
 		return $record;
 	}
 
-	public function file_get_contents($path)
-	{
+	public function file_get_contents($path) {
 		return self::getFileContents($path);
 	}
 
-	public function getFileContents($path)
-	{
+	public function getFileContents($path) {
 		$record =& self::getRecord();
 		if (isset($record['contents'][$path])) {
 			return $record['contents'][$path];
@@ -1050,52 +1007,44 @@ class DataCacheTestPlatform
 		return null;
 	}
 
-	public function wasFileDeleted($path)
-	{
+	public function wasFileDeleted($path) {
 		$record =& self::getRecord();
 
 		return isset($record['deleted-file'][$path]);
 	}
 
-	public function wasDirDeleted($path)
-	{
+	public function wasDirDeleted($path) {
 		$record =& self::getRecord();
 
 		return isset($record['deleted-dir'][$path]);
 	}
 
-	public function atomicWrite($filename, $data)
-	{
+	public function atomicWrite($filename, $data) {
 		$record =& self::getRecord();
 		$record['contents'][$filename] = $data;
 
 		return strlen($data);
 	}
 
-	public function flock($handle, $type)
-	{
+	public function flock($handle, $type) {
 		/* Ignore for now */
 	}
 
-	public function unlink($filename)
-	{
+	public function unlink($filename) {
 		$record =& self::getRecord();
 		$record['deleted-file'][$filename] = 1;
 	}
 
-	public function recursiveRmDir($dir)
-	{
+	public function recursiveRmDir($dir) {
 		$record =& self::getRecord();
 		$record['deleted-dir'][$dir] = 1;
 	}
 
-	public function file_exists($path)
-	{
+	public function file_exists($path) {
 		return true;
 	}
 
-	public function is_dir($path)
-	{
+	public function is_dir($path) {
 		return preg_match('{/(module|theme)/\w+$}', $path);
 	}
 }

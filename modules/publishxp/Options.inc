@@ -29,18 +29,16 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-class OptionsController extends GalleryController
-{
+class OptionsController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 		$results = array();
 		if (isset($form['action']['setOptions'])) {
 			/* No form processing/validation required so just continue the next page */
-		$results['redirect']['view'] = 'publishxp.UploadItems';
+			$results['redirect']['view'] = 'publishxp.UploadItems';
 			$results['redirect']['stripExtensions'] = isset($form['stripExtensions']);
 			$results['redirect']['setCaptions'] = isset($form['setCaptions']);
 			$results['redirect']['albumId'] = $form['albumId'];
@@ -50,7 +48,7 @@ class OptionsController extends GalleryController
 	     * we don't know what or how complex they are, so let's take the easy route of storing
 	     * the form in the session for later.
 	     */
-		$session =& $gallery->getSession();
+			$session =& $gallery->getSession();
 			$session->put('publishxp.extraOptionsForm', serialize($form));
 		} else {
 			$results['delegate']['view'] = 'publishxp.Options';
@@ -68,24 +66,22 @@ class OptionsController extends GalleryController
  * The two options supported are for whether the file extension should be used in the title
  * and if the captions should be set automatically.
  */
-class OptionsView extends GalleryView
-{
+class OptionsView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		if ($form['formName'] != 'Options') {
 			$form['formName'] = 'Options';
 
 			list($form['albumId'], $form['stripExtensions'], $form['setCaptions']) =
-		GalleryUtilities::getRequestVariables('albumId', 'stripExtensions', 'setCaptions');
+			GalleryUtilities::getRequestVariables('albumId', 'stripExtensions', 'setCaptions');
 
 		/* Strip extensions defaults to true, if there was no query parameter for it */
-		if ($form['stripExtensions'] == null) {
-			$form['stripExtensions'] = true;
-		}
+			if ($form['stripExtensions'] == null) {
+				$form['stripExtensions'] = true;
+			}
 
 			if (empty($form['albumId'])) {
 				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
@@ -94,7 +90,7 @@ class OptionsView extends GalleryView
 		$form['albumId'] = (int)$form['albumId'];
 
 	/* Get all the add options */
-	GalleryCoreApi::requireOnce('modules/core/ItemAdd.inc');
+		GalleryCoreApi::requireOnce('modules/core/ItemAdd.inc');
 		if (isset($this->_optionInstances)) {
 			$optionInstances = $this->_optionInstances;
 		} else {
@@ -116,7 +112,7 @@ class OptionsView extends GalleryView
 		}
 
 	/* Now let all options load their template data */
-	list($ret, $item) = GalleryCoreApi::loadEntitiesById($form['albumId'], 'GalleryAlbumItem');
+		list($ret, $item) = GalleryCoreApi::loadEntitiesById($form['albumId'], 'GalleryAlbumItem');
 		if ($ret) {
 			return array($ret, null);
 		}
@@ -124,7 +120,7 @@ class OptionsView extends GalleryView
 		$Options['options'] = array();
 		foreach ($optionInstances as $option) {
 			list($ret, $entry['file'], $entry['l10Domain']) =
-		$option->loadTemplate($template, $form, $item);
+			$option->loadTemplate($template, $form, $item);
 			if ($ret) {
 				return array($ret, null);
 			}

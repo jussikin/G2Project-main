@@ -28,15 +28,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryValidationPlugin.class'
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 18057 $
  */
-class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class UserSelfRegistrationControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'register.UserSelfRegistration');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
@@ -61,8 +58,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$this->_controller->setPluginInstances(array());
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		$results = $this->handleRequest();
 		$this->assertEquals(array('redirect' => array('view' => 'core.UserAdmin'),
@@ -71,8 +67,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 				$results);
 	}
 
-	public function testRegisterWithAutomaticActivation()
-	{
+	public function testRegisterWithAutomaticActivation() {
 		global $gallery;
 		$ret = GalleryCoreApi::setPluginParameter('module', 'register', 'confirmation', 'auto');
 		if ($ret) {
@@ -115,8 +110,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('WelcomeEmail', $this->_emailSubject, 'email subject');
 	}
 
-	public function testRegisterWithEMailActivation()
-	{
+	public function testRegisterWithEMailActivation() {
 		global $gallery;
 		$ret = GalleryCoreApi::setPluginParameter('module', 'register', 'confirmation', 'email');
 		if ($ret) {
@@ -160,8 +154,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$this->assertEquals('ConfEmail', $this->_emailSubject, 'email subject');
 	}
 
-	public function testEntities()
-	{
+	public function testEntities() {
 		/* Make sure emails sent out don't include text like &amp; */
 	/* Also verify password with <&"> characters is not entitized before being hashed */
 	global $gallery;
@@ -219,8 +212,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$this->assert($userEntity->isCorrectPassword('pass&word>'), 'password check');
 	}
 
-	public function testMissingInputs()
-	{
+	public function testMissingInputs() {
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 
 		$results = $this->handleRequest();
@@ -236,8 +228,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$results);
 	}
 
-	public function testInvalidEmail()
-	{
+	public function testInvalidEmail() {
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', 'user-selfreg' . rand());
 		GalleryUtilities::putRequestVariable('form[fullName]', 'full name');
@@ -254,8 +245,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$results);
 	}
 
-	public function testPasswordMismatch()
-	{
+	public function testPasswordMismatch() {
 		$userName = 'user-selfreg' . rand();
 
 	/* Create one user */
@@ -277,8 +267,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$results);
 	}
 
-	public function testCreateDuplicatePendingUser()
-	{
+	public function testCreateDuplicatePendingUser() {
 		$userName = 'user-selfreg' . rand();
 
 		$ret = GalleryCoreApi::setPluginParameter('module', 'register', 'confirmation', 'admin');
@@ -322,8 +311,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($user);
 	}
 
-	public function testCreateDuplicateUser()
-	{
+	public function testCreateDuplicateUser() {
 		global $gallery;
 
 		$userName = 'user-selfreg' . rand();
@@ -378,8 +366,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 	 * Two plugins both returning errors.  The first plugin returns a false 'continue',
 	 * so we should only see the first error in the form return
 	 */
-	public function testPlugins1()
-	{
+	public function testPlugins1() {
 		$userName = 'user-selfreg' . rand();
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $userName);
@@ -412,8 +399,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 	/**
 	 * Two plugins returning errors
 	 */
-	public function testPlugins2()
-	{
+	public function testPlugins2() {
 		$userName = 'user-selfreg' . rand();
 		GalleryUtilities::putRequestVariable('form[action][create]', 1);
 		GalleryUtilities::putRequestVariable('form[userName]', $userName);
@@ -447,8 +433,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 	/**
 	 * No plugin errors - user is created successfully
 	 */
-	public function testPlugins3()
-	{
+	public function testPlugins3() {
 		global $gallery;
 
 		$ret = GalleryCoreApi::setPluginParameter('module', 'register', 'confirmation', 'auto');
@@ -492,8 +477,7 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 		$this->_markForCleanup($user);
 	}
 
-	public function testPluginsOff()
-	{
+	public function testPluginsOff() {
 		global $gallery;
 
 		$ret = GalleryCoreApi::setPluginParameter('module', 'register', 'validation.level', 'OFF');
@@ -541,16 +525,13 @@ class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 	}
 }
 
-class RegisterDummyPlatform
-{
-	public function RegisterDummyPlatform($platform, &$test)
-	{
+class RegisterDummyPlatform {
+	public function RegisterDummyPlatform($platform, &$test) {
 		$this->_platform = $platform;
 		$this->_test =& $test;
 	}
 
-	public function mail($to, $subject, $body, $headers=null)
-	{
+	public function mail($to, $subject, $body, $headers=null) {
 		/* Don't actually send email */
 	$this->_test->_emailSubject .= $subject;
 		$this->_test->_emailBody = $body;
@@ -558,68 +539,55 @@ class RegisterDummyPlatform
 		return true;
 	}
 
-	public function realpath($file)
-	{
+	public function realpath($file) {
 		return $this->_platform->realpath($file);
 	}
 
-	public function getDirectorySeparator()
-	{
+	public function getDirectorySeparator() {
 		return $this->_platform->getDirectorySeparator();
 	}
 
-	public function file_exists($filename)
-	{
+	public function file_exists($filename) {
 		return $this->_platform->file_exists($filename);
 	}
 
-	public function is_dir($filename)
-	{
+	public function is_dir($filename) {
 		return $this->_platform->is_dir($filename);
 	}
 
-	public function is_writeable($filename)
-	{
+	public function is_writeable($filename) {
 		return $this->_platform->is_writeable($filename);
 	}
 
-	public function is_readable($filename)
-	{
+	public function is_readable($filename) {
 		return $this->_platform->is_readable($filename);
 	}
 
-	public function stat($filename)
-	{
+	public function stat($filename) {
 		return $this->_platform->stat($filename);
 	}
 
-	public function mkdir($path)
-	{
+	public function mkdir($path) {
 		return $this->_platform->mkdir($path);
 	}
 
-	public function fopen($filename, $mode, $use_include_path=0)
-	{
+	public function fopen($filename, $mode, $use_include_path=0) {
 		return $this->_platform->fopen($filename, $mode, $use_include_path);
 	}
 
-	public function recursiveRmdir($dirname)
-	{
+	public function recursiveRmdir($dirname) {
 		return $this->_platform->recursiveRmdir($dirname);
 	}
 
-	public function fclose($handle)
-	{
+	public function fclose($handle) {
 		return $this->_platform->fclose($handle);
 	}
 
-	public function flock($handle, $operation, &$wouldblock)
-	{
+	public function flock($handle, $operation, &$wouldblock) {
 		return $this->_platform->flock($handle, $operation, $wouldblock);
 	}
 
-	public function unlink($filename)
-	{
+	public function unlink($filename) {
 		return $this->_platform->unlink($filename);
 	}
 }
@@ -627,20 +595,16 @@ class RegisterDummyPlatform
 /**
  * Mock ValidationPlugin
  */
-class UserSelfRegistrationControllerTestPlugin extends GalleryValidationPlugin
-{
-	public function setContinue($continue)
-	{
+class UserSelfRegistrationControllerTestPlugin extends GalleryValidationPlugin {
+	public function setContinue($continue) {
 		$this->_continue = $continue;
 	}
 
-	public function setErrors($errors)
-	{
+	public function setErrors($errors) {
 		$this->_errors = $errors;
 	}
 
-	public function performValidation(&$form, $options=array())
-	{
+	public function performValidation(&$form, $options=array()) {
 		return array(null, $this->_errors, $this->_continue);
 	}
 }

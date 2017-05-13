@@ -29,15 +29,12 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class DiskQuotasOptionTest extends ItemAddOptionTestCase
-{
-	public function __construct($methodName)
-	{
+class DiskQuotasOptionTest extends ItemAddOptionTestCase {
+	public function __construct($methodName) {
 		$this->ItemAddOptionTestCase($methodName, 'quotas', 'DiskQuotaOption');
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 
 		$ret = parent::setUp();
@@ -128,8 +125,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 	$gallery->_shutdownActions = null;
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		foreach ($this->_saveQuota as $groupId => $quota) {
 			$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap', array('userOrGroupId' => $groupId, 'quotaSize' => $quota['quota']));
@@ -161,8 +157,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 		$this->assert(!$hasQuota, $this->_group2->getId() . ' group2 quota was not deleted');
 	}
 
-	public function testNoQuota()
-	{
+	public function testNoQuota() {
 		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId());
 		if ($ret) {
 			return $ret;
@@ -173,8 +168,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 		$this->assertEquals(array(), $warnings, 'warnings');
 	}
 
-	public function testUserMBQuotaAddOneOk()
-	{
+	public function testUserMBQuotaAddOneOk() {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
 		array('userOrGroupId' => $this->_user->getId(), 'quotaSize' => '2000'));
@@ -194,8 +188,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 						1.95, $this->_MB))), $warnings, 'warnings');
 	}
 
-	public function testUserKBQuotaAddOneFail()
-	{
+	public function testUserKBQuotaAddOneFail() {
 		global $gallery;
 
 		$ret = GalleryCoreApi::addMapEntry(
@@ -223,8 +216,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 			  'item should have been deleted');
 	}
 
-	public function testUserQuotaAddTwo()
-	{
+	public function testUserQuotaAddTwo() {
 		global $gallery;
 
 		$ret = GalleryCoreApi::addMapEntry(
@@ -265,8 +257,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 			  'item should have been deleted');
 	}
 
-	public function testGroupGBQuota()
-	{
+	public function testGroupGBQuota() {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
 		array('userOrGroupId' => $this->_group->getId(), 'quotaSize' => '2000000'));
@@ -287,8 +278,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 						1.91, $this->_GB))), $warnings, 'warnings');
 	}
 
-	public function testGroupTBQuota()
-	{
+	public function testGroupTBQuota() {
 		$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
 		array('userOrGroupId' => $this->_group->getId(),
@@ -323,8 +313,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 		$warnings, 'warnings');
 	}
 
-	public function testGroupQuotas()
-	{
+	public function testGroupQuotas() {
 		/* Should use higher of assigned group quotas */
 	$ret = GalleryCoreApi::addMapEntry(
 		'QuotasMap',
@@ -352,8 +341,7 @@ class DiskQuotasOptionTest extends ItemAddOptionTestCase
 						500, $this->_KB))), $warnings, 'warnings');
 	}
 
-	public function testUserAndGroupQuota()
-	{
+	public function testUserAndGroupQuota() {
 		global $gallery;
 
 	/* Should always use user quota and ignore group quota(s) */

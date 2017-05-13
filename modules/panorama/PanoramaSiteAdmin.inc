@@ -25,13 +25,11 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class PanoramaSiteAdminController extends GalleryController
-{
+class PanoramaSiteAdminController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array($ret, null);
@@ -44,14 +42,21 @@ class PanoramaSiteAdminController extends GalleryController
 			} else {
 				foreach (array('itemType', 'itemLink') as $key) {
 					$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'panorama', $key,
-			(isset($form[$key]) && $form[$key]) ? 1 : 0);
+						'module',
+						'panorama',
+						$key,
+						(isset($form[$key]) && $form[$key]) ? 1 : 0
+					);
 					if ($ret) {
 						return array($ret, null);
 					}
 				}
 				$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'panorama', 'width', (int)$form['width']);
+					'module',
+					'panorama',
+					'width',
+					(int)$form['width']
+				);
 				if ($ret) {
 					return array($ret, null);
 				}
@@ -60,7 +65,7 @@ class PanoramaSiteAdminController extends GalleryController
 		}
 
 	/* Figure out where to redirect upon success */
-	$method = empty($error) ? 'redirect' : 'delegate';
+		$method = empty($error) ? 'redirect' : 'delegate';
 		$results[$method]['view'] = 'core.SiteAdmin';
 		$results[$method]['subView'] = 'panorama.PanoramaSiteAdmin';
 		$results['status'] = $status;
@@ -73,13 +78,11 @@ class PanoramaSiteAdminController extends GalleryController
 /**
  * Settings for Panorama
  */
-class PanoramaSiteAdminView extends GalleryView
-{
+class PanoramaSiteAdminView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaHelper.class');
 
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
@@ -96,7 +99,7 @@ class PanoramaSiteAdminView extends GalleryView
 			$form['formName'] = 'PanoramaSiteAdmin';
 			foreach (array('itemType', 'itemLink', 'width') as $key) {
 				list($ret, $form[$key]) =
-			GalleryCoreApi::getPluginParameter('module', 'panorama', $key);
+				GalleryCoreApi::getPluginParameter('module', 'panorama', $key);
 				if ($ret) {
 					return array($ret, null);
 				}

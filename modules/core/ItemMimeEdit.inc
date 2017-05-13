@@ -25,13 +25,11 @@
  * @author Felix Rabinovich <Felix@Rabinovich.org>
  * @version $Revision: 17580 $
  */
-class ItemMimeEditController extends GalleryController
-{
+class ItemMimeEditController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(
@@ -131,13 +129,11 @@ class ItemMimeEditController extends GalleryController
 /**
  * Edit settings for a mime type
  */
-class ItemMimeEditView extends GalleryView
-{
+class ItemMimeEditView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
 			return array(

@@ -22,10 +22,8 @@
  * @package Getid3
  * @version $Revision: 17580 $
  */
-class Getid3Callbacks
-{
-	public function callback($params, $smarty, $callback, $userId = null)
-	{
+class Getid3Callbacks {
+	public function callback($params, $smarty, $callback, $userId = null) {
 		global $gallery;
 		
 		switch ($callback) {

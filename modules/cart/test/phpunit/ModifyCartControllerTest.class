@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17923 $
  */
-class ModifyCartControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class ModifyCartControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'cart.ModifyCart');
 	}
 	
-	public function setUp()
-	{
+	public function setUp() {
 		global $gallery;
 		
 		$ret = parent::setUp();
@@ -67,8 +64,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function tearDown()
-	{
+	public function tearDown() {
 		global $gallery;
 		
 		/* Restore the existing cart */
@@ -83,8 +79,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase
 		}
 	}
 	
-	public function testUpdateCart()
-	{
+	public function testUpdateCart() {
 		GalleryUtilities::putRequestVariable('form[delete][1]', 'on');
 		GalleryUtilities::putRequestVariable('form[counts][2]', 5);
 		GalleryUtilities::putRequestVariable('form[action][modify]', 1);
@@ -115,8 +110,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase
 		), $cartItemCounts);
 	}
 	
-	public function testEmptyCart()
-	{
+	public function testEmptyCart() {
 		GalleryUtilities::putRequestVariable('form[action][modify]', 1);
 		GalleryUtilities::putRequestVariable('form[pluginId]', 'emptyCart');
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
@@ -144,8 +138,7 @@ class ModifyCartControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(array(), $cartItemCounts);
 	}
 	
-	public function testFulfillCart()
-	{
+	public function testFulfillCart() {
 		/* Work with real items in this test */
 		list($ret, $photoItem) = $this->_createRandomDataItem($this->_album->getId(), 'image/jpeg', array(), GalleryCoreApi::getCodeBasePath('modules/core/test/data/test1.jpg'));
 		if ($ret) {
@@ -201,23 +194,20 @@ class ModifyCartControllerTest extends GalleryControllerTestCase
 
 class ModifyCartControllerTestCartPlugin /* extends CartPluginInterface_1_1 */
 {
-	public function getSupportedItemTypes()
-	{
+	public function getSupportedItemTypes() {
 		return array(
 			'GalleryPhotoItem'
 		);
 	}
 	
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		return array(
 			null,
 			'Test cart plugin'
 		);
 	}
 	
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		$_SERVER['ModifyCartControllerTest']['cartItemIds'] = $cartItemIds;
 
 		return array(
@@ -228,8 +218,7 @@ class ModifyCartControllerTestCartPlugin /* extends CartPluginInterface_1_1 */
 		);
 	}
 	
-	public function getRequiredPermissions()
-	{
+	public function getRequiredPermissions() {
 		return array(
 			'core.view'
 		);

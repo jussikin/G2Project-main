@@ -25,15 +25,12 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
-{
-	public function __construct($methodName)
-	{
+class AdminDeleteGroupControllerTest extends GalleryControllerTestCase {
+	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'core.AdminDeleteGroup');
 	}
 
-	public function testCancel()
-	{
+	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
@@ -49,8 +46,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
 	/**
 	 * Create and delete a group
 	 */
-	public function testDeleteGroup()
-	{
+	public function testDeleteGroup() {
 
 		/* Create a group that we can delete */
 		list($ret, $group) = $this->_createGroup();
@@ -109,8 +105,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
 	}
 
 	/* Try to delete the all users group (this will fail) */
-	public function testDeleteAllUsersGroup()
-	{
+	public function testDeleteAllUsersGroup() {
 		list($ret, $groupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
 		if ($ret) {
 			return $ret;
@@ -124,8 +119,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
 	}
 
 	/* Try to delete the everybody group (this will fail) */
-	public function testDeleteEverybodyGroup()
-	{
+	public function testDeleteEverybodyGroup() {
 		list($ret, $groupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.everybodyGroup');
 		if ($ret) {
 			return $ret;
@@ -139,8 +133,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
 	}
 
 	/* Try to delete the site admin group (this will fail) */
-	public function testDeleteSiteAdminsGroup()
-	{
+	public function testDeleteSiteAdminsGroup() {
 		list($ret, $groupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 		if ($ret) {
 			return $ret;
@@ -153,8 +146,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
 		$this->assertEquals(null, $results);
 	}
 
-	public function _createGroup()
-	{
+	public function _createGroup() {
 		list($ret, $group) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryGroup');
 		if ($ret) {
 			return array(
@@ -191,8 +183,7 @@ class AdminDeleteGroupControllerTest extends GalleryControllerTestCase
 		);
 	}
 
-	public function _deleteGroup($group)
-	{
+	public function _deleteGroup($group) {
 		$ret = GalleryCoreApi::deleteEntityById($group->getId(), 'GalleryGroup');
 		if ($ret) {
 			return $ret;

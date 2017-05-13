@@ -27,15 +27,12 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryPluginHelper_me
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20886 $
  */
-class FactoryTest extends GalleryTestCase
-{
-	public function __construct($methodName)
-	{
+class FactoryTest extends GalleryTestCase {
+	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
 
-	public function setUp()
-	{
+	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
@@ -78,8 +75,7 @@ class FactoryTest extends GalleryTestCase
 		}
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		foreach (array(
 			'factoryTest',
 			'factoryTest2'
@@ -104,8 +100,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, create new instance
 	 */
-	public function testNewInstance()
-	{
+	public function testNewInstance() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstance('FactoryTest', 'FactoryTestDummy');
 		if ($ret) {
 			return $ret;
@@ -118,8 +113,7 @@ class FactoryTest extends GalleryTestCase
 	 * Register an implementation, try to create new instance but expect an
 	 * empty instance
 	 */
-	public function testMissingInstance()
-	{
+	public function testMissingInstance() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstance('FactoryTest', 'MISSING IMPLEMENTATION NAME');
 		if ($ret) {
 			return $ret;
@@ -131,8 +125,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, create new instance given only class type
 	 */
-	public function testNewInstanceNoClass()
-	{
+	public function testNewInstanceNoClass() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstance('FactoryTest');
 		if ($ret) {
 			return $ret;
@@ -145,8 +138,7 @@ class FactoryTest extends GalleryTestCase
 	 * Register an implementation, try to create new instance but expect an
 	 * empty instance
 	 */
-	public function testMissingInstanceNoClass()
-	{
+	public function testMissingInstanceNoClass() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstance('MISSING CLASS TYPE');
 		if ($ret) {
 			return $ret;
@@ -158,8 +150,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, create instance by hint
 	 */
-	public function testNewInstanceByHint()
-	{
+	public function testNewInstanceByHint() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstanceByHint('FactoryTest', 'dummy');
 		if ($ret) {
 			return $ret;
@@ -171,8 +162,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, create instance by default hint
 	 */
-	public function testNewInstanceByHintDefault()
-	{
+	public function testNewInstanceByHintDefault() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstanceByHint('FactoryTest', 'nomatch');
 		if ($ret) {
 			return $ret;
@@ -184,8 +174,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, create instance by hint list
 	 */
-	public function testNewInstanceByHintList()
-	{
+	public function testNewInstanceByHintList() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstanceByHint('FactoryTest', array(
 			'nomatch',
 			'dummy'
@@ -200,8 +189,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, create instance by id
 	 */
-	public function testNewInstanceById()
-	{
+	public function testNewInstanceById() {
 		list($ret, $instance) = GalleryCoreApi::newFactoryInstanceById('FactoryTest', 'FactoryTestDummyId');
 		if ($ret) {
 			return $ret;
@@ -213,8 +201,7 @@ class FactoryTest extends GalleryTestCase
 	/**
 	 * Register an implementation, get all implementation ids
 	 */
-	public function testGetAllImplementationIds()
-	{
+	public function testGetAllImplementationIds() {
 		list($ret, $ids) = GalleryCoreApi::getAllFactoryImplementationIds('FactoryTest');
 		if ($ret) {
 			return $ret;
@@ -227,8 +214,7 @@ class FactoryTest extends GalleryTestCase
 		), $ids);
 	}
 
-	public function testGetAllImplementationIdsWithHint()
-	{
+	public function testGetAllImplementationIdsWithHint() {
 		list($ret, $ids) = GalleryCoreApi::getAllFactoryImplementationIdsWithHint('FactoryTest', 'dummy');
 		if ($ret) {
 			return $ret;
@@ -240,8 +226,7 @@ class FactoryTest extends GalleryTestCase
 		), $ids);
 	}
 
-	public function testInactiveModule()
-	{
+	public function testInactiveModule() {
 		global $gallery;
 
 		/* Deactivate FactoryTestModule */
@@ -296,8 +281,7 @@ class FactoryTest extends GalleryTestCase
 		$this->assertEquals(null, $instance, 'newFactoryInstanceById');
 	}
 
-	public function testGetFactoryDefinitionHints()
-	{
+	public function testGetFactoryDefinitionHints() {
 		list($ret, $hints) = GalleryCoreApi::getFactoryDefinitionHints('FactoryTest', 'FactoryTestDummyId3');
 		if ($ret) {
 			return $ret;
@@ -306,8 +290,7 @@ class FactoryTest extends GalleryTestCase
 		$this->assertEquals(array(), $hints, 'Unexpected hints on get');
 	}
 
-	public function testUpdateFactoryDefinitionHints()
-	{
+	public function testUpdateFactoryDefinitionHints() {
 		$ret = GalleryCoreApi::updateFactoryDefinitionHints('FactoryTest', 'FactoryTestDummyId3', array(
 			'new hint'
 		));
@@ -324,8 +307,7 @@ class FactoryTest extends GalleryTestCase
 		), $hints, 'Unexpected hints on update');
 	}
 
-	public function testRegisterFactoryImplementationForRequest()
-	{
+	public function testRegisterFactoryImplementationForRequest() {
 		$handlerPath = dirname(__FILE__);
 		$ret = GalleryCoreApi::registerFactoryImplementationForRequest('GalleryEventListener', 'TestErrorHandler', 'TestErrorHandler', $handlerPath, 'FactoryTestModule', array(
 			'Gallery::Error'
@@ -365,8 +347,7 @@ class FactoryTest extends GalleryTestCase
 		}
 	}
 
-	public function testRegisterFactoryImplementationForRequestDeleteCache()
-	{
+	public function testRegisterFactoryImplementationForRequestDeleteCache() {
 		$handlerPath = dirname(__FILE__);
 		$ret = GalleryCoreApi::registerFactoryImplementationForRequest('GalleryEventListener', 'TestErrorHandler', 'TestErrorHandler', $handlerPath, 'FactoryTestModule', array(
 			'Gallery::Error'
@@ -402,11 +383,9 @@ class FactoryTest extends GalleryTestCase
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class FactoryTestDummy
-{
+class FactoryTestDummy {
 }
-class FactoryTestDummy2
-{
+class FactoryTestDummy2 {
 }
 
 /**
@@ -415,19 +394,15 @@ class FactoryTestDummy2
  * @package GalleryCore
  * @subpackage PHPUnit
  */
-class FactoryTestModule extends GalleryModule
-{
-	public function FactoryTestModule()
-	{
+class FactoryTestModule extends GalleryModule {
+	public function FactoryTestModule() {
 		$this->setId('factoryTest');
 		$this->setRequiredCoreApi(GalleryCoreApi::getApiVersion());
 		$this->setRequiredModuleApi(GalleryModule::getApiVersion());
 	}
 }
-class FactoryTestModule2 extends GalleryModule
-{
-	public function FactoryTestModule2()
-	{
+class FactoryTestModule2 extends GalleryModule {
+	public function FactoryTestModule2() {
 		$this->setId('factoryTest2');
 		$this->setRequiredCoreApi(GalleryCoreApi::getApiVersion());
 		$this->setRequiredModuleApi(GalleryModule::getApiVersion());

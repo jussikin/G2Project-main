@@ -25,13 +25,11 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class UserWatermarksController extends GalleryController
-{
+class UserWatermarksController extends GalleryController {
 	/**
 	 * @see GalleryController::handleRequest
 	 */
-	public function handleRequest($form)
-	{
+	public function handleRequest($form) {
 		global $gallery;
 
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
@@ -67,7 +65,7 @@ class UserWatermarksController extends GalleryController
 			$results['delegate']['subView'] = 'watermark.UserWatermarks';
 		} elseif (isset($form['action']['delete']) && isset($form['delete']['watermarkId'])) {
 			list($ret, $wasDeleted) =
-		WatermarkHelper::deleteWatermarkImageById($form['delete']['watermarkId']);
+			WatermarkHelper::deleteWatermarkImageById($form['delete']['watermarkId']);
 			if ($ret) {
 				return array($ret, null);
 			}
@@ -78,7 +76,7 @@ class UserWatermarksController extends GalleryController
 				$results['redirect']['subView'] = 'watermark.UserWatermarks';
 			} else {
 				/* Watermark is in use.. redirect to confirm page: */
-		$results['redirect']['view'] = 'core.UserAdmin';
+				$results['redirect']['view'] = 'core.UserAdmin';
 				$results['redirect']['subView'] = 'watermark.ConfirmDelete';
 				$results['redirect']['watermarkId'] = $form['delete']['watermarkId'];
 			}
@@ -94,13 +92,11 @@ class UserWatermarksController extends GalleryController
 /**
  * Manage user watermarks
  */
-class UserWatermarksView extends GalleryView
-{
+class UserWatermarksView extends GalleryView {
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
-	public function loadTemplate(&$template, &$form)
-	{
+	public function loadTemplate(&$template, &$form) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 
@@ -126,10 +122,10 @@ class UserWatermarksView extends GalleryView
 		}
 		foreach ($watermarks as $id => $watermark) {
 			/* Exclude site-wide watermarks (and, in the case of admins -- other people's) */
-		if ($watermark->getOwnerId() != $gallery->getActiveUserId()) {
-			unset($watermarks[$id]);
-			continue;
-		}
+			if ($watermark->getOwnerId() != $gallery->getActiveUserId()) {
+				unset($watermarks[$id]);
+				continue;
+			}
 
 			$watermarks[$id] = (array)$watermark;
 		}
@@ -143,13 +139,13 @@ class UserWatermarksView extends GalleryView
 		}
 
 	/* Set the form's encoding type since we're uploading binary files */
-	if ($template->hasVariable('UserAdmin')) {
-		$UserAdmin =& $template->getVariableByReference('UserAdmin');
-		$UserAdmin['enctype'] = 'multipart/form-data';
-	} else {
-		$UserAdmin['enctype'] = 'multipart/form-data';
-		$template->setVariable('UserAdmin', $UserAdmin);
-	}
+		if ($template->hasVariable('UserAdmin')) {
+			$UserAdmin =& $template->getVariableByReference('UserAdmin');
+			$UserAdmin['enctype'] = 'multipart/form-data';
+		} else {
+			$UserAdmin['enctype'] = 'multipart/form-data';
+			$template->setVariable('UserAdmin', $UserAdmin);
+		}
 
 		$template->setVariable('UserWatermarks', array('watermarks' => $watermarks));
 		$template->setVariable('controller', 'watermark.UserWatermarks');
@@ -160,8 +156,7 @@ class UserWatermarksView extends GalleryView
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
-	public function getViewDescription()
-	{
+	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'watermark');
 		if ($ret) {
 			return array($ret, null);

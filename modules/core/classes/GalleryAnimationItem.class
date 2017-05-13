@@ -37,8 +37,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataItem.class');
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18060 $
  */
-class GalleryAnimationItem extends GalleryDataItem
-{
+class GalleryAnimationItem extends GalleryDataItem {
 	/**
 	 * The width of this animation.
 	 * @var int
@@ -68,8 +67,7 @@ class GalleryAnimationItem extends GalleryDataItem
 	/**
 	 * @see GalleryDataItem::canBeViewedInline
 	 */
-	public function canBeViewedInline()
-	{
+	public function canBeViewedInline() {
 		/* The mimeTypes listed here should provide a render() output */
 		static $mimeList = array('application/x-shockwave-flash', 'application/x-director');
 
@@ -87,8 +85,7 @@ class GalleryAnimationItem extends GalleryDataItem
 	 *        of copy (default is false).
 	 * @return GalleryStatus a status code
 	 */
-	public function create($parentId, $animationFileName, $mimeType, $targetName = null, $symlink = false)
-	{
+	public function create($parentId, $animationFileName, $mimeType, $targetName = null, $symlink = false) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		
@@ -132,8 +129,7 @@ class GalleryAnimationItem extends GalleryDataItem
 	/**
 	 * @see GalleryDataItem::rescan
 	 */
-	public function rescan()
-	{
+	public function rescan() {
 		global $gallery;
 		
 		$ret = parent::rescan();
@@ -175,8 +171,7 @@ class GalleryAnimationItem extends GalleryDataItem
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
-	public function itemTypeName($localized = true)
-	{
+	public function itemTypeName($localized = true) {
 		global $gallery;
 		if ($localized) {
 			list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
@@ -197,8 +192,7 @@ class GalleryAnimationItem extends GalleryDataItem
 	/**
 	 * @see GalleryDataItem::render
 	 **/
-	public function render($entity, $item, $params)
-	{
+	public function render($entity, $item, $params) {
 		global $gallery;
 		
 		$fallback = trim(preg_replace("/[\r\n]/", '', $params['fallback']));
@@ -305,28 +299,23 @@ class GalleryAnimationItem extends GalleryDataItem
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'GalleryAnimationItem';
 	}
 	
-	public function getWidth()
-	{
+	public function getWidth() {
 		return $this->width;
 	}
 	
-	public function setWidth($width)
-	{
+	public function setWidth($width) {
 		$this->width = $width;
 	}
 	
-	public function getHeight()
-	{
+	public function getHeight() {
 		return $this->height;
 	}
 	
-	public function setHeight($height)
-	{
+	public function setHeight($height) {
 		$this->height = $height;
 	}
 }

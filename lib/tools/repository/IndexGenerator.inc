@@ -32,15 +32,13 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryIndex.class'
  * @subpackage Controllers
  * @module IndexGeneratorController
  */
-class IndexGeneratorControllerAndView extends RepositoryControllerAndView
-{
+class IndexGeneratorControllerAndView extends RepositoryControllerAndView {
 	/**
 	 * Regenerates the repository index.
 	 *
 	 * @return GalleryStatus a status code
 	 */
-	public function generate()
-	{
+	public function generate() {
 		global $gallery;
 		$index = new RepositoryIndex();
 		$urlGenerator =& $gallery->getUrlGenerator();

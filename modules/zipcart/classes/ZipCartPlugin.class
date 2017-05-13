@@ -30,24 +30,21 @@ class ZipCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInterfac
 	/**
 	 * @see CartPluginInterface_1_0::getSupportedItemTypes
 	 */
-	public function getSupportedItemTypes()
-	{
+	public function getSupportedItemTypes() {
 		return array('GalleryDataItem');
 	}
 
 	/**
 	 * @see CartPluginInterface_1_1::getRequiredPermissions
 	 */
-	public function getRequiredPermissions()
-	{
+	public function getRequiredPermissions() {
 		return array();
 	}
 
 	/**
 	 * @see CartPluginInterface_1_0::getActionDisplayName
 	 */
-	public function getActionDisplayName()
-	{
+	public function getActionDisplayName() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'zipcart');
 		if ($ret) {
 			return array($ret, null);
@@ -61,8 +58,7 @@ class ZipCartPlugin /* implements CartPluginInterface_1_0 and CartPluginInterfac
 	/**
 	 * @see CartPluginInterface_1_0::fulfillCart
 	 */
-	public function fulfillCart($cartItemIds)
-	{
+	public function fulfillCart($cartItemIds) {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
