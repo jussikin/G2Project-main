@@ -34,21 +34,21 @@ GalleryCoreApi::requireOnce('lib/tools/repository/classes/RepositoryControllerAn
  */
 class RepositoryControllerTest extends GalleryTestCase
 {
-    /**
-     * Test whether RepositoryController::showView properly includes the
-     * specified template file.
-     */
-    public function testShowView()
-    {
-        global $gallery;
-        $gallery->setConfig('repository.templates', dirname(__FILE__) . '/../data/');
-        
-        $controller = new RepositoryController();
-        $ret = $controller->showView('testShowViewTemplate', '');
-        if ($ret) {
-            return ($ret);
-        }
-        
-        $this->assert(in_array(realpath($gallery->getConfig('repository.templates') . 'testShowViewTemplate.tpl'), get_included_files()), 'Template not included.');
-    }
+	/**
+	 * Test whether RepositoryController::showView properly includes the
+	 * specified template file.
+	 */
+	public function testShowView()
+	{
+		global $gallery;
+		$gallery->setConfig('repository.templates', dirname(__FILE__) . '/../data/');
+		
+		$controller = new RepositoryController();
+		$ret = $controller->showView('testShowViewTemplate', '');
+		if ($ret) {
+			return ($ret);
+		}
+		
+		$this->assert(in_array(realpath($gallery->getConfig('repository.templates') . 'testShowViewTemplate.tpl'), get_included_files()), 'Template not included.');
+	}
 }

@@ -25,18 +25,18 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class CantActivateView extends GalleryView {
+class CantActivateView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		if ($ret) {
+			return array($ret, null);
+		}
 
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
+		return array(null, array('body' => 'modules/thumbpage/templates/CantActivate.tpl'));
 	}
-
-	return array(null, array('body' => 'modules/thumbpage/templates/CantActivate.tpl'));
-    }
 }
-?>

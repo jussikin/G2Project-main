@@ -27,131 +27,131 @@
  */
 class ItemAddAlbumController extends GalleryController
 {
-    /**
-     * @see GalleryController::handleRequest
-     */
-    public function handleRequest($form)
-    {
-        global $gallery;
-        
-        list($ret, $item) = $this->getItem();
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        $itemId = $item->getId();
-        
-        /* Make sure we have permission do edit this item */
-        $ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addAlbumItem');
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        list($ret, $lockIds[]) = GalleryCoreApi::acquireReadLock($itemId);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        $status = $error = array();
-        if (isset($form['action']['create'])) {
-            /* Validate the input data */
-            $platform =& $gallery->getPlatform();
-            
-            if (empty($form['pathComponent'])) {
-                $error[] = 'form[error][pathComponent][missing]';
-            } elseif (!$platform->isLegalPathComponent($form['pathComponent'], true)) {
-                $error[] = 'form[error][pathComponent][invalid]';
-            }
-            
-            if (empty($error)) {
-                list($ret, $markup) = GalleryCoreApi::getPluginParameter('module', 'core', 'misc.markup');
-                if ($ret) {
-                    return array(
-                        $ret,
-                        null
-                    );
-                }
-                if ($markup == 'html') {
-                    /* Strip malicious content if html markup allowed */
-                    $form['title'] = GalleryUtilities::htmlSafe($form['title'], true);
-                    $form['summary'] = GalleryUtilities::htmlSafe($form['summary'], true);
-                    $form['description'] = GalleryUtilities::htmlSafe($form['description'], true);
-                }
-                
-                list($ret, $instance) = GalleryCoreApi::createAlbum($itemId, $form['pathComponent'], $form['title'], $form['summary'], $form['description'], $form['keywords']);
-                if ($ret) {
-                    GalleryCoreApi::releaseLocks($lockIds);
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest($form)
+	{
+		global $gallery;
+		
+		list($ret, $item) = $this->getItem();
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		$itemId = $item->getId();
+		
+		/* Make sure we have permission do edit this item */
+		$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addAlbumItem');
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		list($ret, $lockIds[]) = GalleryCoreApi::acquireReadLock($itemId);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		$status = $error = array();
+		if (isset($form['action']['create'])) {
+			/* Validate the input data */
+			$platform =& $gallery->getPlatform();
+			
+			if (empty($form['pathComponent'])) {
+				$error[] = 'form[error][pathComponent][missing]';
+			} elseif (!$platform->isLegalPathComponent($form['pathComponent'], true)) {
+				$error[] = 'form[error][pathComponent][invalid]';
+			}
+			
+			if (empty($error)) {
+				list($ret, $markup) = GalleryCoreApi::getPluginParameter('module', 'core', 'misc.markup');
+				if ($ret) {
+					return array(
+						$ret,
+						null
+					);
+				}
+				if ($markup == 'html') {
+					/* Strip malicious content if html markup allowed */
+					$form['title'] = GalleryUtilities::htmlSafe($form['title'], true);
+					$form['summary'] = GalleryUtilities::htmlSafe($form['summary'], true);
+					$form['description'] = GalleryUtilities::htmlSafe($form['description'], true);
+				}
+				
+				list($ret, $instance) = GalleryCoreApi::createAlbum($itemId, $form['pathComponent'], $form['title'], $form['summary'], $form['description'], $form['keywords']);
+				if ($ret) {
+					GalleryCoreApi::releaseLocks($lockIds);
 
-                    return array(
-                        $ret,
-                        null
-                    );
-                }
-                
-                if (!isset($instance)) {
-                    GalleryCoreApi::releaseLocks($lockIds);
+					return array(
+						$ret,
+						null
+					);
+				}
+				
+				if (!isset($instance)) {
+					GalleryCoreApi::releaseLocks($lockIds);
 
-                    return array(
-                        GalleryCoreApi::error(ERROR_MISSING_OBJECT),
-                        null
-                    );
-                }
-                
-                /* Figure out where to redirect upon success */
-                $redirect['itemId'] = $instance->getId();
-                $ret = GalleryCoreApi::assertHasItemPermission($instance->getId(), 'core.edit');
-                if (empty($ret)) {
-                    $redirect['view'] = 'core.ItemAdmin';
-                    $redirect['subView'] = 'core.ItemEdit';
-                    $redirect['editPlugin'] = 'ItemEditAlbum';
-                }
-                
-                /* Prepare our status message */
-                list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-                if ($ret) {
-                    GalleryCoreApi::releaseLocks($lockIds);
+					return array(
+						GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+						null
+					);
+				}
+				
+				/* Figure out where to redirect upon success */
+				$redirect['itemId'] = $instance->getId();
+				$ret = GalleryCoreApi::assertHasItemPermission($instance->getId(), 'core.edit');
+				if (empty($ret)) {
+					$redirect['view'] = 'core.ItemAdmin';
+					$redirect['subView'] = 'core.ItemEdit';
+					$redirect['editPlugin'] = 'ItemEditAlbum';
+				}
+				
+				/* Prepare our status message */
+				list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+				if ($ret) {
+					GalleryCoreApi::releaseLocks($lockIds);
 
-                    return array(
-                        $ret,
-                        null
-                    );
-                }
-                
-                $status['editMessage'] = $module->translate('Album created successfully.');
-            }
-        }
-        
-        $ret = GalleryCoreApi::releaseLocks($lockIds);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        if (!empty($redirect)) {
-            $results['redirect'] = $redirect;
-        } else {
-            $results['delegate']['view'] = 'core.ItemAdmin';
-            $results['delegate']['subView'] = 'core.ItemAddAlbum';
-        }
-        $results['status'] = $status;
-        $results['error'] = $error;
-        
-        
-        return array(
-            null,
-            $results
-        );
-    }
+					return array(
+						$ret,
+						null
+					);
+				}
+				
+				$status['editMessage'] = $module->translate('Album created successfully.');
+			}
+		}
+		
+		$ret = GalleryCoreApi::releaseLocks($lockIds);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		if (!empty($redirect)) {
+			$results['redirect'] = $redirect;
+		} else {
+			$results['delegate']['view'] = 'core.ItemAdmin';
+			$results['delegate']['subView'] = 'core.ItemAddAlbum';
+		}
+		$results['status'] = $status;
+		$results['error'] = $error;
+		
+		
+		return array(
+			null,
+			$results
+		);
+	}
 }
 
 /**
@@ -159,70 +159,70 @@ class ItemAddAlbumController extends GalleryController
  */
 class ItemAddAlbumView extends GalleryView
 {
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    public function loadTemplate(&$template, &$form)
-    {
-        global $gallery;
-        
-        list($ret, $item) = $this->getItem();
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        $itemId = $item->getId();
-        
-        /* Make sure we have permission do edit this item */
-        $ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addAlbumItem');
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        if ($form['formName'] == 'ItemAddAlbum') {
-            /* Complain if we have any invalid data */
-        } else {
-            /* First time around, load the form with item data */
-            $form['pathComponent'] = '';
-            $form['title'] = '';
-            $form['summary'] = '';
-            $form['keywords'] = '';
-            $form['description'] = '';
-            $form['formName'] = 'ItemAddAlbum';
-        }
-        
-        $template->setVariable('ItemAddAlbum', array());
-        $template->setVariable('controller', 'core.ItemAddAlbum');
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		global $gallery;
+		
+		list($ret, $item) = $this->getItem();
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		$itemId = $item->getId();
+		
+		/* Make sure we have permission do edit this item */
+		$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.addAlbumItem');
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		if ($form['formName'] == 'ItemAddAlbum') {
+			/* Complain if we have any invalid data */
+		} else {
+			/* First time around, load the form with item data */
+			$form['pathComponent'] = '';
+			$form['title'] = '';
+			$form['summary'] = '';
+			$form['keywords'] = '';
+			$form['description'] = '';
+			$form['formName'] = 'ItemAddAlbum';
+		}
+		
+		$template->setVariable('ItemAddAlbum', array());
+		$template->setVariable('controller', 'core.ItemAddAlbum');
 
-        return array(
-            null,
-            array(
-                'body' => 'modules/core/templates/ItemAddAlbum.tpl'
-            )
-        );
-    }
-    
-    /**
-     * @see GalleryView::getViewDescription
-     */
-    public function getViewDescription()
-    {
-        list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        return array(
-            null,
-            $core->translate('add sub-album')
-        );
-    }
+		return array(
+			null,
+			array(
+				'body' => 'modules/core/templates/ItemAddAlbum.tpl'
+			)
+		);
+	}
+	
+	/**
+	 * @see GalleryView::getViewDescription
+	 */
+	public function getViewDescription()
+	{
+		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		return array(
+			null,
+			$core->translate('add sub-album')
+		);
+	}
 }

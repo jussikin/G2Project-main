@@ -31,71 +31,79 @@ define('REWRITE_STATUS_NO_PATH_INFO', 21);
  * @author Douglas Cau <douglas@cau.se>
  * @version $Revision: 17580 $
  */
-class PathInfoParser extends RewriteParser {
-
-    function __construct() {
-	$this->PathInfoParser();
-    }
-
-    function PathInfoParser() {
-	$this->_setParserId('pathinfo');
-	$this->_setParserType('inGallery');
-	$this->_setUrlGeneratorId('PathInfoUrlGenerator');
-    }
-
-    /**
-     * @see RewriteParser::saveActiveRules
-     */
-    function saveActiveRules($activeRules=null, $upgradeModule=null) {
-	GalleryCoreApi::requireOnce(
-	    'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
-	return PathInfoHelper::saveActiveRules($this, $activeRules, $upgradeModule);
-    }
-
-    /**
-     * @see RewriteParser::needsConfiguration
-     */
-    function needsConfiguration() {
-	GalleryCoreApi::requireOnce(
-	    'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
-
-	list ($ret, $code) = PathInfoHelper::checkPathInfo();
-	if ($ret) {
-	    return array($ret, null);
+class PathInfoParser extends RewriteParser
+{
+	public function __construct()
+	{
+		$this->PathInfoParser();
 	}
 
-	return array(null, $code != REWRITE_STATUS_OK);
-    }
-
-    /**
-     * @see RewriteParser::loadTestResultsTemplate
-     */
-    function loadTestResultsTemplate(&$template, &$form) {
-	GalleryCoreApi::requireOnce(
-	    'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
-	return PathInfoHelper::loadTestResultsTemplate($template, $form);
-    }
-
-    /**
-     * @see RewriteParser::handleTestResultsRequest
-     */
-    function handleTestResultsRequest($form) {
-	$error = $status = array();
-
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null, null);
+	public function PathInfoParser()
+	{
+		$this->_setParserId('pathinfo');
+		$this->_setParserType('inGallery');
+		$this->_setUrlGeneratorId('PathInfoUrlGenerator');
 	}
 
-	if (isset($form['force']['test'])) {
-	    $ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'pathinfo.forced', '1');
-	    if ($ret) {
-		return array($ret, null, null);
-	    }
+	/**
+	 * @see RewriteParser::saveActiveRules
+	 */
+	public function saveActiveRules($activeRules=null, $upgradeModule=null)
+	{
+		GalleryCoreApi::requireOnce(
+		'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
+
+		return PathInfoHelper::saveActiveRules($this, $activeRules, $upgradeModule);
 	}
 
-	$status['saved'] = 1;
-	return array(null, $error, $status);
-    }
+	/**
+	 * @see RewriteParser::needsConfiguration
+	 */
+	public function needsConfiguration()
+	{
+		GalleryCoreApi::requireOnce(
+		'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
+
+		list($ret, $code) = PathInfoHelper::checkPathInfo();
+		if ($ret) {
+			return array($ret, null);
+		}
+
+		return array(null, $code != REWRITE_STATUS_OK);
+	}
+
+	/**
+	 * @see RewriteParser::loadTestResultsTemplate
+	 */
+	public function loadTestResultsTemplate(&$template, &$form)
+	{
+		GalleryCoreApi::requireOnce(
+		'modules/rewrite/classes/parsers/pathinfo/PathInfoHelper.class');
+
+		return PathInfoHelper::loadTestResultsTemplate($template, $form);
+	}
+
+	/**
+	 * @see RewriteParser::handleTestResultsRequest
+	 */
+	public function handleTestResultsRequest($form)
+	{
+		$error = $status = array();
+
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		if ($ret) {
+			return array($ret, null, null);
+		}
+
+		if (isset($form['force']['test'])) {
+			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'pathinfo.forced', '1');
+			if ($ret) {
+				return array($ret, null, null);
+			}
+		}
+
+		$status['saved'] = 1;
+
+		return array(null, $error, $status);
+	}
 }
-?>

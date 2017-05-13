@@ -27,106 +27,113 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class NewItemsModule extends GalleryModule {
+class NewItemsModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->NewItemsModule();
+	}
 
-    function __construct() {
-	$this->NewItemsModule();
-    }
+	public function NewItemsModule()
+	{
+		global $gallery;
 
-    function NewItemsModule() {
-	global $gallery;
+		$this->setId('newitems');
+		$this->setName($gallery->i18n('New Items'));
+		$this->setDescription($gallery->i18n('Highlight new/updated Gallery items'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('display', $gallery->i18n('Display'));
+		$this->setCallbacks('getSiteAdminViews|getItemSummaries');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
 
-	$this->setId('newitems');
-	$this->setName($gallery->i18n('New Items'));
-	$this->setDescription($gallery->i18n('Highlight new/updated Gallery items'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('display', $gallery->i18n('Display'));
-	$this->setCallbacks('getSiteAdminViews|getItemSummaries');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
-
-    /**
-     * @see GalleryModule::upgrade
-     */
-    function upgrade($currentVersion, $x1=null) {
-	if (!isset($currentVersion)) {
-	    foreach (array('days.new' => '7',
+	/**
+	 * @see GalleryModule::upgrade
+	 */
+	public function upgrade($currentVersion, $x1=null)
+	{
+		if (!isset($currentVersion)) {
+			foreach (array('days.new' => '7',
 			   'days.updated' => '7' )
-		     as $key => $value) {
-		$ret = $this->setParameter($key, $value);
-		if ($ret) {
-		    return $ret;
+			 as $key => $value) {
+				$ret = $this->setParameter($key, $value);
+				if ($ret) {
+					return $ret;
+				}
+			}
 		}
-	    }
+
+		return null;
 	}
 
-	return null;
-    }
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+		'GallerySortInterface_1_2', 'NewItemsSortOrder', 'NewItems',
+		'modules/newitems/classes/NewItemsSortOrder.class', 'newitems', null);
+		if ($ret) {
+			return $ret;
+		}
 
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    function performFactoryRegistrations() {
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'GallerySortInterface_1_2', 'NewItemsSortOrder', 'NewItems',
-	    'modules/newitems/classes/NewItemsSortOrder.class', 'newitems', null);
-	if ($ret) {
-	    return $ret;
+		return null;
 	}
 
-	return null;
-    }
-
-    /**
-     * @see GalleryModule::getSiteAdminViews
-     */
-    function getSiteAdminViews() {
-	return array(null,
-		     array(array('name' => $this->translate('New Items'),
+	/**
+	 * @see GalleryModule::getSiteAdminViews
+	 */
+	public function getSiteAdminViews()
+	{
+		return array(null,
+			 array(array('name' => $this->translate('New Items'),
 				 'view' => 'newitems.NewItemsSiteAdmin')));
-    }
-
-    /**
-     * @see GalleryModule::getItemSummaries
-     */
-    function getItemSummaries($items, $permissions, &$template) {
-	list ($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'newitems');
-	if ($ret) {
-	    return array($ret, null);
 	}
-	$time = time();
-	$newTime = $time - $param['days.new'] * 86400;
-	$updatedTime = $time - $param['days.updated'] * 86400;
 
-	$newString = $this->translate('New');
-	$updatedString = $this->translate('Updated');
+	/**
+	 * @see GalleryModule::getItemSummaries
+	 */
+	public function getItemSummaries($items, $permissions, &$template)
+	{
+		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'newitems');
+		if ($ret) {
+			return array($ret, null);
+		}
+		$time = time();
+		$newTime = $time - $param['days.new'] * 86400;
+		$updatedTime = $time - $param['days.updated'] * 86400;
 
-	$summaries = array();
-	foreach ($items as $item) {
-	    if ($param['days.new'] > 0 && $item->getCreationTimestamp() > $newTime) {
-		$summaries[$item->getId()] = '<span class="giNew">'
-		    . $newString . '</span>';
-	    } else if ($param['days.updated'] > 0
+		$newString = $this->translate('New');
+		$updatedString = $this->translate('Updated');
+
+		$summaries = array();
+		foreach ($items as $item) {
+			if ($param['days.new'] > 0 && $item->getCreationTimestamp() > $newTime) {
+				$summaries[$item->getId()] = '<span class="giNew">'
+			. $newString . '</span>';
+			} elseif ($param['days.updated'] > 0
 			&& $item->getModificationTimestamp() > $updatedTime) {
-		$summaries[$item->getId()] = '<span class="giUpdated">'
-		    . $updatedString . '</span>';
-	    }
-	}
-	return array(null, $summaries);
-    }
+				$summaries[$item->getId()] = '<span class="giUpdated">'
+			. $updatedString . '</span>';
+			}
+		}
 
-    /**
-     * @see GalleryModule::uninstall
-     */
-    function uninstall() {
-	$ret = GalleryCoreApi::deleteSortOrder('NewItems');
-	if ($ret) {
-	    return $ret;
+		return array(null, $summaries);
 	}
 
-	return parent::uninstall();
-    }
+	/**
+	 * @see GalleryModule::uninstall
+	 */
+	public function uninstall()
+	{
+		$ret = GalleryCoreApi::deleteSortOrder('NewItems');
+		if ($ret) {
+			return $ret;
+		}
+
+		return parent::uninstall();
+	}
 }
-?>

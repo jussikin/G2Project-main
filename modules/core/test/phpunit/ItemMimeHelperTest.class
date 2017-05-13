@@ -30,48 +30,48 @@ GalleryCoreApi::requireOnce('modules/mime/classes/helpers/ItemMimeHelper_simple.
  */
 class ItemMimeHelper_simpleTest extends GalleryTestCase
 {
-    public function ItemMimeHelperTest($methodname)
-    {
-        $this->GalleryTestCase($methodname);
-    }
-    
-    public function setUp()
-    {
-        $ret = parent::setUp();
-        if ($ret) {
-            return $ret;
-        }
-        
-        $ret = GalleryCoreApi::addMimeType('xxx', 'test/test', false);
-        if ($ret) {
-            return $ret;
-        }
-    }
-    
-    public function tearDown()
-    {
-        $ret = GalleryCoreApi::removeMimeType(array(
-            'mimeType' => 'test/test'
-        ));
-        if ($ret) {
-            return $ret;
-        }
-        
-        $ret = parent::tearDown();
-        if ($ret) {
-            return $ret;
-        }
-    }
-    
-    public function testMimeTypeMap()
-    {
-        list($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals(array(
-            'xxx'
-        ), $typeMap['ext']['test/test'], 'Extensions');
-        $this->assert(!$typeMap['viewable']['test/test'], 'Viewable');
-    }
+	public function ItemMimeHelperTest($methodname)
+	{
+		$this->GalleryTestCase($methodname);
+	}
+	
+	public function setUp()
+	{
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
+		
+		$ret = GalleryCoreApi::addMimeType('xxx', 'test/test', false);
+		if ($ret) {
+			return $ret;
+		}
+	}
+	
+	public function tearDown()
+	{
+		$ret = GalleryCoreApi::removeMimeType(array(
+			'mimeType' => 'test/test'
+		));
+		if ($ret) {
+			return $ret;
+		}
+		
+		$ret = parent::tearDown();
+		if ($ret) {
+			return $ret;
+		}
+	}
+	
+	public function testMimeTypeMap()
+	{
+		list($ret, $typeMap) = ItemMimeHelper_simple::getMimeTypeMap();
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals(array(
+			'xxx'
+		), $typeMap['ext']['test/test'], 'Extensions');
+		$this->assert(!$typeMap['viewable']['test/test'], 'Viewable');
+	}
 }

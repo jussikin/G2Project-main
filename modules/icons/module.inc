@@ -27,127 +27,127 @@
  */
 class IconsModule extends GalleryModule
 {
-    public function __construct()
-    {
-        $this->IconsModule();
-    }
-    
-    public function IconsModule()
-    {
-        global $gallery;
-        $this->setId('icons');
-        $this->setName($gallery->i18n('Icons'));
-        $this->setDescription($gallery->i18n('Display icons for links'));
-        $this->setVersion('2.0.0');
-        /* Update upgrade() function below too */
-        $this->_templateVersion = 1;
-        $this->setGroup('display', $gallery->i18n('Display'));
-        $this->setCallbacks('getSiteAdminViews');
-        $this->setRequiredCoreApi(array(
-            8,
-            0
-        ));
-        $this->setRequiredModuleApi(array(
-            4,
-            0
-        ));
-    }
-    
-    /**
-     * @see GalleryModule::upgrade
-     */
-    public function upgrade($currentVersion, $x1 = null)
-    {
-        list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'icons');
-        if ($ret) {
-            return $ret;
-        }
-        foreach (array(
-            'iconpack' => ''
-        ) as $key => $value) {
-            if (!isset($params[$key])) {
-                $ret = $this->setParameter($key, $value);
-                if ($ret) {
-                    return $ret;
-                }
-            }
-        }
-        
-        if (empty($currentVersion)) {
-            $currentVersion = '0';
-        }
-        
-        switch ($currentVersion) {
-            case '0':
-                $ret = $this->setParameter('iconpack', 'silk');
-                if ($ret) {
-                    return $ret;
-                }
-                break;
-            
-            case '0.9.0':
-            case '0.9.1':
-            case '0.9.2':
-                if (isset($params['iconpack']) && $params['iconpack'] == 'paularmstrongdesigns.com') {
-                    /* Removed ".com" from paularmstrongdesigns.com dir, IIS 5.1 didn't like it */
-                    $ret = $this->setParameter('iconpack', 'paularmstrongdesigns');
-                    if ($ret) {
-                        return $ret;
-                    }
-                }
-            
-            case '0.9.3':
-            case '0.9.4':
-            case '0.9.5':
-            case '1.0.0':
-            case '1.0.1':
-            case '1.0.2':
-            case '1.1.0':
-            case '1.1.1':
-            case '1.1.2':
-            /* .mo file migration */
-            
-            case '1.1.3':
-            case '1.1.4':
-            case '1.1.5':
-            /* Core API 8.0 & Module API 4.0 */
-            
-            case 'end of upgrade path':
-                break;
-            
-            default:
-                return GalleryCoreApi::error(ERROR_BAD_PLUGIN, __FILE__, __LINE__, sprintf('Unknown module version %s', $currentVersion));
-        }
-        
-        return null;
-    }
-    
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    public function performFactoryRegistrations()
-    {
-        $ret = GalleryCoreApi::registerFactoryImplementation('IconsInterface_1_0', 'IconsImpl', 'Icons', 'modules/icons/classes/IconsImpl.class', 'icons', null);
-        if ($ret) {
-            return $ret;
-        }
-        
-        return null;
-    }
-    
-    /**
-     * @see GalleryModule::getSiteAdminViews
-     */
-    public function getSiteAdminViews()
-    {
-        return array(
-            null,
-            array(
-                array(
-                    'name' => $this->translate('Icons'),
-                    'view' => 'icons.IconsSiteAdmin'
-                )
-            )
-        );
-    }
+	public function __construct()
+	{
+		$this->IconsModule();
+	}
+	
+	public function IconsModule()
+	{
+		global $gallery;
+		$this->setId('icons');
+		$this->setName($gallery->i18n('Icons'));
+		$this->setDescription($gallery->i18n('Display icons for links'));
+		$this->setVersion('2.0.0');
+		/* Update upgrade() function below too */
+		$this->_templateVersion = 1;
+		$this->setGroup('display', $gallery->i18n('Display'));
+		$this->setCallbacks('getSiteAdminViews');
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
+	}
+	
+	/**
+	 * @see GalleryModule::upgrade
+	 */
+	public function upgrade($currentVersion, $x1 = null)
+	{
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'icons');
+		if ($ret) {
+			return $ret;
+		}
+		foreach (array(
+			'iconpack' => ''
+		) as $key => $value) {
+			if (!isset($params[$key])) {
+				$ret = $this->setParameter($key, $value);
+				if ($ret) {
+					return $ret;
+				}
+			}
+		}
+		
+		if (empty($currentVersion)) {
+			$currentVersion = '0';
+		}
+		
+		switch ($currentVersion) {
+			case '0':
+				$ret = $this->setParameter('iconpack', 'silk');
+				if ($ret) {
+					return $ret;
+				}
+				break;
+			
+			case '0.9.0':
+			case '0.9.1':
+			case '0.9.2':
+				if (isset($params['iconpack']) && $params['iconpack'] == 'paularmstrongdesigns.com') {
+					/* Removed ".com" from paularmstrongdesigns.com dir, IIS 5.1 didn't like it */
+					$ret = $this->setParameter('iconpack', 'paularmstrongdesigns');
+					if ($ret) {
+						return $ret;
+					}
+				}
+			
+			case '0.9.3':
+			case '0.9.4':
+			case '0.9.5':
+			case '1.0.0':
+			case '1.0.1':
+			case '1.0.2':
+			case '1.1.0':
+			case '1.1.1':
+			case '1.1.2':
+			/* .mo file migration */
+			
+			case '1.1.3':
+			case '1.1.4':
+			case '1.1.5':
+			/* Core API 8.0 & Module API 4.0 */
+			
+			case 'end of upgrade path':
+				break;
+			
+			default:
+				return GalleryCoreApi::error(ERROR_BAD_PLUGIN, __FILE__, __LINE__, sprintf('Unknown module version %s', $currentVersion));
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation('IconsInterface_1_0', 'IconsImpl', 'Icons', 'modules/icons/classes/IconsImpl.class', 'icons', null);
+		if ($ret) {
+			return $ret;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @see GalleryModule::getSiteAdminViews
+	 */
+	public function getSiteAdminViews()
+	{
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Icons'),
+					'view' => 'icons.IconsSiteAdmin'
+				)
+			)
+		);
+	}
 }

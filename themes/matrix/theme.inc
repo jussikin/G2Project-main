@@ -27,222 +27,222 @@
  */
 class MatrixTheme extends GalleryTheme
 {
-    public function __construct()
-    {
-        $this->MatrixTheme();
-    }
-    
-    public function MatrixTheme()
-    {
-        global $gallery;
-        
-        $this->setId('matrix');
-        $this->setName($gallery->i18n('Matrix'));
-        $this->setDescription($gallery->i18n('Standard Gallery2 look and feel'));
-        $this->setVersion('2.0.0');
-        $this->setRequiredCoreApi(array(
-            8,
-            0
-        ));
-        $this->setRequiredThemeApi(array(
-            3,
-            0
-        ));
-        $this->setStandardSettings(array(
-            'rows' => 3,
-            'columns' => 3,
-            'showImageOwner' => 0,
-            'showAlbumOwner' => 1,
-            'albumFrame' => '',
-            'itemFrame' => '',
-            'photoFrame' => '',
-            'colorpack' => '',
-            'showMicroThumbs' => 0,
-            'dynamicLinks' => 'browse',
-            'sidebarBlocks' => serialize(array(
-                array(
-                    'search.SearchBlock',
-                    array(
-                        'showAdvancedLink' => true
-                    )
-                ),
-                array(
-                    'core.ItemLinks',
-                    array(
-                        'useDropdown' => false
-                    )
-                ),
-                array(
-                    'core.PeerList',
-                    array()
-                ),
-                array(
-                    'imageblock.ImageBlock',
-                    array()
-                )
-            )),
-            'albumBlocks' => serialize(array(
-                array(
-                    'comment.ViewComments',
-                    array()
-                )
-            )),
-            'photoBlocks' => serialize(array(
-                array(
-                    'exif.ExifInfo',
-                    array()
-                ),
-                array(
-                    'comment.ViewComments',
-                    array()
-                )
-            ))
-        ));
-    }
-    
-    /**
-     * @see GalleryTheme::showAlbumPage
-     */
-    public function showAlbumPage(&$template, $item, $params, $childIds)
-    {
-        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
-            'owner',
-            'viewCount',
-            'childCount',
-            'descendentCount',
-            'parents',
-            'systemLinks',
-            'itemLinks',
-            'itemSummaries',
-            'permissions',
-            'thumbnails',
-            'pageNavigator',
-            'jumpRange'
-        ), $childIds);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        /* Add in our extra stuff */
-        $theme =& $template->getVariableByReference('theme');
-        $theme['columnWidthPct'] = floor(100 / $params['columns']);
-        
-        /* Add our header and styles */
-        return array(
-            null,
-            'theme.tpl'
-        );
-    }
-    
-    /**
-     * @see GalleryTheme::showPhotoPage
-     */
-    public function showPhotoPage(&$template, $item, $params)
-    {
-        $dataTypes = array(
-            'owner',
-            'parents',
-            'systemLinks',
-            'itemLinks',
-            'permissions',
-            'itemLinksDetailed',
-            'itemNavigator',
-            'imageViews'
-        );
-        if (!empty($params['showMicroThumbs'])) {
-            $dataTypes[] = 'navThumbnails';
-        }
-        $ret = $this->loadCommonTemplateData($template, $item, $params, $dataTypes);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        return array(
-            null,
-            'theme.tpl'
-        );
-    }
-    
-    /**
-     * @see GalleryTheme::showModulePage
-     */
-    public function showModulePage(&$template, $item, $params, $templateFile)
-    {
-        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
-            'parents',
-            'systemLinks'
-        ));
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        return array(
-            null,
-            'theme.tpl'
-        );
-    }
-    
-    /**
-     * @see GalleryTheme::showAdminPage
-     */
-    public function showAdminPage(&$template, $item, $params, $templateFile)
-    {
-        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
-            'parents',
-            'systemLinks'
-        ));
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        return array(
-            null,
-            'theme.tpl'
-        );
-    }
-    
-    /**
-     * @see GalleryTheme::showErrorPage
-     */
-    public function showErrorPage(&$template)
-    {
-        return array(
-            null,
-            'error.tpl'
-        );
-    }
-    
-    /**
-     * @see GalleryTheme::showProgressBarPage
-     */
-    public function showProgressBarPage(&$template, $item, $params)
-    {
-        $ret = $this->loadCommonTemplateData($template, $item, $params, array(
-            'parents',
-            'systemLinks'
-        ));
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        return array(
-            null,
-            'theme.tpl'
-        );
-    }
+	public function __construct()
+	{
+		$this->MatrixTheme();
+	}
+	
+	public function MatrixTheme()
+	{
+		global $gallery;
+		
+		$this->setId('matrix');
+		$this->setName($gallery->i18n('Matrix'));
+		$this->setDescription($gallery->i18n('Standard Gallery2 look and feel'));
+		$this->setVersion('2.0.0');
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredThemeApi(array(
+			3,
+			0
+		));
+		$this->setStandardSettings(array(
+			'rows' => 3,
+			'columns' => 3,
+			'showImageOwner' => 0,
+			'showAlbumOwner' => 1,
+			'albumFrame' => '',
+			'itemFrame' => '',
+			'photoFrame' => '',
+			'colorpack' => '',
+			'showMicroThumbs' => 0,
+			'dynamicLinks' => 'browse',
+			'sidebarBlocks' => serialize(array(
+				array(
+					'search.SearchBlock',
+					array(
+						'showAdvancedLink' => true
+					)
+				),
+				array(
+					'core.ItemLinks',
+					array(
+						'useDropdown' => false
+					)
+				),
+				array(
+					'core.PeerList',
+					array()
+				),
+				array(
+					'imageblock.ImageBlock',
+					array()
+				)
+			)),
+			'albumBlocks' => serialize(array(
+				array(
+					'comment.ViewComments',
+					array()
+				)
+			)),
+			'photoBlocks' => serialize(array(
+				array(
+					'exif.ExifInfo',
+					array()
+				),
+				array(
+					'comment.ViewComments',
+					array()
+				)
+			))
+		));
+	}
+	
+	/**
+	 * @see GalleryTheme::showAlbumPage
+	 */
+	public function showAlbumPage(&$template, $item, $params, $childIds)
+	{
+		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
+			'owner',
+			'viewCount',
+			'childCount',
+			'descendentCount',
+			'parents',
+			'systemLinks',
+			'itemLinks',
+			'itemSummaries',
+			'permissions',
+			'thumbnails',
+			'pageNavigator',
+			'jumpRange'
+		), $childIds);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		/* Add in our extra stuff */
+		$theme =& $template->getVariableByReference('theme');
+		$theme['columnWidthPct'] = floor(100 / $params['columns']);
+		
+		/* Add our header and styles */
+		return array(
+			null,
+			'theme.tpl'
+		);
+	}
+	
+	/**
+	 * @see GalleryTheme::showPhotoPage
+	 */
+	public function showPhotoPage(&$template, $item, $params)
+	{
+		$dataTypes = array(
+			'owner',
+			'parents',
+			'systemLinks',
+			'itemLinks',
+			'permissions',
+			'itemLinksDetailed',
+			'itemNavigator',
+			'imageViews'
+		);
+		if (!empty($params['showMicroThumbs'])) {
+			$dataTypes[] = 'navThumbnails';
+		}
+		$ret = $this->loadCommonTemplateData($template, $item, $params, $dataTypes);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		return array(
+			null,
+			'theme.tpl'
+		);
+	}
+	
+	/**
+	 * @see GalleryTheme::showModulePage
+	 */
+	public function showModulePage(&$template, $item, $params, $templateFile)
+	{
+		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
+			'parents',
+			'systemLinks'
+		));
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		return array(
+			null,
+			'theme.tpl'
+		);
+	}
+	
+	/**
+	 * @see GalleryTheme::showAdminPage
+	 */
+	public function showAdminPage(&$template, $item, $params, $templateFile)
+	{
+		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
+			'parents',
+			'systemLinks'
+		));
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		return array(
+			null,
+			'theme.tpl'
+		);
+	}
+	
+	/**
+	 * @see GalleryTheme::showErrorPage
+	 */
+	public function showErrorPage(&$template)
+	{
+		return array(
+			null,
+			'error.tpl'
+		);
+	}
+	
+	/**
+	 * @see GalleryTheme::showProgressBarPage
+	 */
+	public function showProgressBarPage(&$template, $item, $params)
+	{
+		$ret = $this->loadCommonTemplateData($template, $item, $params, array(
+			'parents',
+			'systemLinks'
+		));
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		return array(
+			null,
+			'theme.tpl'
+		);
+	}
 }

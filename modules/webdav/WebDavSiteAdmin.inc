@@ -27,28 +27,28 @@ GalleryCoreApi::requireOnce('modules/webdav/classes/WebDavHelper.class');
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class WebDavSiteAdminView extends GalleryView {
+class WebDavSiteAdminView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		if ($ret) {
+			return array($ret, null);
+		}
 
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
+		$WebDavSiteAdmin = array();
 
-	$WebDavSiteAdmin = array();
-
-	list ($ret, $WebDavSiteAdmin['code']) = WebDavHelper::checkConfiguration();
-	if ($ret) {
-	    return array($ret, null);
-	}
+		list($ret, $WebDavSiteAdmin['code']) = WebDavHelper::checkConfiguration();
+		if ($ret) {
+			return array($ret, null);
+		}
 
 	/* Render HTML body */
 	$template->setVariable('WebDavSiteAdmin', $WebDavSiteAdmin);
 
-	return array(null, array('body' => 'modules/webdav/templates/WebDavSiteAdmin.tpl'));
-    }
+		return array(null, array('body' => 'modules/webdav/templates/WebDavSiteAdmin.tpl'));
+	}
 }
-?>

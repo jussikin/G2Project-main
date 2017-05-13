@@ -25,73 +25,73 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class UserAlbumController extends GalleryController {
+class UserAlbumController extends GalleryController
+{
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest($form)
+	{
+		global $gallery;
+		$activeUserId = $gallery->getActiveUserId();
 
-    /**
-     * @see GalleryController::handleRequest
-     */
-    function handleRequest($form) {
-	global $gallery;
-	$activeUserId = $gallery->getActiveUserId();
+		$userId = GalleryUtilities::getRequestVariables('userId');
+		if (empty($userId)) {
+			$userId = $activeUserId;
+		}
 
-	$userId = GalleryUtilities::getRequestVariables('userId');
-	if (empty($userId)) {
-	    $userId = $activeUserId;
-	}
+		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($userId);
+		if ($ret) {
+			return array($ret, null);
+		}
+		if ($isAnonymous) {
+			return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+		}
 
-	list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($userId);
-	if ($ret) {
-	    return array($ret, null);
-	}
-	if ($isAnonymous) {
-	    return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
-	}
-
-	list ($ret, $albumId) =
-	    GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	list ($ret, $createMode) =
-	    GalleryCoreApi::getPluginParameter('module', 'useralbum', 'create');
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	if (!empty($albumId)) {
-	    list ($ret, $album) = GalleryCoreApi::loadEntitiesById($albumId, 'GalleryItem');
-	    if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
-		return array($ret, null);
-	    }
-	}
-
-	if (!isset($album) && $createMode == 'access') {
-	    /* If userId matches active user then create the user album */
-	    if ($userId != $activeUserId) {
-		return
-		    array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
-	    }
-	    GalleryCoreApi::requireOnce('modules/useralbum/classes/UserAlbumHelper.class');
-
-	    $ret = UserAlbumHelper::createUserAlbum($gallery->getActiveUser());
-	    if ($ret) {
-		return array($ret, null);
-	    }
-
-	    list ($ret, $albumId) =
+		list($ret, $albumId) =
 		GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	}
+		if ($ret) {
+			return array($ret, null);
+		}
 
-	$results = array('delegate' => array('view' => 'core.ShowItem',
-					     'itemId' => $albumId),
+		list($ret, $createMode) =
+		GalleryCoreApi::getPluginParameter('module', 'useralbum', 'create');
+		if ($ret) {
+			return array($ret, null);
+		}
+
+		if (!empty($albumId)) {
+			list($ret, $album) = GalleryCoreApi::loadEntitiesById($albumId, 'GalleryItem');
+			if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
+				return array($ret, null);
+			}
+		}
+
+		if (!isset($album) && $createMode == 'access') {
+			/* If userId matches active user then create the user album */
+		if ($userId != $activeUserId) {
+			return
+			array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+		}
+			GalleryCoreApi::requireOnce('modules/useralbum/classes/UserAlbumHelper.class');
+
+			$ret = UserAlbumHelper::createUserAlbum($gallery->getActiveUser());
+			if ($ret) {
+				return array($ret, null);
+			}
+
+			list($ret, $albumId) =
+		GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
+			if ($ret) {
+				return array($ret, null);
+			}
+		}
+
+		$results = array('delegate' => array('view' => 'core.ShowItem',
+						 'itemId' => $albumId),
 			 'status' => array(),
 			 'error' => array());
 
-	return array(null, $results);
-    }
+		return array(null, $results);
+	}
 }
-?>

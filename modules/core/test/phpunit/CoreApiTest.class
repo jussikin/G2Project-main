@@ -27,48 +27,48 @@
  */
 class CoreApiTest extends GalleryTestCase
 {
-    public function CoreApiTest($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
+	public function CoreApiTest($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
 
-    public function testGetDefaultAlbumId()
-    {
-        $expectedId = $this->_getRootId();
+	public function testGetDefaultAlbumId()
+	{
+		$expectedId = $this->_getRootId();
 
-        list($ret, $defaultId) = GalleryCoreApi::getDefaultAlbumId();
-        if ($ret) {
-            return $ret;
-        }
+		list($ret, $defaultId) = GalleryCoreApi::getDefaultAlbumId();
+		if ($ret) {
+			return $ret;
+		}
 
-        $this->assertEquals($expectedId, $defaultId);
-    }
+		$this->assertEquals($expectedId, $defaultId);
+	}
 
-    public function testGetDefaultAlbumIdNotRoot()
-    {
-        global $gallery;
+	public function testGetDefaultAlbumIdNotRoot()
+	{
+		global $gallery;
 
-        $expectedId = rand();
-        $gallery->setConfig('defaultAlbumId', $expectedId);
+		$expectedId = rand();
+		$gallery->setConfig('defaultAlbumId', $expectedId);
 
-        list($ret, $defaultId) = GalleryCoreApi::getDefaultAlbumId();
-        if ($ret) {
-            return $ret;
-        }
+		list($ret, $defaultId) = GalleryCoreApi::getDefaultAlbumId();
+		if ($ret) {
+			return $ret;
+		}
 
-        $this->assertEquals($expectedId, $defaultId);
-    }
+		$this->assertEquals($expectedId, $defaultId);
+	}
 
-    public function testLoadAvailableBlocks()
-    {
-        list($ret, $blocks) = GalleryCoreApi::loadAvailableBlocks();
-        if ($ret) {
-            return $ret;
-        }
-        $this->assert(!empty($blocks), 'No blocks found!');
-        $this->assert(isset($blocks['core']['LanguageSelector']));
-        $this->assert(isset($blocks['core']['ItemLinks']));
-        $this->assert(isset($blocks['core']['LoginBlock']));
-        $this->assert(isset($blocks['core']['PeerList']));
-    }
+	public function testLoadAvailableBlocks()
+	{
+		list($ret, $blocks) = GalleryCoreApi::loadAvailableBlocks();
+		if ($ret) {
+			return $ret;
+		}
+		$this->assert(!empty($blocks), 'No blocks found!');
+		$this->assert(isset($blocks['core']['LanguageSelector']));
+		$this->assert(isset($blocks['core']['ItemLinks']));
+		$this->assert(isset($blocks['core']['LoginBlock']));
+		$this->assert(isset($blocks['core']['PeerList']));
+	}
 }

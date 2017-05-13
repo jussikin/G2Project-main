@@ -24,8 +24,7 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 20968 $
  */
-
-require_once(dirname(__FILE__) . '/modules/core/classes/GalleryUtilities.class');
+require_once dirname(__FILE__) . '/modules/core/classes/GalleryUtilities.class';
 
 function GalleryInitFirstPass($params = array( ))
 {
@@ -51,7 +50,7 @@ function GalleryInitFirstPass($params = array( ))
 	 * log spam.  Only load GalleryCoreApi if it isn't loaded.
 	 */
 	if (!class_exists("GalleryCoreApi")) {
-		require_once($galleryBase . 'modules/core/classes/GalleryCoreApi.class');
+		require_once $galleryBase . 'modules/core/classes/GalleryCoreApi.class';
 	}
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryConstants.class');
 	GalleryCoreApi::requireOnce('modules/core/classes/GalleryView.class');
@@ -110,9 +109,9 @@ function GalleryInitFirstPass($params = array( ))
 	/* Configure our url generator */
 	if (!isset($params['noDatabase'])) {
 		/*
-		 * Swallow error to prevent GalleryFactoryHelper_loadRegistry cache from breaking upgrade to
-		 * core 1.0.6
-		 */
+	     * Swallow error to prevent GalleryFactoryHelper_loadRegistry cache from breaking upgrade to
+	     * core 1.0.6
+	     */
 		list($ret, $urlGenerator) = @GalleryCoreApi::newFactoryInstance('GalleryUrlGenerator');
 		/* Swallow ERROR_STORAGE_FAILURE, or automatic upgrading fails */
 		if ($ret && !($ret->getErrorCode() & ERROR_STORAGE_FAILURE)) {
@@ -213,7 +212,6 @@ function GalleryInitSecondPass()
 	
 	return null;
 }
-
 
 /**
  * Interceptor for the standard PHP error handler.  We log any errors in the database, then

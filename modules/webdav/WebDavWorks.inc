@@ -25,20 +25,21 @@
  * @author Jack Bates <ms419@freezone.co.uk>
  * @version $Revision: 17580 $
  */
-class WebDavWorksView extends GalleryView {
+class WebDavWorksView extends GalleryView
+{
+	/**
+	 * @see GalleryView::isImmediate
+	 */
+	public function isImmediate()
+	{
+		return true;
+	}
 
-    /**
-     * @see GalleryView::isImmediate
-     */
-    function isImmediate() {
-	return true;
-    }
-
-    /**
-     * @see GalleryView::renderImmediate
-     */
-    function renderImmediate($status, $error) {
-	print 'PASS_WEBDAV';
-    }
+	/**
+	 * @see GalleryView::renderImmediate
+	 */
+	public function renderImmediate($status, $error)
+	{
+		echo 'PASS_WEBDAV';
+	}
 }
-?>

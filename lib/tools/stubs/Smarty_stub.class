@@ -24,6 +24,6 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class Smarty {
+class Smarty
+{
 }
-?>

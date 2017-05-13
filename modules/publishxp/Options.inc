@@ -29,35 +29,37 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-class OptionsController extends GalleryController {
+class OptionsController extends GalleryController
+{
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest($form)
+	{
+		global $gallery;
+		$results = array();
+		if (isset($form['action']['setOptions'])) {
+			/* No form processing/validation required so just continue the next page */
+		$results['redirect']['view'] = 'publishxp.UploadItems';
+			$results['redirect']['stripExtensions'] = isset($form['stripExtensions']);
+			$results['redirect']['setCaptions'] = isset($form['setCaptions']);
+			$results['redirect']['albumId'] = $form['albumId'];
 
-    /**
-     * @see GalleryController::handleRequest
-     */
-    function handleRequest($form) {
-	global $gallery;
-	$results = array();
-	if (isset($form['action']['setOptions'])) {
-	    /* No form processing/validation required so just continue the next page */
-	    $results['redirect']['view'] = 'publishxp.UploadItems';
-	    $results['redirect']['stripExtensions'] = isset($form['stripExtensions']);
-	    $results['redirect']['setCaptions'] = isset($form['setCaptions']);
-	    $results['redirect']['albumId'] = $form['albumId'];
-
-	    /*
+		/*
 	     * Any options set by ItemAddOptions also need to get passed forward but
 	     * we don't know what or how complex they are, so let's take the easy route of storing
 	     * the form in the session for later.
 	     */
-	    $session =& $gallery->getSession();
-	    $session->put('publishxp.extraOptionsForm', serialize($form));
-	} else {
-	    $results['delegate']['view'] = 'publishxp.Options';
+		$session =& $gallery->getSession();
+			$session->put('publishxp.extraOptionsForm', serialize($form));
+		} else {
+			$results['delegate']['view'] = 'publishxp.Options';
+		}
+		$results['status'] = array();
+		$results['error'] = array();
+
+		return array(null, $results);
 	}
-	$results['status'] = array();
-	$results['error'] = array();
-	return array(null, $results);
-    }
 }
 
 /**
@@ -66,80 +68,81 @@ class OptionsController extends GalleryController {
  * The two options supported are for whether the file extension should be used in the title
  * and if the captions should be set automatically.
  */
-class OptionsView extends GalleryView {
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	global $gallery;
-	if ($form['formName'] != 'Options') {
-	    $form['formName'] = 'Options';
+class OptionsView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		global $gallery;
+		if ($form['formName'] != 'Options') {
+			$form['formName'] = 'Options';
 
-	    list ($form['albumId'], $form['stripExtensions'], $form['setCaptions']) =
+			list($form['albumId'], $form['stripExtensions'], $form['setCaptions']) =
 		GalleryUtilities::getRequestVariables('albumId', 'stripExtensions', 'setCaptions');
 
-	    /* Strip extensions defaults to true, if there was no query parameter for it */
-	    if ($form['stripExtensions'] == null) {
-		$form['stripExtensions'] = true;
-	    }
+		/* Strip extensions defaults to true, if there was no query parameter for it */
+		if ($form['stripExtensions'] == null) {
+			$form['stripExtensions'] = true;
+		}
 
-	    if (empty($form['albumId'])) {
-		return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
-	    }
-	}
-	$form['albumId'] = (int)$form['albumId'];
+			if (empty($form['albumId'])) {
+				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+			}
+		}
+		$form['albumId'] = (int)$form['albumId'];
 
 	/* Get all the add options */
 	GalleryCoreApi::requireOnce('modules/core/ItemAdd.inc');
-	if (isset($this->_optionInstances)) {
-	    $optionInstances = $this->_optionInstances;
-	} else {
-	    list ($ret, $optionInstances) = ItemAddOption::getAllAddOptions();
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	}
+		if (isset($this->_optionInstances)) {
+			$optionInstances = $this->_optionInstances;
+		} else {
+			list($ret, $optionInstances) = ItemAddOption::getAllAddOptions();
+			if ($ret) {
+				return array($ret, null);
+			}
+		}
 
-	list ($ret, $permissions) = GalleryCoreApi::getPermissions($form['albumId']);
-	if ($ret) {
-	    return array($ret, null);
-	}
-	if (empty($permissions['core.view'])) {
-	    return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
-	} else if (empty($permissions['core.addDataItem'])
+		list($ret, $permissions) = GalleryCoreApi::getPermissions($form['albumId']);
+		if ($ret) {
+			return array($ret, null);
+		}
+		if (empty($permissions['core.view'])) {
+			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+		} elseif (empty($permissions['core.addDataItem'])
 		   && empty($permissions['core.addAlbumItem'])) {
-	    return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
-	}
+			return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+		}
 
 	/* Now let all options load their template data */
-	list ($ret, $item) = GalleryCoreApi::loadEntitiesById($form['albumId'], 'GalleryAlbumItem');
-	if ($ret) {
-	    return array($ret, null);
-	}
+	list($ret, $item) = GalleryCoreApi::loadEntitiesById($form['albumId'], 'GalleryAlbumItem');
+		if ($ret) {
+			return array($ret, null);
+		}
 
-	$Options['options'] = array();
-	foreach ($optionInstances as $option) {
-	    list ($ret, $entry['file'], $entry['l10Domain']) =
+		$Options['options'] = array();
+		foreach ($optionInstances as $option) {
+			list($ret, $entry['file'], $entry['l10Domain']) =
 		$option->loadTemplate($template, $form, $item);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    if (!empty($entry['file'])) {
-		$Options['options'][] = $entry;
-	    }
-	}
+			if ($ret) {
+				return array($ret, null);
+			}
+			if (!empty($entry['file'])) {
+				$Options['options'][] = $entry;
+			}
+		}
 
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
-	if ($ret) {
-	    return array($ret, null);
-	}
+		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
+		if ($ret) {
+			return array($ret, null);
+		}
 
-	$template->title($module->translate('Windows Publishing Wizard'));
-	$template->setVariable('Options', $Options);
-	$template->head('modules/publishxp/templates/Head.tpl');
+		$template->title($module->translate('Windows Publishing Wizard'));
+		$template->setVariable('Options', $Options);
+		$template->head('modules/publishxp/templates/Head.tpl');
 
-	return array(null, array('body' => 'modules/publishxp/templates/Options.tpl',
+		return array(null, array('body' => 'modules/publishxp/templates/Options.tpl',
 				 'useFullScreen' => true));
-    }
+	}
 }
-?>

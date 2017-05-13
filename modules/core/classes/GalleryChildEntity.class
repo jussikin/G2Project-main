@@ -39,144 +39,144 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
  */
 class GalleryChildEntity extends GalleryEntity
 {
-    /**
-     * The id of the parent of this GalleryChildEntity
-     * @var int
-     *
-     * @g2 <member>
-     * @g2   <member-name>parentId</member-name>
-     * @g2   <member-type>INTEGER</member-type>
-     * @g2   <indexed/>
-     * @g2   <required/>
-     * @g2 </member>
-     */
-    public $parentId;
-    
-    /**
-     * Create this item in our persistent store
-     *
-     * @param int $parentId the id of the GalleryItem parent
-     * @return GalleryStatus a status code
-     */
-    public function create($parentId = null, $x1 = null, $x2 = null)
-    {
-        global $gallery;
-        
-        if (empty($parentId)) {
-            return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
-        }
-        
-        $ret = parent::create();
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* Set the parent id */
-        $this->setParentId($parentId);
-        
-        return null;
-    }
-    
-    /**
-     * @see GalleryEntity::createLink
-     */
-    public function createLink($entity, $parentId = null)
-    {
-        global $gallery;
-        
-        $ret = parent::createLink($entity);
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* Set the parent id */
-        $this->setParentId($parentId);
-        
-        return null;
-    }
-    
-    /**
-     * Move this item to a new parent
-     *
-     * @param int $newParentId the id of the GalleryItem parent
-     * @return GalleryStatus a status code
-     */
-    public function move($newParentId)
-    {
-        global $gallery;
-        
-        if (empty($newParentId)) {
-            return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
-        }
-        
-        /* Set the new parent id */
-        $this->setParentId($newParentId);
-        
-        return null;
-    }
-    
-    /**
-     * Create a root level item.
-     * This is a special case; every other GalleryChildEntry will have a
-     * parent.  But the root items don't have one.
-     */
-    public function createRoot()
-    {
-        $ret = parent::create();
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* No parent for root */
-        $this->setParentId(0);
-        
-        return null;
-    }
-    
-    /**
-     * Get the parent instance
-     *
-     * @return array GalleryStatus a status code
-     *               GalleryItem the parent item
-     */
-    public function fetchParent()
-    {
-        global $gallery;
-        
-        $parentId = $this->getParentId();
-        if (isset($parentId)) {
-            list($ret, $parent) = GalleryCoreApi::loadEntitiesById($this->getParentId(), 'GalleryEntity');
-            if ($ret) {
-                return array(
-                    $ret,
-                    null
-                );
-            }
-        } else {
-            $parent = null;
-        }
-        
-        return array(
-            null,
-            $parent
-        );
-    }
-    
-    /**
-     * @see GalleryEntity::getClassName
-     */
-    public function getClassName()
-    {
-        return 'GalleryChildEntity';
-    }
-    
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
-    
-    public function setParentId($parentId)
-    {
-        $this->parentId = $parentId;
-    }
+	/**
+	 * The id of the parent of this GalleryChildEntity
+	 * @var int
+	 *
+	 * @g2 <member>
+	 * @g2   <member-name>parentId</member-name>
+	 * @g2   <member-type>INTEGER</member-type>
+	 * @g2   <indexed/>
+	 * @g2   <required/>
+	 * @g2 </member>
+	 */
+	public $parentId;
+	
+	/**
+	 * Create this item in our persistent store
+	 *
+	 * @param int $parentId the id of the GalleryItem parent
+	 * @return GalleryStatus a status code
+	 */
+	public function create($parentId = null, $x1 = null, $x2 = null)
+	{
+		global $gallery;
+		
+		if (empty($parentId)) {
+			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+		}
+		
+		$ret = parent::create();
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* Set the parent id */
+		$this->setParentId($parentId);
+		
+		return null;
+	}
+	
+	/**
+	 * @see GalleryEntity::createLink
+	 */
+	public function createLink($entity, $parentId = null)
+	{
+		global $gallery;
+		
+		$ret = parent::createLink($entity);
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* Set the parent id */
+		$this->setParentId($parentId);
+		
+		return null;
+	}
+	
+	/**
+	 * Move this item to a new parent
+	 *
+	 * @param int $newParentId the id of the GalleryItem parent
+	 * @return GalleryStatus a status code
+	 */
+	public function move($newParentId)
+	{
+		global $gallery;
+		
+		if (empty($newParentId)) {
+			return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+		}
+		
+		/* Set the new parent id */
+		$this->setParentId($newParentId);
+		
+		return null;
+	}
+	
+	/**
+	 * Create a root level item.
+	 * This is a special case; every other GalleryChildEntry will have a
+	 * parent.  But the root items don't have one.
+	 */
+	public function createRoot()
+	{
+		$ret = parent::create();
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* No parent for root */
+		$this->setParentId(0);
+		
+		return null;
+	}
+	
+	/**
+	 * Get the parent instance
+	 *
+	 * @return array GalleryStatus a status code
+	 *               GalleryItem the parent item
+	 */
+	public function fetchParent()
+	{
+		global $gallery;
+		
+		$parentId = $this->getParentId();
+		if (isset($parentId)) {
+			list($ret, $parent) = GalleryCoreApi::loadEntitiesById($this->getParentId(), 'GalleryEntity');
+			if ($ret) {
+				return array(
+					$ret,
+					null
+				);
+			}
+		} else {
+			$parent = null;
+		}
+		
+		return array(
+			null,
+			$parent
+		);
+	}
+	
+	/**
+	 * @see GalleryEntity::getClassName
+	 */
+	public function getClassName()
+	{
+		return 'GalleryChildEntity';
+	}
+	
+	public function getParentId()
+	{
+		return $this->parentId;
+	}
+	
+	public function setParentId($parentId)
+	{
+		$this->parentId = $parentId;
+	}
 }

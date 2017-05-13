@@ -28,10 +28,10 @@
 	<ul>
 	  <?php
 	  foreach ($templateData['deactivatedPlugins'] as $pluginType => $list) {
-	      $pluginType = ($pluginType == 'module') ? _('Module') : _('Theme');
-	      foreach ($list as $pluginId) {
-	          echo "<li> $pluginType: $pluginId </li>";
-	      }
+	  	$pluginType = ($pluginType == 'module') ? _('Module') : _('Theme');
+	  	foreach ($list as $pluginId) {
+	  		echo "<li> $pluginType: $pluginId </li>";
+	  	}
 	  }
 	  ?>
 	</ul>
@@ -59,7 +59,7 @@
         </th>
       </tr>
       <?php $upgradableCount = 0;
-        foreach ($templateData['groupedModules'] as $group => $modules): ?>
+		foreach ($templateData['groupedModules'] as $group => $modules): ?>
         <tr style="background-color: #fff">
           <td colspan="4"><h3><?php echo $templateData['groupLabel'][$group] ?></h3></td>
         </tr>
@@ -68,8 +68,8 @@
         <?php $isUpgradeable = isset($templateData['pluginIsUpgradeable']['module'][$id]) ? $templateData['pluginIsUpgradeable']['module'][$id] : $templateData['pluginIsUpgradeable']['theme'][$id]; ?>
         <?php $isCompatible = isset($templateData['pluginIsCompatible']['module'][$id]) ? $templateData['pluginIsCompatible']['module'][$id] : $templateData['pluginIsCompatible']['theme'][$id]; ?>
         <tr<?php if ($counter % 2 == 0) {
-            print ' style="background-color: #eee; padding: 0px; margin: 0px;"';
-        } ?>>
+			echo ' style="background-color: #eee; padding: 0px; margin: 0px;"';
+		} ?>>
           <td>
             <input type="checkbox" id="plugin_<?php echo $id ?>"
               name="<?php echo($templateData['groupType'][$group] . '[' . $id . ']')?>"

@@ -27,82 +27,82 @@
  */
 class ItemDeleteJsView extends GalleryView
 {
-    /**
-     * @see GalleryView::isImmediate
-     */
-    public function isImmediate()
-    {
-        return true;
-    }
-    
-    /**
-     * @see GalleryView::isAllowedInEmbedOnly
-     */
-    public function isAllowedInEmbedOnly()
-    {
-        return true;
-    }
-    
-    /**
-     * @see GalleryView::shouldSaveSession
-     */
-    public function shouldSaveSession()
-    {
-        return false;
-    }
-    
-    /**
-     * @see GalleryView::renderImmediate
-     */
-    public function renderImmediate($status, $error)
-    {
-        GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
-        $template = new GalleryTemplate(dirname(dirname(dirname(__FILE__))));
-        $template->setVariable('l10Domain', 'modules_core');
-        
-        if (function_exists('getallheaders')) {
-            $headers = getallheaders();
-            if (isset($headers['If-modified-since'])) {
-                $headers['If-Modified-Since'] = $headers['If-modified-since'];
-            }
-            if (isset($headers['If-Modified-Since']) && ($when = strtotime($headers['If-Modified-Since'])) > 0) {
-                /**
-                 * Check date on language files to determine if we should resend the strings.
-                 *
-                 * TODO: Create an API to check whether the translation file has changed and refactor the hardcoded .mo file locations.
-                 */
-                global $gallery;
-                $platform =& $gallery->getPlatform();
-                list($ret, $lang) = $gallery->getActiveLocale();
-                if ($ret) {
-                    return $ret;
-                }
-                $inc = $gallery->getConfig('data.gallery.base') . "locale/$lang/LC_MESSAGES/modules_core.mo";
-                if ($platform->file_exists($inc)) {
-                    if (($stat = $platform->stat($inc)) && $stat[9] > $when) {
-                        $new = true;
-                    }
-                } else {
-                    $lang = substr($lang, 0, 2);
-                    $inc = $gallery->getConfig('data.gallery.base') . "locale/$lang/LC_MESSAGES/modules_core.mo";
-                    if ($platform->file_exists($inc) && ($stat = $platform->stat($inc)) && $stat[9] > $when) {
-                        $new = true;
-                    }
-                }
-                if (!isset($new)) {
-                    header('HTTP/1.0 304 Not Modified');
+	/**
+	 * @see GalleryView::isImmediate
+	 */
+	public function isImmediate()
+	{
+		return true;
+	}
+	
+	/**
+	 * @see GalleryView::isAllowedInEmbedOnly
+	 */
+	public function isAllowedInEmbedOnly()
+	{
+		return true;
+	}
+	
+	/**
+	 * @see GalleryView::shouldSaveSession
+	 */
+	public function shouldSaveSession()
+	{
+		return false;
+	}
+	
+	/**
+	 * @see GalleryView::renderImmediate
+	 */
+	public function renderImmediate($status, $error)
+	{
+		GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
+		$template = new GalleryTemplate(dirname(dirname(dirname(__FILE__))));
+		$template->setVariable('l10Domain', 'modules_core');
+		
+		if (function_exists('getallheaders')) {
+			$headers = getallheaders();
+			if (isset($headers['If-modified-since'])) {
+				$headers['If-Modified-Since'] = $headers['If-modified-since'];
+			}
+			if (isset($headers['If-Modified-Since']) && ($when = strtotime($headers['If-Modified-Since'])) > 0) {
+				/**
+	             * Check date on language files to determine if we should resend the strings.
+	             *
+	             * TODO: Create an API to check whether the translation file has changed and refactor the hardcoded .mo file locations.
+	             */
+				global $gallery;
+				$platform =& $gallery->getPlatform();
+				list($ret, $lang) = $gallery->getActiveLocale();
+				if ($ret) {
+					return $ret;
+				}
+				$inc = $gallery->getConfig('data.gallery.base') . "locale/$lang/LC_MESSAGES/modules_core.mo";
+				if ($platform->file_exists($inc)) {
+					if (($stat = $platform->stat($inc)) && $stat[9] > $when) {
+						$new = true;
+					}
+				} else {
+					$lang = substr($lang, 0, 2);
+					$inc = $gallery->getConfig('data.gallery.base') . "locale/$lang/LC_MESSAGES/modules_core.mo";
+					if ($platform->file_exists($inc) && ($stat = $platform->stat($inc)) && $stat[9] > $when) {
+						$new = true;
+					}
+				}
+				if (!isset($new)) {
+					header('HTTP/1.0 304 Not Modified');
 
-                    return null;
-                }
-            }
-        }
-        
-        header('Content-type: text/javascript; charset=UTF-8');
-        header('Last-Modified: ' . GalleryUtilities::getHttpDate());
-        header('Expires: ' . GalleryUtilities::getHttpDate(time() + 2592000));
-        
-        $ret = $template->display('modules/core/templates/ItemDeleteJs.tpl');
+					return null;
+				}
+			}
+		}
+		
+		header('Content-type: text/javascript; charset=UTF-8');
+		header('Last-Modified: ' . GalleryUtilities::getHttpDate());
+		header('Expires: ' . GalleryUtilities::getHttpDate(time() + 2592000));
+		
+		$ret = $template->display('modules/core/templates/ItemDeleteJs.tpl');
 
-        return $ret;
-    }
+		return $ret;
+	}
 }

@@ -23,17 +23,19 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class SearchPreloads {
-    function preload(&$template, $preload, $paramSet) {
-	global $gallery;
+class SearchPreloads
+{
+	public function preload(&$template, $preload, $paramSet)
+	{
+		global $gallery;
 
-	switch($preload) {
+		switch ($preload) {
 	case 'SearchBlock':
-	    $template->javascript('modules/search/SearchBlock.js');
-	    return null;
+		$template->javascript('modules/search/SearchBlock.js');
+
+		return null;
 	}
 
-	return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
-    }
+		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+	}
 }
-?>

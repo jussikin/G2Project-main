@@ -25,37 +25,40 @@
  * @author Piotr P. Karwasz <piotr.karwasz@ens.fr>
  * @version $Revision: 18172 $
  */
-class ReuploadModule extends GalleryModule {
-
-    function __construct() {
-	$this->ReuploadModule();
-    }
-
-    function ReuploadModule() {
-	global $gallery;
-	$this->setId('reupload');
-	$this->setName($gallery->i18n('Reupload'));
-	$this->setDescription($gallery->i18n('Allows reupload of pictures.'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('data', $gallery->i18n('Extra Data'));
-	$this->setCallbacks('');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
-
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    function performFactoryRegistrations() {
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'ItemEditOption', 'ReuploadPhotoOption', 'ReuploadPhotoOption',
-	    'modules/reupload/ReuploadPhotoOption.inc', 'reupload',
-	    array('ItemEditRotateAndScalePhoto'));
-	if ($ret) {
-	    return $ret;
+class ReuploadModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->ReuploadModule();
 	}
-	return null;
-    }
+
+	public function ReuploadModule()
+	{
+		global $gallery;
+		$this->setId('reupload');
+		$this->setName($gallery->i18n('Reupload'));
+		$this->setDescription($gallery->i18n('Allows reupload of pictures.'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('data', $gallery->i18n('Extra Data'));
+		$this->setCallbacks('');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
+
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+		'ItemEditOption', 'ReuploadPhotoOption', 'ReuploadPhotoOption',
+		'modules/reupload/ReuploadPhotoOption.inc', 'reupload',
+		array('ItemEditRotateAndScalePhoto'));
+		if ($ret) {
+			return $ret;
+		}
+
+		return null;
+	}
 }
-?>

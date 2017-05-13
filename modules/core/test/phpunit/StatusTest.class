@@ -29,26 +29,26 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStatus.class');
  */
 class StatusTest extends GalleryTestCase
 {
-    public function StatusTest($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
-    
-    public function testGetErrorCodeConstantsNoSpecificError()
-    {
-        $codes = GalleryStatus::getErrorCodeConstants(GALLERY_ERROR);
-        $this->assertEquals(array(
-            'GALLERY_ERROR'
-        ), $codes);
-    }
-    
-    public function testGetErrorCodeConstantsTwoErrors()
-    {
-        $codes = GalleryStatus::getErrorCodeConstants(ERROR_COLLISION | ERROR_LOCK_IN_USE);
-        $expected = array(
-            'ERROR_COLLISION',
-            'ERROR_LOCK_IN_USE'
-        );
-        $this->assertEquals(sort($expected), sort($codes));
-    }
+	public function StatusTest($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
+	
+	public function testGetErrorCodeConstantsNoSpecificError()
+	{
+		$codes = GalleryStatus::getErrorCodeConstants(GALLERY_ERROR);
+		$this->assertEquals(array(
+			'GALLERY_ERROR'
+		), $codes);
+	}
+	
+	public function testGetErrorCodeConstantsTwoErrors()
+	{
+		$codes = GalleryStatus::getErrorCodeConstants(ERROR_COLLISION | ERROR_LOCK_IN_USE);
+		$expected = array(
+			'ERROR_COLLISION',
+			'ERROR_LOCK_IN_USE'
+		);
+		$this->assertEquals(sort($expected), sort($codes));
+	}
 }

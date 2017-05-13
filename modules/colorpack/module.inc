@@ -27,41 +27,41 @@
  */
 class ColorPackModule extends GalleryModule
 {
-    public function __construct()
-    {
-        $this->ColorPackModule();
-    }
-    
-    public function ColorPackModule()
-    {
-        global $gallery;
-        $this->setId('colorpack');
-        $this->setName($gallery->i18n('Color Packs'));
-        $this->setDescription($gallery->i18n('Select different color palettes for themes'));
-        $this->setVersion('2.0.0');
-        $this->_templateVersion = 1;
-        $this->setGroup('display', $gallery->i18n('Display'));
-        $this->setCallbacks('');
-        $this->setRequiredCoreApi(array(
-            8,
-            0
-        ));
-        $this->setRequiredModuleApi(array(
-            4,
-            0
-        ));
-    }
-    
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    public function performFactoryRegistrations()
-    {
-        $ret = GalleryCoreApi::registerFactoryImplementation('ColorPackInterface_1_0', 'ColorPackImpl', 'ColorPack', 'modules/colorpack/classes/ColorPackImpl.class', 'colorpack', null);
-        if ($ret) {
-            return $ret;
-        }
-        
-        return null;
-    }
+	public function __construct()
+	{
+		$this->ColorPackModule();
+	}
+	
+	public function ColorPackModule()
+	{
+		global $gallery;
+		$this->setId('colorpack');
+		$this->setName($gallery->i18n('Color Packs'));
+		$this->setDescription($gallery->i18n('Select different color palettes for themes'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('display', $gallery->i18n('Display'));
+		$this->setCallbacks('');
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
+	}
+	
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation('ColorPackInterface_1_0', 'ColorPackImpl', 'ColorPack', 'modules/colorpack/classes/ColorPackImpl.class', 'colorpack', null);
+		if ($ret) {
+			return $ret;
+		}
+		
+		return null;
+	}
 }

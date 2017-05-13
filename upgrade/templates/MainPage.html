@@ -9,7 +9,7 @@
 
   <body<?php global $translator; if (isset($translator)
 		 && $translator->isRightToLeft()) {
-    print ' style="direction:rtl"';
+	echo ' style="direction:rtl"';
 } ?>>
     <div id="box">
 <?php endif; ?>
@@ -107,8 +107,8 @@
 		<?php if ($templateData['percentComplete'] != 100): ?>
 		<td class="progressToGo"
 		    style="width:<?php echo(100 - $templateData['percentComplete']) . '%' .
-		      (($templateData['percentComplete'] == 0) ? '' : ';border-left:none')
-		    ?>">&nbsp;</td>
+			  (($templateData['percentComplete'] == 0) ? '' : ';border-left:none')
+			?>">&nbsp;</td>
 		<?php endif; ?>
 	      </tr>
 	    </table>
@@ -120,8 +120,8 @@
 	        <?php foreach ($templateData['errors'] as $error): ?>
 	        <?php echo $error ?>
 	        <?php if (count($templateData['errors']) > 2) {
-		        print "<br/>\n";
-		    } ?>
+				echo "<br/>\n";
+			} ?>
 	          <?php endforeach; ?>
 	      </h2>
 	    </div>

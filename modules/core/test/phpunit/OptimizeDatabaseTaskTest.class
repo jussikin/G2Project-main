@@ -29,63 +29,63 @@ GalleryCoreApi::requireOnce('modules/core/classes/OptimizeDatabaseTask.class');
  */
 class OptimizeDatabaseTaskTest extends GalleryTestCase
 {
-    public function OptimizeDatabaseTaskTest($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
-    
-    public function setUp()
-    {
-        global $gallery;
-        
-        $this->_task = new OptimizeDatabaseTask();
-        $ret = parent::setUp();
-        if ($ret) {
-            return $ret;
-        }
-    }
-    
-    public function testRun()
-    {
-        global $gallery;
-        
-        $gallery->_storage = new OptimizeDatabaseTaskTestStorage();
-        $mockStorage =& $gallery->_storage;
-        
-        list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
-        if ($ret) {
-            return $ret;
-        }
-        
-        list($ret, $success, $details) = $this->_task->run();
-        if ($ret) {
-            return $ret;
-        }
-        
-        $this->assert($success);
-        $this->assertEquals(array(
-            $module->translate('Database optimized successfully')
-        ), $details);
-        $this->assert($mockStorage->optimizeWasCalled());
-    }
+	public function OptimizeDatabaseTaskTest($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
+	
+	public function setUp()
+	{
+		global $gallery;
+		
+		$this->_task = new OptimizeDatabaseTask();
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
+	}
+	
+	public function testRun()
+	{
+		global $gallery;
+		
+		$gallery->_storage = new OptimizeDatabaseTaskTestStorage();
+		$mockStorage =& $gallery->_storage;
+		
+		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'core');
+		if ($ret) {
+			return $ret;
+		}
+		
+		list($ret, $success, $details) = $this->_task->run();
+		if ($ret) {
+			return $ret;
+		}
+		
+		$this->assert($success);
+		$this->assertEquals(array(
+			$module->translate('Database optimized successfully')
+		), $details);
+		$this->assert($mockStorage->optimizeWasCalled());
+	}
 }
 
 class OptimizeDatabaseTaskTestStorage
 {
-    public function OptimizeDatabaseTaskTestStorage()
-    {
-        $this->_optimizeWasCalled = false;
-    }
-    
-    public function optimize()
-    {
-        $this->_optimizeWasCalled = true;
+	public function OptimizeDatabaseTaskTestStorage()
+	{
+		$this->_optimizeWasCalled = false;
+	}
+	
+	public function optimize()
+	{
+		$this->_optimizeWasCalled = true;
 
-        return null;
-    }
-    
-    public function optimizeWasCalled()
-    {
-        return $this->_optimizeWasCalled;
-    }
+		return null;
+	}
+	
+	public function optimizeWasCalled()
+	{
+		return $this->_optimizeWasCalled;
+	}
 }

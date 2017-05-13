@@ -26,19 +26,19 @@
  * @version $Revision: 17580 $
  * @static
  */
-class SearchUtilities {
-
-    /**
-     * Remove any illegal characters from a search string
-     *
-     * @param string $string the input string
-     * @return string a sanitized string
-     */
-    static function sanitizeSearchCriteria($string) {
-	/* Quote the '%' char */
+class SearchUtilities
+{
+	/**
+	 * Remove any illegal characters from a search string
+	 *
+	 * @param string $string the input string
+	 * @return string a sanitized string
+	 */
+	public static function sanitizeSearchCriteria($string)
+	{
+		/* Quote the '%' char */
 	$string = str_replace('%', '%%', $string);
 
-	return $string;
-    }
+		return $string;
+	}
 }
-?>

@@ -25,19 +25,20 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class FulfillmentErrorView extends GalleryView {
+class FulfillmentErrorView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'photoaccess');
+		if ($ret) {
+			return array($ret, null);
+		}
 
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'photoaccess');
-	if ($ret) {
-	    return array($ret, null);
+		$template->title($module->translate('PhotoWorks Fulfillment Error'));
+
+		return array(null, array('body' => 'modules/photoaccess/templates/FulfillmentError.tpl'));
 	}
-
-	$template->title($module->translate('PhotoWorks Fulfillment Error'));
-	return array(null, array('body' => 'modules/photoaccess/templates/FulfillmentError.tpl'));
-    }
 }
-?>

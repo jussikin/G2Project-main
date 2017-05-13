@@ -29,87 +29,87 @@ GalleryCoreApi::requireOnce('modules/imageblock/classes/ImageBlockHelper.class')
  */
 class ImageBlockOption extends ItemEditOption
 {
-    /**
-     * @see ItemEditOption::handleRequestAfterEdit
-     */
-    public function handleRequestAfterEdit($form, &$item, &$preferred)
-    {
-        $error = $warning = array();
-        $setDisabled = isset($form['ImageBlockOption']['setDisabled']) && $form['ImageBlockOption']['setDisabled'] != 'off';
-        $setRecursive = isset($form['ImageBlockOption']['setRecursive']) && $form['ImageBlockOption']['setRecursive'] != 'off';
-        
-        list($ret, $currentlyDisabled) = ImageBlockHelper::getDisabledFlag($item->getId());
-        if ($ret) {
-            return array(
-                $ret,
-                null,
-                null
-            );
-        }
-        
-        if ($setDisabled != $currentlyDisabled) {
-            $ret = ImageBlockHelper::setDisabledFlag($item, $setRecursive, $setDisabled, $setRecursive);
-            if ($ret) {
-                return array(
-                    $ret,
-                    null,
-                    null
-                );
-            }
-        }
+	/**
+	 * @see ItemEditOption::handleRequestAfterEdit
+	 */
+	public function handleRequestAfterEdit($form, &$item, &$preferred)
+	{
+		$error = $warning = array();
+		$setDisabled = isset($form['ImageBlockOption']['setDisabled']) && $form['ImageBlockOption']['setDisabled'] != 'off';
+		$setRecursive = isset($form['ImageBlockOption']['setRecursive']) && $form['ImageBlockOption']['setRecursive'] != 'off';
+		
+		list($ret, $currentlyDisabled) = ImageBlockHelper::getDisabledFlag($item->getId());
+		if ($ret) {
+			return array(
+				$ret,
+				null,
+				null
+			);
+		}
+		
+		if ($setDisabled != $currentlyDisabled) {
+			$ret = ImageBlockHelper::setDisabledFlag($item, $setRecursive, $setDisabled, $setRecursive);
+			if ($ret) {
+				return array(
+					$ret,
+					null,
+					null
+				);
+			}
+		}
 
-        return array(
-            null,
-            $error,
-            $warning
-        );
-    }
-    
-    /**
-     * @see ItemEditOption::loadTemplate
-     */
-    public function loadTemplate(&$template, &$form, $item, $thumbnail)
-    {
-        list($ret, $form['ImageBlockOption']['setDisabled']) = ImageBlockHelper::getDisabledFlag($item->getId());
-        if ($ret) {
-            return array(
-                $ret,
-                null,
-                null
-            );
-        }
-        
-        return array(
-            null,
-            'modules/imageblock/templates/ImageBlockOption.tpl',
-            'modules_imageblock'
-        );
-    }
-    
-    /**
-     * @see ItemEditOption::isSupported
-     */
-    public function isAppropriate($item, $thumbnail)
-    {
-        return array(
-            null,
-            GalleryUtilities::isA($item, 'GalleryAlbumItem')
-        );
-    }
-    
-    /**
-     * @see ItemEditOption::requiresProgressBar
-     */
-    public function requiresProgressBar($form)
-    {
-        $itemId = GalleryUtilities::getRequestVariables('itemId');
-        list($ret, $currentlyDisabled) = ImageBlockHelper::getDisabledFlag($itemId);
-        if ($ret) {
-            return false;
-        }
-        $setDisabled = isset($form['ImageBlockOption']['setDisabled']) && $form['ImageBlockOption']['setDisabled'] != 'off';
-        $setRecursive = isset($form['ImageBlockOption']['setRecursive']) && $form['ImageBlockOption']['setRecursive'] != 'off';
+		return array(
+			null,
+			$error,
+			$warning
+		);
+	}
+	
+	/**
+	 * @see ItemEditOption::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form, $item, $thumbnail)
+	{
+		list($ret, $form['ImageBlockOption']['setDisabled']) = ImageBlockHelper::getDisabledFlag($item->getId());
+		if ($ret) {
+			return array(
+				$ret,
+				null,
+				null
+			);
+		}
+		
+		return array(
+			null,
+			'modules/imageblock/templates/ImageBlockOption.tpl',
+			'modules_imageblock'
+		);
+	}
+	
+	/**
+	 * @see ItemEditOption::isSupported
+	 */
+	public function isAppropriate($item, $thumbnail)
+	{
+		return array(
+			null,
+			GalleryUtilities::isA($item, 'GalleryAlbumItem')
+		);
+	}
+	
+	/**
+	 * @see ItemEditOption::requiresProgressBar
+	 */
+	public function requiresProgressBar($form)
+	{
+		$itemId = GalleryUtilities::getRequestVariables('itemId');
+		list($ret, $currentlyDisabled) = ImageBlockHelper::getDisabledFlag($itemId);
+		if ($ret) {
+			return false;
+		}
+		$setDisabled = isset($form['ImageBlockOption']['setDisabled']) && $form['ImageBlockOption']['setDisabled'] != 'off';
+		$setRecursive = isset($form['ImageBlockOption']['setRecursive']) && $form['ImageBlockOption']['setRecursive'] != 'off';
 
-        return ($setRecursive && $setDisabled != $currentlyDisabled);
-    }
+		return ($setRecursive && $setDisabled != $currentlyDisabled);
+	}
 }

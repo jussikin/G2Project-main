@@ -29,42 +29,42 @@ GalleryCoreApi::requireOnce('modules/core/RepositoryCallback.inc');
  */
 class RepositoryCallbackTest extends GalleryTestCase
 {
-    public function RepositoryCallbackTest($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
-    
-    public function testSaveRepositoryList()
-    {
-        global $gallery;
-        GalleryUtilities::putRequestVariable('form[repositories][released]', 1);
-        GalleryUtilities::putRequestVariable('form[repositories][experimental]', '<script>something malicious</script>');
-        GalleryUtilities::putRequestVariable('form[repositories][experimental]', 'experimental');
-        GalleryUtilities::putRequestVariable('form[repositories][community]', 'checked');
-        GalleryUtilities::putRequestVariable('form[repositories][something_else]', 1);
-        GalleryUtilities::putRequestVariable('command', 'saveRepositoryList');
-        
-        $this->_markPluginParametersForCleanup('module', 'core');
-        $ret = GalleryCoreApi::setPluginParameter('module', 'core', 'core.repositories', serialize(array()));
-        if ($ret) {
-            return $ret;
-        }
-        
-        $view = new RepositoryCallbackView();
-        $ret = $view->renderImmediate(array(), array());
-        if ($ret) {
-            return $ret;
-        }
-        
-        list($ret, $data) = GalleryCoreApi::getPluginParameter('module', 'core', 'core.repositories');
-        if ($ret) {
-            return $ret;
-        }
-        
-        $this->assertEquals(array(
-            'released' => 1,
-            'community' => 1,
-            'experimental' => 1
-        ), unserialize($data));
-    }
+	public function RepositoryCallbackTest($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
+	
+	public function testSaveRepositoryList()
+	{
+		global $gallery;
+		GalleryUtilities::putRequestVariable('form[repositories][released]', 1);
+		GalleryUtilities::putRequestVariable('form[repositories][experimental]', '<script>something malicious</script>');
+		GalleryUtilities::putRequestVariable('form[repositories][experimental]', 'experimental');
+		GalleryUtilities::putRequestVariable('form[repositories][community]', 'checked');
+		GalleryUtilities::putRequestVariable('form[repositories][something_else]', 1);
+		GalleryUtilities::putRequestVariable('command', 'saveRepositoryList');
+		
+		$this->_markPluginParametersForCleanup('module', 'core');
+		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'core.repositories', serialize(array()));
+		if ($ret) {
+			return $ret;
+		}
+		
+		$view = new RepositoryCallbackView();
+		$ret = $view->renderImmediate(array(), array());
+		if ($ret) {
+			return $ret;
+		}
+		
+		list($ret, $data) = GalleryCoreApi::getPluginParameter('module', 'core', 'core.repositories');
+		if ($ret) {
+			return $ret;
+		}
+		
+		$this->assertEquals(array(
+			'released' => 1,
+			'community' => 1,
+			'experimental' => 1
+		), unserialize($data));
+	}
 }

@@ -25,74 +25,76 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class RandomHighlightSiteAdminController extends GalleryController {
-
-    /**
-     * @see GalleryController::handleRequest
-     */
-    function handleRequest($form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	$status = $error = array();
-	if (isset($form['action']['save'])) {
-	    if (isset($form['duration'])) {
-		/* Accept input for locales that use comma as fraction separator */
-		$form['duration'] = str_replace(',', '.', $form['duration']);
-	    }
-	    if (!isset($form['duration']) || !is_numeric($form['duration'])) {
-		$error[] = 'form[error][duration]';
-	    } else {
-		$ret = GalleryCoreApi::setPluginParameter(
-		    'module', 'randomhighlight', 'duration', round($form['duration'] * 60));
+class RandomHighlightSiteAdminController extends GalleryController
+{
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest($form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-		    return array($ret, null);
+			return array($ret, null);
 		}
-		$status['saved'] = 1;
-	    }
-	}
+
+		$status = $error = array();
+		if (isset($form['action']['save'])) {
+			if (isset($form['duration'])) {
+				/* Accept input for locales that use comma as fraction separator */
+		$form['duration'] = str_replace(',', '.', $form['duration']);
+			}
+			if (!isset($form['duration']) || !is_numeric($form['duration'])) {
+				$error[] = 'form[error][duration]';
+			} else {
+				$ret = GalleryCoreApi::setPluginParameter(
+			'module', 'randomhighlight', 'duration', round($form['duration'] * 60));
+				if ($ret) {
+					return array($ret, null);
+				}
+				$status['saved'] = 1;
+			}
+		}
 
 	/* Figure out where to redirect upon success */
 	$method = empty($error) ? 'redirect' : 'delegate';
-	$results[$method]['view'] = 'core.SiteAdmin';
-	$results[$method]['subView'] = 'randomhighlight.RandomHighlightSiteAdmin';
-	$results['status'] = $status;
-	$results['error'] = $error;
+		$results[$method]['view'] = 'core.SiteAdmin';
+		$results[$method]['subView'] = 'randomhighlight.RandomHighlightSiteAdmin';
+		$results['status'] = $status;
+		$results['error'] = $error;
 
-	return array(null, $results);
-    }
+		return array(null, $results);
+	}
 }
 
 /**
  * Settings for Random Highlight
  */
-class RandomHighlightSiteAdminView extends GalleryView {
+class RandomHighlightSiteAdminView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		if ($ret) {
+			return array($ret, null);
+		}
 
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	if ($form['formName'] != 'RandomHighlightSiteAdmin') {
-	    $form['formName'] = 'RandomHighlightSiteAdmin';
-	    list ($ret, $duration) =
+		if ($form['formName'] != 'RandomHighlightSiteAdmin') {
+			$form['formName'] = 'RandomHighlightSiteAdmin';
+			list($ret, $duration) =
 		GalleryCoreApi::getPluginParameter('module', 'randomhighlight', 'duration');
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    /* String conversion here may use comma as fraction separator, based on locale */
-	    $form['duration'] = (string)round($duration / 60, 2);
-	}
+			if ($ret) {
+				return array($ret, null);
+			}
+		/* String conversion here may use comma as fraction separator, based on locale */
+		$form['duration'] = (string)round($duration / 60, 2);
+		}
 
-	$template->setVariable('controller', 'randomhighlight.RandomHighlightSiteAdmin');
-	return array(null, array('body' =>
-		     'modules/randomhighlight/templates/RandomHighlightSiteAdmin.tpl'));
-    }
+		$template->setVariable('controller', 'randomhighlight.RandomHighlightSiteAdmin');
+
+		return array(null, array('body' =>
+			 'modules/randomhighlight/templates/RandomHighlightSiteAdmin.tpl'));
+	}
 }
-?>

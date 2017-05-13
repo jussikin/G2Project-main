@@ -30,8 +30,8 @@ if (!defined('GALLERY_FORM_VARIABLE_PREFIX')) {
 	define('GALLERY_FORM_VARIABLE_PREFIX', 'g2_');
 }
 
-require_once(dirname(__FILE__) . '/modules/core/classes/Gallery.class');
-require_once(dirname(__FILE__) . '/modules/core/classes/GalleryDataCache.class');
+require_once dirname(__FILE__) . '/modules/core/classes/Gallery.class';
+require_once dirname(__FILE__) . '/modules/core/classes/GalleryDataCache.class';
 
 /*
  * Set up our Gallery global.  This global should be the only one that Gallery requires.
@@ -45,7 +45,7 @@ $GLOBALS['gallery'] =& $gallery;
 if (!defined('GALLERY_CONFIG_DIR')) {
 	define('GALLERY_CONFIG_DIR', dirname(__FILE__));
 }
-@include(GALLERY_CONFIG_DIR . '/config.php');
+@include GALLERY_CONFIG_DIR . '/config.php';
 
 /*
  * Disable session.use_trans_sid to mitigate performance-penalty

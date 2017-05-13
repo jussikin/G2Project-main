@@ -26,44 +26,45 @@ GalleryCoreApi::requireOnce('modules/nokiaupload/classes/ImageUploadHelper.class
  * @author Jerome Rannikko <jeromer@hotpop.com>
  * @version $Revision: 17580 $
  */
-class RemoteStorageCapabilitiesView extends GalleryView {
-
-    /**
-     * @see GalleryView::isImmediate
-     */
-    function isImmediate() {
-	return true;
-    }
-
-    /**
-     * API defines the output very specifically so we can't allow any global templating to be used.
-     * @see GalleryView::renderImmediate
-     */
-    function renderImmediate($status, $error) {
-	global $gallery;
-	ImageUploadHelper::logRequest('RemoteStorageCapabilitiesView');
-
-	$capabilities = ImageUploadHelper::getRSCapabilities();
-
-	if (empty($capabilities)) {
-	    $reply = NOKIAUPLOAD_ERR_UNKNOWN . "\r\n";
-	    list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'nokiaupload');
-	    if ($ret) {
-		$reply .= "Couldn't retrieve settings.\r\n";
-	    } else {
-		$reply .= $module->translate("Couldn't retrieve settings.") . "\r\n";
-	    }
-	} else {
-	    $reply = NOKIAUPLOAD_ERR_NOERR . "\r\n" . implode('', $capabilities);
+class RemoteStorageCapabilitiesView extends GalleryView
+{
+	/**
+	 * @see GalleryView::isImmediate
+	 */
+	public function isImmediate()
+	{
+		return true;
 	}
 
-	$gallery->debug("Sending:\n$reply");
+	/**
+	 * API defines the output very specifically so we can't allow any global templating to be used.
+	 * @see GalleryView::renderImmediate
+	 */
+	public function renderImmediate($status, $error)
+	{
+		global $gallery;
+		ImageUploadHelper::logRequest('RemoteStorageCapabilitiesView');
 
-	header("Content-type: text/plain; charset=UTF-8");
-	header('Content-Length: ' . strlen($reply));
-	print $reply;
+		$capabilities = ImageUploadHelper::getRSCapabilities();
 
-	return null;
-    }
+		if (empty($capabilities)) {
+			$reply = NOKIAUPLOAD_ERR_UNKNOWN . "\r\n";
+			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'nokiaupload');
+			if ($ret) {
+				$reply .= "Couldn't retrieve settings.\r\n";
+			} else {
+				$reply .= $module->translate("Couldn't retrieve settings.") . "\r\n";
+			}
+		} else {
+			$reply = NOKIAUPLOAD_ERR_NOERR . "\r\n" . implode('', $capabilities);
+		}
+
+		$gallery->debug("Sending:\n$reply");
+
+		header("Content-type: text/plain; charset=UTF-8");
+		header('Content-Length: ' . strlen($reply));
+		echo $reply;
+
+		return null;
+	}
 }
-?>

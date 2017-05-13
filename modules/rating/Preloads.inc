@@ -23,19 +23,21 @@
  * @author  Don Seiler <don@seiler.us>
  * @version $Revision: 17580 $
  */
-class RatingPreloads {
-    function preload(&$template, $preload, $paramSet) {
-	static $loaded;
+class RatingPreloads
+{
+	public function preload(&$template, $preload, $paramSet)
+	{
+		static $loaded;
 
-	if (!empty($loaded[$preload])) {
-	    return null;
+		if (!empty($loaded[$preload])) {
+			return null;
+		}
+
+		$loaded[$preload] = 1;
+		$template->style('modules/rating/rating.css');
+		$template->javascript('lib/yui/utilities.js');
+		$template->javascript('modules/rating/rating.js');
+
+		return null;
 	}
-
-	$loaded[$preload] = 1;
-	$template->style('modules/rating/rating.css');
-	$template->javascript('lib/yui/utilities.js');
-	$template->javascript('modules/rating/rating.js');
-	return null;
-    }
 }
-?>

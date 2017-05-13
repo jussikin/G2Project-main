@@ -28,13 +28,12 @@
  * @author Timothy Webb <tiwebb@cisco.com>
  * @version $Revision: 17580 $
  */
-
 GalleryCoreApi::requireOnce('modules/publishxp/PublishXpLogin.inc');
 
 /**
  * Obsolete.  This class is kept around to maintain backwards compatibility with older versions of
  * the PublishXp module, since Windows desktops will have view=publishxp.Login in their registry.
  */
-class LoginView extends PublishXpLoginView {
+class LoginView extends PublishXpLoginView
+{
 }
-?>

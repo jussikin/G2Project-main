@@ -30,104 +30,104 @@ GalleryCoreApi::requireOnce('modules/icons/classes/IconsImpl.class');
  */
 class IconsTest extends GalleryControllerTestCase
 {
-    public function __construct($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
-    
-    public function setUp()
-    {
-        global $gallery;
-        $ret = parent::setUp();
-        if ($ret) {
-            return $ret;
-        }
-        
-        $ret = $this->_markPluginParametersForCleanup('module', 'icons');
-        if ($ret) {
-            return $ret;
-        }
-        
-        $this->_icons = new IconsImpl();
-        $this->_saveRtl = $gallery->_translator->_isRightToLeft;
-        $gallery->_translator->_isRightToLeft = false;
-    }
-    
-    public function tearDown()
-    {
-        global $gallery;
-        $gallery->_translator->_isRightToLeft = $this->_saveRtl;
-        
-        $ret = parent::tearDown();
-        if ($ret) {
-            return $ret;
-        }
-    }
-    
-    public function testGetIconPacks()
-    {
-        list($ret, $list) = $this->_icons->getIconPacks();
-        if ($ret) {
-            return $ret;
-        }
-        
-        $this->assert(isset($list['paularmstrongdesigns']), 'paularmstrongdesigns iconpack not found');
-    }
-    
-    public function testNewFactoryInstance()
-    {
-        list($ret, $iconpack) = GalleryCoreApi::newFactoryInstance('IconsInterface_1_0');
-        if ($ret) {
-            return $ret;
-        }
-        $this->assert(isset($iconpack), 'Icon pack was not set');
-        $this->assert(GalleryUtilities::isA($iconpack, 'IconsImpl'), 'The factory instance was not an IconsImpl');
-    }
-    
-    public function testSetupTemplateNone()
-    {
-        $ret = GalleryCoreApi::setPluginParameter('module', 'icons', 'iconpack', '');
-        if ($ret) {
-            return $ret;
-        }
-        $template = new IconsDummyGalleryTemplate();
-        $ret = $this->_icons->init($template);
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals(null, $template->style);
-    }
-    
-    public function testSetupTemplateIcons()
-    {
-        $ret = GalleryCoreApi::setPluginParameter('module', 'icons', 'iconpack', '_phpunitfoo');
-        if ($ret) {
-            return $ret;
-        }
-        $template = new IconsDummyGalleryTemplate();
-        $ret = $this->_icons->init($template);
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals('modules/icons/iconpacks/_phpunitfoo/icons.css', $template->style);
-    }
-    
-    public function testRightToLeft()
-    {
-        global $gallery;
-        $gallery->_translator->_isRightToLeft = true;
-        
-        $ret = GalleryCoreApi::setPluginParameter('module', 'icons', 'iconpack', '_phpunitfoo');
-        if ($ret) {
-            return $ret;
-        }
-        $template = new IconsDummyGalleryTemplate();
-        $ret = $this->_icons->init($template);
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals('modules/icons/iconpacks/_phpunitfoo/icons-rtl.css', $template->style);
-    }
+	public function __construct($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
+	
+	public function setUp()
+	{
+		global $gallery;
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
+		
+		$ret = $this->_markPluginParametersForCleanup('module', 'icons');
+		if ($ret) {
+			return $ret;
+		}
+		
+		$this->_icons = new IconsImpl();
+		$this->_saveRtl = $gallery->_translator->_isRightToLeft;
+		$gallery->_translator->_isRightToLeft = false;
+	}
+	
+	public function tearDown()
+	{
+		global $gallery;
+		$gallery->_translator->_isRightToLeft = $this->_saveRtl;
+		
+		$ret = parent::tearDown();
+		if ($ret) {
+			return $ret;
+		}
+	}
+	
+	public function testGetIconPacks()
+	{
+		list($ret, $list) = $this->_icons->getIconPacks();
+		if ($ret) {
+			return $ret;
+		}
+		
+		$this->assert(isset($list['paularmstrongdesigns']), 'paularmstrongdesigns iconpack not found');
+	}
+	
+	public function testNewFactoryInstance()
+	{
+		list($ret, $iconpack) = GalleryCoreApi::newFactoryInstance('IconsInterface_1_0');
+		if ($ret) {
+			return $ret;
+		}
+		$this->assert(isset($iconpack), 'Icon pack was not set');
+		$this->assert(GalleryUtilities::isA($iconpack, 'IconsImpl'), 'The factory instance was not an IconsImpl');
+	}
+	
+	public function testSetupTemplateNone()
+	{
+		$ret = GalleryCoreApi::setPluginParameter('module', 'icons', 'iconpack', '');
+		if ($ret) {
+			return $ret;
+		}
+		$template = new IconsDummyGalleryTemplate();
+		$ret = $this->_icons->init($template);
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals(null, $template->style);
+	}
+	
+	public function testSetupTemplateIcons()
+	{
+		$ret = GalleryCoreApi::setPluginParameter('module', 'icons', 'iconpack', '_phpunitfoo');
+		if ($ret) {
+			return $ret;
+		}
+		$template = new IconsDummyGalleryTemplate();
+		$ret = $this->_icons->init($template);
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals('modules/icons/iconpacks/_phpunitfoo/icons.css', $template->style);
+	}
+	
+	public function testRightToLeft()
+	{
+		global $gallery;
+		$gallery->_translator->_isRightToLeft = true;
+		
+		$ret = GalleryCoreApi::setPluginParameter('module', 'icons', 'iconpack', '_phpunitfoo');
+		if ($ret) {
+			return $ret;
+		}
+		$template = new IconsDummyGalleryTemplate();
+		$ret = $this->_icons->init($template);
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals('modules/icons/iconpacks/_phpunitfoo/icons-rtl.css', $template->style);
+	}
 }
 
 /**
@@ -136,20 +136,20 @@ class IconsTest extends GalleryControllerTestCase
  */
 class IconsDummyGalleryTemplate
 {
-    public $data = array();
-    public $style = null;
+	public $data = array();
+	public $style = null;
 
-    public function setVariable($key, $value)
-    {
-        $this->data[$key] = $value;
-    }
+	public function setVariable($key, $value)
+	{
+		$this->data[$key] = $value;
+	}
 
-    public function style($path)
-    {
-        $this->style = $path;
-    }
+	public function style($path)
+	{
+		$this->style = $path;
+	}
 
-    public function javascript($path)
-    {
-    }
+	public function javascript($path)
+	{
+	}
 }

@@ -14,11 +14,13 @@
     View: <b> summary </b> | <a href="?type=detail"> detail </a>
     <table class="report">
         <?php $index = 0; ?>
-        <?php foreach ($reportData as $locale => $localeData) { ?>
+        <?php foreach ($reportData as $locale => $localeData) {
+	?>
         <?php if (!($index % 20)) {
-        ?>
+		?>
         <?php include dirname(__FILE__) . '/row_header_summary.inc'; ?>
-        <?php } ?>
+        <?php 
+	} ?>
         <?php $index++; ?>
         <tr>
           <td class="dark">
@@ -28,7 +30,7 @@
         <?php echo $locale ?>
           </td>
           <td class="locale_percent" style="background-color:#<?php
-            echo percentColor($localeData['percentDone']) ?>">
+			echo percentColor($localeData['percentDone']) ?>">
         <?php echo $localeData['percentDone'] ?>%
           </td>
             <?php $summaryData = $localeData['summary']; ?>
@@ -43,16 +45,17 @@
           </td>
           <td class="<?php echo modifier('untranslated') ?>">
         <?php
-          echo '<span title="overall untranslated including missing *.po files">'
-            . (100 - $summaryData['translated'])
-            . '%</span> (<span title="untranslated in existing *.po files">'
-            . $summaryData['untranslated'] . '%</span>)'; ?>
+		  echo '<span title="overall untranslated including missing *.po files">'
+			. (100 - $summaryData['translated'])
+			. '%</span> (<span title="untranslated in existing *.po files">'
+			. $summaryData['untranslated'] . '%</span>)'; ?>
           </td>
           <td class="<?php echo modifier('obsolete') ?>">
         <?php echo $summaryData['obsolete'] ?>%
           </td>
         </tr>
-        <?php } ?>
+        <?php 
+} ?>
     </table>
       </center>
     </body>

@@ -28,32 +28,32 @@
  */
 class SwitchDetailModeController extends GalleryController
 {
-    /**
-     * @see GalleryController::handleRequest
-     */
-    public function handleRequest()
-    {
-        global $gallery;
-        
-        $mode = GalleryUtilities::getRequestVariables('mode');
-        if ($mode != 'summary' && $mode != 'detailed') {
-            $mode = 'summary';
-        }
-        
-        /* Store the new mode in the session */
-        $session =& $gallery->getSession();
-        $session->put('exif.module.LoadExifInfo.mode', $mode);
-        
-        $results['return'] = 1;
-        $results['redirect']['view'] = 'core.ShowItem';
-        $results['status'] = array();
-        $results['error'] = array();
-        
-        return array(
-            null,
-            $results
-        );
-    }
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest()
+	{
+		global $gallery;
+		
+		$mode = GalleryUtilities::getRequestVariables('mode');
+		if ($mode != 'summary' && $mode != 'detailed') {
+			$mode = 'summary';
+		}
+		
+		/* Store the new mode in the session */
+		$session =& $gallery->getSession();
+		$session->put('exif.module.LoadExifInfo.mode', $mode);
+		
+		$results['return'] = 1;
+		$results['redirect']['view'] = 'core.ShowItem';
+		$results['status'] = array();
+		$results['error'] = array();
+		
+		return array(
+			null,
+			$results
+		);
+	}
 }
 
 /**
@@ -62,61 +62,61 @@ class SwitchDetailModeController extends GalleryController
  */
 class SwitchDetailModeView extends GalleryView
 {
-    /**
-     * @see GalleryView::isImmediate
-     */
-    public function isImmediate()
-    {
-        return true;
-    }
-    
-    /**
-     * @see GalleryView::isAllowedInEmbedOnly
-     */
-    public function isAllowedInEmbedOnly()
-    {
-        return true;
-    }
-    
-    /**
-     * @see GalleryView::renderImmediate
-     */
-    public function renderImmediate($status, $error)
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
-        
-        list($ret, $item) = $this->getItem();
-        if ($ret) {
-            return $ret;
-        }
-        
-        $mode = GalleryUtilities::getRequestVariables('mode');
-        if ($mode != 'summary' && $mode != 'detailed') {
-            $mode = 'summary';
-        }
-        
-        /* Store the new mode in the session */
-        $session->put('exif.module.LoadExifInfo.mode', $mode);
-        
-        if (!headers_sent()) {
-            header("Content-type: text/plain; charset=UTF-8");
-        }
-        
-        GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
-        $template = new GalleryTemplate(dirname(dirname(dirname(__FILE__))));
-        $template->setVariable('l10Domain', 'modules_exif');
-        $template->setVariable('ajax', true);
-        $template->setVariable('item', (array) $item);
-        $template->setVariable('theme', array(
-            'actingUserId' => $gallery->getActiveUserId()
-        ));
-        
-        $ret = $template->display('gallery:modules/exif/templates/blocks/ExifInfo.tpl');
-        if ($ret) {
-            return $ret;
-        }
-        
-        return null;
-    }
+	/**
+	 * @see GalleryView::isImmediate
+	 */
+	public function isImmediate()
+	{
+		return true;
+	}
+	
+	/**
+	 * @see GalleryView::isAllowedInEmbedOnly
+	 */
+	public function isAllowedInEmbedOnly()
+	{
+		return true;
+	}
+	
+	/**
+	 * @see GalleryView::renderImmediate
+	 */
+	public function renderImmediate($status, $error)
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
+		
+		list($ret, $item) = $this->getItem();
+		if ($ret) {
+			return $ret;
+		}
+		
+		$mode = GalleryUtilities::getRequestVariables('mode');
+		if ($mode != 'summary' && $mode != 'detailed') {
+			$mode = 'summary';
+		}
+		
+		/* Store the new mode in the session */
+		$session->put('exif.module.LoadExifInfo.mode', $mode);
+		
+		if (!headers_sent()) {
+			header("Content-type: text/plain; charset=UTF-8");
+		}
+		
+		GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
+		$template = new GalleryTemplate(dirname(dirname(dirname(__FILE__))));
+		$template->setVariable('l10Domain', 'modules_exif');
+		$template->setVariable('ajax', true);
+		$template->setVariable('item', (array) $item);
+		$template->setVariable('theme', array(
+			'actingUserId' => $gallery->getActiveUserId()
+		));
+		
+		$ret = $template->display('gallery:modules/exif/templates/blocks/ExifInfo.tpl');
+		if ($ret) {
+			return $ret;
+		}
+		
+		return null;
+	}
 }

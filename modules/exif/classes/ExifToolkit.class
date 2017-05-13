@@ -29,30 +29,30 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class ExifToolkit extends GalleryToolkit
 {
-    /**
-     * @see GalleryToolkit::getProperty
-     */
-    public function getProperty($mimeType, $propertyName, $sourceFilename)
-    {
-        switch ($propertyName) {
-            case 'originationTimestamp':
-                GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');
-                $timestamp = ExifHelper::getOriginationTimestamp($sourceFilename);
-                $results = array(
-                    $timestamp
-                );
-                break;
-            
-            default:
-                return array(
-                    GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
-                    null
-                );
-        }
-        
-        return array(
-            null,
-            $results
-        );
-    }
+	/**
+	 * @see GalleryToolkit::getProperty
+	 */
+	public function getProperty($mimeType, $propertyName, $sourceFilename)
+	{
+		switch ($propertyName) {
+			case 'originationTimestamp':
+				GalleryCoreApi::requireOnce('modules/exif/classes/ExifHelper.class');
+				$timestamp = ExifHelper::getOriginationTimestamp($sourceFilename);
+				$results = array(
+					$timestamp
+				);
+				break;
+			
+			default:
+				return array(
+					GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+					null
+				);
+		}
+		
+		return array(
+			null,
+			$results
+		);
+	}
 }

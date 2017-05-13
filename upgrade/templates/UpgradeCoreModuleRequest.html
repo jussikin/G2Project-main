@@ -39,7 +39,7 @@
 	<td colspan="2" class="error">
 	  <?php printf(_("Unable to write to config.php in your %s directory.  Please change its permissions."), basename(GALLERY_CONFIG_DIR)) ?>
 	  <?php if ($templateData['canChmod']) {
-    print _("You can do <i>chmod 666 config.php</i> to fix this.");
+	echo _("You can do <i>chmod 666 config.php</i> to fix this.");
 } ?>
 	</td>
       </tr>

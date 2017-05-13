@@ -29,20 +29,21 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  * @author Daniel Grund <http://www.photogrund.nl>
  * @version $Revision: 17580 $
  */
-class FeedListView extends GalleryView {
+class FeedListView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
+		if ($ret) {
+			return array($ret, null);
+		}
 
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	list ($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
-	if ($ret) {
-	    return array($ret, null);
+		$template->setVariable('FeedList', array('feeds' => $feeds));
+		$template->setVariable('view', 'rss.FeedList');
+
+		return array(null, array('body' => 'modules/rss/templates/FeedList.tpl'));
 	}
-
-	$template->setVariable('FeedList', array('feeds' => $feeds));
-	$template->setVariable('view', 'rss.FeedList');
-	return array(null, array('body' => 'modules/rss/templates/FeedList.tpl'));
-    }
 }
-?>

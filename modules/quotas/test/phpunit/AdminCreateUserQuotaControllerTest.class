@@ -25,134 +25,142 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase {
-
-    function AdminCreateUserQuotaControllerTest($methodName) {
-	$this->GalleryControllerTestCase($methodName, 'quotas.AdminCreateUserQuota');
-    }
-
-    function setUp() {
-	$ret = parent::setUp();
-	if ($ret) {
-	   return $ret;
+class AdminCreateUserQuotaControllerTest extends GalleryControllerTestCase
+{
+	public function AdminCreateUserQuotaControllerTest($methodName)
+	{
+		$this->GalleryControllerTestCase($methodName, 'quotas.AdminCreateUserQuota');
 	}
+
+	public function setUp()
+	{
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
 
 	/* Create a user to add a quota to */
-	list ($ret, $this->_user) = $this->_createRandomUser();
-	if ($ret) {
-	    return $ret;
+	list($ret, $this->_user) = $this->_createRandomUser();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($this->_user);
 	}
-	$this->_markForCleanup($this->_user);
-    }
 
-    function testCancel() {
-	GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
-	GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
+	public function testCancel()
+	{
+		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
+		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-    }
+				$results);
+	}
 
-    function testCreateUserQuota() {
-	GalleryUtilities::putRequestVariable('form[action][create]', 1);
-	GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
-	GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
-	GalleryUtilities::putRequestVariable('form[quotaUnit]', 'KB');
-	GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
+	public function testCreateUserQuota()
+	{
+		GalleryUtilities::putRequestVariable('form[action][create]', 1);
+		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
+		GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
+		GalleryUtilities::putRequestVariable('form[quotaUnit]', 'KB');
+		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array('createdUser' => $this->_user->getUserName()),
 				  'error' => array()),
-			    $results);
-	$this->_deleteUserQuota($this->_user->getId());
-    }
+				$results);
+		$this->_deleteUserQuota($this->_user->getId());
+	}
 
-    function testCreateUserQuotaMissingValues() {
-	/* No Values */
+	public function testCreateUserQuotaMissingValues()
+	{
+		/* No Values */
 	GalleryUtilities::putRequestVariable('form[action][create]', 1);
-	GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
+		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminCreateUserQuota'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminCreateUserQuota'),
 				  'status' => array(),
 				  'error' => array('form[error][quotaSize][missing]',
 						   'form[error][quotaUnit][missing]')),
-			    $results);
+				$results);
 
 	/* quota size */
 	GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminCreateUserQuota'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminCreateUserQuota'),
 				  'status' => array(),
 				  'error' => array('form[error][quotaUnit][missing]')),
-			    $results);
+				$results);
 
 	/* quota unit only */
 	GalleryUtilities::removeRequestVariable('form[quotaSize]');
-	GalleryUtilities::putRequestVariable('form[quotaUnit]', 'MB');
+		GalleryUtilities::putRequestVariable('form[quotaUnit]', 'MB');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminCreateUserQuota'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminCreateUserQuota'),
 				  'status' => array(),
 				  'error' => array('form[error][quotaSize][missing]')),
-			    $results);
-    }
+				$results);
+	}
 
-    function testCreateUserQuotaUserIdMissing() {
-	GalleryUtilities::putRequestVariable('form[action][save]', 1);
-	$results = $this->handleRequest(ERROR_BAD_PARAMETER);
-    }
+	public function testCreateUserQuotaUserIdMissing()
+	{
+		GalleryUtilities::putRequestVariable('form[action][save]', 1);
+		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
+	}
 
-    function testCreateUserQuotaDuplicateQuota() {
-	GalleryUtilities::putRequestVariable('form[action][create]', 1);
-	GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
-	GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
-	GalleryUtilities::putRequestVariable('form[quotaUnit]', 'KB');
-	GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
+	public function testCreateUserQuotaDuplicateQuota()
+	{
+		GalleryUtilities::putRequestVariable('form[action][create]', 1);
+		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
+		GalleryUtilities::putRequestVariable('form[quotaSize]', 2048);
+		GalleryUtilities::putRequestVariable('form[quotaUnit]', 'KB');
+		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array('createdUser' => $this->_user->getUserName()),
 				  'error' => array()),
-			    $results);
+				$results);
 
 	/* Attempt to create a quota for the user that already has one */
 	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminCreateUserQuota'),
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminCreateUserQuota'),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
+				$results);
 
-	$this->_deleteUserQuota($this->_user->getId());
-    }
-
-    function _createUserQuota($userId, $quota) {
-	$ret = GalleryCoreApi::addMapEntry(
-	    'QuotasMap',
-	    array('userOrGroupId' => $userId, 'quotaSize' => $quota));
-	if ($ret) {
-	    return $ret;
+		$this->_deleteUserQuota($this->_user->getId());
 	}
-    }
 
-    function _deleteUserQuota($userId) {
-	$ret = GalleryCoreApi::removeMapEntry(
-	    'QuotasMap', array('userOrGroupId' => $userId));
-	if ($ret) {
-	    return $ret;
+	public function _createUserQuota($userId, $quota)
+	{
+		$ret = GalleryCoreApi::addMapEntry(
+		'QuotasMap',
+		array('userOrGroupId' => $userId, 'quotaSize' => $quota));
+		if ($ret) {
+			return $ret;
+		}
 	}
-    }
+
+	public function _deleteUserQuota($userId)
+	{
+		$ret = GalleryCoreApi::removeMapEntry(
+		'QuotasMap', array('userOrGroupId' => $userId));
+		if ($ret) {
+			return $ret;
+		}
+	}
 }
-?>

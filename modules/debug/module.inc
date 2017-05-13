@@ -29,65 +29,65 @@
  */
 class DebugModule extends GalleryModule
 {
-    public function __construct()
-    {
-        $this->DebugModule();
-    }
-    
-    public function DebugModule()
-    {
-        global $gallery;
-        
-        $this->setId('debug');
-        $this->setName($gallery->i18n('Debugging'));
-        $this->setDescription($gallery->i18n('Debugging and Developer Tools'));
-        $this->setVersion('2.0.0');
-        $this->_templateVersion = 1;
-        $this->setGroup('gallery', $gallery->i18n('Gallery'));
-        $this->setCallbacks('getItemLinks');
-        $this->setRequiredCoreApi(array(
-            8,
-            0
-        ));
-        $this->setRequiredModuleApi(array(
-            4,
-            0
-        ));
-    }
-    
-    /**
-     * @see GalleryModule::getItemLinks
-     */
-    public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null)
-    {
-        $links = array();
-        
-        list($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup($userId);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        if ($isAdmin) {
-            foreach ($items as $item) {
-                $itemId = $item->getId();
-                if (isset($wantsDetailedLinks[$itemId])) {
-                    $links[$itemId][] = array(
-                        'text' => $this->translate('Show Debug Tree'),
-                        'params' => array(
-                            'view' => 'debug.ShowTree',
-                            'itemId' => $itemId
-                        )
-                    );
-                }
-            }
-        }
-        
-        return array(
-            null,
-            $links
-        );
-    }
+	public function __construct()
+	{
+		$this->DebugModule();
+	}
+	
+	public function DebugModule()
+	{
+		global $gallery;
+		
+		$this->setId('debug');
+		$this->setName($gallery->i18n('Debugging'));
+		$this->setDescription($gallery->i18n('Debugging and Developer Tools'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('gallery', $gallery->i18n('Gallery'));
+		$this->setCallbacks('getItemLinks');
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
+	}
+	
+	/**
+	 * @see GalleryModule::getItemLinks
+	 */
+	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $userId = null)
+	{
+		$links = array();
+		
+		list($ret, $isAdmin) = GalleryCoreApi::isUserInSiteAdminGroup($userId);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		if ($isAdmin) {
+			foreach ($items as $item) {
+				$itemId = $item->getId();
+				if (isset($wantsDetailedLinks[$itemId])) {
+					$links[$itemId][] = array(
+						'text' => $this->translate('Show Debug Tree'),
+						'params' => array(
+							'view' => 'debug.ShowTree',
+							'itemId' => $itemId
+						)
+					);
+				}
+			}
+		}
+		
+		return array(
+			null,
+			$links
+		);
+	}
 }

@@ -25,123 +25,123 @@
  */
 class UpgradeStep
 {
-    public $_stepNumber;
-    public $_isComplete;
-    public $_isInError;
-    public $_isLastStep;
-    
-    public function isComplete()
-    {
-        return $this->_isComplete;
-    }
-    
-    public function isRedoable()
-    {
-        return false;
-    }
-    
-    public function setComplete($complete)
-    {
-        $this->_isComplete = $complete;
-    }
-    
-    public function canBeVisited()
-    {
-        return true;
-    }
-    
-    public function setInError($inError)
-    {
-        $this->_isInError = $inError;
-    }
-    
-    public function isInError()
-    {
-        return $this->_isInError;
-    }
-    
-    public function stepName()
-    {
-        return _('Unknown');
-    }
-    
-    public function setStepNumber($stepNumber)
-    {
-        $this->_stepNumber = $stepNumber;
-    }
-    
-    public function getStepNumber()
-    {
-        return $this->_stepNumber;
-    }
-    
-    public function processRequest()
-    {
-        return true;
-        /* true means continue rendering the page */
-    }
-    
-    public function loadTemplateData(&$templateData)
-    {
-        return null;
-    }
-    
-    public function getActions()
-    {
-        return array();
-    }
-    
-    public function setIsLastStep($lastStep)
-    {
-        $this->_isLastStep = $lastStep;
-    }
-    
-    public function isLastStep()
-    {
-        return $this->_isLastStep;
-    }
-    
-    public function loadGalleryConfig($config)
-    {
-    }
-    
-    public function sanitize($string)
-    {
-        if (get_magic_quotes_gpc()) {
-            $string = stripslashes($string);
-        }
+	public $_stepNumber;
+	public $_isComplete;
+	public $_isInError;
+	public $_isLastStep;
+	
+	public function isComplete()
+	{
+		return $this->_isComplete;
+	}
+	
+	public function isRedoable()
+	{
+		return false;
+	}
+	
+	public function setComplete($complete)
+	{
+		$this->_isComplete = $complete;
+	}
+	
+	public function canBeVisited()
+	{
+		return true;
+	}
+	
+	public function setInError($inError)
+	{
+		$this->_isInError = $inError;
+	}
+	
+	public function isInError()
+	{
+		return $this->_isInError;
+	}
+	
+	public function stepName()
+	{
+		return _('Unknown');
+	}
+	
+	public function setStepNumber($stepNumber)
+	{
+		$this->_stepNumber = $stepNumber;
+	}
+	
+	public function getStepNumber()
+	{
+		return $this->_stepNumber;
+	}
+	
+	public function processRequest()
+	{
+		return true;
+		/* true means continue rendering the page */
+	}
+	
+	public function loadTemplateData(&$templateData)
+	{
+		return null;
+	}
+	
+	public function getActions()
+	{
+		return array();
+	}
+	
+	public function setIsLastStep($lastStep)
+	{
+		$this->_isLastStep = $lastStep;
+	}
+	
+	public function isLastStep()
+	{
+		return $this->_isLastStep;
+	}
+	
+	public function loadGalleryConfig($config)
+	{
+	}
+	
+	public function sanitize($string)
+	{
+		if (get_magic_quotes_gpc()) {
+			$string = stripslashes($string);
+		}
 
-        return $string;
-    }
-    
-    public function isRelevant()
-    {
-        return true;
-    }
-    
-    public function isOptional()
-    {
-        return false;
-    }
-    
-    public function resetL10Domain()
-    {
-        /* Reset to installer domain in case we called some code that may have done translation */
-        if (function_exists('textdomain')) {
-            textdomain('gallery2_upgrade');
-        }
-    }
-    
-    public function _startDebugLog($header)
-    {
-        global $gallery;
-        $gallery->setDebug('logged');
-        if (!isset($_SESSION['debugLogFile'])) {
-            $dataBase = $gallery->getConfig('data.gallery.base');
-            $tag = substr(md5(microtime() . rand(1, 32767)), 0, 10);
-            $_SESSION['debugLogFile'] = $dataBase . '/upgrade_' . $tag . '.log';
-        }
-        $gallery->setDebugLogFile($_SESSION['debugLogFile']);
-        $gallery->debug("\n\n--------------------------------------------------------\n\t$header\n" . "--------------------------------------------------------\n\n");
-    }
+		return $string;
+	}
+	
+	public function isRelevant()
+	{
+		return true;
+	}
+	
+	public function isOptional()
+	{
+		return false;
+	}
+	
+	public function resetL10Domain()
+	{
+		/* Reset to installer domain in case we called some code that may have done translation */
+		if (function_exists('textdomain')) {
+			textdomain('gallery2_upgrade');
+		}
+	}
+	
+	public function _startDebugLog($header)
+	{
+		global $gallery;
+		$gallery->setDebug('logged');
+		if (!isset($_SESSION['debugLogFile'])) {
+			$dataBase = $gallery->getConfig('data.gallery.base');
+			$tag = substr(md5(microtime() . rand(1, 32767)), 0, 10);
+			$_SESSION['debugLogFile'] = $dataBase . '/upgrade_' . $tag . '.log';
+		}
+		$gallery->setDebugLogFile($_SESSION['debugLogFile']);
+		$gallery->debug("\n\n--------------------------------------------------------\n\t$header\n" . "--------------------------------------------------------\n\n");
+	}
 }

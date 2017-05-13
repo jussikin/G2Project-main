@@ -27,29 +27,29 @@
  */
 class ChangeLanguageController extends GalleryController
 {
-    /**
-     * @see GalleryController::handleRequest
-     */
-    public function handleRequest($form)
-    {
-        global $gallery;
-        
-        $language = GalleryUtilities::getRequestVariables('language');
-        $ret      = $gallery->setActiveLocale($language);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        $results['return'] = 1;
-        $results['status'] = array();
-        $results['error']  = array();
-        
-        return array(
-            null,
-            $results
-        );
-    }
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest($form)
+	{
+		global $gallery;
+		
+		$language = GalleryUtilities::getRequestVariables('language');
+		$ret	  = $gallery->setActiveLocale($language);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		$results['return'] = 1;
+		$results['status'] = array();
+		$results['error']  = array();
+		
+		return array(
+			null,
+			$results
+		);
+	}
 }

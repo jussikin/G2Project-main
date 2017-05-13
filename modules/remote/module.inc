@@ -23,67 +23,71 @@
  * @author Pierre-Luc Paour <paour@users.sourceforge.net>
  * @version $Revision: 20951 $
  */
-class RemoteModule extends GalleryModule {
-
-    function __construct() {
-	$this->RemoteModule();
-    }
-
-    function RemoteModule() {
-	global $gallery;
-	$this->setId('remote');
-	$this->setName($gallery->i18n('Remote'));
-	$this->setDescription($gallery->i18n('Implementation for the remote control protocol'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('interfaces', $gallery->i18n('Remote Interfaces'));
-	$this->setCallbacks('getSiteAdminViews');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
-
-    /**
-     * @see GalleryModule::upgrade
-     */
-    function upgrade($currentVersion, $x1=null) {
-	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'remote');
-	if ($ret) {
-	    return $ret;
+class RemoteModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->RemoteModule();
 	}
-	foreach (array('showItemAdd' => 1) as $key => $value) {
-	    if (!isset($params[$key])) {
-		$ret = $this->setParameter($key, $value);
+
+	public function RemoteModule()
+	{
+		global $gallery;
+		$this->setId('remote');
+		$this->setName($gallery->i18n('Remote'));
+		$this->setDescription($gallery->i18n('Implementation for the remote control protocol'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('interfaces', $gallery->i18n('Remote Interfaces'));
+		$this->setCallbacks('getSiteAdminViews');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
+
+	/**
+	 * @see GalleryModule::upgrade
+	 */
+	public function upgrade($currentVersion, $x1=null)
+	{
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'remote');
 		if ($ret) {
-		    return $ret;
+			return $ret;
 		}
-	    }
+		foreach (array('showItemAdd' => 1) as $key => $value) {
+			if (!isset($params[$key])) {
+				$ret = $this->setParameter($key, $value);
+				if ($ret) {
+					return $ret;
+				}
+			}
+		}
+
+		return null;
 	}
 
-	return null;
-    }
-
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    function performFactoryRegistrations() {
-	/* Register our item add plugins */
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		/* Register our item add plugins */
 	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'ItemAddPlugin', 'ItemAddGalleryRemote', 'ItemAddGalleryRemote',
-	    'modules/remote/ItemAddGalleryRemote.inc', 'remote', null);
-	if ($ret) {
-	    return $ret;
+		'ItemAddPlugin', 'ItemAddGalleryRemote', 'ItemAddGalleryRemote',
+		'modules/remote/ItemAddGalleryRemote.inc', 'remote', null);
+		if ($ret) {
+			return $ret;
+		}
+
+		return null;
 	}
 
-	return null;
-    }
-
-    /**
-     * @see GalleryModule::getSiteAdminViews
-     */
-    function getSiteAdminViews() {
-	return array(null,
-		     array(array('name' => $this->translate('Remote'),
+	/**
+	 * @see GalleryModule::getSiteAdminViews
+	 */
+	public function getSiteAdminViews()
+	{
+		return array(null,
+			 array(array('name' => $this->translate('Remote'),
 				 'view' => 'remote.RemoteSiteAdmin')));
-    }
+	}
 }
-?>

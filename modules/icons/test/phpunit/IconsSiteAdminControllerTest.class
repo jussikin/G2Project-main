@@ -28,77 +28,77 @@
  */
 class IconsSiteAdminControllerTest extends GalleryControllerTestCase
 {
-    public function __construct($methodName)
-    {
-        $this->GalleryControllerTestCase($methodName, 'icons.IconsSiteAdmin');
-    }
-    
-    public function setUp()
-    {
-        $ret = parent::setUp();
-        if ($ret) {
-            return $ret;
-        }
-        
-        $ret = $this->_markPluginParametersForCleanup('module', 'icons');
-        if ($ret) {
-            return $ret;
-        }
-    }
-    
-    public function testIconsSiteAdminControllerReset()
-    {
-        GalleryUtilities::putRequestVariable('form[action][reset]', '1');
-        
-        $results = $this->handleRequest();
-        $this->assertEquals(array(
-            'redirect' => array(
-                'view' => 'core.SiteAdmin',
-                'subView' => 'icons.IconsSiteAdmin'
-            ),
-            'status' => array(),
-            'error' => array()
-        ), $results);
-    }
-    
-    public function testIconsSiteAdminControllerSave()
-    {
-        GalleryUtilities::putRequestVariable('form[iconpack]', 'testpack');
-        GalleryUtilities::putRequestVariable('form[action][save]', '1');
-        
-        $results = $this->handleRequest();
-        $this->assertEquals(array(
-            'redirect' => array(
-                'view' => 'core.SiteAdmin',
-                'subView' => 'icons.IconsSiteAdmin'
-            ),
-            'status' => array(
-                'saved' => 1
-            ),
-            'error' => array()
-        ), $results);
-        
-        list($ret, $iconpack) = GalleryCoreApi::getPluginParameter('module', 'icons', 'iconpack');
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals('testpack', $iconpack, 'iconpack');
-    }
-    
-    public function testIconsSiteAdminControllerSaveNoIconPack()
-    {
-        GalleryUtilities::putRequestVariable('form[action][save]', '1');
-        
-        $results = $this->handleRequest();
-        $this->assertEquals(array(
-            'delegate' => array(
-                'view' => 'core.SiteAdmin',
-                'subView' => 'icons.IconsSiteAdmin'
-            ),
-            'status' => array(),
-            'error' => array(
-                'form[error][iconpack][missing]'
-            )
-        ), $results);
-    }
+	public function __construct($methodName)
+	{
+		$this->GalleryControllerTestCase($methodName, 'icons.IconsSiteAdmin');
+	}
+	
+	public function setUp()
+	{
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
+		
+		$ret = $this->_markPluginParametersForCleanup('module', 'icons');
+		if ($ret) {
+			return $ret;
+		}
+	}
+	
+	public function testIconsSiteAdminControllerReset()
+	{
+		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
+		
+		$results = $this->handleRequest();
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'icons.IconsSiteAdmin'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
+	}
+	
+	public function testIconsSiteAdminControllerSave()
+	{
+		GalleryUtilities::putRequestVariable('form[iconpack]', 'testpack');
+		GalleryUtilities::putRequestVariable('form[action][save]', '1');
+		
+		$results = $this->handleRequest();
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'icons.IconsSiteAdmin'
+			),
+			'status' => array(
+				'saved' => 1
+			),
+			'error' => array()
+		), $results);
+		
+		list($ret, $iconpack) = GalleryCoreApi::getPluginParameter('module', 'icons', 'iconpack');
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals('testpack', $iconpack, 'iconpack');
+	}
+	
+	public function testIconsSiteAdminControllerSaveNoIconPack()
+	{
+		GalleryUtilities::putRequestVariable('form[action][save]', '1');
+		
+		$results = $this->handleRequest();
+		$this->assertEquals(array(
+			'delegate' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'icons.IconsSiteAdmin'
+			),
+			'status' => array(),
+			'error' => array(
+				'form[error][iconpack][missing]'
+			)
+		), $results);
+	}
 }

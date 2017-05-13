@@ -29,76 +29,76 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/ServerAuthPlugin.class');
  */
 class ServerAuthPluginTest extends GalleryTestCase
 {
-    public function __construct($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
-    
-    public function setUp()
-    {
-        global $gallery;
-        $ret = parent::setUp();
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* Create test user */
-        list($ret, $this->_user) = $this->_createRandomUser();
-        if ($ret) {
-            return $ret;
-        }
-        $this->_markForCleanup($this->_user);
-        $_SERVER['AUTH_TYPE'] = 'Test';
-        
-        $this->_plugin = new ServerAuthPlugin();
-        
-        $this->_saveSession = $gallery->_session;
-        $gallery->_session = new ServerAuthPluginTestSession();
-    }
-    
-    public function tearDown()
-    {
-        global $gallery;
-        $gallery->_session = $this->_saveSession;
-        
-        $ret = GalleryCoreApi::removeAllMapEntries('FailedLoginsMap');
-        if ($ret) {
-            return $ret;
-        }
-        
-        $ret = parent::tearDown();
-        if ($ret) {
-            return $ret;
-        }
-    }
-    
-    public function testValidUser()
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
-        
-        $_SERVER['REMOTE_USER'] = $this->_user->getUserName();
-        
-        list($ret, $user) = $this->_plugin->getUser();
-        if ($ret) {
-            return ($ret);
-        }
-        
-        $this->assertEquals($this->_user, $user);
-        $this->assert($session->regenerateWasCalled(), 'Session has not been regenerated!');
-    }
-    
-    public function testInvalidUser()
-    {
-        $_SERVER['REMOTE_USER'] = 'bogusUser-' . rand();
-        
-        list($ret, $user) = $this->_plugin->getUser();
-        if ($ret) {
-            return ($ret);
-        }
-        
-        $this->assertEquals(null, $user);
-    }
+	public function __construct($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
+	
+	public function setUp()
+	{
+		global $gallery;
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* Create test user */
+		list($ret, $this->_user) = $this->_createRandomUser();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($this->_user);
+		$_SERVER['AUTH_TYPE'] = 'Test';
+		
+		$this->_plugin = new ServerAuthPlugin();
+		
+		$this->_saveSession = $gallery->_session;
+		$gallery->_session = new ServerAuthPluginTestSession();
+	}
+	
+	public function tearDown()
+	{
+		global $gallery;
+		$gallery->_session = $this->_saveSession;
+		
+		$ret = GalleryCoreApi::removeAllMapEntries('FailedLoginsMap');
+		if ($ret) {
+			return $ret;
+		}
+		
+		$ret = parent::tearDown();
+		if ($ret) {
+			return $ret;
+		}
+	}
+	
+	public function testValidUser()
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
+		
+		$_SERVER['REMOTE_USER'] = $this->_user->getUserName();
+		
+		list($ret, $user) = $this->_plugin->getUser();
+		if ($ret) {
+			return ($ret);
+		}
+		
+		$this->assertEquals($this->_user, $user);
+		$this->assert($session->regenerateWasCalled(), 'Session has not been regenerated!');
+	}
+	
+	public function testInvalidUser()
+	{
+		$_SERVER['REMOTE_USER'] = 'bogusUser-' . rand();
+		
+		list($ret, $user) = $this->_plugin->getUser();
+		if ($ret) {
+			return ($ret);
+		}
+		
+		$this->assertEquals(null, $user);
+	}
 }
 
 /**
@@ -106,23 +106,23 @@ class ServerAuthPluginTest extends GalleryTestCase
  */
 class ServerAuthPluginTestSession
 {
-    public function ServerAuthPluginTestSession()
-    {
-        $this->_regenerateWasCalled = false;
-    }
-    
-    public function getUserId()
-    {
-        return null;
-    }
-    
-    public function regenerate()
-    {
-        $this->_regenerateWasCalled = true;
-    }
-    
-    public function regenerateWasCalled()
-    {
-        return $this->_regenerateWasCalled;
-    }
+	public function ServerAuthPluginTestSession()
+	{
+		$this->_regenerateWasCalled = false;
+	}
+	
+	public function getUserId()
+	{
+		return null;
+	}
+	
+	public function regenerate()
+	{
+		$this->_regenerateWasCalled = true;
+	}
+	
+	public function regenerateWasCalled()
+	{
+		return $this->_regenerateWasCalled;
+	}
 }

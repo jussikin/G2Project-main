@@ -29,19 +29,19 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthHelper.class');
  */
 class HttpAuthWorksView extends GalleryView
 {
-    /**
-     * @see GalleryView::isImmediate
-     */
-    public function isImmediate()
-    {
-        return true;
-    }
-    
-    /**
-     * @see GalleryView::renderImmediate
-     */
-    public function renderImmediate($status, $error)
-    {
-        echo implode("\n", HttpAuthHelper::getHttpAuth());
-    }
+	/**
+	 * @see GalleryView::isImmediate
+	 */
+	public function isImmediate()
+	{
+		return true;
+	}
+	
+	/**
+	 * @see GalleryView::renderImmediate
+	 */
+	public function renderImmediate($status, $error)
+	{
+		echo implode("\n", HttpAuthHelper::getHttpAuth());
+	}
 }

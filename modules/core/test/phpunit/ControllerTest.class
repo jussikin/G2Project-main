@@ -29,286 +29,286 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryController.class');
  */
 class ControllerTest extends GalleryTestCase
 {
-    public function ControllerTest($methodName)
-    {
-        $this->GalleryTestCase($methodName);
-    }
+	public function ControllerTest($methodName)
+	{
+		$this->GalleryTestCase($methodName);
+	}
 
-    public function setUp()
-    {
-        $ret = parent::setUp();
-        if ($ret) {
-            return $ret;
-        }
+	public function setUp()
+	{
+		$ret = parent::setUp();
+		if ($ret) {
+			return $ret;
+		}
 
-        global $gallery;
-        $session =& $gallery->getSession();
+		global $gallery;
+		$session =& $gallery->getSession();
 
-        GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryPluginHelper_medium.class');
-        GalleryPluginHelper_medium::setPluginInstance('module', 'controllertest', new ControllerTestModule());
-        $session->remove('core.authToken');
-        $this->_originalIsPersistentSession = $session->isPersistent();
-        GalleryUtilities::removeRequestVariable('authToken');
-    }
+		GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryPluginHelper_medium.class');
+		GalleryPluginHelper_medium::setPluginInstance('module', 'controllertest', new ControllerTestModule());
+		$session->remove('core.authToken');
+		$this->_originalIsPersistentSession = $session->isPersistent();
+		GalleryUtilities::removeRequestVariable('authToken');
+	}
 
-    public function tearDown()
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
+	public function tearDown()
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
 
-        $session->remove('core.authToken');
-        $session->_isPersistent = $this->_originalIsPersistentSession;
-        $ret = parent::tearDown();
-        if ($ret) {
-            return $ret;
-        }
-    }
+		$session->remove('core.authToken');
+		$session->_isPersistent = $this->_originalIsPersistentSession;
+		$ret = parent::tearDown();
+		if ($ret) {
+			return $ret;
+		}
+	}
 
-    public function testLoadControllerSuccess()
-    {
-        list($ret, $controller) = GalleryController::loadController('core.ItemEdit');
-        if ($ret) {
-            return $ret;
-        }
-        $this->assert(isset($controller));
-    }
+	public function testLoadControllerSuccess()
+	{
+		list($ret, $controller) = GalleryController::loadController('core.ItemEdit');
+		if ($ret) {
+			return $ret;
+		}
+		$this->assert(isset($controller));
+	}
 
-    public function testLoadControllerFail()
-    {
-        list($ret, $controller) = GalleryController::loadController('controllertest.SomeRandomController');
-        if ($ret && $ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
-            /* this is what we expect */
-        } else {
-            $this->assert(false, 'The controller of a deactivated module should not load.');
-        }
-    }
+	public function testLoadControllerFail()
+	{
+		list($ret, $controller) = GalleryController::loadController('controllertest.SomeRandomController');
+		if ($ret && $ret->getErrorCode() & ERROR_PERMISSION_DENIED) {
+			/* this is what we expect */
+		} else {
+			$this->assert(false, 'The controller of a deactivated module should not load.');
+		}
+	}
 
-    public function testLoadConfigurationController()
-    {
-        /*
-         * We can load the config controller even though the module is deactivated
-         * because we're an admin.
-         */
-        list($ret, $controller) = GalleryController::loadController('controllertest.ConfigView');
-        if ($ret) {
-            return $ret;
-        }
-        $this->assert(isset($controller));
-    }
+	public function testLoadConfigurationController()
+	{
+		/*
+	     * We can load the config controller even though the module is deactivated
+	     * because we're an admin.
+	     */
+		list($ret, $controller) = GalleryController::loadController('controllertest.ConfigView');
+		if ($ret) {
+			return $ret;
+		}
+		$this->assert(isset($controller));
+	}
 
-    public function testAssertIsGenuineRequestDefaultsToFalse()
-    {
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
-            /* this is what we expect */
-        } elseif ($ret) {
-            return $ret;
-        } else {
-            $this->assert(false, 'should throw an error by default');
-        }
-    }
+	public function testAssertIsGenuineRequestDefaultsToFalse()
+	{
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
+			/* this is what we expect */
+		} elseif ($ret) {
+			return $ret;
+		} else {
+			$this->assert(false, 'should throw an error by default');
+		}
+	}
 
-    public function testAssertIsGenuineRequestHandlesEmptyValue()
-    {
-        GalleryUtilities::putRequestVariable('authToken', '');
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
-            /* this is what we expect */
-        } elseif ($ret) {
-            return $ret;
-        } else {
-            $this->assert(false);
-        }
-    }
+	public function testAssertIsGenuineRequestHandlesEmptyValue()
+	{
+		GalleryUtilities::putRequestVariable('authToken', '');
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
+			/* this is what we expect */
+		} elseif ($ret) {
+			return $ret;
+		} else {
+			$this->assert(false);
+		}
+	}
 
-    public function testAssertIsGenuineRequestWithValidAuthToken()
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
+	public function testAssertIsGenuineRequestWithValidAuthToken()
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
 
-        $validAuthToken = 'ABCDEF123456';
-        $session->put('core.authToken', $validAuthToken);
-        GalleryUtilities::putRequestVariable('authToken', $validAuthToken);
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret) {
-            $this->fail('specified auth token in request parameters should be correct');
+		$validAuthToken = 'ABCDEF123456';
+		$session->put('core.authToken', $validAuthToken);
+		GalleryUtilities::putRequestVariable('authToken', $validAuthToken);
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret) {
+			$this->fail('specified auth token in request parameters should be correct');
 
-            return $ret;
-        }
-    }
+			return $ret;
+		}
+	}
 
-    public function testAssertIsGenuineRequestWithInValidAuthToken()
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
+	public function testAssertIsGenuineRequestWithInValidAuthToken()
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
 
-        $validAuthToken = 'ABCDEF123456';
-        $session->put('core.authToken', $validAuthToken);
-        GalleryUtilities::putRequestVariable('authToken', '098765432109');
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
-            /* this is what we expect */
-        } elseif ($ret) {
-            return $ret;
-        } else {
-            $this->assert(false, 'invalid auth token was accepted');
-        }
-    }
+		$validAuthToken = 'ABCDEF123456';
+		$session->put('core.authToken', $validAuthToken);
+		GalleryUtilities::putRequestVariable('authToken', '098765432109');
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret && $ret->getErrorCode() & ERROR_REQUEST_FORGED) {
+			/* this is what we expect */
+		} elseif ($ret) {
+			return $ret;
+		} else {
+			$this->assert(false, 'invalid auth token was accepted');
+		}
+	}
 
-    public function testAssertIsGenuineRequestIgnoresNonPersistentSessions()
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
+	public function testAssertIsGenuineRequestIgnoresNonPersistentSessions()
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
 
-        $session->_isPersistent = false;
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret) {
-            $this->fail('check should be omitted for non-persistent sessions');
+		$session->_isPersistent = false;
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret) {
+			$this->fail('check should be omitted for non-persistent sessions');
 
-            return $ret;
-        }
+			return $ret;
+		}
 
-        $validAuthToken = 'ABCDEF123456';
-        $session->put('core.authToken', $validAuthToken);
-        GalleryUtilities::putRequestVariable('authToken', '098765432109');
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret) {
-            $this->fail('specified auth token should be ignored for non-persistent sessions');
+		$validAuthToken = 'ABCDEF123456';
+		$session->put('core.authToken', $validAuthToken);
+		GalleryUtilities::putRequestVariable('authToken', '098765432109');
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret) {
+			$this->fail('specified auth token should be ignored for non-persistent sessions');
 
-            return $ret;
-        }
-    }
+			return $ret;
+		}
+	}
 
-    public function testAssertIsGunuineRequestOmittedInMaintenanceMode()
-    {
-        global $gallery;
-        $session =& $gallery->getSession();
+	public function testAssertIsGunuineRequestOmittedInMaintenanceMode()
+	{
+		global $gallery;
+		$session =& $gallery->getSession();
 
-        $validAuthToken = 'ABCDEF123456';
-        $session->put('core.authToken', $validAuthToken);
-        GalleryUtilities::putRequestVariable('authToken', '098765432109');
-        $gallery->setConfig('mode.maintenance', true);
-        $ret = GalleryController::assertIsGenuineRequest();
-        if ($ret) {
-            $this->fail('specified auth token should be ignored in maintenance mode');
+		$validAuthToken = 'ABCDEF123456';
+		$session->put('core.authToken', $validAuthToken);
+		GalleryUtilities::putRequestVariable('authToken', '098765432109');
+		$gallery->setConfig('mode.maintenance', true);
+		$ret = GalleryController::assertIsGenuineRequest();
+		if ($ret) {
+			$this->fail('specified auth token should be ignored in maintenance mode');
 
-            return $ret;
-        }
-    }
+			return $ret;
+		}
+	}
 
-    public function testOmitAuthTokenCheckDefaultsToFalse()
-    {
-        $controller = new GalleryController();
-        $this->assert(!$controller->omitAuthTokenCheck(), 'should default to false');
-    }
+	public function testOmitAuthTokenCheckDefaultsToFalse()
+	{
+		$controller = new GalleryController();
+		$this->assert(!$controller->omitAuthTokenCheck(), 'should default to false');
+	}
 
-    public function testGetItemOnlyReturnsItems()
-    {
-        global $gallery;
+	public function testGetItemOnlyReturnsItems()
+	{
+		global $gallery;
 
-        $controller = new GalleryController();
-        GalleryUtilities::putRequestVariable('itemId', $gallery->getActiveUserId());
+		$controller = new GalleryController();
+		GalleryUtilities::putRequestVariable('itemId', $gallery->getActiveUserId());
 
-        list($ret, $item) = $controller->getItem();
-        $this->assert($ret, 'getItem() should return an error if the itemId is the id of a user.');
-        if ($ret) {
-            $this->assert($ret->getErrorCode() & ERROR_MISSING_OBJECT, 'ERROR_MISSING_OBJECT');
-        }
-    }
+		list($ret, $item) = $controller->getItem();
+		$this->assert($ret, 'getItem() should return an error if the itemId is the id of a user.');
+		if ($ret) {
+			$this->assert($ret->getErrorCode() & ERROR_MISSING_OBJECT, 'ERROR_MISSING_OBJECT');
+		}
+	}
 
-    public function testGetItemRequiresViewPermission()
-    {
-        global $gallery;
+	public function testGetItemRequiresViewPermission()
+	{
+		global $gallery;
 
-        $controller = new GalleryController();
-        list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
-        if ($ret) {
-            return $ret;
-        }
-        $this->_markForCleanup($album);
+		$controller = new GalleryController();
+		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($album);
 
-        GalleryUtilities::putRequestVariable('itemId', $album->getId());
+		GalleryUtilities::putRequestVariable('itemId', $album->getId());
 
-        $ret = GalleryCoreApi::removeItemPermissions($album->getId());
-        if ($ret) {
-            return $ret;
-        }
+		$ret = GalleryCoreApi::removeItemPermissions($album->getId());
+		if ($ret) {
+			return $ret;
+		}
 
-        list($ret, $item) = $controller->getItem();
-        if ($ret) {
-            if (!($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
-                $this->fail('Wrong error code, expected ERROR_MISSING_OBJECT');
+		list($ret, $item) = $controller->getItem();
+		if ($ret) {
+			if (!($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
+				$this->fail('Wrong error code, expected ERROR_MISSING_OBJECT');
 
-                return $ret;
-            }
-        } else {
-            $this->fail('Expected ERROR_MISSING_OBJECT, no error returned');
-        }
+				return $ret;
+			}
+		} else {
+			$this->fail('Expected ERROR_MISSING_OBJECT, no error returned');
+		}
 
-        /* No permission check */
-        list($ret, $item) = $controller->getItem(false);
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals($album->getId(), $item->getId(), 'no permission check, itemId');
+		/* No permission check */
+		list($ret, $item) = $controller->getItem(false);
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals($album->getId(), $item->getId(), 'no permission check, itemId');
 
-        /* Prepare test with permission */
-        $ret = GalleryCoreApi::addUserPermission($album->getId(), $gallery->getActiveUserId(), 'core.view');
-        if ($ret) {
-            return $ret;
-        }
+		/* Prepare test with permission */
+		$ret = GalleryCoreApi::addUserPermission($album->getId(), $gallery->getActiveUserId(), 'core.view');
+		if ($ret) {
+			return $ret;
+		}
 
-        list($ret, $item) = $controller->getItem();
-        if ($ret) {
-            return $ret;
-        }
-        $this->assertEquals($album->getId(), $item->getId(), 'with permission, itemId');
-    }
+		list($ret, $item) = $controller->getItem();
+		if ($ret) {
+			return $ret;
+		}
+		$this->assertEquals($album->getId(), $item->getId(), 'with permission, itemId');
+	}
 
-    public function testGetItemMissingItemIdFails()
-    {
-        $controller = new GalleryController();
-        GalleryUtilities::removeRequestVariable('itemId');
+	public function testGetItemMissingItemIdFails()
+	{
+		$controller = new GalleryController();
+		GalleryUtilities::removeRequestVariable('itemId');
 
-        list($ret, $item) = $controller->getItem();
-        $this->assert($ret, 'getItem() should return an error if the itemId is the id of a user.');
-        if ($ret) {
-            $this->assert($ret->getErrorCode() & ERROR_MISSING_VALUE, 'ERROR_MISSING_OBJECT');
-        }
-    }
+		list($ret, $item) = $controller->getItem();
+		$this->assert($ret, 'getItem() should return an error if the itemId is the id of a user.');
+		if ($ret) {
+			$this->assert($ret->getErrorCode() & ERROR_MISSING_VALUE, 'ERROR_MISSING_OBJECT');
+		}
+	}
 
-    public function testPermissionCheckNotAdmin()
-    {
-        $galleryController = new GalleryController();
+	public function testPermissionCheckNotAdmin()
+	{
+		$galleryController = new GalleryController();
 
-        $this->_becomeGuestUser();
-        list($ret, $results) = $galleryController->permissionCheck(GalleryCoreApi::error(ERROR_PERMISSION_DENIED));
-        $this->assertEquals(array(
-            'redirect' => array(
-                'view' => 'core.UserAdmin',
-                'subView' => 'core.UserLogin',
-                'return' => true
-            ),
-            'status' => array(),
-            'error' => array()
-        ), $results, 'Unexpected result');
-    }
+		$this->_becomeGuestUser();
+		list($ret, $results) = $galleryController->permissionCheck(GalleryCoreApi::error(ERROR_PERMISSION_DENIED));
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.UserAdmin',
+				'subView' => 'core.UserLogin',
+				'return' => true
+			),
+			'status' => array(),
+			'error' => array()
+		), $results, 'Unexpected result');
+	}
 
-    public function testPermissionCheckAuthTimeoutExpired()
-    {
-        $galleryController = new GalleryController();
+	public function testPermissionCheckAuthTimeoutExpired()
+	{
+		$galleryController = new GalleryController();
 
-        list($ret, $results) = $galleryController->permissionCheck(GalleryCoreApi::error(ERROR_PERMISSION_DENIED));
-        $this->assertEquals(array(
-            'redirect' => array(
-                'view' => 'core.UserAdmin',
-                'subView' => 'core.UserLogin',
-                'return' => true
-            ),
-            'status' => array(),
-            'error' => array()
-        ), $results, 'Unexpected result');
-    }
+		list($ret, $results) = $galleryController->permissionCheck(GalleryCoreApi::error(ERROR_PERMISSION_DENIED));
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.UserAdmin',
+				'subView' => 'core.UserLogin',
+				'return' => true
+			),
+			'status' => array(),
+			'error' => array()
+		), $results, 'Unexpected result');
+	}
 }
 
 /**
@@ -319,18 +319,18 @@ class ControllerTest extends GalleryTestCase
  */
 class ControllerTestModule
 {
-    public function isActive()
-    {
-        return array(
-            null,
-            false
-        );
-    }
+	public function isActive()
+	{
+		return array(
+			null,
+			false
+		);
+	}
 
-    public function getConfigurationView()
-    {
-        return 'controllertest.ConfigView';
-    }
+	public function getConfigurationView()
+	{
+		return 'controllertest.ConfigView';
+	}
 }
 
 /**

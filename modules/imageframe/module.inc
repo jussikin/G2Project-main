@@ -27,41 +27,41 @@
  */
 class ImageFrameModule extends GalleryModule
 {
-    public function __construct()
-    {
-        $this->ImageFrameModule();
-    }
-    
-    public function ImageFrameModule()
-    {
-        global $gallery;
-        $this->setId('imageframe');
-        $this->setName($gallery->i18n('ImageFrame'));
-        $this->setDescription($gallery->i18n('Render frames around images'));
-        $this->setVersion('2.0.0');
-        $this->_templateVersion = 1;
-        $this->setGroup('display', $gallery->i18n('Display'));
-        $this->setCallbacks('');
-        $this->setRequiredCoreApi(array(
-            8,
-            0
-        ));
-        $this->setRequiredModuleApi(array(
-            4,
-            0
-        ));
-    }
-    
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    public function performFactoryRegistrations()
-    {
-        $ret = GalleryCoreApi::registerFactoryImplementation('ImageFrameInterface_1_1', 'ImageFrameImpl', 'ImageFrame', 'modules/imageframe/classes/ImageFrameImpl.class', 'imageframe', null);
-        if ($ret) {
-            return $ret;
-        }
-        
-        return null;
-    }
+	public function __construct()
+	{
+		$this->ImageFrameModule();
+	}
+	
+	public function ImageFrameModule()
+	{
+		global $gallery;
+		$this->setId('imageframe');
+		$this->setName($gallery->i18n('ImageFrame'));
+		$this->setDescription($gallery->i18n('Render frames around images'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('display', $gallery->i18n('Display'));
+		$this->setCallbacks('');
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
+	}
+	
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation('ImageFrameInterface_1_1', 'ImageFrameImpl', 'ImageFrame', 'modules/imageframe/classes/ImageFrameImpl.class', 'imageframe', null);
+		if ($ret) {
+			return $ret;
+		}
+		
+		return null;
+	}
 }

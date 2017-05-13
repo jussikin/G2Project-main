@@ -29,132 +29,132 @@
  */
 class CustomFieldModule extends GalleryModule
 {
-    public function __construct()
-    {
-        $this->CustomFieldModule();
-    }
-    
-    public function CustomFieldModule()
-    {
-        global $gallery;
-        
-        $this->setId('customfield');
-        $this->setName($gallery->i18n('Custom Fields'));
-        $this->setDescription($gallery->i18n('Create custom data fields for Gallery items'));
-        $this->setVersion('2.0.0');
-        $this->_templateVersion = 1;
-        $this->setGroup('data', $gallery->i18n('Extra Data'));
-        $this->setCallbacks('getSiteAdminViews|getItemSummaries');
-        $this->setRequiredCoreApi(array(
-            8,
-            0
-        ));
-        $this->setRequiredModuleApi(array(
-            4,
-            0
-        ));
-    }
-    
-    /**
-     * @see GalleryModule::upgrade
-     */
-    public function upgrade($currentVersion, $x1 = null)
-    {
-        global $gallery;
-        
-        if (!empty($currentVersion) && version_compare($currentVersion, '1.0.1', '<')) {
-            $storage =& $gallery->getStorage();
-            $ret = $storage->configureStore($this->getId(), array(
-                'CustomFieldMap:1.0'
-            ));
-            if ($ret) {
-                return $ret;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * @see GalleryModule::getSiteAdminViews
-     */
-    public function getSiteAdminViews()
-    {
-        return array(
-            null,
-            array(
-                array(
-                    'name' => $this->translate('Custom Fields'),
-                    'view' => 'customfield.CustomFieldSiteAdmin'
-                )
-            )
-        );
-    }
-    
-    /**
-     * @see GalleryModule::getItemSummaries
-     */
-    public function getItemSummaries($items, $permissions, &$template)
-    {
-        GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class');
-        GalleryCoreApi::requireOnce('lib/smarty_plugins/modifier.markup.php');
-        $summaries = array();
-        
-        list($ret, $data) = CustomFieldHelper::fetchFieldValues($items, 'summary');
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        foreach ($data as $itemId => $fields) {
-            $list = array();
-            foreach ($fields as $field => $value) {
-                $list[] = $field . ': ' . smarty_modifier_markup($value);
-            }
-            if (!empty($list)) {
-                $summaries[$itemId] = implode("<br/>\n", $list);
-            }
-        }
+	public function __construct()
+	{
+		$this->CustomFieldModule();
+	}
+	
+	public function CustomFieldModule()
+	{
+		global $gallery;
+		
+		$this->setId('customfield');
+		$this->setName($gallery->i18n('Custom Fields'));
+		$this->setDescription($gallery->i18n('Create custom data fields for Gallery items'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('data', $gallery->i18n('Extra Data'));
+		$this->setCallbacks('getSiteAdminViews|getItemSummaries');
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
+	}
+	
+	/**
+	 * @see GalleryModule::upgrade
+	 */
+	public function upgrade($currentVersion, $x1 = null)
+	{
+		global $gallery;
+		
+		if (!empty($currentVersion) && version_compare($currentVersion, '1.0.1', '<')) {
+			$storage =& $gallery->getStorage();
+			$ret = $storage->configureStore($this->getId(), array(
+				'CustomFieldMap:1.0'
+			));
+			if ($ret) {
+				return $ret;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @see GalleryModule::getSiteAdminViews
+	 */
+	public function getSiteAdminViews()
+	{
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Custom Fields'),
+					'view' => 'customfield.CustomFieldSiteAdmin'
+				)
+			)
+		);
+	}
+	
+	/**
+	 * @see GalleryModule::getItemSummaries
+	 */
+	public function getItemSummaries($items, $permissions, &$template)
+	{
+		GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class');
+		GalleryCoreApi::requireOnce('lib/smarty_plugins/modifier.markup.php');
+		$summaries = array();
+		
+		list($ret, $data) = CustomFieldHelper::fetchFieldValues($items, 'summary');
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		foreach ($data as $itemId => $fields) {
+			$list = array();
+			foreach ($fields as $field => $value) {
+				$list[] = $field . ': ' . smarty_modifier_markup($value);
+			}
+			if (!empty($list)) {
+				$summaries[$itemId] = implode("<br/>\n", $list);
+			}
+		}
 
-        return array(
-            null,
-            $summaries
-        );
-    }
-    
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    public function performFactoryRegistrations()
-    {
-        /* Register our item edit plugin */
-        $ret = GalleryCoreApi::registerFactoryImplementation('ItemEditPlugin', 'CustomFieldItemEdit', 'CustomFieldItemEdit', 'modules/customfield/CustomFieldItemEdit.inc', 'customfield', null);
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* Register interface implementation */
-        $ret = GalleryCoreApi::registerFactoryImplementation('CustomFieldInterface_1_0', 'CustomFieldHelper', 'CustomField', 'modules/customfield/classes/CustomFieldHelper.class', 'customfield', null);
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* Register search implementation */
-        $ret = GalleryCoreApi::registerFactoryImplementation('GallerySearchInterface_1_0', 'CustomFieldSearch', 'CustomField', 'modules/customfield/classes/CustomFieldSearch.class', 'customfield', null);
-        if ($ret) {
-            return $ret;
-        }
-        
-        /* Register event listeners */
-        $ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'CustomFieldHelper', 'CustomFieldHelper', 'modules/customfield/classes/CustomFieldHelper.class', 'customfield', array(
-            'GalleryEntity::delete'
-        ));
-        if ($ret) {
-            return $ret;
-        }
-        
-        return null;
-    }
+		return array(
+			null,
+			$summaries
+		);
+	}
+	
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		/* Register our item edit plugin */
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditPlugin', 'CustomFieldItemEdit', 'CustomFieldItemEdit', 'modules/customfield/CustomFieldItemEdit.inc', 'customfield', null);
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* Register interface implementation */
+		$ret = GalleryCoreApi::registerFactoryImplementation('CustomFieldInterface_1_0', 'CustomFieldHelper', 'CustomField', 'modules/customfield/classes/CustomFieldHelper.class', 'customfield', null);
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* Register search implementation */
+		$ret = GalleryCoreApi::registerFactoryImplementation('GallerySearchInterface_1_0', 'CustomFieldSearch', 'CustomField', 'modules/customfield/classes/CustomFieldSearch.class', 'customfield', null);
+		if ($ret) {
+			return $ret;
+		}
+		
+		/* Register event listeners */
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'CustomFieldHelper', 'CustomFieldHelper', 'modules/customfield/classes/CustomFieldHelper.class', 'customfield', array(
+			'GalleryEntity::delete'
+		));
+		if ($ret) {
+			return $ret;
+		}
+		
+		return null;
+	}
 }

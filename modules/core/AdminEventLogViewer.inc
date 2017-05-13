@@ -28,31 +28,31 @@
  */
 class AdminEventLogViewerView extends GalleryView
 {
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    public function loadTemplate(&$template, &$form)
-    {
-        $ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        $AdminEventLogViewer = array();
-        if ($form['formName'] != 'AdminEventLogViewer') {
-            $form['formName'] = 'AdminEventLogViewer';
-        }
-        
-        $template->javascript('lib/yui/utilities.js');
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		$AdminEventLogViewer = array();
+		if ($form['formName'] != 'AdminEventLogViewer') {
+			$form['formName'] = 'AdminEventLogViewer';
+		}
+		
+		$template->javascript('lib/yui/utilities.js');
 
-        return array(
-            null,
-            array(
-                'body' => 'modules/core/templates/AdminEventLogViewer.tpl'
-            )
-        );
-    }
+		return array(
+			null,
+			array(
+				'body' => 'modules/core/templates/AdminEventLogViewer.tpl'
+			)
+		);
+	}
 }

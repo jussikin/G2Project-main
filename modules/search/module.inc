@@ -27,24 +27,25 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 18172 $
  */
-class SearchModule extends GalleryModule {
+class SearchModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->SearchModule();
+	}
 
-    function __construct() {
-	$this->SearchModule();
-    }
+	public function SearchModule()
+	{
+		global $gallery;
 
-    function SearchModule() {
-	global $gallery;
-
-	$this->setId('search');
-	$this->setName($gallery->i18n('Search'));
-	$this->setDescription($gallery->i18n('Search your Gallery'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('gallery', $gallery->i18n('Gallery'));
-	$this->setCallbacks('');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
+		$this->setId('search');
+		$this->setName($gallery->i18n('Search'));
+		$this->setDescription($gallery->i18n('Search your Gallery'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('gallery', $gallery->i18n('Gallery'));
+		$this->setCallbacks('');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
 }
-?>

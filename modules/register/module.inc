@@ -25,126 +25,133 @@
  * @author Sebastian Eichner <mailsp@sebastian-eichner.de>
  * @version $Revision: 18172 $
  */
-class RegisterModule extends GalleryModule {
-
-    function __construct() {
-	$this->RegisterModule();
-    }
-
-    function RegisterModule() {
-	global $gallery;
-
-	$this->setId('register');
-	$this->setName($gallery->i18n('Registration'));
-	$this->setDescription($gallery->i18n('New User Registration'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('gallery', $gallery->i18n('Gallery'));
-	$this->setCallbacks('getSystemLinks|getUserAdminViews|getSiteAdminViews');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
-
-    /**
-     * @see GalleryModule::upgrade
-     */
-    function upgrade($currentVersion, $x1=null) {
-	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'register');
-	if ($ret) {
-	    return $ret;
+class RegisterModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->RegisterModule();
 	}
 
-	foreach (array('confirmation' => 'admin', 'emailadmins' => 1, 'emailusers' => 1,
-		       'subject' => $this->translate('Account activation'),
-		       'adminsubject' => $this->translate('New user registration'),
-		       'usersubject' => $this->translate('Welcome to Gallery'),
-		       'from' => 'webmaster@' . GalleryUtilities::getServerVar('SERVER_NAME'),
-		       'validation.level' => 'HIGH')
-		as $key => $value) {
-	    if (!isset($params[$key])) {
-		$ret = $this->setParameter($key, $value);
+	public function RegisterModule()
+	{
+		global $gallery;
+
+		$this->setId('register');
+		$this->setName($gallery->i18n('Registration'));
+		$this->setDescription($gallery->i18n('New User Registration'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('gallery', $gallery->i18n('Gallery'));
+		$this->setCallbacks('getSystemLinks|getUserAdminViews|getSiteAdminViews');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
+
+	/**
+	 * @see GalleryModule::upgrade
+	 */
+	public function upgrade($currentVersion, $x1=null)
+	{
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'register');
 		if ($ret) {
-		    return $ret;
+			return $ret;
 		}
-	    }
+
+		foreach (array('confirmation' => 'admin', 'emailadmins' => 1, 'emailusers' => 1,
+			   'subject' => $this->translate('Account activation'),
+			   'adminsubject' => $this->translate('New user registration'),
+			   'usersubject' => $this->translate('Welcome to Gallery'),
+			   'from' => 'webmaster@' . GalleryUtilities::getServerVar('SERVER_NAME'),
+			   'validation.level' => 'HIGH')
+		as $key => $value) {
+			if (!isset($params[$key])) {
+				$ret = $this->setParameter($key, $value);
+				if ($ret) {
+					return $ret;
+				}
+			}
+		}
+
+		return null;
 	}
 
-	return null;
-    }
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+		'GalleryEntity', 'GalleryPendingUser', 'GalleryPendingUser',
+		'modules/register/classes/GalleryPendingUser.class', 'register', null);
+		if ($ret) {
+			return $ret;
+		}
 
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    function performFactoryRegistrations() {
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'GalleryEntity', 'GalleryPendingUser', 'GalleryPendingUser',
-	    'modules/register/classes/GalleryPendingUser.class', 'register', null);
-	if ($ret) {
-	    return $ret;
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+		'CaptchaAdminOption', 'RegisterCaptchaAdminOption', 'RegisterCaptchaAdminOption',
+		'modules/register/classes/RegisterCaptchaAdminOption.class', 'register', null);
+		if ($ret) {
+			return $ret;
+		}
+
+		return null;
 	}
 
-	$ret = GalleryCoreApi::registerFactoryImplementation(
-	    'CaptchaAdminOption', 'RegisterCaptchaAdminOption', 'RegisterCaptchaAdminOption',
-	    'modules/register/classes/RegisterCaptchaAdminOption.class', 'register', null);
-	if ($ret) {
-	    return $ret;
+	/**
+	 * @see GalleryModule::getModuleEntityTypes
+	 */
+	public function getModuleEntityTypes()
+	{
+		return array('GalleryPendingUser');
 	}
 
-	return null;
-    }
+	/**
+	 * @see GalleryModule::getSystemLinks
+	 */
+	public function getSystemLinks()
+	{
+		$links = array();
 
-    /**
-     * @see GalleryModule::getModuleEntityTypes
-     */
-    function getModuleEntityTypes() {
-	return array('GalleryPendingUser');
-    }
-
-    /**
-     * @see GalleryModule::getSystemLinks
-     */
-    function getSystemLinks() {
-	$links = array();
-
-	list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
-	if ($ret) {
-	    return array($ret, null);
-	}
-	if ($isAnonymous) {
-	    $links['Register'] = array(
+		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
+		if ($ret) {
+			return array($ret, null);
+		}
+		if ($isAnonymous) {
+			$links['Register'] = array(
 		'text' => $this->translate('Register'),
 		'params' => array('view' => 'core.UserAdmin',
 				  'subView' => 'register.UserSelfRegistration',
 				  'return' => 1));
+		}
+
+		return array(null, $links);
 	}
 
-	return array(null, $links);
-    }
+	/**
+	 * @see GalleryModule::getUserAdminViews
+	 */
+	public function getUserAdminViews($user)
+	{
+		$views = array();
 
-    /**
-     * @see GalleryModule::getUserAdminViews
-     */
-    function getUserAdminViews($user) {
-	$views = array();
+		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($user->getId());
+		if ($ret) {
+			return array($ret, null);
+		}
+		if ($isAnonymous) {
+			$views[] = array('name' => $this->translate('Register'),
+				 'view' => 'register.UserSelfRegistration');
+		}
 
-	list ($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($user->getId());
-	if ($ret) {
-	    return array($ret, null);
+		return array(null, $views);
 	}
-	if ($isAnonymous) {
-	    $views[] = array('name' => $this->translate('Register'),
-			     'view' => 'register.UserSelfRegistration');
+
+	/**
+	 * @see GalleryModule::getSiteAdminViews
+	 */
+	public function getSiteAdminViews()
+	{
+		return array(null, array(array('name' => $this->translate('Registration'),
+					   'view' => 'register.AdminSelfRegistration')));
 	}
-
-	return array(null, $views);
-    }
-
-    /**
-     * @see GalleryModule::getSiteAdminViews
-     */
-    function getSiteAdminViews() {
-	return array(null, array(array('name' => $this->translate('Registration'),
-				       'view' => 'register.AdminSelfRegistration')));
-    }
 }
-?>

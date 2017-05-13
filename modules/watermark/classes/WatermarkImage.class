@@ -36,8 +36,8 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEntity.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class WatermarkImage extends GalleryEntity {
-
+class WatermarkImage extends GalleryEntity
+{
 	/**
 	 * Should this watermark be applied to the preferred derivative?
 	 *
@@ -50,7 +50,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var bool $applyToPreferred
 	 * @access public
 	**/
-    var $applyToPreferred;
+	public $applyToPreferred;
 
 	/**
 	 * Should this watermark be applied to resize derivatives?
@@ -64,7 +64,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var int $applyToResizes
 	 * @access public
 	**/
-    var $applyToResizes;
+	public $applyToResizes;
 
 	/**
 	 * Should this watermark be applied to the thumbnail derivative?
@@ -77,7 +77,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var int $applyToThumbnail
 	 * @access public
 	**/
-    var $applyToThumbnail;
+	public $applyToThumbnail;
 
 	/**
 	 * The symbolic name of this watermark, eg "My Watermark"
@@ -93,7 +93,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var string $name
 	 * @access public
 	**/
-    var $name;
+	public $name;
 
 	/**
 	 * The watermark image filename, in the g2data/watermark directory
@@ -110,7 +110,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var string $fileName
 	 * @access public
 	**/
-    var $fileName;
+	public $fileName;
 
 	/**
 	 * The mime type of the image.
@@ -125,7 +125,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var string $mimeType
 	 * @access public
 	**/
-    var $mimeType;
+	public $mimeType;
 
 	/**
 	 * The size of the image file.
@@ -138,7 +138,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var int $size
 	 * @access public
 	**/
-    var $size;
+	public $size;
 
 	/**
 	 * The width of the image.
@@ -152,7 +152,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var int $width
 	 * @access public
 	**/
-    var $width;
+	public $width;
 
 	/**
 	 * The height of the image.
@@ -166,7 +166,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var int $height
 	 * @access public
 	**/
-    var $height;
+	public $height;
 
 	/**
 	 * The owner of the image
@@ -179,7 +179,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var int $ownerId
 	 * @access public
 	**/
-    var $ownerId;
+	public $ownerId;
 
 	/**
 	 * The desired location of this watermark on the target
@@ -196,7 +196,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var string $xPercentage
 	 * @access public
 	**/
-    var $xPercentage;
+	public $xPercentage;
 
 	/**
 	 * The desired location of this watermark on the target
@@ -213,7 +213,7 @@ class WatermarkImage extends GalleryEntity {
 	 * @var string $yPercentage
 	 * @access public
 	**/
-    var $yPercentage;
+	public $yPercentage;
 
 	/**
 	 * Create a new instance of this type in the persistent store.
@@ -224,22 +224,23 @@ class WatermarkImage extends GalleryEntity {
 	 * @param string $targetName the desired name of the new item
 	 * @return GalleryStatus a status code
 	**/
-	function create($inputFileName, $mimeType, $targetName=null) {
-	GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
-	global $gallery;
-	$platform =& $gallery->getPlatform();
-	$dir = $this->getWatermarkDir();
-	if (empty($targetName)) {
-	    $targetName = basename($inputFileName);
-	}
+	public function create($inputFileName, $mimeType, $targetName=null)
+	{
+		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
+		global $gallery;
+		$platform =& $gallery->getPlatform();
+		$dir = $this->getWatermarkDir();
+		if (empty($targetName)) {
+			$targetName = basename($inputFileName);
+		}
 
 	/* Validate the input file */
 	if (empty($inputFileName)) {
-	    return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
-	if (!$platform->file_exists($inputFileName)) {
-	    return GalleryCoreApi::error(ERROR_BAD_PATH);
-	}
+		if (!$platform->file_exists($inputFileName)) {
+			return GalleryCoreApi::error(ERROR_BAD_PATH);
+		}
 
 	/**
 	 * Neutralize the file extension to avoid receiving an executable file
@@ -249,113 +250,117 @@ class WatermarkImage extends GalleryEntity {
 
 	/* Uniquify filename */
 	while ($platform->file_exists($dir . $targetFilename)) {
-	    $targetFilename = '_' . $targetFilename;
+		$targetFilename = '_' . $targetFilename;
 	}
 
-	list ($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
-	if ($ret) {
-	    return $ret;
-	}
-	$nameMap = array();
-	foreach ($watermarks as $watermark) {
-	    $nameMap[$watermark->getName()] = true;
-	}
+		list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
+		if ($ret) {
+			return $ret;
+		}
+		$nameMap = array();
+		foreach ($watermarks as $watermark) {
+			$nameMap[$watermark->getName()] = true;
+		}
 
 	/* Uniquify name */
 	while (isset($nameMap[$targetName])) {
-	    $targetName = '_' . $targetName;
+		$targetName = '_' . $targetName;
 	}
 
-	$ret = parent::create();
-	if ($ret) {
-	    return $ret;
+		$ret = parent::create();
+		if ($ret) {
+			return $ret;
+		}
+
+		$this->setName($targetName);
+		$this->setFileName($targetFilename);
+		$this->setMimeType($mimeType);
+		$this->setWidth(0);
+		$this->setHeight(0);
+		$this->setXPercentage(100);
+		$this->setYPercentage(100);
+		$this->setApplyToPreferred(false);
+		$this->setApplyToResizes(true);
+		$this->setApplyToThumbnail(true);
+		$this->setOwnerId($gallery->getActiveUserId());
+
+		$newFileName = $dir . $targetFilename;
+		if (!$platform->copy($inputFileName, $newFileName)) {
+			return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE);
+		}
+
+		$ret = $this->rescan();
+		if ($ret) {
+			return $ret;
+		}
+
+		return null;
 	}
-
-	$this->setName($targetName);
-	$this->setFileName($targetFilename);
-	$this->setMimeType($mimeType);
-	$this->setWidth(0);
-	$this->setHeight(0);
-	$this->setXPercentage(100);
-	$this->setYPercentage(100);
-	$this->setApplyToPreferred(false);
-	$this->setApplyToResizes(true);
-	$this->setApplyToThumbnail(true);
-	$this->setOwnerId($gallery->getActiveUserId());
-
-	$newFileName = $dir . $targetFilename;
-	if (!$platform->copy($inputFileName, $newFileName)) {
-	    return GalleryCoreApi::error(ERROR_PLATFORM_FAILURE);
-	}
-
-	$ret = $this->rescan();
-	if ($ret) {
-	    return $ret;
-	}
-
-	return null;
-    }
 
 	/**
 	 * Determine file size and dimensions
 	 * @return GalleryStatus a status code
 	**/
-	function rescan() {
-	global $gallery;
-	$platform =& $gallery->getPlatform();
+	public function rescan()
+	{
+		global $gallery;
+		$platform =& $gallery->getPlatform();
 
-	$path = $this->getWatermarkDir() . $this->getFileName();
-	$this->setSize($platform->filesize($path));
+		$path = $this->getWatermarkDir() . $this->getFileName();
+		$this->setSize($platform->filesize($path));
 
-	list ($ret, $toolkit) =
-	    GalleryCoreApi::getToolkitByProperty($this->getMimeType(), 'dimensions');
-	if ($ret) {
-	    return $ret;
-	}
+		list($ret, $toolkit) =
+		GalleryCoreApi::getToolkitByProperty($this->getMimeType(), 'dimensions');
+		if ($ret) {
+			return $ret;
+		}
 
-	if (isset($toolkit)) {
-	    list ($ret, $dimensions) =
+		if (isset($toolkit)) {
+			list($ret, $dimensions) =
 		$toolkit->getProperty($this->getMimeType(), 'dimensions', $path);
-	    if ($ret) {
-		$ret->addErrorCode(ERROR_BAD_DATA_TYPE);
-		return $ret;
-	    }
-	    $this->setWidth($dimensions[0]);
-	    $this->setHeight($dimensions[1]);
-	}
+			if ($ret) {
+				$ret->addErrorCode(ERROR_BAD_DATA_TYPE);
 
-	return null;
-    }
+				return $ret;
+			}
+			$this->setWidth($dimensions[0]);
+			$this->setHeight($dimensions[1]);
+		}
+
+		return null;
+	}
 
 	/**
 	 * @see GalleryEntity::save
 	**/
-	function save($postEvent=true) {
-	return parent::save($postEvent, 0);
-    }
+	public function save($postEvent=true)
+	{
+		return parent::save($postEvent, 0);
+	}
 
 	/**
 	 * @see GalleryEntity::delete
 	**/
-	function delete() {
-	global $gallery;
+	public function delete()
+	{
+		global $gallery;
 
 	/* Delete myself */
 	$ret = parent::delete();
-	if ($ret) {
-	    return $ret;
-	}
+		if ($ret) {
+			return $ret;
+		}
 
 	/* Delete our source file */
 	$path = $this->getWatermarkDir() . $this->getFileName();
-	$platform =& $gallery->getPlatform();
-	if (!$platform->unlink($path)) {
-	    return GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
+		$platform =& $gallery->getPlatform();
+		if (!$platform->unlink($path)) {
+			return GalleryCoreApi::error(ERROR_BAD_PATH, __FILE__, __LINE__,
 					 "Could not delete $path");
-	}
+		}
 
-	return null;
-    }
+		return null;
+	}
 
 	/**
 	 * Full path to image file
@@ -363,21 +368,24 @@ class WatermarkImage extends GalleryEntity {
 	 * @return array GalleryStatus a status code,
 	 *               string path
 	**/
-	function fetchPath() {
-	return array(null, $this->getWatermarkDir() . $this->getFileName());
-    }
+	public function fetchPath()
+	{
+		return array(null, $this->getWatermarkDir() . $this->getFileName());
+	}
 
 	/**
 	 * Watermark directory
 	 *
 	 * @return string Directory where watermark images are stored
 	**/
-	function getWatermarkDir() {
-	global $gallery;
-	$platform =& $gallery->getPlatform();
-	$slash = $platform->getDirectorySeparator();
-	return $gallery->getConfig('data.gallery.plugins_data') . 'modules/watermark' . $slash;
-    }
+	public function getWatermarkDir()
+	{
+		global $gallery;
+		$platform =& $gallery->getPlatform();
+		$slash = $platform->getDirectorySeparator();
+
+		return $gallery->getConfig('data.gallery.plugins_data') . 'modules/watermark' . $slash;
+	}
 
 	/**
 	 * Render image
@@ -385,24 +393,25 @@ class WatermarkImage extends GalleryEntity {
 	 * @see GalleryDataItem::render
 	 * @return string content
 	**/
-	function render($entity, $item, $params) {
+	public function render($entity, $item, $params)
+	{
 		global $gallery;
 		
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$src = $urlGenerator->generateUrl(
 				array(
-						'view' => 'core.DownloadItem', 
+						'view' => 'core.DownloadItem',
 						'itemId' => $this->getId(),
 						'serialNumber' => $this->getSerialNumber()
 				),
 				array('forceFullUrl' => !empty($params['forceFullUrl']))
 		);
 		
-		list ($width, $height) = array($this->getWidth(), $this->getHeight());
+		list($width, $height) = array($this->getWidth(), $this->getHeight());
 		
 		/* Shrink our dimensions if necessary */
 		if (isset($params['maxSize'])) {
-			list ($width, $height) = GalleryUtilities::shrinkDimensionsToFit(
+			list($width, $height) = GalleryUtilities::shrinkDimensionsToFit(
 					$width, $height, $params['maxSize']
 			);
 			unset($params['maxSize']);
@@ -410,7 +419,7 @@ class WatermarkImage extends GalleryEntity {
 		
 		$sizeStr = (
 				$width > 0 && $height > 0)
-						? sprintf(' width="%s" height="%s"', $width, $height) 
+						? sprintf(' width="%s" height="%s"', $width, $height)
 						: '';
 						
 		if (!isset($params['alt'])) {
@@ -425,117 +434,143 @@ class WatermarkImage extends GalleryEntity {
 				$html .= " $attr=\"$value\"";
 			}
 		}
+
 		return $html . '>';
 	}
 
 	/**
 	 * So WatermarkImage is displayable with {g->image}
 	**/
-	function getRenderer() {
+	public function getRenderer()
+	{
 		return null;
 	}
 
 	/**
 	 * @see GalleryEntity::getClassName
 	**/
-	function getClassName() {
+	public function getClassName()
+	{
 		return 'WatermarkImage';
 	}
 
-	function getApplyToPreferred() {
+	public function getApplyToPreferred()
+	{
 		return $this->applyToPreferred;
 	}
 
-	function setApplyToPreferred($applyToPreferred) {
+	public function setApplyToPreferred($applyToPreferred)
+	{
 		$this->applyToPreferred = $applyToPreferred;
 	}
 
-	function getApplyToResizes() {
+	public function getApplyToResizes()
+	{
 		return $this->applyToResizes;
 	}
 
-	function setApplyToResizes($applyToResizes) {
-	$this->applyToResizes = $applyToResizes;
+	public function setApplyToResizes($applyToResizes)
+	{
+		$this->applyToResizes = $applyToResizes;
 	}
 
-	function getApplyToThumbnail() {
+	public function getApplyToThumbnail()
+	{
 		return $this->applyToThumbnail;
 	}
 
-	function setApplyToThumbnail($applyToThumbnail) {
+	public function setApplyToThumbnail($applyToThumbnail)
+	{
 		$this->applyToThumbnail = $applyToThumbnail;
 	}
 
-	function getName() {
+	public function getName()
+	{
 		return $this->name;
 	}
 
-	function setName($name) {
+	public function setName($name)
+	{
 		$this->name = $name;
 	}
 
-	function getFileName() {
+	public function getFileName()
+	{
 		return $this->fileName;
 	}
 
-	function setFileName($fileName) {
+	public function setFileName($fileName)
+	{
 		$this->fileName = $fileName;
 	}
 
-	function getMimeType() {
+	public function getMimeType()
+	{
 		return $this->mimeType;
 	}
 
-	function setMimeType($mimeType) {
+	public function setMimeType($mimeType)
+	{
 		$this->mimeType = $mimeType;
 	}
 
-	function getSize() {
+	public function getSize()
+	{
 		return $this->size;
 	}
 
-	function setSize($size) {
+	public function setSize($size)
+	{
 		$this->size = $size;
 	}
 
-	function getWidth() {
+	public function getWidth()
+	{
 		return $this->width;
 	}
 
-	function setWidth($width) {
+	public function setWidth($width)
+	{
 		$this->width = $width;
 	}
 
-	function getHeight() {
+	public function getHeight()
+	{
 		return $this->height;
 	}
 
-	function setHeight($height) {
+	public function setHeight($height)
+	{
 		$this->height = $height;
 	}
 
-	function getOwnerId() {
+	public function getOwnerId()
+	{
 		return $this->ownerId;
 	}
 
-	function setOwnerId($ownerId) {
+	public function setOwnerId($ownerId)
+	{
 		$this->ownerId = $ownerId;
 	}
 
-	function getXPercentage() {
+	public function getXPercentage()
+	{
 		return $this->xPercentage;
 	}
 
-	function setXPercentage($xPercentage) {
+	public function setXPercentage($xPercentage)
+	{
 		$this->xPercentage = $xPercentage;
 	}
 
-	function getYPercentage() {
+	public function getYPercentage()
+	{
 		return $this->yPercentage;
 	}
 
-	function setYPercentage($yPercentage) {
+	public function setYPercentage($yPercentage)
+	{
 		$this->yPercentage = $yPercentage;
 	}
 }
-?>

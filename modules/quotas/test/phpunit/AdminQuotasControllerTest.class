@@ -25,250 +25,258 @@
  * @author Robert Balousek <volksport@users.sf.net>
  * @version $Revision: 17580 $
  */
-class AdminQuotasControllerTest extends GalleryControllerTestCase {
-
-    function AdminQuotasControllerTest($methodName) {
-	$this->GalleryControllerTestCase($methodName, 'quotas.AdminQuotas');
-    }
-
-    function testGroupQuotaCreate() {
-	list ($ret, $group) = $this->_createRandomGroup();
-	if ($ret) {
-	    return $ret;
+class AdminQuotasControllerTest extends GalleryControllerTestCase
+{
+	public function AdminQuotasControllerTest($methodName)
+	{
+		$this->GalleryControllerTestCase($methodName, 'quotas.AdminQuotas');
 	}
-	$this->_markForCleanup($group);
 
-	GalleryUtilities::putRequestVariable('form[action][group][createFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][groupName]', $group->getGroupName());
+	public function testGroupQuotaCreate()
+	{
+		list($ret, $group) = $this->_createRandomGroup();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($group);
 
-	$results = $this->handleRequest();
+		GalleryUtilities::putRequestVariable('form[action][group][createFromText]', 1);
+		GalleryUtilities::putRequestVariable('form[text][groupName]', $group->getGroupName());
 
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminCreateGroupQuota',
-						      'groupId' => $group->getId()),
+		$results = $this->handleRequest();
+
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminCreateGroupQuota',
+							  'groupId' => $group->getId()),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-    }
-
-    function testUserQuotaCreate() {
-	list ($ret, $user) = $this->_createRandomUser();
-	if ($ret) {
-	    return $ret;
+				$results);
 	}
-	$this->_markForCleanup($user);
 
-	GalleryUtilities::putRequestVariable('form[action][user][createFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+	public function testUserQuotaCreate()
+	{
+		list($ret, $user) = $this->_createRandomUser();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($user);
 
-	$results = $this->handleRequest();
+		GalleryUtilities::putRequestVariable('form[action][user][createFromText]', 1);
+		GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
 
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminCreateUserQuota',
-						      'userId' => $user->getId()),
+		$results = $this->handleRequest();
+
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminCreateUserQuota',
+							  'userId' => $user->getId()),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-    }
-
-    function testEditGroupQuotaFromText() {
-	/* Normal */
-	list ($ret, $group) = $this->_createRandomGroup();
-	if ($ret) {
-	    return $ret;
+				$results);
 	}
-	$this->_markForCleanup($group);
 
-	$this->_createUserOrGroupQuota($group->getId(), 1024);
+	public function testEditGroupQuotaFromText()
+	{
+		/* Normal */
+	list($ret, $group) = $this->_createRandomGroup();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($group);
 
-	GalleryUtilities::putRequestVariable('form[action][group][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][groupName]', $group->getGroupName());
+		$this->_createUserOrGroupQuota($group->getId(), 1024);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminEditGroupQuota',
-						      'groupId' => $group->getId()),
+		GalleryUtilities::putRequestVariable('form[action][group][editFromText]', 1);
+		GalleryUtilities::putRequestVariable('form[text][groupName]', $group->getGroupName());
+
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminEditGroupQuota',
+							  'groupId' => $group->getId()),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-	$this->_deleteUserOrGroupQuota($group->getId());
+				$results);
+		$this->_deleteUserOrGroupQuota($group->getId());
 
 	/* Missing group name */
 	GalleryUtilities::putRequestVariable('form[action][group][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][groupName]', null);
+		GalleryUtilities::putRequestVariable('form[text][groupName]', null);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noGroupSpecified]')),
-			    $results);
+				$results);
 
 	/* Invalid group name */
 	GalleryUtilities::putRequestVariable('form[action][group][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][groupName]',
-					     'some-invalid-group-name-'.rand());
+		GalleryUtilities::putRequestVariable('form[text][groupName]',
+						 'some-invalid-group-name-' . rand());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noSuchGroup]')),
-			    $results);
-    }
-
-    function testEditUserQuotaFromText() {
-	/* Normal */
-	list ($ret, $user) = $this->_createRandomUser();
-	if ($ret) {
-	    return $ret;
+				$results);
 	}
-	$this->_markForCleanup($user);
 
-	$this->_createUserOrGroupQuota($user->getId(), 1024);
+	public function testEditUserQuotaFromText()
+	{
+		/* Normal */
+	list($ret, $user) = $this->_createRandomUser();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($user);
 
-	GalleryUtilities::putRequestVariable('form[action][user][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+		$this->_createUserOrGroupQuota($user->getId(), 1024);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminEditUserQuota',
-						      'userId' => $user->getId()),
+		GalleryUtilities::putRequestVariable('form[action][user][editFromText]', 1);
+		GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminEditUserQuota',
+							  'userId' => $user->getId()),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-	$this->_deleteUserOrGroupQuota($user->getId());
+				$results);
+		$this->_deleteUserOrGroupQuota($user->getId());
 
 	/* Missing user name */
 	GalleryUtilities::putRequestVariable('form[action][user][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', null);
+		GalleryUtilities::putRequestVariable('form[text][userName]', null);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noUserSpecified]')),
-			    $results);
+				$results);
 
 	/* Invalid user name */
 	GalleryUtilities::putRequestVariable('form[action][user][editFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]',
-					     'some-invalid-user-name-'.rand());
+		GalleryUtilities::putRequestVariable('form[text][userName]',
+						 'some-invalid-user-name-' . rand());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noSuchUser]')),
-			    $results);
-    }
-
-    function testDeleteGroupFromText() {
-	/* Normal */
-	list ($ret, $group) = $this->_createRandomGroup();
-	if ($ret) {
-	    return $ret;
+				$results);
 	}
-	$this->_markForCleanup($group);
 
-	$this->_createUserOrGroupQuota($group->getId(), 2048);
+	public function testDeleteGroupFromText()
+	{
+		/* Normal */
+	list($ret, $group) = $this->_createRandomGroup();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($group);
 
-	GalleryUtilities::putRequestVariable('form[action][group][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][groupName]', $group->getGroupName());
+		$this->_createUserOrGroupQuota($group->getId(), 2048);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminDeleteGroupQuota',
-						      'groupId' => $group->getId()),
+		GalleryUtilities::putRequestVariable('form[action][group][deleteFromText]', 1);
+		GalleryUtilities::putRequestVariable('form[text][groupName]', $group->getGroupName());
+
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminDeleteGroupQuota',
+							  'groupId' => $group->getId()),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-	$this->_deleteUserOrGroupQuota($group->getId());
+				$results);
+		$this->_deleteUserOrGroupQuota($group->getId());
 
 	/* Missing group name */
 	GalleryUtilities::putRequestVariable('form[action][group][deleteFromText]', 1);
-	GalleryUtilities::removeRequestVariable('form[text][groupName]');
+		GalleryUtilities::removeRequestVariable('form[text][groupName]');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noGroupSpecified]')),
-			    $results);
+				$results);
 
 	/* Invalid group name */
 	GalleryUtilities::putRequestVariable('form[action][group][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][groupName]',
-					     'some-invalid-group-name-'.rand());
+		GalleryUtilities::putRequestVariable('form[text][groupName]',
+						 'some-invalid-group-name-' . rand());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noSuchGroup]')),
-			    $results);
-    }
-
-    function testDeleteUserFromText() {
-	/* Normal */
-	list ($ret, $user) = $this->_createRandomUser();
-	if ($ret) {
-	    return $ret;
+				$results);
 	}
-	$this->_markForCleanup($user);
 
-	$this->_createUserOrGroupQuota($user->getId(), 2048);
+	public function testDeleteUserFromText()
+	{
+		/* Normal */
+	list($ret, $user) = $this->_createRandomUser();
+		if ($ret) {
+			return $ret;
+		}
+		$this->_markForCleanup($user);
 
-	GalleryUtilities::putRequestVariable('form[action][user][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+		$this->_createUserOrGroupQuota($user->getId(), 2048);
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminDeleteUserQuota',
-						      'userId' => $user->getId()),
+		GalleryUtilities::putRequestVariable('form[action][user][deleteFromText]', 1);
+		GalleryUtilities::putRequestVariable('form[text][userName]', $user->getUserName());
+
+		$results = $this->handleRequest();
+		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminDeleteUserQuota',
+							  'userId' => $user->getId()),
 				  'status' => array(),
 				  'error' => array()),
-			    $results);
-	$this->_deleteUserOrGroupQuota($user->getId());
+				$results);
+		$this->_deleteUserOrGroupQuota($user->getId());
 
 	/* Missing user name */
 	GalleryUtilities::putRequestVariable('form[action][user][deleteFromText]', 1);
-	GalleryUtilities::removeRequestVariable('form[text][userName]');
+		GalleryUtilities::removeRequestVariable('form[text][userName]');
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noUserSpecified]')),
-			    $results);
+				$results);
 
 	/* Invalid user name */
 	GalleryUtilities::putRequestVariable('form[action][user][deleteFromText]', 1);
-	GalleryUtilities::putRequestVariable('form[text][userName]',
-					     'some-invalid-user-name-'.rand());
+		GalleryUtilities::putRequestVariable('form[text][userName]',
+						 'some-invalid-user-name-' . rand());
 
-	$results = $this->handleRequest();
-	$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-						      'subView' => 'quotas.AdminQuotas'),
+		$results = $this->handleRequest();
+		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
+							  'subView' => 'quotas.AdminQuotas'),
 				  'status' => array(),
 				  'error' => array('form[error][text][noSuchUser]')),
-			    $results);
-    }
-
-    function _createUserOrGroupQuota($userOrGroupId, $quota) {
-	$ret = GalleryCoreApi::addMapEntry(
-	    'QuotasMap', array('userOrGroupId' => $userOrGroupId, 'quotaSize' => $quota));
-	if ($ret) {
-	    return $ret;
+				$results);
 	}
-    }
 
-    function _deleteUserOrGroupQuota($userOrGroupId) {
-	$ret = GalleryCoreApi::removeMapEntry(
-	    'QuotasMap', array('userOrGroupId' => $userOrGroupId));
-	if ($ret) {
-	    return $ret;
+	public function _createUserOrGroupQuota($userOrGroupId, $quota)
+	{
+		$ret = GalleryCoreApi::addMapEntry(
+		'QuotasMap', array('userOrGroupId' => $userOrGroupId, 'quotaSize' => $quota));
+		if ($ret) {
+			return $ret;
+		}
 	}
-    }
+
+	public function _deleteUserOrGroupQuota($userOrGroupId)
+	{
+		$ret = GalleryCoreApi::removeMapEntry(
+		'QuotasMap', array('userOrGroupId' => $userOrGroupId));
+		if ($ret) {
+			return $ret;
+		}
+	}
 }
-?>

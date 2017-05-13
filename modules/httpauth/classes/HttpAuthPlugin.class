@@ -33,59 +33,59 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthHelper.class');
  */
 class HttpAuthPlugin /* extends GalleryAuthPlugin */
 {
-    /**
-     * @see GalleryAuthPlugin::getUser
-     */
-    public function getUser()
-    {
-        list($authtype, $username, $password) = HttpAuthHelper::getHttpAuth();
-        
-        list($ret, $user) = HttpAuthHelper::getUser($authtype, $username);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        /*
-         * We are effectively logging in on every request when we use this plugin.  We can't
-         * post a login event each time we do this, but we need to post FailedLogin events.
-         */
-        if (isset($user) && $user->isCorrectPassword($password)) {
-            $ret = HttpAuthHelper::regenerateSessionIfNecessary($user);
-            if ($ret) {
-                return array(
-                    $ret,
-                    null
-                );
-            }
-            
-            return array(
-                null,
-                $user
-            );
-        } elseif (!empty($username) && strpos($username, '__LOGOUT__') !== 0) {
-            /*
-             * Don't post an event if the username starts with __logout__ since that is used when we
-             * try to force the user-agent to clear its auth cache.
-             */
-            $event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
-            $event->setData(array(
-                'userName' => $username
-            ));
-            list($ret, $ignored) = GalleryCoreApi::postEvent($event);
-            if ($ret) {
-                return array(
-                    $ret,
-                    null
-                );
-            }
-        }
-        
-        return array(
-            null,
-            null
-        );
-    }
+	/**
+	 * @see GalleryAuthPlugin::getUser
+	 */
+	public function getUser()
+	{
+		list($authtype, $username, $password) = HttpAuthHelper::getHttpAuth();
+		
+		list($ret, $user) = HttpAuthHelper::getUser($authtype, $username);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		/*
+	     * We are effectively logging in on every request when we use this plugin.  We can't
+	     * post a login event each time we do this, but we need to post FailedLogin events.
+	     */
+		if (isset($user) && $user->isCorrectPassword($password)) {
+			$ret = HttpAuthHelper::regenerateSessionIfNecessary($user);
+			if ($ret) {
+				return array(
+					$ret,
+					null
+				);
+			}
+			
+			return array(
+				null,
+				$user
+			);
+		} elseif (!empty($username) && strpos($username, '__LOGOUT__') !== 0) {
+			/*
+	         * Don't post an event if the username starts with __logout__ since that is used when we
+	         * try to force the user-agent to clear its auth cache.
+	         */
+			$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
+			$event->setData(array(
+				'userName' => $username
+			));
+			list($ret, $ignored) = GalleryCoreApi::postEvent($event);
+			if ($ret) {
+				return array(
+					$ret,
+					null
+				);
+			}
+		}
+		
+		return array(
+			null,
+			null
+		);
+	}
 }

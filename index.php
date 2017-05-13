@@ -21,9 +21,8 @@
  * Main handler for all Gallery pages/requests.
  * @package Gallery
  */
-
 $gallerySetErrorHandler = false;
-include(dirname(__FILE__) . '/bootstrap.inc');
+include dirname(__FILE__) . '/bootstrap.inc';
 
 /*
  * If they don't have a setup password, we assume that the config.php is empty and this is an
@@ -32,29 +31,31 @@ include(dirname(__FILE__) . '/bootstrap.inc');
 if (!@$gallery->getConfig('setup.password')) {
 	/* May be invalid if a multisite install lost its config.php; galleryBaseUrl unknown */
 	header('Location: install/');
+
 	return;
 }
 
 if ($gallery->isEmbedded()) {
-	require_once(dirname(__FILE__) . '/init.inc');
+	 require_once(dirname(__FILE__) . '/init.inc');
 } else {
 	/* If this is a request for a public data file, give it to the user immediately */
 	$unsanitizedView = isset($_GET[GALLERY_FORM_VARIABLE_PREFIX . 'view']) ? $_GET[GALLERY_FORM_VARIABLE_PREFIX . 'view'] : null;
 	$itemId = (int) (isset($_GET[GALLERY_FORM_VARIABLE_PREFIX . 'itemId']) ? $_GET[GALLERY_FORM_VARIABLE_PREFIX . 'itemId'] : null);
 	if ($unsanitizedView == 'core.DownloadItem' && !empty($itemId)) {
 		/*
-		 * Our URLs are immutable because they have the serial numbers embedded.  If the browser
-		 * presents us with an If-Modified-Since then it has the latest version of the file already.
-		 */
+	     * Our URLs are immutable because they have the serial numbers embedded.  If the browser
+	     * presents us with an If-Modified-Since then it has the latest version of the file already.
+	     */
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) || (function_exists('getallheaders') && ($headers = getallheaders()) && (isset($headers['If-Modified-Since']) || isset($headers['If-modified-since'])))) {
 			header('HTTP/1.0 304 Not Modified');
+
 			return;
 		}
 		
 		/*
-		 * Fast download depends on having data.gallery.cache set, so set it now.  If for some
-		 * reason we fail, we'll reset it in init.inc (but that's OK).
-		 */
+	     * Fast download depends on having data.gallery.cache set, so set it now.  If for some
+	     * reason we fail, we'll reset it in init.inc (but that's OK).
+	     */
 		$gallery->setConfig('data.gallery.cache', $gallery->getConfig('data.gallery.base') . 'cache/');
 		
 		$path = GalleryDataCache::getCachePath(array(
@@ -64,18 +65,18 @@ if ($gallery->isEmbedded()) {
 		/* We don't have a platform yet so we have to use the raw file_exists */
 		/* Disable fast-download in maintenance mode, admins still get via core.DownloadItem */
 		if (file_exists($path) && !$gallery->getConfig('mode.maintenance')) {
-			include($path);
+			include $path;
 			if (GalleryFastDownload()) {
 				return;
 			}
 		}
 	}
 	
-	/* Otherwise, proceed with our regular process */
-	require_once(dirname(__FILE__) . '/init.inc');
+	/* Otherwise, proceed with our regular process */ require_once(dirname(__FILE__) . '/init.inc');
 	$ret = GalleryInitFirstPass();
 	if ($ret) {
 		_GalleryMain_errorHandler($ret, null);
+
 		return;
 	}
 	
@@ -102,9 +103,9 @@ function GalleryMain($embedded = false)
 		_GalleryMain_errorHandler($ret, $g2Data);
 		
 		/**
-		 * @todo security question: should we be resetting the auth code (below) even if the
-		 * storage is not initialized here?
-		 */
+	     * @todo security question: should we be resetting the auth code (below) even if the
+	     * storage is not initialized here?
+	     */
 		if ($gallery->isStorageInitialized()) {
 			/* Nuke our transaction, too */
 			$storage =& $gallery->getStorage();
@@ -112,9 +113,9 @@ function GalleryMain($embedded = false)
 			
 			if ($ret->getErrorCode() & ERROR_REQUEST_FORGED) {
 				/*
-				 * The auth token was automatically reset as a side-effect when we determined that
-				 * this request was forged, so save the session now.
-				 */
+	             * The auth token was automatically reset as a side-effect when we determined that
+	             * this request was forged, so save the session now.
+	             */
 				$session =& $gallery->getSession();
 				$ret2 = $session->save(true);
 				if ($ret2) {
@@ -140,12 +141,12 @@ function GalleryMain($embedded = false)
 		$g2Data['isDone'] = true;
 	} elseif (isset($g2Data['redirectUrl'])) {
 		/* If we're in debug mode, show a redirect page */
-		print '<h1> Debug Redirect </h1> ' . 'Not automatically redirecting you to the next page because we\'re in debug mode<br/>';
+		echo '<h1> Debug Redirect </h1> ' . 'Not automatically redirecting you to the next page because we\'re in debug mode<br/>';
 		printf('<a href="%s">Continue to the next page</a>', $g2Data['redirectUrl']);
-		print '<hr/>';
-		print '<pre>';
-		print $gallery->getDebugBuffer();
-		print '</pre>';
+		echo '<hr/>';
+		echo '<pre>';
+		echo $gallery->getDebugBuffer();
+		echo '</pre>';
 	}
 	
 	return $g2Data;
@@ -181,7 +182,7 @@ function _GalleryMain($embedded = false, $template = null)
 			/* Maintenance mode - redirect if given URL, else simple message */
 			if ($redirectUrl === true) {
 				header('Content-Type: text/html; charset=UTF-8');
-				print $core->translate('Site is temporarily down for maintenance.');
+				echo $core->translate('Site is temporarily down for maintenance.');
 				exit;
 			}
 		} else {
@@ -189,6 +190,7 @@ function _GalleryMain($embedded = false, $template = null)
 			$redirectUrl = $urlGenerator->getCurrentUrlDir(true) . 'upgrade/index.php';
 		}
 		list($ignored, $results) = _GalleryMain_doRedirect($redirectUrl, null, null, true);
+
 		return array(
 			null,
 			$results
@@ -224,6 +226,7 @@ function _GalleryMain($embedded = false, $template = null)
 				);
 			}
 			list($ignored, $results) = _GalleryMain_doRedirect($redirectUrl, null, null, true);
+
 			return array(
 				null,
 				$results
@@ -249,6 +252,7 @@ function _GalleryMain($embedded = false, $template = null)
 					));
 				}
 				list($ignored, $results) = _GalleryMain_doRedirect($redirectUrl, null, null, true);
+
 				return array(
 					null,
 					$results
@@ -368,6 +372,7 @@ function _GalleryMain($embedded = false, $template = null)
 		if (!$isAdmin) {
 			if (($redirectUrl = $gallery->getConfig('mode.maintenance')) !== true) {
 				list($ignored, $results) = _GalleryMain_doRedirect($redirectUrl, null, null, true);
+
 				return array(
 					null,
 					$results
@@ -393,6 +398,7 @@ function _GalleryMain($embedded = false, $template = null)
 				null
 			);
 		}
+
 		return _GalleryMain_doRedirect($redirectUrl);
 	}
 	
@@ -437,7 +443,7 @@ function _GalleryMain($embedded = false, $template = null)
 			if (!headers_sent()) {
 				header('Content-Type: text/html; charset=UTF-8');
 			}
-			print $session->replaceTempSessionIdIfNecessary($html);
+			echo $session->replaceTempSessionIdIfNecessary($html);
 			$data['isDone'] = true;
 		} else {
 			$html = unserialize($html);
@@ -466,10 +472,10 @@ function _GalleryMain($embedded = false, $template = null)
 		/* If we render directly to the browser, we need a session before, or no session at all */
 		if ($view->isImmediate() || $viewName == 'core.ProgressBar') {
 			/*
-			 * Session: Find out whether we need to send a cookie & get a new sessionId and save it
-			 * (make sure there's a sessionId before starting to render, but only if we need a
-			 * session)
-			 */
+	         * Session: Find out whether we need to send a cookie & get a new sessionId and save it
+	         * (make sure there's a sessionId before starting to render, but only if we need a
+	         * session)
+	         */
 			$session =& $gallery->getSession();
 			$ret = $session->start();
 			if ($ret) {
@@ -483,10 +489,10 @@ function _GalleryMain($embedded = false, $template = null)
 		}
 		
 		/*
-		 * If this is an immediate view, it will send its own output directly.  This is used in the
-		 * situation where we want to send back data that's not controlled by the layout.  That's
-		 * usually something that's not user-visible like a binary file.
-		 */
+	     * If this is an immediate view, it will send its own output directly.  This is used in the
+	     * situation where we want to send back data that's not controlled by the layout.  That's
+	     * usually something that's not user-visible like a binary file.
+	     */
 		$data = array( );
 		if ($view->isImmediate()) {
 			if ($view->autoCacheControl()) {
@@ -510,6 +516,7 @@ function _GalleryMain($embedded = false, $template = null)
 					/* Normalize error to GalleryView::_permissionCheck() */
 					$ret->addErrorCode(ERROR_PERMISSION_DENIED);
 				}
+
 				return array(
 					$ret,
 					null
@@ -559,9 +566,9 @@ function _GalleryMain($embedded = false, $template = null)
 				@ini_set('output_buffering', '0');
 				
 				/**
-				 * Try to prevent Apache's mod_deflate from gzipping the output since that
-				 * can interfere with streamed output.
-				 */
+	             * Try to prevent Apache's mod_deflate from gzipping the output since that
+	             * can interfere with streamed output.
+	             */
 				if (function_exists('apache_setenv') && !@$gallery->getConfig('apacheSetenvBroken')) {
 					@apache_setenv('no-gzip', '1');
 				}
@@ -599,9 +606,9 @@ function _GalleryMain($embedded = false, $template = null)
 				}
 				
 				/*
-				 * Session: Find out whether we need to send a cookie & need a new session (only if
-				 * we don't have one yet)
-				 */
+	             * Session: Find out whether we need to send a cookie & need a new session (only if
+	             * we don't have one yet)
+	             */
 				$session =& $gallery->getSession();
 				$ret = $session->start();
 				if ($ret) {
@@ -620,9 +627,9 @@ function _GalleryMain($embedded = false, $template = null)
 				}
 				
 				/*
-				 * Event call to allow for override of HTML as well as caching status 
-				 * See joomg2 module's 'handleEvent' function for example usage
-				 */
+	             * Event call to allow for override of HTML as well as caching status
+	             * See joomg2 module's 'handleEvent' function for example usage
+	             */
 				$event = GalleryCoreApi::newEvent('Gallery::BeforeOutput');
 				$event->setEntity($template);
 				$event->setData(array(
@@ -667,7 +674,7 @@ function _GalleryMain($embedded = false, $template = null)
 					if (!headers_sent()) {
 						header('Content-Type: text/html; charset=UTF-8');
 					}
-					print $session->replaceTempSessionIdIfNecessary($html);
+					echo $session->replaceTempSessionIdIfNecessary($html);
 					
 					$data['isDone'] = true;
 				}
@@ -748,21 +755,21 @@ function _GalleryMain_doRedirect($redirectUrl, $template = null, $controller = n
 	
 	if ($gallery->getDebug() == false || $gallery->getDebug() == 'logged') {
 		/*
-		 * The URL generator makes HTML 4.01 compliant URLs using &amp; but we don't want those in
-		 * our Location: header
-		 */
+	     * The URL generator makes HTML 4.01 compliant URLs using &amp; but we don't want those in
+	     * our Location: header
+	     */
 		$redirectUrl = str_replace('&amp;', '&', $redirectUrl);
 		$redirectUrl = rtrim($redirectUrl, '&? ');
 		
 		$redirectUrl = $urlGenerator->makeAbsoluteUrl($redirectUrl);
 		
 		/*
-		 * IIS 3.0 - 5.0 webservers will ignore all other headers if the location header is set.  It
-		 * will simply not send other headers, eg. the set-cookie header, which is important for us
-		 * in the login and logout requests / redirects.  See:
-		 * http://support.microsoft.com/kb/q176113/ Our solution: detect IIS version and append
-		 * GALLERYSID to the Location URL if necessary
-		 */
+	     * IIS 3.0 - 5.0 webservers will ignore all other headers if the location header is set.  It
+	     * will simply not send other headers, eg. the set-cookie header, which is important for us
+	     * in the login and logout requests / redirects.  See:
+	     * http://support.microsoft.com/kb/q176113/ Our solution: detect IIS version and append
+	     * GALLERYSID to the Location URL if necessary
+	     */
 		if (in_array($controller, array(
 			'core.Logout',
 			'core.UserLogin',
@@ -772,9 +779,9 @@ function _GalleryMain_doRedirect($redirectUrl, $template = null, $controller = n
 			$webserver = GalleryUtilities::getServerVar('SERVER_SOFTWARE');
 			if (!empty($webserver) && preg_match('|^Microsoft-IIS/(\d)\.\d$|', trim($webserver), $matches) && $matches[1] < 6) {
 				/*
-				 * It is IIS and it's a version with this bug, check if GALLERYSID is already in the
-				 * URL, else append it
-				 */
+	             * It is IIS and it's a version with this bug, check if GALLERYSID is already in the
+	             * URL, else append it
+	             */
 				$session =& $gallery->getSession();
 				$sessionParamString = GalleryUtilities::prefixFormVariable(urlencode($session->getKey())) . '=' . urlencode($session->getId());
 				if ($session->isPersistent() && !strstr($redirectUrl, $sessionParamString)) {
@@ -785,6 +792,7 @@ function _GalleryMain_doRedirect($redirectUrl, $template = null, $controller = n
 		}
 		
 		GalleryUtilities::setResponseHeader("Location: $redirectUrl");
+
 		return array(
 			null,
 			array(

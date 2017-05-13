@@ -30,41 +30,41 @@ GalleryCoreApi::requireOnce('modules/httpauth/classes/HttpAuthHelper.class');
  */
 class TryLogoutView extends GalleryView
 {
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    public function loadTemplate(&$template, &$form)
-    {
-        global $gallery;
-        $urlGenerator =& $gallery->getUrlGenerator();
-        
-        /* Ask browser to authenticate with bogus authtype */
-        GalleryUtilities::setResponseHeader('HTTP/1.0 401 Unauthorized', false);
-        GalleryUtilities::setResponseHeader('WWW-Authenticate: Bogus');
-        
-        /* Redirect using random username and password */
-        $TryLogout = array();
-        foreach (array(
-            'scriptUrl',
-            'hrefUrl'
-        ) as $key) {
-            $url = $urlGenerator->generateUrl(array(
-                'view' => 'httpauth.FinishLogout'
-            ), array(
-                'forceFullUrl' => true,
-                'htmlEntities' => $key == 'hrefUrl'
-            ));
-            $TryLogout[$key] = HttpAuthHelper::addHttpAuthToUrl($url, '__LOGOUT__' . rand(), rand());
-        }
-        
-        /* Render HTML body */
-        $template->setVariable('TryLogout', $TryLogout);
-        
-        return array(
-            null,
-            array(
-                'body' => 'modules/httpauth/templates/TryLogout.tpl'
-            )
-        );
-    }
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		global $gallery;
+		$urlGenerator =& $gallery->getUrlGenerator();
+		
+		/* Ask browser to authenticate with bogus authtype */
+		GalleryUtilities::setResponseHeader('HTTP/1.0 401 Unauthorized', false);
+		GalleryUtilities::setResponseHeader('WWW-Authenticate: Bogus');
+		
+		/* Redirect using random username and password */
+		$TryLogout = array();
+		foreach (array(
+			'scriptUrl',
+			'hrefUrl'
+		) as $key) {
+			$url = $urlGenerator->generateUrl(array(
+				'view' => 'httpauth.FinishLogout'
+			), array(
+				'forceFullUrl' => true,
+				'htmlEntities' => $key == 'hrefUrl'
+			));
+			$TryLogout[$key] = HttpAuthHelper::addHttpAuthToUrl($url, '__LOGOUT__' . rand(), rand());
+		}
+		
+		/* Render HTML body */
+		$template->setVariable('TryLogout', $TryLogout);
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/httpauth/templates/TryLogout.tpl'
+			)
+		);
+	}
 }

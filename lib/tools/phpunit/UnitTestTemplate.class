@@ -31,54 +31,54 @@ require_once dirname(__FILE__) . '/../../../modules/core/classes/GalleryTemplate
  */
 class UnitTestTemplate extends GalleryTemplate
 {
-    public $_data = array();
-    
-    public function UnitTestTemplate()
-    {
-    }
-    
-    /* @see GalleryTemplate::setVariable */
-    public function setVariable($key, $value = null)
-    {
-        $this->_data[$key] = $value;
-    }
-    
-    /* @see GalleryTemplate::getVariable */
-    public function getVariable($key)
-    {
-        return $this->_data[$key];
-    }
-    
-    /* @see GalleryTemplate::getVariableByReference */
-    public function &getVariableByReference($key)
-    {
-        return $this->_data[$key];
-    }
-    
-    /* @see GalleryTemplate::hasVariable */
-    public function hasVariable($key)
-    {
-        return isset($this->_data[$key]);
-    }
-    
-    /* @see GalleryTemplate::setVariableByReference */
-    public function setVariableByReference($key, &$value)
-    {
-        $this->_data[$key] =& $value;
-    }
-    
-    /* Not implemented. Use a real GalleryTemplate to test compiled templates. */
-    public function fetch($templateName)
-    {
-        return array(
-            GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
-            null
-        );
-    }
-    
-    /* Not implemented. Use a real GalleryTemplate to test compiled templates. */
-    public function display($templateName)
-    {
-        return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
-    }
+	public $_data = array();
+	
+	public function UnitTestTemplate()
+	{
+	}
+	
+	/* @see GalleryTemplate::setVariable */
+	public function setVariable($key, $value = null)
+	{
+		$this->_data[$key] = $value;
+	}
+	
+	/* @see GalleryTemplate::getVariable */
+	public function getVariable($key)
+	{
+		return $this->_data[$key];
+	}
+	
+	/* @see GalleryTemplate::getVariableByReference */
+	public function &getVariableByReference($key)
+	{
+		return $this->_data[$key];
+	}
+	
+	/* @see GalleryTemplate::hasVariable */
+	public function hasVariable($key)
+	{
+		return isset($this->_data[$key]);
+	}
+	
+	/* @see GalleryTemplate::setVariableByReference */
+	public function setVariableByReference($key, &$value)
+	{
+		$this->_data[$key] =& $value;
+	}
+	
+	/* Not implemented. Use a real GalleryTemplate to test compiled templates. */
+	public function fetch($templateName)
+	{
+		return array(
+			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+			null
+		);
+	}
+	
+	/* Not implemented. Use a real GalleryTemplate to test compiled templates. */
+	public function display($templateName)
+	{
+		return GalleryCoreApi::error(ERROR_UNIMPLEMENTED);
+	}
 }

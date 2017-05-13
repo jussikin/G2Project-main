@@ -19,44 +19,44 @@
  */
 ini_set('error_reporting', 2047);
 if (!empty($_SERVER['SERVER_NAME'])) {
-    echo "You must run this from the command line\n";
-    exit(1);
+	echo "You must run this from the command line\n";
+	exit(1);
 }
 
 if (php_sapi_name() == 'cgi') {
-    /* Starts in lib/tools/creator for php-cgi */
-    chdir('../../..');
+	/* Starts in lib/tools/creator for php-cgi */
+	chdir('../../..');
 }
 if (!file_exists('modules')) {
-    echo "You must run this from the gallery2 directory\n";
-    exit(1);
+	echo "You must run this from the gallery2 directory\n";
+	exit(1);
 }
 
 $author = '';
 $authorFullName = '';
 if (function_exists('posix_getlogin')) {
-    $author = posix_getlogin();
-    $tmp = posix_getpwnam($author);
-    if (!empty($tmp['gecos'])) {
-        $authorFullName = $tmp['gecos'];
-    }
+	$author = posix_getlogin();
+	$tmp = posix_getpwnam($author);
+	if (!empty($tmp['gecos'])) {
+		$authorFullName = $tmp['gecos'];
+	}
 }
 
 require_once dirname(__FILE__) . '/../../../lib/smarty/Smarty.class.php';
 if (!empty($_ENV['TMP'])) {
-    $tmpdir = $_ENV['TMP'];
+	$tmpdir = $_ENV['TMP'];
 } else {
-    $tmpdir = '/tmp';
+	$tmpdir = '/tmp';
 }
 $tmpdir .= "/g2_" . rand(1, 30000);
 if (file_exists($tmpdir)) {
-    echo "Tmp dir already exists: $tmpdir\n";
-    exit(1);
+	echo "Tmp dir already exists: $tmpdir\n";
+	exit(1);
 }
 
 if (!mkdir($tmpdir)) {
-    echo "Unable to make tmp dir: $tmpdir\n";
-    exit(1);
+	echo "Unable to make tmp dir: $tmpdir\n";
+	exit(1);
 }
 
 $smarty = new Smarty();
@@ -70,17 +70,17 @@ $smarty->template_dir = dirname(__FILE__);
  * Gather any info we need from the user
  */
 if (!empty($author)) {
-    $defaultModuleName = 'Hello ' . ucfirst($author);
+	$defaultModuleName = 'Hello ' . ucfirst($author);
 } else {
-    $defaultModuleName = 'Hello World';
+	$defaultModuleName = 'Hello World';
 }
 
 while (empty($moduleName)) {
-    $moduleName = ask('What is the name of your module?', $defaultModuleName);
+	$moduleName = ask('What is the name of your module?', $defaultModuleName);
 }
 
 while (empty($moduleId)) {
-    $moduleId = ask('What is the id of your module?', strtolower(preg_replace('/ /', '', $moduleName)));
+	$moduleId = ask('What is the id of your module?', strtolower(preg_replace('/ /', '', $moduleName)));
 }
 $moduleId = preg_replace('/\W/', '', $moduleId);
 $ucModuleId = ucfirst($moduleId);
@@ -100,9 +100,9 @@ $smarty->assign('mapName', $ucModuleId . "Map");
 /* Make the module directory */
 $modulePath = 'modules/' . $moduleId;
 if (file_exists($modulePath)) {
-    error("$modulePath already exists!");
+	error("$modulePath already exists!");
 } else {
-    mkdir($modulePath) || error("Can't mkdir($modulePath)");
+	mkdir($modulePath) || error("Can't mkdir($modulePath)");
 }
 
 /* Create module.inc */
@@ -156,62 +156,62 @@ echo "* * * * * * * * * * * * * * * * * * * * * * * * * *\n";
 
 function ask($prompt, $default = '')
 {
-    echo $prompt;
-    if (!empty($default)) {
-        echo " [$default]";
-    }
-    echo ' ';
-    $line = trim(fgets(stdin()));
-    if (empty($line)) {
-        return $default;
-    }
+	echo $prompt;
+	if (!empty($default)) {
+		echo " [$default]";
+	}
+	echo ' ';
+	$line = trim(fgets(stdin()));
+	if (empty($line)) {
+		return $default;
+	}
 
-    return $line;
+	return $line;
 }
 
 function error($message)
 {
-    fwrite(stderr(), "$message\n");
-    fwrite(stderr(), "*** Exiting!\n");
-    cleanup();
-    exit(1);
+	fwrite(stderr(), "$message\n");
+	fwrite(stderr(), "*** Exiting!\n");
+	cleanup();
+	exit(1);
 }
 
 function cleanup()
 {
-    global $tmpdir;
-    if (file_exists($tmpdir)) {
-        system("rm -rf $tmpdir");
-    }
+	global $tmpdir;
+	if (file_exists($tmpdir)) {
+		system("rm -rf $tmpdir");
+	}
 }
 
 function safe_fopen($path)
 {
-    ($fd = fopen($path, 'wb')) || error("Can't write to $path");
+	($fd = fopen($path, 'wb')) || error("Can't write to $path");
 
-    return $fd;
+	return $fd;
 }
 
 function stdin()
 {
-    static $stdin;
-    if (!defined('STDERR')) {
-        /* Already defined for CLI but not for CGI */
-        $stdin = fopen('php://stdin', 'w');
-        define('STDERR', $stdin);
-    }
+	static $stdin;
+	if (!defined('STDERR')) {
+		/* Already defined for CLI but not for CGI */
+		$stdin = fopen('php://stdin', 'w');
+		define('STDERR', $stdin);
+	}
 
-    return STDERR;
+	return STDERR;
 }
 
 function stderr()
 {
-    static $stderr;
-    if (!defined('STDERR')) {
-        /* Already defined for CLI but not for CGI */
-        $stderr = fopen('php://stderr', 'w');
-        define('STDERR', $stderr);
-    }
+	static $stderr;
+	if (!defined('STDERR')) {
+		/* Already defined for CLI but not for CGI */
+		$stderr = fopen('php://stderr', 'w');
+		define('STDERR', $stderr);
+	}
 
-    return STDERR;
+	return STDERR;
 }

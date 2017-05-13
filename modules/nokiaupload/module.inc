@@ -28,59 +28,65 @@
  * @author Jerome Rannikko <jeromer@hotpop.com>
  * @version $Revision: 18172 $
  */
-class NokiaUploadModule extends GalleryModule {
-
-    function __construct() {
-	$this->NokiaUploadModule();
-    }
-
-    function NokiaUploadModule() {
-	global $gallery;
-
-	$this->setId('nokiaupload');
-	$this->setName($gallery->i18n('Nokia Image Upload'));
-	$this->setDescription(
-	    $gallery->i18n('Implementation of Nokia Image Upload Server API v1.1'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('import', $gallery->i18n('Import'));
-	$this->setCallbacks('');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
-
-    /**
-     * @see GalleryModule::autoConfigure
-     */
-    function autoConfigure() {
-	list ($ret, $needsConfiguration) = $this->needsConfiguration();
-	if ($ret) {
-	    return array($ret, null);
+class NokiaUploadModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->NokiaUploadModule();
 	}
-	return array(null, !$needsConfiguration);
-    }
 
-    /**
-     * @see GalleryModule::needsConfiguration
-     */
-    function needsConfiguration() {
-	list ($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'nokiaupload');
-	if ($ret) {
-	    return array($ret, null);
-	}
-	foreach (array('id.mobileGroup', 'id.uploadAlbum') as $key) {
-	    if (empty($params[$key])) {
-		return array(null, true);
-	    }
-	}
-	return array(null, false);
-    }
+	public function NokiaUploadModule()
+	{
+		global $gallery;
 
-    /**
-     * @see GalleryModule::getConfigurationView
-     */
-    function getConfigurationView() {
-	return 'nokiaupload.Configure';
-    }
+		$this->setId('nokiaupload');
+		$this->setName($gallery->i18n('Nokia Image Upload'));
+		$this->setDescription(
+		$gallery->i18n('Implementation of Nokia Image Upload Server API v1.1'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('import', $gallery->i18n('Import'));
+		$this->setCallbacks('');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
+
+	/**
+	 * @see GalleryModule::autoConfigure
+	 */
+	public function autoConfigure()
+	{
+		list($ret, $needsConfiguration) = $this->needsConfiguration();
+		if ($ret) {
+			return array($ret, null);
+		}
+
+		return array(null, !$needsConfiguration);
+	}
+
+	/**
+	 * @see GalleryModule::needsConfiguration
+	 */
+	public function needsConfiguration()
+	{
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'nokiaupload');
+		if ($ret) {
+			return array($ret, null);
+		}
+		foreach (array('id.mobileGroup', 'id.uploadAlbum') as $key) {
+			if (empty($params[$key])) {
+				return array(null, true);
+			}
+		}
+
+		return array(null, false);
+	}
+
+	/**
+	 * @see GalleryModule::getConfigurationView
+	 */
+	public function getConfigurationView()
+	{
+		return 'nokiaupload.Configure';
+	}
 }
-?>

@@ -28,72 +28,75 @@ GalleryCoreApi::requireOnce('modules/slideshow/classes/SlideshowHelper.class');
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17785 $
  */
-class SlideshowMediaRssView extends GalleryView {
+class SlideshowMediaRssView extends GalleryView
+{
+	/**
+	 * @see GalleryView::isImmediate
+	 */
+	public function isImmediate()
+	{
+		return true;
+	}
 
-    /**
-     * @see GalleryView::isImmediate
-     */
-    function isImmediate() {
-	return true;
-    }
+	/**
+	 * @see GalleryView::isAllowedInEmbedOnly
+	 */
+	public function isAllowedInEmbedOnly()
+	{
+		return true;
+	}
 
-    /**
-     * @see GalleryView::isAllowedInEmbedOnly
-     */
-    function isAllowedInEmbedOnly() {
-	return true;
-    }
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function renderImmediate($status, $error)
+	{
+		global $gallery;
+		$phpVm = $gallery->getPhpVm();
 
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function renderImmediate($status, $error) {
-	global $gallery;
-	$phpVm = $gallery->getPhpVm();
+		$SlideShowMediaRss = array();
 
-	$SlideShowMediaRss = array();
+		$itemId = $prevOffset = $nextOffset = $startId = null;
 
-	$itemId = $prevOffset = $nextOffset = $startId = null;
+		list($itemListString, $startId, $offset) =
+		GalleryUtilities::getRequestVariables('itemList', 'startId', 'offset');
+		if (isset($startId)) {
+			$startId = (int)$startId;
+		}
+		if (isset($offset)) {
+			$offset = (int)$offset;
+		}
 
-	list ($itemListString, $startId, $offset) =
-	    GalleryUtilities::getRequestVariables('itemList', 'startId', 'offset');
-        if (isset($startId)) {
-            $startId = (int)$startId;                
-        }
-        if (isset($offset)) {
-            $offset = (int)$offset;
-        }
+		if (!empty($itemListString)) {
+			foreach (explode('|', $itemListString) as $id) {
+				$itemIds[] = (int)$id;
+			}
+			list($ret, $items, $start) = SlideshowHelper::buildItemsSlideshow($itemIds);
+			if ($ret) {
+				return $ret;
+			}
+		} else {
+			list($ret, $item) = $this->getItem();
+			if ($ret) {
+				return $ret;
+			}
 
-	if (!empty($itemListString)) {
-	    foreach (explode('|', $itemListString) as $id) {
-		$itemIds[] = (int)$id;
-	    }
-	    list ($ret, $items, $start) = SlideshowHelper::buildItemsSlideshow($itemIds);
-	    if ($ret) {
-		return $ret;
-	    }
-	} else {
-	    list ($ret, $item) = $this->getItem();
-	    if ($ret) {
-		return $ret;
-	    }
+			$itemId = $item->getId();
 
-	    $itemId = $item->getId();
-
-	    list ($ret, $items, $start, $prevOffset, $nextOffset) =
+			list($ret, $items, $start, $prevOffset, $nextOffset) =
 		SlideshowHelper::buildAlbumSlideshow($item, $startId, $offset);
-	    if ($ret) {
-		return $ret;
-	    }
-	}
+			if ($ret) {
+				return $ret;
+			}
+		}
 
-	if (!$phpVm->headers_sent()) {
-	    $phpVm->header('Content-Type: text/xml; charset=UTF-8');
+		if (!$phpVm->headers_sent()) {
+			$phpVm->header('Content-Type: text/xml; charset=UTF-8');
+		}
+		$template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
+		$template->setVariable('SlideshowMediaRss', array('items' => $items,
+		'itemId' => $itemId, 'prevOffset' => $prevOffset, 'nextOffset' => $nextOffset));
+
+		return $template->display('modules/slideshow/templates/SlideshowMediaRss.tpl');
 	}
-	$template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
-	$template->setVariable('SlideshowMediaRss', array('items' => $items,
-	    'itemId' => $itemId, 'prevOffset' => $prevOffset, 'nextOffset' => $nextOffset));
-	return $template->display('modules/slideshow/templates/SlideshowMediaRss.tpl');
-    }
 }
-?>

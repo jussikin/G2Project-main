@@ -29,52 +29,52 @@ GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
  */
 class AddToCartController extends GalleryController
 {
-    /**
-     * @see GalleryController::handleRequest
-     **/
-    public function handleRequest($form)
-    {
-        global $gallery;
-        
-        list($ret, $item) = $this->getItem();
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        /* Figure out what ids we care about */
-        if ($item->getCanContainChildren()) {
-            list($ret, $ids) = GalleryCoreApi::fetchChildDataItemIds($item);
-            if ($ret) {
-                return array(
-                    $ret,
-                    null
-                );
-            }
-        } else {
-            $ids = array(
-                $item->getId()
-            );
-        }
-        
-        $ret = CartHelper::addItemsToCart($ids);
-        if ($ret) {
-            return array(
-                $ret,
-                null
-            );
-        }
-        
-        /* Prepare results */
-        $results['redirect']['href'] = GalleryUtilities::getRequestVariables('return');
-        $results['status'] = array();
-        $results['error'] = array();
-        
-        return array(
-            null,
-            $results
-        );
-    }
+	/**
+	 * @see GalleryController::handleRequest
+	 **/
+	public function handleRequest($form)
+	{
+		global $gallery;
+		
+		list($ret, $item) = $this->getItem();
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		/* Figure out what ids we care about */
+		if ($item->getCanContainChildren()) {
+			list($ret, $ids) = GalleryCoreApi::fetchChildDataItemIds($item);
+			if ($ret) {
+				return array(
+					$ret,
+					null
+				);
+			}
+		} else {
+			$ids = array(
+				$item->getId()
+			);
+		}
+		
+		$ret = CartHelper::addItemsToCart($ids);
+		if ($ret) {
+			return array(
+				$ret,
+				null
+			);
+		}
+		
+		/* Prepare results */
+		$results['redirect']['href'] = GalleryUtilities::getRequestVariables('return');
+		$results['status'] = array();
+		$results['error'] = array();
+		
+		return array(
+			null,
+			$results
+		);
+	}
 }

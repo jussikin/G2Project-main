@@ -27,94 +27,94 @@
  */
 class FlashVideoOption extends ItemAddOption
 {
-    /**
-     * @see ItemAddOption::isAppropriate
-     */
-    public function isAppropriate()
-    {
-        return array(
-            null,
-            true
-        );
-    }
-    
-    /**
-     * @see ItemAddOption::handleRequestAfterAdd
-     */
-    public function handleRequestAfterAdd($form, $items)
-    {
-        global $gallery;
-        $storage =& $gallery->getStorage();
-        $errors = $flvItems = array();
-        
-        foreach ($items as $item) {
-            if (GalleryUtilities::isA($item, 'GalleryMovieItem') && $item->getMimeType() == 'video/x-flv') {
-                $flvItems[] = $item;
-            }
-        }
-        while (!empty($flvItems)) {
-            $currentItems = array_splice($flvItems, 0, 100);
-            $itemIds = array();
-            foreach ($currentItems as $item) {
-                $itemIds[] = $item->getId();
-            }
-            
-            list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($itemIds);
-            if ($ret) {
-                return array(
-                    $ret,
-                    null,
-                    null
-                );
-            }
-            
-            foreach ($currentItems as $item) {
-                list($ret, $item) = $item->refresh();
-                if ($ret) {
-                    GalleryCoreApi::releaseLocks($lockId);
+	/**
+	 * @see ItemAddOption::isAppropriate
+	 */
+	public function isAppropriate()
+	{
+		return array(
+			null,
+			true
+		);
+	}
+	
+	/**
+	 * @see ItemAddOption::handleRequestAfterAdd
+	 */
+	public function handleRequestAfterAdd($form, $items)
+	{
+		global $gallery;
+		$storage =& $gallery->getStorage();
+		$errors = $flvItems = array();
+		
+		foreach ($items as $item) {
+			if (GalleryUtilities::isA($item, 'GalleryMovieItem') && $item->getMimeType() == 'video/x-flv') {
+				$flvItems[] = $item;
+			}
+		}
+		while (!empty($flvItems)) {
+			$currentItems = array_splice($flvItems, 0, 100);
+			$itemIds = array();
+			foreach ($currentItems as $item) {
+				$itemIds[] = $item->getId();
+			}
+			
+			list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($itemIds);
+			if ($ret) {
+				return array(
+					$ret,
+					null,
+					null
+				);
+			}
+			
+			foreach ($currentItems as $item) {
+				list($ret, $item) = $item->refresh();
+				if ($ret) {
+					GalleryCoreApi::releaseLocks($lockId);
 
-                    return array(
-                        $ret,
-                        null,
-                        null
-                    );
-                }
-                
-                $item->setRenderer('FlashVideoRenderer');
-                $ret = $item->save();
-                if ($ret) {
-                    GalleryCoreApi::releaseLocks($lockId);
+					return array(
+						$ret,
+						null,
+						null
+					);
+				}
+				
+				$item->setRenderer('FlashVideoRenderer');
+				$ret = $item->save();
+				if ($ret) {
+					GalleryCoreApi::releaseLocks($lockId);
 
-                    return array(
-                        $ret,
-                        null,
-                        null
-                    );
-                }
-            }
-            
-            $ret = GalleryCoreApi::releaseLocks($lockId);
-            if ($ret) {
-                return array(
-                    $ret,
-                    null,
-                    null
-                );
-            }
-            $ret = $storage->checkPoint();
-            if ($ret) {
-                return array(
-                    $ret,
-                    null,
-                    null
-                );
-            }
-        }
-        
-        return array(
-            null,
-            $errors,
-            array()
-        );
-    }
+					return array(
+						$ret,
+						null,
+						null
+					);
+				}
+			}
+			
+			$ret = GalleryCoreApi::releaseLocks($lockId);
+			if ($ret) {
+				return array(
+					$ret,
+					null,
+					null
+				);
+			}
+			$ret = $storage->checkPoint();
+			if ($ret) {
+				return array(
+					$ret,
+					null,
+					null
+				);
+			}
+		}
+		
+		return array(
+			null,
+			$errors,
+			array()
+		);
+	}
 }

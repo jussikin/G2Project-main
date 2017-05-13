@@ -23,35 +23,36 @@
  * @author Bharat Mediratta <bharat@menalto.com>
  * @version $Revision: 17580 $
  */
-class MembersCallbacks {
+class MembersCallbacks
+{
+	public function callback($params, $smarty, $callback, $userId=null)
+	{
+		global $gallery;
 
-    function callback($params, $smarty, $callback, $userId=null) {
-	global $gallery;
+		$block = $smarty->getTemplateVars('block');
+		$smarty->assignByRef('block', $block);
 
-	$block = $smarty->getTemplateVars('block');
-	$smarty->assignByRef('block', $block);
-
-	switch($callback) {
+		switch ($callback) {
 	case 'LoadMembers':
-	    /* The "Members List" link */
-	    GalleryCoreApi::requireOnce(
+		/* The "Members List" link */
+		GalleryCoreApi::requireOnce(
 		'modules/members/classes/GalleryMembersHelper.class');
-	    list ($ret, $block['members']['LoadMembers']['canViewList']) =
+		list($ret, $block['members']['LoadMembers']['canViewList']) =
 		GalleryMembersHelper::canViewMembersModule($gallery->getActiveUserId());
-	    if ($ret) {
-		return $ret;
-	    }
+		if ($ret) {
+			return $ret;
+		}
 
-	    /* The members count */
-	    list ($ret, $block['members']['LoadMembers']['count']) =
+		/* The members count */
+		list($ret, $block['members']['LoadMembers']['count']) =
 		GalleryMembersHelper::getMembersCount();
-	    if ($ret) {
-		return $ret;
-	    }
-	    return null;
+		if ($ret) {
+			return $ret;
+		}
+
+		return null;
 	}
 
-	return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
-    }
+		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+	}
 }
-?>

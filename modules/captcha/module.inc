@@ -28,157 +28,157 @@
  */
 class CaptchaModule extends GalleryModule
 {
-    public function __construct()
-    {
-        $this->CaptchaModule();
-    }
+	public function __construct()
+	{
+		$this->CaptchaModule();
+	}
 
-    public static function CaptchaModule()
-    {
-        global $gallery;
-        $this->setId('captcha');
-        $this->setName($gallery->i18n('Captcha'));
-        $this->setDescription($gallery->i18n('Prevents abuse by deterring automated bots with ' .
-                         'input that requires visual comprehension'));
-        $this->setVersion('2.0.0'); /* Update upgrade() function below too */
-        $this->_templateVersion = 1;
-        $this->setGroup('gallery', $gallery->i18n('Gallery'));
-        $this->setCallbacks('getSiteAdminViews');
-        $this->setRequiredCoreApi(array(8, 0));
-        $this->setRequiredModuleApi(array(4, 0));
-    }
+	public static function CaptchaModule()
+	{
+		global $gallery;
+		$this->setId('captcha');
+		$this->setName($gallery->i18n('Captcha'));
+		$this->setDescription($gallery->i18n('Prevents abuse by deterring automated bots with ' .
+						 'input that requires visual comprehension'));
+		$this->setVersion('2.0.0'); /* Update upgrade() function below too */
+		$this->_templateVersion = 1;
+		$this->setGroup('gallery', $gallery->i18n('Gallery'));
+		$this->setCallbacks('getSiteAdminViews');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
 
-    /**
-     * @see GalleryModule::performFactoryRegistrations
-     */
-    public static function performFactoryRegistrations()
-    {
-        $ret = GalleryCoreApi::registerFactoryImplementation(
-            'GalleryValidationPlugin',
-            'CaptchaValidationPlugin',
-            'CaptchaValidationPlugin',
-            'modules/captcha/classes/CaptchaValidationPlugin.inc',
-            'captcha',
-            null
-        );
-        if ($ret) {
-            return $ret;
-        }
-        $ret = GalleryCoreApi::registerFactoryImplementation(
-            'MaintenanceTask',
-            'ResetFailureCountsTask',
-            'ResetFailureCountsTask',
-            'modules/captcha/classes/ResetFailureCountsTask.class',
-            'captcha',
-            null
-        );
-        if ($ret) {
-            return $ret;
-        }
+	/**
+	 * @see GalleryModule::performFactoryRegistrations
+	 */
+	public static function performFactoryRegistrations()
+	{
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+			'GalleryValidationPlugin',
+			'CaptchaValidationPlugin',
+			'CaptchaValidationPlugin',
+			'modules/captcha/classes/CaptchaValidationPlugin.inc',
+			'captcha',
+			null
+		);
+		if ($ret) {
+			return $ret;
+		}
+		$ret = GalleryCoreApi::registerFactoryImplementation(
+			'MaintenanceTask',
+			'ResetFailureCountsTask',
+			'ResetFailureCountsTask',
+			'modules/captcha/classes/ResetFailureCountsTask.class',
+			'captcha',
+			null
+		);
+		if ($ret) {
+			return $ret;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * @see GalleryModule::upgrade
-     */
-    public static function upgrade($currentVersion, $x1 = null)
-    {
-        switch ($currentVersion) {
-            case '':
-                /* Set some reasonable defaults */
-                $ret = $this->setParameter('failedAttemptThreshold', 3);
-                if ($ret) {
-                    return $ret;
-                }
-                break;
+	/**
+	 * @see GalleryModule::upgrade
+	 */
+	public static function upgrade($currentVersion, $x1 = null)
+	{
+		switch ($currentVersion) {
+			case '':
+				/* Set some reasonable defaults */
+				$ret = $this->setParameter('failedAttemptThreshold', 3);
+				if ($ret) {
+					return $ret;
+				}
+				break;
 
-            case '0.9.0':
-                /* Captcha changed from LoginPlugin to ValidationPlugin to add registration support */
-            case '0.9.1':
-                /* Updated GalleryCoreApi requirement to 5.3 to use Gallery::getPhpVm() */
-            case '0.9.2':
-                /* Updated GalleryCoreApi requirement to 6.0 */
-            case '0.9.3':
-            case '0.9.4':
-                /* Upgraded GalleryModule requirement to 1.0 */
-            case '0.9.5':
-                /* Upgraded GalleryModule requirement to 2.0 */
-            case '0.9.6':
-            case '1.0.0':
-                /* Renamed ValidationPlugin to GalleryValidationPlugin */
-            case '1.0.1':
-                /* GalleryCoreApi 7.0 and GalleryModule 3.0 */
-            case '1.0.2':
-                /* Updated GalleryValidationPlugin API */
-            case '1.1.0':
-            case '1.1.1':
-            case '1.1.2':
-            case '1.1.3':
-            case '1.1.4':
-            case '1.1.4.1':
-                /* .mo file migration */
-            case '1.1.5':
-            case '1.1.6':
-            case '1.1.7':
-            case '2.0.0':
-                /* GalleryCoreApi 8.0 and GalleryModule 4.0 */
+			case '0.9.0':
+				/* Captcha changed from LoginPlugin to ValidationPlugin to add registration support */
+			case '0.9.1':
+				/* Updated GalleryCoreApi requirement to 5.3 to use Gallery::getPhpVm() */
+			case '0.9.2':
+				/* Updated GalleryCoreApi requirement to 6.0 */
+			case '0.9.3':
+			case '0.9.4':
+				/* Upgraded GalleryModule requirement to 1.0 */
+			case '0.9.5':
+				/* Upgraded GalleryModule requirement to 2.0 */
+			case '0.9.6':
+			case '1.0.0':
+				/* Renamed ValidationPlugin to GalleryValidationPlugin */
+			case '1.0.1':
+				/* GalleryCoreApi 7.0 and GalleryModule 3.0 */
+			case '1.0.2':
+				/* Updated GalleryValidationPlugin API */
+			case '1.1.0':
+			case '1.1.1':
+			case '1.1.2':
+			case '1.1.3':
+			case '1.1.4':
+			case '1.1.4.1':
+				/* .mo file migration */
+			case '1.1.5':
+			case '1.1.6':
+			case '1.1.7':
+			case '2.0.0':
+				/* GalleryCoreApi 8.0 and GalleryModule 4.0 */
 
-            case 'end of upgrade path':
-                break;
+			case 'end of upgrade path':
+				break;
 
-            default:
-                return GalleryCoreApi::error(
-                    ERROR_BAD_PLUGIN,
-                    __FILE__,
-                    __LINE__,
-                    sprintf('Unknown module version %s', $currentVersion)
-                );
-        }
+			default:
+				return GalleryCoreApi::error(
+					ERROR_BAD_PLUGIN,
+					__FILE__,
+					__LINE__,
+					sprintf('Unknown module version %s', $currentVersion)
+				);
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * @see GalleryModule::autoConfigure
-     */
-    public static function autoConfigure()
-    {
-        /* We need to perform a test before activating */
-        list($ret, $needsConfiguration) = $this->needsConfiguration();
-        if ($ret) {
-            return array($ret, null);
-        }
+	/**
+	 * @see GalleryModule::autoConfigure
+	 */
+	public static function autoConfigure()
+	{
+		/* We need to perform a test before activating */
+		list($ret, $needsConfiguration) = $this->needsConfiguration();
+		if ($ret) {
+			return array($ret, null);
+		}
 
-        return array(null, !$needsConfiguration);
-    }
+		return array(null, !$needsConfiguration);
+	}
 
-    /**
-     * @see GalleryModule::needsConfiguration
-     */
-    public static function needsConfiguration()
-    {
-        GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
-        $gdReport = CaptchaHelper::testRequiredGdFunctions();
+	/**
+	 * @see GalleryModule::needsConfiguration
+	 */
+	public static function needsConfiguration()
+	{
+		GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
+		$gdReport = CaptchaHelper::testRequiredGdFunctions();
 
-        return array(null, count($gdReport['fail']) > 0);
-    }
+		return array(null, count($gdReport['fail']) > 0);
+	}
 
-    /**
-     * @see GalleryModule::getSiteAdminViews
-     */
-    public static function getSiteAdminViews()
-    {
-        return array(null,
-             array(array('name' => $this->translate('Captcha'),
-                 'view' => 'captcha.CaptchaSiteAdmin')));
-    }
+	/**
+	 * @see GalleryModule::getSiteAdminViews
+	 */
+	public static function getSiteAdminViews()
+	{
+		return array(null,
+			 array(array('name' => $this->translate('Captcha'),
+				 'view' => 'captcha.CaptchaSiteAdmin')));
+	}
 
-    /**
-     * @see GalleryModule::getConfigurationView
-     */
-    public static function getConfigurationView()
-    {
-        return 'captcha.CaptchaConfigAdmin';
-    }
+	/**
+	 * @see GalleryModule::getConfigurationView
+	 */
+	public static function getConfigurationView()
+	{
+		return 'captcha.CaptchaConfigAdmin';
+	}
 }

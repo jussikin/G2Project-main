@@ -25,122 +25,124 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 17580 $
  */
-class KeywordAlbumSiteAdminController extends GalleryController {
-
-    /**
-     * @see GalleryController::handleRequest
-     */
-    function handleRequest($form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	$status = $error = array();
-	if (isset($form['action']['save'])) {
-	    if (empty($form['split'])) {
-		$error[] = 'form[error][split]';
-	    }
-	}
-	if (isset($form['action']['save']) && empty($error)) {
-	    list ($ret, $themeSettingsId) =
-		GalleryCoreApi::getPluginParameter('module', 'keyalbum', 'themeSettingsId');
-	    if ($ret) {
-		return array($ret, null);
-	    }
-
-	    list ($ret, $error, $status) = GalleryCoreApi::handleThemeSettingsRequest(
-		    $form['currentThemeId'], $themeSettingsId, $form);
-	    if ($ret) {
-		return array($ret, null);
-	    }
-	    $status = empty($status) ? array() : array('statusMessage' => $status);
-	}
-
-	if (isset($form['action']['save']) && empty($error)) {
-	    $split = '';
-	    $map = array('semicolon' => ';', 'comma' => ',', 'space' => '\\s');
-	    foreach ($form['split'] as $key => $unused) {
-		if (isset($map[$key])) {
-		    $split .= $map[$key];
+class KeywordAlbumSiteAdminController extends GalleryController
+{
+	/**
+	 * @see GalleryController::handleRequest
+	 */
+	public function handleRequest($form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
+		if ($ret) {
+			return array($ret, null);
 		}
-	    }
-	    foreach (array('themeId' => $form['themeId'],
+
+		$status = $error = array();
+		if (isset($form['action']['save'])) {
+			if (empty($form['split'])) {
+				$error[] = 'form[error][split]';
+			}
+		}
+		if (isset($form['action']['save']) && empty($error)) {
+			list($ret, $themeSettingsId) =
+		GalleryCoreApi::getPluginParameter('module', 'keyalbum', 'themeSettingsId');
+			if ($ret) {
+				return array($ret, null);
+			}
+
+			list($ret, $error, $status) = GalleryCoreApi::handleThemeSettingsRequest(
+			$form['currentThemeId'], $themeSettingsId, $form);
+			if ($ret) {
+				return array($ret, null);
+			}
+			$status = empty($status) ? array() : array('statusMessage' => $status);
+		}
+
+		if (isset($form['action']['save']) && empty($error)) {
+			$split = '';
+			$map = array('semicolon' => ';', 'comma' => ',', 'space' => '\\s');
+			foreach ($form['split'] as $key => $unused) {
+				if (isset($map[$key])) {
+					$split .= $map[$key];
+				}
+			}
+			foreach (array('themeId' => $form['themeId'],
 			   'orderBy' => (empty($form['presort']) ? '' : $form['presort'] . '|')
 					. $form['orderBy'],
-			    'orderDirection' => !isset($form['orderDirection']) ? ''
+				'orderDirection' => !isset($form['orderDirection']) ? ''
 						: $form['orderDirection'],
-			    'summaryLinks' => $form['summaryLinks'],
-			    'description' => $form['description'],
-			    'split' => $split)
-		    as $key => $value) {
-		$ret = GalleryCoreApi::setPluginParameter('module', 'keyalbum', $key, $value);
-		if ($ret) {
-		    return array($ret, null);
+				'summaryLinks' => $form['summaryLinks'],
+				'description' => $form['description'],
+				'split' => $split)
+			as $key => $value) {
+				$ret = GalleryCoreApi::setPluginParameter('module', 'keyalbum', $key, $value);
+				if ($ret) {
+					return array($ret, null);
+				}
+			}
+			$status['saved'] = 1;
 		}
-	    }
-	    $status['saved'] = 1;
-	}
 
-	$method = empty($error) ? 'redirect' : 'delegate';
-	$results = array($method => array('view' => 'core.SiteAdmin',
+		$method = empty($error) ? 'redirect' : 'delegate';
+		$results = array($method => array('view' => 'core.SiteAdmin',
 					  'subView' => 'keyalbum.KeywordAlbumSiteAdmin'),
 			 'status' => $status,
 			 'error' => $error);
 
-	return array(null, $results);
-    }
+		return array(null, $results);
+	}
 }
 
 /**
  * Settings for Keyword Albums
  */
-class KeywordAlbumSiteAdminView extends GalleryView {
-
-    /**
-     * @see GalleryView::loadTemplate
-     */
-    function loadTemplate(&$template, &$form) {
-	$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
-	if ($ret) {
-	    return array($ret, null);
-	}
-
-	if ($form['formName'] != 'KeywordAlbumSiteAdmin') {
-	    foreach (array('themeId', 'orderBy', 'orderDirection', 'summaryLinks', 'description',
-			   'split') as $key) {
-		list ($ret, $form[$key]) =
-		    GalleryCoreApi::getPluginParameter('module', 'keyalbum', $key);
+class KeywordAlbumSiteAdminView extends GalleryView
+{
+	/**
+	 * @see GalleryView::loadTemplate
+	 */
+	public function loadTemplate(&$template, &$form)
+	{
+		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-		    return array($ret, null);
+			return array($ret, null);
 		}
-	    }
-	    $tmp = explode('|', $form['orderBy'], 2);
-	    if (count($tmp) < 2) {
-		$form['presort'] = '';
-	    } else {
-		$form['orderBy'] = $tmp[1];
-		$form['presort'] = $tmp[0];
-	    }
-	    $map = array(';' => 'semicolon', ',' => 'comma', 's' => 'space');
-	    $split = $form['split'];
-	    $form['split'] = array();
-	    for ($i = 0; $i < strlen($split); $i++) {
-		if (isset($map[$split{$i}])) {
-		    $form['split'][$map[$split{$i}]] = 1;
+
+		if ($form['formName'] != 'KeywordAlbumSiteAdmin') {
+			foreach (array('themeId', 'orderBy', 'orderDirection', 'summaryLinks', 'description',
+			   'split') as $key) {
+				list($ret, $form[$key]) =
+			GalleryCoreApi::getPluginParameter('module', 'keyalbum', $key);
+				if ($ret) {
+					return array($ret, null);
+				}
+			}
+			$tmp = explode('|', $form['orderBy'], 2);
+			if (count($tmp) < 2) {
+				$form['presort'] = '';
+			} else {
+				$form['orderBy'] = $tmp[1];
+				$form['presort'] = $tmp[0];
+			}
+			$map = array(';' => 'semicolon', ',' => 'comma', 's' => 'space');
+			$split = $form['split'];
+			$form['split'] = array();
+			for ($i = 0; $i < strlen($split); $i++) {
+				if (isset($map[$split{$i}])) {
+					$form['split'][$map[$split{$i}]] = 1;
+				}
+			}
+		} else {
+			/* Reset theme selection on validation error for theme settings */
+		$form['themeId'] = $form['currentThemeId'];
 		}
-	    }
-	} else {
-	    /* Reset theme selection on validation error for theme settings */
-	    $form['themeId'] = $form['currentThemeId'];
-	}
 
-	list ($ret, $module) = GalleryCoreApi::loadPlugin('module', 'keyalbum');
-	if ($ret) {
-	    return array($ret, null);
-	}
+		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'keyalbum');
+		if ($ret) {
+			return array($ret, null);
+		}
 
-	$summaryList = array(
+		$summaryList = array(
 		'all' => $module->translate('All album views'),
 		'album' => $module->translate('Standard albums'),
 		'key' => $module->translate('Keyword albums'),
@@ -148,29 +150,29 @@ class KeywordAlbumSiteAdminView extends GalleryView {
 
 	/* Set up sort order selection list */
 	GalleryCoreApi::requireOnce('modules/core/classes/GallerySortInterface_1_2.class');
-	list ($ret, $orderByList, $presortList, $orderDirectionList) =
-	    GallerySortInterface_1_2::getAllSortOrders();
-	if ($ret) {
-	    return array($ret, null);
-	}
+		list($ret, $orderByList, $presortList, $orderDirectionList) =
+		GallerySortInterface_1_2::getAllSortOrders();
+		if ($ret) {
+			return array($ret, null);
+		}
 
 	/* Set up theme selection list */
 	$themeList = array('' => $module->translate('&laquo; default theme &raquo;'));
-	list ($ret, $themeStatus) = GalleryCoreApi::fetchPluginStatus('theme');
-	if ($ret) {
-	    return array($ret, null);
-	}
-	foreach ($themeStatus as $id => $status) {
-	    if (!empty($status['active'])) {
-		list ($ret, $theme) = GalleryCoreApi::loadPlugin('theme', $id);
+		list($ret, $themeStatus) = GalleryCoreApi::fetchPluginStatus('theme');
 		if ($ret) {
-		    return array($ret, null);
+			return array($ret, null);
 		}
-		$themeList[$id] = $theme->translate($theme->getName());
-	    }
-	}
+		foreach ($themeStatus as $id => $status) {
+			if (!empty($status['active'])) {
+				list($ret, $theme) = GalleryCoreApi::loadPlugin('theme', $id);
+				if ($ret) {
+					return array($ret, null);
+				}
+				$themeList[$id] = $theme->translate($theme->getName());
+			}
+		}
 
-	$KeywordAlbumSiteAdmin = array(
+		$KeywordAlbumSiteAdmin = array(
 		'summaryList' => $summaryList,
 		'orderByList' => $orderByList,
 		'presortList' => $presortList,
@@ -178,24 +180,24 @@ class KeywordAlbumSiteAdminView extends GalleryView {
 		'themeList' => $themeList);
 
 	/* Set up theme settings */
-	list ($ret, $themeSettingsId) =
-	    GalleryCoreApi::getPluginParameter('module', 'keyalbum', 'themeSettingsId');
-	if ($ret) {
-	    return array($ret, null);
-	}
-	$ret = GalleryCoreApi::loadThemeSettingsForm($form['themeId'], $themeSettingsId,
-						     $template, $form);
-	if ($ret) {
-	    return array($ret, null);
-	}
+	list($ret, $themeSettingsId) =
+		GalleryCoreApi::getPluginParameter('module', 'keyalbum', 'themeSettingsId');
+		if ($ret) {
+			return array($ret, null);
+		}
+		$ret = GalleryCoreApi::loadThemeSettingsForm($form['themeId'], $themeSettingsId,
+							 $template, $form);
+		if ($ret) {
+			return array($ret, null);
+		}
 
-	if ($form['formName'] != 'KeywordAlbumSiteAdmin') {
-	    $form['formName'] = 'KeywordAlbumSiteAdmin';
-	}
+		if ($form['formName'] != 'KeywordAlbumSiteAdmin') {
+			$form['formName'] = 'KeywordAlbumSiteAdmin';
+		}
 
-	$template->setVariable('KeywordAlbumSiteAdmin', $KeywordAlbumSiteAdmin);
-	$template->setVariable('controller', 'keyalbum.KeywordAlbumSiteAdmin');
-	return array(null, array('body' => 'modules/keyalbum/templates/KeywordAlbumSiteAdmin.tpl'));
-    }
+		$template->setVariable('KeywordAlbumSiteAdmin', $KeywordAlbumSiteAdmin);
+		$template->setVariable('controller', 'keyalbum.KeywordAlbumSiteAdmin');
+
+		return array(null, array('body' => 'modules/keyalbum/templates/KeywordAlbumSiteAdmin.tpl'));
+	}
 }
-?>

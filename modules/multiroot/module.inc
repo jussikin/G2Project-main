@@ -26,45 +26,49 @@
  * @author Alan Harder <alan.harder@sun.com>
  * @version $Revision: 18172 $
  */
-class MultirootModule extends GalleryModule {
+class MultirootModule extends GalleryModule
+{
+	public function __construct()
+	{
+		$this->MultirootModule();
+	}
 
-    function __construct() {
-	$this->MultirootModule();
-    }
+	public function MultirootModule()
+	{
+		global $gallery;
 
-    function MultirootModule() {
-	global $gallery;
+		$this->setId('multiroot');
+		$this->setName($gallery->i18n('Multiroot'));
+		$this->setDescription($gallery->i18n('Define an alternate guest view of the Gallery'));
+		$this->setVersion('2.0.0');
+		$this->_templateVersion = 1;
+		$this->setGroup('display', $this->translate('Display'));
+		$this->setCallbacks('');
+		$this->setRequiredCoreApi(array(8, 0));
+		$this->setRequiredModuleApi(array(4, 0));
+	}
 
-	$this->setId('multiroot');
-	$this->setName($gallery->i18n('Multiroot'));
-	$this->setDescription($gallery->i18n('Define an alternate guest view of the Gallery'));
-	$this->setVersion('2.0.0');
-	$this->_templateVersion = 1;
-	$this->setGroup('display', $this->translate('Display'));
-	$this->setCallbacks('');
-	$this->setRequiredCoreApi(array(8, 0));
-	$this->setRequiredModuleApi(array(4, 0));
-    }
+	/**
+	 * @see GalleryModule::getConfigurationView
+	 */
+	public function getConfigurationView()
+	{
+		return 'multiroot.ConfigureMultiroot';
+	}
 
-    /**
-     * @see GalleryModule::getConfigurationView
-     */
-    function getConfigurationView() {
-	return 'multiroot.ConfigureMultiroot';
-    }
+	/**
+	 * @see GalleryModule::needsConfiguration
+	 */
+	public function needsConfiguration()
+	{
+		return array(null, true);
+	}
 
-    /**
-     * @see GalleryModule::needsConfiguration
-     */
-    function needsConfiguration() {
-	return array(null, true);
-    }
-
-    /**
-     * @see GalleryModule::autoConfigure
-     */
-    function autoConfigure() {
-	return array(null, false);
-    }
+	/**
+	 * @see GalleryModule::autoConfigure
+	 */
+	public function autoConfigure()
+	{
+		return array(null, false);
+	}
 }
-?>
