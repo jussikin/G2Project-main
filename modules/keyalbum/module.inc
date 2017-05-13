@@ -31,7 +31,7 @@ class KeyAlbumModule extends GalleryModule
 	{
 		$this->KeyAlbumModule();
 	}
-
+	
 	public function KeyAlbumModule()
 	{
 		global $gallery;
@@ -42,22 +42,33 @@ class KeyAlbumModule extends GalleryModule
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $gallery->i18n('Display'));
 		$this->setCallbacks('getSiteAdminViews|getItemSummaries');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
-	public function upgrade($currentVersion, $x1=null)
+	public function upgrade($currentVersion, $x1 = null)
 	{
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'keyalbum');
 		if ($ret) {
 			return $ret;
 		}
-		foreach (array('themeId' => '', 'orderBy' => '', 'orderDirection' => '',
-			   'summaryLinks' => 'all', 'description' => '', 'split' => ';,')
-		as $key => $value) {
+		foreach (array(
+			'themeId' => '',
+			'orderBy' => '',
+			'orderDirection' => '',
+			'summaryLinks' => 'all',
+			'description' => '',
+			'split' => ';,'
+		) as $key => $value) {
 			if (!isset($params[$key])) {
 				$this->setParameter($key, $value);
 				if ($ret) {
@@ -66,14 +77,12 @@ class KeyAlbumModule extends GalleryModule
 			}
 		}
 		if (!isset($params['themeSettingsId'])) {
-			list($ret, $entity) =
-		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryEntity');
+			list($ret, $entity) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryEntity');
 			if ($ret) {
 				return $ret;
 			}
 			if (!isset($entity)) {
-				return GalleryCoreApi::error(ERROR_MISSING_OBJECT, __FILE__, __LINE__,
-						 'Unable to get a GalleryEntity instance');
+				return GalleryCoreApi::error(ERROR_MISSING_OBJECT, __FILE__, __LINE__, 'Unable to get a GalleryEntity instance');
 			}
 			$ret = $entity->create();
 			if ($ret) {
@@ -90,28 +99,35 @@ class KeyAlbumModule extends GalleryModule
 		}
 		if (!empty($currentVersion) && version_compare($currentVersion, '1.0.3', '<')) {
 			/* Format for keyword data changed; force refresh */
-		foreach (array_keys($params) as $key) {
-			if (preg_match('/^allKeywords.*\.time$/', $key)) {
-				$ret = $this->removeParameter($key);
-				if ($ret) {
-					return $ret;
+			foreach (array_keys($params) as $key) {
+				if (preg_match('/^allKeywords.*\.time$/', $key)) {
+					$ret = $this->removeParameter($key);
+					if ($ret) {
+						return $ret;
+					}
 				}
 			}
 		}
-		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews()
 	{
-		return array(null, array(array('name' => $this->translate('Keyword Albums'),
-					   'view' => 'keyalbum.KeywordAlbumSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Keyword Albums'),
+					'view' => 'keyalbum.KeywordAlbumSiteAdmin'
+				)
+			)
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getItemSummaries
 	 */
@@ -119,20 +135,25 @@ class KeyAlbumModule extends GalleryModule
 	{
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
-
+		
 		list($ret, $params) = $this->fetchParameters();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$mode = $params['summaryLinks'];
 		if ($mode != 'all') {
 			$view = GalleryUtilities::getRequestVariables('view');
-			if ($mode == 'none' || ($mode == 'key' && $view != 'keyalbum.KeywordAlbum')
-			|| ($mode == 'album' && $view != 'core.ShowItem')) {
-				return array(null, array());
+			if ($mode == 'none' || ($mode == 'key' && $view != 'keyalbum.KeywordAlbum') || ($mode == 'album' && $view != 'core.ShowItem')) {
+				return array(
+					null,
+					array()
+				);
 			}
 		}
-
+		
 		$summaries = array();
 		$label = $this->translate('Keywords:');
 		foreach ($items as $item) {
@@ -140,17 +161,22 @@ class KeyAlbumModule extends GalleryModule
 				$itemId = $item->getId();
 				$links = array();
 				foreach ($this->splitKeywords($keywords, $params['split']) as $raw => $keyword) {
-					$links[] = ' <a href="' . $urlGenerator->generateUrl(
-			array('view' => 'keyalbum.KeywordAlbum', 'keyword' => $raw,
-				  'highlightId' => $itemId)) . '">' . $keyword . '</a>';
+					$links[] = ' <a href="' . $urlGenerator->generateUrl(array(
+						'view' => 'keyalbum.KeywordAlbum',
+						'keyword' => $raw,
+						'highlightId' => $itemId
+					)) . '">' . $keyword . '</a>';
 				}
 				$summaries[$itemId] = $label . implode(',', $links);
 			}
 		}
-
-		return array(null, $summaries);
+		
+		return array(
+			null,
+			$summaries
+		);
 	}
-
+	
 	/**
 	 * Split keywords string into separate keywords.
 	 * Unsanitized values in array keys of return value should not be used for display,
@@ -170,25 +196,34 @@ class KeyAlbumModule extends GalleryModule
 				$result[$rawKeyword] = $keyword;
 			}
 		}
-
+		
 		return $result;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
 	public function getRewriteRules()
 	{
 		return array(
-		array('comment' => $this->translate('Keyword Album'),
-			  'match' => array('view' => 'keyalbum.KeywordAlbum'),
-			  'pattern' => 'key/%keyword%',
-			  'help' => $this->translate('Short URL for Keyword Albums'),
-			  'keywords' => array(
-			  'keyword' => array('pattern' => '([^?/]+)',
-				  'help' => $this->translate('Keyword to use for dynamic album')),
-			  'page' => array('pattern' => '([0-9]*)',
-				  'help' => $this->translate('Page number in a dynamic album')))
-			));
+			array(
+				'comment' => $this->translate('Keyword Album'),
+				'match' => array(
+					'view' => 'keyalbum.KeywordAlbum'
+				),
+				'pattern' => 'key/%keyword%',
+				'help' => $this->translate('Short URL for Keyword Albums'),
+				'keywords' => array(
+					'keyword' => array(
+						'pattern' => '([^?/]+)',
+						'help' => $this->translate('Keyword to use for dynamic album')
+					),
+					'page' => array(
+						'pattern' => '([0-9]*)',
+						'help' => $this->translate('Page number in a dynamic album')
+					)
+				)
+			)
+		);
 	}
 }
