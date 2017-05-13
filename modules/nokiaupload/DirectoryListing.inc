@@ -34,20 +34,28 @@ class DirectoryListingController extends GalleryController
 	public function handleRequest($form)
 	{
 		ImageUploadHelper::logRequest('DirectoryListingController');
-
-	/* Request forgery protection */
-	$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
+		
+		/* Request forgery protection */
+		$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 		if (strstr($httpUserAgent, 'Nokia') === false) {
-			return array(GalleryCoreApi::error(ERROR_REQUEST_FORGED), null);
+			return array(
+				GalleryCoreApi::error(ERROR_REQUEST_FORGED),
+				null
+			);
 		}
-
-		$results['delegate'] = array('view' => 'nokiaupload.DirectoryListing');
+		
+		$results['delegate'] = array(
+			'view' => 'nokiaupload.DirectoryListing'
+		);
 		$results['status'] = ImageUploadHelper::getDirectoryListing();
 		$results['error'] = array();
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
-
+	
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
@@ -69,7 +77,7 @@ class DirectoryListingView extends GalleryView
 	{
 		return true;
 	}
-
+	
 	/**
 	 * API defines the output very specifically so we can't allow any global templating to be used.
 	 * @see GalleryView::renderImmediate
@@ -79,22 +87,24 @@ class DirectoryListingView extends GalleryView
 		global $gallery;
 		$gallery->debug("##### DirectoryListingView #####\n\$status = ");
 		$gallery->debug_r($status);
-
+		
 		if ($status['success'] == NOKIAUPLOAD_ERR_NOERR && !isset($status['albums'])) {
 			$status['success'] = NOKIAUPLOAD_ERR_UNKNOWN;
 		}
-
-		$reply = array($status['success'] . "\r\n");
-
+		
+		$reply = array(
+			$status['success'] . "\r\n"
+		);
+		
 		if ($status['success'] == NOKIAUPLOAD_ERR_NOERR) {
 			$dirNum = count($status['albums']);
 			$reply[] = $dirNum . "\r\n";
 			$reply[] = "3\r\n"; // Lines per directory (id, parent id and name).
-		foreach ($status['albums'] as $album) {
-			$reply[] = 'DId=' . $album['id'] . "\r\n";
-			$reply[] = 'PId=' . $album['parentid'] . "\r\n";
-			$reply[] = 'DirName=' . $album['name'] . "\r\n";
-		}
+			foreach ($status['albums'] as $album) {
+				$reply[] = 'DId=' . $album['id'] . "\r\n";
+				$reply[] = 'PId=' . $album['parentid'] . "\r\n";
+				$reply[] = 'DirName=' . $album['name'] . "\r\n";
+			}
 		} else {
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'nokiaupload');
 			if ($ret) {
@@ -103,14 +113,14 @@ class DirectoryListingView extends GalleryView
 				$reply[] = $module->translate("Couldn't fetch directory list.") . "\r\n";
 			}
 		}
-
+		
 		$reply = implode('', $reply);
 		$gallery->debug("Sending:\n$reply");
-
+		
 		header("Content-type: text/plain; charset=UTF-8");
 		header('Content-Length: ' . strlen($reply));
 		echo $reply;
-
+		
 		return null;
 	}
 }

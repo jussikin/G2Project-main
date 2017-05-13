@@ -32,28 +32,28 @@ class NokiaUploadConfigureControllerTest extends GalleryControllerTestCase
 	{
 		$this->GalleryControllerTestCase($methodName, 'nokiaupload.Configure');
 	}
-
+	
 	public function setUp()
 	{
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_markForCleanup($this->_album);
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'nokiaupload');
 		if ($ret) {
 			return $ret;
 		}
 		$_SERVER['HTTP_USER_AGENT'] = 'Nokia6630/1.0 (2.39.129) Series60/2.6 Profile/MIDP-2.0';
 	}
-
+	
 	public function tearDown()
 	{
 		if (isset($this->_groupId)) {
@@ -67,65 +67,85 @@ class NokiaUploadConfigureControllerTest extends GalleryControllerTestCase
 			return $ret;
 		}
 	}
-
+	
 	public function testCancel()
 	{
 		GalleryUtilities::putRequestVariable('form[action][cancel]', '1');
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-						   'subView' => 'core.AdminPlugins'),
-				  'status' => array(), 'error' => array()),
-				$results);
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'core.AdminPlugins'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
 	}
-
+	
 	public function testMissingData()
 	{
 		GalleryUtilities::putRequestVariable('form[group]', '');
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
-		'delegate' => array('view' => 'core.SiteAdmin', 'subView' => 'nokiaupload.Configure'),
-		'status' => array(),
-		'error' => array('form[error][group][missing]', 'form[error][album][missing]')),
-		$results);
+			'delegate' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'nokiaupload.Configure'
+			),
+			'status' => array(),
+			'error' => array(
+				'form[error][group][missing]',
+				'form[error][album][missing]'
+			)
+		), $results);
 	}
-
+	
 	public function testGroupCollision()
 	{
-		list($ret, $groupId) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
+		list($ret, $groupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.allUserGroup');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $group) = GalleryCoreApi::loadEntitiesById($groupId, 'GalleryGroup');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryUtilities::putRequestVariable('form[group]', $group->getGroupName());
 		GalleryUtilities::putRequestVariable('form[album]', 'Nokia Test');
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
-		'delegate' => array('view' => 'core.SiteAdmin', 'subView' => 'nokiaupload.Configure'),
-		'status' => array(),
-		'error' => array('form[error][group][duplicate]')),
-		$results);
+			'delegate' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'nokiaupload.Configure'
+			),
+			'status' => array(),
+			'error' => array(
+				'form[error][group][duplicate]'
+			)
+		), $results);
 	}
-
+	
 	public function testConfigure()
 	{
 		GalleryUtilities::putRequestVariable('form[group]', 'NokiaGroup ' . rand(1000, 100000));
 		GalleryUtilities::putRequestVariable('form[album]', 'NokiaAlbum ' . rand(1000, 100000));
-		GalleryUtilities::putRequestVariable('form[parent]', (string)$this->_album->getId());
+		GalleryUtilities::putRequestVariable('form[parent]', (string) $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
-		'redirect' => array('view' => 'core.SiteAdmin', 'subView' => 'core.AdminPlugins'),
-		'status' => array('configured' => 'nokiaupload'), 'error' => array()),
-		$results);
-
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'core.AdminPlugins'
+			),
+			'status' => array(
+				'configured' => 'nokiaupload'
+			),
+			'error' => array()
+		), $results);
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'nokiaupload');
 		if ($ret) {
 			return $ret;
@@ -135,7 +155,7 @@ class NokiaUploadConfigureControllerTest extends GalleryControllerTestCase
 			return $ret;
 		}
 		$this->assertEquals(false, $config, 'Needs Configuration');
-
+		
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'nokiaupload');
 		if ($ret) {
 			return $ret;
@@ -143,16 +163,18 @@ class NokiaUploadConfigureControllerTest extends GalleryControllerTestCase
 		$this->assert(!empty($params['id.mobileGroup']), 'group param');
 		$this->assert(!empty($params['id.uploadAlbum']), 'album param');
 		$this->_groupId = $params['id.mobileGroup'];
-
-		list($ret, $perms) =
-		GalleryCoreApi::fetchAllPermissionsForItem($params['id.uploadAlbum'], true);
+		
+		list($ret, $perms) = GalleryCoreApi::fetchAllPermissionsForItem($params['id.uploadAlbum'], true);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$hasAddDataItem = false;
 		foreach ($perms as $perm) {
-			if ($perm == array('groupId' => $this->_groupId, 'permission' => 'core.addDataItem')) {
+			if ($perm == array(
+				'groupId' => $this->_groupId,
+				'permission' => 'core.addDataItem'
+			)) {
 				$hasDataItem = true;
 			}
 		}

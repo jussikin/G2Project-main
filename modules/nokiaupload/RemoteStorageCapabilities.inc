@@ -35,7 +35,7 @@ class RemoteStorageCapabilitiesView extends GalleryView
 	{
 		return true;
 	}
-
+	
 	/**
 	 * API defines the output very specifically so we can't allow any global templating to be used.
 	 * @see GalleryView::renderImmediate
@@ -44,9 +44,9 @@ class RemoteStorageCapabilitiesView extends GalleryView
 	{
 		global $gallery;
 		ImageUploadHelper::logRequest('RemoteStorageCapabilitiesView');
-
+		
 		$capabilities = ImageUploadHelper::getRSCapabilities();
-
+		
 		if (empty($capabilities)) {
 			$reply = NOKIAUPLOAD_ERR_UNKNOWN . "\r\n";
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'nokiaupload');
@@ -58,13 +58,13 @@ class RemoteStorageCapabilitiesView extends GalleryView
 		} else {
 			$reply = NOKIAUPLOAD_ERR_NOERR . "\r\n" . implode('', $capabilities);
 		}
-
+		
 		$gallery->debug("Sending:\n$reply");
-
+		
 		header("Content-type: text/plain; charset=UTF-8");
 		header('Content-Length: ' . strlen($reply));
 		echo $reply;
-
+		
 		return null;
 	}
 }

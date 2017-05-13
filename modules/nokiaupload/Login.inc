@@ -34,20 +34,28 @@ class LoginController extends GalleryController
 	public function handleRequest($form)
 	{
 		ImageUploadHelper::logRequest('LoginController');
-
-	/* Request forgery protection */
-	$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
+		
+		/* Request forgery protection */
+		$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 		if (strstr($httpUserAgent, 'Nokia') === false) {
-			return array(GalleryCoreApi::error(ERROR_REQUEST_FORGED), null);
+			return array(
+				GalleryCoreApi::error(ERROR_REQUEST_FORGED),
+				null
+			);
 		}
-
-		$results['delegate'] = array('view' => 'nokiaupload.Login');
+		
+		$results['delegate'] = array(
+			'view' => 'nokiaupload.Login'
+		);
 		$results['status'] = ImageUploadHelper::doLogin();
 		$results['error'] = array();
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
-
+	
 	/**
 	 * @see GalleryController::omitAuthTokenCheck
 	 */
@@ -69,7 +77,7 @@ class LoginView extends GalleryView
 	{
 		return true;
 	}
-
+	
 	/**
 	 * API defines the output very specifically so we can't allow any global templating to be used.
 	 * @see GalleryView::renderImmediate
@@ -79,22 +87,23 @@ class LoginView extends GalleryView
 		global $gallery;
 		$gallery->debug("##### LoginView #####\n\$status = ");
 		$gallery->debug_r($status);
-
-		$reply = array($status['success'] . "\r\n");
+		
+		$reply = array(
+			$status['success'] . "\r\n"
+		);
 		$reply[] = 'Version=' . NOKIAUPLOAD_PROTOCOLVERSION . "\r\n";
-
+		
 		if ($status['success'] == NOKIAUPLOAD_ERR_NOERR) {
 			$session =& $gallery->getSession();
-			$reply[] = 'SId=' . GalleryUtilities::prefixFormVariable($session->getKey()) .
-		'=' . $session->getId() . "\r\n";
+			$reply[] = 'SId=' . GalleryUtilities::prefixFormVariable($session->getKey()) . '=' . $session->getId() . "\r\n";
 			$reply[] = 'RSURL=' . $status['rsurl'] . "\r\n";
-
-		/* Send RS Capabilities as well if we have them. */
-		if (isset($status['capabilities'])) {
-			foreach ($status['capabilities'] as $capability) {
-				$reply[] = $capability;
+			
+			/* Send RS Capabilities as well if we have them. */
+			if (isset($status['capabilities'])) {
+				foreach ($status['capabilities'] as $capability) {
+					$reply[] = $capability;
+				}
 			}
-		}
 		} else {
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'nokiaupload');
 			if ($ret) {
@@ -103,14 +112,14 @@ class LoginView extends GalleryView
 				$reply[] = $module->translate('Login failed.') . "\r\n";
 			}
 		}
-
+		
 		$reply = implode('', $reply);
 		$gallery->debug("Sending:\n$reply");
-
+		
 		header("Content-type: text/plain; charset=UTF-8");
 		header('Content-Length: ' . strlen($reply));
 		echo $reply;
-
+		
 		return null;
 	}
 }

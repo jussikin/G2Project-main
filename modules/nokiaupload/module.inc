@@ -34,23 +34,28 @@ class NokiaUploadModule extends GalleryModule
 	{
 		$this->NokiaUploadModule();
 	}
-
+	
 	public function NokiaUploadModule()
 	{
 		global $gallery;
-
+		
 		$this->setId('nokiaupload');
 		$this->setName($gallery->i18n('Nokia Image Upload'));
-		$this->setDescription(
-		$gallery->i18n('Implementation of Nokia Image Upload Server API v1.1'));
+		$this->setDescription($gallery->i18n('Implementation of Nokia Image Upload Server API v1.1'));
 		$this->setVersion('2.0.0');
 		$this->_templateVersion = 1;
 		$this->setGroup('import', $gallery->i18n('Import'));
 		$this->setCallbacks('');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::autoConfigure
 	 */
@@ -58,12 +63,18 @@ class NokiaUploadModule extends GalleryModule
 	{
 		list($ret, $needsConfiguration) = $this->needsConfiguration();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, !$needsConfiguration);
+		
+		return array(
+			null,
+			!$needsConfiguration
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::needsConfiguration
 	 */
@@ -71,17 +82,29 @@ class NokiaUploadModule extends GalleryModule
 	{
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'nokiaupload');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		foreach (array('id.mobileGroup', 'id.uploadAlbum') as $key) {
+		foreach (array(
+			'id.mobileGroup',
+			'id.uploadAlbum'
+		) as $key) {
 			if (empty($params[$key])) {
-				return array(null, true);
+				return array(
+					null,
+					true
+				);
 			}
 		}
-
-		return array(null, false);
+		
+		return array(
+			null,
+			false
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */
