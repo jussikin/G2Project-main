@@ -31,7 +31,7 @@ class MigrateEventHandlerTest extends GalleryControllerTestCase
 {
 	public $_temporaryAlbumId;
 
-	public function MigrateEventHandlerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName, 'migrate.ConfirmImport');
 	}

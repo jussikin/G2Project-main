@@ -28,7 +28,7 @@
  */
 class CommentTest extends GalleryTestCase
 {
-	public function CommentTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

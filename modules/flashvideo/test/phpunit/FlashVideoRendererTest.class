@@ -28,7 +28,7 @@
  */
 class FlashVideoRendererTest extends GalleryTestCase
 {
-	public function FlashVideoRendererTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

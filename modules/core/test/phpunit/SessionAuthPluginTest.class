@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/test/phpunit/UserLoginControllerTest.c
  */
 class SessionAuthPluginTest extends GalleryTestCase
 {
-	public function SessionAuthPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

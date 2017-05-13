@@ -27,7 +27,7 @@
  */
 class PlatformTest extends GalleryTestCase
 {
-	public function PlatformTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

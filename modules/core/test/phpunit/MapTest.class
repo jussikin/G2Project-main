@@ -27,7 +27,7 @@
  */
 class MapTest extends GalleryTestCase
 {
-	public function MapTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

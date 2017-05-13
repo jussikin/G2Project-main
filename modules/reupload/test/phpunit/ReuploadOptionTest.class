@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class ReuploadOptionTest extends ItemEditOptionTestCase
 {
-	public function ReuploadOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'reupload', 'ReuploadPhotoOption');
 	}

@@ -28,7 +28,7 @@
  */
 class CaptchaSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function CaptchaSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'captcha.CaptchaSiteAdmin');
 	}

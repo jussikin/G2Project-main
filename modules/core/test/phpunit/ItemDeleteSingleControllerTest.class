@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/ItemDeleteSingle.inc');
  */
 class ItemDeleteSingleControllerTest extends GalleryControllerTestCase
 {
-	public function ItemDeleteSingleControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemDeleteSingle');
 	}

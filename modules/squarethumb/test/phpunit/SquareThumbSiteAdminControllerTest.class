@@ -28,7 +28,7 @@
  */
 class SquareThumbSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function SquareThumbSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'squarethumb.SquareThumbSiteAdmin');
 	}

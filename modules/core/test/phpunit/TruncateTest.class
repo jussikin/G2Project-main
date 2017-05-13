@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('lib/smarty_plugins/modifier.entitytruncate.php');
  */
 class TruncateTest extends GalleryTestCase
 {
-	public function TruncateTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

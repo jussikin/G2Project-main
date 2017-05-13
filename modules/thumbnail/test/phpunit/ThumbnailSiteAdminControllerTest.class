@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
  */
 class ThumbnailSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function ThumbnailSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'thumbnail.ThumbnailSiteAdmin');
 	}

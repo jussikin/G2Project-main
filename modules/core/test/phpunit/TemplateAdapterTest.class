@@ -34,7 +34,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplateAdapter.class')
  */
 class TemplateAdapterTest extends GalleryTestCase
 {
-	public function GalleryTemplateAdapterTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

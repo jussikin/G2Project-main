@@ -27,7 +27,7 @@
  */
 class ItemEditAlbumPluginTest extends ItemEditPluginTestCase
 {
-	public function ItemEditAlbumPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditAlbum');
 	}

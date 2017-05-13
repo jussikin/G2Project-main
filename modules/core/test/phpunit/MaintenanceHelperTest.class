@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/MaintenanceHelper_simp
  */
 class MaintenanceHelperTest extends GalleryTestCase
 {
-	public function MaintenanceHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

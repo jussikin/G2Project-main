@@ -29,7 +29,7 @@
  */
 class CodeAuditTest extends CodeAuditTestCase
 {
-	public function CodeAuditTest($methodName)
+	public function __construct($methodName)
 	{
 		global $gallery;
 		$platform =& $gallery->getPlatform();

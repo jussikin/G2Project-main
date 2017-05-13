@@ -27,7 +27,7 @@
  */
 class RedirectControllerTest extends GalleryControllerTestCase
 {
-	public function RedirectControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'migrate.Redirect');
 	}

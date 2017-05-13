@@ -28,7 +28,7 @@
  */
 class RemoteSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function RemoteSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'remote.RemoteSiteAdmin');
 	}

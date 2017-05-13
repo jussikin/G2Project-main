@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  */
 class CustomFieldHelperTest extends GalleryTestCase
 {
-	public function CustomFieldHelperTest($methodname)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodname);
 	}

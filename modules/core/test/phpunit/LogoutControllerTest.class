@@ -27,7 +27,7 @@
  */
 class LogoutControllerTest extends GalleryControllerTestCase
 {
-	public function LogoutControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.Logout');
 	}

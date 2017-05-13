@@ -32,7 +32,7 @@ class RssSiteAdminControllerTest extends GalleryControllerTestCase
 {
 	public $_feedsToDelete;
 
-	public function RssSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'rss.RssSiteAdmin');
 	}

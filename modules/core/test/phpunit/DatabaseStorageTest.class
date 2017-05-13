@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage/GalleryStorageE
  */
 class DatabaseStorageTest extends GalleryTestCase
 {
-	public function DatabaseStorageTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -34,7 +34,7 @@ class RssEditFeedTest extends GalleryControllerTestCase
 {
 	public $_feedsToDelete;
 
-	public function RssEditFeedTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'rss.EditFeed');
 	}

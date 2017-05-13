@@ -27,7 +27,7 @@
  */
 class ZipCartAdminControllerTest extends GalleryControllerTestCase
 {
-	public function ZipCartAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'zipcart.ZipCartAdmin');
 	}

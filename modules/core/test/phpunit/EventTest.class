@@ -27,7 +27,7 @@
  */
 class EventTest extends GalleryTestCase
 {
-	public function EventTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

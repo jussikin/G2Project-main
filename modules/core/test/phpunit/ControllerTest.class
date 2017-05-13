@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryController.class');
  */
 class ControllerTest extends GalleryTestCase
 {
-	public function ControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

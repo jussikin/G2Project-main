@@ -27,7 +27,7 @@
  */
 class MailHelperTest extends GalleryTestCase
 {
-	public function MailHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

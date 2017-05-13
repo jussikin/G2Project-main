@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/remote/classes/GalleryRemoteProperties.clas
  */
 class GalleryRemotePropertiesTest extends GalleryControllerTestCase
 {
-	public function GalleryRemotePropertiesTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

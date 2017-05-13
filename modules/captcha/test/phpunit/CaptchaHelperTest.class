@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/captcha/classes/CaptchaHelper.class');
  */
 class CaptchaHelperTest extends GalleryTestCase
 {
-	public function CaptchaHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

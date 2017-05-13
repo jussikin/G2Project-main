@@ -31,7 +31,7 @@ class Getid3HelperTest extends GalleryTestCase
 	public $_expectedTarResults;
 	public $_expectedZipResults;
 	
-	public function Getid3HelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

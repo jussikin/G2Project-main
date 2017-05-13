@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  */
 class DiskQuotasOptionTest extends ItemAddOptionTestCase
 {
-	public function DiskQuotasOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddOptionTestCase($methodName, 'quotas', 'DiskQuotaOption');
 	}

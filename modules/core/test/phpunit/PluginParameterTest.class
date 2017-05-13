@@ -27,7 +27,7 @@
  */
 class PluginParameterTest extends GalleryTestCase
 {
-	public function PluginParameterTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class')
  */
 class RewriteUrlGeneratorTest extends GalleryTestCase
 {
-	public function RewriteUrlGeneratorTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/exif/Callbacks.inc');
  */
 class SwitchDetailModeControllerTest extends GalleryControllerTestCase
 {
-	public function SwitchDetailModeControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'exif.SwitchDetailMode');
 	}

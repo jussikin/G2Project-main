@@ -38,7 +38,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryUnknownItem.class');
  */
 class ItemAddFromWebTest extends ItemAddPluginTestCase
 {
-	public function ItemAddFromWebTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddPluginTestCase($methodName, 'itemadd', 'ItemAddFromWeb');
 	}

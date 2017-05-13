@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/sitemap/Sitemap.inc');
  */
 class SitemapViewTest extends GalleryTestCase
 {
-	public function SitemapViewTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

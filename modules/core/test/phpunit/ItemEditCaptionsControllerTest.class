@@ -27,7 +27,7 @@
  */
 class ItemEditCaptionsControllerTest extends GalleryControllerTestCase
 {
-	public function ItemEditCaptionsControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemEditCaptions');
 	}

@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/helpers/GalleryPluginHelper_me
  */
 class FactoryTest extends GalleryTestCase
 {
-	public function FactoryTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

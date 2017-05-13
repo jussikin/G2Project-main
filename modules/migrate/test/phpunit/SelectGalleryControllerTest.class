@@ -27,7 +27,7 @@
  */
 class SelectGalleryControllerTest extends GalleryControllerTestCase
 {
-	public function SelectGalleryControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'migrate.SelectGallery');
 	}

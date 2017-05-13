@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  */
 class TemplateAuditTest extends CodeAuditTestCase
 {
-	public function TemplateAuditTest($methodName)
+	public function __construct($methodName)
 	{
 		global $gallery;
 		

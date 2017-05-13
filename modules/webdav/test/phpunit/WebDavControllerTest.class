@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/webdav/classes/WebDavHelper.class');
  */
 class WebDavControllerTest extends GalleryControllerTestCase
 {
-	public function WebDavControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'webdav.WebDav');
 	}

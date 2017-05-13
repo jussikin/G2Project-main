@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  */
 class ThemeTest extends GalleryTestCase
 {
-	public function ThemeTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

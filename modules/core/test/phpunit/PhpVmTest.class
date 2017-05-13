@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryPhpVm.class');
  */
 class PhpVmTest extends GalleryTestCase
 {
-	public function PhpVmTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

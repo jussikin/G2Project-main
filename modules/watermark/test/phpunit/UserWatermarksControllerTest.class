@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  */
 class UserWatermarksControllerTest extends GalleryControllerTestCase
 {
-	public function UserWatermarksControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'watermark.UserWatermarks');
 	}

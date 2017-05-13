@@ -27,7 +27,7 @@
  */
 class ItemAddLinkItemTest extends ItemAddPluginTestCase
 {
-	public function ItemAddLinkItemTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddPluginTestCase($methodName, 'linkitem', 'ItemAddLinkItem');
 	}

@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  */
 class ItemEditWatermarkPluginTest extends ItemEditPluginTestCase
 {
-	public function ItemEditWatermarkPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'watermark', 'ItemEditWatermark');
 	}

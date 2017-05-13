@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  */
 class CustomFieldItemAdminControllerTest extends GalleryControllerTestCase
 {
-	public function CustomFieldItemAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'customfield.CustomFieldItemAdmin');
 	}

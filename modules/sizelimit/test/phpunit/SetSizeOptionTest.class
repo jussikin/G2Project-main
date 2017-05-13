@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class SetSizeOptionTest extends ItemAddOptionTestCase
 {
-	public function SetSizeOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddOptionTestCase($methodName, 'sizelimit', 'SetSizeOption');
 	}

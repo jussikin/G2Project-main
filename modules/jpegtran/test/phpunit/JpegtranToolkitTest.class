@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/jpegtran/classes/JpegtranToolkit.class');
  */
 class JpegtranToolkitTest extends GalleryTestCase
 {
-	public function JpegtranToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

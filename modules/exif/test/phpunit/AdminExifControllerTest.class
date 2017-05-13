@@ -32,7 +32,7 @@ class AdminExifControllerTest extends GalleryControllerTestCase
 {
 	public $_save = array();
 	
-	public function AdminExifControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'exif.AdminExif');
 	}

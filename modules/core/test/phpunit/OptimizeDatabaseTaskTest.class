@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/OptimizeDatabaseTask.class');
  */
 class OptimizeDatabaseTaskTest extends GalleryTestCase
 {
-	public function OptimizeDatabaseTaskTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

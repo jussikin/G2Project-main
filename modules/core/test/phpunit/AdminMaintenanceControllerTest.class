@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/AdminMaintenance.inc');
  */
 class AdminMaintenanceControllerTest extends GalleryControllerTestCase
 {
-	public function AdminMaintenanceControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminMaintenance');
 	}

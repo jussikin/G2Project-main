@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryStorage.class');
  */
 class DatabaseImportTest extends GalleryTestCase
 {
-	public function DatabaseImportTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

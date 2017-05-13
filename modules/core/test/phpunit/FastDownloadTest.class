@@ -27,7 +27,7 @@
  */
 class FastDownloadTest extends GalleryTestCase
 {
-	public function FastDownloadTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

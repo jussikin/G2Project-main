@@ -34,7 +34,7 @@ class PermissionTest extends GalleryTestCase
 	 */
 	public $_albums;
 	
-	public function PermissionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

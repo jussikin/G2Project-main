@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlushTemplatesTask.class');
  */
 class FlushTemplatesTaskTest extends GalleryTestCase
 {
-	public function FlushTemplatesTaskTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

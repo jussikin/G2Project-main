@@ -27,7 +27,7 @@
  */
 class ViewCartViewTest extends GalleryViewTestCase
 {
-	public function ViewCartViewTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryViewTestCase($methodName, 'cart.ViewCart');
 	}

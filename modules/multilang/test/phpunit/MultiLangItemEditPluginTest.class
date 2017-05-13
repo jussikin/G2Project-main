@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/multilang/classes/MultiLangHelper.class');
  */
 class MultiLangItemEditPluginTest extends ItemEditPluginTestCase
 {
-	public function MultiLangItemEditPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'multilang', 'MultiLangItemEdit');
 	}

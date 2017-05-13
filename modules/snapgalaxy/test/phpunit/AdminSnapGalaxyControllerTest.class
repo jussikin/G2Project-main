@@ -28,7 +28,7 @@
  */
 class AdminSnapGalaxyControllerTest extends GalleryControllerTestCase
 {
-	public function AdminSnapGalaxyControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'snapgalaxy.AdminSnapGalaxy');
 	}

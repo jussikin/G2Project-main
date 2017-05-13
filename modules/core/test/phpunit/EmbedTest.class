@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryEmbed.class');
  */
 class EmbedTest extends GalleryTestCase
 {
-	public function EmbedTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

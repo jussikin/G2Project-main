@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class RandomHighlightOptionTest extends ItemEditOptionTestCase
 {
-	public function RandomHighlightOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'randomhighlight', 'RandomHighlightOption');
 	}

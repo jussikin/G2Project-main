@@ -27,7 +27,7 @@
  */
 class AdminQuotasControllerTest extends GalleryControllerTestCase
 {
-	public function AdminQuotasControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminQuotas');
 	}

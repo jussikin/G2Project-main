@@ -31,7 +31,7 @@ class ItemAddFromPicasaTest extends ItemAddPluginTestCase
 {
 	public $_temporaryAlbum;
 
-	public function ItemAddFromPicasaTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddPluginTestCase($methodName, 'picasa', 'ItemAddFromPicasa');
 	}

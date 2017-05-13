@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/dcraw/classes/DcrawToolkit.class');
  */
 class DcrawToolkitTest extends GalleryTestCase
 {
-	public function DcrawToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 		$this->_toolkit = new DcrawToolkit();

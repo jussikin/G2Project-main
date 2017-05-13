@@ -29,7 +29,7 @@ class PhpDocAuditTest extends CodeAuditTestCase
 {
 	public $_packageMap = array();
 	
-	public function PhpDocAuditTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->CodeAuditTestCase($methodName);
 		$this->_errorCount = 0;

@@ -27,7 +27,7 @@
  */
 class RearrangeItemsControllerTest extends GalleryControllerTestCase
 {
-	public function RearrangeItemsControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'rearrange.RearrangeItems');
 	}

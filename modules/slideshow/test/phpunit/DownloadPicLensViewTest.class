@@ -27,7 +27,7 @@
  */
 class DownloadPicLensViewTest extends GalleryImmediateViewTestCase
 {
-	public function DownloadPicLensViewTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryImmediateViewTestCase($methodName, 'slideshow.DownloadPicLens');
 	}

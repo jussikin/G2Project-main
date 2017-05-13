@@ -33,7 +33,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class ImageBlockTest extends GalleryTestCase
 {
-	public function ImageBlockTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

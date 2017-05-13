@@ -47,7 +47,7 @@ class ImageMagickToolkitTest extends GalleryTestCase
 	 */
 	public $_files = array();
 	
-	public function ImageMagickToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 		

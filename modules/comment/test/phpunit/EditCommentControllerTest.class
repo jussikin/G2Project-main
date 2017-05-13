@@ -27,7 +27,7 @@
  */
 class EditCommentControllerTest extends GalleryControllerTestCase
 {
-	public function EditCommentControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'comment.EditComment');
 	}

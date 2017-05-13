@@ -27,7 +27,7 @@
  */
 class UploadItemsControllerTest extends GalleryControllerTestCase
 {
-	public function UploadItemsControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'publishxp.UploadItems');
 	}

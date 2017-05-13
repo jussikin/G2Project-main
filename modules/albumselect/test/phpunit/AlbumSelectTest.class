@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/albumselect/Callbacks.inc');
  */
 class AlbumSelectTest extends GalleryTestCase
 {
-	public function AlbumSelectTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

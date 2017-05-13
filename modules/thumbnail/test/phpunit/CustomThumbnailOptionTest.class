@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class CustomThumbnailOptionTest extends ItemEditOptionTestCase
 {
-	public function CustomThumbnailOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'thumbnail', 'CustomThumbnailOption');
 	}

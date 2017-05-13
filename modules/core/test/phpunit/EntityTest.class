@@ -27,7 +27,7 @@
  */
 class EntityTest extends GalleryTestCase
 {
-	public function EntityTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -27,7 +27,7 @@
  */
 class ItemAddAlbumControllerTest extends GalleryControllerTestCase
 {
-	public function ItemAddAlbumControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemAddAlbum');
 	}

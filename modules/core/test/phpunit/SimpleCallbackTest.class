@@ -27,7 +27,7 @@
  */
 class SimpleCallbackTest extends GalleryTestCase
 {
-	public function SimpleCallbackTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}
@@ -245,17 +245,17 @@ class SimpleCallbackTest extends GalleryTestCase
 		$gallery->_phpVm = new SimpleCallbackTestPhpVm();
 		$platform = new SimpleCallbackTestPlatform();
 		$platform->setReply('is_dir', array(
-			'/phpäunit'
+			'/phpï¿½unit'
 		), true);
 		$platform->setReply('opendir', array(
-			'/phpäunit'
+			'/phpï¿½unit'
 		), 'dh');
 		$platform->setReply('getDirectorySeparator', array(), '/');
 		$platform->setReply('readdir', array(
 			'dh'
-		), 'täst');
+		), 'tï¿½st');
 		$platform->setReply('is_dir', array(
-			'/phpäunit/täst'
+			'/phpï¿½unit/tï¿½st'
 		), true);
 		$platform->setReply('readdir', array(
 			'dh'
@@ -268,7 +268,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		/* Fake a specific charset to isolate this test */
 		GalleryDataCache::put('GalleryCharsetHelper_simple::detectSystemCharset', 'ISO-8859-1');
 		
-		/* German umlaut 'ä' in ISO-8859-1 */
+		/* German umlaut 'ï¿½' in ISO-8859-1 */
 		$umlautUtf8 = GalleryCoreApi::convertToUtf8(chr(228), 'ISO-8859-1');
 		$prefix = '/php' . $umlautUtf8 . 'unit';
 		GalleryUtilities::putRequestVariable('command', 'lookupDirectories');
@@ -376,26 +376,26 @@ class SimpleCallbackTest extends GalleryTestCase
 		$gallery->_phpVm = new SimpleCallbackTestPhpVm();
 		$platform = new SimpleCallbackTestPlatform();
 		$platform->setReply('is_dir', array(
-			'/phpäunit'
+			'/phpï¿½unit'
 		), true);
 		$platform->setReply('opendir', array(
-			'/phpäunit'
+			'/phpï¿½unit'
 		), 'dh');
 		$platform->setReply('getDirectorySeparator', array(), '/');
 		$platform->setReply('readdir', array(
 			'dh'
-		), 'täst');
+		), 'tï¿½st');
 		$platform->setReply('is_dir', array(
-			'/phpäunit/täst'
+			'/phpï¿½unit/tï¿½st'
 		), false);
 		$platform->setReply('is_file', array(
-			'/phpäunit/täst'
+			'/phpï¿½unit/tï¿½st'
 		), true);
 		$platform->setReply('readdir', array(
 			'dh'
 		), 'dir');
 		$platform->setReply('is_dir', array(
-			'/phpäunit/dir'
+			'/phpï¿½unit/dir'
 		), true);
 		$platform->setReply('readdir', array(
 			'dh'
@@ -408,7 +408,7 @@ class SimpleCallbackTest extends GalleryTestCase
 		/* Fake a specific charset to isolate this test */
 		GalleryDataCache::put('GalleryCharsetHelper_simple::detectSystemCharset', 'ISO-8859-1');
 		
-		/* German umlaut 'ä' in ISO-8859-1 */
+		/* German umlaut 'ï¿½' in ISO-8859-1 */
 		$umlautUtf8 = GalleryCoreApi::convertToUtf8(chr(228), 'ISO-8859-1');
 		$prefix = '/php' . $umlautUtf8 . 'unit';
 		GalleryUtilities::putRequestVariable('command', 'lookupFiles');

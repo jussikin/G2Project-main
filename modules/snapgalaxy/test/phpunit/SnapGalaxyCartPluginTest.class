@@ -28,7 +28,7 @@
  */
 class SnapGalaxyCartPluginTest extends GalleryTestCase
 {
-	public function SnapGalaxyCartPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

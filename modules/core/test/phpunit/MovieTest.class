@@ -27,7 +27,7 @@
  */
 class MovieTest extends GalleryTestCase
 {
-	public function MovieTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/shutterfly/PrintPhotos.inc');
  */
 class ShutterflyPrintPhotosViewTest extends GalleryTestCase
 {
-	public function ShutterflyPrintPhotosViewtest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

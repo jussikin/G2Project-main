@@ -27,7 +27,7 @@
  */
 class ItemCreateReplicaControllerTest extends GalleryControllerTestCase
 {
-	public function ItemCreateReplicaControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'replica.ItemCreateReplica');
 	}

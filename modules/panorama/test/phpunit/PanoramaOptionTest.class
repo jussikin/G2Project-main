@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaRenderer.class');
  */
 class PanoramaOptionTest extends ItemEditOptionTestCase
 {
-	public function PanoramaOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'panorama', 'PanoramaOption');
 	}

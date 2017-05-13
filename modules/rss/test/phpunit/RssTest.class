@@ -32,7 +32,7 @@ class RssTest extends GalleryTestCase
 {
 	public $_feedsToDelete;
 
-	public function RssTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

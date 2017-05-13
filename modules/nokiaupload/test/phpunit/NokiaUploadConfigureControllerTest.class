@@ -28,7 +28,7 @@
  */
 class NokiaUploadConfigureControllerTest extends GalleryControllerTestCase
 {
-	public function NokiaUploadConfigureControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'nokiaupload.Configure');
 	}

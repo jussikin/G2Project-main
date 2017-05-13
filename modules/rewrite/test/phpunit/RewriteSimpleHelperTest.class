@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteSimpleHelper.class')
 GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class');
 class RewriteSimpleHelperTest extends GalleryTestCase
 {
-	public function RewriteSimpleHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

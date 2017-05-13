@@ -28,7 +28,7 @@
  */
 class ZipCartPluginTest extends GalleryTestCase
 {
-	public function ZipCartPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

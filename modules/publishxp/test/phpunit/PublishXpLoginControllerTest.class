@@ -27,7 +27,7 @@
  */
 class PublishXpLoginControllerTest extends GalleryControllerTestCase
 {
-	public function PublishXpLoginControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'publishxp.PublishXpLogin');
 	}

@@ -50,7 +50,7 @@ class ExifHelperTest extends GalleryTestCase
 {
 	public $_save = array();
 	
-	public function ExifHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

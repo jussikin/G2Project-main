@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/register/classes/GalleryPendingUserHelper.c
  */
 class GalleryPendingUserTest extends GalleryTestCase
 {
-	public function GalleryPendingUserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

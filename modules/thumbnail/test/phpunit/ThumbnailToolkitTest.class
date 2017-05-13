@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/thumbnail/classes/ThumbnailHelper.class');
  */
 class ThumbnailToolkitTest extends GalleryTestCase
 {
-	public function ThumbnailToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

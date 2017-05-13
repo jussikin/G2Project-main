@@ -29,7 +29,7 @@ class SelectPicasaExportPathControllerTest extends GalleryControllerTestCase
 {
 	public $_platform;
 
-	public function SelectPicasaExportPathControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'picasa.SelectPicasaExportPath');
 	}

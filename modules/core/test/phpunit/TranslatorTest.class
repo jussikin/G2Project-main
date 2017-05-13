@@ -29,7 +29,7 @@
  */
 class TranslatorTest extends GalleryTestCase
 {
-	public function TranslatorTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

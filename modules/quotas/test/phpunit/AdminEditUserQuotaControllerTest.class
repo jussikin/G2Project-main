@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  */
 class AdminEditUserQuotaControllerTest extends GalleryControllerTestCase
 {
-	public function AdminEditUserQuotaControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminEditUserQuota');
 	}

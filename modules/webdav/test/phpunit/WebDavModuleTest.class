@@ -27,7 +27,7 @@
  */
 class WebDavModuleTest extends GalleryTestCase
 {
-	public function WebDavModuleTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

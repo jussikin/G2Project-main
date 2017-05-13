@@ -27,7 +27,7 @@
  */
 class Getid3DetailModeControllerTest extends GalleryControllerTestCase
 {
-	public function Getid3DetailModeControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'getid3:Getid3DetailMode');
 	}

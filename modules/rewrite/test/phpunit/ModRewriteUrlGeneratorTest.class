@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteUrlGeneratorTes
  */
 class ModRewriteUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 {
-	public function ModRewriteUrlGeneratorTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

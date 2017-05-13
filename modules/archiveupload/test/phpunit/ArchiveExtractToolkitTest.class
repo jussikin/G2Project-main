@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/archiveupload/classes/ArchiveExtractToolkit
  */
 class ArchiveExtractToolkitTest extends GalleryTestCase
 {
-	public function ArchiveExtractToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

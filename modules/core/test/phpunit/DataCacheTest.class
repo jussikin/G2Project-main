@@ -27,7 +27,7 @@
  */
 class DataCacheTest extends GalleryTestCase
 {
-	public function DataCacheTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

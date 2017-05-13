@@ -28,7 +28,7 @@
  */
 class CommentSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function CommentSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'comment.CommentSiteAdmin');
 	}

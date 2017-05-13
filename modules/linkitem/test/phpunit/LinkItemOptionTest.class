@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('lib/tools/phpunit/ItemEditOptionTestCase.class');
  */
 class LinkItemOptionTest extends ItemEditOptionTestCase
 {
-	public function LinkItemOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'linkitem', 'LinkItemOption');
 	}

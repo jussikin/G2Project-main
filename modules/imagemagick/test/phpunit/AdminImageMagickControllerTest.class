@@ -27,7 +27,7 @@
  */
 class AdminImageMagickControllerTest extends GalleryControllerTestCase
 {
-	public function AdminImageMagickControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'imagemagick.AdminImageMagick');
 	}

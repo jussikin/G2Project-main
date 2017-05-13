@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteUrlGeneratorTes
  */
 class PathInfoUrlGeneratorTest extends RewriteUrlGeneratorTestCase
 {
-	public function PathInfoUrlGeneratorTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

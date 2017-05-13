@@ -28,7 +28,7 @@
  */
 class WebCamSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function WebCamSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'webcam.WebCamSiteAdmin');
 	}

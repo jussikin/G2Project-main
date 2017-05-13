@@ -32,7 +32,7 @@ class PermalinksTest extends GalleryTestCase
 {
 	public $_aliasNamesToDelete;
 
-	public function PermalinksTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

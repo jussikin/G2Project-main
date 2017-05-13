@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/publishxp/DownloadRegistryFile.inc');
  */
 class DownloadRegistryFileTest extends GalleryTestCase
 {
-	public function DownloadRegistryFileTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

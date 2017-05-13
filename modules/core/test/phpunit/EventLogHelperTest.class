@@ -27,7 +27,7 @@
  */
 class EventLogHelperTest extends GalleryTestCase
 {
-	public function EventLogHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

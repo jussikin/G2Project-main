@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/pathinfo/parser.inc
 GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteParserTestCase.class');
 class PathInfoParserTest extends RewriteParserTestCase
 {
-	public function PathInfoParserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

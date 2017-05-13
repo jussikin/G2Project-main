@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/getid3/classes/Getid3Toolkit.class');
  */
 class Getid3ToolkitTest extends GalleryTestCase
 {
-	public function Getid3ToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

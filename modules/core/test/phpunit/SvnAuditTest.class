@@ -27,7 +27,7 @@
  */
 class SvnAuditTest extends CodeAuditTestCase
 {
-	public function SvnAuditTest($methodName)
+	public function __construct($methodName)
 	{
 		global $gallery;
 		$this->_platform =& $gallery->getPlatform();

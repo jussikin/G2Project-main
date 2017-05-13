@@ -27,7 +27,7 @@
  */
 class FileSystemTest extends GalleryTestCase
 {
-	public function FileSystemTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

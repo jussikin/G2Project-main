@@ -26,7 +26,7 @@
  */
 class ItemMimeEditControllerTest extends GalleryControllerTestCase
 {
-	public function ItemMimeEditControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMimeEdit');
 	}

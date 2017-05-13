@@ -27,7 +27,7 @@
  */
 class MainTest extends GalleryTestCase
 {
-	public function MainTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

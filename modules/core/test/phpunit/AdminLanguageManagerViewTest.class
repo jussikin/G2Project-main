@@ -31,7 +31,7 @@ class AdminLanguageManagerViewTest extends GalleryViewTestCase
 {
 	public $_galleryTemplateAdapter;
 
-	public function AdminLanguageManagerViewTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryViewTestCase($methodName, 'core.AdminLanguageManager');
 	}

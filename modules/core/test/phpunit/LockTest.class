@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlockLockSystem.class');
  */
 class LockTest extends GalleryTestCase
 {
-	public function LockTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

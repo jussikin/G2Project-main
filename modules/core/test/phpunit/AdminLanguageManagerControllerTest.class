@@ -31,7 +31,7 @@ class AdminLanguageManagerControllerTest extends GalleryControllerTestCase
 {
 	public $_galleryTemplateAdapter;
 
-	public function AdminLanguageManagerControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminLanguageManager');
 	}

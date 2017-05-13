@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/comment/classes/AkismetApi.class');
  */
 class AkismetApiTest extends GalleryTestCase
 {
-	public function AkismetApiTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

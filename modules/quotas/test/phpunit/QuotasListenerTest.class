@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  */
 class QuotasListenerTest extends GalleryTestCase
 {
-	public function QuotasListenerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -31,7 +31,7 @@ class AdminRepositoryDownloadAndInstallControllerTest extends GalleryControllerT
 {
 	public $_galleryTemplateAdapter;
 
-	public function AdminRepositoryDownloadAndInstallControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminRepositoryDownloadAndInstall');
 	}

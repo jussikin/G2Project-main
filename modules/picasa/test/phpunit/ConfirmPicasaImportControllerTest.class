@@ -42,7 +42,7 @@ class ConfirmPicasaImportControllerTest extends GalleryControllerTestCase
 	 */
 	public $_platform;
 
-	public function ConfirmPicasaImportControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'picasa.ConfirmPicasaImport');
 	}

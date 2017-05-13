@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  */
 class WatermarkTest extends GalleryTestCase
 {
-	public function WatermarkTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

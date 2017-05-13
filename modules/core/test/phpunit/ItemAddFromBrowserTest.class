@@ -27,7 +27,7 @@
  */
 class ItemAddFromBrowserTest extends ItemAddPluginTestCase
 {
-	public function ItemAddFromBrowserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddPluginTestCase($methodName, 'core', 'ItemAddFromBrowser');
 	}
