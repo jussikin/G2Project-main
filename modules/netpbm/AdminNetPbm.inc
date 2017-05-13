@@ -35,50 +35,56 @@ class AdminNetPbmController extends GalleryController
 	public function handleRequest($form)
 	{
 		global $gallery;
-
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$status = $error = array();
 		if (isset($form['action']['save'])) {
 			if (empty($form['path'])) {
 				$error[] = 'form[error][path][missing]';
 			} else {
-
-		/* Set the path.  Guarantee that it's got a trailing slash. */
-		$platform =& $gallery->getPlatform();
+				/* Set the path.  Guarantee that it's got a trailing slash. */
+				$platform =& $gallery->getPlatform();
 				$slash = $platform->getDirectorySeparator();
 				$form['path'] = trim($form['path']);
 				if (!empty($form['path'])) {
-					if ($form['path']{strlen($form['path'])-1} != $slash) {
+					if ($form['path']{strlen($form['path']) - 1} != $slash) {
 						$form['path'] .= $slash;
 					}
 				}
-
-				list($ret, $testResults, $mimeTypes) =
-			NetPbmToolkitHelper::testBinaries($form['path']);
+				
+				list($ret, $testResults, $mimeTypes) = NetPbmToolkitHelper::testBinaries($form['path']);
 				if ($ret) {
 					if ($ret->getErrorCode() & ERROR_BAD_PATH) {
 						$error[] = 'form[error][path][badPath]';
 					} else {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				} elseif (empty($mimeTypes)) {
 					/* At least one mime type must be supported, else this path is invalid */
-			$error[] = 'form[error][path][testError]';
+					$error[] = 'form[error][path][testError]';
 				}
 			}
-
+			
 			if (!empty($form['jheadPath'])) {
-				list($ret, $jheadTests, $jheadMimeTypes) =
-			NetPbmToolkitHelper::testJhead($form['jheadPath']);
+				list($ret, $jheadTests, $jheadMimeTypes) = NetPbmToolkitHelper::testJhead($form['jheadPath']);
 				if ($ret) {
 					if ($ret->getErrorCode() & ERROR_BAD_PATH) {
 						$error[] = 'form[error][jheadPath][badPath]';
 					} else {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				} else {
 					$successCount = 0;
@@ -90,44 +96,59 @@ class AdminNetPbmController extends GalleryController
 					}
 				}
 			}
-
+			
 			if (empty($error)) {
-				$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'netpbm', 'path', $form['path']);
+				$ret = GalleryCoreApi::setPluginParameter('module', 'netpbm', 'path', $form['path']);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
-		/* Set the image quality */
-		$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'netpbm', 'jpegQuality', $form['jpegQuality']);
+				
+				/* Set the image quality */
+				$ret = GalleryCoreApi::setPluginParameter('module', 'netpbm', 'jpegQuality', $form['jpegQuality']);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
-		/* Set the jhead binary name */
-		$jheadPath = isset($form['jheadPath']) ? $form['jheadPath'] : '';
-				$ret = GalleryCoreApi::setPluginParameter(
-			'module', 'netpbm', 'jheadPath', $jheadPath);
+				
+				/* Set the jhead binary name */
+				$jheadPath = isset($form['jheadPath']) ? $form['jheadPath'] : '';
+				$ret = GalleryCoreApi::setPluginParameter('module', 'netpbm', 'jheadPath', $jheadPath);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
-		/* Save binaries to use for this netpbm path */
-		$ret = NetPbmToolkitHelper::saveParameters($testResults);
+				
+				/* Save binaries to use for this netpbm path */
+				$ret = NetPbmToolkitHelper::saveParameters($testResults);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
+				
 				list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'netpbm');
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				list($ret, $isActive) = $module->isActive();
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
+				
 				$redirect['view'] = 'core.SiteAdmin';
 				if ($isActive) {
 					$redirect['subView'] = 'netpbm.AdminNetPbm';
@@ -144,7 +165,7 @@ class AdminNetPbmController extends GalleryController
 			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'core.AdminPlugins';
 		}
-
+		
 		if (!empty($redirect)) {
 			$results['redirect'] = $redirect;
 		} else {
@@ -153,8 +174,11 @@ class AdminNetPbmController extends GalleryController
 		}
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -170,40 +194,52 @@ class AdminNetPbmView extends GalleryView
 	{
 		global $gallery;
 		$platform =& $gallery->getPlatform();
-
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Load our default values if we didn't just come from this form. */
-	if ($form['formName'] != 'AdminNetPbm') {
-		foreach (array('path', 'jpegQuality', 'jheadPath') as $key) {
-			list($ret, $form[$key]) =
-			GalleryCoreApi::getPluginParameter('module', 'netpbm', $key);
-			if ($ret) {
-				return array($ret, null);
+		
+		/* Load our default values if we didn't just come from this form. */
+		if ($form['formName'] != 'AdminNetPbm') {
+			foreach (array(
+				'path',
+				'jpegQuality',
+				'jheadPath'
+			) as $key) {
+				list($ret, $form[$key]) = GalleryCoreApi::getPluginParameter('module', 'netpbm', $key);
+				if ($ret) {
+					return array(
+						$ret,
+						null
+					);
+				}
 			}
+			$form['formName'] = 'AdminNetPbm';
 		}
-		$form['formName'] = 'AdminNetPbm';
-	}
-
-	/* Guarantee that the path and jheadPath have a trailing slash. */
-	$slash = $platform->getDirectorySeparator();
-		foreach (array('path', 'jheadPath') as $key) {
+		
+		/* Guarantee that the path and jheadPath have a trailing slash. */
+		$slash = $platform->getDirectorySeparator();
+		foreach (array(
+			'path',
+			'jheadPath'
+		) as $key) {
 			$form[$key] = trim($form[$key]);
 			if (!empty($form[$key])) {
-				if ($form[$key]{strlen($form[$key])-1} != $slash) {
+				if ($form[$key]{strlen($form[$key]) - 1} != $slash) {
 					$form[$key] .= $slash;
 				}
 			}
 		}
-
-	/* Set up our jpeg quality selection list */
-	for ($i = 100; $i >= 50; $i -= 5) {
-		$jpegQualityList[] = $i;
-	}
-
+		
+		/* Set up our jpeg quality selection list */
+		for ($i = 100; $i >= 50; $i -= 5) {
+			$jpegQualityList[] = $i;
+		}
+		
 		$tests = $mimeTypes = array();
 		$failCount = 0;
 		$debugSnippet = '';
@@ -214,12 +250,15 @@ class AdminNetPbmView extends GalleryView
 				$gallery->startRecordingDebugSnippet();
 				list($ret, $tests, $mimeTypes) = NetPbmToolkitHelper::testBinaries($form['path']);
 				$debugSnippet = $gallery->stopRecordingDebugSnippet();
-
+				
 				if ($ret) {
 					if ($ret->getErrorCode() & ERROR_BAD_PATH) {
 						$form['error']['path']['badPath'] = 1;
 					} else {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				} else {
 					foreach ($tests as $test) {
@@ -227,19 +266,21 @@ class AdminNetPbmView extends GalleryView
 					}
 				}
 			}
-
+			
 			if (empty($form['jheadPath'])) {
 				$form['error']['jheadPath']['missing'] = 1;
 			} else {
 				$gallery->startRecordingDebugSnippet();
-				list($ret, $jheadTests, $jheadMimeTypes) =
-			NetPbmToolkitHelper::testJhead($form['jheadPath']);
+				list($ret, $jheadTests, $jheadMimeTypes) = NetPbmToolkitHelper::testJhead($form['jheadPath']);
 				$debugSnippet .= $gallery->stopRecordingDebugSnippet();
 				if ($ret) {
 					if ($ret->getErrorCode() & ERROR_BAD_PATH) {
 						$form['error']['jheadPath']['badPath'] = 1;
 					} else {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				} else {
 					foreach ($jheadTests as $test) {
@@ -249,16 +290,22 @@ class AdminNetPbmView extends GalleryView
 				}
 			}
 		}
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'netpbm');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		list($ret, $isActive) = $module->isActive();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$AdminNetPbm = array();
 		$AdminNetPbm['tests'] = $tests;
 		$AdminNetPbm['mimeTypes'] = $mimeTypes;
@@ -266,16 +313,20 @@ class AdminNetPbmView extends GalleryView
 		$AdminNetPbm['failCount'] = $failCount;
 		$AdminNetPbm['debugSnippet'] = $debugSnippet;
 		$AdminNetPbm['isConfigure'] = !$isActive;
-		$AdminNetPbm['canExec'] =
-		!in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')));
-
+		$AdminNetPbm['canExec'] = !in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')));
+		
 		if ($failCount > 0) {
 			$template->javascript('lib/javascript/BlockToggle.js');
 		}
-
+		
 		$template->setVariable('AdminNetPbm', $AdminNetPbm);
 		$template->setVariable('controller', 'netpbm.AdminNetPbm');
-
-		return array(null, array('body' => 'modules/netpbm/templates/AdminNetPbm.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/netpbm/templates/AdminNetPbm.tpl'
+			)
+		);
 	}
 }
