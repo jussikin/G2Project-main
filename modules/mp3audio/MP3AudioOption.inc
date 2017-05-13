@@ -32,9 +32,12 @@ class MP3AudioOption extends ItemAddOption
 	 */
 	public function isAppropriate()
 	{
-		return array(null, true);
+		return array(
+			null,
+			true
+		);
 	}
-
+	
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
@@ -43,10 +46,9 @@ class MP3AudioOption extends ItemAddOption
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$errors = $mp3Items = array();
-
+		
 		foreach ($items as $item) {
-			if (GalleryUtilities::isA($item, 'GalleryDataItem')
-			&& $item->getMimeType() == 'audio/mpeg') {
+			if (GalleryUtilities::isA($item, 'GalleryDataItem') && $item->getMimeType() == 'audio/mpeg') {
 				$mp3Items[] = $item;
 			}
 		}
@@ -56,39 +58,63 @@ class MP3AudioOption extends ItemAddOption
 			foreach ($currentItems as $item) {
 				$itemIds[] = $item->getId();
 			}
-
+			
 			list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($itemIds);
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
-
+			
 			foreach ($currentItems as $item) {
 				list($ret, $item) = $item->refresh();
 				if ($ret) {
 					GalleryCoreApi::releaseLocks($lockId);
-
-					return array($ret, null, null);
+					
+					return array(
+						$ret,
+						null,
+						null
+					);
 				}
-
+				
 				$item->setRenderer('MP3AudioRenderer');
 				$ret = $item->save();
 				if ($ret) {
 					GalleryCoreApi::releaseLocks($lockId);
-
-					return array($ret, null, null);
+					
+					return array(
+						$ret,
+						null,
+						null
+					);
 				}
 			}
-
+			
 			$ret = GalleryCoreApi::releaseLocks($lockId);
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 			$ret = $storage->checkPoint();
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 		}
-
-		return array(null, $errors, array());
+		
+		return array(
+			null,
+			$errors,
+			array()
+		);
 	}
 }
