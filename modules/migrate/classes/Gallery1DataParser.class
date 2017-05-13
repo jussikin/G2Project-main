@@ -38,15 +38,14 @@ class Gallery1DataParser
 	{
 		global $gallery;
 		$platform =& $gallery->getPlatform();
-
-		if ($platform->file_exists($path . 'albumdb.dat')
-		&& $platform->is_readable($path . 'albumdb.dat')) {
+		
+		if ($platform->file_exists($path . 'albumdb.dat') && $platform->is_readable($path . 'albumdb.dat')) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Load and return user metadata from given file
 	 *
@@ -58,37 +57,44 @@ class Gallery1DataParser
 	{
 		global $gallery;
 		$platform =& $gallery->getPlatform();
-
+		
 		if (!$platform->file_exists($fileName) || !$platform->is_readable($fileName)) {
-			if ($platform->file_exists($fileName . '.bak') &&
-			$platform->is_readable($fileName . '.bak')) {
+			if ($platform->file_exists($fileName . '.bak') && $platform->is_readable($fileName . '.bak')) {
 				$fileName .= '.bak';
 			} else {
-				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__,
-						  "Missing or not readable file: $fileName"), null);
+				return array(
+					GalleryCoreApi::error(ERROR_BAD_PARAMETER, __FILE__, __LINE__, "Missing or not readable file: $fileName"),
+					null
+				);
 			}
 		}
 		$tmp = $platform->file($fileName);
-
+		
 		if (empty($tmp)) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_VALUE), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_VALUE),
+				null
+			);
 		}
-
+		
 		$tmp = join('', $tmp);
-
-	/*
-	 * We renamed User.php to Gallery_User.php in v1.2, so port forward
-	 * any saved user objects.
-	 */
-	if (!strcmp(substr($tmp, 0, 10), 'O:4:"user"')) {
-		$tmp = str_replace('O:4:"user"', 'O:12:"gallery_user"', $tmp);
-	}
-
+		
+		/*
+	     * We renamed User.php to Gallery_User.php in v1.2, so port forward
+	     * any saved user objects.
+	     */
+		if (!strcmp(substr($tmp, 0, 10), 'O:4:"user"')) {
+			$tmp = str_replace('O:4:"user"', 'O:12:"gallery_user"', $tmp);
+		}
+		
 		$object = unserialize($tmp);
-
-		return array(null, $object);
+		
+		return array(
+			null,
+			$object
+		);
 	}
-
+	
 	/**
 	 * Fetch an array of albums from a given path
 	 *
@@ -101,25 +107,33 @@ class Gallery1DataParser
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
-
+		
 		list($ret, $albumOrder) = self::loadFile($path . 'albumdb.dat');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* TODO: check that there is an $albumOrder */
-	foreach ($albumOrder as $albumName) {
-		list($ret, $albumFields) =
-		self::loadAlbumFields($path . $albumName . $slash);
-		if ($ret) {
-			return array($ret,'');
+		
+		/* TODO: check that there is an $albumOrder */
+		foreach ($albumOrder as $albumName) {
+			list($ret, $albumFields) = self::loadAlbumFields($path . $albumName . $slash);
+			if ($ret) {
+				return array(
+					$ret,
+					''
+				);
+			}
+			$albumList[$albumName] = $albumFields;
 		}
-		$albumList[$albumName] = $albumFields;
+		
+		return array(
+			null,
+			$albumList
+		);
 	}
-
-		return array(null, $albumList);
-	}
-
+	
 	/**
 	 * Fetch an associative array of parentalbum names from a given path to gallery1 albums
 	 *
@@ -132,24 +146,32 @@ class Gallery1DataParser
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
-
+		
 		list($ret, $albumOrder) = self::loadFile($path . 'albumdb.dat');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		foreach ($albumOrder as $albumName) {
-			list($ret, $albumFields) =
-		self::loadAlbumFields($path . $albumName . $slash);
+			list($ret, $albumFields) = self::loadAlbumFields($path . $albumName . $slash);
 			if ($ret) {
-				return array($ret,'');
+				return array(
+					$ret,
+					''
+				);
 			}
 			$parentAlbumList[$albumName] = $albumFields['parentAlbumName'];
 		}
-
-		return array(null, $parentAlbumList);
+		
+		return array(
+			null,
+			$parentAlbumList
+		);
 	}
-
+	
 	/**
 	 * Build a data tree of albums
 	 *
@@ -161,26 +183,32 @@ class Gallery1DataParser
 	{
 		list($ret, $parentAlbumList) = self::getParentAlbumList($path);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		foreach ($parentAlbumList as $myName => $parentName) {
 			if (!isset($tempAlbums[$myName])) {
 				$tempAlbums[$myName] = array();
 			}
 			if (empty($parentName) || $parentName == '.root') {
-				$hierarchy[$myName] = &$tempAlbums[$myName];
+				$hierarchy[$myName] =& $tempAlbums[$myName];
 			} else {
 				if (!isset($tempAlbums[$parentName])) {
 					$tempAlbums[$parentName] = array();
 				}
-				$tempAlbums[$parentName][$myName] = &$tempAlbums[$myName];
+				$tempAlbums[$parentName][$myName] =& $tempAlbums[$myName];
 			}
 		}
-
-		return array(null, $hierarchy);
+		
+		return array(
+			null,
+			$hierarchy
+		);
 	}
-
+	
 	/**
 	 * Fetch an array of albums with no parents
 	 *
@@ -193,26 +221,34 @@ class Gallery1DataParser
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
-
+		
 		list($ret, $albumOrder) = self::loadFile($path . 'albumdb.dat');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		foreach ($albumOrder as $albumName) {
-			list($ret, $albumFields) =
-		self::loadAlbumFields($path . $albumName . $slash);
+			list($ret, $albumFields) = self::loadAlbumFields($path . $albumName . $slash);
 			if ($ret) {
-				return array($ret,'');
+				return array(
+					$ret,
+					''
+				);
 			}
 			if ($albumFields['parentAlbumName'] == '.root') {
 				$rootAlbums[] = $albumName;
 			}
 		}
-
-		return array(null, $rootAlbums);
+		
+		return array(
+			null,
+			$rootAlbums
+		);
 	}
-
+	
 	/**
 	 * Load and return album metadata from given directory
 	 *
@@ -225,26 +261,32 @@ class Gallery1DataParser
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
-
+		
 		$tmp = trim($path);
-		if ($tmp[strlen($tmp)-1] != $slash) {
+		if ($tmp[strlen($tmp) - 1] != $slash) {
 			$tmp .= $slash;
 		}
 		$path = trim($tmp);
 		$albumPath = explode($slash, $path);
-		$albumName = $albumPath[count($albumPath)-2];
+		$albumName = $albumPath[count($albumPath) - 2];
 		list($ret, $album) = self::loadFile($path . 'album.dat');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$album->fields['name'] = $albumName;
 		if (!$album->fields['parentAlbumName']) {
 			$album->fields['parentAlbumName'] = '.root';
 		}
-
-		return array(null, $album->fields);
+		
+		return array(
+			null,
+			$album->fields
+		);
 	}
-
+	
 	/**
 	 * Count the number of photos in an album dir
 	 *
@@ -256,13 +298,19 @@ class Gallery1DataParser
 	{
 		list($ret, $photos) = self::loadFile($path . 'photos.dat');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$photoCount = count($photos);
-
-		return array(null, $photoCount);
+		
+		return array(
+			null,
+			$photoCount
+		);
 	}
-
+	
 	/**
 	 * Count the photo data from an album dir
 	 *
@@ -275,15 +323,21 @@ class Gallery1DataParser
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$slash = $platform->getDirectorySeparator();
-
+		
 		list($ret, $photos) = self::loadFile($path . $slash . 'photos.dat');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $photos);
+		
+		return array(
+			null,
+			$photos
+		);
 	}
-
+	
 	/**
 	 * Load user uids from path
 	 *
@@ -301,25 +355,28 @@ class Gallery1DataParser
 			}
 			$platform =& $gallery->getPlatform();
 			$slash = $platform->getDirectorySeparator();
-
-			list($ret, $userDB) =
-		self::loadFile($path . '.users' . $slash . 'userdb.dat');
+			
+			list($ret, $userDB) = self::loadFile($path . '.users' . $slash . 'userdb.dat');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			$uids[$path] = array();
 			foreach ($userDB->userMap as $username => $uid) {
-				if (self::isValidUid($path, $uid)
-			&& !self::isValidUid($path, $username)
-			&& !preg_match('/nobody|everybody|loggedin/i', $username)) {
+				if (self::isValidUid($path, $uid) && !self::isValidUid($path, $username) && !preg_match('/nobody|everybody|loggedin/i', $username)) {
 					$uids[$path][$uid] = $username;
 				}
 			}
 		}
-
-		return array(null, $uids[$path]);
+		
+		return array(
+			null,
+			$uids[$path]
+		);
 	}
-
+	
 	/**
 	 * Validate user id string from gallery v1.x.x
 	 *
@@ -334,7 +391,7 @@ class Gallery1DataParser
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Validate user id from gallery v1.x.x
 	 *
@@ -366,10 +423,10 @@ class Gallery1DataParser
 				$valid[$path][$uid] = false;
 			}
 		}
-
+		
 		return $valid[$path][$uid];
 	}
-
+	
 	/**
 	 * Load user metadata given a path and uid
 	 *
@@ -382,7 +439,7 @@ class Gallery1DataParser
 	{
 		global $gallery;
 		static $fields;
-
+		
 		if (!isset($fields[$path][$uid])) {
 			if (!isset($fields)) {
 				$fields = array();
@@ -396,17 +453,23 @@ class Gallery1DataParser
 			if (self::isValidUidString($uid)) {
 				list($ret, $user) = self::loadFile($path . '.users' . $slash . $uid);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				foreach ($user as $key => $value) {
 					$fields[$path][$uid][$key] = $value;
 				}
 			}
 		}
-
-		return array(null, $fields[$path][$uid]);
+		
+		return array(
+			null,
+			$fields[$path][$uid]
+		);
 	}
-
+	
 	/**
 	 * Load user metadata given a path and username
 	 *
@@ -419,16 +482,25 @@ class Gallery1DataParser
 	{
 		list($ret, $uids) = self::getUserUids($path);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$usernames = array_flip($uids);
 		$uid = $usernames[$username];
 		list($ret, $fields) = self::getUserFieldsByUid($path, $uid);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $fields);
+		
+		return array(
+			null,
+			$fields
+		);
 	}
 }
 

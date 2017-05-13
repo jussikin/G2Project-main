@@ -37,22 +37,28 @@ class G1MigrateHelper
 	public static function fetchMapCount()
 	{
 		global $gallery;
-
+		
 		$query = 'SELECT COUNT(*) FROM [G1MigrateMap]';
-
+		
 		list($ret, $searchResults) = $gallery->search($query, array(), array());
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$count = 0;
 		if ($result = $searchResults->nextResult()) {
-			$count = (int)$result[0];
+			$count = (int) $result[0];
 		}
-
-		return array(null, $count);
+		
+		return array(
+			null,
+			$count
+		);
 	}
-
+	
 	/**
 	 * Get mapping for given G1 album/item
 	 *
@@ -61,31 +67,39 @@ class G1MigrateHelper
 	 * @return array GalleryStatus a status code
 	 *               int id of G2 item or null if not found
 	 */
-	public static function fetchMapping($g1album, $g1item=null)
+	public static function fetchMapping($g1album, $g1item = null)
 	{
 		global $gallery;
-
+		
 		$query = 'SELECT [G1MigrateMap::itemId] FROM [G1MigrateMap]
 		  WHERE [G1MigrateMap::g1album]=? AND [G1MigrateMap::g1item]';
-		$data = array($g1album);
-
+		$data = array(
+			$g1album
+		);
+		
 		if (isset($g1item)) {
 			$query .= '=?';
 			$data[] = $g1item;
 		} else {
 			$query .= ' IS NULL';
 		}
-
+		
 		list($ret, $searchResults) = $gallery->search($query, $data);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$id = null;
 		if ($result = $searchResults->nextResult()) {
-			$id = (int)$result[0];
+			$id = (int) $result[0];
 		}
-
-		return array(null, $id);
+		
+		return array(
+			null,
+			$id
+		);
 	}
 }
