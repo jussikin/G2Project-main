@@ -32,7 +32,7 @@ class PanoramaModule extends GalleryModule {
 	public function __construct() {
 		$this->PanoramaModule();
 	}
-
+	
 	public function PanoramaModule() {
 		global $gallery;
 		$this->setId('panorama');
@@ -42,19 +42,27 @@ class PanoramaModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $gallery->i18n('Display'));
 		$this->setCallbacks('getSiteAdminViews|getItemLinks');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
 	public function upgrade($currentVersion, $x1 = null) {
 		if (!isset($currentVersion)) {
 			/* Initial install */
-			foreach (array('itemType' => 1,
-			   'itemLink' => 1,
-			   'width' => 800) as $key => $value) {
+			foreach (array(
+				'itemType' => 1,
+				'itemLink' => 1,
+				'width' => 800
+			) as $key => $value) {
 				$ret = $this->setParameter($key, $value);
 				if ($ret) {
 					return $ret;
@@ -69,71 +77,71 @@ class PanoramaModule extends GalleryModule {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryRenderer',
-			'PanoramaRenderer',
-			'PanoramaRenderer',
-			'modules/panorama/classes/PanoramaRenderer.class',
-			'panorama',
-			null
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryRenderer', 'PanoramaRenderer', 'PanoramaRenderer', 'modules/panorama/classes/PanoramaRenderer.class', 'panorama', null);
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemEditOption',
-			'PanoramaOption',
-			'PanoramaOption',
-			'modules/panorama/PanoramaOption.inc',
-			'panorama',
-			array('ItemEditPhoto')
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditOption', 'PanoramaOption', 'PanoramaOption', 'modules/panorama/PanoramaOption.inc', 'panorama', array(
+			'ItemEditPhoto'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null,
-			 array(array('name' => $this->translate('Panorama'),
-				 'view' => 'panorama.PanoramaSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Panorama'),
+					'view' => 'panorama.PanoramaSiteAdmin'
+				)
+			)
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getItemLinks
 	 */
 	public function getItemLinks($items, $wantsDetailedLinks, $permissions, $x1 = null) {
 		$links = array();
-
+		
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'panorama');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if ($param['itemLink']) {
 			GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaHelper.class');
-
-		/*
-	     * This won't obey the acting user id, but that's ok because it's only used to
-	     * determine if a panorama is even possible.  We'll still also gate on the acting
-	     * user's permissions that we receive.
-	     */
+			
+			/*
+	         * This won't obey the acting user id, but that's ok because it's only used to
+	         * determine if a panorama is even possible.  We'll still also gate on the acting
+	         * user's permissions that we receive.
+	         */
 			list($ret, $images) = PanoramaHelper::fetchViewableImages($items);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			foreach ($items as $item) {
 				$itemId = $item->getId();
@@ -143,23 +151,30 @@ class PanoramaModule extends GalleryModule {
 				$image = $images[$itemId];
 				$mimeType = $item->getMimeType();
 				$width = $image->getWidth();
-		/* Applet supports jpeg and gif images */
-				if (GalleryUtilities::isA($item, 'GalleryPhotoItem') &&
-				$item->getRenderer() != 'PanoramaRenderer' &&
-				preg_match(':^image/(gif|p?jpeg)$:', $mimeType) &&
-				$width > $param['width'] &&
-				($image->getHeight() / $width < 0.6)) {
-					$links[$itemId][] =
-					array('text' => $this->translate('View Panorama'),
-						  'params' => array('view' => 'panorama.Panorama',
-						'itemId' => $itemId));
+				/* Applet supports jpeg and gif images */
+				if (GalleryUtilities::isA($item, 'GalleryPhotoItem')
+					&& $item->getRenderer() != 'PanoramaRenderer'
+					&& preg_match(':^image/(gif|p?jpeg)$:', $mimeType)
+					&& $width > $param['width']
+					&& ($image->getHeight() / $width < 0.6)
+				) {
+					$links[$itemId][] = array(
+						'text' => $this->translate('View Panorama'),
+						'params' => array(
+							'view' => 'panorama.Panorama',
+							'itemId' => $itemId
+						)
+					);
 				}
 			}
 		}
-
-		return array(null, $links);
+		
+		return array(
+			null,
+			$links
+		);
 	}
-
+	
 	/**
 	 * @see GalleryPlugin::uninstall
 	 */
@@ -168,7 +183,7 @@ class PanoramaModule extends GalleryModule {
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return parent::uninstall();
 	}
 }

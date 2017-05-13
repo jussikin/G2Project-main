@@ -32,46 +32,51 @@ class PanoramaSiteAdminController extends GalleryController {
 	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$status = $error = array();
 		if (isset($form['action']['save'])) {
-			if (!isset($form['width']) || ((int)$form['width']) < 100) {
+			if (!isset($form['width']) || ((int) $form['width']) < 100) {
 				$error[] = 'form[error][width]';
 			} else {
-				foreach (array('itemType', 'itemLink') as $key) {
-					$ret = GalleryCoreApi::setPluginParameter(
-						'module',
-						'panorama',
-						$key,
-						(isset($form[$key]) && $form[$key]) ? 1 : 0
-					);
+				foreach (array(
+					'itemType',
+					'itemLink'
+				) as $key) {
+					$ret = GalleryCoreApi::setPluginParameter('module', 'panorama', $key, (isset($form[$key]) && $form[$key]) ? 1 : 0);
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				}
-				$ret = GalleryCoreApi::setPluginParameter(
-					'module',
-					'panorama',
-					'width',
-					(int)$form['width']
-				);
+				$ret = GalleryCoreApi::setPluginParameter('module', 'panorama', 'width', (int) $form['width']);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				$status['saved'] = 1;
 			}
 		}
-
-	/* Figure out where to redirect upon success */
+		
+		/* Figure out where to redirect upon success */
 		$method = empty($error) ? 'redirect' : 'delegate';
 		$results[$method]['view'] = 'core.SiteAdmin';
 		$results[$method]['subView'] = 'panorama.PanoramaSiteAdmin';
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -84,30 +89,47 @@ class PanoramaSiteAdminView extends GalleryView {
 	 */
 	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaHelper.class');
-
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		foreach (array('itemType', 'itemLink') as $key) {
+		
+		foreach (array(
+			'itemType',
+			'itemLink'
+		) as $key) {
 			if (!isset($form[$key])) {
 				$form[$key] = false;
 			}
 		}
 		if ($form['formName'] != 'PanoramaSiteAdmin') {
 			$form['formName'] = 'PanoramaSiteAdmin';
-			foreach (array('itemType', 'itemLink', 'width') as $key) {
-				list($ret, $form[$key]) =
-				GalleryCoreApi::getPluginParameter('module', 'panorama', $key);
+			foreach (array(
+				'itemType',
+				'itemLink',
+				'width'
+			) as $key) {
+				list($ret, $form[$key]) = GalleryCoreApi::getPluginParameter('module', 'panorama', $key);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
 		}
-
+		
 		$template->setVariable('controller', 'panorama.PanoramaSiteAdmin');
-
-		return array(null, array('body' => 'modules/panorama/templates/PanoramaSiteAdmin.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/panorama/templates/PanoramaSiteAdmin.tpl'
+			)
+		);
 	}
 }

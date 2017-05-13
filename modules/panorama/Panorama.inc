@@ -31,40 +31,64 @@ class PanoramaView extends GalleryView {
 	 */
 	public function loadTemplate(&$template, &$form) {
 		GalleryCoreApi::requireOnce('modules/panorama/classes/PanoramaHelper.class');
-
+		
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		list($ret, $image) = PanoramaHelper::fetchViewableImages(array($item));
+		list($ret, $image) = PanoramaHelper::fetchViewableImages(array(
+			$item
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (empty($image)) {
-			return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+			return array(
+				GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+				null
+			);
 		}
 		$image = $image[$item->getId()];
-
-		list($ret, $renderer) =
-		GalleryCoreApi::newFactoryInstance('GalleryRenderer', 'PanoramaRenderer');
+		
+		list($ret, $renderer) = GalleryCoreApi::newFactoryInstance('GalleryRenderer', 'PanoramaRenderer');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (!isset($renderer)) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+				null
+			);
 		}
-
+		
 		$template->setVariable('Panorama', array(
-			'item' => (array)$item,
-			'appletHtml' => $renderer->render($image, $item, array()),
-			));
-
+			'item' => (array) $item,
+			'appletHtml' => $renderer->render($image, $item, array())
+		));
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'panorama');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$template->title($module->translate('Panorama'));
-
-		return array(null, array('body' => 'modules/panorama/templates/Panorama.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/panorama/templates/Panorama.tpl'
+			)
+		);
 	}
 }

@@ -31,40 +31,59 @@ class PanoramaOption extends ItemEditOption {
 	 */
 	public function isAppropriate($item, $thumbnail) {
 		if (!GalleryUtilities::isA($item, 'GalleryPhotoItem')) {
-			return array(null, false);
+			return array(
+				null,
+				false
+			);
 		}
 		list($ret, $param) = GalleryCoreApi::fetchAllPluginParameters('module', 'panorama');
 		if ($ret || !$param['itemType']) {
-			return array(null, false);
+			return array(
+				null,
+				false
+			);
 		}
-		list($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
+		list($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array(
+			$item->getId()
+		));
 		if ($ret) {
-			return array(null, false);
+			return array(
+				null,
+				false
+			);
 		}
-		$width = empty($preferred)
-		? $item->getWidth() : $preferred[$item->getId()]->getWidth();
-		$mimeType = empty($preferred)
-		? $item->getMimeType() : $preferred[$item->getId()]->getMimeType();
-
-		return array(null,
-			 $item->getRenderer() == 'PanoramaRenderer' ||
-			 ($width > $param['width'] &&
-			  ($mimeType == 'image/jpeg' || $mimeType == 'image/gif')));
+		$width = empty($preferred) ? $item->getWidth() : $preferred[$item->getId()]->getWidth();
+		$mimeType = empty($preferred) ? $item->getMimeType() : $preferred[$item->getId()]->getMimeType();
+		
+		return array(
+			null,
+			$item->getRenderer() == 'PanoramaRenderer' || ($width > $param['width'] && ($mimeType == 'image/jpeg' || $mimeType == 'image/gif'))
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
 	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
-		list($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
+		list($ret, $preferred) = GalleryCoreApi::fetchPreferredsByItemIds(array(
+			$item->getId()
+		));
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
 		$form['PanoramaOption']['isPanorama'] = $item->getRenderer() == 'PanoramaRenderer';
-
-		return array(null, 'modules/panorama/templates/PanoramaOption.tpl', 'modules_panorama');
+		
+		return array(
+			null,
+			'modules/panorama/templates/PanoramaOption.tpl',
+			'modules_panorama'
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditOption::handleRequestAfterEdit
 	 */
@@ -75,26 +94,44 @@ class PanoramaOption extends ItemEditOption {
 		} elseif (!$isUsingPanoramaRenderer && isset($form['PanoramaOption']['isPanorama'])) {
 			$item->setRenderer('PanoramaRenderer');
 		}
-
+		
 		if ($item->isModified()) {
-			list($ret, $lockId) = GalleryCoreApi::acquireWriteLock(array($item->getId()));
+			list($ret, $lockId) = GalleryCoreApi::acquireWriteLock(array(
+				$item->getId()
+			));
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
-
+			
 			$ret = $item->save();
 			if ($ret) {
 				GalleryCoreApi::releaseLocks($lockId);
-
-				return array($ret, null, null);
+				
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
-
+			
 			$ret = GalleryCoreApi::releaseLocks($lockId);
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 		}
-
-		return array(null, array(), array());
+		
+		return array(
+			null,
+			array(),
+			array()
+		);
 	}
 }

@@ -40,23 +40,25 @@ class PanoramaUpgradeHelper {
 	 */
 	public static function revertEntities() {
 		global $gallery;
-
+		
 		$query = '
-	  SELECT
-	    [GalleryEntity::id], [GalleryEntity::entityType]
-	  FROM
-	    [GalleryEntity]
-	  WHERE
-	    [GalleryEntity::entityType] IN (\'PanoramaPhotoItem\', \'PanoramaDerivativeImage\')
-	';
+			SELECT
+				[GalleryEntity::id], [GalleryEntity::entityType]
+			FROM
+				[GalleryEntity]
+			WHERE
+				[GalleryEntity::entityType] IN (\'PanoramaPhotoItem\', \'PanoramaDerivativeImage\')
+		';
+		
 		list($ret, $searchResults) = $gallery->search($query, array());
 		if ($ret) {
 			return $ret;
 		}
+		
 		if (!$searchResults->resultCount()) {
 			return null;
 		}
-
+		
 		$photos = array();
 		$derivatives = array();
 		while ($result = $searchResults->nextResult()) {
@@ -67,49 +69,46 @@ class PanoramaUpgradeHelper {
 				$derivatives[] = $result[0];
 			}
 		}
-
+		
 		$storage =& $gallery->getStorage();
-
-	/* Switch PanoramaPhotoItems back to GalleryPhotoItems */
-	while ($photos) {
-		$ids = array_splice($photos, 0, 500);
-		$markers = GalleryUtilities::makeMarkers($ids);
-		$query = "UPDATE [GalleryItem] SET [::renderer] = 'PanoramaRenderer' " .
-		"WHERE [GalleryItem::id] IN ($markers)";
-		$ret = $storage->execute($query, $ids);
-		if ($ret) {
-			return $ret;
+		
+		/* Switch PanoramaPhotoItems back to GalleryPhotoItems */
+		while ($photos) {
+			$ids = array_splice($photos, 0, 500);
+			$markers = GalleryUtilities::makeMarkers($ids);
+			$query = "UPDATE [GalleryItem] SET [::renderer] = 'PanoramaRenderer' " . "WHERE [GalleryItem::id] IN ($markers)";
+			$ret = $storage->execute($query, $ids);
+			if ($ret) {
+				return $ret;
+			}
+			
+			$query = "UPDATE [GalleryEntity] SET [::entityType] = 'GalleryPhotoItem' " . "WHERE [GalleryEntity::id] IN ($markers)";
+			$ret = $storage->execute($query, $ids);
+			if ($ret) {
+				return $ret;
+			}
 		}
-
-		$query = "UPDATE [GalleryEntity] SET [::entityType] = 'GalleryPhotoItem' " .
-		"WHERE [GalleryEntity::id] IN ($markers)";
-		$ret = $storage->execute($query, $ids);
-		if ($ret) {
-			return $ret;
+		
+		/* Switch PanoramaDerivativeImage back to GalleryDerivativeImage */
+		while ($derivatives) {
+			$ids = array_splice($derivatives, 0, 500);
+			$markers = GalleryUtilities::makeMarkers($ids);
+			$query = "UPDATE [GalleryEntity] SET [::entityType] = 'GalleryDerivativeImage' " . "WHERE [GalleryEntity::id] IN ($markers)";
+			$ret = $storage->execute($query, $ids);
+			if ($ret) {
+				return $ret;
+			}
 		}
-	}
-
-	/* Switch PanoramaDerivativeImage back to GalleryDerivativeImage */
-	while ($derivatives) {
-		$ids = array_splice($derivatives, 0, 500);
-		$markers = GalleryUtilities::makeMarkers($ids);
-		$query = "UPDATE [GalleryEntity] SET [::entityType] = 'GalleryDerivativeImage' " .
-		"WHERE [GalleryEntity::id] IN ($markers)";
-		$ret = $storage->execute($query, $ids);
-		if ($ret) {
-			return $ret;
-		}
-	}
-
-	/*
-	 * Flush the entity cache because we've changed types
-	 * Swallow any errors here; they're going to be recoverable.
-	 * @todo Refactor this together with the code from the upgrader
-	 */
-	$cacheBaseDir = $gallery->getConfig('data.gallery.cache');
+		
+		/*
+	     * Flush the entity cache because we've changed types
+	     * Swallow any errors here; they're going to be recoverable.
+	     * @todo Refactor this together with the code from the upgrader
+	     */
+		$cacheBaseDir = $gallery->getConfig('data.gallery.cache');
 		$platform =& $gallery->getPlatform();
 		@$platform->recursiveRmDir("$cacheBaseDir/entity");
-
+		
 		return null;
 	}
 }
