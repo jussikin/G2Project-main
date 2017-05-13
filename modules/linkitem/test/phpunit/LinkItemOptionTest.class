@@ -33,27 +33,28 @@ class LinkItemOptionTest extends ItemEditOptionTestCase
 	{
 		$this->ItemEditOptionTestCase($methodName, 'linkitem', 'LinkItemOption');
 	}
-
+	
 	public function setUp()
 	{
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_album);
-
-		list($ret, $lockId) = GalleryCoreApi::acquireReadLock(array($this->_album->getId()));
+		
+		list($ret, $lockId) = GalleryCoreApi::acquireReadLock(array(
+			$this->_album->getId()
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $this->_link) =
-		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryLinkItem');
+		
+		list($ret, $this->_link) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryLinkItem');
 		if ($ret) {
 			return $ret;
 		}
@@ -68,34 +69,44 @@ class LinkItemOptionTest extends ItemEditOptionTestCase
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = GalleryCoreApi::releaseLocks($lockId);
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testSetUrl()
 	{
-		$form = array('LinkItemOption' => array('link' => 'http://test.net/'));
-
+		$form = array(
+			'LinkItemOption' => array(
+				'link' => 'http://test.net/'
+			)
+		);
+		
 		list($error, $warning) = $this->_handleRequestAfterEdit($form, $this->_link);
 		$this->assertEquals(array(), $error);
 		$this->assertEquals(array(), $warning);
-
+		
 		list($ret, $link) = $this->_link->refresh();
 		if ($ret) {
 			return $ret;
 		}
 		$this->assertEquals('http://test.net/', $link->getLink());
 	}
-
+	
 	public function testMissingUrl()
 	{
-		$form = array('LinkItemOption' => array('link' => ''));
-
+		$form = array(
+			'LinkItemOption' => array(
+				'link' => ''
+			)
+		);
+		
 		list($error, $warning) = $this->_handleRequestAfterEdit($form, $this->_link);
-		$this->assertEquals(array('form[LinkItemOption][error][link][missing]'), $error);
+		$this->assertEquals(array(
+			'form[LinkItemOption][error][link][missing]'
+		), $error);
 		$this->assertEquals(array(), $warning);
 	}
 }

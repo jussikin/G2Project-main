@@ -53,7 +53,7 @@ class GalleryLinkItem extends GalleryItem
 	 * @access public
 	 */
 	public $link;
-
+	
 	/**
 	 * Create a new instance of this GalleryEntity in the persistent store.
 	 * Let the parent do its work, then add any initialization specific to this class.
@@ -69,17 +69,17 @@ class GalleryLinkItem extends GalleryItem
 		}
 		if (is_numeric($link)) {
 			/* Link to an album */
-		list($ret, $linkedAlbum) = GalleryCoreApi::loadEntitiesById($link, 'GalleryAlbumItem');
+			list($ret, $linkedAlbum) = GalleryCoreApi::loadEntitiesById($link, 'GalleryAlbumItem');
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		$ret = parent::create($parentId, 'linkitem' . rand(1000, 9999));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->setLink($link);
 		if (isset($linkedAlbum)) {
 			$this->setTitle($linkedAlbum->getTitle());
@@ -89,31 +89,31 @@ class GalleryLinkItem extends GalleryItem
 		} else {
 			$this->setTitle(basename($link));
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryFileSystemEntity::move
 	 */
 	public function move($newParentId)
 	{
 		/*
-	 * We don't really have anything in the filesystem to move.
-	 * Pretend to be a linked entity during the move to avoid platform rename.
-	 */
-	$this->setLinkedEntity('fake');
-
+	     * We don't really have anything in the filesystem to move.
+	     * Pretend to be a linked entity during the move to avoid platform rename.
+	     */
+		$this->setLinkedEntity('fake');
+		
 		$ret = parent::move($newParentId);
 		$this->setLinkedEntity(null);
-
+		
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryEntity::itemTypeName
 	 */
@@ -122,13 +122,19 @@ class GalleryLinkItem extends GalleryItem
 		if ($localized) {
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'linkitem');
 			if (!$ret) {
-				return array($module->translate('Link'), $module->translate('link'));
+				return array(
+					$module->translate('Link'),
+					$module->translate('link')
+				);
 			}
 		}
-
-		return array('Link', 'link');
+		
+		return array(
+			'Link',
+			'link'
+		);
 	}
-
+	
 	/**
 	 * @see GalleryEntity::onLoad
 	 */
@@ -138,9 +144,9 @@ class GalleryLinkItem extends GalleryItem
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Redirect if trying to show this item */
-	list($view, $itemId) = GalleryUtilities::getRequestVariables('view', 'itemId');
+		
+		/* Redirect if trying to show this item */
+		list($view, $itemId) = GalleryUtilities::getRequestVariables('view', 'itemId');
 		if ($view == 'core.ShowItem' && $itemId == $this->getId()) {
 			global $gallery;
 			$link = $this->getLink();
@@ -152,40 +158,46 @@ class GalleryLinkItem extends GalleryItem
 				}
 				$session->doNotUseTempId();
 				$urlGenerator =& $gallery->getUrlGenerator();
-				$link = $urlGenerator->generateUrl(array('view' => 'core.ShowItem',
-							 'itemId' => $link),
-						   array('forceFullUrl' => true));
+				$link = $urlGenerator->generateUrl(array(
+					'view' => 'core.ShowItem',
+					'itemId' => $link
+				), array(
+					'forceFullUrl' => true
+				));
 			}
-
+			
 			$phpVm = $gallery->getPhpVm();
 			$phpVm->header('Location: ' . str_replace('&amp;', '&', $link));
 			$phpVm->exit_();
 		}
-
+		
 		return null;
 	}
-
+	
 	/* Add functions to make this entity thumbnail-able */
 	public function fetchPath()
 	{
-		return array(null, $this->getLink());
+		return array(
+			null,
+			$this->getLink()
+		);
 	}
-
+	
 	public function getMimeType()
 	{
 		return 'gallery/linkitem';
 	}
-
+	
 	public function getWidth()
 	{
 		return 0;
 	}
-
+	
 	public function getHeight()
 	{
 		return 0;
 	}
-
+	
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
@@ -193,12 +205,12 @@ class GalleryLinkItem extends GalleryItem
 	{
 		return 'GalleryLinkItem';
 	}
-
+	
 	public function getLink()
 	{
 		return $this->link;
 	}
-
+	
 	public function setLink($link)
 	{
 		$this->link = $link;
