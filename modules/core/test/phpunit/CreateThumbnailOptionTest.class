@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('lib/tools/phpunit/ItemAddOptionTestCase.class');
  */
 class CreateThumbnailOptionTest extends ItemAddOptionTestCase
 {
-	public function CreateThumbnailOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddOptionTestCase($methodName, 'core', 'CreateThumbnailOption');
 	}

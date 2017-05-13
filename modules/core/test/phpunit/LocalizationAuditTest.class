@@ -29,7 +29,7 @@ class LocalizationAuditTest extends CodeAuditTestCase
 {
 	public $_idMap = array();
 	
-	public function LocalizationAuditTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->CodeAuditTestCase($methodName);
 		$this->_errorCount = 0;

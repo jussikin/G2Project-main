@@ -27,7 +27,7 @@
  */
 class RegisterModuleTest extends GalleryTestCase
 {
-	public function RewriteModuleTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

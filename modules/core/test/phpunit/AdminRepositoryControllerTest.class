@@ -29,7 +29,7 @@ class AdminRepositoryControllerTest extends GalleryControllerTestCase
 {
 	public $_galleryTemplateAdapter;
 
-	public function AdminRepositoryControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminRepository');
 	}

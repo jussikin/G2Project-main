@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('lib/smarty_plugins/modifier.markup.php');
  */
 class MarkupTest extends GalleryTestCase
 {
-	public function MarkupTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

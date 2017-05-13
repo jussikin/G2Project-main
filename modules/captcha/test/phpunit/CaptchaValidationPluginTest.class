@@ -28,7 +28,7 @@
  */
 class CaptchaValidationPluginTest extends GalleryTestCase
 {
-	public function CaptchaValidationPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

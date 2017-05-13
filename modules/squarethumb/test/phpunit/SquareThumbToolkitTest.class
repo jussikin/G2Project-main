@@ -32,7 +32,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDerivativeImage.class')
  */
 class SquareThumbToolkitTest extends GalleryTestCase
 {
-	public function SquareThumbToolkitTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

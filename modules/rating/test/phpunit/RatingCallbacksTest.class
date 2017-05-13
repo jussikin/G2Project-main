@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/rating/Callbacks.inc');
  */
 class RatingCallbacksTest extends GalleryTestCase
 {
-	public function RatingCallbacksTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

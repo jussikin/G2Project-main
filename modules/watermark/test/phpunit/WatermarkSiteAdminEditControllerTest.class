@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  */
 class WatermarkSiteAdminEditControllerTest extends GalleryControllerTestCase
 {
-	public function WatermarkSiteAdminEditControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'watermark.WatermarkSiteAdminEdit');
 	}

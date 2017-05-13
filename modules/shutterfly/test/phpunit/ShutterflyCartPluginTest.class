@@ -28,7 +28,7 @@
  */
 class ShutterflyCartPluginTest extends GalleryTestCase
 {
-	public function ShutterflyCartPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

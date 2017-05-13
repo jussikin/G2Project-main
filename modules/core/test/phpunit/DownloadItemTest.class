@@ -27,7 +27,7 @@
  */
 class DownloadItemTest extends GalleryTestCase
 {
-	public function DownloadItemTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

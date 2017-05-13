@@ -28,7 +28,7 @@
  */
 class RatingAlbumTest extends GalleryTestCase
 {
-	public function RatingAlbumTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

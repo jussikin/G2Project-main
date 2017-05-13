@@ -31,7 +31,7 @@ class RewriteModuleTest extends GalleryTestCase
 	public $_module;
 	public $_activeRules;
 
-	public function RewriteModuleTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

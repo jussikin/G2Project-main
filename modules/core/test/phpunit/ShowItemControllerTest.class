@@ -27,7 +27,7 @@
  */
 class ShowItemControllerTest extends GalleryControllerTestCase
 {
-	public function ShowItemControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ShowItem');
 	}

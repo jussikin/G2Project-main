@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataCache.class');
  */
 class AdminDeleteUserControllerTest extends GalleryControllerTestCase
 {
-	public function AdminDeleteUserControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminDeleteUser');
 	}

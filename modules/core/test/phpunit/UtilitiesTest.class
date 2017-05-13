@@ -27,7 +27,7 @@
  */
 class UtilitiesTest extends GalleryTestCase
 {
-	public function UtilitiesTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

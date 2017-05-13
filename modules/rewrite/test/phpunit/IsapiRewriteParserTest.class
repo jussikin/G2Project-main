@@ -32,7 +32,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteParserTestCase.
  */
 class IsapiRewriteParserTest extends RewriteParserTestCase
 {
-	public function IsapiRewriteParserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

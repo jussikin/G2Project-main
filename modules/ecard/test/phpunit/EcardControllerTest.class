@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryValidationPlugin.class'
  */
 class EcardControllerTest extends GalleryControllerTestCase
 {
-	public function EcardControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'ecard.SendEcard');
 	}

@@ -28,7 +28,7 @@
  */
 class MP3AudioRendererTest extends GalleryTestCase
 {
-	public function MP3AudioRendererTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -28,7 +28,7 @@
  */
 class SetupRewriteControllerTest extends GalleryControllerTestCase
 {
-	public function SetupRewriteControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'rewrite.SetupRewrite');
 	}

@@ -27,7 +27,7 @@
  */
 class AddToCartControllerTest extends GalleryControllerTestCase
 {
-	public function AddToCartControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'cart.AddToCart');
 	}

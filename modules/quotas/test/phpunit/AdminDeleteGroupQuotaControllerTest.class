@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
  */
 class AdminDeleteGroupQuotaControllerTest extends GalleryControllerTestCase
 {
-	public function AdminDeleteGroupQuotaControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminDeleteGroupQuota');
 	}

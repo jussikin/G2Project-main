@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class ItemMakeHighlightControllerTest extends GalleryControllerTestCase
 {
-	public function ItemMakeHighlightControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMakeHighlight');
 	}

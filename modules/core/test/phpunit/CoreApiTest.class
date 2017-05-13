@@ -27,7 +27,7 @@
  */
 class CoreApiTest extends GalleryTestCase
 {
-	public function CoreApiTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

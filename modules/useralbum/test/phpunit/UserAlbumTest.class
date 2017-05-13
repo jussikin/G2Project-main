@@ -28,7 +28,7 @@
  */
 class UserAlbumTest extends GalleryTestCase
 {
-	public function UserAlbumTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

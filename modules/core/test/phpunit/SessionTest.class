@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
  */
 class SessionTest extends GalleryTestCase
 {
-	public function SessionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

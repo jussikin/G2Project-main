@@ -27,7 +27,7 @@
  */
 class AdminJpegtranControllerTest extends GalleryControllerTestCase
 {
-	public function AdminJpegtranControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'jpegtran.AdminJpegtran');
 	}

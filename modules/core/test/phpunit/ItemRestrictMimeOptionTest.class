@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('lib/tools/phpunit/ItemAddOptionTestCase.class');
  */
 class ItemRestrictMimeOptionTest extends ItemAddOptionTestCase
 {
-	public function ItemRestrictMimeOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddOptionTestCase($methodName, 'quotas', 'ItemRestrictMimeOption');
 	}

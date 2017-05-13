@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce(
 	'modules/rewrite/classes/parsers/isapirewrite/IsapiRewriteHelper.class');
 class IsapiRewriteHelperTest extends GalleryTestCase
 {
-	public function IsapiRewriteHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

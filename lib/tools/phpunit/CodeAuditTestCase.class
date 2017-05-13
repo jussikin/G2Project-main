@@ -28,7 +28,7 @@
  */
 class CodeAuditTestCase extends GalleryTestCase
 {
-	public function CodeAuditTestCase($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 		$this->_shouldHalt = false;

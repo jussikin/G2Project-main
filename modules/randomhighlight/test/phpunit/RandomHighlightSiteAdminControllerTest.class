@@ -28,7 +28,7 @@
  */
 class RandomHighlightSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function RandomHighlightSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'randomhighlight.RandomHighlightSiteAdmin');
 	}

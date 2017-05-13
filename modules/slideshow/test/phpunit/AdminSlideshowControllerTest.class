@@ -27,7 +27,7 @@
  */
 class AdminSlideshowControllerTest extends GalleryControllerTestCase
 {
-	public function AdminSlideshowControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'slideshow.AdminSlideshow');
 	}

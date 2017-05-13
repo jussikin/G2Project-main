@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce(
 	'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
 class ModRewriteHelperTest extends GalleryTestCase
 {
-	public function ModRewriteHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

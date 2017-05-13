@@ -27,7 +27,7 @@
  */
 class ItemEditThemePluginTest extends ItemEditPluginTestCase
 {
-	public function ItemEditThemePluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditTheme');
 	}

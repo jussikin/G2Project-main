@@ -28,7 +28,7 @@
  */
 class SlideshowAppletSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function SlideshowAppletSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'slideshowapplet.SlideshowAppletSiteAdmin');
 	}

@@ -27,7 +27,7 @@
  */
 class ItemDeleteControllerTest extends GalleryControllerTestCase
 {
-	public function ItemDeleteControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemDelete');
 	}

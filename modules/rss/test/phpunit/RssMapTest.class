@@ -32,7 +32,7 @@ class RssMapTest extends GalleryTestCase
 {
 	public $_feedsToDelete;
 
-	public function RssMapTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

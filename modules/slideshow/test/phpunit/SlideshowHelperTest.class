@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/slideshow/classes/SlideshowHelper.class');
  */
 class SlideshowHelperTest extends GalleryTestCase
 {
-	public function SlideshowHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

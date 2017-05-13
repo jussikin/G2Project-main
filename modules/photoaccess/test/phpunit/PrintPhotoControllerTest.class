@@ -28,7 +28,7 @@
  */
 class PrintPhotoControllerTest extends GalleryControllerTestCase
 {
-	public function PrintPhotoControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'photoaccess.PrintPhoto');
 	}

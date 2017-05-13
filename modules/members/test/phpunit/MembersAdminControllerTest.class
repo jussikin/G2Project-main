@@ -28,7 +28,7 @@
  */
 class MembersAdminControllerTest extends GalleryControllerTestCase
 {
-	public function MembersAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'members.AdminMembers');
 	}

@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/members/classes/GalleryMembersHelper.class'
  */
 class MembersTest extends GalleryTestCase
 {
-	public function MembersTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class SizeLimitHelperTest extends GalleryTestCase
 {
-	public function SizeLimitHelperTest($methodname)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodname);
 	}

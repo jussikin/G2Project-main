@@ -28,7 +28,7 @@
  */
 class AdminRewriteControllerTest extends GalleryControllerTestCase
 {
-	public function AdminRewriteControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'rewrite.AdminRewrite');
 	}

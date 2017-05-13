@@ -28,7 +28,7 @@
 */
 class PermalinksSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function PermalinksSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'permalinks.PermalinksSiteAdmin');
 	}

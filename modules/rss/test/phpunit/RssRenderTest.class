@@ -33,7 +33,7 @@ GalleryCoreApi::requireOnce('modules/rss/Render.inc');
  */
 class RssRenderTest extends GalleryControllerTestCase
 {
-	public function RssRenderTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

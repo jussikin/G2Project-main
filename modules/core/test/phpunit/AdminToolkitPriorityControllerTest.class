@@ -27,7 +27,7 @@
  */
 class AdminToolkitPriorityControllerTest extends GalleryControllerTestCase
 {
-	public function AdminToolkitPriorityControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminToolkitPriority');
 	}

@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/FlushDatabaseCacheTask.class')
  */
 class FlushDatabaseCacheTaskTest extends GalleryTestCase
 {
-	public function FlushDatabaseCacheTaskTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

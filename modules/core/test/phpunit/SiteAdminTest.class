@@ -27,7 +27,7 @@
  */
 class SiteAdminTest extends GalleryTestCase
 {
-	public function SiteAdminTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -27,7 +27,7 @@
  */
 class ItemEditMoviePluginTest extends ItemEditPluginTestCase
 {
-	public function ItemEditMoviePluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditMovie');
 	}

@@ -28,7 +28,7 @@
  */
 class PhotoAccessCartPluginTest extends GalleryTestCase
 {
-	public function PhotoAccessCartPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

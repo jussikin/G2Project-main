@@ -30,7 +30,7 @@ class UrlGeneratorTest extends GalleryTestCase
 	public $_urlGenerator;
 	public $_savedGet;
 	
-	public function UrlGeneratorTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

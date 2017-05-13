@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/DeleteSessionsTask.class');
  */
 class DeleteSessionsTaskTest extends GalleryTestCase
 {
-	public function DeleteSessionsTaskTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

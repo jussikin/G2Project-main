@@ -27,7 +27,7 @@
  */
 class RatingOptionTest extends ItemEditOptionTestCase
 {
-	public function RatingOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'rating', 'RatingItemEdit');
 	}

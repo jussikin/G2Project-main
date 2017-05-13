@@ -28,7 +28,7 @@
  */
 class ItemAddSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function ItemAddSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'itemadd.ItemAddSiteAdmin');
 	}

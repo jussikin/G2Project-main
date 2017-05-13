@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryToolkit.class');
  */
 class ItemAddWebCamTest extends ItemAddPluginTestCase
 {
-	public function ItemAddWebCamTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddPluginTestCase($methodName, 'webcam', 'ItemAddWebCam');
 	}

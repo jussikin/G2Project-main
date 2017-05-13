@@ -29,7 +29,7 @@ class GalleryTestCase extends TestCase
 {
 	public $_cleanup;
 	
-	public function GalleryTestCase($methodName)
+	public function __construct($methodName)
 	{
 		$this->TestCase($methodName);
 		$this->_cleanup = array(

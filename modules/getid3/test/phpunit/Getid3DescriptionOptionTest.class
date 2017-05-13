@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('lib/tools/phpunit/ItemAddOptionTestCase.class');
  */
 class Getid3DescriptionOptionTest extends ItemAddOptionTestCase
 {
-	public function Getid3DescriptionOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddOptionTestCase($methodName, 'getid3', 'Getid3DescriptionOption');
 	}

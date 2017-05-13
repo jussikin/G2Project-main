@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
  */
 class RatingHelperTest extends GalleryTestCase
 {
-	public function RatingHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

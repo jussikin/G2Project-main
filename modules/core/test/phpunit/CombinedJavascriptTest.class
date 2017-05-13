@@ -27,7 +27,7 @@
  */
 class CombinedJavascriptTest extends GalleryImmediateViewTestCase
 {
-	public function CombinedJavascriptTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryImmediateViewTestCase($methodName, 'core.CombinedJavascript');
 	}

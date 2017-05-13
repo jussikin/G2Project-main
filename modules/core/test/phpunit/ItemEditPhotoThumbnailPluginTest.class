@@ -27,7 +27,7 @@
  */
 class ItemEditPhotoThumbnailPluginTest extends ItemEditPluginTestCase
 {
-	public function ItemEditPhotoThumbnailPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditPhotoThumbnail');
 	}

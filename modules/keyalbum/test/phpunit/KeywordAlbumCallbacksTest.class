@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/keyalbum/Callbacks.inc');
  */
 class KeywordAlbumCallbacksTest extends GalleryTestCase
 {
-	public function KeywordAlbumCallbacksTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

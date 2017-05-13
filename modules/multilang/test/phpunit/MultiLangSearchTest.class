@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/multilang/classes/MultiLangHelper.class');
  */
 class MultiLangSearchTest extends GalleryTestCase
 {
-	public function MultiLangSearchTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

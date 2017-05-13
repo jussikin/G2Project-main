@@ -27,7 +27,7 @@
  */
 class ThumbOffsetItemEditPluginTest extends ItemEditPluginTestCase
 {
-	public function ThumbOffsetItemEditPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'thumbpage', 'ItemEditThumbOffset');
 	}

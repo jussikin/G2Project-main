@@ -27,7 +27,7 @@
  */
 class AdminGetid3ControllerTest extends GalleryControllerTestCase
 {
-	public function AdminGetid3ControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'getid3:AdminGetid3');
 	}

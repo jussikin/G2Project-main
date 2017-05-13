@@ -27,7 +27,7 @@
  */
 class ItemPermissionsControllerTest extends GalleryControllerTestCase
 {
-	public function ItemPermissionsControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemPermissions');
 	}

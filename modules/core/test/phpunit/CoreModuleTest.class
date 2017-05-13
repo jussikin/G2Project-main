@@ -29,7 +29,7 @@ class CoreModuleTest extends GalleryTestCase
 {
 	public $_module;
 
-	public function CoreModuleTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

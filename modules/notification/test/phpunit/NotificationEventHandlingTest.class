@@ -37,7 +37,7 @@ GalleryCoreApi::requireOnce('modules/notification/classes/NotificationMethodEmai
  */
 class NotificationEventHandlingTest extends GalleryTestCase
 {
-	public function NotificationEventHandlingTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

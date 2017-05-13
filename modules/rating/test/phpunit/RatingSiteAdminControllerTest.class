@@ -28,7 +28,7 @@
  */
 class RatingSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function RatingSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'rating.RatingSiteAdmin');
 	}

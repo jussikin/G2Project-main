@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/parser.i
 GalleryCoreApi::requireOnce('modules/rewrite/test/phpunit/RewriteParserTestCase.class');
 class ModRewriteParserTest extends RewriteParserTestCase
 {
-	public function ModRewriteParserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

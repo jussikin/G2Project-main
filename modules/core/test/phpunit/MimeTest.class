@@ -27,7 +27,7 @@
  */
 class MimeTest extends GalleryTestCase
 {
-	public function MimeTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

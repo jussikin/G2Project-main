@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GallerySession.class');
  */
 class IndexDotPhpTest extends GalleryTestCase
 {
-	public function IndexDotPhpTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

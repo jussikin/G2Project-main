@@ -27,7 +27,7 @@
  */
 class ItemMoveControllerTest extends GalleryControllerTestCase
 {
-	public function ItemMoveControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ItemMove');
 	}

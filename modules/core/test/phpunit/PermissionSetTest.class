@@ -27,7 +27,7 @@
  */
 class PermissionSetTest extends GalleryTestCase
 {
-	public function PermissionSetTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

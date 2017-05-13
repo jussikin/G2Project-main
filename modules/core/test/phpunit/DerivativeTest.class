@@ -27,7 +27,7 @@
  */
 class DerivativeTest extends GalleryTestCase
 {
-	public function DerivativeTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

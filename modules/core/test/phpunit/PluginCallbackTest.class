@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/PluginCallback.inc');
  */
 class PluginCallbackTest extends GalleryTestCase
 {
-	public function PluginCallbackTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

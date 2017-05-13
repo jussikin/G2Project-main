@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/BuildDerivativesTask.class');
  */
 class BuildDerivativesTaskTest extends GalleryTestCase
 {
-	public function BuildDerivativesTaskTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

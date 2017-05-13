@@ -28,7 +28,7 @@
  */
 class ShowCommentsViewTest extends GalleryViewTestCase
 {
-	public function ShowCommentsViewTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryViewTestCase($methodName, 'comment.ShowComments');
 	}

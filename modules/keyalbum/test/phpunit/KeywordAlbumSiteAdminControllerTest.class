@@ -28,7 +28,7 @@
  */
 class KeywordAlbumSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function KeywordAlbumSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'keyalbum.KeywordAlbumSiteAdmin');
 	}

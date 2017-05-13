@@ -27,7 +27,7 @@
  */
 class AdminDcrawControllerTest extends GalleryControllerTestCase
 {
-	public function AdminDcrawControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'dcraw.AdminDcraw');
 	}

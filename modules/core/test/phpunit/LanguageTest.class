@@ -27,7 +27,7 @@
  */
 class LanguageTest extends GalleryControllerTestCase
 {
-	public function LanguageTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.ChangeLanguage');
 	}

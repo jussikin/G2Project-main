@@ -42,7 +42,7 @@ class ConfirmImportControllerTest extends GalleryControllerTestCase
 	 */
 	public $_mapCount;
 
-	public function ConfirmImportControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'migrate.ConfirmImport');
 	}

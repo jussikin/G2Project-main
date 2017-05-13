@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/comment/classes/GalleryComment.class');
  */
 class CommentCallbackViewTest extends GalleryTestCase
 {
-	public function CommentCallbackViewTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

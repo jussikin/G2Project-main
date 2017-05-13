@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/AdminPerformance.inc');
  */
 class AdminPerformanceControllerTest extends GalleryControllerTestCase
 {
-	public function AdminPerformanceControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminPerformance');
 	}

@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteUrlGenerator.class')
  */
 class WebDavRewriteHelperTest extends GalleryTestCase
 {
-	public function WebDavRewriteHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

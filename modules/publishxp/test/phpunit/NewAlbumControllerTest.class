@@ -27,7 +27,7 @@
  */
 class NewAlbumControllerTest extends GalleryControllerTestCase
 {
-	public function NewAlbumControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'publishxp.NewAlbum');
 	}

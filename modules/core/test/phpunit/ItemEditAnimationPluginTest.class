@@ -27,7 +27,7 @@
  */
 class ItemEditAnimationPluginTest extends ItemEditPluginTestCase
 {
-	public function ItemEditAnimationPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'core', 'ItemEditAnimation');
 	}

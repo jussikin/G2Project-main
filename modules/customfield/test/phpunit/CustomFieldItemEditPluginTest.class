@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/customfield/classes/CustomFieldHelper.class
  */
 class CustomFieldItemEditPluginTest extends ItemEditPluginTestCase
 {
-	public function CustomFieldItemEditPluginTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditPluginTestCase($methodName, 'customfield', 'CustomFieldItemEdit');
 	}

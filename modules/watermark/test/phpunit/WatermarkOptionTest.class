@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkImage.class');
  */
 class WatermarkOptionTest extends ItemAddOptionTestCase
 {
-	public function WatermarkOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddOptionTestCase($methodName, 'watermark', 'WatermarkOption');
 	}

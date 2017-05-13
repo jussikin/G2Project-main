@@ -27,7 +27,7 @@
  */
 class DcrawToolkitHelperTest extends GalleryTestCase
 {
-	public function DcrawToolkitHelperTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

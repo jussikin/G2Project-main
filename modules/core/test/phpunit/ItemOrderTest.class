@@ -27,7 +27,7 @@
  */
 class ItemOrderTest extends GalleryTestCase
 {
-	public function ItemOrderTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

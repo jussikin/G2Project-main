@@ -27,7 +27,7 @@
  */
 class AdminUsersControllerTest extends GalleryControllerTestCase
 {
-	public function AdminUsersControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.AdminUsers');
 	}

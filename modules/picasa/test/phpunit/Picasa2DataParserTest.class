@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/picasa/classes/Picasa2DataParser.class');
  */
 class Picasa2DataParserTest extends GalleryControllerTestCase
 {
-	public function Picasa2DataParserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

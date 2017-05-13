@@ -28,7 +28,7 @@
  */
 class PrintPhotosControllerTest extends GalleryControllerTestCase
 {
-	public function PrintPhotosControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'fotokasten.PrintPhotos');
 	}

@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/mime/classes/helpers/ItemMimeHelper_simple.
  */
 class ItemMimeHelper_simpleTest extends GalleryTestCase
 {
-	public function ItemMimeHelperTest($methodname)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodname);
 	}

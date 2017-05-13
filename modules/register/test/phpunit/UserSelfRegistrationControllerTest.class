@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryValidationPlugin.class'
  */
 class UserSelfRegistrationControllerTest extends GalleryControllerTestCase
 {
-	public function UserSelfRegistrationControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'register.UserSelfRegistration');
 	}

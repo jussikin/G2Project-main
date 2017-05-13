@@ -32,7 +32,7 @@ class PermalinksOptionTest extends ItemEditOptionTestCase
 {
 	public $_aliasNamesToDelete;
 
-	public function PermalinksOptionTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemEditOptionTestCase($methodName, 'permalinks', 'PermalinksOption');
 	}

@@ -27,7 +27,7 @@
  */
 class ItemAddFromServerTest extends ItemAddPluginTestCase
 {
-	public function ItemAddFromServerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->ItemAddPluginTestCase($methodName, 'itemadd', 'ItemAddFromServer');
 	}

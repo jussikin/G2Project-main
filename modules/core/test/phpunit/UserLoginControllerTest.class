@@ -31,7 +31,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
  */
 class UserLoginControllerTest extends GalleryControllerTestCase
 {
-	public function UserLoginControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'core.UserLogin');
 	}

@@ -27,7 +27,7 @@
  */
 class ShowItemTest extends GalleryTestCase
 {
-	public function ShowItemTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

@@ -28,7 +28,7 @@
  */
 class Php43CompatibilityTest extends CodeAuditTestCase
 {
-	public function Php43CompatibilityTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->CodeAuditTestCase($methodName);
 		

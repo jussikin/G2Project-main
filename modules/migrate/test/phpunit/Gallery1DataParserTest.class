@@ -30,7 +30,7 @@ GalleryCoreApi::requireOnce('modules/migrate/classes/Gallery1DataParser.class');
  */
 class Gallery1DataParserTest extends GalleryControllerTestCase
 {
-	public function Gallery1DataParserTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

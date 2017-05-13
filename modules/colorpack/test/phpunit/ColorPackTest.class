@@ -28,7 +28,7 @@
  */
 class ColorPackTest extends GalleryTestCase
 {
-	public function ColorPackTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}

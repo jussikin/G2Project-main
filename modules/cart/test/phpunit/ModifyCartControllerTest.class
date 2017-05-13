@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/cart/classes/CartHelper.class');
  */
 class ModifyCartControllerTest extends GalleryControllerTestCase
 {
-	public function ModifyCartControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'cart.ModifyCart');
 	}

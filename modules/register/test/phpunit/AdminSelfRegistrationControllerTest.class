@@ -29,7 +29,7 @@ class AdminSelfRegistrationControllerTest extends GalleryControllerTestCase
 {
 	public $paramNames;
 
-	public function AdminSelfRegistrationControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'register.AdminSelfRegistration');
 	}

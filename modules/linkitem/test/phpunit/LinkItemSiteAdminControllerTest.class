@@ -28,7 +28,7 @@
  */
 class LinkItemSiteAdminControllerTest extends GalleryControllerTestCase
 {
-	public function LinkItemSiteAdminControllerTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryControllerTestCase($methodName, 'linkitem.LinkItemSiteAdmin');
 	}

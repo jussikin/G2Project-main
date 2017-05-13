@@ -29,7 +29,7 @@ GalleryCoreApi::requireOnce('modules/core/classes/GalleryDataItem.class');
  */
 class DataItemTest extends GalleryTestCase
 {
-	public function DataItemTest($methodName)
+	public function __construct($methodName)
 	{
 		$this->GalleryTestCase($methodName);
 	}
