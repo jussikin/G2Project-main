@@ -37,22 +37,27 @@ class NewItemsHelper
 	public static function fetchAlbumCount()
 	{
 		global $gallery;
-		$query = 'SELECT COUNT([GalleryAlbumItem::id]) FROM [GalleryAlbumItem] ' .
-		 'WHERE [GalleryAlbumItem::orderBy] LIKE \'%NewItems%\'';
-
+		$query = 'SELECT COUNT([GalleryAlbumItem::id]) FROM [GalleryAlbumItem] ' . 'WHERE [GalleryAlbumItem::orderBy] LIKE \'%NewItems%\'';
+		
 		list($ret, $results) = $gallery->search($query);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$count = 0;
 		if ($result = $results->nextResult()) {
-			$count = (int)$result[0];
+			$count = (int) $result[0];
 		}
-
-		return array(null, $count);
+		
+		return array(
+			null,
+			$count
+		);
 	}
-
+	
 	/**
 	 * Remove NewItems sort from all albums
 	 *
@@ -61,19 +66,18 @@ class NewItemsHelper
 	public static function resetNewItemSorts()
 	{
 		global $gallery;
-		$query = 'SELECT [GalleryAlbumItem::id] FROM [GalleryAlbumItem] ' .
-		 'WHERE [GalleryAlbumItem::orderBy] LIKE \'%NewItems%\'';
-
+		$query = 'SELECT [GalleryAlbumItem::id] FROM [GalleryAlbumItem] ' . 'WHERE [GalleryAlbumItem::orderBy] LIKE \'%NewItems%\'';
+		
 		list($ret, $results) = $gallery->search($query);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		for ($i = 0; $result = $results->nextResult();) {
 			if ($i++ % 10 == 0) {
 				$gallery->guaranteeTimeLimit(5);
 			}
-			$itemId = (int)$result[0];
+			$itemId = (int) $result[0];
 			list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($itemId);
 			if ($ret) {
 				return $ret;
@@ -93,7 +97,7 @@ class NewItemsHelper
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
 }
