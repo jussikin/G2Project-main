@@ -113,21 +113,21 @@ class GalleryMembersHelper
 		$aclMarkers = GalleryUtilities::makeMarkers(count($aclIds));
 
 		$query = sprintf('
-	SELECT
-	  [GalleryItem::id], [GalleryEntity::creationTimestamp]
-	FROM
-	  [GalleryItem], [GalleryEntity], [GalleryAccessSubscriberMap]
-	WHERE
-	  [GalleryItem::id] = [GalleryEntity::id]
-	  AND
-	  [GalleryItem::ownerId] = ?
-	  AND
-	  [GalleryAccessSubscriberMap::itemId] = [GalleryItem::id]
-	  AND
-	  [GalleryAccessSubscriberMap::accessListId] IN (%s)
-	ORDER BY
-	  [GalleryEntity::creationTimestamp] ' . $direction . '
-	', $aclMarkers);
+			SELECT
+				[GalleryItem::id], [GalleryEntity::creationTimestamp]
+			FROM
+				[GalleryItem], [GalleryEntity], [GalleryAccessSubscriberMap]
+			WHERE
+				[GalleryItem::id] = [GalleryEntity::id]
+			AND
+				[GalleryItem::ownerId] = ?
+			AND
+				[GalleryAccessSubscriberMap::itemId] = [GalleryItem::id]
+			AND
+				[GalleryAccessSubscriberMap::accessListId] IN (%s)
+			ORDER BY
+				[GalleryEntity::creationTimestamp] ' . $direction . '
+			', $aclMarkers);
 
 		$data = array();
 		$data[] = (int)$userId;

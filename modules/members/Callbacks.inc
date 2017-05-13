@@ -25,34 +25,30 @@
  */
 class MembersCallbacks
 {
-	public function callback($params, $smarty, $callback, $userId=null)
-	{
-		global $gallery;
-
-		$block = $smarty->getTemplateVars('block');
-		$smarty->assignByRef('block', $block);
-
-		switch ($callback) {
-	case 'LoadMembers':
-		/* The "Members List" link */
-		GalleryCoreApi::requireOnce(
-		'modules/members/classes/GalleryMembersHelper.class');
-		list($ret, $block['members']['LoadMembers']['canViewList']) =
-		GalleryMembersHelper::canViewMembersModule($gallery->getActiveUserId());
-		if ($ret) {
-			return $ret;
-		}
-
-		/* The members count */
-		list($ret, $block['members']['LoadMembers']['count']) =
-		GalleryMembersHelper::getMembersCount();
-		if ($ret) {
-			return $ret;
-		}
-
-		return null;
-	}
-
-		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
-	}
+    public function callback($params, $smarty, $callback, $userId = null)
+    {
+        global $gallery;
+        
+        $block = $smarty->getTemplateVars('block');
+        $smarty->assignByRef('block', $block);
+        
+        if ($callback == 'LoadMembers') {
+            /* The "Members List" link */
+            GalleryCoreApi::requireOnce('modules/members/classes/GalleryMembersHelper.class');
+            list($ret, $block['members']['LoadMembers']['canViewList']) = GalleryMembersHelper::canViewMembersModule($gallery->getActiveUserId());
+            if ($ret) {
+                return $ret;
+            }
+            
+            /* The members count */
+            list($ret, $block['members']['LoadMembers']['count']) = GalleryMembersHelper::getMembersCount();
+            if ($ret) {
+                return $ret;
+            }
+            
+            return null;
+        }
+        
+        return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+    }
 }

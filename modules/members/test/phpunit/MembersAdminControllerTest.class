@@ -32,47 +32,55 @@ class MembersAdminControllerTest extends GalleryControllerTestCase
 	{
 		$this->GalleryControllerTestCase($methodName, 'members.AdminMembers');
 	}
-
+	
 	public function setUp()
 	{
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'members');
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testMembersAdminControllerReset()
 	{
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
-
-	/* Perform the request and verify that we succeeded */
-	$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'members.AdminMembers'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
+		
+		/* Perform the request and verify that we succeeded */
+		$results = $this->handleRequest();
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'members.AdminMembers'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
 	}
-
+	
 	public function testMembersAdminControllerSave()
 	{
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
 		GalleryUtilities::putRequestVariable('form[canViewMembersModule]', '2');
 		GalleryUtilities::putRequestVariable('form[canViewEmailAddress]', '0');
-
-	/* Perform the request and verify that we succeeded */
-	$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'members.AdminMembers'),
-				  'status' => array('saved' => 1),
-				  'error' => array()),
-				$results);
-
-	/* TODO: verify that the parameters were actually saved properly to the database */
+		
+		/* Perform the request and verify that we succeeded */
+		$results = $this->handleRequest();
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'members.AdminMembers'
+			),
+			'status' => array(
+				'saved' => 1
+			),
+			'error' => array()
+		), $results);
+		
+		/* TODO: verify that the parameters were actually saved properly to the database */
 	}
 }
