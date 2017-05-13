@@ -26,29 +26,37 @@
  * @author Tim Almdal <tnalmdal@shaw.ca>
  * @version $Revision: 17580 $
  */
-class NotificationItemsAddedOption extends ItemAddOption
-{
+class NotificationItemsAddedOption extends ItemAddOption {
 	/**
 	 * @see ItemAddOption::isAppropriate
 	 */
-	public function isAppropriate()
-	{
-		return array(null, true);
+	public function isAppropriate() {
+		return array(
+			null,
+			true
+		);
 	}
-
+	
 	/**
 	 * @see ItemAddOption::handleRequestAfterAdd
 	 */
-	public function handleRequestAfterAdd($form, $items)
-	{
+	public function handleRequestAfterAdd($form, $items) {
 		/* Tell the world we were successful */
-	$itemAddEvent = GalleryCoreApi::newEvent('Gallery::ItemAdded');
+		$itemAddEvent = GalleryCoreApi::newEvent('Gallery::ItemAdded');
 		$itemAddEvent->setData($items);
 		list($ret) = GalleryCoreApi::postEvent($itemAddEvent);
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
-		return array(null, array(), array());
+		
+		return array(
+			null,
+			array(),
+			array()
+		);
 	}
 }

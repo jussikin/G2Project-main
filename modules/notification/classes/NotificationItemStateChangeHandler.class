@@ -32,45 +32,61 @@ class NotificationItemStateChangeHandler /* extends GalleryEventListener */
 	/**
 	 * @see GalleryEventListener::handleEvent
 	 */
-	public function handleEvent($event)
-	{
+	public function handleEvent($event) {
 		global $gallery;
-
+		
 		$eventName = $event->getEventName();
 		$entity = $event->getEntity();
-	
+		
 		if (empty($entity)) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT, null, null,
-							   'No entity supplied for ' . $eventName), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_OBJECT, null, null, 'No entity supplied for ' . $eventName),
+				null
+			);
 		}
 		if ($eventName == 'GalleryEntity::save') {
-			if (!$entity->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)
-		|| !method_exists($entity, 'getParentId')) {
-				return array(null, null);
+			if (!$entity->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED) || !method_exists($entity, 'getParentId')) {
+				return array(
+					null,
+					null
+				);
 			}
-
+			
 			$parentId = $entity->getParentId();
 			list($ret, $eventMap) = NotificationHelper::getSubscriberByEntityId($parentId);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			$ret = $this->_propagateSubscriptions($entity, $eventMap);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} elseif ($eventName == 'GalleryEntity::delete') {
 			$deleteByColumn = GalleryUtilities::isA($entity, 'GalleryUser') ? 'userId' : 'itemId';
-			$ret = GalleryCoreApi::removeMapEntry('SubscriptionMap',
-						  array($deleteByColumn => $entity->getId()));
+			$ret = GalleryCoreApi::removeMapEntry('SubscriptionMap', array(
+				$deleteByColumn => $entity->getId()
+			));
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		return array(null, null);
+		
+		return array(
+			null,
+			null
+		);
 	}
-
+	
 	/**
 	 * For the specified entityId, this method will retrieve all the events that have users
 	 * subscribed to. If the user has permission to the new item, the subscription will be applied
@@ -81,46 +97,41 @@ class NotificationItemStateChangeHandler /* extends GalleryEventListener */
 	 * @return GalleryStatus
 	 * @access private
 	 */
-	public function _propagateSubscriptions($entity, $eventMap)
-	{
+	public function _propagateSubscriptions($entity, $eventMap) {
 		foreach ($eventMap as $notificationName => $subscribers) {
-			list($ret, $notification) = GalleryCoreApi::newFactoryInstanceById(
-							 'NotificationEvent_1_0', $notificationName);
+			list($ret, $notification) = GalleryCoreApi::newFactoryInstanceById('NotificationEvent_1_0', $notificationName);
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			if (!$notification->isAppropriateForItem($entity)) {
 				continue;
 			}
-
-			list($ret, $hints) = GalleryCoreApi::getFactoryDefinitionHints('NotificationEvent_1_0',
-										$notificationName);
+			
+			list($ret, $hints) = GalleryCoreApi::getFactoryDefinitionHints('NotificationEvent_1_0', $notificationName);
 			if ($ret) {
 				return $ret;
 			}
 			$eventName = $hints[0];
-
+			
 			$requiredPermission = $notification->getPermission();
 			foreach ($subscribers as $data) {
-				list($ret, $permissions) =
-			GalleryCoreApi::getPermissions($entity->getId(), $data[0]);
+				list($ret, $permissions) = GalleryCoreApi::getPermissions($entity->getId(), $data[0]);
 				if ($ret) {
 					return $ret;
 				}
-
+				
 				if (empty($requiredPermission) || empty($permissions[$requiredPermission])) {
 					continue;
 				}
-
-				$ret = NotificationHelper::subscribe($data[0], $entity, $eventName,
-							 $notificationName, $data[1], true);
+				
+				$ret = NotificationHelper::subscribe($data[0], $entity, $eventName, $notificationName, $data[1], true);
 				if ($ret) {
 					return $ret;
 				}
 			}
 		}
-
+		
 		return null;
 	}
 }
