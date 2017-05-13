@@ -34,41 +34,59 @@ class RedirectController extends GalleryController {
 	public function omitAuthTokenCheck() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
 	public function handleRequest(&$form) {
 		$alias = GalleryUtilities::getRequestVariables('filename');
 		if (empty($alias)) {
-			return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+			return array(
+				GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+				null
+			);
 		}
-
+		
 		list($ret, $itemId) = PermalinksMapHelper::fetchItemIdForAlias($alias);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Avoid information disclosure, act as if the item didn't exist. */
+		
+		/* Avoid information disclosure, act as if the item didn't exist. */
 		if (isset($itemId)) {
-			list($ret, $hasPermission) =
-			GalleryCoreApi::hasItemPermission($itemId, 'core.view');
+			list($ret, $hasPermission) = GalleryCoreApi::hasItemPermission($itemId, 'core.view');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
 		if (empty($itemId) || !$hasPermission) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+				null
+			);
 		}
-
-	/* Delegate to the ShowItem view */
+		
+		/* Delegate to the ShowItem view */
 		GalleryUtilities::putRequestVariable('itemId', $itemId);
 		GalleryUtilities::putRequestVariable('view', 'core.ShowItem');
-
-		$results = array('delegate' => array('view' => 'core.ShowItem'),
-			 'status' => array(),
-			 'error' => array());
-
-		return array(null, $results);
+		
+		$results = array(
+			'delegate' => array(
+				'view' => 'core.ShowItem'
+			),
+			'status' => array(),
+			'error' => array()
+		);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }

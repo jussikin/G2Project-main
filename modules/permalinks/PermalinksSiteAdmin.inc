@@ -34,56 +34,67 @@ class PermalinksSiteAdminController extends GalleryController {
 	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$results = $status = $error = array();
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'permalinks');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (isset($form['PermalinksSiteAdmin']['delete'])) {
 			foreach ($form['PermalinksSiteAdmin']['delete'] as $id => $id1) {
 				$ret = PermalinksMapHelper::deleteAlias($id);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
-			$status['PermalinksSiteAdmin']['success'] =
-			$module->translate('Permalink(s) deleted successfully');
+			$status['PermalinksSiteAdmin']['success'] = $module->translate('Permalink(s) deleted successfully');
 		}
-
-		list($ret, $autoPermalink) =
-		GalleryCoreApi::getPluginParameter('module', 'permalinks', 'autoPermalink');
+		
+		list($ret, $autoPermalink) = GalleryCoreApi::getPluginParameter('module', 'permalinks', 'autoPermalink');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$autoPermalink = isset($autoPermalink) ? $autoPermalink : 0;
 		$newAutoPermalink = isset($form['PermalinksSiteAdmin']['autoPermalink']) ? 1 : 0;
-
+		
 		if ($autoPermalink != $newAutoPermalink) {
-			$ret = GalleryCoreApi::setPluginParameter(
-				'module',
-				'permalinks',
-				'autoPermalink',
-				$newAutoPermalink
-			);
+			$ret = GalleryCoreApi::setPluginParameter('module', 'permalinks', 'autoPermalink', $newAutoPermalink);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-	/* Figure out where to redirect upon success */
+		
+		/* Figure out where to redirect upon success */
 		$method = empty($error) ? 'redirect' : 'delegate';
 		$results[$method]['view'] = 'core.SiteAdmin';
 		$results[$method]['subView'] = 'permalinks.PermalinksSiteAdmin';
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -97,24 +108,37 @@ class PermalinksSiteAdminView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$PermalinksSiteAdmin = array();
 		list($ret, $PermalinksSiteAdmin['aliases']) = PermalinksMapHelper::fetchAliasesForItem();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $PermalinksSiteAdmin['autoPermalink']) =
-		GalleryCoreApi::getPluginParameter('module', 'permalinks', 'autoPermalink');
+		
+		list($ret, $PermalinksSiteAdmin['autoPermalink']) = GalleryCoreApi::getPluginParameter('module', 'permalinks', 'autoPermalink');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$template->setVariable('PermalinksSiteAdmin', $PermalinksSiteAdmin);
 		$template->setVariable('controller', 'permalinks.PermalinksSiteAdmin');
-
-		return array(null, array('body' => 'modules/permalinks/templates/PermalinksSiteAdmin.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/permalinks/templates/PermalinksSiteAdmin.tpl'
+			)
+		);
 	}
 }

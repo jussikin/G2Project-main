@@ -32,11 +32,19 @@ class ActivationWarningView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$template->setVariable('controller', 'permalinks.PermalinksSiteAdmin');
-
-		return array(null, array('body' => 'modules/permalinks/templates/ActivationWarning.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/permalinks/templates/ActivationWarning.tpl'
+			)
+		);
 	}
 }

@@ -33,69 +33,96 @@ class PermalinksOption extends ItemEditOption {
 	 */
 	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		$warning = $error = array();
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'permalinks');
 		if ($ret) {
-			return array($ret, null, null);
-		}
-
-		if (!empty($form['PermalinksOption']['aliasName'])) {
-			$ret = PermalinksMapHelper::createAlias(
-				$form['PermalinksOption']['aliasName'],
-				$item->getId()
+			return array(
+				$ret,
+				null,
+				null
 			);
+		}
+		
+		if (!empty($form['PermalinksOption']['aliasName'])) {
+			$ret = PermalinksMapHelper::createAlias($form['PermalinksOption']['aliasName'], $item->getId());
 			if ($ret) {
 				if (!($ret->getErrorCode() & ERROR_COLLISION)) {
-					return array($ret, null, null);
+					return array(
+						$ret,
+						null,
+						null
+					);
 				}
-
-		/* Set our error status and fall back to the view. */
+				
+				/* Set our error status and fall back to the view. */
 				$error[] = 'form[error][PermalinksOption][exists]';
 			} else {
 				/* don't do anything if we're successful */
 			}
 		}
-
+		
 		if (isset($form['PermalinksOption']['delete'])) {
 			foreach ($form['PermalinksOption']['delete'] as $name => $status) {
 				$ret = PermalinksMapHelper::deleteAlias($name);
 				if ($ret) {
-					return array($ret, null, null);
+					return array(
+						$ret,
+						null,
+						null
+					);
 				}
-
-		/* don't do anything if we're successful */
+				
+				/* don't do anything if we're successful */
 			}
 			$warning[] = $module->translate('Permalink(s) deleted successfully');
 		}
-
-		return array(null, $error, $warning);
+		
+		return array(
+			null,
+			$error,
+			$warning
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
 	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		list($ret, $aliases) = PermalinksMapHelper::fetchAliasesForItem($item->getId());
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
-		$template->setVariable('PermalinksOption', array('aliases' => $aliases));
-
-		return array(null,
-			 'modules/permalinks/templates/PermalinksOption.tpl', 'modules_permalinks');
+		
+		$template->setVariable('PermalinksOption', array(
+			'aliases' => $aliases
+		));
+		
+		return array(
+			null,
+			'modules/permalinks/templates/PermalinksOption.tpl',
+			'modules_permalinks'
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
 	public function isAppropriate($item, $thumbnail) {
 		list($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null,
-			 GalleryUtilities::isA($item, 'GalleryItem') && $item->getId() != $rootId);
+		
+		return array(
+			null,
+			GalleryUtilities::isA($item, 'GalleryItem') && $item->getId() != $rootId
+		);
 	}
 }
