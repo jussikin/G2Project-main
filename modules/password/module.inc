@@ -31,26 +31,30 @@
  */
 class PasswordModule extends GalleryModule {
 	/* and GalleryEventListener */
-
+	
 	public function __construct() {
 		$this->PasswordModule();
 	}
-
+	
 	public function PasswordModule() {
 		global $gallery;
-
+		
 		$this->setId('password');
 		$this->setName($gallery->i18n('Password Protected Albums'));
-		$this->setDescription(
-			$gallery->i18n('Assign passwords for viewing particular albums')
-		);
+		$this->setDescription($gallery->i18n('Assign passwords for viewing particular albums'));
 		$this->setVersion('2.0.0');
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $this->translate('Display'));
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
@@ -59,7 +63,9 @@ class PasswordModule extends GalleryModule {
 		if ($ret) {
 			return $ret;
 		}
-		foreach (array('validation.level' => 'MEDIUM') as $key => $value) {
+		foreach (array(
+			'validation.level' => 'MEDIUM'
+		) as $key => $value) {
 			if (!isset($params[$key])) {
 				$ret = $this->setParameter($key, $value);
 				if ($ret) {
@@ -67,84 +73,55 @@ class PasswordModule extends GalleryModule {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryEventListener',
-			'PasswordModule',
-			'PasswordModule',
-			'modules/password/module.inc',
-			'password',
-			array('GalleryEntity::save')
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'PasswordModule', 'PasswordModule', 'modules/password/module.inc', 'password', array(
+			'GalleryEntity::save'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryOnLoadHandler',
-			'PasswordModule',
-			'Password',
-			'modules/password/module.inc',
-			'password',
-			null
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryOnLoadHandler', 'PasswordModule', 'Password', 'modules/password/module.inc', 'password', null);
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemEditOption',
-			'PasswordOption',
-			'PasswordOption',
-			'modules/password/PasswordOption.inc',
-			'password',
-			array('ItemEditItem')
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditOption', 'PasswordOption', 'PasswordOption', 'modules/password/PasswordOption.inc', 'password', array(
+			'ItemEditItem'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'PasswordInterface_1_0',
-			'PasswordHelper',
-			'Password',
-			'modules/password/classes/PasswordHelper.class',
-			'password',
-			null
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('PasswordInterface_1_0', 'PasswordHelper', 'Password', 'modules/password/classes/PasswordHelper.class', 'password', null);
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'CaptchaAdminOption',
-			'PasswordCaptchaAdminOption',
-			'PasswordCaptchaAdminOption',
-			'modules/password/classes/PasswordCaptchaAdminOption.class',
-			'password',
-			null
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('CaptchaAdminOption', 'PasswordCaptchaAdminOption', 'PasswordCaptchaAdminOption', 'modules/password/classes/PasswordCaptchaAdminOption.class', 'password', null);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getOnLoadHandlerIds
 	 */
 	public function getOnLoadHandlerIds() {
-		return array('Password');
+		return array(
+			'Password'
+		);
 	}
-
+	
 	/**
 	 * Remove password from all items.
 	 * @see GalleryModule::uninstall
@@ -152,7 +129,7 @@ class PasswordModule extends GalleryModule {
 	public function uninstall() {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/password/classes/PasswordHelper.class');
-
+		
 		$query = '
 	    SELECT [GalleryEntity::id]
 	    FROM [GalleryEntity]
@@ -165,10 +142,9 @@ class PasswordModule extends GalleryModule {
 		while ($result = $searchResults->nextResult()) {
 			$itemIds[] = $result[0];
 		}
-
+		
 		while (!empty($itemIds)) {
-			list($ret, $items) =
-			GalleryCoreApi::loadEntitiesById(array_splice($itemIds, 0, 100), 'GalleryEntity');
+			list($ret, $items) = GalleryCoreApi::loadEntitiesById(array_splice($itemIds, 0, 100), 'GalleryEntity');
 			if ($ret) {
 				return $ret;
 			}
@@ -179,15 +155,15 @@ class PasswordModule extends GalleryModule {
 				}
 			}
 		}
-
+		
 		$ret = parent::uninstall();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Redirect to getPassword view when core.ShowItem accessed directly for this item
 	 * and user doesn't already have permission.
@@ -203,11 +179,9 @@ class PasswordModule extends GalleryModule {
 			if ($ret) {
 				return $ret;
 			}
-			if (!isset($permissions['core.viewResizes'])
-			&& !isset($permissions['core.viewSource'])) {
+			if (!isset($permissions['core.viewResizes']) && !isset($permissions['core.viewSource'])) {
 				if (!isset($permissions['core.view'])) {
-					list($ret, $hiddenInterface) =
-					GalleryCoreApi::newFactoryInstance('HiddenInterface_1_0');
+					list($ret, $hiddenInterface) = GalleryCoreApi::newFactoryInstance('HiddenInterface_1_0');
 					if ($ret) {
 						return $ret;
 					}
@@ -229,41 +203,50 @@ class PasswordModule extends GalleryModule {
 					$session->doNotUseTempId();
 					$urlGenerator =& $gallery->getUrlGenerator();
 					$phpVm = $gallery->getPhpVm();
-					$phpVm->header('Location: ' . $urlGenerator->generateUrl(
-						array('view' => 'password.PasswordEntry', 'itemId' => $itemId),
-						array('forceFullUrl' => true, 'htmlEntities' => false)
-					));
+					$phpVm->header('Location: ' . $urlGenerator->generateUrl(array(
+						'view' => 'password.PasswordEntry',
+						'itemId' => $itemId
+					), array(
+						'forceFullUrl' => true,
+						'htmlEntities' => false
+					)));
 					$phpVm->exit_();
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Update permissions when items move in/out of password protected albums
 	 * @see GalleryEventListener::handleEvent
 	 */
 	public function handleEvent($event) {
 		$item = $event->getEntity();
-		if (GalleryUtilities::isA($item, 'GalleryItem')
-		&& !$item->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)
-		&& $item->isModified('parentId')) {
+		if (GalleryUtilities::isA($item, 'GalleryItem') && !$item->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED) && $item->isModified('parentId')) {
 			GalleryCoreApi::requireOnce('modules/password/classes/PasswordHelper.class');
 			$ret = PasswordHelper::handleMoveItem($item);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-		} elseif (GalleryUtilities::isA($item, 'GalleryItem')
-		&& $item->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
+		} elseif (GalleryUtilities::isA($item, 'GalleryItem') && $item->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
 			GalleryCoreApi::requireOnce('modules/password/classes/PasswordHelper.class');
 			$ret = PasswordHelper::handleNewItem($item);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		return array(null, null);
+		
+		return array(
+			null,
+			null
+		);
 	}
 }

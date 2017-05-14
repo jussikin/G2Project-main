@@ -33,58 +33,66 @@ class PasswordEntryController extends GalleryController {
 	 * @access private
 	 */
 	public $_pluginInstances;
-
+	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
 	public function handleRequest($form) {
 		$status = $error = array();
-
-		if (isset($form['action']['password'])
-		&& isset($form['itemId']) && isset($form['password'])) {
+		
+		if (isset($form['action']['password']) && isset($form['itemId']) && isset($form['password'])) {
 			$itemId = $form['itemId'];
 			list($ret, $canSee) = GalleryCoreApi::hasItemPermission($itemId, 'core.view');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			if (!$canSee) {
 				/* Allow access without core.view if this item is also hidden */
-				list($ret, $hiddenInterface) =
-				GalleryCoreApi::newFactoryInstance('HiddenInterface_1_0');
+				list($ret, $hiddenInterface) = GalleryCoreApi::newFactoryInstance('HiddenInterface_1_0');
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				if (isset($hiddenInterface)) {
 					list($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'GalleryItem');
 					if (!$ret) {
 						list($ret, $canSee) = $hiddenInterface->isHidden($item);
 						if ($ret) {
-							return array($ret, null);
+							return array(
+								$ret,
+								null
+							);
 						}
 					}
 				}
 			}
-
-		/* Check the password entered against the actual password */
-			list($ret, $hashedPassword) = GalleryCoreApi::getPluginParameter(
-				'module',
-				'password',
-				'password',
-				$itemId
-			);
+			
+			/* Check the password entered against the actual password */
+			list($ret, $hashedPassword) = GalleryCoreApi::getPluginParameter('module', 'password', 'password', $itemId);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			GalleryUtilities::unsanitizeInputValues($form['password'], false);
-			$isCorrect = $canSee && $hashedPassword
-			&& GalleryUtilities::isCorrectPassword($form['password'], $hashedPassword);
-
-		/* Prepare for validation */
-			$options = array('pass' => $isCorrect);
-			list($ret, $options['level']) =
-			GalleryCoreApi::getPluginParameter('module', 'password', 'validation.level');
+			$isCorrect = $canSee && $hashedPassword && GalleryUtilities::isCorrectPassword($form['password'], $hashedPassword);
+			
+			/* Prepare for validation */
+			$options = array(
+				'pass' => $isCorrect
+			);
+			list($ret, $options['level']) = GalleryCoreApi::getPluginParameter('module', 'password', 'validation.level');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			if ($options['level'] == 'MEDIUM') {
 				$options['key'] = 'password.PasswordEntry.' . $itemId;
@@ -94,38 +102,42 @@ class PasswordEntryController extends GalleryController {
 			} elseif (isset($this->_pluginInstances)) {
 				$plugins = $this->_pluginInstances;
 			} else {
-				list($ret, $plugins) =
-				GalleryCoreApi::getAllFactoryImplementationIds('GalleryValidationPlugin');
+				list($ret, $plugins) = GalleryCoreApi::getAllFactoryImplementationIds('GalleryValidationPlugin');
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				foreach (array_keys($plugins) as $pluginId) {
-					list($ret, $plugins[$pluginId]) = GalleryCoreApi::newFactoryInstanceById(
-						'GalleryValidationPlugin',
-						$pluginId
-					);
+					list($ret, $plugins[$pluginId]) = GalleryCoreApi::newFactoryInstanceById('GalleryValidationPlugin', $pluginId);
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				}
 			}
-
-		/* Let each plugin do its verification */
+			
+			/* Let each plugin do its verification */
 			foreach ($plugins as $plugin) {
-				list($ret, $pluginErrors, $continue) =
-				$plugin->performValidation($form, $options);
+				list($ret, $pluginErrors, $continue) = $plugin->performValidation($form, $options);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				$error = array_merge($error, $pluginErrors);
 				if (!$continue) {
 					break;
 				}
 			}
-
+			
 			if (empty($error) && $isCorrect) {
 				GalleryCoreApi::addPermissionToSession($itemId);
-
+				
 				$results['redirect']['view'] = 'core.ShowItem';
 				$results['redirect']['itemId'] = $itemId;
 			} elseif (empty($error)) {
@@ -137,8 +149,11 @@ class PasswordEntryController extends GalleryController {
 		}
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -154,27 +169,40 @@ class PasswordEntryView extends GalleryView {
 			$form['formName'] = 'PasswordEntry';
 			$form['itemId'] = GalleryUtilities::getRequestVariables('itemId');
 		}
-
-		list($ret, $form['validationLevel']) =
-		GalleryCoreApi::getPluginParameter('module', 'password', 'validation.level');
+		
+		list($ret, $form['validationLevel']) = GalleryCoreApi::getPluginParameter('module', 'password', 'validation.level');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$template->setVariable('controller', 'password.PasswordEntry');
-
-		return array(null, array('body' => 'modules/password/templates/PasswordEntry.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/password/templates/PasswordEntry.tpl'
+			)
+		);
 	}
-
+	
 	/**
 	 * @see GalleryView::getViewDescription
 	 */
 	public function getViewDescription() {
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'password');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $core->translate('Password Entry'));
+		
+		return array(
+			null,
+			$core->translate('Password Entry')
+		);
 	}
 }
