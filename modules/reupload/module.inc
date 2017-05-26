@@ -29,7 +29,7 @@ class ReuploadModule extends GalleryModule {
 	public function __construct() {
 		$this->ReuploadModule();
 	}
-
+	
 	public function ReuploadModule() {
 		global $gallery;
 		$this->setId('reupload');
@@ -39,10 +39,16 @@ class ReuploadModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('data', $gallery->i18n('Extra Data'));
 		$this->setCallbacks('');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
@@ -58,7 +64,7 @@ class ReuploadModule extends GalleryModule {
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
 }
