@@ -31,56 +31,62 @@ class MockLockSystem extends GalleryLockSystem {
 	public function FlockLockSystem() {
 		$this->_locks = array();
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::acquireReadLock
 	 */
-	public function acquireReadLock($ids, $timeout=10) {
-		return array(null, 1);
+	public function acquireReadLock($ids, $timeout = 10) {
+		return array(
+			null,
+			1
+		);
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::isReadLocked
 	 */
 	public function isReadLocked($id) {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::acquireWriteLock
 	 */
-	public function acquireWriteLock($ids, $timeout=10) {
-		return array(null, 1);
+	public function acquireWriteLock($ids, $timeout = 10) {
+		return array(
+			null,
+			1
+		);
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::isWriteLocked
 	 */
 	public function isWriteLocked($id) {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::releaseLocks
 	 */
 	public function releaseLocks($lockIds) {
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::refreshAllLocks
 	 */
 	public function releaseAllLocks() {
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryLockSystem::refreshLocks
 	 */
 	public function refreshLocks($freshUntil) {
 		return null;
 	}
-
+	
 	/**
 	 * Return the ids of all the locks we hold
 	 *

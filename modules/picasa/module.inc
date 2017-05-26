@@ -28,7 +28,7 @@ class PicasaModule extends GalleryModule {
 	public function __construct() {
 		$this->PicasaModule();
 	}
-
+	
 	public function PicasaModule() {
 		global $gallery;
 		$this->setId('picasa');
@@ -38,34 +38,40 @@ class PicasaModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('import', $this->translate('Import'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemAddPlugin',
-			'ItemAddFromPicasa',
-			'ItemAddFromPicasa',
-			'modules/picasa/ItemAddFromPicasa.inc',
-			'picasa',
-			null
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddFromPicasa', 'ItemAddFromPicasa', 'modules/picasa/ItemAddFromPicasa.inc', 'picasa', null);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null, array(array('name' => $this->translate('Picasa 2'),
-					   'view' => 'picasa.SelectPicasaExportPath')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Picasa 2'),
+					'view' => 'picasa.SelectPicasaExportPath'
+				)
+			)
+		);
 	}
 }
