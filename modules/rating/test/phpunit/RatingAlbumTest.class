@@ -30,7 +30,7 @@ class RatingAlbumTest extends GalleryTestCase {
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
@@ -38,145 +38,152 @@ class RatingAlbumTest extends GalleryTestCase {
 			return $ret;
 		}
 		GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
-
+		
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_album);
-
+		
 		for ($i = 1; $i <= 3; $i++) {
 			list($ret, $this->_items[$i]) = $this->_createRandomDataItem($this->_album->getId());
 			if ($ret) {
 				return $ret;
 			}
-			list($ret) = RatingHelper::rateItem($this->_items[$i]->getId(), 5 - $i,
-						 $gallery->getActiveUserId());
+			list($ret) = RatingHelper::rateItem($this->_items[$i]->getId(), 5 - $i, $gallery->getActiveUserId());
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		list($ret, $this->_view) = GalleryView::loadView('rating.RatingAlbum');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
-		$this->_template =
-		new GalleryTemplate(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-
+		$this->_template = new GalleryTemplate(dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'rating');
 		if ($ret) {
 			return $ret;
 		}
-		foreach (array('minLimit' => '2.25', 'orderBy' => 'RatingSortOrder') as $key => $value) {
+		foreach (array(
+			'minLimit' => '2.25',
+			'orderBy' => 'RatingSortOrder'
+		) as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'rating', $key, $value);
 			if ($ret) {
 				return $ret;
 			}
 		}
 	}
-
+	
 	public function testLoadThemeAndSettingsForAlbum() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'description', 'test desc');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryUtilities::putRequestVariable('limit', '4');
-
+		
 		list($ret, $theme, $params, $item) = $this->_view->loadThemeAndParameters();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assert(GalleryUtilities::isA($theme, 'GalleryTheme'), 'theme');
 		$this->assert(is_array($params), 'theme settings');
 		$this->assert(GalleryUtilities::isA($item, 'GalleryDynamicAlbum'), 'item');
 		$this->assert(!isset($item->parent), 'item parent');
 		$this->assertEquals('test desc', $item->getDescription(), 'description');
 	}
-
+	
 	public function testLoadThemeAndSettingsForItem() {
 		$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'description', 'test desc');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryUtilities::putRequestVariable('limit', '3.6');
 		GalleryUtilities::putRequestVariable('itemId', $this->_items[1]->getId());
-
+		
 		list($ret, $theme, $params, $item) = $this->_view->loadThemeAndParameters();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assert(GalleryUtilities::isA($theme, 'GalleryTheme'), 'theme');
 		$this->assert(is_array($params), 'theme settings');
 		$this->assert(GalleryUtilities::isA($item, 'GalleryDataItem'), 'item');
 		$this->assert(isset($item->parent), 'item parent');
 		$this->assert(GalleryUtilities::isA($item->parent, 'GalleryDynamicAlbum'), 'parent type');
-		$this->assertEquals(array('RatingAlbumView', 'getChildIds'),
-				$item->parent->getChildrenFunction, 'get children function');
+		$this->assertEquals(array(
+			'RatingAlbumView',
+			'getChildIds'
+		), $item->parent->getChildrenFunction, 'get children function');
 	}
-
+	
 	public function testLoadTemplateForAlbum() {
 		global $gallery;
 		$theme =& $this->_template->getVariableByReference('theme');
 		$theme['actingUserId'] = $gallery->getActiveUserId();
-
+		
 		GalleryUtilities::putRequestVariable('limit', '3.45');
-
+		
 		list($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assertEquals(array('view' => 'rating.RatingAlbum', 'limit' => '3.45'),
-				$theme['pageUrl'], 'page url');
+		
+		$this->assertEquals(array(
+			'view' => 'rating.RatingAlbum',
+			'limit' => '3.45'
+		), $theme['pageUrl'], 'page url');
 		$this->assert(in_array($this->_items[1]->getId(), $theme['allChildIds']), 'item 1');
 		$this->assert(!in_array($this->_items[2]->getId(), $theme['allChildIds']), 'item 2');
 		$this->assert(!in_array($this->_items[3]->getId(), $theme['allChildIds']), 'item 3');
 	}
-
+	
 	public function testLoadTemplateForItem() {
 		list($ret, $count) = GalleryCoreApi::fetchItemViewCount($this->_items[2]->getId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->assertEquals(0, $count, 'count before');
-
+		
 		GalleryUtilities::putRequestVariable('limit', '3');
 		GalleryUtilities::putRequestVariable('itemId', $this->_items[2]->getId());
-
+		
 		list($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$theme =& $this->_template->getVariableByReference('theme');
-		$this->assertEquals(array('view' => 'rating.RatingAlbum', 'limit' => '3'),
-				$theme['pageUrl'], 'page url');
-
+		$this->assertEquals(array(
+			'view' => 'rating.RatingAlbum',
+			'limit' => '3'
+		), $theme['pageUrl'], 'page url');
+		
 		list($ret, $count) = GalleryCoreApi::fetchItemViewCount($this->_items[2]->getId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->assertEquals(1, $count, 'count after');
 	}
-
+	
 	public function testLoadTemplateForItemNoPermission() {
 		$ret = GalleryCoreApi::removeItemPermissions($this->_items[1]->getId());
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryUtilities::putRequestVariable('limit', '4');
 		GalleryUtilities::putRequestVariable('itemId', $this->_items[1]->getId());
-
-	/* ShowItem handling used to redirect to root album; now returns permission error */
-	list($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());
+		
+		/* ShowItem handling used to redirect to root album; now returns permission error */
+		list($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());
 		if ($ret) {
 			$this->assert($ret->getErrorCode() & ERROR_MISSING_OBJECT, 'wrong error code');
 			if (!($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
@@ -186,17 +193,20 @@ class RatingAlbumTest extends GalleryTestCase {
 			$this->fail('expected error');
 		}
 	}
-
+	
 	public function testLimitTooLow() {
 		GalleryUtilities::putRequestVariable('limit', '1.5');
-
+		
 		list($ret, $result) = $this->_view->loadTemplate($this->_template, $form = array());
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assertEquals(
-		array('redirect' => array('view' => 'rating.RatingAlbum', 'limit' => '2.25')),
-		$result, 'redirect');
+		
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'rating.RatingAlbum',
+				'limit' => '2.25'
+			)
+		), $result, 'redirect');
 	}
 }

@@ -30,33 +30,35 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase {
 	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'rating.RatingSiteAdmin');
 	}
-
+	
 	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'rating');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $this->_entity) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_entity);
-
-		foreach (array('themeId' => 'ratingTest',
-			   'themeSettingsId' => $this->_entity->getId()) as $key => $value) {
+		
+		foreach (array(
+			'themeId' => 'ratingTest',
+			'themeSettingsId' => $this->_entity->getId()
+		) as $key => $value) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'rating', $key, $value);
 			if ($ret) {
 				return $ret;
 			}
 		}
 	}
-
+	
 	public function testEnableAlbumRatings() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 'Save');
 		GalleryUtilities::putRequestVariable('form[allowAlbumRating]', 'on');
@@ -67,21 +69,25 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase {
 		GalleryUtilities::putRequestVariable('form[presort]', '');
 		GalleryUtilities::putRequestVariable('form[themeId]', 'ratingTest');
 		GalleryUtilities::putRequestVariable('form[currentThemeId]', 'ratingTest');
-
+		
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
 			'redirect' => array(
-			'view' => 'core.SiteAdmin', 'subView' => 'rating.RatingSiteAdmin'),
-			'status' => array('statusMessage' => $core->translate(
-				'Successfully saved theme settings'), 'saved' => 1),
-			'error' => array()),
-		$results);
-
+				'view' => 'core.SiteAdmin',
+				'subView' => 'rating.RatingSiteAdmin'
+			),
+			'status' => array(
+				'statusMessage' => $core->translate('Successfully saved theme settings'),
+				'saved' => 1
+			),
+			'error' => array()
+		), $results);
+		
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rating');
 		if ($ret) {
 			return $ret;
@@ -92,16 +98,17 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase {
 			}
 		}
 		ksort($params);
-		$this->assertEquals(array('allowAlbumRating' => 1,
-				  'description' => 'desc',
-				  'orderBy' => 'title',
-				  'orderDirection' => ORDER_ASCENDING,
-				  'minLimit' => '1.5',
-				  'themeId' => 'ratingTest',
-				  'themeSettingsId' => $this->_entity->getId()),
-				$params, 'Verify DB Data');
+		$this->assertEquals(array(
+			'allowAlbumRating' => 1,
+			'description' => 'desc',
+			'orderBy' => 'title',
+			'orderDirection' => ORDER_ASCENDING,
+			'minLimit' => '1.5',
+			'themeId' => 'ratingTest',
+			'themeSettingsId' => $this->_entity->getId()
+		), $params, 'Verify DB Data');
 	}
-
+	
 	public function testDisableAlbumRatings() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 'Save');
 		GalleryUtilities::putRequestVariable('form[minLimit]', '3,75');
@@ -111,21 +118,25 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase {
 		GalleryUtilities::putRequestVariable('form[presort]', 'albumsFirst');
 		GalleryUtilities::putRequestVariable('form[themeId]', 'ratingTest');
 		GalleryUtilities::putRequestVariable('form[currentThemeId]', 'ratingTest');
-
+		
 		list($ret, $core) = GalleryCoreApi::loadPlugin('module', 'core');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
 			'redirect' => array(
-			'view' => 'core.SiteAdmin', 'subView' => 'rating.RatingSiteAdmin'),
-			'status' => array('statusMessage' => $core->translate(
-				'Successfully saved theme settings'), 'saved' => 1),
-			'error' => array()),
-		$results);
-
+				'view' => 'core.SiteAdmin',
+				'subView' => 'rating.RatingSiteAdmin'
+			),
+			'status' => array(
+				'statusMessage' => $core->translate('Successfully saved theme settings'),
+				'saved' => 1
+			),
+			'error' => array()
+		), $results);
+		
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rating');
 		if ($ret) {
 			return $ret;
@@ -136,25 +147,28 @@ class RatingSiteAdminControllerTest extends GalleryControllerTestCase {
 			}
 		}
 		ksort($params);
-		$this->assertEquals(array('allowAlbumRating' => 0,
-				  'description' => '',
-				  'orderBy' => 'albumsFirst|RatingSortOrder',
-				  'orderDirection' => ORDER_DESCENDING,
-				  'minLimit' => '3.75',
-				  'themeId' => 'ratingTest',
-				  'themeSettingsId' => $this->_entity->getId()),
-				$params, 'Verify DB Data');
+		$this->assertEquals(array(
+			'allowAlbumRating' => 0,
+			'description' => '',
+			'orderBy' => 'albumsFirst|RatingSortOrder',
+			'orderDirection' => ORDER_DESCENDING,
+			'minLimit' => '3.75',
+			'themeId' => 'ratingTest',
+			'themeSettingsId' => $this->_entity->getId()
+		), $params, 'Verify DB Data');
 	}
-
+	
 	public function testReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', 'Reset');
 		$results = $this->handleRequest();
 		$this->assertEquals(array(
 			'redirect' => array(
-			'view' => 'core.SiteAdmin', 'subView' => 'rating.RatingSiteAdmin'),
+				'view' => 'core.SiteAdmin',
+				'subView' => 'rating.RatingSiteAdmin'
+			),
 			'status' => array(),
-			'error' => array()),
-		$results);
+			'error' => array()
+		), $results);
 	}
 }
 

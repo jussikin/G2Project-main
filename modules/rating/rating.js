@@ -92,7 +92,7 @@ function updateStarDisplay(itemId, userRating) {
 
 function updateElementDisplay(id, str) {
 	document.getElementById(id).replaceChild(
-	    document.createTextNode(str),
+		document.createTextNode(str),
 		document.getElementById(id).childNodes[0]
 	);
 }

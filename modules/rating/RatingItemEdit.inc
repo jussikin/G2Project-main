@@ -31,52 +31,70 @@ class RatingItemEdit extends ItemEditOption {
 	 */
 	public function handleRequestAfterEdit($form, &$item, &$preferred) {
 		global $gallery;
-
+		
 		if (isset($form['changeInDescendents']['rating'])) {
 			list($ret, $subAlbumIds) = GalleryCoreApi::fetchDescendentAlbumItemIds($item);
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 			array_unshift($subAlbumIds, $item->getId());
 		} else {
-			$subAlbumIds = array($item->getId());
-		}
-
-		foreach ($subAlbumIds as $id) {
-			$ret = GalleryCoreApi::setPluginParameter(
-				'module',
-				'rating',
-				'enabled',
-				(empty($form['rating']['enabled']) ? 0 : 1),
-				$id
+			$subAlbumIds = array(
+				$item->getId()
 			);
+		}
+		
+		foreach ($subAlbumIds as $id) {
+			$ret = GalleryCoreApi::setPluginParameter('module', 'rating', 'enabled', (empty($form['rating']['enabled']) ? 0 : 1), $id);
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 		}
-
-		return array(null, array(), array());
+		
+		return array(
+			null,
+			array(),
+			array()
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditOption::loadTemplate
 	 */
 	public function loadTemplate(&$template, &$form, $item, $thumbnail) {
 		if (empty($form['error'])) {
-			list($ret, $form['rating']['enabled']) =
-			GalleryCoreApi::getPluginParameter('module', 'rating', 'enabled', $item->getId());
+			list($ret, $form['rating']['enabled']) = GalleryCoreApi::getPluginParameter('module', 'rating', 'enabled', $item->getId());
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 		}
-
-		return array(null, 'modules/rating/templates/RatingItemEdit.tpl', 'modules_rating');
+		
+		return array(
+			null,
+			'modules/rating/templates/RatingItemEdit.tpl',
+			'modules_rating'
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditOption::isAppropriate
 	 */
 	public function isAppropriate($item, $thumbnail) {
-		return array(null, true);
+		return array(
+			null,
+			true
+		);
 	}
 }

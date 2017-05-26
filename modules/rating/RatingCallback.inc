@@ -31,33 +31,33 @@ class RatingCallbackView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::isControllerLike
 	 */
 	public function isControllerLike() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
 	public function renderImmediate($status, $error) {
 		global $gallery;
 		GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
-
+		
 		list($command, $rating) = GalleryUtilities::getRequestVariables('command', 'rating');
-
+		
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return $ret;
 		}
 		$itemId = $item->getId();
-
+		
 		if (!headers_sent()) {
 			header("Content-type: text/plain; charset=UTF-8");
 		}
-
+		
 		switch ($command) {
 			case 'rate':
 				list($ret, $permission) = GalleryCoreApi::hasItemPermission($itemId, 'rating.add');
@@ -67,9 +67,8 @@ class RatingCallbackView extends GalleryView {
 				if (!$permission) {
 					return null;
 				}
-
-				list($ret, $results) =
-				RatingHelper::rateItem($itemId, (int)$rating, $gallery->getActiveUserId());
+				
+				list($ret, $results) = RatingHelper::rateItem($itemId, (int) $rating, $gallery->getActiveUserId());
 				if ($ret) {
 					return $ret;
 				}
@@ -77,27 +76,24 @@ class RatingCallbackView extends GalleryView {
 				if ($ret) {
 					return $ret;
 				}
-				$results['votesString'] =
-				$module->translate(array('one' => '%d vote',
-					 'many' => '%d votes',
-					 'count' => $results['votes'],
-					 'arg1' => $results['votes']));
-
-						$session =& $gallery->getSession();
-						echo $results['itemId'] . "\n"
-						. $results['rating'] . "\n"
-						. $results['votesString'] . "\n"
-						. $results['userRating'] . "\n"
-						. $session->getAuthToken();
-						/*
-						 * If this was the first rating from an anonymous user then their session just became
-						 * persistent (see RatingHelper::rateItem); return the authToken so it can be used
-						 * in future rating requests.
-						 */
-
-		        break;
+				$results['votesString'] = $module->translate(array(
+					'one' => '%d vote',
+					'many' => '%d votes',
+					'count' => $results['votes'],
+					'arg1' => $results['votes']
+				));
+				
+				$session =& $gallery->getSession();
+				echo $results['itemId'] . "\n" . $results['rating'] . "\n" . $results['votesString'] . "\n" . $results['userRating'] . "\n" . $session->getAuthToken();
+				/*
+	             * If this was the first rating from an anonymous user then their session just became
+	             * persistent (see RatingHelper::rateItem); return the authToken so it can be used
+	             * in future rating requests.
+	             */
+				
+				break;
 		}
-
+		
 		return null;
 	}
 }

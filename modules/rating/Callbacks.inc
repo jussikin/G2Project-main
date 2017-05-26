@@ -26,7 +26,7 @@
 class RatingCallbacks {
 	public function callback($params, $smarty, $callback, $userId) {
 		global $gallery;
-
+		
 		switch ($callback) {
 			case 'LoadRating':
 				$itemId = $params['itemId'];
@@ -34,9 +34,8 @@ class RatingCallbacks {
 				if ($ret) {
 					return $ret;
 				}
-
-				list($ret, $hasPermission) =
-				GalleryCoreApi::hasItemPermission($item->getId(), 'core.view');
+				
+				list($ret, $hasPermission) = GalleryCoreApi::hasItemPermission($item->getId(), 'core.view');
 				if ($ret) {
 					return $ret;
 				}
@@ -44,11 +43,10 @@ class RatingCallbacks {
 					/* Avoid information disclosure, act as if the item didn't exist. */
 					return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 				}
-
+				
 				if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 					$albumId = $itemId;
-					list($ret, $allowAlbumRating) =
-					GalleryCoreApi::getPluginParameter('module', 'rating', 'allowAlbumRating');
+					list($ret, $allowAlbumRating) = GalleryCoreApi::getPluginParameter('module', 'rating', 'allowAlbumRating');
 					if ($ret) {
 						return $ret;
 					}
@@ -58,52 +56,60 @@ class RatingCallbacks {
 				} else {
 					$albumId = $item->getParentId();
 				}
-
-						list($ret, $enabled) =
-						GalleryCoreApi::getPluginParameter('module', 'rating', 'enabled', $albumId);
+				
+				list($ret, $enabled) = GalleryCoreApi::getPluginParameter('module', 'rating', 'enabled', $albumId);
 				if ($ret) {
 					return $ret;
 				}
 				if (!$enabled) {
 					return null;
 				}
-
-						list($ret, $permission) =
-						GalleryCoreApi::hasItemPermission($itemId, 'rating.view', $userId);
+				
+				list($ret, $permission) = GalleryCoreApi::hasItemPermission($itemId, 'rating.view', $userId);
 				if ($ret) {
 					return $ret;
 				}
 				if (!$permission) {
 					return null;
 				}
-
-						GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
-						list($ret, $RatingData) = RatingHelper::fetchRatings(array($itemId), $userId);
+				
+				GalleryCoreApi::requireOnce('modules/rating/classes/RatingHelper.class');
+				list($ret, $RatingData) = RatingHelper::fetchRatings(array(
+					$itemId
+				), $userId);
 				if ($ret) {
 					return $ret;
 				}
-
-						list($ret, $permission) =
-						GalleryCoreApi::hasItemPermission($itemId, 'rating.add', $userId);
+				
+				list($ret, $permission) = GalleryCoreApi::hasItemPermission($itemId, 'rating.add', $userId);
 				if ($ret) {
 					return $ret;
 				}
-						$RatingData[$itemId]['canRate'] = ($permission ? true : false);
-
-						$session =& $gallery->getSession();
-						$authToken = $session->isPersistent() ? $session->getAuthToken() : '';
-						$RatingSummary = array('ratingValues' => array(1, 2, 3, 4, 5),
-						   'firstCall' => true, 'authToken' => $authToken);
-
-						$block = $smarty->getTemplateVars('block');
-						$smarty->assignByRef('block', $block);
-		
-						$block['rating']['RatingData'] = $RatingData[$itemId];
-						$block['rating']['RatingSummary'] = $RatingSummary;
-
-		        return null;
+				$RatingData[$itemId]['canRate'] = ($permission ? true : false);
+				
+				$session =& $gallery->getSession();
+				$authToken = $session->isPersistent() ? $session->getAuthToken() : '';
+				$RatingSummary = array(
+					'ratingValues' => array(
+						1,
+						2,
+						3,
+						4,
+						5
+					),
+					'firstCall' => true,
+					'authToken' => $authToken
+				);
+				
+				$block = $smarty->getTemplateVars('block');
+				$smarty->assignByRef('block', $block);
+				
+				$block['rating']['RatingData'] = $RatingData[$itemId];
+				$block['rating']['RatingSummary'] = $RatingSummary;
+				
+				return null;
 		}
-
+		
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 }

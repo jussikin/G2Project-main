@@ -34,19 +34,30 @@ class RatingSortOrder extends GallerySortInterface_1_2 {
 	public function getSortInfo() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rating');
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Rating'), false);
+		
+		return array(
+			null,
+			$module->translate('Rating'),
+			false
+		);
 	}
-
+	
 	/**
 	 * @see GallerySortInterface_1_2::getSortOrder
 	 */
 	public function getSortOrder($direction) {
-		return array(null,
-		'[RatingCacheMap::averageRating]' . $direction . ', [RatingCacheMap::voteCount] DESC',
-		'[RatingCacheMap::averageRating], [RatingCacheMap::voteCount]', null,
-		'LEFT JOIN [RatingCacheMap] ON [BASE::ID] = [RatingCacheMap::itemId]');
+		return array(
+			null,
+			'[RatingCacheMap::averageRating]' . $direction . ', [RatingCacheMap::voteCount] DESC',
+			'[RatingCacheMap::averageRating], [RatingCacheMap::voteCount]',
+			null,
+			'LEFT JOIN [RatingCacheMap] ON [BASE::ID] = [RatingCacheMap::itemId]'
+		);
 	}
 }
