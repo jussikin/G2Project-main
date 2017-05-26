@@ -30,42 +30,52 @@ class RemoteSiteAdminControllerTest extends GalleryControllerTestCase {
 	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'remote.RemoteSiteAdmin');
 	}
-
+	
 	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'remote');
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testRemoteSiteAdminControllerReset() {
 		GalleryUtilities::putRequestVariable('form[action][reset]', '1');
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'remote.RemoteSiteAdmin'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'remote.RemoteSiteAdmin'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
 	}
-
+	
 	public function testRemoteSiteAdminControllerSave() {
 		GalleryUtilities::putRequestVariable('form[showItemAdd]', '1');
 		GalleryUtilities::putRequestVariable('form[action][save]', '1');
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'remote.RemoteSiteAdmin'),
-				  'status' => array('saved' => 1),
-				  'error' => array()),
-				$results);
-
-		foreach (array('showItemAdd' => '1') as $key => $expectedValue) {
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'remote.RemoteSiteAdmin'
+			),
+			'status' => array(
+				'saved' => 1
+			),
+			'error' => array()
+		), $results);
+		
+		foreach (array(
+			'showItemAdd' => '1'
+		) as $key => $expectedValue) {
 			list($ret, $value) = GalleryCoreApi::getPluginParameter('module', 'remote', $key);
 			if ($ret) {
 				return $ret;

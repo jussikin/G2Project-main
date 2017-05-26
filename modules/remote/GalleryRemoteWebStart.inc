@@ -32,46 +32,46 @@ class GalleryRemoteWebStartView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
 	public function isAllowedInEmbedOnly() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::shouldSaveSession
 	 */
 	public function shouldSaveSession() {
 		return false;
 	}
-
+	
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
 	public function renderImmediate($status, $error) {
 		global $gallery;
-
+		
 		if (!headers_sent()) {
 			header("Content-type: application/x-java-jnlp-file");
 		}
-
+		
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$codebase = $urlGenerator->getCurrentUrlDir(true);
-	/*
-	 * Removed the href attribute in the jnlp element, because it caused WebStart to fail
-	 * caching the application.
-	 */
-	/*$jnlpFile = $urlGenerator->generateUrl(
+		/*
+	     * Removed the href attribute in the jnlp element, because it caused WebStart to fail
+	     * caching the application.
+	     */
+		/*$jnlpFile = $urlGenerator->generateUrl(
 	    array('view' => 'remote.GalleryRemoteWebStart'),
 	    array('forceDirect' => true, 'forceFullUrl' => true, 'forceSessionId' => false));*/
-
+		
 		$user = $gallery->getActiveUser();
 		if (isset($user)) {
 			$username = $user->getUserName();
 		}
-
+		
 		echo '<?xml version="1.0" encoding="utf-8"?>' . "\n"; ?>
 <jnlp
 	spec="1.0+"
@@ -101,16 +101,17 @@ class GalleryRemoteWebStartView extends GalleryView {
 	<application-desc main-class="com.gallery.GalleryRemote.GalleryRemote">
 	<argument>-url</argument>
 	<argument><?php echo $codebase; ?></argument>
-	<?php if (isset($username)) {
-			?>
+	<?php
+	if (isset($username)) {
+		?>
 	<argument>-username</argument>
 	<argument><?php echo $username; ?></argument>
 	<?php
-} ?>
+	} ?>
 	</application-desc>
 </jnlp>
 <?php
-	return null;
+		return null;
 	}
 }
 ?>

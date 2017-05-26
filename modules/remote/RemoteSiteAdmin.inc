@@ -32,31 +32,41 @@ class RemoteSiteAdminController extends GalleryController {
 	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$status = $error = array();
 		if (isset($form['action']['save'])) {
-			foreach (array('showItemAdd') as $key) {
-				$ret = GalleryCoreApi::setPluginParameter(
-					'module',
-					'remote',
-					$key,
-					(isset($form[$key]) && $form[$key]) ? 1 : 0
-				);
+			foreach (array(
+				'showItemAdd'
+			) as $key) {
+				$ret = GalleryCoreApi::setPluginParameter('module', 'remote', $key, (isset($form[$key]) && $form[$key]) ? 1 : 0);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
 			$status['saved'] = 1;
 		}
-
-		$results = array('redirect' => array('view' => 'core.SiteAdmin',
-						 'subView' => 'remote.RemoteSiteAdmin'),
-			 'status' => $status,
-			 'error' => $error);
-
-		return array(null, $results);
+		
+		$results = array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'remote.RemoteSiteAdmin'
+			),
+			'status' => $status,
+			'error' => $error
+		);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -70,9 +80,12 @@ class RemoteSiteAdminView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (!isset($form['showItemAdd'])) {
 			$form['showItemAdd'] = false;
 		}
@@ -80,15 +93,23 @@ class RemoteSiteAdminView extends GalleryView {
 			$form['formName'] = 'RemoteSiteAdmin';
 			list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'remote');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			foreach ($params as $key => $value) {
 				$form[$key] = $value;
 			}
 		}
-
+		
 		$template->setVariable('controller', 'remote.RemoteSiteAdmin');
-
-		return array(null, array('body' => 'modules/remote/templates/RemoteSiteAdmin.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/remote/templates/RemoteSiteAdmin.tpl'
+			)
+		);
 	}
 }

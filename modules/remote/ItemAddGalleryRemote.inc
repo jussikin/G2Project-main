@@ -33,34 +33,49 @@ class ItemAddGalleryRemote extends ItemAddPlugin {
 		if ($form['formName'] != 'ItemAddGalleryRemote') {
 			$form['formName'] = 'ItemAddGalleryRemote';
 		}
-
+		
 		$template->setVariable('ItemAddGalleryRemote', array());
-
-		return array(null, 'modules/remote/templates/ItemAddGalleryRemote.tpl', 'modules_remote');
+		
+		return array(
+			null,
+			'modules/remote/templates/ItemAddGalleryRemote.tpl',
+			'modules_remote'
+		);
 	}
-
+	
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
 	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'remote');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Gallery Remote'));
+		
+		return array(
+			null,
+			$module->translate('Gallery Remote')
+		);
 	}
-
+	
 	/**
 	 * @see ItemAddPlugin::isAppropriate
 	 */
 	public function isAppropriate() {
-		list($ret, $showItemAdd) =
-		GalleryCoreApi::getPluginParameter('module', 'remote', 'showItemAdd');
+		list($ret, $showItemAdd) = GalleryCoreApi::getPluginParameter('module', 'remote', 'showItemAdd');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $showItemAdd);
+		
+		return array(
+			null,
+			$showItemAdd
+		);
 	}
 }

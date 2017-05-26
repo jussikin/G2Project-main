@@ -27,7 +27,7 @@ class RemoteModule extends GalleryModule {
 	public function __construct() {
 		$this->RemoteModule();
 	}
-
+	
 	public function RemoteModule() {
 		global $gallery;
 		$this->setId('remote');
@@ -37,10 +37,16 @@ class RemoteModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('interfaces', $gallery->i18n('Remote Interfaces'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
@@ -49,7 +55,9 @@ class RemoteModule extends GalleryModule {
 		if ($ret) {
 			return $ret;
 		}
-		foreach (array('showItemAdd' => 1) as $key => $value) {
+		foreach (array(
+			'showItemAdd' => 1
+		) as $key => $value) {
 			if (!isset($params[$key])) {
 				$ret = $this->setParameter($key, $value);
 				if ($ret) {
@@ -57,36 +65,35 @@ class RemoteModule extends GalleryModule {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
 		/* Register our item add plugins */
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemAddPlugin',
-			'ItemAddGalleryRemote',
-			'ItemAddGalleryRemote',
-			'modules/remote/ItemAddGalleryRemote.inc',
-			'remote',
-			null
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddGalleryRemote', 'ItemAddGalleryRemote', 'modules/remote/ItemAddGalleryRemote.inc', 'remote', null);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null,
-			 array(array('name' => $this->translate('Remote'),
-				 'view' => 'remote.RemoteSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Remote'),
+					'view' => 'remote.RemoteSiteAdmin'
+				)
+			)
+		);
 	}
 }
