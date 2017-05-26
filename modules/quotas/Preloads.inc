@@ -26,14 +26,14 @@
 class QuotasPreloads {
 	public function preload(&$template, $preload, $paramSet) {
 		static $loaded;
-
+		
 		if (!empty($loaded[$preload])) {
 			return null;
 		}
-
+		
 		$loaded[$preload] = 1;
 		$template->style('modules/quotas/quotas.css');
-
+		
 		return null;
 	}
 }

@@ -32,65 +32,78 @@ class AdminCreateUserQuotaController extends GalleryController {
 	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$results = $status = $error = array();
-
+		
 		$userId = GalleryUtilities::getRequestVariables('userId');
 		list($ret, $user) = GalleryCoreApi::loadEntitiesById($userId, 'GalleryUser');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (isset($form['action']['cancel'])) {
-		/* Go back to the AdminQuotas view */
+			/* Go back to the AdminQuotas view */
 			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'quotas.AdminQuotas';
 		} elseif (isset($form['action']['create'])) {
 			/* If all the right fields are in place then go ahead and create the user quota */
 			if (array_key_exists('quotaSize', $form) && array_key_exists('quotaUnit', $form)) {
-				if (!empty($form['quotaSize']) && is_numeric($form['quotaSize']) &&
-				$form['quotaSize'] >= 0 && !empty($form['quotaSize'])) {
-						GalleryCoreApi::requireOnce(
-							'modules/quotas/classes/GalleryQuotasHelper.class'
-						);
-						$form['quotaSize'] = round((float)$form['quotaSize'], 2);
+				if (!empty($form['quotaSize']) && is_numeric($form['quotaSize']) && $form['quotaSize'] >= 0 && !empty($form['quotaSize'])) {
+					GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
+					$form['quotaSize'] = round((float) $form['quotaSize'], 2);
 					if ($form['quotaUnit'] == 'KB') {
-							$quotaSize = round($form['quotaSize']);
+						$quotaSize = round($form['quotaSize']);
 					} elseif ($form['quotaUnit'] == 'MB') {
-							$quotaSize = round($form['quotaSize'] * 1024.00);
+						$quotaSize = round($form['quotaSize'] * 1024.00);
 					} elseif ($form['quotaUnit'] == 'GB') {
-							$quotaSize = round($form['quotaSize'] * 1024.00 * 1024.00);
+						$quotaSize = round($form['quotaSize'] * 1024.00 * 1024.00);
 					} else {
-							return array(GalleryCoreApi::error(ERROR_MISSING_VALUE), null);
+						return array(
+							GalleryCoreApi::error(ERROR_MISSING_VALUE),
+							null
+						);
 					}
 					if ($quotaSize <= 2147483647) {
 						if (!isset($user)) {
-							return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+							return array(
+								GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+								null
+							);
 						}
-							list($ret, $quotaExists, $userQuota) =
-						GalleryQuotasHelper::fetchUserQuota($user->getId());
+						list($ret, $quotaExists, $userQuota) = GalleryQuotasHelper::fetchUserQuota($user->getId());
 						if ($ret) {
-							return array($ret, null);
+							return array(
+								$ret,
+								null
+							);
 						}
 						if (!$quotaExists) {
-							$ret = GalleryCoreApi::addMapEntry(
-								'QuotasMap',
-								array('userOrGroupId' => $user->getId(),
-								'quotaSize' => $quotaSize)
-							);
+							$ret = GalleryCoreApi::addMapEntry('QuotasMap', array(
+								'userOrGroupId' => $user->getId(),
+								'quotaSize' => $quotaSize
+							));
 							if ($ret) {
-											return array($ret, null);
+								return array(
+									$ret,
+									null
+								);
 							}
-
+							
 							/* Request a redirect to the confirmation screen */
 							$redirect['view'] = 'core.SiteAdmin';
 							$redirect['subView'] = 'quotas.AdminQuotas';
 							$status['createdUser'] = $user->getUserName();
 						}
 					} else {
-							$error[] = 'form[error][quotaSize][tooLarge]';
-							$error[] = 'form[error][quotaSize][' . $quotaSize . ']';
+						$error[] = 'form[error][quotaSize][tooLarge]';
+						$error[] = 'form[error][quotaSize][' . $quotaSize . ']';
 					}
 				} else {
 					$error[] = 'form[error][quotaSize][notNumeric]';
@@ -105,7 +118,7 @@ class AdminCreateUserQuotaController extends GalleryController {
 				}
 			}
 		}
-
+		
 		if (!empty($redirect)) {
 			$results['redirect'] = $redirect;
 		} else {
@@ -114,8 +127,11 @@ class AdminCreateUserQuotaController extends GalleryController {
 		}
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -129,38 +145,54 @@ class AdminCreateUserQuotaView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$userId = GalleryUtilities::getRequestVariables('userId');
 		list($ret, $user) = GalleryCoreApi::loadEntitiesById($userId, 'GalleryUser');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($form['formName'] != 'AdminCreateUserQuota') {
 			/* Set the form defaults */
 			$form['quotaSize'] = '';
 			$form['quotaUnit'] = '';
 			$form['formName'] = 'AdminCreateUserQuota';
 		}
-
+		
 		$form['userName'] = $user->getUserName();
 		$form['userId'] = $user->getId();
-
+		
 		$AdminCreateUserQuota = array();
 		$AdminCreateUserQuota['userId'] = $user->getId();
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'quotas');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		$AdminCreateUserQuota['quotaUnitChoices'] = array('KB' => $module->translate('KB'),
-							  'MB' => $module->translate('MB'),
-							  'GB' => $module->translate('GB'));
-
+		$AdminCreateUserQuota['quotaUnitChoices'] = array(
+			'KB' => $module->translate('KB'),
+			'MB' => $module->translate('MB'),
+			'GB' => $module->translate('GB')
+		);
+		
 		$template->setVariable('AdminCreateUserQuota', $AdminCreateUserQuota);
 		$template->setVariable('controller', 'quotas.AdminCreateUserQuota');
-
-		return array(null, array('body' => 'modules/quotas/templates/AdminCreateUserQuota.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/quotas/templates/AdminCreateUserQuota.tpl'
+			)
+		);
 	}
 }

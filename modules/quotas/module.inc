@@ -29,10 +29,10 @@ class QuotasModule extends GalleryModule {
 	public function __construct() {
 		$this->QuotasModule();
 	}
-
+	
 	public function QuotasModule() {
 		global $gallery;
-
+		
 		$this->setId('quotas');
 		$this->setName($gallery->i18n('Quotas'));
 		$this->setDescription($gallery->i18n('User/Group Disk Quotas'));
@@ -40,19 +40,27 @@ class QuotasModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('gallery', $gallery->i18n('Gallery'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
 	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
-
+		
 		if (!empty($currentVersion) && version_compare($currentVersion, '1.0.1', '<')) {
 			$storage =& $gallery->getStorage();
-			$ret = $storage->configureStore($this->getId(), array('QuotasMap:1.0'));
+			$ret = $storage->configureStore($this->getId(), array(
+				'QuotasMap:1.0'
+			));
 			if ($ret) {
 				return $ret;
 			}
@@ -64,51 +72,44 @@ class QuotasModule extends GalleryModule {
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null,
-			 array(array('name' => $this->translate('Quotas'),
-				 'view' => 'quotas.AdminQuotas')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Quotas'),
+					'view' => 'quotas.AdminQuotas'
+				)
+			)
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryEventListener',
-			'QuotasModule',
-			'QuotasModule',
-			'modules/quotas/module.inc',
-			'quotas',
-			array('GalleryEntity::delete')
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'QuotasModule', 'QuotasModule', 'modules/quotas/module.inc', 'quotas', array(
+			'GalleryEntity::delete'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemAddOption',
-			'DiskQuotaOption',
-			'DiskQuotaOption',
-			'modules/quotas/DiskQuotaOption.inc',
-			'quotas',
-			null,
-			9
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemAddOption', 'DiskQuotaOption', 'DiskQuotaOption', 'modules/quotas/DiskQuotaOption.inc', 'quotas', null, 9);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Event handler for GalleryEntity::delete events
 	 * Delete any group/user quotas if the associated group/user is deleted
@@ -119,41 +120,47 @@ class QuotasModule extends GalleryModule {
 		$result = null;
 		if ($event->getEventName() == 'GalleryEntity::delete') {
 			$entity = $event->getEntity();
-
-			if (GalleryUtilities::isA($entity, 'GalleryGroup') ||
-			GalleryUtilities::isA($entity, 'GalleryUser')) {
-				GalleryCoreApi::requireOnce(
-					'modules/quotas/classes/GalleryQuotasHelper.class'
-				);
-
-		/* If its a group, find if a group quota exists, if so delete it */
+			
+			if (GalleryUtilities::isA($entity, 'GalleryGroup') || GalleryUtilities::isA($entity, 'GalleryUser')) {
+				GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
+				
+				/* If its a group, find if a group quota exists, if so delete it */
 				if (GalleryUtilities::isA($entity, 'GalleryGroup')) {
-					list($ret, $quotaExists, $groupQuota) =
-					GalleryQuotasHelper::fetchGroupQuota($entity->getId());
+					list($ret, $quotaExists, $groupQuota) = GalleryQuotasHelper::fetchGroupQuota($entity->getId());
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
-						/* If its a user, find if a user quota exists, if so delete it */
+					/* If its a user, find if a user quota exists, if so delete it */
 				} elseif (GalleryUtilities::isA($entity, 'GalleryUser')) {
-					list($ret, $quotaExists, $userQuota) =
-					GalleryQuotasHelper::fetchUserQuota($entity->getId());
+					list($ret, $quotaExists, $userQuota) = GalleryQuotasHelper::fetchUserQuota($entity->getId());
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				}
-
+				
 				if ($quotaExists) {
-					$ret = GalleryCoreApi::removeMapEntry(
-						'QuotasMap',
-						array('userOrGroupId' => $entity->getId())
-					);
+					$ret = GalleryCoreApi::removeMapEntry('QuotasMap', array(
+						'userOrGroupId' => $entity->getId()
+					));
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				}
 			}
 		}
-
-		return array(null, $result);
+		
+		return array(
+			null,
+			$result
+		);
 	}
 }

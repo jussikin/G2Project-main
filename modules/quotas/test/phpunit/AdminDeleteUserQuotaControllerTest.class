@@ -31,92 +31,111 @@ class AdminDeleteUserQuotaControllerTest extends GalleryControllerTestCase {
 	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'quotas.AdminDeleteUserQuota');
 	}
-
+	
 	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Create a user that we can delete */
-	list($ret, $this->_user) = $this->_createRandomUser();
+		
+		/* Create a user that we can delete */
+		list($ret, $this->_user) = $this->_createRandomUser();
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_user);
 	}
-
+	
 	public function testCancel() {
 		GalleryUtilities::putRequestVariable('form[action][cancel]', 1);
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'quotas.AdminQuotas'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'quotas.AdminQuotas'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
 	}
-
+	
 	/**
 	 * Create and delete a user quota
 	 */
 	public function testDeleteUserQuota() {
 		$this->_createUserQuota($this->_user->getId(), 2048);
-
+		
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		GalleryUtilities::putRequestVariable('form[action][delete]', 1);
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'quotas.AdminQuotas'),
-				  'status' => array('deletedUser' => $this->_user->getUserName()),
-				  'error' => array()),
-				$results,
-				'Failed to delete user quota');
-
-	/* Verify the user quota is gone */
-	list($ret, $quotaExists, $quota) =
-		GalleryQuotasHelper::fetchUserQuota($this->_user->getId());
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'quotas.AdminQuotas'
+			),
+			'status' => array(
+				'deletedUser' => $this->_user->getUserName()
+			),
+			'error' => array()
+		), $results, 'Failed to delete user quota');
+		
+		/* Verify the user quota is gone */
+		list($ret, $quotaExists, $quota) = GalleryQuotasHelper::fetchUserQuota($this->_user->getId());
 		if ($quotaExists) {
 			$this->assert(false, 'The user quota was not actually deleted');
 		} else {
 			$this->_deleteUserQuota($this->_user->getId());
 		}
 	}
-
+	
 	public function testDeleteUserQuotaUserIdMissing() {
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
-
+	
 	/**
 	 * Delete a non-existant user quota
 	 */
 	public function testDeleteNonExistantUserQuota() {
 		GalleryUtilities::putRequestVariable('userId', $this->_user->getId());
 		GalleryUtilities::putRequestVariable('form[action][delete]', 1);
-
+		
 		$results = $this->handleRequest();
-
-		$this->assertEquals(array('delegate' => array('view' => 'core.SiteAdmin',
-							  'subView' => 'quotas.AdminDeleteUserQuota'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
+		
+		$this->assertEquals(array(
+			'delegate' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'quotas.AdminDeleteUserQuota'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
 	}
-
+	
 	public function _createUserQuota($userId, $quota) {
-		$ret = GalleryCoreApi::addMapEntry(
-		'QuotasMap', array('userOrGroupId' => $userId, 'quotaSize' => $quota));
+		$ret = GalleryCoreApi::addMapEntry('QuotasMap', array(
+			'userOrGroupId' => $userId,
+			'quotaSize' => $quota
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 	}
-
+	
 	public function _deleteUserQuota($userId) {
-		$ret = GalleryCoreApi::removeMapEntry('QuotasMap', array('userOrGroupId' => $userId));
+		$ret = GalleryCoreApi::removeMapEntry('QuotasMap', array(
+			'userOrGroupId' => $userId
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 	}
 }

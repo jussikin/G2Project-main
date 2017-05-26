@@ -32,44 +32,54 @@ class AdminDeleteGroupQuotaController extends GalleryController {
 	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$results = $status = $error = array();
 		$groupId = GalleryUtilities::getRequestVariables('groupId');
 		list($ret, $group) = GalleryCoreApi::loadEntitiesById($groupId, 'GalleryGroup');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (isset($form['action']['cancel'])) {
-		/* Go back to the AdminGroups view */
+			/* Go back to the AdminGroups view */
 			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'quotas.AdminQuotas';
 		} elseif (isset($form['action']['delete'])) {
 			GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
-
-			list($ret, $quotaExists, $groupQuota) =
-			GalleryQuotasHelper::fetchGroupQuota($group->getId());
+			
+			list($ret, $quotaExists, $groupQuota) = GalleryQuotasHelper::fetchGroupQuota($group->getId());
 			if ($ret) {
-				return array($ret, null);
-			}
-
-			if ($quotaExists) {
-				$ret = GalleryCoreApi::removeMapEntry(
-					'QuotasMap',
-					array('userOrGroupId' => $group->getId())
+				return array(
+					$ret,
+					null
 				);
+			}
+			
+			if ($quotaExists) {
+				$ret = GalleryCoreApi::removeMapEntry('QuotasMap', array(
+					'userOrGroupId' => $group->getId()
+				));
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
-		/* Request a redirect to the confirmation screen */
+				
+				/* Request a redirect to the confirmation screen */
 				$redirect['view'] = 'core.SiteAdmin';
 				$redirect['subView'] = 'quotas.AdminQuotas';
 				$status['deletedGroup'] = $group->getGroupName();
 			}
 		}
-
+		
 		if (!empty($redirect)) {
 			$results['redirect'] = $redirect;
 		} else {
@@ -78,8 +88,11 @@ class AdminDeleteGroupQuotaController extends GalleryController {
 		}
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -93,38 +106,53 @@ class AdminDeleteGroupQuotaView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		GalleryCoreApi::requireOnce('modules/quotas/classes/GalleryQuotasHelper.class');
 		$groupId = GalleryUtilities::getRequestVariables('groupId');
 		list($ret, $group) = GalleryCoreApi::loadEntitiesById($groupId, 'GalleryGroup');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $quotaExists, $groupQuota) =
-		GalleryQuotasHelper::fetchGroupQuota($group->getId());
+		
+		list($ret, $quotaExists, $groupQuota) = GalleryQuotasHelper::fetchGroupQuota($group->getId());
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($form['formName'] != 'AdminDeleteGroupQuota') {
 			/* First time around initialize our form */
 			$form['groupName'] = $group->getGroupName();
 			$form['formName'] = 'AdminDeleteGroupQuota';
 		}
-
+		
 		$AdminDeleteGroupQuota = array();
-		list($ret, $AdminDeleteGroupQuota['quotaSize'], $AdminDeleteGroupQuota['quotaUnit']) =
-		GalleryQuotasHelper::humanReadableFromKilobytes($groupQuota['quota']);
+		list($ret, $AdminDeleteGroupQuota['quotaSize'], $AdminDeleteGroupQuota['quotaUnit']) = GalleryQuotasHelper::humanReadableFromKilobytes($groupQuota['quota']);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		$AdminDeleteGroupQuota['group'] = (array)$group;
-
+		$AdminDeleteGroupQuota['group'] = (array) $group;
+		
 		$template->setVariable('AdminDeleteGroupQuota', $AdminDeleteGroupQuota);
 		$template->setVariable('controller', 'quotas.AdminDeleteGroupQuota');
-
-		return array(null, array('body' => 'modules/quotas/templates/AdminDeleteGroupQuota.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/quotas/templates/AdminDeleteGroupQuota.tpl'
+			)
+		);
 	}
 }
