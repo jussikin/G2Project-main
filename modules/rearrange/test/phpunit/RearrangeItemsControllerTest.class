@@ -29,22 +29,23 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase {
 	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'rearrange.RearrangeItems');
 	}
-
+	
 	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
-	// Create a test album with 4 child items (1 with no permission) and 1 subalbum..
-	list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId(),
-								   array('orderBy' => 'orderWeight'));
+		
+		// Create a test album with 4 child items (1 with no permission) and 1 subalbum..
+		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId(), array(
+			'orderBy' => 'orderWeight'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_markForCleanup($this->_album);
-
+		
 		for ($i = 0; $i < 5; $i++) {
 			if ($i == 3) {
 				list($ret, $this->_child[$i]) = $this->_createRandomAlbum($this->_album->getId());
@@ -52,8 +53,7 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase {
 					return $ret;
 				}
 			} else {
-				list($ret, $this->_child[$i]) =
-			$this->_createRandomDataItem($this->_album->getId());
+				list($ret, $this->_child[$i]) = $this->_createRandomDataItem($this->_album->getId());
 				if ($ret) {
 					return $ret;
 				}
@@ -64,7 +64,7 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase {
 					}
 				}
 			}
-
+			
 			$ret = GalleryCoreApi::setItemOrderWeight($this->_child[$i]->getId(), $i * 1000);
 			if ($ret) {
 				return $ret;
@@ -72,44 +72,53 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase {
 			$this->_childIds[] = $this->_child[$i]->getId();
 		}
 	}
-
+	
 	public function testReset() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[action][reset]', 1);
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
-							  'subView' => 'rearrange.RearrangeItems',
-							  'itemId' => $this->_album->getId()),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.ItemAdmin',
+				'subView' => 'rearrange.RearrangeItems',
+				'itemId' => $this->_album->getId()
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
 	}
-
+	
 	public function testRearrangeItems() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[list]', '3,2,0,1');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'core.ItemAdmin',
-							  'subView' => 'rearrange.RearrangeItems',
-							  'itemId' => $this->_album->getId()),
-				  'status' => array('saved' => 1),
-				  'error' => array()),
-				$results);
-
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'core.ItemAdmin',
+				'subView' => 'rearrange.RearrangeItems',
+				'itemId' => $this->_album->getId()
+			),
+			'status' => array(
+				'saved' => 1
+			),
+			'error' => array()
+		), $results);
+		
 		list($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($this->_album);
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assertEquals(array($this->_childIds[4],
-				  $this->_childIds[3],
-				  $this->_childIds[0],
-				  $this->_childIds[2]),
-				$childIds, 'childIds');
-
+		
+		$this->assertEquals(array(
+			$this->_childIds[4],
+			$this->_childIds[3],
+			$this->_childIds[0],
+			$this->_childIds[2]
+		), $childIds, 'childIds');
+		
 		list($ret, $orderWeights) = GalleryCoreApi::fetchItemOrderWeights($this->_childIds);
 		if ($ret) {
 			return $ret;
@@ -117,27 +126,33 @@ class RearrangeItemsControllerTest extends GalleryControllerTestCase {
 		foreach ($this->_childIds as $id) {
 			$weightList[] = $orderWeights[$id];
 		}
-
-		$this->assertEquals(array(3000, 1000, 4000, 2000, 0),
-				$weightList, 'orderWeights');
+		
+		$this->assertEquals(array(
+			3000,
+			1000,
+			4000,
+			2000,
+			0
+		), $weightList, 'orderWeights');
 	}
-
+	
 	public function testBadList() {
 		GalleryUtilities::putRequestVariable('itemId', $this->_album->getId());
 		GalleryUtilities::putRequestVariable('form[list]', '1,4,2,3,0');
 		GalleryUtilities::putRequestVariable('form[action][save]', 1);
-
+		
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
-
+		
 		list($ret, $childIds) = GalleryCoreApi::fetchChildItemIds($this->_album);
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assertEquals(array($this->_childIds[0],
-				  $this->_childIds[2],
-				  $this->_childIds[3],
-				  $this->_childIds[4]),
-				$childIds);
+		
+		$this->assertEquals(array(
+			$this->_childIds[0],
+			$this->_childIds[2],
+			$this->_childIds[3],
+			$this->_childIds[4]
+		), $childIds);
 	}
 }
