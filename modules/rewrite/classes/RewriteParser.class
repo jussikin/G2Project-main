@@ -36,7 +36,7 @@ class RewriteParser {
 	 * @access private
 	 */
 	public $_parserId;
-
+	
 	/**
 	 * The name of this URL generator class
 	 *
@@ -44,7 +44,7 @@ class RewriteParser {
 	 * @access private
 	 */
 	public $_urlGeneratorId;
-
+	
 	/**
 	 * The type of this parser.  Can be either 'preGallery' or 'inGallery'
 	 *
@@ -52,7 +52,7 @@ class RewriteParser {
 	 * @access private
 	 */
 	public $_type;
-
+	
 	/**
 	 * Saves the active rewrite rules.  This needs to be implemented by the specific plugin.  It
 	 * needs to save two rewrite params, activeRules and shortUrls.  activeRules is just a
@@ -66,10 +66,14 @@ class RewriteParser {
 	 *               array string module (on error)
 	 *                     int rule id (on error)
 	 */
-	public function saveActiveRules($activeRules=null, $upgradeModule=null) {
-		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null, null);
+	public function saveActiveRules($activeRules = null, $upgradeModule = null) {
+		return array(
+			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+			null,
+			null
+		);
 	}
-
+	
 	/**
 	 * Saves list of hosts Gallery allows as referrer and if Gallery should allow an empty referrer.
 	 * This needs to be implemented by the specific plugin.  It needs to save a serialized array of
@@ -81,9 +85,12 @@ class RewriteParser {
 	 *               int rewrite status code (REWRITE_STATUS_OK on success)
 	 */
 	public function saveAccessList($accessList, $allowEmptyReferer) {
-		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED), null);
+		return array(
+			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+			null
+		);
 	}
-
+	
 	/**
 	 * By default there's nothing to configure, so we return success.
 	 *
@@ -91,9 +98,12 @@ class RewriteParser {
 	 *               boolean true if this parser needs configuration
 	 */
 	public function needsConfiguration() {
-		return array(null, false);
+		return array(
+			null,
+			false
+		);
 	}
-
+	
 	/**
 	 * This function is called when new rules are saved and by rewrite.AdminRewrite to know if this
 	 * rule should be displayed.  If the parser overrides this function it needs to call this (the
@@ -105,38 +115,36 @@ class RewriteParser {
 	 *        active rule when called from saveActiveRules
 	 * @return boolean true if the rule is valid
 	 */
-	public function isValidRule($rule, $activeRule=null) {
+	public function isValidRule($rule, $activeRule = null) {
 		if (isset($rule['parser']) && $rule['parser'] != $this->getParserType()) {
 			return false;
 		}
-
-	/* Only supported by preGallery parsers */
-	if (isset($rule['conditions']) && $this->getParserType() != 'preGallery') {
-		return false;
-	}
-
-	/* Only supported by preGallery parsers */
-	if (isset($rule['restrict']) && $this->getParserType() != 'preGallery') {
-		return false;
-	}
-
+		
+		/* Only supported by preGallery parsers */
+		if (isset($rule['conditions']) && $this->getParserType() != 'preGallery') {
+			return false;
+		}
+		
+		/* Only supported by preGallery parsers */
+		if (isset($rule['restrict']) && $this->getParserType() != 'preGallery') {
+			return false;
+		}
+		
 		if (isset($activeRule) && (isset($activeRule['pattern']) != isset($rule['pattern']))) {
 			return false;
 		}
-
-		if (isset($activeRule['pattern']) && isset($rule['pattern']) && isset($rule['locked'])
-		&& $activeRule['pattern'] != $rule['pattern']) {
+		
+		if (isset($activeRule['pattern']) && isset($rule['pattern']) && isset($rule['locked']) && $activeRule['pattern'] != $rule['pattern']) {
 			return false;
 		}
-
-		if (isset($activeRule['pattern'])
-		&& !preg_match('/^[a-zA-Z0-9\/\.\%\-]+$/', $activeRule['pattern'])) {
+		
+		if (isset($activeRule['pattern']) && !preg_match('/^[a-zA-Z0-9\/\.\%\-]+$/', $activeRule['pattern'])) {
 			return false;
 		}
-
+		
 		return true;
 	}
-
+	
 	/**
 	 * Returns translated error message, called from AdminRewrite when an unsucsessful save has been
 	 * made.  A valid $code is anything that $this->saveActiveRules would return if an error occurs.
@@ -146,32 +154,46 @@ class RewriteParser {
 	 * @return array GalleryStatus a status code
 	 *               string translated error message
 	 */
-	public function getErrorMessage($code, $rewriteModule=null) {
+	public function getErrorMessage($code, $rewriteModule = null) {
 		if (!isset($rewriteModule)) {
 			list($ret, $rewriteModule) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		switch ($code) {
-	case REWRITE_STATUS_BAD_KEYWORD:
-		return array(null,
-		$rewriteModule->translate('Bad keyword.'));
-	case REWRITE_STATUS_DUPE_SHORT_URL:
-		return array(null,
-		$rewriteModule->translate('Duplicate short URL rule.'));
-	case REWRITE_STATUS_INVALID_PATTERN:
-		return array(null,
-		$rewriteModule->translate('Invalid pattern.'));
-	case REWRITE_STATUS_EMPTY_VALUE:
-		return array(null,
-		$rewriteModule->translate('Empty configuration value.'));
+			case REWRITE_STATUS_BAD_KEYWORD:
+				return array(
+					null,
+					$rewriteModule->translate('Bad keyword.')
+				);
+			case REWRITE_STATUS_DUPE_SHORT_URL:
+				return array(
+					null,
+					$rewriteModule->translate('Duplicate short URL rule.')
+				);
+			case REWRITE_STATUS_INVALID_PATTERN:
+				return array(
+					null,
+					$rewriteModule->translate('Invalid pattern.')
+				);
+			case REWRITE_STATUS_EMPTY_VALUE:
+				return array(
+					null,
+					$rewriteModule->translate('Empty configuration value.')
+				);
+		}
+		
+		return array(
+			null,
+			null
+		);
 	}
-
-		return array(null, null);
-	}
-
+	
 	/**
 	 * Displays the test results if the template variable $TestResults.body is set.  It should be a
 	 * Gallery base dir relative path.
@@ -183,7 +205,7 @@ class RewriteParser {
 	public function loadTestResultsTemplate(&$template, &$form) {
 		return null;
 	}
-
+	
 	/**
 	 * Handles the submitted form and should save any settings (ie. forced tests).
 	 *
@@ -193,9 +215,13 @@ class RewriteParser {
 	 *               array status codes
 	 */
 	public function handleTestResultsRequest($form) {
-		return array(null, array(), array());
+		return array(
+			null,
+			array(),
+			array()
+		);
 	}
-
+	
 	/**
 	 * Displays the parser configuration if the template variable $AdminParser.body is set.  It
 	 * should be a Gallery base dir relative path.
@@ -207,7 +233,7 @@ class RewriteParser {
 	public function loadAdminParserTemplate(&$template, &$form) {
 		return null;
 	}
-
+	
 	/**
 	 * Handles the submitted form and should save the settings.
 	 *
@@ -217,52 +243,66 @@ class RewriteParser {
 	 *               array status codes
 	 */
 	public function handleAdminParserRequest($form) {
-		return array(null, array(), array());
+		return array(
+			null,
+			array(),
+			array()
+		);
 	}
-
+	
 	/**
 	 * @see RewriteApi::needsEmbedConfig
 	 */
 	public function needsEmbedConfig() {
-		return array(null, false);
+		return array(
+			null,
+			false
+		);
 	}
-
+	
 	/**
 	 * @see RewriteApi::fetchEmbedConfig
 	 */
 	public function fetchEmbedConfig() {
-		return array(null, array());
+		return array(
+			null,
+			array()
+		);
 	}
-
+	
 	/**
 	 * @see RewriteApi::saveEmbedConfig
 	 */
 	public function saveEmbedConfig($params) {
-		return array(null, REWRITE_STATUS_OK, null);
+		return array(
+			null,
+			REWRITE_STATUS_OK,
+			null
+		);
 	}
-
+	
 	/* Getters and setters below */
-
+	
 	public function _setParserId($parserId) {
 		$this->_parserId = $parserId;
 	}
-
+	
 	public function getParserId() {
 		return $this->_parserId;
 	}
-
+	
 	public function _setUrlGeneratorId($urlGenerator) {
 		$this->_urlGeneratorId = $urlGenerator;
 	}
-
+	
 	public function getUrlGeneratorId() {
 		return $this->_urlGeneratorId;
 	}
-
+	
 	public function _setParserType($parserType) {
 		$this->_type = $parserType;
 	}
-
+	
 	public function getParserType() {
 		return $this->_type;
 	}

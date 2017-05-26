@@ -44,46 +44,40 @@ class ModRewriteParser extends RewriteParser {
 	public function __construct() {
 		$this->ModRewriteParser();
 	}
-
+	
 	public function ModRewriteParser() {
 		$this->_setParserId('modrewrite');
 		$this->_setParserType('preGallery');
 		$this->_setUrlGeneratorId('ModRewriteUrlGenerator');
 	}
-
+	
 	/**
 	 * @see RewriteParser::saveActiveRules
 	 */
 	public function saveActiveRules($activeRules = null, $upgradeModule = null) {
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		return ModRewriteHelper::saveActiveRules($this, $activeRules, $upgradeModule);
 	}
-
+	
 	/**
 	 * @see RewriteParser::saveAccessList
 	 */
 	public function saveAccessList($accessList, $allowEmptyReferer) {
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		return ModRewriteHelper::saveAccessList($accessList, $allowEmptyReferer);
 	}
-
+	
 	/**
 	 * @see RewriteParser::needsConfiguration
 	 */
 	public function needsConfiguration() {
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		return ModRewriteHelper::needsConfiguration();
 	}
-
+	
 	/**
 	 * @see RewriteParser::getErrorMessage
 	 */
@@ -91,210 +85,261 @@ class ModRewriteParser extends RewriteParser {
 		if (!isset($rewriteModule)) {
 			list($ret, $rewriteModule) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		list($ret, $message) = parent::getErrorMessage($code, $rewriteModule);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (!isset($message)) {
 			switch ($code) {
 				case REWRITE_STATUS_HTACCESS_CANT_READ:
-						$message = $rewriteModule->translate('Cannot read the .htaccess file');
-		            break;
+					$message = $rewriteModule->translate('Cannot read the .htaccess file');
+					break;
 				case REWRITE_STATUS_HTACCESS_CANT_WRITE:
-						$message = $rewriteModule->translate('Cannot write to the .htaccess file');
-		            break;
+					$message = $rewriteModule->translate('Cannot write to the .htaccess file');
+					break;
 				case REWRITE_STATUS_HTACCESS_MISSING:
-						$message = $rewriteModule->translate('Cannot write to the .htaccess file, ' .
-					'please create it.');
-		            break;
+					$message = $rewriteModule->translate('Cannot write to the .htaccess file, ' . 'please create it.');
+					break;
 				case REWRITE_STATUS_EMBED_HTACCESS_CANT_READ:
-						$message = $rewriteModule->translate('Cannot read the embedded .htaccess file');
-		            break;
+					$message = $rewriteModule->translate('Cannot read the embedded .htaccess file');
+					break;
 				case REWRITE_STATUS_EMBED_HTACCESS_CANT_WRITE:
-						$message = $rewriteModule->translate('Cannot write to the embedded .htaccess file');
-		            break;
+					$message = $rewriteModule->translate('Cannot write to the embedded .htaccess file');
+					break;
 				case REWRITE_STATUS_EMBED_HTACCESS_MISSING:
-						$message = $rewriteModule->translate('Cannot write to the embedded .htaccess ' .
-					'file, please create it.');
-		            break;
+					$message = $rewriteModule->translate('Cannot write to the embedded .htaccess ' . 'file, please create it.');
+					break;
 				default:
-		            return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+					return array(
+						GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+						null
+					);
 			}
 		}
-
-		return array(null, $message);
+		
+		return array(
+			null,
+			$message
+		);
 	}
-
+	
 	/**
 	 * @see RewriteParser::loadTestResultsTemplate
 	 */
 	public function loadTestResultsTemplate(&$template, &$form) {
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		return ModRewriteHelper::loadTestResultsTemplate($template, $form);
 	}
-
+	
 	/**
 	 * @see RewriteParser::handleTestResultsRequest
 	 */
 	public function handleTestResultsRequest($form) {
 		$error = $status = array();
-
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
+		
 		if (isset($form['force']['test1'])) {
-			$ret = GalleryCoreApi::setPluginParameter(
-				'module',
-				'rewrite',
-				'modrewrite.status',
-				serialize(array('needOptions' => false, 'forced' => 1))
-			);
+			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'modrewrite.status', serialize(array(
+				'needOptions' => false,
+				'forced' => 1
+			)));
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 		}
-
+		
 		if (isset($form['force']['test2'])) {
-			$ret = GalleryCoreApi::setPluginParameter(
-				'module',
-				'rewrite',
-				'modrewrite.status',
-				serialize(array('needOptions' => true, 'forced' => 1))
-			);
+			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'modrewrite.status', serialize(array(
+				'needOptions' => true,
+				'forced' => 1
+			)));
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 		}
-
+		
 		$status['saved'] = 1;
-
-		return array(null, $error, $status);
+		
+		return array(
+			null,
+			$error,
+			$status
+		);
 	}
-
+	
 	/**
 	 * @see RewriteParser::loadAdminParserTemplate
 	 */
 	public function loadAdminParserTemplate(&$template, &$form) {
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		return ModRewriteHelper::loadAdminRewriteTemplate($template, $form);
 	}
-
+	
 	/**
 	 * @see RewriteParser::handleAdminParserRequest
 	 */
 	public function handleAdminParserRequest($form) {
 		$error = $status = array();
-
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
-	/* We can only save the embedded .htaccess in embedded mode */
+		
+		/* We can only save the embedded .htaccess in embedded mode */
 		if (!GalleryUtilities::isEmbedded()) {
-			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION),
-			null, null);
+			return array(
+				GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION),
+				null,
+				null
+			);
 		}
-
+		
 		if (empty($form['embeddedLocation']) || empty($form['embeddedHtaccess'])) {
 			$error[] = 'form[error][' . REWRITE_STATUS_EMPTY_VALUE . ']';
-
-			return array(null, $error, $status);
+			
+			return array(
+				null,
+				$error,
+				$status
+			);
 		}
-
-		list($ret, $code) = ModRewriteHelper::saveEmbedConfig(
-			array('embeddedLocation' => $form['embeddedLocation'],
-			'embeddedHtaccess' => $form['embeddedHtaccess']),
-			$this,
-			GalleryUtilities::getRequestVariables('controller') != 'SetupRewriteController'
-		);
+		
+		list($ret, $code) = ModRewriteHelper::saveEmbedConfig(array(
+			'embeddedLocation' => $form['embeddedLocation'],
+			'embeddedHtaccess' => $form['embeddedHtaccess']
+		), $this, GalleryUtilities::getRequestVariables('controller') != 'SetupRewriteController');
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
+		
 		if ($code == REWRITE_STATUS_OK) {
 			$status['saved'] = 1;
 		} else {
 			$error[] = 'form[error][' . $code . ']';
 		}
-
-		return array(null, $error, $status);
+		
+		return array(
+			null,
+			$error,
+			$status
+		);
 	}
-
+	
 	/**
 	 * @see RewriteParser::needsEmbedConfig
 	 */
 	public function needsEmbedConfig() {
-		foreach (array('embeddedLocation', 'embeddedHtaccess') as $key) {
-			list($ret, $value) = GalleryCoreApi::getPluginParameter(
-				'module',
-				'rewrite',
-				'modrewrite.' . $key
-			);
+		foreach (array(
+			'embeddedLocation',
+			'embeddedHtaccess'
+		) as $key) {
+			list($ret, $value) = GalleryCoreApi::getPluginParameter('module', 'rewrite', 'modrewrite.' . $key);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			if (empty($value)) {
-				return array(null, true);
+				return array(
+					null,
+					true
+				);
 			}
 		}
-
-		return array(null, false);
+		
+		return array(
+			null,
+			false
+		);
 	}
-
+	
 	/**
 	 * @see RewriteParser::fetchEmbedConfig
 	 */
 	public function fetchEmbedConfig() {
 		$config = array();
-		foreach (array('embeddedLocation', 'embeddedHtaccess') as $key) {
-			list($ret, $value) = GalleryCoreApi::getPluginParameter(
-				'module',
-				'rewrite',
-				'modrewrite.' . $key
-			);
+		foreach (array(
+			'embeddedLocation',
+			'embeddedHtaccess'
+		) as $key) {
+			list($ret, $value) = GalleryCoreApi::getPluginParameter('module', 'rewrite', 'modrewrite.' . $key);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			$config[$key] = $value;
 		}
-
-		return array(null, $config);
+		
+		return array(
+			null,
+			$config
+		);
 	}
-
+	
 	/**
 	 * @see RewriteParser::fetchEmbedConfig
 	 */
 	public function saveEmbedConfig($param) {
-		GalleryCoreApi::requireOnce(
-			'modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class'
-		);
-
+		GalleryCoreApi::requireOnce('modules/rewrite/classes/parsers/modrewrite/ModRewriteHelper.class');
+		
 		list($ret, $code) = ModRewriteHelper::saveEmbedConfig($param, $this, true);
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
-		return array(null, $code,
-		($code != REWRITE_STATUS_OK) ? $this->getErrorMessage($code) : null);
+		
+		return array(
+			null,
+			$code,
+			($code != REWRITE_STATUS_OK) ? $this->getErrorMessage($code) : null
+		);
 	}
 }

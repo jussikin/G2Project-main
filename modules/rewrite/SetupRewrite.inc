@@ -31,7 +31,7 @@ class SetupRewriteController extends GalleryController {
 	 * @var array
 	 */
 	public $_parserIds = array('modrewrite', 'isapirewrite', 'pathinfo');
-
+	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
@@ -40,82 +40,116 @@ class SetupRewriteController extends GalleryController {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$status = $error = array();
-		$results = array('redirect' => array('view' => 'core.SiteAdmin',
-						 'subView' => 'rewrite.SetupRewrite'));
-
+		$results = array(
+			'redirect' => array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'rewrite.SetupRewrite'
+			)
+		);
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (isset($form['action']['testParser'])) {
 			list($ret, $rewriteParser) = RewriteHelper::getRewriteParser();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			list($ret, $error, $status) = $rewriteParser->handleTestResultsRequest($form);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} elseif (isset($form['action']['adminParser'])) {
 			list($ret, $rewriteParser) = RewriteHelper::getRewriteParser();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			list($ret, $error, $status) = $rewriteParser->handleAdminParserRequest($form);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} elseif (isset($form['action']['save']) && isset($form['parser'])) {
 			if (!in_array($form['parser'], $this->_parserIds)) {
-				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+				return array(
+					GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+					null
+				);
 			}
-
-			$ret = GalleryCoreApi::setPluginParameter(
-				'module',
-				'rewrite',
-				'parserId',
-				$form['parser']
-			);
+			
+			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'parserId', $form['parser']);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			list($ret, $rewriteParser) = RewriteHelper::getRewriteParser();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			list($ret, $code) = $rewriteParser->needsConfiguration();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			if (!$code) {
 				$results['redirect']['subView'] = 'core.AdminPlugins';
 			}
-
+			
 			$status['saved'] = 1;
 		} elseif (isset($form['action']['done'])) {
 			$results['redirect']['subView'] = 'core.AdminPlugins';
 		} elseif (isset($form['action']['back'])) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'rewrite', 'parserId', '');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		if (!empty($error)) {
 			unset($results['redirect']);
-			$results['delegate'] = array('view' => 'core.SiteAdmin',
-					 'subView' => 'rewrite.SetupRewrite');
+			$results['delegate'] = array(
+				'view' => 'core.SiteAdmin',
+				'subView' => 'rewrite.SetupRewrite'
+			);
 		}
 		$results['error'] = $error;
 		$results['status'] = $status;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -130,36 +164,46 @@ class SetupRewriteView extends GalleryView {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$SetupRewrite = array();
-
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Make sure the module is not yet active */
+		
+		/* Make sure the module is not yet active */
 		list($ret, $rewrite) = GalleryCoreApi::loadPlugin('module', 'rewrite');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		list($ret, $isActive) = $rewrite->isActive();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if ($isActive) {
-			return array(GalleryCoreApi::error(
-				ERROR_UNSUPPORTED_OPERATION,
-				__FILE__,
-				__LINE__,
-				'rewrite module is active'
-			), null);
+			return array(
+				GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__, 'rewrite module is active'),
+				null
+			);
 		}
-
+		
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 		list($ret, $rewriteParser) = RewriteHelper::getRewriteParser();
 		if ($ret && !($ret->getErrorCode() & ERROR_MISSING_VALUE)) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (isset($rewriteParser)) {
 			/* Error handeling for defined (numeric) REWRITE_STATUS_* errors */
 			$errors = array();
@@ -173,20 +217,29 @@ class SetupRewriteView extends GalleryView {
 			if (!empty($errors)) {
 				$SetupRewrite['errors'] = $errors;
 			}
-
+			
 			$ret = $rewriteParser->loadTestResultsTemplate($template, $form);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			list($ret, $SetupRewrite['needsConfiguration']) = $rewriteParser->needsConfiguration();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			$ret = $rewriteParser->loadAdminParserTemplate($template, $form);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} else {
 			$SetupRewrite['bootstrap'] = 1;
@@ -198,14 +251,19 @@ class SetupRewriteView extends GalleryView {
 				$SetupRewrite['server'] = 'IIS';
 			}
 		}
-
+		
 		if ($form['formName'] != 'SetupRewrite') {
 			$form['formName'] = 'SetupRewrite';
 		}
-
+		
 		$template->setVariable('SetupRewrite', $SetupRewrite);
 		$template->setVariable('controller', 'rewrite.SetupRewrite');
-
-		return array(null, array('body' => 'modules/rewrite/templates/SetupRewrite.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/rewrite/templates/SetupRewrite.tpl'
+			)
+		);
 	}
 }

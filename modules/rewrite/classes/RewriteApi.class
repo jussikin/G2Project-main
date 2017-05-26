@@ -32,18 +32,18 @@ class RewriteApi {
 	 * @var GalleryStatus a status code
 	 */
 	public $_error;
-
+	
 	/**
 	 * Holds the active parser.
 	 *
 	 * @var RewriteParser active parser
 	 */
 	public $_parser;
-
+	
 	public function __construct() {
 		$this->RewriteApi();
 	}
-
+	
 	public function RewriteApi() {
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 		list($ret, $this->_parser) = RewriteHelper::getRewriteParser();
@@ -51,7 +51,7 @@ class RewriteApi {
 			$this->_error = $ret;
 		}
 	}
-
+	
 	/**
 	 * When using this API you should first make sure that your code is compatible with it.
 	 *
@@ -61,18 +61,24 @@ class RewriteApi {
 	 */
 	public function isCompatibleWithApi($version) {
 		if (isset($this->_error)) {
-			return array($this->_error, null);
+			return array(
+				$this->_error,
+				null
+			);
 		}
-
-		return array(null, GalleryUtilities::isCompatibleWithApi($version, $this->getApiVersion()));
+		
+		return array(
+			null,
+			GalleryUtilities::isCompatibleWithApi($version, $this->getApiVersion())
+		);
 	}
-
+	
 	/**
 	 * Embedded configuration
 	 *
 	 * All embedded-related functions need to be called while Gallery is in embedded mode.
 	 */
-
+	
 	/**
 	 * Checks if the parser needs configuration.
 	 *
@@ -81,22 +87,33 @@ class RewriteApi {
 	 */
 	public function needsEmbedConfig() {
 		if (isset($this->_error)) {
-			return array($this->_error, null);
+			return array(
+				$this->_error,
+				null
+			);
 		}
-
+		
 		if (!GalleryUtilities::isEmbedded()) {
-			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__,
-		'use in embedded mode'), null);
+			return array(
+				GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__, 'use in embedded mode'),
+				null
+			);
 		}
-
+		
 		list($ret, $status) = $this->_parser->needsEmbedConfig();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $status);
+		
+		return array(
+			null,
+			$status
+		);
 	}
-
+	
 	/**
 	 * Returns the current active configuration values.
 	 *
@@ -105,22 +122,33 @@ class RewriteApi {
 	 */
 	public function fetchEmbedConfig() {
 		if (isset($this->_error)) {
-			return array($this->_error, null);
+			return array(
+				$this->_error,
+				null
+			);
 		}
-
+		
 		if (!GalleryUtilities::isEmbedded()) {
-			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__,
-		'use in embedded mode'), null);
+			return array(
+				GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__, 'use in embedded mode'),
+				null
+			);
 		}
-
+		
 		list($ret, $config) = $this->_parser->fetchEmbedConfig();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $config);
+		
+		return array(
+			null,
+			$config
+		);
 	}
-
+	
 	/**
 	 * Saves the configuration.
 	 *
@@ -131,22 +159,37 @@ class RewriteApi {
 	 */
 	public function saveEmbedConfig($params) {
 		if (isset($this->_error)) {
-			return array($this->_error, null, null);
+			return array(
+				$this->_error,
+				null,
+				null
+			);
 		}
-
+		
 		if (!GalleryUtilities::isEmbedded()) {
-			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__,
-		'use in embedded mode'), null, null);
+			return array(
+				GalleryCoreApi::error(ERROR_UNSUPPORTED_OPERATION, __FILE__, __LINE__, 'use in embedded mode'),
+				null,
+				null
+			);
 		}
-
+		
 		list($ret, $status, $errstr) = $this->_parser->saveEmbedConfig($params);
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
-		return array(null, $status, $errstr);
+		
+		return array(
+			null,
+			$status,
+			$errstr
+		);
 	}
-
+	
 	/**
 	 * Fetch the active rewrite rules for a specific module which can be inactive at the time of
 	 * this call.
@@ -155,26 +198,37 @@ class RewriteApi {
 	 *               array $ruleIds list of the active rewrite rule ids
 	 */
 	public function fetchActiveRulesForModule($moduleId) {
-		list($ret, $activeRules) =
-		GalleryCoreApi::getPluginParameter('module', 'rewrite', 'activeRules');
+		list($ret, $activeRules) = GalleryCoreApi::getPluginParameter('module', 'rewrite', 'activeRules');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$activeRules = unserialize($activeRules);
-
+		
 		if (isset($activeRules[$moduleId])) {
-			return array(null, array_keys($activeRules[$moduleId]));
+			return array(
+				null,
+				array_keys($activeRules[$moduleId])
+			);
 		}
-
+		
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 		list($ret, $history) = RewriteHelper::getHistoryForModule($moduleId);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, array_keys($history));
+		
+		return array(
+			null,
+			array_keys($history)
+		);
 	}
-
+	
 	/**
 	 * Activate the rewrite rules for a specific module which can be inactive at the time of this
 	 * call.  Does not update active rules by default, only changes the list of active rules for the
@@ -188,29 +242,36 @@ class RewriteApi {
 	 *               boolean true if the operation was successful, false if not (e.g. if the
 	 *               .htaccess could not be written or if the rules are invalid)
 	 */
-	public function activateRewriteRulesForModule($moduleId, $ruleIds=null, $replacePatterns=false) {
+	public function activateRewriteRulesForModule($moduleId, $ruleIds = null, $replacePatterns = false) {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', $moduleId, true);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $activeRules) =
-		GalleryCoreApi::getPluginParameter('module', 'rewrite', 'activeRules');
+		
+		list($ret, $activeRules) = GalleryCoreApi::getPluginParameter('module', 'rewrite', 'activeRules');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$activeRules = unserialize($activeRules);
-
+		
 		GalleryCoreApi::requireOnce('modules/rewrite/classes/RewriteHelper.class');
 		list($ret, $history) = RewriteHelper::getHistoryForModule($moduleId);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$rules = $module->getRewriteRules();
 		foreach ($rules as $ruleId => $rule) {
-			if ((!isset($activeRules[$moduleId][$ruleId]) || $replacePatterns)
-			&& (!isset($ruleIds) || in_array($ruleId, $ruleIds))) {
+			if ((!isset($activeRules[$moduleId][$ruleId]) || $replacePatterns) && (!isset($ruleIds) || in_array($ruleId, $ruleIds))) {
 				$activeRule = array();
 				if (isset($rule['pattern'])) {
 					$activeRule['pattern'] = $rule['pattern'];
@@ -225,39 +286,51 @@ class RewriteApi {
 				unset($history[$ruleId]);
 			}
 		}
-
+		
 		list($ret, $code, $errorId) = $this->_parser->saveActiveRules($activeRules, $module);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Update the history */
-	if ($code == REWRITE_STATUS_OK) {
-		$ret = RewriteHelper::setHistoryForModule($moduleId, $history);
-		if ($ret) {
-			return array($ret, null);
+		
+		/* Update the history */
+		if ($code == REWRITE_STATUS_OK) {
+			$ret = RewriteHelper::setHistoryForModule($moduleId, $history);
+			if ($ret) {
+				return array(
+					$ret,
+					null
+				);
+			}
 		}
+		
+		return array(
+			null,
+			$code == REWRITE_STATUS_OK
+		);
 	}
-
-		return array(null, $code == REWRITE_STATUS_OK);
-	}
-
+	
 	/* Getters below */
-
+	
 	/**
 	 * @return array api version
 	 */
 	public function getApiVersion() {
-		return array(1, 1);
+		return array(
+			1,
+			1
+		);
 	}
-
+	
 	/**
 	 * @return string parser id
 	 */
 	public function getParserId() {
 		return $this->_parser->getParserId();
 	}
-
+	
 	/**
 	 * @return string parser type
 	 */
