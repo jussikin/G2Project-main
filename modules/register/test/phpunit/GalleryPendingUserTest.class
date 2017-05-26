@@ -31,97 +31,111 @@ class GalleryPendingUserTest extends GalleryTestCase {
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'register');
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testPendingUserCreation() {
 		global $gallery;
-
-	/* Create a new pending user */
-	list($ret, $user) = $this->_createRandomPendingUser();
+		
+		/* Create a new pending user */
+		list($ret, $user) = $this->_createRandomPendingUser();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryDataCache::reset();
-
-	/* Verify it */
-	$ret = $this->_verifyEntity($user);
+		
+		/* Verify it */
+		$ret = $this->_verifyEntity($user);
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Delete it */
-	$ret = $this->_deleteAndVerifyEntity($user->getId());
+		
+		/* Delete it */
+		$ret = $this->_deleteAndVerifyEntity($user->getId());
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testPendingUserPassword() {
 		/* Verify hashed password is created as GalleryUser would */
-	list($ret, $pendingUser) =
-		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
+		list($ret, $pendingUser) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
 		if ($ret) {
 			return $ret;
 		}
-		list($ret, $user) =
-		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
+		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return $ret;
 		}
 		if (empty($pendingUser) || empty($user)) {
 			return $this->assert(false, 'factory error');
 		}
-
+		
 		$password = 'testpass' . rand(1, 999);
 		$user->changePassword($password);
 		$pendingUser->changePassword($password);
-		$this->assertEquals(strlen($user->getHashedPassword()),
-				strlen($pendingUser->getHashedPassword()), 'hash length');
+		$this->assertEquals(strlen($user->getHashedPassword()), strlen($pendingUser->getHashedPassword()), 'hash length');
 		$user->setHashedPassword($pendingUser->getHashedPassword());
 		$this->assert($user->isCorrectPassword($password), 'check password');
 	}
-
+	
 	public function _createRandomPendingUser() {
-		list($ret, $user) =
-		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
+		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryPendingUser');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (!isset($user)) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+				null
+			);
 		}
-
+		
 		$username = 'testuser_' . rand(1000, 1000000);
-
+		
 		$ret = $user->create($username);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$ret = $user->save();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		list($ret, $user) = GalleryPendingUserHelper::fetchPendingUserByUserName($username);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array( null, $user);
+		
+		return array(
+			null,
+			$user
+		);
 	}
 }

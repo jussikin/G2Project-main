@@ -30,29 +30,35 @@ class ConfirmRegistrationController extends GalleryController {
 	 * @see GalleryController::handleRequest
 	 */
 	public function handleRequest($form) {
-		GalleryCoreApi::requireOnce(
-			'modules/register/classes/GalleryPendingUserHelper.class'
+		GalleryCoreApi::requireOnce('modules/register/classes/GalleryPendingUserHelper.class');
+		$results = array(
+			'status' => array(),
+			'error' => array()
 		);
-		$results = array('status' => array(), 'error' => array());
-
-	/* turn the pending user into a real user */
+		
+		/* turn the pending user into a real user */
 		list($username, $regKey) = GalleryUtilities::getRequestVariables('username', 'key');
-
+		
 		list($ret, $user) = GalleryPendingUserHelper::fetchPendingUserByUsername($username);
 		if ($ret) {
 			if ($ret->getErrorCode() & ERROR_MISSING_OBJECT) {
 				/*
-	     * If the username is now a real user then maybe we got here via return-url
-	     * after login.. let's just return to previous url instead of showing error msg.
-	     */
+	             * If the username is now a real user then maybe we got here via return-url
+	             * after login.. let's just return to previous url instead of showing error msg.
+	             */
 				list($ret, $user) = GalleryCoreApi::fetchUserByUsername($username);
 				if (!$ret) {
-					$results['redirect'] = array('return' => true);
+					$results['redirect'] = array(
+						'return' => true
+					);
 				} else {
 					$results['error'][] = 'form[error][unknownUser]';
 				}
 			} else {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} else {
 			/* verify registration key: */
@@ -61,17 +67,25 @@ class ConfirmRegistrationController extends GalleryController {
 			} else {
 				$ret = GalleryPendingUserHelper::createGalleryUser($user);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
 		}
-
+		
 		if (empty($results['redirect'])) {
-			$results['delegate'] = array('view' => 'core.UserAdmin',
-					 'subView' => 'register.ConfirmRegistration');
+			$results['delegate'] = array(
+				'view' => 'core.UserAdmin',
+				'subView' => 'register.ConfirmRegistration'
+			);
 		}
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -84,7 +98,12 @@ class ConfirmRegistrationView extends GalleryView {
 	 */
 	public function loadTemplate(&$template, &$form) {
 		$template->setVariable('controller', 'register.ConfirmRegistration');
-
-		return array(null, array('body' => 'modules/register/templates/ConfirmRegistration.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/register/templates/ConfirmRegistration.tpl'
+			)
+		);
 	}
 }

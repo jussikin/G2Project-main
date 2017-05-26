@@ -36,30 +36,44 @@ class GalleryPendingUserHelper {
 	 */
 	public static function fetchPendingUserByUserName($userName) {
 		global $gallery;
-
+		
 		$query = '
 	SELECT [GalleryPendingUser::id] FROM [GalleryPendingUser]
 	WHERE [GalleryPendingUser::userName] = ?
 	';
-		list($ret, $searchResults) = $gallery->search($query, array($userName));
+		list($ret, $searchResults) = $gallery->search($query, array(
+			$userName
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($searchResults->resultCount() == 0) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+				null
+			);
 		} else {
 			$result = $searchResults->nextResult();
-			$id = (int)$result[0];
+			$id = (int) $result[0];
 			list($ret, $user) = GalleryCoreApi::loadEntitiesById($id, 'GalleryPendingUser');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
-			return array(null, $user);
+			
+			return array(
+				null,
+				$user
+			);
 		}
 	}
-
+	
 	/**
 	 * Return the total number of pending users
 	 *
@@ -67,7 +81,7 @@ class GalleryPendingUserHelper {
 	 * @return array GalleryStatus a status code
 	 *               int number of pending users
 	 */
-	public static function fetchUserCount($substring=null) {
+	public static function fetchUserCount($substring = null) {
 		global $gallery;
 		$data = array();
 		$query = '
@@ -77,17 +91,23 @@ class GalleryPendingUserHelper {
 			$query .= ' WHERE [GalleryPendingUser::userName] LIKE ?';
 			$data[] = "%$substring%";
 		}
-
+		
 		list($ret, $searchResults) = $gallery->search($query, $data);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$result = $searchResults->nextResult();
-
-		return array(null, (int)$result[0]);
+		
+		return array(
+			null,
+			(int) $result[0]
+		);
 	}
-
+	
 	/**
 	 * Return a map of user ids and data
 	 *
@@ -100,7 +120,7 @@ class GalleryPendingUserHelper {
 	 * @return array GalleryStatus a status code
 	 *               array (id => array('userName'=>name, 'fullName'=>name, 'email'=>email), ...)
 	 */
-	public static function fetchUserData($count=null, $offset=null, $substring=null) {
+	public static function fetchUserData($count = null, $offset = null, $substring = null) {
 		global $gallery;
 		$data = array();
 		$query = '
@@ -110,31 +130,43 @@ class GalleryPendingUserHelper {
 	FROM [GalleryPendingUser], [GalleryEntity]
 	WHERE [GalleryPendingUser::id]=[GalleryEntity::id]
 	';
-
+		
 		if (!empty($substring)) {
 			$query .= ' AND [GalleryPendingUser::userName] LIKE ?';
 			$data[] = "%$substring%";
 		}
-
+		
 		$query .= ' ORDER BY [GalleryPendingUser::userName] ASC';
-
-		list($ret, $searchResults) = $gallery->search($query, $data,
-		 array('limit' => array('count' => (int)$count, 'offset' => (int)$offset)));
+		
+		list($ret, $searchResults) = $gallery->search($query, $data, array(
+			'limit' => array(
+				'count' => (int) $count,
+				'offset' => (int) $offset
+			)
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$data = array();
 		while ($result = $searchResults->nextResult()) {
-			$data[$result[0]] = array('userName' => $result[1],
-					  'fullName' => $result[2],
-					  'email' => $result[3],
-					  'creationTimestamp' => (int)$result[4]);
+			$data[$result[0]] = array(
+				'userName' => $result[1],
+				'fullName' => $result[2],
+				'email' => $result[3],
+				'creationTimestamp' => (int) $result[4]
+			);
 		}
-
-		return array(null, $data);
+		
+		return array(
+			null,
+			$data
+		);
 	}
-
+	
 	/**
 	 * Send an email with a confirmation link
 	 *
@@ -147,10 +179,9 @@ class GalleryPendingUserHelper {
 	 *                                        locale for the email.
 	 * @return GalleryStatus a status code
 	 */
-	public static function sendConfirmationEmail(&$pendingUser,
-		$tplFile='ConfirmationEmail.tpl', $subjectParam='subject', $userIdForLocale=null) {
+	public static function sendConfirmationEmail(&$pendingUser, $tplFile = 'ConfirmationEmail.tpl', $subjectParam = 'subject', $userIdForLocale = null) {
 		global $gallery;
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'register');
 		if ($ret) {
 			return $ret;
@@ -159,19 +190,26 @@ class GalleryPendingUserHelper {
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$decodedUserName = $pendingUser->getUserName();
 		GalleryUtilities::unsanitizeInputValues($decodedUserName, false);
 		$generator =& $gallery->getUrlGenerator();
-		$confirmationUrl = $generator->generateUrl(
-		array('controller' => 'register.ConfirmRegistration',
-		  /* Incoming url params will get sanitized, so decode here */
-		  'username' => $decodedUserName,
-		  'key' => $pendingUser->getRegistrationKey()),
-		array('forceFullUrl' => true, 'forceSessionId' => false, 'htmlEntities' => false));
-		$baseUrl = $generator->generateUrl(array(),
-		array('forceFullUrl' => true, 'forceSessionId' => false, 'htmlEntities' => false));
-
+		$confirmationUrl = $generator->generateUrl(array(
+			'controller' => 'register.ConfirmRegistration',
+			/* Incoming url params will get sanitized, so decode here */
+			'username' => $decodedUserName,
+			'key' => $pendingUser->getRegistrationKey()
+		), array(
+			'forceFullUrl' => true,
+			'forceSessionId' => false,
+			'htmlEntities' => false
+		));
+		$baseUrl = $generator->generateUrl(array(), array(
+			'forceFullUrl' => true,
+			'forceSessionId' => false,
+			'htmlEntities' => false
+		));
+		
 		if (isset($userIdForLocale)) {
 			$translator =& $gallery->getTranslator();
 			$currentLocale = $translator->getActiveLocale();
@@ -186,33 +224,29 @@ class GalleryPendingUserHelper {
 				}
 			}
 		}
-
-		$ret = GalleryCoreApi::sendTemplatedEmail(
-		'modules/register/templates/' . $tplFile,
-		array(
+		
+		$ret = GalleryCoreApi::sendTemplatedEmail('modules/register/templates/' . $tplFile, array(
 			'name' => $pendingUser->getFullName(),
 			/* We send plain text email so decode entities in username */
 			'username' => $decodedUserName,
 			'confirmationUrl' => $confirmationUrl,
 			'baseUrl' => $baseUrl,
-			'l10Domain' => 'modules_register'),
-		$params['from'],
-		$pendingUser->getEmail(),
-		$module->translate($params[$subjectParam]));
+			'l10Domain' => 'modules_register'
+		), $params['from'], $pendingUser->getEmail(), $module->translate($params[$subjectParam]));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		if (isset($userIdForLocale) && $language != $currentLocale) {
 			list($ret) = $translator->init($currentLocale);
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Send notification email to site administrators
 	 *
@@ -221,7 +255,7 @@ class GalleryPendingUserHelper {
 	 */
 	public static function sendAdminEmail(&$pendingUser) {
 		global $gallery;
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'register');
 		if ($ret) {
 			return $ret;
@@ -230,8 +264,7 @@ class GalleryPendingUserHelper {
 		if ($ret) {
 			return $ret;
 		}
-		list($ret, $adminGroupId) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
+		list($ret, $adminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 		if ($ret) {
 			return $ret;
 		}
@@ -239,8 +272,7 @@ class GalleryPendingUserHelper {
 		if ($ret) {
 			return $ret;
 		}
-		list($ret, $adminUsers) =
-		GalleryCoreApi::loadEntitiesById(array_keys($adminUserIds), 'GalleryUser');
+		list($ret, $adminUsers) = GalleryCoreApi::loadEntitiesById(array_keys($adminUserIds), 'GalleryUser');
 		if ($ret) {
 			return $ret;
 		}
@@ -256,7 +288,7 @@ class GalleryPendingUserHelper {
 				$localeList[] = $language;
 			}
 		}
-
+		
 		if (!empty($toList)) {
 			list($ret, $defaultLocale) = $gallery->getActiveLocale();
 			if ($ret) {
@@ -264,44 +296,39 @@ class GalleryPendingUserHelper {
 			}
 			$currentLocale = $defaultLocale;
 			$translator =& $gallery->getTranslator();
-
+			
 			$decodedUserName = $pendingUser->getUserName();
 			GalleryUtilities::unsanitizeInputValues($decodedUserName, false);
 			foreach ($toList as $index => $to) {
 				/* Reinitialize translator with the preferred language of admin where needed */
-		if ($currentLocale != $localeList[$index]) {
-			list($ret, $currentLocale) =
-			$translator->init($localeList[$index]);
-			if ($ret) {
-				if ($defaultLocale != $localeList[$index]) {
-					list($ret2) = $translator->init($defaultLocale);
-					if ($ret2) {
-						return $ret2;
+				if ($currentLocale != $localeList[$index]) {
+					list($ret, $currentLocale) = $translator->init($localeList[$index]);
+					if ($ret) {
+						if ($defaultLocale != $localeList[$index]) {
+							list($ret2) = $translator->init($defaultLocale);
+							if ($ret2) {
+								return $ret2;
+							}
+						}
+						
+						return $ret;
 					}
 				}
-
-				return $ret;
-			}
-		}
-				$ret = GalleryCoreApi::sendTemplatedEmail(
-			'modules/register/templates/AdminEmail.tpl',
-			array('name' => $pendingUser->getFullName(),
-				  /* We send plain text email so decode entities in username */
-				  'username' => $decodedUserName,
-				  'email' => $pendingUser->getEmail(),
-				  'l10Domain' => 'modules_register'),
-			$params['from'],
-			$to,
-			$module->translate($params['adminsubject']));
+				$ret = GalleryCoreApi::sendTemplatedEmail('modules/register/templates/AdminEmail.tpl', array(
+					'name' => $pendingUser->getFullName(),
+					/* We send plain text email so decode entities in username */
+					'username' => $decodedUserName,
+					'email' => $pendingUser->getEmail(),
+					'l10Domain' => 'modules_register'
+				), $params['from'], $to, $module->translate($params['adminsubject']));
 				if ($ret) {
 					if ($defaultLocale != $currentLocale) {
-						list($ret2, $currentLocale) =
-				$translator->init($defaultLocale);
+						list($ret2, $currentLocale) = $translator->init($defaultLocale);
 						if ($ret2) {
 							return $ret2;
 						}
 					}
-
+					
 					return $ret;
 				}
 			}
@@ -312,10 +339,10 @@ class GalleryPendingUserHelper {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Create GalleryUser from GalleryPendingUser
 	 *
@@ -323,7 +350,7 @@ class GalleryPendingUserHelper {
 	 * @param boolean $delete if true delete the GalleryPendingUser
 	 * @return GalleryStatus a status code
 	 */
-	public static function createGalleryUser(&$pendingUser, $delete=true) {
+	public static function createGalleryUser(&$pendingUser, $delete = true) {
 		list($ret, $user) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'GalleryUser');
 		if ($ret) {
 			return $ret;
@@ -331,62 +358,62 @@ class GalleryPendingUserHelper {
 		if (!isset($user)) {
 			return GalleryCoreApi::error(ERROR_MISSING_OBJECT);
 		}
-
+		
 		$ret = $user->create($pendingUser->getUserName());
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Copy all values to the new "real" user */
-	$user->setEmail($pendingUser->getEmail());
+		
+		/* Copy all values to the new "real" user */
+		$user->setEmail($pendingUser->getEmail());
 		$user->setFullName($pendingUser->getFullName());
 		$user->setLanguage($pendingUser->getLanguage());
 		$user->setHashedPassword($pendingUser->getHashedPassword());
-
+		
 		$ret = $user->save();
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Send welcome email if selected in module settings */
-	list($ret, $sendEmail) =
-		GalleryCoreApi::getPluginParameter('module', 'register', 'emailusers');
+		
+		/* Send welcome email if selected in module settings */
+		list($ret, $sendEmail) = GalleryCoreApi::getPluginParameter('module', 'register', 'emailusers');
 		if ($ret) {
 			return $ret;
 		}
 		if ($sendEmail) {
-			$ret = self::sendConfirmationEmail($pendingUser,
-			'WelcomeEmail.tpl', 'usersubject', $user->getId());
+			$ret = self::sendConfirmationEmail($pendingUser, 'WelcomeEmail.tpl', 'usersubject', $user->getId());
 			if ($ret) {
 				return $ret;
 			}
 		}
-
-	/* Notify gallery event system */
-	$event = GalleryCoreApi::newEvent('GalleryPendingUser::createGalleryUser');
+		
+		/* Notify gallery event system */
+		$event = GalleryCoreApi::newEvent('GalleryPendingUser::createGalleryUser');
 		$event->setEntity($pendingUser);
 		list($ret) = GalleryCoreApi::postEvent($event);
 		if ($ret) {
-			return  $ret;
+			return $ret;
 		}
-
+		
 		if ($delete) {
-			list($ret, $lock) = GalleryCoreApi::acquireWriteLock(array($pendingUser->getId()));
+			list($ret, $lock) = GalleryCoreApi::acquireWriteLock(array(
+				$pendingUser->getId()
+			));
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			$ret = $pendingUser->delete();
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			$ret = GalleryCoreApi::releaseLocks($lock);
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
 }

@@ -57,7 +57,7 @@ class GalleryPendingUser extends GalleryEntity {
 	 * @access public
 	 */
 	public $userName;
-
+	
 	/**
 	 * The User's full name
 	 *
@@ -72,7 +72,7 @@ class GalleryPendingUser extends GalleryEntity {
 	 * @access public
 	 */
 	public $fullName;
-
+	
 	/**
 	 * The User's password in a hashed form.
 	 *
@@ -86,7 +86,7 @@ class GalleryPendingUser extends GalleryEntity {
 	 * @access public
 	 */
 	public $hashedPassword;
-
+	
 	/**
 	 * The User's email address.
 	 *
@@ -100,7 +100,7 @@ class GalleryPendingUser extends GalleryEntity {
 	 * @access public
 	 */
 	public $email;
-
+	
 	/**
 	 * The User's language preference
 	 *
@@ -114,7 +114,7 @@ class GalleryPendingUser extends GalleryEntity {
 	 * @access public
 	 */
 	public $language;
-
+	
 	/**
 	 * The registration key (used in confirmation url)
 	 *
@@ -128,7 +128,7 @@ class GalleryPendingUser extends GalleryEntity {
 	 * @access public
 	 */
 	public $registrationKey;
-
+	
 	/**
 	 * Create a new instance of this user in the persistent store
 	 *
@@ -136,9 +136,9 @@ class GalleryPendingUser extends GalleryEntity {
 	 */
 	public function create($userName) {
 		global $gallery;
-
-	/* first check for a collision in the pending users table */
-	$query = '
+		
+		/* first check for a collision in the pending users table */
+		$query = '
 	SELECT
 	  [GalleryPendingUser::id]
 	FROM
@@ -146,22 +146,26 @@ class GalleryPendingUser extends GalleryEntity {
 	WHERE
 	  [GalleryPendingUser::userName] = ?
 	';
-
-	/* Check to see if we have a collision */
-	list($ret, $results) =
-		$gallery->search($query, array($userName),
-				 array('limit' => array('count' => 1)));
+		
+		/* Check to see if we have a collision */
+		list($ret, $results) = $gallery->search($query, array(
+			$userName
+		), array(
+			'limit' => array(
+				'count' => 1
+			)
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$result = $results->nextResult();
 		if ($result[0] > 0) {
 			return GalleryCoreApi::error(ERROR_COLLISION);
 		}
-
-	/* then check for a collision in the real user table */
-	$query = '
+		
+		/* then check for a collision in the real user table */
+		$query = '
 	SELECT
 	  [GalleryUser::id]
 	FROM
@@ -169,32 +173,36 @@ class GalleryPendingUser extends GalleryEntity {
 	WHERE
 	  [GalleryUser::userName] = ?
 	';
-
-	/* Check to see if we have a collision */
-	list($ret, $results) =
-		$gallery->search($query, array($userName),
-				 array('limit' => array('count' => 1)));
+		
+		/* Check to see if we have a collision */
+		list($ret, $results) = $gallery->search($query, array(
+			$userName
+		), array(
+			'limit' => array(
+				'count' => 1
+			)
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$result = $results->nextResult();
 		if ($result[0] > 0) {
 			return GalleryCoreApi::error(ERROR_COLLISION);
 		}
-
-	/* okay, we don't have any collisions, so go on */
-	$ret = parent::create();
+		
+		/* okay, we don't have any collisions, so go on */
+		$ret = parent::create();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->setUserName($userName);
 		$this->setRegistrationKey('G' . rand(100000, 999999) . '2');
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Change the user's password to the new value provided.
 	 *
@@ -203,58 +211,58 @@ class GalleryPendingUser extends GalleryEntity {
 	public function changePassword($newPassword) {
 		$this->setHashedPassword(GalleryUtilities::md5Salt($newPassword));
 	}
-
+	
 	/**
 	 * @see GalleryEntity::getClassName
 	 */
 	public function getClassName() {
 		return 'GalleryPendingUser';
 	}
-
+	
 	public function getUserName() {
 		return $this->userName;
 	}
-
+	
 	public function setUserName($userName) {
 		$this->userName = $userName;
 	}
-
+	
 	public function getFullName() {
 		return $this->fullName;
 	}
-
+	
 	public function setFullName($fullName) {
 		$this->fullName = $fullName;
 	}
-
+	
 	public function getHashedPassword() {
 		return $this->hashedPassword;
 	}
-
+	
 	public function setHashedPassword($hashedPassword) {
 		$this->hashedPassword = $hashedPassword;
 	}
-
+	
 	public function getEmail() {
 		return $this->email;
 	}
-
+	
 	public function setEmail($email) {
 		$this->email = $email;
 	}
-
+	
 	public function getLanguage() {
 		return $this->language;
 	}
-
+	
 	public function setLanguage($language) {
 		$this->language = $language;
 	}
-
+	
 	public function getRegistrationKey() {
 		return $this->registrationKey;
 	}
-
+	
 	public function setRegistrationKey($registrationKey) {
 		$this->registrationKey = $registrationKey;
 	}
