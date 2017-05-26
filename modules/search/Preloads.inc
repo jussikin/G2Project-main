@@ -26,14 +26,14 @@
 class SearchPreloads {
 	public function preload(&$template, $preload, $paramSet) {
 		global $gallery;
-
+		
 		switch ($preload) {
 			case 'SearchBlock':
 				$template->javascript('modules/search/SearchBlock.js');
-
-		        return null;
+				
+				return null;
 		}
-
+		
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 }

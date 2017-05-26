@@ -31,10 +31,10 @@ class SearchModule extends GalleryModule {
 	public function __construct() {
 		$this->SearchModule();
 	}
-
+	
 	public function SearchModule() {
 		global $gallery;
-
+		
 		$this->setId('search');
 		$this->setName($gallery->i18n('Search'));
 		$this->setDescription($gallery->i18n('Search your Gallery'));
@@ -42,7 +42,13 @@ class SearchModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('gallery', $gallery->i18n('Gallery'));
 		$this->setCallbacks('');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
 }

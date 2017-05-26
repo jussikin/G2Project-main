@@ -30,12 +30,12 @@ class SearchUtilitiesTest extends GalleryTestCase {
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
-
+	
 	public function testSanitizeSearchCriteria() {
 		global $gallery;
-
+		
 		GalleryCoreApi::requireOnce('modules/search/classes/SearchUtilities.class');
-
+		
 		$this->assertEquals('%%foo%%bar%%', SearchUtilities::sanitizeSearchCriteria('%foo%bar%'));
 	}
 }

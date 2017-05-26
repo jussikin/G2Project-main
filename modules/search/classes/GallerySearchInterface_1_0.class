@@ -46,10 +46,12 @@ class GallerySearchInterface_1_0 {
 	 *                                                        'enabled' => 1)))
 	 */
 	public function getSearchModuleInfo() {
-		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
-			 null);
+		return array(
+			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+			null
+		);
 	}
-
+	
 	/**
 	 * Search the module for the given criteria with the given options
 	 *
@@ -69,8 +71,10 @@ class GallerySearchInterface_1_0 {
 	 *                                              array('key' => 'localized title',
 	 *                                                    'value' => 'localized text'))))
 	 */
-	public function search($options, $criteria, $offset=0, $count=-1) {
-		return array(GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
-			 null);
+	public function search($options, $criteria, $offset = 0, $count = -1) {
+		return array(
+			GalleryCoreApi::error(ERROR_UNIMPLEMENTED),
+			null
+		);
 	}
 }
