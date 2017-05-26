@@ -37,24 +37,36 @@ class NewAlbumController extends GalleryController {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$results = $error = $status = array();
-
+		
 		if (isset($form['action']['newAlbum'])) {
 			if (empty($form['parentId'])) {
-				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+				return array(
+					GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+					null
+				);
 			}
-			list($ret, $permissions) = GalleryCoreApi::getPermissions((int)$form['parentId']);
+			list($ret, $permissions) = GalleryCoreApi::getPermissions((int) $form['parentId']);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			if (empty($permissions['core.view'])) {
 				/* Avoid information disclosure, act as if the item didn't exist. */
-				return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+				return array(
+					GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+					null
+				);
 			}
 			if (empty($permissions['core.addAlbumItem'])) {
-				return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+				return array(
+					GalleryCoreApi::error(ERROR_PERMISSION_DENIED),
+					null
+				);
 			}
-
-		/* Now check the value of name and title */
+			
+			/* Now check the value of name and title */
 			if (empty($form['pathComponent'])) {
 				$error[] = 'form[error][pathComponent][missing]';
 			} elseif (!$platform->isLegalPathComponent($form['pathComponent'])) {
@@ -64,16 +76,12 @@ class NewAlbumController extends GalleryController {
 				$error[] = 'form[error][title][missing]';
 			}
 			if (empty($error)) {
-				list($ret, $newAlbum) = GalleryCoreApi::createAlbum(
-					(int)$form['parentId'],
-					$form['pathComponent'],
-					$form['title'],
-					$form['summary'],
-					$form['description'],
-					null
-				);
+				list($ret, $newAlbum) = GalleryCoreApi::createAlbum((int) $form['parentId'], $form['pathComponent'], $form['title'], $form['summary'], $form['description'], null);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				if (empty($error)) {
 					$redirect['view'] = 'publishxp.SelectAlbum';
@@ -81,7 +89,7 @@ class NewAlbumController extends GalleryController {
 				}
 			}
 		}
-
+		
 		if (!empty($redirect)) {
 			$results['redirect'] = $redirect;
 		} else {
@@ -89,8 +97,11 @@ class NewAlbumController extends GalleryController {
 		}
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -110,9 +121,12 @@ class NewAlbumView extends GalleryView {
 			$form['formName'] = 'NewAlbum';
 			$parentId = GalleryUtilities::getRequestVariables('parentId');
 			if (empty($parentId)) {
-				return array(GalleryCoreApi::error(ERROR_BAD_PARAMETER), null);
+				return array(
+					GalleryCoreApi::error(ERROR_BAD_PARAMETER),
+					null
+				);
 			}
-
+			
 			$form['parentId'] = $parentId;
 			$form['pathComponent'] = '';
 			$form['title'] = '';
@@ -120,52 +134,74 @@ class NewAlbumView extends GalleryView {
 			$form['keywords'] = '';
 			$form['description'] = '';
 		}
-		$form['parentId'] = (int)$form['parentId'];
-
+		$form['parentId'] = (int) $form['parentId'];
+		
 		list($ret, $canView) = GalleryCoreApi::hasItemPermission($form['parentId'], 'core.view');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (!$canView) {
 			/* Avoid information disclosure, act as if the item didn't exist. */
-			return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+				null
+			);
 		}
-
+		
 		$ret = GalleryCoreApi::assertHasItemPermission($form['parentId'], 'core.addAlbumItem');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $parent) =
-		GalleryCoreApi::loadEntitiesById($form['parentId'], 'GalleryAlbumItem');
+		
+		list($ret, $parent) = GalleryCoreApi::loadEntitiesById($form['parentId'], 'GalleryAlbumItem');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Load the item's parents */
+		
+		/* Load the item's parents */
 		list($ret, $parents) = GalleryCoreApi::fetchParents($parent, 'core.view', true);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		for ($i = 0; $i < sizeof($parents); $i ++) {
-			$parents[$i] = (array)$parents[$i];
+		for ($i = 0; $i < sizeof($parents); $i++) {
+			$parents[$i] = (array) $parents[$i];
 		}
-		$parents[] = (array)$parent;
-
+		$parents[] = (array) $parent;
+		
 		$NewAlbum = array();
 		$NewAlbum['parents'] = $parents;
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$template->title($module->translate('Windows Publishing Wizard'));
 		$template->setVariable('NewAlbum', $NewAlbum);
 		$template->setVariable('controller', 'publishxp.NewAlbum');
 		$template->head('modules/publishxp/templates/Head.tpl');
-
-		return array(null, array('body' => 'modules/publishxp/templates/NewAlbum.tpl',
-				 'useFullScreen' => true));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/publishxp/templates/NewAlbum.tpl',
+				'useFullScreen' => true
+			)
+		);
 	}
 }

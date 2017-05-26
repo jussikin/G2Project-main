@@ -34,26 +34,35 @@ class ItemAddPublishXp extends ItemAddPlugin {
 	 */
 	public function loadTemplate(&$template, &$form, $item) {
 		$httpUserAgent = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
-
+		
 		$isWindowsVista = strpos($httpUserAgent, 'Windows NT 6') !== false;
-		$template->setVariable(
-			'ItemAddPublishXp',
-			array('isUsingWindowsVista' => (int)$isWindowsVista,
-			'isUsingOtherWindows' => (int)!$isWindowsVista)
+		$template->setVariable('ItemAddPublishXp', array(
+			'isUsingWindowsVista' => (int) $isWindowsVista,
+			'isUsingOtherWindows' => (int) !$isWindowsVista
+		));
+		
+		return array(
+			null,
+			'modules/publishxp/templates/ItemAddPublishXp.tpl',
+			'modules_publishxp'
 		);
-
-		return array(null, 'modules/publishxp/templates/ItemAddPublishXp.tpl', 'modules_publishxp');
 	}
-
+	
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
 	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Windows Publishing Wizard'));
+		
+		return array(
+			null,
+			$module->translate('Windows Publishing Wizard')
+		);
 	}
 }

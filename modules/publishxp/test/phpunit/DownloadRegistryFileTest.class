@@ -31,14 +31,14 @@ class DownloadRegistryFileTest extends GalleryTestCase {
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'core');
 		if ($ret) {
 			return $ret;
@@ -51,51 +51,50 @@ class DownloadRegistryFileTest extends GalleryTestCase {
 		if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 		}
-	
+		
 		$this->view = new DownloadRegistryFileView();
 	}
-
+	
 	public function testGetCharsetFromRequestDefault() {
 		$this->assertEquals('CP1252', $this->view->_getCharsetFromRequest(), 'default');
-	
+		
 		$this->_setActiveLocale('en_US');
 		$this->assertEquals('CP1252', $this->view->_getCharsetFromRequest(), 'default 2');
-
+		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'ja';
 		$this->assertEquals('CP932', $this->view->_getCharsetFromRequest(), 'HTTP override');
-
+		
 		$this->_setActiveLocale('ru_RU');
-		$this->assertEquals('CP1251', $this->view->_getCharsetFromRequest(),
-				'session override');
+		$this->assertEquals('CP1251', $this->view->_getCharsetFromRequest(), 'session override');
 	}
-
+	
 	public function testGetCharsetFromRequestComparesToSiteDefaultLocale() {
 		/* Ensure it uses the plugin param and not getDefaultLocale() */
-	$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'language.useBrowserPref', '1');
+		$ret = GalleryCoreApi::setPluginParameter('module', 'core', 'language.useBrowserPref', '1');
 		if ($ret) {
 			return $ret;
 		}
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'ja';
 		$this->assertEquals('CP932', $this->view->_getCharsetFromRequest(), 'HTTP override');
 	}
-
+	
 	public function testGetCharsetFromRequestChinese() {
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'zh';
 		$this->assertEquals('CP950', $this->view->_getCharsetFromRequest(), 'default');
-
+		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'zh-cn';
 		$this->assertEquals('CP936', $this->view->_getCharsetFromRequest(), 'Simplified 1');
-
+		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'zh-tw';
 		$this->assertEquals('CP950', $this->view->_getCharsetFromRequest(), 'Traditional 1');
-
+		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'zh-hans_HK';
 		$this->assertEquals('CP936', $this->view->_getCharsetFromRequest(), 'Simplified 2');
-
+		
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'zh-Hant';
 		$this->assertEquals('CP950', $this->view->_getCharsetFromRequest(), 'Traditional 2');
 	}
-
+	
 	public function _setActiveLocale($locale) {
 		global $gallery;
 		$ret = $gallery->setActiveLocale($locale);

@@ -34,7 +34,7 @@ class DownloadRegistryFileView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * Renders the Windows registry file.
 	 * Generates the registry file to be downloaded and installed on Windows systems.
@@ -44,12 +44,12 @@ class DownloadRegistryFileView extends GalleryView {
 	 */
 	public function renderImmediate($status, $error) {
 		global $gallery;
-
-	/* Get the domain name */
+		
+		/* Get the domain name */
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$domain = $urlGenerator->getHostName();
-
-	/* Get the name of the gallery */
+		
+		/* Get the name of the gallery */
 		list($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 		if ($ret) {
 			return $ret;
@@ -68,37 +68,36 @@ class DownloadRegistryFileView extends GalleryView {
 			}
 			$title = $root->getTitle();
 		}
-
-	/* Setup the headers for the Registry file */
+		
+		/* Setup the headers for the Registry file */
 		header("Cache-control: private");
 		header("Content-Type: application/octet-stream");
 		header("Content-Disposition: filename=install_registry.reg");
-
+		
 		GalleryCoreApi::requireOnce('modules/core/classes/GalleryTemplate.class');
 		$template = new GalleryTemplate(dirname(__FILE__) . '/../..');
 		$template->setVariable('l10Domain', 'modules_publishxp');
-
+		
 		$vistaVersion = GalleryUtilities::getRequestVariables('vistaVersion');
 		$DownloadRegistryFile['vistaVersion'] = !empty($vistaVersion);
 		$DownloadRegistryFile['title'] = $title;
 		$DownloadRegistryFile['domain'] = $domain;
 		$template->setVariable('DownloadRegistryFile', $DownloadRegistryFile);
-		list($ret, $registryFileContents) =
-		$template->fetch('gallery:modules/publishxp/templates/DownloadRegistryFile.tpl');
+		list($ret, $registryFileContents) = $template->fetch('gallery:modules/publishxp/templates/DownloadRegistryFile.tpl');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Make sure we use Windows line endings */
+		
+		/* Make sure we use Windows line endings */
 		$registryFileContents = preg_replace("/(?<!\r)\n/", "\r\n", $registryFileContents);
-
-	/* Convert the text to the Windows character set corresponding to the requested locale */
+		
+		/* Convert the text to the Windows character set corresponding to the requested locale */
 		$clientWindowsLocale = $this->_getCharsetFromRequest();
 		echo GalleryCoreApi::convertFromUtf8($registryFileContents, $clientWindowsLocale);
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Maps the locale of the HTTP request to a corresponding Windows character set.
 	 * To detect the locale, the following precedence is applied:
@@ -110,27 +109,24 @@ class DownloadRegistryFileView extends GalleryView {
 	 */
 	public function _getCharsetFromRequest() {
 		global $gallery;
-
+		
 		list($ret, $locale) = $gallery->getActiveLocale();
 		if ($ret) {
 			if ($gallery->getDebug()) {
-				$gallery->debug('publishxp.DownloadRegistryFile, failed to get the session ' .
-				'language. Error: ' . $ret->getAsText());
+				$gallery->debug('publishxp.DownloadRegistryFile, failed to get the session ' . 'language. Error: ' . $ret->getAsText());
 			}
 			$locale = '';
 		}
-
-		list($ret, $defaultLocale) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
+		
+		list($ret, $defaultLocale) = GalleryCoreApi::getPluginParameter('module', 'core', 'default.language');
 		if ($ret) {
 			if ($gallery->getDebug()) {
-				$gallery->debug('publishxp.DownloadRegistryFile, failed to get the default ' .
-				'language. Error: ' . $ret->getAsText());
+				$gallery->debug('publishxp.DownloadRegistryFile, failed to get the default ' . 'language. Error: ' . $ret->getAsText());
 			}
 			$defaultLocale = 'en_US';
 		}
 		$locale = empty($locale) ? $defaultLocale : $locale;
-
+		
 		if ($locale == $defaultLocale) {
 			$httpAcceptLanguage = GalleryUtilities::getServerVar('HTTP_ACCEPT_LANGUAGE');
 			if (!empty($httpAcceptLanguage)) {
@@ -138,80 +134,118 @@ class DownloadRegistryFileView extends GalleryView {
 				$locale = $codes[0];
 			}
 		}
-
+		
 		list($language, $country) = preg_split('/[-_]/', $locale . '_');
-
-	/*
-	 * Lookup table: language code to Windows Code Page. Source:
-	 * http://www.microsoft.com/globaldev/reference/oslocversion.mspx
-	 */
-		switch (trim(GalleryUtilities::strToLower((string)$language))) {
-			case 'th': /* Thai */
+		
+		/*
+	     * Lookup table: language code to Windows Code Page. Source:
+	     * http://www.microsoft.com/globaldev/reference/oslocversion.mspx
+	     */
+		switch (trim(GalleryUtilities::strToLower((string) $language))) {
+			case 'th':
+				/* Thai */
 				$codePage = 874;
 				break;
-			case 'ja': /* Japanese */
+			case 'ja':
+				/* Japanese */
 				$codePage = 932;
 				break;
-			case 'zh': /* Chinese */
-				$country = trim(GalleryUtilities::strToLower((string)$country));
-				if (in_array($country, array('hans', 'cn'))) {
-					$codePage = 936; /* Chinese (Simplified) */
+			case 'zh':
+				/* Chinese */
+				$country = trim(GalleryUtilities::strToLower((string) $country));
+				if (in_array($country, array(
+					'hans',
+					'cn'
+				))) {
+					$codePage = 936;
+					/* Chinese (Simplified) */
 				} else {
-					$codePage = 950; /* Chinese (Traditional) */
+					$codePage = 950;
+					/* Chinese (Traditional) */
 				}
 				break;
-			case 'ko': /* Korean */
+			case 'ko':
+				/* Korean */
 				$codePage = 949;
 				break;
-			case 'hr': /* Croatian */
-			case 'cs': /* Czech */
-			case 'hu': /* Hungarian */
-			case 'po': /* Polish */
-			case 'ro': /* Romanian */
-			case 'sk': /* Slovak */
-			case 'sl': /* Slovenian */
+			case 'hr':
+			/* Croatian */
+			case 'cs':
+			/* Czech */
+			case 'hu':
+			/* Hungarian */
+			case 'po':
+			/* Polish */
+			case 'ro':
+			/* Romanian */
+			case 'sk':
+			/* Slovak */
+			case 'sl':
+				/* Slovenian */
 				$codePage = 1250;
 				break;
-			case 'bg': /* Bulgarian */
-			case 'ru': /* Russian */
+			case 'bg':
+			/* Bulgarian */
+			case 'ru':
+				/* Russian */
 				$codePage = 1251;
 				break;
-			case 'ca': /* Catalan */
-			case 'da': /* Danish */
-			case 'nl': /* Dutch */
-			case 'en': /* English */
-			case 'fi': /* Finnish */
-			case 'fr': /* French */
-			case 'de': /* German */
-			case 'it': /* Italian */
-			case 'no': /* Norwegian */
-			case 'pt': /* Portuguese */
-			case 'es': /* Spanish */
-			case 'sv': /* Swedish */
+			case 'ca':
+			/* Catalan */
+			case 'da':
+			/* Danish */
+			case 'nl':
+			/* Dutch */
+			case 'en':
+			/* English */
+			case 'fi':
+			/* Finnish */
+			case 'fr':
+			/* French */
+			case 'de':
+			/* German */
+			case 'it':
+			/* Italian */
+			case 'no':
+			/* Norwegian */
+			case 'pt':
+			/* Portuguese */
+			case 'es':
+			/* Spanish */
+			case 'sv':
+				/* Swedish */
 				$codePage = 1252;
 				break;
-			case 'el': /* Greek */
+			case 'el':
+				/* Greek */
 				$codePage = 1253;
 				break;
-			case 'tr': /* Turkish */
+			case 'tr':
+				/* Turkish */
 				$codePage = 1254;
 				break;
-			case 'he': /* Hebrew */
-			case 'iw': /* Hebrew (legacy) */
+			case 'he':
+			/* Hebrew */
+			case 'iw':
+				/* Hebrew (legacy) */
 				$codePage = 1255;
 				break;
-			case 'ar': /* Arabic */
+			case 'ar':
+				/* Arabic */
 				$codePage = 1256;
 				break;
-			case 'et': /* Estonian */
-			case 'lv': /* Latvian */
-			case 'lt': /* Lithuanian */
+			case 'et':
+			/* Estonian */
+			case 'lv':
+			/* Latvian */
+			case 'lt':
+				/* Lithuanian */
 				$codePage = 1257;
 				break;
 			default:
 				$codePage = 1252;
 		}
-
+		
 		return 'CP' . $codePage;
 	}
 }

@@ -39,57 +39,74 @@ class PublishXpLoginController extends GalleryController {
 			if (empty($form['userName'])) {
 				$error[] = 'form[error][userName][missing]';
 			}
-
+			
 			if (empty($form['password'])) {
 				$error[] = 'form[error][password][missing]';
 			}
-
+			
 			if (empty($error)) {
 				list($ret, $isDisabled) = GalleryCoreApi::isDisabledUsername($form['userName']);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				if ($isDisabled) {
 					$error[] = 'form[error][userName][disabled]';
 				}
 			}
-
+			
 			if (empty($error)) {
 				list($ret, $user) = GalleryCoreApi::fetchUserByUsername($form['userName']);
 				if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				if (isset($user) && $user->isCorrectPassword($form['password'])) {
 					$gallery->setActiveUser($user);
-
+					
 					$event = GalleryCoreApi::newEvent('Gallery::Login');
 					$event->setEntity($user);
 					list($ret, $ignoreTheRedirect) = GalleryCoreApi::postEvent($event);
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
-
+					
 					$results['redirect']['view'] = 'publishxp.SelectAlbum';
 				}
 			}
-
+			
 			if (!empty($error) && !empty($form['userName'])) {
 				$event = GalleryCoreApi::newEvent('Gallery::FailedLogin');
-				$event->setData(array('userName' => $form['userName']));
+				$event->setData(array(
+					'userName' => $form['userName']
+				));
 				list($ret, $ignored) = GalleryCoreApi::postEvent($event);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
 		}
-
+		
 		if (empty($results['redirect']) && !isset($results['delegate']['view'])) {
 			$results['delegate']['view'] = 'publishxp.PublishXpLogin';
 		}
 		$results['status'] = array();
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -108,27 +125,45 @@ class PublishXpLoginView extends GalleryView {
 			$form['userName'] = '';
 			$form['formName'] = 'PublishXpLogin';
 		}
-
+		
 		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (!$isAnonymous) {
 			/* No need to log in */
-			return array(null, array('redirect' => array('view' => 'publishxp.SelectAlbum')));
+			return array(
+				null,
+				array(
+					'redirect' => array(
+						'view' => 'publishxp.SelectAlbum'
+					)
+				)
+			);
 		}
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$template->title($module->translate('Windows Publishing Wizard'));
 		$template->setVariable('controller', 'publishxp.PublishXpLogin');
 		$template->head('modules/publishxp/templates/Head.tpl');
-
-		return array(null, array('body' => 'modules/publishxp/templates/PublishXpLogin.tpl',
-				 'useFullScreen' => true));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/publishxp/templates/PublishXpLogin.tpl',
+				'useFullScreen' => true
+			)
+		);
 	}
 }

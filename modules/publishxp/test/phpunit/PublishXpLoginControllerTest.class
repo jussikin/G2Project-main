@@ -29,66 +29,73 @@ class PublishXpLoginControllerTest extends GalleryControllerTestCase {
 	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'publishxp.PublishXpLogin');
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $this->_user) = $this->_createRandomUser();
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_user);
 	}
-
+	
 	public function testLogin() {
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'password');
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
-
+		
 		$ret = $this->_registerEventListener('Gallery::Login');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$result = $this->handleRequest();
-		$this->assertEquals(
-		array('status' => array(),
-		  'error' => array(),
-		  'redirect' => array('view' => 'publishxp.SelectAlbum')),
-		$result);
-
-	/* Verify our event got posted */
-	$this->assertEventFired('Gallery::Login', $this->_user);
+		$this->assertEquals(array(
+			'status' => array(),
+			'error' => array(),
+			'redirect' => array(
+				'view' => 'publishxp.SelectAlbum'
+			)
+		), $result);
+		
+		/* Verify our event got posted */
+		$this->assertEventFired('Gallery::Login', $this->_user);
 	}
-
+	
 	public function testLoginDisabledUser() {
 		GalleryUtilities::putRequestVariable('form[userName]', $this->_user->getUserName());
 		GalleryUtilities::putRequestVariable('form[password]', 'password');
 		GalleryUtilities::putRequestVariable('form[action][login]', 1);
-
+		
 		$ret = $this->_disableUserName($this->_user->getUserName());
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->_registerEventListener('Gallery::FailedLogin');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$result = $this->handleRequest();
-		$this->assertEquals(
-		array('status' => array(),
-		  'error' => array('form[error][userName][disabled]'),
-		  'delegate' => array('view' => 'publishxp.PublishXpLogin')),
-		$result);
-
-	/* Verify our event got posted */
-	$this->assertEventFired('Gallery::FailedLogin', null,
-		array('userName' => $this->_user->getUserName()));
+		$this->assertEquals(array(
+			'status' => array(),
+			'error' => array(
+				'form[error][userName][disabled]'
+			),
+			'delegate' => array(
+				'view' => 'publishxp.PublishXpLogin'
+			)
+		), $result);
+		
+		/* Verify our event got posted */
+		$this->assertEventFired('Gallery::FailedLogin', null, array(
+			'userName' => $this->_user->getUserName()
+		));
 	}
 }

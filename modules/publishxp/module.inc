@@ -33,7 +33,7 @@ class PublishXpModule extends GalleryModule {
 	public function __construct() {
 		$this->PublishXpModule();
 	}
-
+	
 	public function PublishXpModule() {
 		global $gallery;
 		$this->setId('publishxp');
@@ -43,25 +43,24 @@ class PublishXpModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('import', $gallery->i18n('Import'));
 		$this->setCallbacks('');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * Registers the item add operation with Gallery.
 	 *
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		GalleryCoreApi::registerFactoryImplementation(
-			'ItemAddPlugin',
-			'ItemAddPublishXp',
-			'ItemAddPublishXp',
-			'modules/publishxp/ItemAddPublishXp.inc',
-			'publishxp',
-			null
-		);
-
+		GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddPublishXp', 'ItemAddPublishXp', 'modules/publishxp/ItemAddPublishXp.inc', 'publishxp', null);
+		
 		return null;
 	}
 }

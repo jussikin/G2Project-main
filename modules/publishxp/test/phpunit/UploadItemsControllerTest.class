@@ -29,64 +29,69 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 	public function __construct($methodName) {
 		$this->GalleryControllerTestCase($methodName, 'publishxp.UploadItems');
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $this->_parent) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_parent);
 		$this->_controller->setOptionInstances(array());
-
+		
 		$ret = GalleryCoreApi::addMimeType('phpunit_ext', 'test/file', false);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_saveSession =& $gallery->getSession();
 	}
-
+	
 	public function tearDown() {
 		global $gallery;
-		$ret = GalleryCoreApi::removeMimeType(array('extension' => 'phpunit_ext'));
+		$ret = GalleryCoreApi::removeMimeType(array(
+			'extension' => 'phpunit_ext'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$gallery->_session = $this->_saveSession;
-
+		
 		$ret = parent::tearDown();
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testUploadItems() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = 'test/file';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
 		$_FILES['userFile']['name'] = 'Foo.dat';
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'publishxp.UploadedItem'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
-
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'publishxp.UploadedItem'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
+		
 		$entityCounter =& GalleryTestCase::getEntityCounter();
 		$id = $entityCounter->getRecentEntityId('GalleryUnknownItem');
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryUnknownItem');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assertEquals($this->_parent->getId(), $entity->getParentId());
 		$this->assertEquals('Foo_dat', $entity->getPathComponent());
 		$this->assertEquals('test/file', $entity->getMimeType());
@@ -94,7 +99,7 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 		$this->assertEquals('', $entity->getSummary(), 'summary');
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
-
+	
 	public function testUploadItemsXssFilename() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
@@ -102,75 +107,81 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 		$_FILES['userFile']['type'] = 'test/file';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
 		$_FILES['userFile']['name'] = 'Foo<script>Bar.dat';
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'publishxp.UploadedItem'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
-
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'publishxp.UploadedItem'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
+		
 		$entityCounter =& GalleryTestCase::getEntityCounter();
 		$id = $entityCounter->getRecentEntityId('GalleryUnknownItem');
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryUnknownItem');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assertEquals($this->_parent->getId(), $entity->getParentId());
 		$this->assertEquals('test/file', $entity->getMimeType());
-	/** @todo: this is not optimal.. the path should be 'Foo_script_Bar_dat' */
-	$this->assertEquals('Foo_lt_script_gt_Bar_dat', $entity->getPathComponent());
+		/** @todo: this is not optimal.. the path should be 'Foo_script_Bar_dat' */
+		$this->assertEquals('Foo_lt_script_gt_Bar_dat', $entity->getPathComponent());
 		$this->assertEquals('Foo&lt;script&gt;Bar.dat', $entity->getTitle(), 'title');
 		$this->assertEquals('Foo&lt;script&gt;Bar.dat', $entity->getSummary(), 'summary');
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
-
+	
 	public function testUploadItemsPermissionDenied() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', 0);
 		$_FILES['userFile']['type'] = 'application/unknown';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
 		$_FILES['userFile']['name'] = 'Foo.dat';
-
+		
 		$results = $this->handleRequest(ERROR_PERMISSION_DENIED);
 	}
-
+	
 	public function testUploadItemsMissingFileName() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = 'application/unknown';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
-
+		
 		$results = $this->handleRequest(ERROR_BAD_PARAMETER);
 	}
-
+	
 	public function testUploadItemsMissingMimeType() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = '';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
 		$_FILES['userFile']['name'] = 'Foo.csh';
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'publishxp.UploadedItem'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
-
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'publishxp.UploadedItem'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
+		
 		$entityCounter =& GalleryTestCase::getEntityCounter();
 		$id = $entityCounter->getRecentEntityId('GalleryUnknownItem');
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryUnknownItem');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assertEquals($this->_parent->getId(), $entity->getParentId());
 		$this->assertEquals('application/x-csh', $entity->getMimeType());
 		$this->assertEquals('Foo.csh', $entity->getTitle());
 		$this->assertEquals('', $entity->getSummary(), 'summary');
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
-
+	
 	public function testUploadItemsSetCaptionsAndStripExtensions() {
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
@@ -179,78 +190,88 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 		$_FILES['userFile']['type'] = 'test/file';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
 		$_FILES['userFile']['name'] = 'Foo.dat';
-
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'publishxp.UploadedItem'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
-
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'publishxp.UploadedItem'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
+		
 		$entityCounter =& GalleryTestCase::getEntityCounter();
 		$id = $entityCounter->getRecentEntityId('GalleryUnknownItem');
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryUnknownItem');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assertEquals($this->_parent->getId(), $entity->getParentId());
 		$this->assertEquals('test/file', $entity->getMimeType());
 		$this->assertEquals('Foo', $entity->getTitle(), 'title');
 		$this->assertEquals('Foo', $entity->getSummary(), 'summary');
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
-
+	
 	public function testUploadItemsWithOption() {
 		global $gallery;
 		$session =& $gallery->getSession();
-		$session->put('publishxp.extraOptionsForm',
-			  serialize(array('optionValue' => 'myOptionValue')));
-
+		$session->put('publishxp.extraOptionsForm', serialize(array(
+			'optionValue' => 'myOptionValue'
+		)));
+		
 		GalleryUtilities::putRequestVariable('form[action][uploadItem]', 1);
 		GalleryUtilities::putRequestVariable('form[albumId]', $this->_parent->getId());
 		$_FILES['userFile']['type'] = 'test/file';
 		$_FILES['userFile']['tmp_name'] = __FILE__;
 		$_FILES['userFile']['name'] = 'Foo.dat';
-
-		$this->_controller->setOptionInstances(
-		array('instance' => new UploadItemsControllerTestAddOption()));
-
+		
+		$this->_controller->setOptionInstances(array(
+			'instance' => new UploadItemsControllerTestAddOption()
+		));
+		
 		$results = $this->handleRequest();
-		$this->assertEquals(array('redirect' => array('view' => 'publishxp.UploadedItem'),
-				  'status' => array(),
-				  'error' => array()),
-				$results);
-
+		$this->assertEquals(array(
+			'redirect' => array(
+				'view' => 'publishxp.UploadedItem'
+			),
+			'status' => array(),
+			'error' => array()
+		), $results);
+		
 		$entityCounter =& GalleryTestCase::getEntityCounter();
 		$id = $entityCounter->getRecentEntityId('GalleryUnknownItem');
 		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryUnknownItem');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Make sure our option was called */
-	$this->assertEquals(array($entity->getId(), 'myOptionValue'),
-				UploadItemsControllerTestAddOption::getRequestData());
-
+		
+		/* Make sure our option was called */
+		$this->assertEquals(array(
+			$entity->getId(),
+			'myOptionValue'
+		), UploadItemsControllerTestAddOption::getRequestData());
+		
 		$this->assertEquals($this->_parent->getId(), $entity->getParentId());
 		$this->assertEquals('test/file', $entity->getMimeType());
 		$this->assertEquals('Foo.dat', $entity->getTitle());
 		$this->assertEquals('', $entity->getSummary(), 'summary');
 		$this->assertEquals('', $entity->getDescription(), 'description');
 	}
-
+	
 	public function testGetCharsetFromRequest() {
 		$controller = new UploadItemsController();
-
+		
 		GalleryUtilities::putRequestVariable('lcid', 1033, false);
 		$this->assertEquals('CP1252', $controller->_getCharsetFromRequest(), 'English');
-
+		
 		GalleryUtilities::putRequestVariable('lcid', 1031, false);
 		$this->assertEquals('CP1252', $controller->_getCharsetFromRequest(), 'German');
-
+		
 		GalleryUtilities::putRequestVariable('lcid', 1025, false);
 		$this->assertEquals('CP1256', $controller->_getCharsetFromRequest(), 'Arabic');
-
+		
 		GalleryUtilities::removeRequestVariable('lcid', false);
 		$this->assertEquals('CP1252', $controller->_getCharsetFromRequest(), 'Default');
 	}
@@ -258,12 +279,18 @@ class UploadItemsControllerTest extends GalleryControllerTestCase {
 
 class UploadItemsControllerTestAddOption {
 	public function handleRequestAfterAdd($form, $items) {
-		GalleryUtilities::putRequestVariable(
-		'requestData', array($items[0]->getId(), $form['optionValue']));
-
-		return array(null, array(), array());
+		GalleryUtilities::putRequestVariable('requestData', array(
+			$items[0]->getId(),
+			$form['optionValue']
+		));
+		
+		return array(
+			null,
+			array(),
+			array()
+		);
 	}
-
+	
 	public function getRequestData() {
 		return GalleryUtilities::getRequestVariables('requestData');
 	}

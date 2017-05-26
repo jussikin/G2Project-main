@@ -35,11 +35,11 @@ class SelectAlbumController extends GalleryController {
 	 */
 	public function handleRequest($form) {
 		$results = $error = $status = array();
-
-	/*
-	 * We merely provide a redirection service here.  Permission checks will be
-	 * handled by the target views.
-	 */
+		
+		/*
+	     * We merely provide a redirection service here.  Permission checks will be
+	     * handled by the target views.
+	     */
 		if (isset($form['action']['newAlbum'])) {
 			/* Redirect to the new album page. */
 			if (isset($form['albumId'])) {
@@ -57,7 +57,7 @@ class SelectAlbumController extends GalleryController {
 				$error[] = 'form[error][albumId][missing]';
 			}
 		}
-
+		
 		$results['status'] = $status;
 		$results['error'] = $error;
 		if (!empty($redirect)) {
@@ -65,8 +65,11 @@ class SelectAlbumController extends GalleryController {
 		} else {
 			$results['delegate']['view'] = 'publishxp.SelectAlbum';
 		}
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -88,38 +91,43 @@ class SelectAlbumView extends GalleryView {
 			$form['albumId'] = GalleryUtilities::getRequestVariables('albumId');
 		} else {
 			/*
-	     * In case they didn't select an album in the prior page (they're going
-	     * to get an error message, but we require form[albumId] to be set in the template).
-	     */
+	         * In case they didn't select an album in the prior page (they're going
+	         * to get an error message, but we require form[albumId] to be set in the template).
+	         */
 			if (!isset($form['albumId'])) {
 				$form['albumId'] = null;
 			}
 		}
-
-	/* Get ids of all all albums where we can add new data items */
-		list($ret, $albumIds['addDataItem']) =
-		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addDataItem');
+		
+		/* Get ids of all all albums where we can add new data items */
+		list($ret, $albumIds['addDataItem']) = GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addDataItem');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Get ids of all all albums where we can add new album items */
-		list($ret, $albumIds['addAlbumItem']) =
-		GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
+		
+		/* Get ids of all all albums where we can add new album items */
+		list($ret, $albumIds['addAlbumItem']) = GalleryCoreApi::fetchAllItemIds('GalleryAlbumItem', 'core.addAlbumItem');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Merge them together to get the master list of ids */
-		$albumIds['allIds'] =
-		array_unique(array_merge($albumIds['addDataItem'], $albumIds['addAlbumItem']));
-
+		
+		/* Merge them together to get the master list of ids */
+		$albumIds['allIds'] = array_unique(array_merge($albumIds['addDataItem'], $albumIds['addAlbumItem']));
+		
 		if (!empty($albumIds['allIds'])) {
 			/** @todo Use fetchAllItemIds with multiple permissions once the API is available */
-			list($ret, $permissions) =
-			GalleryCoreApi::fetchPermissionsForItems($albumIds['allIds']);
+			list($ret, $permissions) = GalleryCoreApi::fetchPermissionsForItems($albumIds['allIds']);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			$filteredIds = array();
 			foreach ($albumIds['allIds'] as $id) {
@@ -129,31 +137,41 @@ class SelectAlbumView extends GalleryView {
 			}
 			$albumIds['allIds'] = $filteredIds;
 		}
-
+		
 		$albums = array();
 		if (!empty($albumIds['allIds'])) {
 			/* Load all the album entities */
-			list($ret, $albums) =
-			GalleryCoreApi::loadEntitiesById($albumIds['allIds'], 'GalleryAlbumItem');
+			list($ret, $albums) = GalleryCoreApi::loadEntitiesById($albumIds['allIds'], 'GalleryAlbumItem');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		$SelectAlbum = array();
 		$SelectAlbum['albumTree'] = GalleryUtilities::createAlbumTree($albums);
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'publishxp');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$template->title($module->translate('Windows Publishing Wizard'));
 		$template->setVariable('SelectAlbum', $SelectAlbum);
 		$template->setVariable('controller', 'publishxp.SelectAlbum');
 		$template->head('modules/publishxp/templates/Head.tpl');
-
-		return array(null, array('body' => 'modules/publishxp/templates/SelectAlbum.tpl',
-				 'useFullScreen' => true));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/publishxp/templates/SelectAlbum.tpl',
+				'useFullScreen' => true
+			)
+		);
 	}
 }
