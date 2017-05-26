@@ -38,55 +38,57 @@ class SimpleRenderView extends RenderView {
 	 */
 	public function renderImmediate($status, $error) {
 		global $gallery;
-
-	/* get all parameters */
+		
+		/* get all parameters */
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'rss');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		if ($params['allowSimpleFeed'] != 1) {
 			$this->handleError($gallery->i18n('Feeds of that type are not allowed!'));
-
+			
 			return null;
 		}
-
+		
 		list($ret, $item) = $this->getItem();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$params['itemId'] = $item->getId();
-
-	/* set feed type */
+		
+		/* set feed type */
 		if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 			$params['feedType'] = $params['sfAlbumType'];
 		} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
 			$params['feedType'] = 'commentsPhoto';
 		}
-
+		
 		$params['feedDate'] = $params['sfDate'];
-
-	/* apply defaults */
-		foreach (array('copyright' => 'defaultCopyright',
-			  'version' => 'defaultVersion',
-			  'count' => 'defaultCount',
-			  'photosRecursiveLimit' => 'sfPhotosRecursiveLimit',
-			  'ttl' => 'defaultTtl') as $name => $defaultName) {
+		
+		/* apply defaults */
+		foreach (array(
+			'copyright' => 'defaultCopyright',
+			'version' => 'defaultVersion',
+			'count' => 'defaultCount',
+			'photosRecursiveLimit' => 'sfPhotosRecursiveLimit',
+			'ttl' => 'defaultTtl'
+		) as $name => $defaultName) {
 			$params[$name] = $params[$defaultName];
 		}
-
+		
 		$params['language'] = 'en-us';
 		$params['useImage'] = true;
 		$params['useEnclosure'] = false;
 		$params['useCloud'] = false;
 		$params['useMedia'] = false;
-
+		
 		$ret = $this->continueRender($params);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
 }

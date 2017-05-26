@@ -28,14 +28,14 @@
 class RssPreloads {
 	public function preload(&$template, $preload, $paramSet) {
 		global $gallery;
-
+		
 		switch ($preload) {
 			case 'RssBlock':
 				$template->head('modules/rss/templates/RssBlockHead.tpl');
-
-		        return null;
+				
+				return null;
 		}
-
+		
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 }

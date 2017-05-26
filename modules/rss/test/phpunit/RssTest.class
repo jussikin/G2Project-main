@@ -30,26 +30,26 @@ GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
  */
 class RssTest extends GalleryTestCase {
 	public $_feedsToDelete;
-
+	
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_feedsToDelete = array();
-
+		
 		$ret = $this->_markPluginParametersForCleanup('module', 'rss');
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function tearDown() {
 		if (!empty($this->_feedsToDelete)) {
 			foreach ($this->_feedsToDelete as $name) {
@@ -59,41 +59,43 @@ class RssTest extends GalleryTestCase {
 				}
 			}
 		}
-
+		
 		$ret = parent::tearDown();
 		if ($ret) {
 			return $ret;
 		}
 	}
-
+	
 	public function testDeleteItem() {
 		/* The event listener is deactivated during unit tests, register it */
-	GalleryCoreApi::registerEventListener('GalleryEntity::delete', new RssModule());
-
-	/* create an album */
-	list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
+		GalleryCoreApi::registerEventListener('GalleryEntity::delete', new RssModule());
+		
+		/* create an album */
+		list($ret, $album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
-
-	/* create a test feed */
-	$name = 'test' . rand();
-		$params = array('itemId' => $album->getId());
+		
+		/* create a test feed */
+		$name = 'test' . rand();
+		$params = array(
+			'itemId' => $album->getId()
+		);
 		$ret = RssMapHelper::createFeed($name, $params);
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Delete album: deletes sub-item and aliases */
-	$ret = GalleryCoreApi::deleteEntityById($album->getId(), 'GalleryAlbumItem');
+		
+		/* Delete album: deletes sub-item and aliases */
+		$ret = GalleryCoreApi::deleteEntityById($album->getId(), 'GalleryAlbumItem');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* check that the feed has been deleted */
-	list($ret, $feed) = RssMapHelper::fetchFeed($name);
-	/* we expect an error */
-	$this->assert($ret);
+		
+		/* check that the feed has been deleted */
+		list($ret, $feed) = RssMapHelper::fetchFeed($name);
+		/* we expect an error */
+		$this->assert($ret);
 		$this->assert($ret->getErrorCode(), ERROR_MISSING_OBJECT);
 	}
 }

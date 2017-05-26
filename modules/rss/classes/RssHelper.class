@@ -23,8 +23,7 @@
  * retrieve comments from the database for comments rss feeds.
  * @todo Don't access GalleryCommentHelper directly
  */
-if (GalleryPlatform::file_exists(dirname(__FILE__)
-		. '/../../comment/classes/GalleryCommentHelper.class')) {
+if (GalleryPlatform::file_exists(dirname(__FILE__) . '/../../comment/classes/GalleryCommentHelper.class')) {
 	GalleryCoreApi::requireOnce('modules/comment/classes/GalleryCommentHelper.class');
 }
 
@@ -50,209 +49,205 @@ class RssHelper {
 	 */
 	public static function getFeed(&$generator, $id, $param) {
 		global $gallery;
-
-	/* get gallery entity by id */
-	list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryItem');
+		
+		/* get gallery entity by id */
+		list($ret, $entity) = GalleryCoreApi::loadEntitiesById($id, 'GalleryItem');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* get member data for the <channel> properties */
-	$memberData = (array) $entity;
-
-	/* generate url to the album and rss feed */
-	$urlGenerator =& $gallery->getUrlGenerator();
-		$albumUrl = $urlGenerator->generateUrl(
-		array(
-		'view' => 'core.ShowItem',
-		'itemId' => $memberData['id']),
-		array(
-		'forceSessionId' => false,
-		'forceFullUrl' => true));
-
+		
+		/* get member data for the <channel> properties */
+		$memberData = (array) $entity;
+		
+		/* generate url to the album and rss feed */
+		$urlGenerator =& $gallery->getUrlGenerator();
+		$albumUrl = $urlGenerator->generateUrl(array(
+			'view' => 'core.ShowItem',
+			'itemId' => $memberData['id']
+		), array(
+			'forceSessionId' => false,
+			'forceFullUrl' => true
+		));
+		
 		$generator->addProperty('title', $memberData['title']);
 		$generator->addProperty('description', $memberData['description']);
 		$generator->addProperty('link', $albumUrl);
-
+		
 		if ($param['useImage']) {
 			/* retrieve gallery thumbnail */
-		list($ret, $thumbArrayl) = GalleryCoreApi::fetchThumbnailsByItemIds(array($id));
+			list($ret, $thumbArrayl) = GalleryCoreApi::fetchThumbnailsByItemIds(array(
+				$id
+			));
 			if ($ret) {
 				return $ret;
 			}
-
-		/* check if image tag should be used */
-		if (!empty($thumbArrayl)) {
-			$thumb = $thumbArrayl[$id];
-			$imageUrl = $urlGenerator->generateUrl(
-			array(
-			'view' => 'core.DownloadItem',
-			'itemId' => $thumb->getId()),
-			array(
-			'forceSessionId' => false,
-			'forceFullUrl' => true));
-
-			$generator->addProperty('image', array('title' => $memberData['title'],
-			'url' => $imageUrl, 'link' => $albumUrl));
+			
+			/* check if image tag should be used */
+			if (!empty($thumbArrayl)) {
+				$thumb = $thumbArrayl[$id];
+				$imageUrl = $urlGenerator->generateUrl(array(
+					'view' => 'core.DownloadItem',
+					'itemId' => $thumb->getId()
+				), array(
+					'forceSessionId' => false,
+					'forceFullUrl' => true
+				));
+				
+				$generator->addProperty('image', array(
+					'title' => $memberData['title'],
+					'url' => $imageUrl,
+					'link' => $albumUrl
+				));
+			}
 		}
+		
+		/* check if the cloud tag should be used */
+		if ($param['useCloud']) {
+			$cloud = array(
+				'domain' => $param['cloudDomain'],
+				'port' => $param['cloudPort'],
+				'path' => $param['cloudPath'],
+				'registerProcedure' => $param['cloudRegisterProcedure'],
+				'protocol' => $param['cloudProtocol']
+			);
+			$generator->addProperty('cloud', $cloud);
 		}
-
-	/* check if the cloud tag should be used */
-	if ($param['useCloud']) {
-		$cloud = array('domain' => $param['cloudDomain'],
-			   'port' => $param['cloudPort'],
-			   'path' => $param['cloudPath'],
-			   'registerProcedure' => $param['cloudRegisterProcedure'],
-			   'protocol' => $param['cloudProtocol']);
-		$generator->addProperty('cloud', $cloud);
-	}
-
-	/* check if the podcast tag should be used */
-	if ($param['usePodcast']) {
-		$podcast = array('subtitle' => $param['podcastSubtitle'],
-			   'author' => $param['podcastAuthor'],
-			   'ownername' => $param['podcastOwnerName'],
-			   'owneremail' => $param['podcastOwnerEmail']);
-		$generator->addProperty('podcast', $podcast);
-	}
-
-	/* add copyright, category and generator */
-	if (isset($param['copyright'])) {
-		$generator->addProperty('copyright', $param['copyright']);
-	}
+		
+		/* check if the podcast tag should be used */
+		if ($param['usePodcast']) {
+			$podcast = array(
+				'subtitle' => $param['podcastSubtitle'],
+				'author' => $param['podcastAuthor'],
+				'ownername' => $param['podcastOwnerName'],
+				'owneremail' => $param['podcastOwnerEmail']
+			);
+			$generator->addProperty('podcast', $podcast);
+		}
+		
+		/* add copyright, category and generator */
+		if (isset($param['copyright'])) {
+			$generator->addProperty('copyright', $param['copyright']);
+		}
 		if (isset($param['category'])) {
 			$generator->addProperty('category', $param['category']);
 		}
 		if (isset($param['useMedia'])) {
 			$generator->addProperty('useMedia', $param['useMedia']);
 		}
-		list($ret, $version) =
-		GalleryCoreApi::getPluginParameter('module', 'rss', '_version');
+		list($ret, $version) = GalleryCoreApi::getPluginParameter('module', 'rss', '_version');
 		$generator->addProperty('generator', 'Gallery 2 RSS Module, version ' . $version);
 		$generator->addProperty('ttl', $param['ttl']);
 		$vm = $gallery->getPhpVm();
 		$generator->addProperty('lastBuildDate', date('r', $vm->time()));
-
-	/* language tag */
-	$generator->addProperty('language', $param['language']);
-
+		
+		/* language tag */
+		$generator->addProperty('language', $param['language']);
+		
 		$items = array();
 		$newOnly = ($param['feedDate'] == 'new');
-
+		
 		switch ($param['feedType']) {
-		case 'album':
-		case 'photosRecursive':
-		case 'photosRandomRecursive':
-		/* get sub-albums or items, ordered by date */
-		list($ret, $items) = self::fetchAlbumTree(
-			$entity->getId(),
-			$param['count'],
-			$newOnly,
-			$param['feedType'] != 'album',
-			$param['feedType'] == 'photosRecursive' ? $param['photosRecursiveLimit'] : 0,
-			$param['feedType'] == 'photosRandomRecursive');
-		if ($ret) {
-			return $ret;
-		}
-
-		if (!empty($items)) {
-			list($ret, $items) =
-			GalleryCoreApi::loadEntitiesById($items, 'GalleryItem');
-			if ($ret) {
-				return $ret;
-			}
-
-			if ($param['feedType'] == 'photosRecursive'
-				|| $param['feedType'] == 'photosRandomRecursive') {
-				/* load parents also, so we can display the name of the parent albums */
-			$parentIds = array();
-
-				foreach ($items as $item) {
-					if (!in_array($item->getParentId(), $parentIds)) {
-						$parentIds[] = $item->getParentId();
-					}
-				}
-
-				list($ret, $parents) =
-				GalleryCoreApi::loadEntitiesById($parentIds, 'GalleryItem');
+			case 'album':
+			case 'photosRecursive':
+			case 'photosRandomRecursive':
+				/* get sub-albums or items, ordered by date */
+				list($ret, $items) = self::fetchAlbumTree($entity->getId(), $param['count'], $newOnly, $param['feedType'] != 'album', $param['feedType'] == 'photosRecursive' ? $param['photosRecursiveLimit'] : 0, $param['feedType'] == 'photosRandomRecursive');
 				if ($ret) {
 					return $ret;
 				}
-
-				$parentsA = array();
-				foreach ($parents as $parent) {
-					$parentsA[$parent->getId()] = $parent;
+				
+				if (!empty($items)) {
+					list($ret, $items) = GalleryCoreApi::loadEntitiesById($items, 'GalleryItem');
+					if ($ret) {
+						return $ret;
+					}
+					
+					if ($param['feedType'] == 'photosRecursive' || $param['feedType'] == 'photosRandomRecursive') {
+						/* load parents also, so we can display the name of the parent albums */
+						$parentIds = array();
+						
+						foreach ($items as $item) {
+							if (!in_array($item->getParentId(), $parentIds)) {
+								$parentIds[] = $item->getParentId();
+							}
+						}
+						
+						list($ret, $parents) = GalleryCoreApi::loadEntitiesById($parentIds, 'GalleryItem');
+						if ($ret) {
+							return $ret;
+						}
+						
+						$parentsA = array();
+						foreach ($parents as $parent) {
+							$parentsA[$parent->getId()] = $parent;
+						}
+						
+						$param['parents'] = $parentsA;
+					}
 				}
-
-				$param['parents'] = $parentsA;
-			}
-		}
-
-		break;
-
-		case 'photos':
-		case 'photosRandom':
-		list($ret, $items) = self::getPhotoFeed($entity, $newOnly,
-			$param['feedType'] == 'photosRandom');
-		if ($ret) {
-			return $ret;
-		}
-
-		break;
-
-		case 'commentsAlbum':
-		case 'commentsPhoto':
-		list($ret, $items) = GalleryCommentHelper::fetchComments($id,
-			$param['count'], ORDER_DESCENDING);
-		if ($ret) {
-			return $ret;
-		}
-
-		break;
-
-		case 'commentsRecursive':
-		list($ret, $items) = GalleryCommentHelper::fetchAllComments($id,
-			$param['count'], null, ORDER_DESCENDING);
-		if ($ret) {
-			return $ret;
-		}
-
-		break;
-	}
-
-	/* if necessary, fetch the thumbnails */
-	if (! strstr($param['feedType'], 'comments')) {
-		$itemIds = array();
-
-		foreach ($items as $item) {
-			$itemIds[] = $item->getId();
-		}
+				
+				break;
 			
-		list($ret, $param['resizes']) = GalleryCoreApi::fetchResizesByItemIds($itemIds);
-		if ($ret) {
-			return $ret;
+			case 'photos':
+			case 'photosRandom':
+				list($ret, $items) = self::getPhotoFeed($entity, $newOnly, $param['feedType'] == 'photosRandom');
+				if ($ret) {
+					return $ret;
+				}
+				
+				break;
+			
+			case 'commentsAlbum':
+			case 'commentsPhoto':
+				list($ret, $items) = GalleryCommentHelper::fetchComments($id, $param['count'], ORDER_DESCENDING);
+				if ($ret) {
+					return $ret;
+				}
+				
+				break;
+			
+			case 'commentsRecursive':
+				list($ret, $items) = GalleryCommentHelper::fetchAllComments($id, $param['count'], null, ORDER_DESCENDING);
+				if ($ret) {
+					return $ret;
+				}
+				
+				break;
 		}
 		
-		list($ret, $param['thumbnails']) = GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
-		if ($ret) {
-			return $ret;
-		}
-	}
-
-	/* go through subitems array and pass data to generator */
-	if (!empty($items)) {
-		foreach ($items as $item) {
-			$ret = self::addItem($generator, $item, $param);
-
+		/* if necessary, fetch the thumbnails */
+		if (!strstr($param['feedType'], 'comments')) {
+			$itemIds = array();
+			
+			foreach ($items as $item) {
+				$itemIds[] = $item->getId();
+			}
+			
+			list($ret, $param['resizes']) = GalleryCoreApi::fetchResizesByItemIds($itemIds);
+			if ($ret) {
+				return $ret;
+			}
+			
+			list($ret, $param['thumbnails']) = GalleryCoreApi::fetchThumbnailsByItemIds($itemIds);
 			if ($ret) {
 				return $ret;
 			}
 		}
-	}
-
+		
+		/* go through subitems array and pass data to generator */
+		if (!empty($items)) {
+			foreach ($items as $item) {
+				$ret = self::addItem($generator, $item, $param);
+				
+				if ($ret) {
+					return $ret;
+				}
+			}
+		}
+		
 		return null;
 	}
-
+	
 	/**
 	 * This function adds an item to the feed generator
 	 *
@@ -262,8 +257,7 @@ class RssHelper {
 	 * @return GalleryStatus
 	 */
 	public function addItem(&$generator, $item, $param) {
-		if (GalleryUtilities::isA($item, 'GalleryDataItem')
-		|| GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
+		if (GalleryUtilities::isA($item, 'GalleryDataItem') || GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 			return self::addPhotoOrAlbum($generator, $item, $param);
 		} elseif (GalleryUtilities::isA($item, 'GalleryComment')) {
 			return self::addComment($generator, $item, $param);
@@ -271,7 +265,7 @@ class RssHelper {
 			return GalleryCoreApi::error(ERROR_INVALID_OBJECT);
 		}
 	}
-
+	
 	/**
 	 * This function adds a photo or an album item to the feed generator
 	 *
@@ -282,25 +276,29 @@ class RssHelper {
 	 */
 	public function addPhotoOrAlbum(&$generator, $item, $param) {
 		global $gallery;
-
-	/* generate url to the images */
-	$urlGenerator =& $gallery->getUrlGenerator();
-		$url = $urlGenerator->generateUrl(
-		array('view' => 'core.ShowItem', 'itemId' => $item->getId()),
-		array('forceSessionId' => false, 'forceFullUrl' => true));
-
-	/* generate description */
-	$description = $item->getDescription();
+		
+		/* generate url to the images */
+		$urlGenerator =& $gallery->getUrlGenerator();
+		$url = $urlGenerator->generateUrl(array(
+			'view' => 'core.ShowItem',
+			'itemId' => $item->getId()
+		), array(
+			'forceSessionId' => false,
+			'forceFullUrl' => true
+		));
+		
+		/* generate description */
+		$description = $item->getDescription();
 		if (!isset($description)) {
 			$description = '';
 		}
-
+		
 		$displayThumbnail = 0;
 		$itemSettings = array();
 		if (!empty($param['resizes']) && !empty($param['resizes'][$item->getId()])) {
 			$resizes = $param['resizes'][$item->getId()];
-	
-			$maxSize  = 450;
+			
+			$maxSize = 450;
 			$bestSize = 0;
 			$bestImage = null;
 			foreach ($resizes as $resize) {
@@ -311,117 +309,111 @@ class RssHelper {
 				}
 			}
 			if ($bestImage != null) {
-				$imageUrl = $urlGenerator->generateUrl(
-			array(
-				'view' => 'core.DownloadItem',
-				'itemId' => $bestImage->getId()),
-			array(
-				'forceSessionId' => false,
-				'forceFullUrl' => true));
-				$description = '<center><a href="' . $url . '"><img border="0" src="' . $imageUrl .
-			'" width="' . $bestImage->getWidth() .
-			'" height="' . $bestImage->getHeight() .
-			'"/></a></center>' . (!empty($description) ? '<br/>' . $description : $description);
+				$imageUrl = $urlGenerator->generateUrl(array(
+					'view' => 'core.DownloadItem',
+					'itemId' => $bestImage->getId()
+				), array(
+					'forceSessionId' => false,
+					'forceFullUrl' => true
+				));
+				$description = '<center><a href="' . $url . '"><img border="0" src="' . $imageUrl . '" width="' . $bestImage->getWidth() . '" height="' . $bestImage->getHeight() . '"/></a></center>' . (!empty($description) ? '<br/>' . $description : $description);
 			}
 		} else {
 			$displayThumbnail = 1;
 		}
-	
-	
+		
+		
 		if (!empty($param['thumbnails']) && !empty($param['thumbnails'][$item->getId()])) {
 			$thumbnail = $param['thumbnails'][$item->getId()];
-			$imageUrl = $urlGenerator->generateUrl(
-		array(
-			'view' => 'core.DownloadItem',
-			'itemId' => $thumbnail->getId()),
-		array(
-			'forceSessionId' => false,
-			'forceFullUrl' => true));
-
+			$imageUrl = $urlGenerator->generateUrl(array(
+				'view' => 'core.DownloadItem',
+				'itemId' => $thumbnail->getId()
+			), array(
+				'forceSessionId' => false,
+				'forceFullUrl' => true
+			));
+			
 			if ($displayThumbnail == 1) {
-				$description = '<center><a href="' . $url . '"><img border="0" src="' . $imageUrl .
-			'" width="' . $thumbnail->getWidth() .
-			'" height="' . $thumbnail->getHeight() .
-			'"/></a></center>' . (!empty($description) ? '<br/>' . $description : $description);
+				$description = '<center><a href="' . $url . '"><img border="0" src="' . $imageUrl . '" width="' . $thumbnail->getWidth() . '" height="' . $thumbnail->getHeight() . '"/></a></center>' . (!empty($description) ? '<br/>' . $description : $description);
 			}
-		
+			
 			$itemSettings['thumbnail']['url'] = $imageUrl;
 			$itemSettings['thumbnail']['width'] = $thumbnail->getWidth();
 			$itemSettings['thumbnail']['height'] = $thumbnail->getHeight();
 		}
-
-		if ($param['feedType'] == 'photosRecursive'
-		|| $param['feedType'] == 'photosRandomRecursive') {
+		
+		if ($param['feedType'] == 'photosRecursive' || $param['feedType'] == 'photosRandomRecursive') {
 			/* add a link to the parent album */
-		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
+			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
 			if ($ret) {
 				return $ret;
 			}
-
-			$url1 = $urlGenerator->generateUrl(
-		array('view' => 'core.ShowItem', 'itemId' => $item->getParentId()),
-		array('forceSessionId' => false, 'forceFullUrl' => true));
-
-			$description .= '<br/>' . $module->translate(
-		array('text' => 'In album %s',
-			  'arg1' => sprintf('<a href="%s">%s</a>', $url1,
-					$param['parents'][$item->getParentId()]->getTitle())));
+			
+			$url1 = $urlGenerator->generateUrl(array(
+				'view' => 'core.ShowItem',
+				'itemId' => $item->getParentId()
+			), array(
+				'forceSessionId' => false,
+				'forceFullUrl' => true
+			));
+			
+			$description .= '<br/>' . $module->translate(array(
+				'text' => 'In album %s',
+				'arg1' => sprintf('<a href="%s">%s</a>', $url1, $param['parents'][$item->getParentId()]->getTitle())
+			));
 		}
-
+		
 		$title = $item->getTitle();
 		if (!isset($title)) {
 			$title = $item->getPathComponent();
 		}
-
+		
 		$itemSettings['title'] = $title;
 		$itemSettings['link'] = $url;
 		$itemSettings['description'] = $description;
-
+		
 		if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 			$itemSettings['category'] = 'album';
 		} else {
 			$itemSettings['category'] = 'photo';
 		}
-
+		
 		$itemSettings['pubDate'] = date('r', $item->getModificationTimestamp());
 		$itemSettings['ownerId'] = $item->getOwnerId();
-
-	/* check if the enclosure tag should be used */
-	if (GalleryUtilities::isA($item, 'GalleryPhotoItem') || GalleryUtilities::isA($item, 'GalleryDataItem')
-		&& ((isset($param['useEnclosure']) && $param['useEnclosure'] == '1')
-		  || (isset($param['useMedia']) && $param['useMedia'] == '1')
-		  || (isset($param['usePodcast']) && $param['usePodcast'] == '1'))) {
-		$imageUrl = $urlGenerator->generateUrl(
-		array(
-			'view' => 'core.DownloadItem',
-			'itemId' => $item->getId()),
-		array(
-			'forceSessionId' => false,
-			'forceFullUrl' => true));
-
-		if ((isset($param['useEnclosure']) && $param['useEnclosure'] == '1')
-		  || (isset($param['usePodcast']) && $param['usePodcast'] == '1')) {
-			$itemSettings['enclosure'] = array(
-			'url' => $imageUrl,
-			'length' => $item->getSize(),
-			'type' => $item->getMimeType());
+		
+		/* check if the enclosure tag should be used */
+		if (GalleryUtilities::isA($item, 'GalleryPhotoItem') || GalleryUtilities::isA($item, 'GalleryDataItem') && ((isset($param['useEnclosure']) && $param['useEnclosure'] == '1') || (isset($param['useMedia']) && $param['useMedia'] == '1') || (isset($param['usePodcast']) && $param['usePodcast'] == '1'))) {
+			$imageUrl = $urlGenerator->generateUrl(array(
+				'view' => 'core.DownloadItem',
+				'itemId' => $item->getId()
+			), array(
+				'forceSessionId' => false,
+				'forceFullUrl' => true
+			));
+			
+			if ((isset($param['useEnclosure']) && $param['useEnclosure'] == '1') || (isset($param['usePodcast']) && $param['usePodcast'] == '1')) {
+				$itemSettings['enclosure'] = array(
+					'url' => $imageUrl,
+					'length' => $item->getSize(),
+					'type' => $item->getMimeType()
+				);
+			}
+			
+			if (isset($param['useMedia']) && $param['useMedia'] == '1') {
+				$itemSettings['media'] = array(
+					'url' => $imageUrl,
+					'type' => $item->getMimeType(),
+					'width' => $item->getWidth(),
+					'height' => $item->getHeight()
+				);
+			}
 		}
-
-		if (isset($param['useMedia']) && $param['useMedia'] == '1') {
-			$itemSettings['media'] = array(
-			'url' => $imageUrl,
-			'type' => $item->getMimeType(),
-			'width' => $item->getWidth(),
-			'height' => $item->getHeight(),
-			);
-		}
-	}
-
+		
 		$generator->addItem($itemSettings, $item->getId());
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * This function adds a comment item to the feed generator
 	 *
@@ -432,33 +424,38 @@ class RssHelper {
 	 */
 	public function addComment(&$generator, $item, $param) {
 		global $gallery;
-
-	/* generate url to the images */
-	$urlGenerator =& $gallery->getUrlGenerator();
-		$url = $urlGenerator->generateUrl(
-		array('view' => 'comment.ShowAllComments', 'itemId' => $item->getParentId()),
-		array('forceSessionId' => false, 'forceFullUrl' => true));
-
+		
+		/* generate url to the images */
+		$urlGenerator =& $gallery->getUrlGenerator();
+		$url = $urlGenerator->generateUrl(array(
+			'view' => 'comment.ShowAllComments',
+			'itemId' => $item->getParentId()
+		), array(
+			'forceSessionId' => false,
+			'forceFullUrl' => true
+		));
+		
 		$itemSettings = array(
-		'title' => $item->getSubject(),
-		'link' => $url,
-		'description' => $item->getComment());
-
-	/* check if we should use the category tag */
-	if (isset($param['useItemCategory']) && $param['useItemCategory'] == '1') {
-		$itemSettings['category'] = 'comment';
-	}
-
-	/* check if pubDate tag should be used */
-	if (isset($param['usePubDate']) && $param['usePubDate']) {
-		$itemSettings['pubDate'] = date('r', $item->getDate());
-	}
-
+			'title' => $item->getSubject(),
+			'link' => $url,
+			'description' => $item->getComment()
+		);
+		
+		/* check if we should use the category tag */
+		if (isset($param['useItemCategory']) && $param['useItemCategory'] == '1') {
+			$itemSettings['category'] = 'comment';
+		}
+		
+		/* check if pubDate tag should be used */
+		if (isset($param['usePubDate']) && $param['usePubDate']) {
+			$itemSettings['pubDate'] = date('r', $item->getDate());
+		}
+		
 		$generator->addItem($itemSettings, $item->getId());
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * This function retrieves photos and put them in an array.
 	 *
@@ -470,37 +467,46 @@ class RssHelper {
 	 */
 	public function getPhotoFeed($entity, $newOnly, $random) {
 		/* retrieve subitems' ids */
-	list($ret, $subIds) = GalleryCoreApi::fetchChildItemIds($entity);
+		list($ret, $subIds) = GalleryCoreApi::fetchChildItemIds($entity);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$itemsAcc = array();
 		$sortParam = $newOnly ? 'creationTimestamp' : 'modificationTimestamp';
-
-	/* go through subitems array and pass data to generator */
-	if (!empty($subIds)) {
-		/* retrieve array of subitems */
-		list($ret, $subItems) = GalleryCoreApi::loadEntitiesById($subIds, 'GalleryItem');
-		if ($ret) {
-			return array($ret, null);
+		
+		/* go through subitems array and pass data to generator */
+		if (!empty($subIds)) {
+			/* retrieve array of subitems */
+			list($ret, $subItems) = GalleryCoreApi::loadEntitiesById($subIds, 'GalleryItem');
+			if ($ret) {
+				return array(
+					$ret,
+					null
+				);
+			}
+			
+			foreach ($subItems as $key => $subItem) {
+				/* check if the subitem is a photo */
+				if (GalleryUtilities::isA($subItem, 'GalleryDataItem')) {
+					$itemData = (array) $subItem;
+					$key = $random ? rand() : $itemData[$sortParam] . '_' . $itemData['id'];
+					$itemsAcc[$key] = $subItem;
+				}
+			}
 		}
-
-		foreach ($subItems as $key => $subItem) {
-			/* check if the subitem is a photo */
-		if (GalleryUtilities::isA($subItem, 'GalleryDataItem')) {
-			$itemData = (array) $subItem;
-			$key = $random ? rand() : $itemData[$sortParam] . '_' . $itemData['id'];
-			$itemsAcc[$key] = $subItem;
-		}
-		}
-	}
-
+		
 		krsort($itemsAcc);
-
-		return array(null, $itemsAcc);
+		
+		return array(
+			null,
+			$itemsAcc
+		);
 	}
-
+	
 	/**
 	 * This function fetches albums or items inside a root album
 	 *
@@ -514,91 +520,104 @@ class RssHelper {
 	 *
 	 * copied and modified from GalleryItemHelper_simple
 	 */
-	public function fetchAlbumTree($itemId, $limit, $newOnly, $allowPhotos, $perAlbumLimit = 0,
-		$random = false) {
+	public function fetchAlbumTree($itemId, $limit, $newOnly, $allowPhotos, $perAlbumLimit = 0, $random = false) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$userId = $gallery->getActiveUserId();
-
+		
 		list($ret, $aclIds) = GalleryCoreApi::fetchAccessListIds('core.view', $userId);
 		if (empty($aclIds)) {
-			return array(null, array());
+			return array(
+				null,
+				array()
+			);
 		}
 		$aclMarkers = GalleryUtilities::makeMarkers(count($aclIds));
-
-		list($ret, $rootId) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
+		
+		list($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($itemId == $rootId) {
 			$parentSequence = '';
 		} else {
 			list($ret, $parentSequence) = GalleryCoreApi::fetchParentSequence($itemId);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			$ret = GalleryCoreApi::assertHasItemPermission($itemId, 'core.view');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			$parentSequence[] = $itemId;
 			$parentSequence = implode('/', $parentSequence);
 		}
-
+		
 		$timestamp = $newOnly ? 'creationTimestamp' : 'modificationTimestamp';
 		$table = $allowPhotos ? 'GalleryDataItem' : 'GalleryAlbumItem';
-
-		list($ret, $newDays) =
-		GalleryCoreApi::getPluginParameter('module', 'rss', 'maxAge');
+		
+		list($ret, $newDays) = GalleryCoreApi::getPluginParameter('module', 'rss', 'maxAge');
 		if ($ret || !$newDays) {
-			$newDays = 21; /* Use default on error or zero setting */
+			$newDays = 21;
+			/* Use default on error or zero setting */
 		}
 		$timeCutOff = time() - 3600 * 24 * $newDays;
-
+		
 		if ($random) {
 			/* get the random function for the DB */
-		list($ret, $orderBy) = $storage->getFunctionSql('RAND', array());
+			list($ret, $orderBy) = $storage->getFunctionSql('RAND', array());
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} else {
 			$orderBy = "[GalleryEntity::$timestamp] DESC";
 		}
-
+		
 		$query = "
 	    SELECT
 	      [$table::id]";
-
+		
 		if ($perAlbumLimit != 0) {
 			$query .= ', [GalleryItemAttributesMap::parentSequence]';
 		}
-
+		
 		$query .= "
 	    FROM
 	      [$table], [GalleryItemAttributesMap],
 	      [GalleryAccessSubscriberMap], [GalleryEntity]
 	    WHERE ";
-
-		if (! $random) {
+		
+		if (!$random) {
 			$query .= "
 	      [GalleryEntity::$timestamp] >= $timeCutOff
 	      AND ";
 		}
-
+		
 		$query .= "
 	      [$table::id] = [GalleryItemAttributesMap::itemId]
 	      AND
 	      [$table::id] = [GalleryEntity::id]";
-
+		
 		if (!empty($parentSequence)) {
 			$query .= "
 	      AND
 	      [GalleryItemAttributesMap::parentSequence] LIKE '$parentSequence/%'";
 		}
-
+		
 		$query .= "
 	      AND
 	      [$table::id] = [GalleryAccessSubscriberMap::itemId]
@@ -607,50 +626,58 @@ class RssHelper {
 	    ORDER BY
 	      $orderBy
 	    ";
-
+		
 		$data = $aclIds;
-
+		
 		$params = array();
-
+		
 		if (isset($limit)) {
-			$params['limit'] = array('count' => $limit);
+			$params['limit'] = array(
+				'count' => $limit
+			);
 		}
-
+		
 		list($ret, $searchResults) = $gallery->search($query, $data, $params);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$list = array();
 		$perAlbum = array();
 		while ($result = $searchResults->nextResult()) {
 			if ($perAlbumLimit != 0) {
 				/*
-	     * check number of items already accepted for this album
-	     * is lower than the limit
-	     */
-		if (isset($perAlbum[$result[1]])) {
-			$n = $perAlbum[$result[1]];
-
-			if ($n < $perAlbumLimit) {
-				/* under the limit */
-			$perAlbum[$result[1]] = $n + 1;
-				$list[] = $result[0];
-			}
-		} else {
-			/* first item for this album: accept */
-			$perAlbum[$result[1]] = 1;
-			$list[] = $result[0];
-		}
+	             * check number of items already accepted for this album
+	             * is lower than the limit
+	             */
+				if (isset($perAlbum[$result[1]])) {
+					$n = $perAlbum[$result[1]];
+					
+					if ($n < $perAlbumLimit) {
+						/* under the limit */
+						$perAlbum[$result[1]] = $n + 1;
+						$list[] = $result[0];
+					}
+				} else {
+					/* first item for this album: accept */
+					$perAlbum[$result[1]] = 1;
+					$list[] = $result[0];
+				}
 			} else {
 				/* include all results */
-		$list[] = $result[0];
+				$list[] = $result[0];
 			}
 		}
-
-		return array(null, $list);
+		
+		return array(
+			null,
+			$list
+		);
 	}
-
+	
 	/**
 	 * This provides a translation of the feed type codes
 	 *
@@ -660,20 +687,24 @@ class RssHelper {
 	public static function getFeedTypeTranslation() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'rss');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, array(
-		'photos' => $module->translate('Items in an album'),
-		'album' => $module->translate('Sub-albums of an album'),
-		'photosRecursive' => $module->translate('Items in an album and its sub-albums'),
-		'commentsAlbum' => $module->translate('Comments for an album'),
-		'commentsPhoto' => $module->translate('Comments for an item'),
-		'commentsRecursive' =>
-			$module->translate('Comments for an album and its subalbums'),
-		'photosRandom' => $module->translate('Random items in an album'),
-		'photosRandomRecursive' =>
-			$module->translate('Random items in an album and its subalbums'),
-			));
+		
+		return array(
+			null,
+			array(
+				'photos' => $module->translate('Items in an album'),
+				'album' => $module->translate('Sub-albums of an album'),
+				'photosRecursive' => $module->translate('Items in an album and its sub-albums'),
+				'commentsAlbum' => $module->translate('Comments for an album'),
+				'commentsPhoto' => $module->translate('Comments for an item'),
+				'commentsRecursive' => $module->translate('Comments for an album and its subalbums'),
+				'photosRandom' => $module->translate('Random items in an album'),
+				'photosRandomRecursive' => $module->translate('Random items in an album and its subalbums')
+			)
+		);
 	}
 }

@@ -26,7 +26,7 @@
 class RssCallbacks {
 	public function callback($params, $smarty, $callback, $userId = null) {
 		static $feeds;
-
+		
 		GalleryCoreApi::requireOnce('modules/rss/classes/RssMapHelper.class');
 		switch ($callback) {
 			case 'FeedList':
@@ -35,7 +35,7 @@ class RssCallbacks {
 					$tpl_vars = $smarty->getTemplateVars();
 					if (!empty($tpl_vars['theme']['params']['sidebarBlocks'])) {
 						$blocks = $tpl_vars['theme']['params']['sidebarBlocks'];
-
+						
 						foreach ($blocks as $block) {
 							if ($block[0] == 'rss.RssBlock') {
 								$params = $block[1];
@@ -43,13 +43,13 @@ class RssCallbacks {
 							}
 						}
 					}
-
+					
 					if (empty($params['number'])) {
 						/* still empty, probably because the user never changed the default */
 						$params['number'] = '5';
 					}
 				}
-
+				
 				/* since we get called twice (once for the block, once for the head), cache the feeds */
 				if (!isset($feeds)) {
 					list($ret, $feeds) = RssMapHelper::fetchFeedNames((int) $params['number']);
@@ -57,16 +57,16 @@ class RssCallbacks {
 						return $ret;
 					}
 				}
-
+				
 				$block = $smarty->getTemplateVars('block');
 				$smarty->assignByRef('block', $block);
-		
+				
 				$block['rss']['feeds'] = $feeds;
 				$block['rss']['showMore'] = !empty($feeds);
-
-		        return null;
+				
+				return null;
 		}
-
+		
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 }

@@ -36,12 +36,22 @@ class FeedListView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		list($ret, $feeds) = RssMapHelper::fetchFeedsForItem();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		$template->setVariable('FeedList', array('feeds' => $feeds));
+		
+		$template->setVariable('FeedList', array(
+			'feeds' => $feeds
+		));
 		$template->setVariable('view', 'rss.FeedList');
-
-		return array(null, array('body' => 'modules/rss/templates/FeedList.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/rss/templates/FeedList.tpl'
+			)
+		);
 	}
 }
