@@ -32,64 +32,91 @@ class UserAlbumController extends GalleryController {
 	public function handleRequest($form) {
 		global $gallery;
 		$activeUserId = $gallery->getActiveUserId();
-
+		
 		$userId = GalleryUtilities::getRequestVariables('userId');
 		if (empty($userId)) {
 			$userId = $activeUserId;
 		}
-
+		
 		list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser($userId);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if ($isAnonymous) {
-			return array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+			return array(
+				GalleryCoreApi::error(ERROR_PERMISSION_DENIED),
+				null
+			);
 		}
-
-		list($ret, $albumId) =
-		GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
+		
+		list($ret, $albumId) = GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $createMode) =
-		GalleryCoreApi::getPluginParameter('module', 'useralbum', 'create');
+		
+		list($ret, $createMode) = GalleryCoreApi::getPluginParameter('module', 'useralbum', 'create');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (!empty($albumId)) {
 			list($ret, $album) = GalleryCoreApi::loadEntitiesById($albumId, 'GalleryItem');
 			if ($ret && !($ret->getErrorCode() & ERROR_MISSING_OBJECT)) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		if (!isset($album) && $createMode == 'access') {
 			/* If userId matches active user then create the user album */
 			if ($userId != $activeUserId) {
-				return
-				array(GalleryCoreApi::error(ERROR_PERMISSION_DENIED), null);
+				return array(
+					GalleryCoreApi::error(ERROR_PERMISSION_DENIED),
+					null
+				);
 			}
 			GalleryCoreApi::requireOnce('modules/useralbum/classes/UserAlbumHelper.class');
-
+			
 			$ret = UserAlbumHelper::createUserAlbum($gallery->getActiveUser());
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
-			list($ret, $albumId) =
-			GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
+			
+			list($ret, $albumId) = GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $userId);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		$results = array('delegate' => array('view' => 'core.ShowItem',
-						 'itemId' => $albumId),
-			 'status' => array(),
-			 'error' => array());
-
-		return array(null, $results);
+		
+		$results = array(
+			'delegate' => array(
+				'view' => 'core.ShowItem',
+				'itemId' => $albumId
+			),
+			'status' => array(),
+			'error' => array()
+		);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }

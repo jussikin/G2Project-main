@@ -27,11 +27,11 @@
  */
 class UserAlbumModule extends GalleryModule {
 	/* and GalleryEventListener */
-
+	
 	public function __construct() {
 		$this->UserAlbumModule();
 	}
-
+	
 	public function UserAlbumModule() {
 		global $gallery;
 		$this->setId('useralbum');
@@ -41,29 +41,32 @@ class UserAlbumModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('gallery', $gallery->i18n('Gallery'));
 		$this->setCallbacks('getSiteAdminViews|getSystemLinks');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryEventListener',
-			'UserAlbumModule',
-			'UserAlbumModule',
-			'modules/useralbum/module.inc',
-			'useralbum',
-			array('GalleryEntity::delete', 'GalleryEntity::save', 'Gallery::Login')
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'UserAlbumModule', 'UserAlbumModule', 'modules/useralbum/module.inc', 'useralbum', array(
+			'GalleryEntity::delete',
+			'GalleryEntity::save',
+			'Gallery::Login'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
@@ -76,9 +79,14 @@ class UserAlbumModule extends GalleryModule {
 		if ($ret) {
 			return $ret;
 		}
-		foreach (array('view' => 'everybody', 'fullSize' => '1', 'targetLocation' => $rootId,
-			   'loginRedirect' => 0, 'homeLink' => 0, 'create' => 'access')
-		as $key => $value) {
+		foreach (array(
+			'view' => 'everybody',
+			'fullSize' => '1',
+			'targetLocation' => $rootId,
+			'loginRedirect' => 0,
+			'homeLink' => 0,
+			'create' => 'access'
+		) as $key => $value) {
 			if (!isset($params[$key])) {
 				$ret = $this->setParameter($key, $value);
 				if ($ret) {
@@ -86,62 +94,79 @@ class UserAlbumModule extends GalleryModule {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null,
-			 array(array('name' => $this->translate('User Albums'),
-				 'view' => 'useralbum.UserAlbumSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('User Albums'),
+					'view' => 'useralbum.UserAlbumSiteAdmin'
+				)
+			)
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSystemLinks
 	 */
 	public function getSystemLinks() {
 		global $gallery;
 		$links = array();
-
+		
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'useralbum');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Check if link is enabled */
+		
+		/* Check if link is enabled */
 		if (!empty($params['homeLink'])) {
 			list($ret, $isAnonymous) = GalleryCoreApi::isAnonymousUser();
 			if ($ret) {
-				return array($ret, null);
-			}
-
-			if (!$isAnonymous) {
-				list($ret, $albumId) =
-				GalleryCoreApi::getPluginParameter(
-					'module',
-					'useralbum',
-					'albumId',
-					$gallery->getActiveUserId()
+				return array(
+					$ret,
+					null
 				);
+			}
+			
+			if (!$isAnonymous) {
+				list($ret, $albumId) = GalleryCoreApi::getPluginParameter('module', 'useralbum', 'albumId', $gallery->getActiveUserId());
 				if ($ret) {
-						return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
+				
 				if (!empty($albumId) || $params['create'] == 'access') {
-						$links['YourAlbum'] = array('text' => $this->translate('Your Album'),
-					'params' => empty($albumId) ? array('controller' => 'useralbum.UserAlbum')
-							: array('view' => 'core.ShowItem',
-								'itemId' => $albumId));
+					$links['YourAlbum'] = array(
+						'text' => $this->translate('Your Album'),
+						'params' => empty($albumId) ? array(
+							'controller' => 'useralbum.UserAlbum'
+						) : array(
+							'view' => 'core.ShowItem',
+							'itemId' => $albumId
+						)
+					);
 				}
 			}
 		}
-
-		return array(null, $links);
+		
+		return array(
+			null,
+			$links
+		);
 	}
-
+	
 	/**
 	 * Event handler for GalleryEntity::save, ::delete and Gallery::Login events
 	 * Create new top level album with appropriate permissions when a GalleryUser is created
@@ -156,79 +181,96 @@ class UserAlbumModule extends GalleryModule {
 		switch ($event->getEventName()) {
 			case 'GalleryEntity::save':
 				$user = $event->getEntity();
-				if (GalleryUtilities::isA($user, 'GalleryUser') &&
-					$user->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
-							list($ret, $createMode) = $this->getParameter('create');
+				if (GalleryUtilities::isA($user, 'GalleryUser') && $user->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
+					list($ret, $createMode) = $this->getParameter('create');
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 					if ($createMode == 'immediate') {
-						GalleryCoreApi::requireOnce(
-							'modules/useralbum/classes/UserAlbumHelper.class'
-						);
-
-								$ret = UserAlbumHelper::createUserAlbum($user);
+						GalleryCoreApi::requireOnce('modules/useralbum/classes/UserAlbumHelper.class');
+						
+						$ret = UserAlbumHelper::createUserAlbum($user);
 						if ($ret) {
-									return array($ret, null);
+							return array(
+								$ret,
+								null
+							);
 						}
 					}
 				}
-		        break;
-
+				break;
+			
 			case 'GalleryEntity::delete':
 				$entity = $event->getEntity();
-
+				
 				/* We don't care unless it's an album */
 				if (!GalleryUtilities::isA($entity, 'GalleryAlbumItem')) {
 					break;
 				}
-
+				
 				list($ret, $targetId) = $this->getParameter('targetLocation');
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-
+				
 				if ($entity->getId() == $targetId) {
-					list($ret, $rootId) =
-					GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
+					list($ret, $rootId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.rootAlbum');
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
-
+					
 					$ret = $this->setParameter('targetLocation', $rootId);
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				} else {
 					/*
-				 * Delete the albumid value from the ParameterMap so we don't get
-				 * MISSING_OBJECT errors when the user clicks their 'Your Album' link
-				 */
-					$ret = GalleryCoreApi::removePluginParameterByValue(
-						'module',
-						'useralbum',
-						'albumId',
-						$entity->getId()
-					);
+	                 * Delete the albumid value from the ParameterMap so we don't get
+	                 * MISSING_OBJECT errors when the user clicks their 'Your Album' link
+	                 */
+					$ret = GalleryCoreApi::removePluginParameterByValue('module', 'useralbum', 'albumId', $entity->getId());
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				}
-		        break;
-
+				break;
+			
 			case 'Gallery::Login':
 				/* Check if redirect is enabled.. */
 				list($ret, $loginRedirect) = $this->getParameter('loginRedirect');
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				if (!empty($loginRedirect)) {
 					/* Return a redirect to the user album.. */
-					$result = array('controller' => 'useralbum.UserAlbum');
+					$result = array(
+						'controller' => 'useralbum.UserAlbum'
+					);
 				}
-		        break;
+				break;
 		}
-
-		return array(null, $result);
+		
+		return array(
+			null,
+			$result
+		);
 	}
 }
