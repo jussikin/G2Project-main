@@ -31,12 +31,15 @@ class ZipCartAdminController extends GalleryController {
 	 */
 	public function handleRequest($form) {
 		global $gallery;
-
+		
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$error = $status = array();
 		if (isset($form['action']['save']) || isset($form['action']['test'])) {
 			$form['path'] = trim($form['path']);
@@ -60,8 +63,13 @@ class ZipCartAdminController extends GalleryController {
 				$gallery->guaranteeTimeLimit(30);
 				$gallery->startRecordingDebugSnippet();
 				if ($success = $platform->copy(__FILE__, $zipBase)) {
-					list($success) =
-					$platform->exec(array(array($form['path'], $zipFile, $zipBase)));
+					list($success) = $platform->exec(array(
+						array(
+							$form['path'],
+							$zipFile,
+							$zipBase
+						)
+					));
 				}
 				$debugSnippet = $gallery->stopRecordingDebugSnippet();
 				if (!$success || !$platform->file_exists($zipFile)) {
@@ -72,22 +80,31 @@ class ZipCartAdminController extends GalleryController {
 				@$platform->unlink($zipBase);
 			}
 		}
-
+		
 		if (isset($form['action']['save']) && empty($error)) {
 			$ret = GalleryCoreApi::setPluginParameter('module', 'zipcart', 'path', $form['path']);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'zipcart');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			list($ret, $isActive) = $module->isActive();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			$redirect['view'] = 'core.SiteAdmin';
 			if ($isActive) {
 				$redirect['subView'] = 'zipcart.ZipCartAdmin';
@@ -103,7 +120,7 @@ class ZipCartAdminController extends GalleryController {
 			$redirect['view'] = 'core.SiteAdmin';
 			$redirect['subView'] = 'core.AdminPlugins';
 		}
-
+		
 		if (!empty($redirect)) {
 			$results['redirect'] = $redirect;
 		} else {
@@ -112,8 +129,11 @@ class ZipCartAdminController extends GalleryController {
 		}
 		$results['status'] = $status;
 		$results['error'] = $error;
-
-		return array(null, $results);
+		
+		return array(
+			null,
+			$results
+		);
 	}
 }
 
@@ -127,44 +147,59 @@ class ZipCartAdminView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($form['formName'] != 'ZipCartAdmin') {
 			$form['formName'] = 'ZipCartAdmin';
-			list($ret, $form['path']) =
-			GalleryCoreApi::getPluginParameter('module', 'zipcart', 'path');
+			list($ret, $form['path']) = GalleryCoreApi::getPluginParameter('module', 'zipcart', 'path');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		if (isset($form['action']['test'])) {
 			$form['test'] = empty($form['error']);
 		}
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'zipcart');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		list($ret, $isActive) = $module->isActive();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		$ZipCartAdmin = array('isConfigure' => !$isActive,
-				  'canExec' => !in_array(
-					  'exec',
-					  preg_split('/,\s*/', ini_get('disable_functions'))
-				  ));
+		
+		$ZipCartAdmin = array(
+			'isConfigure' => !$isActive,
+			'canExec' => !in_array('exec', preg_split('/,\s*/', ini_get('disable_functions')))
+		);
 		if (isset($form['error']['path']['badZip']) > 0) {
 			$ZipCartAdmin['debugSnippet'] = GalleryUtilities::getRequestVariables('debugSnippet');
 			$template->javascript('lib/javascript/BlockToggle.js');
 		}
-
+		
 		$template->setVariable('ZipCartAdmin', $ZipCartAdmin);
 		$template->setVariable('controller', 'zipcart.ZipCartAdmin');
-
-		return array(null, array('body' => 'modules/zipcart/templates/ZipCartAdmin.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/zipcart/templates/ZipCartAdmin.tpl'
+			)
+		);
 	}
 }
