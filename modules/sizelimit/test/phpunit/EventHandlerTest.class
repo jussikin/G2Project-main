@@ -29,26 +29,29 @@ class EventHandlerTest extends GalleryTestCase {
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodname);
 	}
-
+	
 	public function setUp() {
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_album);
 	}
-
+	
 	public function testCopy() {
 		$event = GalleryCoreApi::newEvent('GalleryEntity::save');
-		foreach (array('width' => 768, 'height' => 1024, 'size' => 1000, 'keepOriginal' => 1)
-		as $key => $value) {
-			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit',
-		$key, $value, $this->_album->getId());
+		foreach (array(
+			'width' => 768,
+			'height' => 1024,
+			'size' => 1000,
+			'keepOriginal' => 1
+		) as $key => $value) {
+			$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit', $key, $value, $this->_album->getId());
 			if ($ret) {
 				return $ret;
 			}
@@ -57,18 +60,21 @@ class EventHandlerTest extends GalleryTestCase {
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		GalleryCoreApi::requireOnce('modules/sizelimit/module.inc');
 		list($ret, $data) = SizeLimitModule::handleEvent($event);
 		if ($ret) {
 			return $ret;
 		}
-		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters(
-		'module', 'sizelimit', $this->_album->getId());
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'sizelimit', $this->_album->getId());
 		if ($ret) {
 			return $ret;
 		}
-		$this->assertEquals(array('width' => 768, 'height' => 1024, 'size' => 1000,
-		'keepOriginal' => 1), $params, 'Copied Album');
+		$this->assertEquals(array(
+			'width' => 768,
+			'height' => 1024,
+			'size' => 1000,
+			'keepOriginal' => 1
+		), $params, 'Copied Album');
 	}
 }

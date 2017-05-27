@@ -29,63 +29,52 @@ class SizeLimitModule extends GalleryModule {
 	public function __construct() {
 		$this->SizeLimitModule();
 	}
-
+	
 	public function SizeLimitModule() {
 		global $gallery;
-
+		
 		$this->setId('sizelimit');
 		$this->setName($gallery->i18n('Size Limit'));
 		$this->setDescription($gallery->i18n('Define picture size limit'));
 		$this->setVersion('2.0.0');
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $gallery->i18n('Display'));
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryEventListener',
-			'SizelimitModule',
-			'SizelimitModule',
-			'modules/sizelimit/module.inc',
-			'sizelimit',
-			array('GalleryEntity::save')
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'SizelimitModule', 'SizelimitModule', 'modules/sizelimit/module.inc', 'sizelimit', array(
+			'GalleryEntity::save'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemEditOption',
-			'SizeLimitOption',
-			'SizeLimitOption',
-			'modules/sizelimit/SizeLimitOption.inc',
-			'sizelimit',
-			array('ItemEditAlbum')
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemEditOption', 'SizeLimitOption', 'SizeLimitOption', 'modules/sizelimit/SizeLimitOption.inc', 'sizelimit', array(
+			'ItemEditAlbum'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemAddOption',
-			'SetSizeOption',
-			'SetSizeOption',
-			'modules/sizelimit/SetSizeOption.inc',
-			'sizelimit',
-			null
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemAddOption', 'SetSizeOption', 'SetSizeOption', 'modules/sizelimit/SetSizeOption.inc', 'sizelimit', null);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Event handler for GalleryEntity::save event
 	 * Copy dimension / filesize limits when the album is created
@@ -96,32 +85,30 @@ class SizeLimitModule extends GalleryModule {
 	public function handleEvent($event) {
 		if ($event->getEventName() == 'GalleryEntity::save') {
 			$album = $event->getEntity();
-			if (GalleryUtilities::isA($album, 'GalleryAlbumItem') &&
-			$album->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
-				$parentId = (int)$album->getParentId();
-				list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters(
-					'module',
-					'sizelimit',
-					$parentId
-				);
+			if (GalleryUtilities::isA($album, 'GalleryAlbumItem') && $album->testPersistentFlag(STORAGE_FLAG_NEWLY_CREATED)) {
+				$parentId = (int) $album->getParentId();
+				list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'sizelimit', $parentId);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 				foreach ($params as $param => $value) {
-					$ret = GalleryCoreApi::setPluginParameter(
-						'module',
-						'sizelimit',
-						$param,
-						$value,
-						$album->getId()
-					);
+					$ret = GalleryCoreApi::setPluginParameter('module', 'sizelimit', $param, $value, $album->getId());
 					if ($ret) {
-						return array($ret, null);
+						return array(
+							$ret,
+							null
+						);
 					}
 				}
 			}
 		}
-
-		return array(null, null);
+		
+		return array(
+			null,
+			null
+		);
 	}
 }
