@@ -33,64 +33,88 @@ class ItemEditWatermark extends ItemEditPlugin {
 		global $gallery;
 		$status = null;
 		$error = array();
-
+		
 		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'watermark');
 		if ($ret) {
-			return array($ret, null, null, null);
+			return array(
+				$ret,
+				null,
+				null,
+				null
+			);
 		}
 		if ($params['forceDefaultWatermark'] && !empty($params['defaultWatermarkId'])) {
 			$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 			if ($ret) {
-				return array($ret, null, null, null);
+				return array(
+					$ret,
+					null,
+					null,
+					null
+				);
 			}
 		}
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'watermark');
 		if ($ret) {
-			return array($ret, null, null, null);
+			return array(
+				$ret,
+				null,
+				null,
+				null
+			);
 		}
-
+		
 		if (isset($form['action']['save'])) {
-			if (!(isset($form['whichDerivative']['thumbnail']) ||
-			isset($form['whichDerivative']['resize']) ||
-			isset($form['whichDerivative']['preferred']))) {
+			if (!(isset($form['whichDerivative']['thumbnail']) || isset($form['whichDerivative']['resize']) || isset($form['whichDerivative']['preferred']))) {
 				$error[] = 'form[error][versions][missing]';
 			}
-
+			
 			if (empty($error)) {
-				list($ret, $watermark) =
-				GalleryCoreApi::loadEntitiesById($form['watermarkId'], 'WatermarkImage');
+				list($ret, $watermark) = GalleryCoreApi::loadEntitiesById($form['watermarkId'], 'WatermarkImage');
 				if ($ret) {
-					return array($ret, null, null, null);
+					return array(
+						$ret,
+						null,
+						null,
+						null
+					);
 				}
-
-				$which = array(DERIVATIVE_TYPE_IMAGE_PREFERRED =>
-				!empty($form['whichDerivative']['preferred']),
-				   DERIVATIVE_TYPE_IMAGE_RESIZE =>
-				!empty($form['whichDerivative']['resize']),
-				   DERIVATIVE_TYPE_IMAGE_THUMBNAIL =>
-				!empty($form['whichDerivative']['thumbnail']));
-
+				
+				$which = array(
+					DERIVATIVE_TYPE_IMAGE_PREFERRED => !empty($form['whichDerivative']['preferred']),
+					DERIVATIVE_TYPE_IMAGE_RESIZE => !empty($form['whichDerivative']['resize']),
+					DERIVATIVE_TYPE_IMAGE_THUMBNAIL => !empty($form['whichDerivative']['thumbnail'])
+				);
+				
 				GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 				if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 					$templateAdapter =& $gallery->getTemplateAdapter();
-					$templateAdapter->registerTrailerCallback(
-						array($this, 'bulkOperation'),
-						array($item, 'apply',
-						array($watermark, null, $form['xPercent'], $form['yPercent'], $which),
+					$templateAdapter->registerTrailerCallback(array(
+						$this,
+						'bulkOperation'
+					), array(
+						$item,
+						'apply',
+						array(
+							$watermark,
+							null,
+							$form['xPercent'],
+							$form['yPercent'],
+							$which
+						),
 						!empty($form['recursive']),
-						$gallery->i18n('Apply watermark'))
-					);
+						$gallery->i18n('Apply watermark')
+					));
 					$requiresProgressBar = true;
 				} else {
-					$ret = WatermarkHelper::watermarkItem(
-						$watermark,
-						$item,
-						$form['xPercent'],
-						$form['yPercent'],
-						$which
-					);
+					$ret = WatermarkHelper::watermarkItem($watermark, $item, $form['xPercent'], $form['yPercent'], $which);
 					if ($ret) {
-						return array($ret, null, null, null);
+						return array(
+							$ret,
+							null,
+							null,
+							null
+						);
 					}
 				}
 				$status = $module->translate('Watermark applied successfully');
@@ -98,54 +122,70 @@ class ItemEditWatermark extends ItemEditPlugin {
 		} elseif (isset($form['action']['remove'])) {
 			if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
 				$templateAdapter =& $gallery->getTemplateAdapter();
-				$templateAdapter->registerTrailerCallback(
-					array($this, 'bulkOperation'),
-					array($item, 'remove', array(), !empty($form['recursive']),
-					$gallery->i18n('Remove watermarks'))
-				);
+				$templateAdapter->registerTrailerCallback(array(
+					$this,
+					'bulkOperation'
+				), array(
+					$item,
+					'remove',
+					array(),
+					!empty($form['recursive']),
+					$gallery->i18n('Remove watermarks')
+				));
 				$requiresProgressBar = true;
 			} else {
 				$ret = $this->removeWatermark($item->getId());
 				if ($ret) {
-					return array($ret, null, null, null);
+					return array(
+						$ret,
+						null,
+						null,
+						null
+					);
 				}
 			}
 			$status = $module->translate('Watermark removed successfully');
 		}
-
-		return array(null, $error, $status, isset($requiresProgressBar));
+		
+		return array(
+			null,
+			$error,
+			$status,
+			isset($requiresProgressBar)
+		);
 	}
-
+	
 	public function bulkOperation($item, $operation, $params, $recursive, $message) {
 		global $gallery;
 		$storage =& $gallery->getStorage();
 		$urlGenerator =& $gallery->getUrlGenerator();
-		$redirect = $urlGenerator->generateUrl(array('view' => 'core.ItemAdmin',
-			'subView' => 'core.ItemEdit', 'itemId' => $item->getId()));
-
+		$redirect = $urlGenerator->generateUrl(array(
+			'view' => 'core.ItemAdmin',
+			'subView' => 'core.ItemEdit',
+			'itemId' => $item->getId()
+		));
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'watermark');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$message = $module->translate($message);
 		$templateAdapter =& $gallery->getTemplateAdapter();
 		$templateAdapter->updateProgressBar($message, $module->translate('Preparing...'), 0);
-
+		
 		if ($recursive) {
-			list($ret, $itemIds) =
-			GalleryCoreApi::fetchDescendentItemIds($item, null, null, 'core.edit');
+			list($ret, $itemIds) = GalleryCoreApi::fetchDescendentItemIds($item, null, null, 'core.edit');
 			if ($ret) {
 				return $ret;
 			}
 		} else {
-			list($ret, $itemIds) =
-			GalleryCoreApi::fetchChildItemIdsWithPermission($item->getId(), 'core.edit');
+			list($ret, $itemIds) = GalleryCoreApi::fetchChildItemIdsWithPermission($item->getId(), 'core.edit');
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		$i = 0;
 		$total = count($itemIds);
 		while (!empty($itemIds)) {
@@ -166,10 +206,10 @@ class ItemEditWatermark extends ItemEditPlugin {
 						}
 					} elseif ($this->isSupported($item, null)) {
 						$params[1] = $item;
-						$ret = call_user_func_array(
-							array('WatermarkHelper', 'watermarkItem'),
-							$params
-						);
+						$ret = call_user_func_array(array(
+							'WatermarkHelper',
+							'watermarkItem'
+						), $params);
 						if ($ret) {
 							return $ret;
 						}
@@ -181,14 +221,16 @@ class ItemEditWatermark extends ItemEditPlugin {
 				return $ret;
 			}
 		}
-
+		
 		$templateAdapter->completeProgressBar($redirect);
-
+		
 		return null;
 	}
-
+	
 	public function removeWatermark($itemId) {
-		list($ret, $derivativeTable) = GalleryCoreApi::fetchDerivativesByItemIds(array($itemId));
+		list($ret, $derivativeTable) = GalleryCoreApi::fetchDerivativesByItemIds(array(
+			$itemId
+		));
 		if ($ret) {
 			return $ret;
 		}
@@ -196,74 +238,68 @@ class ItemEditWatermark extends ItemEditPlugin {
 			return null;
 		}
 		$derivatives = $derivativeTable[$itemId];
-
+		
 		$ids = array();
 		foreach ($derivatives as $derivative) {
 			$ids[] = $derivative->getId();
 		}
-
-	/* Lock them all */
+		
+		/* Lock them all */
 		list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($ids);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		foreach ($derivatives as $derivative) {
 			list($ret, $derivative) = $derivative->refresh();
 			if ($ret) {
 				GalleryCoreApi::releaseLocks($lockId);
-
+				
 				return $ret;
 			}
-
-			$newPostFilters = GalleryCoreApi::removeDerivativeOperation(
-				'composite',
-				$derivative->getPostFilterOperations()
-			);
+			
+			$newPostFilters = GalleryCoreApi::removeDerivativeOperation('composite', $derivative->getPostFilterOperations());
 			$derivative->setPostFilterOperations($newPostFilters);
-
+			
 			if ($derivative->getDerivativeType() == DERIVATIVE_TYPE_IMAGE_PREFERRED) {
 				$preferred = $derivative;
 			}
-
+			
 			$ret = $derivative->save();
 			if ($ret) {
 				GalleryCoreApi::releaseLocks($lockId);
-
+				
 				return $ret;
 			}
 		}
-
+		
 		$ret = GalleryCoreApi::releaseLocks($lockId);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		if (isset($preferred)) {
 			list($ret, $preferred) = $preferred->refresh();
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			if ($preferred->hasNoOperations()) {
-				$ret = GalleryCoreApi::remapSourceIds(
-					$preferred->getId(),
-					$preferred->getDerivativeSourceId()
-				);
+				$ret = GalleryCoreApi::remapSourceIds($preferred->getId(), $preferred->getDerivativeSourceId());
 				if ($ret) {
 					return $ret;
 				}
-
+				
 				$ret = GalleryCoreApi::deleteEntityById($preferred->getId(), 'GalleryDerivative');
 				if ($ret) {
 					return $ret;
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
@@ -272,19 +308,29 @@ class ItemEditWatermark extends ItemEditPlugin {
 		GalleryCoreApi::requireOnce('modules/watermark/classes/WatermarkHelper.class');
 		list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
 		foreach (array_keys($watermarks) as $watermarkId) {
-			$watermarks[$watermarkId] = (array)$watermarks[$watermarkId];
+			$watermarks[$watermarkId] = (array) $watermarks[$watermarkId];
 		}
-
-	/* Grab the smallest derivative that's greater than 400px on a side */
+		
+		/* Grab the smallest derivative that's greater than 400px on a side */
 		$itemId = $item->getId();
 		if (GalleryUtilities::isA($item, 'GalleryDataItem')) {
 			$displayImage = $item;
-			list($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds(array($itemId));
+			list($ret, $derivatives) = GalleryCoreApi::fetchDerivativesByItemIds(array(
+				$itemId
+			));
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 			$derivatives = isset($derivatives[$itemId]) ? $derivatives[$itemId] : array();
 			foreach ($derivatives as $derivative) {
@@ -296,38 +342,34 @@ class ItemEditWatermark extends ItemEditPlugin {
 				}
 			}
 		}
-
+		
 		if ($form['formName'] != 'ItemEditWatermark') {
 			/* First time around, reset the form */
 			$form['formName'] = 'ItemEditWatermark';
-
+			
 			if (!empty($watermarks) && GalleryUtilities::isA($item, 'GalleryDataItem')) {
 				/* Get the current watermark from any of the derivatives */
 				foreach ($derivatives as $derivative) {
 					$ops = $derivative->getPostFilterOperations();
-					if (preg_match(
-						'{composite\|plugins_data/modules/watermark/([^;]*)}',
-						$ops,
-						$matches
-					)) {
+					if (preg_match('{composite\|plugins_data/modules/watermark/([^;]*)}', $ops, $matches)) {
 						switch ($derivative->getDerivativeType()) {
 							case DERIVATIVE_TYPE_IMAGE_PREFERRED:
 								$form['whichDerivative']['preferred'] = 1;
 								break;
-
+							
 							case DERIVATIVE_TYPE_IMAGE_RESIZE:
 								$form['whichDerivative']['resize'] = 1;
 								break;
-
+							
 							case DERIVATIVE_TYPE_IMAGE_THUMBNAIL:
 								$form['whichDerivative']['thumbnail'] = 1;
 								break;
 						}
-
-								$args = preg_split('/,/', $matches[1]);
-								$fileName = $args[0];
-								$form['xPercent'] = $args[5];
-								$form['yPercent'] = $args[6];
+						
+						$args = preg_split('/,/', $matches[1]);
+						$fileName = $args[0];
+						$form['xPercent'] = $args[5];
+						$form['yPercent'] = $args[6];
 						foreach ($watermarks as $watermark) {
 							if ($watermark['fileName'] == $fileName) {
 								$form['watermarkId'] = $watermark['id'];
@@ -337,7 +379,7 @@ class ItemEditWatermark extends ItemEditPlugin {
 					}
 				}
 			}
-
+			
 			if (!empty($watermarks) && !isset($form['watermarkId'])) {
 				$watermarkIds = array_keys($watermarks);
 				$form['watermarkId'] = $watermarkIds[0];
@@ -345,21 +387,26 @@ class ItemEditWatermark extends ItemEditPlugin {
 				$form['yPercent'] = $watermarks[$watermarkIds[0]]['yPercentage'];
 			}
 		}
-
-		$ItemEditWatermark = array('watermarks' => $watermarks,
-				   'item' => (array)$item,
-				   'image' => isset($displayImage) ? (array)$displayImage : null,
-				   'isAlbum' => GalleryUtilities::isA($item, 'GalleryAlbumItem'));
-
+		
+		$ItemEditWatermark = array(
+			'watermarks' => $watermarks,
+			'item' => (array) $item,
+			'image' => isset($displayImage) ? (array) $displayImage : null,
+			'isAlbum' => GalleryUtilities::isA($item, 'GalleryAlbumItem')
+		);
+		
 		$template->javascript('lib/yui/utilities.js');
 		$template->javascript('modules/watermark/watermark.js');
-
+		
 		$template->setVariable('ItemEditWatermark', $ItemEditWatermark);
-
-		return array(null,
-			 'modules/watermark/templates/ItemEditWatermark.tpl', 'modules_watermark');
+		
+		return array(
+			null,
+			'modules/watermark/templates/ItemEditWatermark.tpl',
+			'modules_watermark'
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 * @todo Broaden this interface to allow a GalleryStatus return code
@@ -376,54 +423,64 @@ class ItemEditWatermark extends ItemEditPlugin {
 				return false;
 			}
 		}
-
+		
 		if (GalleryUtilities::isA($item, 'GalleryAlbumItem')) {
-			$mimeType = 'image/jpeg'; /* Just check common type to show tab for albums */
+			$mimeType = 'image/jpeg';
+			/* Just check common type to show tab for albums */
 		} elseif (GalleryUtilities::isA($item, 'GalleryDataItem')) {
 			$mimeType = $item->getMimeType();
 		} else {
 			return false;
 		}
-
+		
 		list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($mimeType, 'composite');
 		if ($ret) {
-			return false; /* Swallow the error for now */
+			return false;
+			/* Swallow the error for now */
 		}
 		if (isset($toolkit)) {
 			return true;
 		}
-
-	/* Ok we have no composite for the item .. but maybe we do for its preferred? */
-		list($ret, $preferredTable) =
-		GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
+		
+		/* Ok we have no composite for the item .. but maybe we do for its preferred? */
+		list($ret, $preferredTable) = GalleryCoreApi::fetchPreferredsByItemIds(array(
+			$item->getId()
+		));
 		if ($ret) {
-			return false; /* Swallow the error for now */
+			return false;
+			/* Swallow the error for now */
 		}
-
+		
 		if (!empty($preferredTable[$item->getId()])) {
 			$preferred = $preferredTable[$item->getId()];
-			list($ret, $toolkit) =
-			GalleryCoreApi::getToolkitByOperation($preferred->getMimeType(), 'composite');
+			list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation($preferred->getMimeType(), 'composite');
 			if ($ret) {
-				return false; /* Swallow the error for now */
+				return false;
+				/* Swallow the error for now */
 			}
 			if (isset($toolkit)) {
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
 	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'watermark');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Watermark'));
+		
+		return array(
+			null,
+			$module->translate('Watermark')
+		);
 	}
 }

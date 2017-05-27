@@ -32,62 +32,60 @@ class WatermarkTest extends GalleryTestCase {
 	public function __construct($methodName) {
 		$this->GalleryTestCase($methodName);
 	}
-
+	
 	public function setUp() {
 		global $gallery;
 		$ret = parent::setUp();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_registerEventListener('GalleryEntity::delete', new WatermarkModule());
-
+		
 		list($ret, $this->_album) = $this->_createRandomAlbum($this->_getRootId());
 		if ($ret) {
 			return $ret;
 		}
 		$this->_markForCleanup($this->_album);
-
+		
 		list($ret, $this->_user) = $this->_createUser();
 		if ($ret) {
 			return $ret;
 		}
 		$this->_saveUser = $gallery->getActiveUser();
 		$gallery->setActiveUser($this->_user);
-
-	/* Create a watermark */
-	$watermark = new WatermarkImage();
+		
+		/* Create a watermark */
+		$watermark = new WatermarkImage();
 		$ret = $watermark->create(__FILE__, 'test/file', 'phpunit_' . rand() . '.gif');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $watermark->save();
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->_watermark = $watermark;
 		$this->_markForCleanup($this->_user);
 	}
-
+	
 	public function testFetchWatermarks1() {
 		/* We never gave permission to our test watermark, so it shouldn't show up */
-	list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
+		list($ret, $watermarks) = WatermarkHelper::fetchWatermarks();
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assert(!isset($watermarks[$this->_watermark->getId()]),
-			  'Watermark appears when it shouldn\'t');
+		
+		$this->assert(!isset($watermarks[$this->_watermark->getId()]), 'Watermark appears when it shouldn\'t');
 	}
-
+	
 	public function testFetchWatermarks2() {
 		global $gallery;
-
-	/* Give permission for us to see the watermark */
-	$ret = GalleryCoreApi::addUserPermission(
-		$this->_watermark->getId(), $gallery->getActiveUserId(), 'core.all');
+		
+		/* Give permission for us to see the watermark */
+		$ret = GalleryCoreApi::addUserPermission($this->_watermark->getId(), $gallery->getActiveUserId(), 'core.all');
 		if ($ret) {
 			return $ret;
 		}
@@ -95,77 +93,72 @@ class WatermarkTest extends GalleryTestCase {
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assert(isset($watermarks[$this->_watermark->getId()]),
-			  'Watermark doesn\'t appear when it should');
+		
+		$this->assert(isset($watermarks[$this->_watermark->getId()]), 'Watermark doesn\'t appear when it should');
 		$this->assertEquals($this->_watermark, $watermarks[$this->_watermark->getId()]);
 	}
-
+	
 	public function testFetchWatermarksByOwnerId1() {
 		global $gallery;
-
-		list($ret, $watermarkIds) =
-		WatermarkHelper::fetchWatermarkIdsByOwnerId($gallery->getActiveUserId());
+		
+		list($ret, $watermarkIds) = WatermarkHelper::fetchWatermarkIdsByOwnerId($gallery->getActiveUserId());
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assert(in_array($this->_watermark->getId(), $watermarkIds),
-			  'Watermark doesn\'t appear when it should');
+		
+		$this->assert(in_array($this->_watermark->getId(), $watermarkIds), 'Watermark doesn\'t appear when it should');
 	}
-
+	
 	public function testFetchWatermarksByOwnerId2() {
 		/* Use a random/bogus user id */
-	list($ret, $watermarkIds) = WatermarkHelper::fetchWatermarkIdsByOwnerId(1234567);
+		list($ret, $watermarkIds) = WatermarkHelper::fetchWatermarkIdsByOwnerId(1234567);
 		if ($ret) {
 			return $ret;
 		}
-
-		$this->assert(!in_array($this->_watermark->getId(), $watermarkIds),
-			  'Watermark appears when it shouldn\'t');
+		
+		$this->assert(!in_array($this->_watermark->getId(), $watermarkIds), 'Watermark appears when it shouldn\'t');
 	}
-
+	
 	public function testWatermarkItem() {
 		/* Create an item to watermark */
-	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
+		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Give it some derivatives */
-	list($ret, $preferred) = $this->_createDerivative(
-		$item, $item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED, 'rotate|90');
+		
+		/* Give it some derivatives */
+		list($ret, $preferred) = $this->_createDerivative($item, $item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED, 'rotate|90');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $thumbnail) = $this->_createDerivative(
-		$item, $preferred->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL,
-		'crop|10,10,30,40;scale|200');
+		
+		list($ret, $thumbnail) = $this->_createDerivative($item, $preferred->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'crop|10,10,30,40;scale|200');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $resize) = $this->_createDerivative($item, $preferred->getId(),
-							DERIVATIVE_TYPE_IMAGE_RESIZE, 'scale|500');
+		
+		list($ret, $resize) = $this->_createDerivative($item, $preferred->getId(), DERIVATIVE_TYPE_IMAGE_RESIZE, 'scale|500');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Apply the watermark */
-	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
-						  array(DERIVATIVE_TYPE_IMAGE_PREFERRED => true,
-							DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
-							DERIVATIVE_TYPE_IMAGE_RESIZE => true));
+		
+		/* Apply the watermark */
+		$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2', array(
+			DERIVATIVE_TYPE_IMAGE_PREFERRED => true,
+			DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
+			DERIVATIVE_TYPE_IMAGE_RESIZE => true
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Verify that it went properly */
-	$filter =
-		sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
-			$this->_watermark->getFileName());
-		foreach (array($preferred, $resize, $thumbnail) as $derivative) {
+		
+		/* Verify that it went properly */
+		$filter = sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200', $this->_watermark->getFileName());
+		foreach (array(
+			$preferred,
+			$resize,
+			$thumbnail
+		) as $derivative) {
 			list($ret, $derivative) = $derivative->refresh();
 			if ($ret) {
 				return $ret;
@@ -173,151 +166,151 @@ class WatermarkTest extends GalleryTestCase {
 			$this->assertEquals($filter, $derivative->getPostFilterOperations());
 		}
 	}
-
+	
 	public function testReplaceWatermark() {
 		/* Create an item to watermark */
-	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
+		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Give it a thumbnail with a watermark */
-	list($ret, $thumbnail) = $this->_createDerivative(
-		$item, $item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'rotate|90',
-		'test/file', array('postFilterOperations' => 'composite|plugins_data/modules/' .
-				   'watermark/foo,test/file,0,0,manual,9,8'));
+		
+		/* Give it a thumbnail with a watermark */
+		list($ret, $thumbnail) = $this->_createDerivative($item, $item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'rotate|90', 'test/file', array(
+			'postFilterOperations' => 'composite|plugins_data/modules/' . 'watermark/foo,test/file,0,0,manual,9,8'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Apply a second watermark */
-	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
-						  array(DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
-							DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
-							DERIVATIVE_TYPE_IMAGE_RESIZE => false));
+		
+		/* Apply a second watermark */
+		$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2', array(
+			DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
+			DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
+			DERIVATIVE_TYPE_IMAGE_RESIZE => false
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Verify that it went properly */
-	$filter =
-		sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
-			$this->_watermark->getFileName());
-
+		
+		/* Verify that it went properly */
+		$filter = sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200', $this->_watermark->getFileName());
+		
 		list($ret, $thumbnail) = $thumbnail->refresh();
 		if ($ret) {
 			return $ret;
 		}
 		$this->assertEquals($filter, $thumbnail->getPostFilterOperations());
 	}
-
+	
 	public function testWatermarkItemCreatedPreferred() {
 		/* Create an item to watermark */
-	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
+		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $thumbnail) = $this->_createDerivative(
-		$item, $item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'crop|10,10,30,40;scale|200');
+		
+		list($ret, $thumbnail) = $this->_createDerivative($item, $item->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'crop|10,10,30,40;scale|200');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $resize) = $this->_createDerivative(
-		$item, $item->getId(), DERIVATIVE_TYPE_IMAGE_RESIZE, 'scale|500');
+		
+		list($ret, $resize) = $this->_createDerivative($item, $item->getId(), DERIVATIVE_TYPE_IMAGE_RESIZE, 'scale|500');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Apply the watermark */
-	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
-						  array(DERIVATIVE_TYPE_IMAGE_PREFERRED => true,
-							DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
-							DERIVATIVE_TYPE_IMAGE_RESIZE => true));
+		
+		/* Apply the watermark */
+		$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2', array(
+			DERIVATIVE_TYPE_IMAGE_PREFERRED => true,
+			DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
+			DERIVATIVE_TYPE_IMAGE_RESIZE => true
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Verify that we have a preferred now */
-	$filter =
-		sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
-			$this->_watermark->getFileName());
-		list($ret, $table) = GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
+		
+		/* Verify that we have a preferred now */
+		$filter = sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200', $this->_watermark->getFileName());
+		list($ret, $table) = GalleryCoreApi::fetchPreferredsByItemIds(array(
+			$item->getId()
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		if (!empty($table[$item->getId()])) {
 			$preferred = $table[$item->getId()];
 			$this->assertEquals($filter, $preferred->getPostFilterOperations());
-
-		/* Verify that the thumb/resizes are remapped to the preferred */
-		foreach (array($resize, $thumbnail) as $derivative) {
-			list($ret, $derivative) = $derivative->refresh();
-			if ($ret) {
-				return $ret;
+			
+			/* Verify that the thumb/resizes are remapped to the preferred */
+			foreach (array(
+				$resize,
+				$thumbnail
+			) as $derivative) {
+				list($ret, $derivative) = $derivative->refresh();
+				if ($ret) {
+					return $ret;
+				}
+				$this->assertEquals($preferred->getId(), $derivative->getDerivativeSourceId());
 			}
-			$this->assertEquals($preferred->getId(), $derivative->getDerivativeSourceId());
-		}
 		} else {
 			$this->assert(false, 'missing preferred');
 		}
 	}
-
+	
 	public function testWatermarkItemDeletePreferred() {
 		/* Create an item to watermark */
-	list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
+		list($ret, $item) = $this->_createRandomDataItem($this->_album->getId(), 'test/file');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $preferred) = $this->_createDerivative($item, $item->getId(),
-							   DERIVATIVE_TYPE_IMAGE_PREFERRED, '');
+		
+		list($ret, $preferred) = $this->_createDerivative($item, $item->getId(), DERIVATIVE_TYPE_IMAGE_PREFERRED, '');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $thumbnail) = $this->_createDerivative(
-		$item, $preferred->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL,
-		'crop|10,10,30,40;scale|200');
+		
+		list($ret, $thumbnail) = $this->_createDerivative($item, $preferred->getId(), DERIVATIVE_TYPE_IMAGE_THUMBNAIL, 'crop|10,10,30,40;scale|200');
 		if ($ret) {
 			return $ret;
 		}
-
-		list($ret, $resize) = $this->_createDerivative($item, $preferred->getId(),
-							DERIVATIVE_TYPE_IMAGE_RESIZE, 'scale|500');
+		
+		list($ret, $resize) = $this->_createDerivative($item, $preferred->getId(), DERIVATIVE_TYPE_IMAGE_RESIZE, 'scale|500');
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Apply the watermark */
-	$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2',
-						  array(DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
-							DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
-							DERIVATIVE_TYPE_IMAGE_RESIZE => true));
+		
+		/* Apply the watermark */
+		$ret = WatermarkHelper::watermarkItem($this->_watermark, $item, '1.1', '2.2', array(
+			DERIVATIVE_TYPE_IMAGE_PREFERRED => false,
+			DERIVATIVE_TYPE_IMAGE_THUMBNAIL => true,
+			DERIVATIVE_TYPE_IMAGE_RESIZE => true
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-	/* Verify that we have a preferred now */
-	$filter =
-		sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200',
-			$this->_watermark->getFileName());
-		list($ret, $table) = GalleryCoreApi::fetchPreferredsByItemIds(array($item->getId()));
+		
+		/* Verify that we have a preferred now */
+		$filter = sprintf('composite|plugins_data/modules/watermark/%s,test/file,0,0,manual,1.100,2.200', $this->_watermark->getFileName());
+		list($ret, $table) = GalleryCoreApi::fetchPreferredsByItemIds(array(
+			$item->getId()
+		));
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$this->assert(empty($table[$item->getId()]), 'preferred is not gone!');
-
-	/* Verify that the thumb/resizes are remapped to the source id */
-	foreach (array($resize, $thumbnail) as $derivative) {
-		list($ret, $derivative) = $derivative->refresh();
-		if ($ret) {
-			return $ret;
+		
+		/* Verify that the thumb/resizes are remapped to the source id */
+		foreach (array(
+			$resize,
+			$thumbnail
+		) as $derivative) {
+			list($ret, $derivative) = $derivative->refresh();
+			if ($ret) {
+				return $ret;
+			}
+			$this->assertEquals($item->getId(), $derivative->getDerivativeSourceId());
 		}
-		$this->assertEquals($item->getId(), $derivative->getDerivativeSourceId());
-	}
 	}
 }
