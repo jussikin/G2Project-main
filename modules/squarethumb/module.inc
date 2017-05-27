@@ -30,14 +30,14 @@
  */
 class SquareThumbModule extends GalleryModule {
 	/* and GalleryEventListener */
-
+	
 	public function __construct() {
 		$this->SquareThumbModule();
 	}
-
+	
 	public function SquareThumbModule() {
 		global $gallery;
-
+		
 		$this->setId('squarethumb');
 		$this->setName($gallery->i18n('Square Thumbnails'));
 		$this->setDescription($gallery->i18n('Build all thumbnails so they are square'));
@@ -45,10 +45,16 @@ class SquareThumbModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('display', $gallery->i18n('Display'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::upgrade
 	 */
@@ -57,8 +63,10 @@ class SquareThumbModule extends GalleryModule {
 		if ($ret) {
 			return $ret;
 		}
-		foreach (array('mode' => 'crop', 'color' => '000000')
-		as $key => $value) {
+		foreach (array(
+			'mode' => 'crop',
+			'color' => '000000'
+		) as $key => $value) {
 			if (!isset($params[$key])) {
 				$ret = $this->setParameter($key, $value);
 				if ($ret) {
@@ -66,106 +74,119 @@ class SquareThumbModule extends GalleryModule {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryEventListener',
-			'SquareThumbModule',
-			'SquareThumbModule',
-			'modules/squarethumb/module.inc',
-			'squarethumb',
-			array('Gallery::DeactivatePlugin')
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryEventListener', 'SquareThumbModule', 'SquareThumbModule', 'modules/squarethumb/module.inc', 'squarethumb', array(
+			'Gallery::DeactivatePlugin'
+		));
 		if ($ret) {
 			return $ret;
 		}
-
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'GalleryToolkit',
-			'SquareThumbToolkit',
-			'SquareThumb',
-			'modules/squarethumb/classes/SquareThumbToolkit.class',
-			'squarethumb',
-			null
-		);
+		
+		$ret = GalleryCoreApi::registerFactoryImplementation('GalleryToolkit', 'SquareThumbToolkit', 'SquareThumb', 'modules/squarethumb/classes/SquareThumbToolkit.class', 'squarethumb', null);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null,
-			 array(array('name' => $this->translate('Square Thumbnails'),
-				 'view' => 'squarethumb.SquareThumbSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Square Thumbnails'),
+					'view' => 'squarethumb.SquareThumbSiteAdmin'
+				)
+			)
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::activate
 	 */
 	public function activate($postActivationEvent = true) {
 		global $gallery;
-
-		list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation(
-			'image/x-portable-pixmap',
-			'convert-to-image/jpeg'
-		);
+		
+		list($ret, $toolkit) = GalleryCoreApi::getToolkitByOperation('image/x-portable-pixmap', 'convert-to-image/jpeg');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		list($ret, $mimeTypes) = $this->_getSupportedMimeTypes(isset($toolkit));
 		if ($ret) {
-			return array($ret, null);
-		}
-
-	/* Register toolkit operation using high priority */
-		if (!empty($mimeTypes)) {
-			$ret = GalleryCoreApi::registerToolkitOperation(
-				'SquareThumb',
-				$mimeTypes,
-				'thumbnail',
-				array(array('type' => 'int', 'description' => $gallery->i18n('target size')),
-				array('type' => 'int', 'description' => $gallery->i18n('(optional)'))),
-				$gallery->i18n('Create square thumbnail'),
-				'',
-				10
+			return array(
+				$ret,
+				null
 			);
+		}
+		
+		/* Register toolkit operation using high priority */
+		if (!empty($mimeTypes)) {
+			$ret = GalleryCoreApi::registerToolkitOperation('SquareThumb', $mimeTypes, 'thumbnail', array(
+				array(
+					'type' => 'int',
+					'description' => $gallery->i18n('target size')
+				),
+				array(
+					'type' => 'int',
+					'description' => $gallery->i18n('(optional)')
+				)
+			), $gallery->i18n('Create square thumbnail'), '', 10);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} else {
 			/* Can't activate unless there's a toolkit to leech off of */
-			return array(null,
-			 array('view' => 'core.SiteAdmin',
-				   'subView' => 'squarethumb.CantActivate'));
+			return array(
+				null,
+				array(
+					'view' => 'core.SiteAdmin',
+					'subView' => 'squarethumb.CantActivate'
+				)
+			);
 		}
-
+		
 		if (!isset($toolkit)) {
 			/* Make sure we're in crop mode, if toolkit support for fit mode gets deactivated */
 			$ret = $this->setParameter('mode', 'crop');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
+		
 		list($ret, $redirect) = parent::activate($postActivationEvent);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $redirect);
+		
+		return array(
+			null,
+			$redirect
+		);
 	}
-
+	
 	/**
 	 * Find out what mime-types currently have toolkit support for:
 	 *    thumbnail, dimensions and crop [or composite]
@@ -178,27 +199,38 @@ class SquareThumbModule extends GalleryModule {
 	public function _getSupportedMimeTypes($useComposite) {
 		list($ret, $thumbnail) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		list($ret, $crop) = GalleryCoreApi::getToolkitOperationMimeTypes('crop');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if ($useComposite) {
 			list($ret, $composite) = GalleryCoreApi::getToolkitOperationMimeTypes('composite');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} else {
 			$composite = array();
 		}
-
+		
 		$mimeTypes = array();
-		foreach (array_intersect(array_keys(array_merge($crop, $composite)), array_keys($thumbnail))
- as $mimeType) {
+		foreach (array_intersect(array_keys(array_merge($crop, $composite)), array_keys($thumbnail)) as $mimeType) {
 			list($ret, $properties) = GalleryCoreApi::getToolkitProperties($mimeType);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			foreach ($properties as $tmp) {
 				if ($tmp['name'] == 'dimensions') {
@@ -207,10 +239,13 @@ class SquareThumbModule extends GalleryModule {
 				}
 			}
 		}
-
-		return array(null, $mimeTypes);
+		
+		return array(
+			null,
+			$mimeTypes
+		);
 	}
-
+	
 	/**
 	 * Handler for Gallery::DeactivatePlugin event.
 	 *
@@ -218,31 +253,38 @@ class SquareThumbModule extends GalleryModule {
 	 */
 	public function handleEvent($event) {
 		/*
-	 * We're going to deactivate this plugin which will generate another
-	 * Gallery::DeactivatePlugin event, so make sure that we don't handle
-	 * *that* event and get into an infinite loop!
-	 */
+	     * We're going to deactivate this plugin which will generate another
+	     * Gallery::DeactivatePlugin event, so make sure that we don't handle
+	     * *that* event and get into an infinite loop!
+	     */
 		$data = $event->getData();
-		if ($event->getEventName() == 'Gallery::DeactivatePlugin' &&
-		$data['pluginId'] != 'squarethumb' &&
-		$data['pluginType'] == 'module') {
+		if ($event->getEventName() == 'Gallery::DeactivatePlugin' && $data['pluginId'] != 'squarethumb' && $data['pluginType'] == 'module') {
 			list($ret, $isActive) = $this->isActive();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
+			
 			if ($isActive) {
 				/* Reactivate may fail if toolkit support no longer found. */
 				list($ret, $redirect) = $this->reactivate();
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
 		}
-
-		return array(null, null);
+		
+		return array(
+			null,
+			null
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getConfigurationView
 	 */

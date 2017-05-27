@@ -32,9 +32,17 @@ class CantActivateView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, array('body' => 'modules/squarethumb/templates/CantActivate.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/squarethumb/templates/CantActivate.tpl'
+			)
+		);
 	}
 }
