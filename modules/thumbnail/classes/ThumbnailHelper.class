@@ -40,16 +40,16 @@ class ThumbnailHelper {
 	 * @return array GalleryStatus a status code
 	 *               array of itemId=>fileName
 	 */
-	public static function fetchThumbnails($listAll=false, $count=null, $offset=null, $substring=null) {
+	public static function fetchThumbnails($listAll = false, $count = null, $offset = null, $substring = null) {
 		global $gallery;
-
+		
 		$where = $data = array();
 		$query = '
 	SELECT [ThumbnailImage::id], [GalleryFileSystemEntity::pathComponent]
 	FROM [ThumbnailImage], [GalleryFileSystemEntity]
 	';
 		$where[] = '[GalleryFileSystemEntity::id] = [ThumbnailImage::id]';
-
+		
 		if (!$listAll) {
 			$where[] = '[ThumbnailImage::itemMimeTypes] IS NOT NULL';
 		}
@@ -60,23 +60,33 @@ class ThumbnailHelper {
 		if (!empty($where)) {
 			$query .= ' WHERE ' . implode(' AND ', $where);
 		}
-
+		
 		$query .= ' ORDER BY [GalleryFileSystemEntity::pathComponent] ASC';
-
-		list($ret, $searchResults) = $gallery->search($query, $data,
-		array('limit' => array('count' => (int)$count, 'offset' => (int)$offset)));
+		
+		list($ret, $searchResults) = $gallery->search($query, $data, array(
+			'limit' => array(
+				'count' => (int) $count,
+				'offset' => (int) $offset
+			)
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$items = array();
 		while ($result = $searchResults->nextResult()) {
-			$items[(int)$result[0]] = $result[1];
+			$items[(int) $result[0]] = $result[1];
 		}
-
-		return array(null, $items);
+		
+		return array(
+			null,
+			$items
+		);
 	}
-
+	
 	/**
 	 * Fetch ThumbnailImage for given item
 	 *
@@ -86,27 +96,35 @@ class ThumbnailHelper {
 	 */
 	public static function fetchThumbnail($itemId) {
 		global $gallery;
-
-		list($ret, $searchResults) = $gallery->search(
-		'SELECT [ThumbnailImage::id] FROM [ThumbnailImage], [ChildEntity]
-	     WHERE [ThumbnailImage::id] = [ChildEntity::id] AND [ChildEntity::parentId] = ?',
-		array((int)$itemId));
+		
+		list($ret, $searchResults) = $gallery->search('SELECT [ThumbnailImage::id] FROM [ThumbnailImage], [ChildEntity]
+	     WHERE [ThumbnailImage::id] = [ChildEntity::id] AND [ChildEntity::parentId] = ?', array(
+			(int) $itemId
+		));
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$thumbnailImage = null;
 		if ($result = $searchResults->nextResult()) {
-			list($ret, $thumbnailImage) =
-		GalleryCoreApi::loadEntitiesById((int)$result[0], 'ThumbnailImage');
+			list($ret, $thumbnailImage) = GalleryCoreApi::loadEntitiesById((int) $result[0], 'ThumbnailImage');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		return array(null, $thumbnailImage);
+		
+		return array(
+			null,
+			$thumbnailImage
+		);
 	}
-
+	
 	/**
 	 * Get supported mime types
 	 *
@@ -115,22 +133,27 @@ class ThumbnailHelper {
 	 */
 	public static function fetchMimeTypeMap() {
 		global $gallery;
-		list($ret, $searchResults) = $gallery->search(
-		'SELECT [ThumbnailImage::id], [ThumbnailImage::itemMimeTypes]
+		list($ret, $searchResults) = $gallery->search('SELECT [ThumbnailImage::id], [ThumbnailImage::itemMimeTypes]
 	     FROM [ThumbnailImage] WHERE [ThumbnailImage::itemMimeTypes] IS NOT NULL');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$data = array();
 		while ($result = $searchResults->nextResult()) {
 			foreach (explode('|', $result[1]) as $mimeType) {
-				$data[$mimeType] = (int)$result[0];
+				$data[$mimeType] = (int) $result[0];
 			}
 		}
-
-		return array(null, $data);
+		
+		return array(
+			null,
+			$data
+		);
 	}
-
+	
 	/**
 	 * Get information about thumbnail support from other toolkits
 	 *
@@ -141,18 +164,30 @@ class ThumbnailHelper {
 	 *               :by-mimeType: null
 	 *                or by-toolkit: array of mimeType conflicts
 	 */
-	public static function fetchToolkitSupport($byMimeType=true) {
+	public static function fetchToolkitSupport($byMimeType = true) {
 		list($ret, $tList) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
 		list($ret, $cList) = GalleryCoreApi::getToolkitOperationMimeTypes('convert-to-image/jpeg');
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
 		$data = array_merge_recursive($tList, $cList);
 		if ($byMimeType) {
-			return array(null, $data, null);
+			return array(
+				null,
+				$data,
+				null
+			);
 		}
 		$badMime = array();
 		$toolkitMime = array();
@@ -166,10 +201,14 @@ class ThumbnailHelper {
 				$badMime[] = $mime;
 			}
 		}
-
-		return array(null, $toolkitMime, $badMime);
+		
+		return array(
+			null,
+			$toolkitMime,
+			$badMime
+		);
 	}
-
+	
 	/**
 	 * Register toolkit operation for given mime type(s).
 	 * @param mixed $mimeTypes array or single string
@@ -178,26 +217,32 @@ class ThumbnailHelper {
 	public static function registerToolkitOperation($mimeTypes) {
 		global $gallery;
 		if (!is_array($mimeTypes)) {
-			$mimeTypes = array($mimeTypes);
+			$mimeTypes = array(
+				$mimeTypes
+			);
 		}
-
-	/* Returns image/jpeg, but register as null mimeType to avoid operation CRC mismatch */
-	$ret = GalleryCoreApi::registerToolkitOperation(
-		'Thumbnail', $mimeTypes, 'thumbnail',
-		array(array('type' => 'int', 'description' =>
-			$gallery->i18n(array('text' => 'target width (# pixels or #% of full size)',
-						 'cFormat' => false))),
-			array('type' => 'int', 'description' =>
-			$gallery->i18n('(optional) target height, defaults to same as width'))),
-		$gallery->i18n('Scale the image to the target size, maintain aspect ratio'),
-		null, 50);
+		
+		/* Returns image/jpeg, but register as null mimeType to avoid operation CRC mismatch */
+		$ret = GalleryCoreApi::registerToolkitOperation('Thumbnail', $mimeTypes, 'thumbnail', array(
+			array(
+				'type' => 'int',
+				'description' => $gallery->i18n(array(
+					'text' => 'target width (# pixels or #% of full size)',
+					'cFormat' => false
+				))
+			),
+			array(
+				'type' => 'int',
+				'description' => $gallery->i18n('(optional) target height, defaults to same as width')
+			)
+		), $gallery->i18n('Scale the image to the target size, maintain aspect ratio'), null, 50);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Add new ThumbnailImage
 	 *
@@ -212,32 +257,45 @@ class ThumbnailHelper {
 	 * @return array GalleryStatus a status code,
 	 *               int id of newly created object
 	 */
-	public static function addItem($mimeType, $parentId,
-			 $filename, $tmpfile, $fileMimeType, $knownSize=array(), $item=null) {
+	public static function addItem($mimeType, $parentId, $filename, $tmpfile, $fileMimeType, $knownSize = array(), $item = null) {
 		/* Get the mime type. */
-	list($ret, $fileMimeType) = GalleryCoreApi::getMimeType($filename, $fileMimeType);
+		list($ret, $fileMimeType) = GalleryCoreApi::getMimeType($filename, $fileMimeType);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if ($fileMimeType != 'image/jpeg') {
-			return array(GalleryCoreApi::error(ERROR_UNSUPPORTED_FILE_TYPE), null);
+			return array(
+				GalleryCoreApi::error(ERROR_UNSUPPORTED_FILE_TYPE),
+				null
+			);
 		}
-
+		
 		if (!isset($item)) {
-			list($ret, $item) =
-		GalleryCoreApi::newFactoryInstance('GalleryEntity', 'ThumbnailImage');
+			list($ret, $item) = GalleryCoreApi::newFactoryInstance('GalleryEntity', 'ThumbnailImage');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			if (!isset($item)) {
-				return array(GalleryCoreApi::error(ERROR_MISSING_OBJECT), null);
+				return array(
+					GalleryCoreApi::error(ERROR_MISSING_OBJECT),
+					null
+				);
 			}
 		}
-
+		
 		$ret = $item->create($tmpfile, $fileMimeType, $filename, $parentId);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (isset($mimeType)) {
 			$item->setItemMimeTypes($mimeType);
@@ -245,36 +303,49 @@ class ThumbnailHelper {
 		if (isset($parentId)) {
 			$item->setParentId($parentId);
 		}
-		if ($item->getWidth() == 0 && $item->getHeight() == 0
-		&& isset($knownSize['width']) && isset($knownSize['height'])) {
+		if ($item->getWidth() == 0 && $item->getHeight() == 0 && isset($knownSize['width']) && isset($knownSize['height'])) {
 			$item->setWidth($knownSize['width']);
 			$item->setHeight($knownSize['height']);
 		}
 		$ret = $item->save();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		list($ret, $adminGroupId) =
-		GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
+		
+		list($ret, $adminGroupId) = GalleryCoreApi::getPluginParameter('module', 'core', 'id.adminGroup');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		$ret = GalleryCoreApi::addGroupPermission($item->getId(), $adminGroupId, 'core.viewSource');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		if (isset($mimeType)) {
 			$ret = self::registerToolkitOperation($mimeType);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		return array(null, $item->getId());
+		
+		return array(
+			null,
+			$item->getId()
+		);
 	}
-
+	
 	/**
 	 * Add or delete a mime type from an existing ThumbnailImage
 	 *
@@ -283,7 +354,7 @@ class ThumbnailHelper {
 	 * @param boolean $isAdd (optional) true to add mime type, false to delete
 	 * @return GalleryStatus a status code
 	 */
-	public static function updateItem($itemId, $mimeType, $isAdd=true) {
+	public static function updateItem($itemId, $mimeType, $isAdd = true) {
 		list($ret, $item) = GalleryCoreApi::loadEntitiesById($itemId, 'ThumbnailImage');
 		if ($ret) {
 			return $ret;
@@ -308,7 +379,7 @@ class ThumbnailHelper {
 		$ret = $item->save();
 		if ($ret) {
 			GalleryCoreApi::releaseLocks($lockId);
-
+			
 			return $ret;
 		}
 		$ret = GalleryCoreApi::releaseLocks($lockId);
@@ -321,16 +392,17 @@ class ThumbnailHelper {
 				return $ret;
 			}
 		} else {
-			$ret = GalleryCoreApi::unregisterToolkitOperation(
-			'Thumbnail', 'thumbnail', array($mimeType));
+			$ret = GalleryCoreApi::unregisterToolkitOperation('Thumbnail', 'thumbnail', array(
+				$mimeType
+			));
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Create or update thumbnail derivative to be sourced from a ThumbnailImage
 	 *
@@ -339,7 +411,9 @@ class ThumbnailHelper {
 	 * @return GalleryStatus a status code
 	 */
 	public static function applyThumbnail(&$item, $thumbnailId) {
-		list($ret, $derivative) = GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
+		list($ret, $derivative) = GalleryCoreApi::fetchThumbnailsByItemIds(array(
+			$item->getId()
+		));
 		if ($ret) {
 			return $ret;
 		}
@@ -349,13 +423,10 @@ class ThumbnailHelper {
 			if ($ret) {
 				return $ret;
 			}
-		/* Make sure operations contains only thumbnail and composite */
-		$derivative->setDerivativeOperations(
-		rtrim(preg_replace('/(^|;)((?!thumbnail\||composite\|).*?(;|$))+/', '$1',
-				   $derivative->getDerivativeOperations()), ';'));
+			/* Make sure operations contains only thumbnail and composite */
+			$derivative->setDerivativeOperations(rtrim(preg_replace('/(^|;)((?!thumbnail\||composite\|).*?(;|$))+/', '$1', $derivative->getDerivativeOperations()), ';'));
 		} else {
-			list($ret, $derivative) =
-		GalleryCoreApi::newFactoryInstanceByHint('GalleryDerivative', 'ThumbnailImage');
+			list($ret, $derivative) = GalleryCoreApi::newFactoryInstanceByHint('GalleryDerivative', 'ThumbnailImage');
 			if ($ret) {
 				return $ret;
 			}
@@ -366,8 +437,7 @@ class ThumbnailHelper {
 			if ($ret) {
 				return $ret;
 			}
-			list($ret, $prefs) =
-		GalleryCoreApi::fetchDerivativePreferencesForItem($item->getParentId());
+			list($ret, $prefs) = GalleryCoreApi::fetchDerivativePreferencesForItem($item->getParentId());
 			if ($ret) {
 				return $ret;
 			}
@@ -380,21 +450,19 @@ class ThumbnailHelper {
 			}
 			$derivative->setDerivativeOperations($op);
 		}
-
+		
 		list($ret, $mimeList) = GalleryCoreApi::getToolkitOperationMimeTypes('thumbnail');
 		if ($ret) {
 			return $ret;
 		}
 		if (!isset($mimeList['image/jpeg'])) {
 			/*
-	     * No toolkit for jpeg thumbnails.
-	     * Omit thumbnail operation to just use custom thumbnail in its original size.
-	     */
-		$derivative->setDerivativeOperations(
-		rtrim(preg_replace('/(^|;)thumbnail\|.*?(;|$)/', '$1',
-				   $derivative->getDerivativeOperations()), ';'));
+	         * No toolkit for jpeg thumbnails.
+	         * Omit thumbnail operation to just use custom thumbnail in its original size.
+	         */
+			$derivative->setDerivativeOperations(rtrim(preg_replace('/(^|;)thumbnail\|.*?(;|$)/', '$1', $derivative->getDerivativeOperations()), ';'));
 		}
-
+		
 		$derivative->setDerivativeSourceId($thumbnailId);
 		$derivative->setMimeType('image/jpeg');
 		$ret = $derivative->save();
@@ -402,7 +470,7 @@ class ThumbnailHelper {
 			if (isset($lockId)) {
 				GalleryCoreApi::releaseLocks($lockId);
 			}
-
+			
 			return $ret;
 		}
 		if (isset($lockId)) {
@@ -411,10 +479,10 @@ class ThumbnailHelper {
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Return mime types and applicable file extensions
 	 *
@@ -423,7 +491,7 @@ class ThumbnailHelper {
 	 */
 	public static function getMimeTypeMap() {
 		global $gallery;
-
+		
 		$query = '
 	    SELECT [GalleryMimeTypeMap::mimeType], [GalleryMimeTypeMap::extension]
 	    FROM [GalleryMimeTypeMap]
@@ -431,16 +499,22 @@ class ThumbnailHelper {
 	';
 		list($ret, $searchResults) = $gallery->search($query);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		while ($result = $searchResults->nextResult()) {
 			$typeMap[$result[0]][] = $result[1];
 		}
-
+		
 		foreach (array_keys($typeMap) as $mimeType) {
 			$typeMap[$mimeType] = implode(' ', $typeMap[$mimeType]);
 		}
-
-		return array(null, $typeMap);
+		
+		return array(
+			null,
+			$typeMap
+		);
 	}
 }
