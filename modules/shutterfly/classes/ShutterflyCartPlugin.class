@@ -31,28 +31,38 @@ class ShutterflyCartPlugin /* implements CartPluginInterface_1_0 and CartPluginI
 	 * @see CartPluginInterface_1_0::getSupportedItemTypes
 	 */
 	public function getSupportedItemTypes() {
-		return array('GalleryPhotoItem');
+		return array(
+			'GalleryPhotoItem'
+		);
 	}
-
+	
 	/**
 	 * @see CartPluginInterface_1_1::getRequiredPermissions
 	 */
 	public function getRequiredPermissions() {
-		return array('shutterfly.print');
+		return array(
+			'shutterfly.print'
+		);
 	}
-
+	
 	/**
 	 * @see CartPluginInterface_1_0::getActionDisplayName
 	 */
 	public function getActionDisplayName() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'shutterfly');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Print with Shutterfly'));
+		
+		return array(
+			null,
+			$module->translate('Print with Shutterfly')
+		);
 	}
-
+	
 	/**
 	 * @see CartPluginInterface_1_0::fulfillCart
 	 */
@@ -60,12 +70,21 @@ class ShutterflyCartPlugin /* implements CartPluginInterface_1_0 and CartPluginI
 		global $gallery;
 		$session =& $gallery->getSession();
 		$session->put('shutterfly.cart', $cartItemIds);
-
+		
 		$urlGenerator =& $gallery->getUrlGenerator();
-		$returnUrl = $urlGenerator->generateUrl(
-		array('view' => 'cart.ViewCart'), array('forceFullUrl' => true));
-
-		return array(null, array('view' => 'shutterfly.PrintPhotos', 'returnUrl' => $returnUrl,
-				 'authToken' => $session->getAuthToken()));
+		$returnUrl = $urlGenerator->generateUrl(array(
+			'view' => 'cart.ViewCart'
+		), array(
+			'forceFullUrl' => true
+		));
+		
+		return array(
+			null,
+			array(
+				'view' => 'shutterfly.PrintPhotos',
+				'returnUrl' => $returnUrl,
+				'authToken' => $session->getAuthToken()
+			)
+		);
 	}
 }
