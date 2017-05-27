@@ -34,24 +34,40 @@ class ItemEditThumbOffset extends ItemEditPlugin {
 		$error = array();
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'thumbpage');
 		if ($ret) {
-			return array($ret, null, null, null);
+			return array(
+				$ret,
+				null,
+				null,
+				null
+			);
 		}
-
+		
 		if (isset($form['action']['save'])) {
 			list($ret, $duration) = $this->_getDuration($item);
 			if ($ret) {
-				return array($ret, null, null, null);
+				return array(
+					$ret,
+					null,
+					null,
+					null
+				);
 			}
 			if ($form['offset'] > $duration || $form['offset'] < 0) {
 				$error[] = 'form[error][offset][invalid]';
 			}
 		}
-
+		
 		if (isset($form['action']['save']) && empty($error)) {
-			list($ret, $thumbnails) =
-			GalleryCoreApi::fetchThumbnailsByItemIds(array($item->getId()));
+			list($ret, $thumbnails) = GalleryCoreApi::fetchThumbnailsByItemIds(array(
+				$item->getId()
+			));
 			if ($ret) {
-				return array($ret, null, null, null);
+				return array(
+					$ret,
+					null,
+					null,
+					null
+				);
 			}
 			$thumb = array_shift($thumbnails);
 			$operations = $thumb->getDerivativeOperations();
@@ -66,24 +82,45 @@ class ItemEditThumbOffset extends ItemEditPlugin {
 			}
 			list($ret, $lockId) = GalleryCoreApi::acquireWriteLock($thumb->getId());
 			if ($ret) {
-				return array($ret, null, null, null);
+				return array(
+					$ret,
+					null,
+					null,
+					null
+				);
 			}
 			$thumb->setDerivativeOperations($operations);
 			$ret = $thumb->save();
 			if ($ret) {
-				return array($ret, null, null, null);
+				return array(
+					$ret,
+					null,
+					null,
+					null
+				);
 			}
 			$ret = GalleryCoreApi::releaseLocks($lockId);
 			if ($ret) {
-				return array($ret, null, null, null);
+				return array(
+					$ret,
+					null,
+					null,
+					null
+				);
 			}
-
+			
 			$status = $module->translate('Changes saved successfully');
-		} /* else $form['action']['reset']) */
-
-		return array(null, $error, $status, false);
+		}
+		/* else $form['action']['reset']) */
+		
+		return array(
+			null,
+			$error,
+			$status,
+			false
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditPlugin::loadTemplate
 	 */
@@ -91,54 +128,62 @@ class ItemEditThumbOffset extends ItemEditPlugin {
 		if ($form['formName'] != 'ItemEditThumbOffset') {
 			$form['formName'] = 'ItemEditThumbOffset';
 			$form['offset'] = '0';
-			if (preg_match(
-				'/(^|;)select-offset\|([0-9.]+)/',
-				$thumbnail->getDerivativeOperations(),
-				$regs
-			)) {
+			if (preg_match('/(^|;)select-offset\|([0-9.]+)/', $thumbnail->getDerivativeOperations(), $regs)) {
 				$form['offset'] = $regs[2];
 			}
 		}
 		list($ret, $duration) = $this->_getDuration($item);
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
 		$form['duration'] = sprintf('%.3f', $duration);
 		$template->setVariable('controller', 'thumbpage.ItemEditThumbOffset');
-
-		return array(null,
-			 'modules/thumbpage/templates/Offset.tpl', 'modules_thumbpage');
+		
+		return array(
+			null,
+			'modules/thumbpage/templates/Offset.tpl',
+			'modules_thumbpage'
+		);
 	}
-
+	
 	/**
 	 * @see ItemEditPlugin::isSupported
 	 */
 	public function isSupported($item, $thumbnail) {
 		if (GalleryUtilities::isA($item, 'GalleryDataItem') && isset($thumbnail)) {
-			list($ret, $mimeTypes) =
-			GalleryCoreApi::getPluginParameter('module', 'thumbpage', 'movieTypes');
+			list($ret, $mimeTypes) = GalleryCoreApi::getPluginParameter('module', 'thumbpage', 'movieTypes');
 			if (!$ret) {
 				$list = explode('|', $mimeTypes);
-
+				
 				return in_array($item->getMimeType(), $list);
 			}
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * @see ItemEditPlugin::getTitle
 	 */
 	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'thumbpage');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Thumbnail'));
+		
+		return array(
+			null,
+			$module->translate('Thumbnail')
+		);
 	}
-
+	
 	/**
 	 * Get the movie duration
 	 * @param GalleryDataItem $item
@@ -149,25 +194,35 @@ class ItemEditThumbOffset extends ItemEditPlugin {
 	public function _getDuration(&$item) {
 		list($ret, $path) = $item->fetchPath();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		list($ret, $toolkit) =
-		GalleryCoreApi::getToolkitByProperty($item->getMimeType(), 'dimensions-and-duration');
+		list($ret, $toolkit) = GalleryCoreApi::getToolkitByProperty($item->getMimeType(), 'dimensions-and-duration');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
 		if (!isset($toolkit)) {
-			return array(GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE), null);
+			return array(
+				GalleryCoreApi::error(ERROR_TOOLKIT_FAILURE),
+				null
+			);
 		}
-		list($ret, $result) = $toolkit->getProperty(
-			$item->getMimeType(),
-			'dimensions-and-duration',
-			$path
-		);
+		list($ret, $result) = $toolkit->getProperty($item->getMimeType(), 'dimensions-and-duration', $path);
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $result[2]);
+		
+		return array(
+			null,
+			$result[2]
+		);
 	}
 }
