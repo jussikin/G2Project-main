@@ -32,7 +32,7 @@ class WebDavWorksView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */

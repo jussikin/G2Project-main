@@ -34,19 +34,30 @@ class WebDavSiteAdminView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$WebDavSiteAdmin = array();
-
+		
 		list($ret, $WebDavSiteAdmin['code']) = WebDavHelper::checkConfiguration();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Render HTML body */
+		
+		/* Render HTML body */
 		$template->setVariable('WebDavSiteAdmin', $WebDavSiteAdmin);
-
-		return array(null, array('body' => 'modules/webdav/templates/WebDavSiteAdmin.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/webdav/templates/WebDavSiteAdmin.tpl'
+			)
+		);
 	}
 }

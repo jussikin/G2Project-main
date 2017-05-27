@@ -27,31 +27,32 @@
 class WebDavCallbacks {
 	public function callback($params, $smarty, $callback, $userId = null) {
 		global $gallery;
-
+		
 		switch ($callback) {
 			case 'LoadMountLink':
 				GalleryCoreApi::requireOnce('modules/webdav/classes/WebDavHelper.class');
-
-				list($ret, $hasPermission) =
-				GalleryCoreApi::hasItemPermission($params['itemId'], 'core.view');
+				
+				list($ret, $hasPermission) = GalleryCoreApi::hasItemPermission($params['itemId'], 'core.view');
 				if ($ret) {
 					return $ret;
 				}
-
+				
 				$link = array();
 				if ($hasPermission) {
 					$link = WebDavHelper::getMountLink($params['itemId']);
 				}
-
+				
 				$block = $smarty->getTemplateVars('block');
 				$smarty->assignByRef('block', $block);
-		
-				$block['webdav']['LoadMountLink'] =
-				array('link' => $link, 'hasPermission' => $hasPermission);
-
-		        return null;
+				
+				$block['webdav']['LoadMountLink'] = array(
+					'link' => $link,
+					'hasPermission' => $hasPermission
+				);
+				
+				return null;
 		}
-
+		
 		return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 	}
 }
