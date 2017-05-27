@@ -35,37 +35,36 @@ class SlideshowMediaRssView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
 	public function isAllowedInEmbedOnly() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::loadTemplate
 	 */
 	public function renderImmediate($status, $error) {
 		global $gallery;
 		$phpVm = $gallery->getPhpVm();
-
+		
 		$SlideShowMediaRss = array();
-
+		
 		$itemId = $prevOffset = $nextOffset = $startId = null;
-
-		list($itemListString, $startId, $offset) =
-		GalleryUtilities::getRequestVariables('itemList', 'startId', 'offset');
+		
+		list($itemListString, $startId, $offset) = GalleryUtilities::getRequestVariables('itemList', 'startId', 'offset');
 		if (isset($startId)) {
-			$startId = (int)$startId;
+			$startId = (int) $startId;
 		}
 		if (isset($offset)) {
-			$offset = (int)$offset;
+			$offset = (int) $offset;
 		}
-
+		
 		if (!empty($itemListString)) {
 			foreach (explode('|', $itemListString) as $id) {
-				$itemIds[] = (int)$id;
+				$itemIds[] = (int) $id;
 			}
 			list($ret, $items, $start) = SlideshowHelper::buildItemsSlideshow($itemIds);
 			if ($ret) {
@@ -76,23 +75,26 @@ class SlideshowMediaRssView extends GalleryView {
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			$itemId = $item->getId();
-
-			list($ret, $items, $start, $prevOffset, $nextOffset) =
-			SlideshowHelper::buildAlbumSlideshow($item, $startId, $offset);
+			
+			list($ret, $items, $start, $prevOffset, $nextOffset) = SlideshowHelper::buildAlbumSlideshow($item, $startId, $offset);
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		if (!$phpVm->headers_sent()) {
 			$phpVm->header('Content-Type: text/xml; charset=UTF-8');
 		}
 		$template = new GalleryTemplate(GalleryCoreApi::getCodeBasePath());
-		$template->setVariable('SlideshowMediaRss', array('items' => $items,
-		'itemId' => $itemId, 'prevOffset' => $prevOffset, 'nextOffset' => $nextOffset));
-
+		$template->setVariable('SlideshowMediaRss', array(
+			'items' => $items,
+			'itemId' => $itemId,
+			'prevOffset' => $prevOffset,
+			'nextOffset' => $nextOffset
+		));
+		
 		return $template->display('modules/slideshow/templates/SlideshowMediaRss.tpl');
 	}
 }

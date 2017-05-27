@@ -37,75 +37,89 @@ class AdminSlideshowController extends GalleryController {
 	public function _setPicLensHelper($picLensHelper = null) {
 		$this->_picLensHelper = $picLensHelper;
 	}
-
+	
 	/**
 	 * @see GalleryController::handleRequest
 	 */
 	public function handleRequest($form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Allow our helper to be injected as a dependency for ease in testing */
+		
+		/* Allow our helper to be injected as a dependency for ease in testing */
 		$picLensHelper = isset($this->_picLensHelper) ? $this->_picLensHelper : new PicLensHelper();
 		$error = $status = array();
 		if (isset($form['action']['install'])) {
 			list($ret, $version) = $picLensHelper->install();
 			if ($ret) {
 				if ($ret->getErrorCode() & ERROR_STORAGE_FAILURE) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
-		/* It should be safe to swallow non storage failures. */
+				/* It should be safe to swallow non storage failures. */
 				$status['downloadFailed'] = 1;
 			} else {
 				$status['installed'] = $version;
-				$ret = GalleryCoreApi::setPluginParameter(
-					'module',
-					'slideshow',
-					'piclens.version',
-					$version
-				);
+				$ret = GalleryCoreApi::setPluginParameter('module', 'slideshow', 'piclens.version', $version);
 				if ($ret) {
-					return array($ret, null);
+					return array(
+						$ret,
+						null
+					);
 				}
 			}
-
-			$ret = GalleryCoreApi::removePluginParameter(
-				'module',
-				'slideshow',
-				'piclens.uninstalled'
-			);
+			
+			$ret = GalleryCoreApi::removePluginParameter('module', 'slideshow', 'piclens.uninstalled');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} elseif (isset($form['action']['uninstall'])) {
 			$ret = $picLensHelper->uninstall();
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 			$status['uninstalled'] = 1;
-
+			
 			$ret = GalleryCoreApi::removePluginParameter('module', 'slideshow', 'piclens.version');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
-
-			$ret = GalleryCoreApi::setPluginParameter(
-				'module',
-				'slideshow',
-				'piclens.uninstalled',
-				1
-			);
+			
+			$ret = GalleryCoreApi::setPluginParameter('module', 'slideshow', 'piclens.uninstalled', 1);
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		}
-
-		return array(null, array('redirect' => array('view' => 'core.SiteAdmin',
-							 'subView' => 'slideshow.AdminSlideshow'),
-				 'status' => $status,
-				 'error' => $error));
+		
+		return array(
+			null,
+			array(
+				'redirect' => array(
+					'view' => 'core.SiteAdmin',
+					'subView' => 'slideshow.AdminSlideshow'
+				),
+				'status' => $status,
+				'error' => $error
+			)
+		);
 	}
 }
 
@@ -119,40 +133,54 @@ class AdminSlideshowView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-	/* Load our default values if we didn't just come from this form. */
+		
+		/* Load our default values if we didn't just come from this form. */
 		if ($form['formName'] != 'AdminSlideshow') {
 			$form['formName'] = 'AdminSlideshow';
 		}
-
-		list($ret, $current) =
-		GalleryCoreApi::getPluginParameter('module', 'slideshow', 'piclens.version');
+		
+		list($ret, $current) = GalleryCoreApi::getPluginParameter('module', 'slideshow', 'piclens.version');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		$picLensHelper = new PicLensHelper();
 		$info = $picLensHelper->getLatestPicLensInfo();
 		if (empty($info)) {
 			$update = null;
-			$ret = GalleryCoreApi::addEventLogEntry(
-				'slideshow',
-				'Unable to get latest piclens info',
-				''
-			);
+			$ret = GalleryCoreApi::addEventLogEntry('slideshow', 'Unable to get latest piclens info', '');
 			if ($ret) {
-				return array($ret, null);
+				return array(
+					$ret,
+					null
+				);
 			}
 		} else {
 			$update = version_compare($info['version'], $current, '>') ? $info['version'] : null;
 		}
-
-		$AdminSlideshow = array('piclens' => array('current' => $current, 'update' => $update));
+		
+		$AdminSlideshow = array(
+			'piclens' => array(
+				'current' => $current,
+				'update' => $update
+			)
+		);
 		$template->setVariable('AdminSlideshow', $AdminSlideshow);
 		$template->setVariable('controller', 'slideshow.AdminSlideshow');
-
-		return array(null, array('body' => 'modules/slideshow/templates/AdminSlideshow.tpl'));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/slideshow/templates/AdminSlideshow.tpl'
+			)
+		);
 	}
 }

@@ -36,39 +36,56 @@ class PicLensHelper {
 	public static function install() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
-
+		
 		$info = self::getLatestPicLensInfo();
 		if (empty($info)) {
-			return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null);
+			return array(
+				GalleryCoreApi::error(ERROR_PLATFORM_FAILURE),
+				null
+			);
 		}
-
+		
 		if (empty($info['version']) || empty($info['jsUrl']) || empty($info['swfUrl'])) {
-			return array(GalleryCoreApi::error(ERROR_MISSING_VALUE), null);
+			return array(
+				GalleryCoreApi::error(ERROR_MISSING_VALUE),
+				null
+			);
 		}
-
+		
 		$codeDir = $gallery->getConfig('data.gallery.plugins_data') . 'modules/slideshow/';
 		$jsPath = "${codeDir}piclens.js";
 		$swfPath = "${codeDir}PicLensLite.swf";
 		list($success1) = GalleryCoreApi::fetchWebFile($info['jsUrl'], "$jsPath.new");
 		list($success2) = GalleryCoreApi::fetchWebFile($info['swfUrl'], "$swfPath.new");
 		if ($success1 && $success2) {
-			if (!$platform->rename("$jsPath.new", $jsPath)
-			|| !$platform->rename("$swfPath.new", $swfPath)) {
-				return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null);
+			if (!$platform->rename("$jsPath.new", $jsPath) || !$platform->rename("$swfPath.new", $swfPath)) {
+				return array(
+					GalleryCoreApi::error(ERROR_PLATFORM_FAILURE),
+					null
+				);
 			}
 		} else {
-			foreach (array($jsPath, $swfPath) as $path) {
+			foreach (array(
+				$jsPath,
+				$swfPath
+			) as $path) {
 				if ($platform->file_exists("$path.new")) {
 					$platform->unlink("$path.new");
 				}
 			}
-
-			return array(GalleryCoreApi::error(ERROR_PLATFORM_FAILURE), null);
+			
+			return array(
+				GalleryCoreApi::error(ERROR_PLATFORM_FAILURE),
+				null
+			);
 		}
-
-		return array(null, $info['version']);
+		
+		return array(
+			null,
+			$info['version']
+		);
 	}
-
+	
 	/**
 	 * Get information about the latest version of the PicLens code.
 	 *
@@ -83,7 +100,7 @@ class PicLensHelper {
 		if (!$success) {
 			return null;
 		}
-
+		
 		$info = array();
 		foreach (explode("\n", $body) as $line) {
 			$pair = explode("=", $line, 2);
@@ -92,19 +109,22 @@ class PicLensHelper {
 				$info[$pair[0]] = $pair[1];
 			}
 		}
-
+		
 		return $info;
 	}
-
+	
 	/**
 	 * Remove PicLens.
 	 */
 	public function uninstall() {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
-
+		
 		$codeDir = $gallery->getConfig('data.gallery.plugins_data') . 'modules/slideshow/';
-		foreach (array('piclens.js', 'PicLensLite.swf') as $file) {
+		foreach (array(
+			'piclens.js',
+			'PicLensLite.swf'
+		) as $file) {
 			$path = "{$codeDir}$file";
 			if ($platform->file_exists($path)) {
 				@$platform->unlink($path);

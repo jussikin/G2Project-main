@@ -32,54 +32,58 @@ class DownloadPicLensView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::shouldSaveSession
 	 */
 	public function shouldSaveSession() {
 		return false;
 	}
-
+	
 	/**
 	 * @see GalleryView::autoCacheControl
 	 */
 	public function autoCacheControl() {
 		return false;
 	}
-
+	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
 	public function renderImmediate($status, $error) {
 		global $gallery;
-
-	/* Figure out which file we're talking about */
+		
+		/* Figure out which file we're talking about */
 		$file = GalleryUtilities::getRequestVariables('file');
-
+		
 		$codeDir = $gallery->getConfig('data.gallery.plugins_data') . 'modules/slideshow/';
 		switch ($file) {
 			case 'js':
-		        return $this->_sendFile(array('path' => "${codeDir}piclens.js",
-					  'mimeType' => 'application/x-javascript',
-					  'pseudoFileName' => 'piclens.js'));
-
+				return $this->_sendFile(array(
+					'path' => "${codeDir}piclens.js",
+					'mimeType' => 'application/x-javascript',
+					'pseudoFileName' => 'piclens.js'
+				));
+			
 			case 'swf':
-		        return $this->_sendFile(array('path' => "${codeDir}PicLensLite.swf",
-					  'mimeType' => 'application/x-shockwave-flash',
-					  'pseudoFileName' => 'PicLensLite.swf'));
-
+				return $this->_sendFile(array(
+					'path' => "${codeDir}PicLensLite.swf",
+					'mimeType' => 'application/x-shockwave-flash',
+					'pseudoFileName' => 'PicLensLite.swf'
+				));
+			
 			default:
-		        return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
+				return GalleryCoreApi::error(ERROR_BAD_PARAMETER);
 		}
 	}
-
+	
 	/**
 	 * @see GalleryView::isAllowedInEmbedOnly
 	 */
 	public function isAllowedInEmbedOnly() {
 		return true;
 	}
-
+	
 	/**
 	 * Copied from modules/core/DownloadItem.inc
 	 * @todo refactor all the various _sendFile() implementations into an API call
@@ -88,30 +92,29 @@ class DownloadPicLensView extends GalleryView {
 		global $gallery;
 		$platform =& $gallery->getPlatform();
 		$phpVm = $gallery->getPhpVm();
-
-	/**
-	 * Try to prevent Apache's mod_deflate from gzipping the output since it's likely already
-	 * a binary file and broken versions of mod_deflate sometimes get the byte count wrong.
-	 */
+		
+		/**
+		 * Try to prevent Apache's mod_deflate from gzipping the output since it's likely already
+		 * a binary file and broken versions of mod_deflate sometimes get the byte count wrong.
+		 */
 		if (function_exists('apache_setenv') && !@$gallery->getConfig('apacheSetenvBroken')) {
 			@apache_setenv('no-gzip', '1');
 		}
-
-		$requestMethod =
-		GalleryUtilities::strtolower(GalleryUtilities::getServerVar('REQUEST_METHOD'));
-
+		
+		$requestMethod = GalleryUtilities::strtolower(GalleryUtilities::getServerVar('REQUEST_METHOD'));
+		
 		if (!$platform->file_exists($data['path'])) {
 			return GalleryCoreApi::error(ERROR_MISSING_OBJECT, null, null, "$data[path] missing");
 		}
-
+		
 		$stats = $platform->stat($data['path']);
 		$phpVm->header('Content-type: ' . $data['mimeType']);
 		$phpVm->header('Content-Disposition: inline; filename="' . $data['pseudoFileName'] . '"');
 		$phpVm->header('Last-Modified: ' . GalleryUtilities::getHttpDate($stats[9]));
 		$phpVm->header('Expires: ' . GalleryUtilities::getHttpDate(2147483647));
 		$phpVm->header('Cache-Control: public');
-
-	/* If the request method is HEAD, don't send back the body */
+		
+		/* If the request method is HEAD, don't send back the body */
 		if ($requestMethod == 'head') {
 			$phpVm->header('Content-length: 0');
 		} else {
@@ -119,10 +122,10 @@ class DownloadPicLensView extends GalleryView {
 				$phpVm->header('Content-length: ' . $stats[7]);
 			}
 			/*
-			 * Don't use readfile() because it buffers the entire file in memory.  Profiling shows
-			 * that this approach is as efficient as fpassthru() but we get to call
-			 * guaranteeTimeLimit which prevents it from failing on very large files
-			 */
+	         * Don't use readfile() because it buffers the entire file in memory.  Profiling shows
+	         * that this approach is as efficient as fpassthru() but we get to call
+	         * guaranteeTimeLimit which prevents it from failing on very large files
+	         */
 			if ($fd = $platform->fopen($data['path'], 'rb')) {
 				while (true) {
 					$bytes = $platform->fread($fd, 65535);
@@ -135,7 +138,7 @@ class DownloadPicLensView extends GalleryView {
 				$platform->fclose($fd);
 			}
 		}
-
+		
 		return null;
 	}
 }
