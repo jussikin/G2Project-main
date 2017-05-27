@@ -30,35 +30,51 @@ class ItemAddUploadApplet extends ItemAddPlugin {
 	 */
 	public function loadTemplate(&$template, &$form, $item) {
 		global $gallery;
-
+		
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'uploadapplet');
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
+		
 		list($ret, $modules) = GalleryCoreApi::fetchPluginStatus('module');
 		if ($ret) {
-			return array($ret, null, null);
+			return array(
+				$ret,
+				null,
+				null
+			);
 		}
-
+		
 		$ItemAddUploadApplet = array();
 		if (!isset($modules['remote']['active']) || !$modules['remote']['active']) {
 			$ItemAddUploadApplet['NoProtocolError'] = 1;
 		} else {
 			$session =& $gallery->getSession();
 			$urlGenerator =& $gallery->getUrlGenerator();
-		/*
-	     * Force the use of the G2 base for the url and the cookie path as the applet will
-	     * communicate to G2 directly, even when G2 is embedded
-	     */
+			/*
+	         * Force the use of the G2 base for the url and the cookie path as the applet will
+	         * communicate to G2 directly, even when G2 is embedded
+	         */
 			$ItemAddUploadApplet['g2BaseUrl'] = $urlGenerator->getCurrentUrlDir(true);
 			list($ret, $cookiePath) = $urlGenerator->getCookiePath(true);
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 			list($ret, $cookieDomain) = $session->getCookieDomain();
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 			$ItemAddUploadApplet['NoProtocolError'] = 0;
 			$ItemAddUploadApplet['cookieName'] = $session->getKey();
@@ -69,19 +85,29 @@ class ItemAddUploadApplet extends ItemAddPlugin {
 			$ItemAddUploadApplet['userAgent'] = GalleryUtilities::getServerVar('HTTP_USER_AGENT');
 			$ItemAddUploadApplet['galleryVersion'] = 2;
 			$ItemAddUploadApplet['code'] = 'com.gallery.GalleryRemote.ItemAddUploadAppletMini';
-
+			
 			list($ret, $locale) = $gallery->getActiveLocale();
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
 			$ItemAddUploadApplet['locale'] = $locale;
-
-			list($ret, $params) =
-			GalleryCoreApi::fetchAllPluginParameters('module', 'uploadapplet');
+			
+			list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'uploadapplet');
 			if ($ret) {
-				return array($ret, null, null);
+				return array(
+					$ret,
+					null,
+					null
+				);
 			}
-			foreach (array('default', 'override') as $type) {
+			foreach (array(
+				'default',
+				'override'
+			) as $type) {
 				$ItemAddUploadApplet[$type] = array();
 				if (!empty($params['upload' . $type . 'Variables'])) {
 					$variablesArray = explode('|', $params['upload' . $type . 'Variables']);
@@ -92,23 +118,31 @@ class ItemAddUploadApplet extends ItemAddPlugin {
 				}
 			}
 		}
-
+		
 		$template->setVariable('ItemAddUploadApplet', $ItemAddUploadApplet);
-
-		return array(null,
-			 'modules/uploadapplet/templates/ItemAddUploadApplet.tpl',
-			 'modules_uploadapplet');
+		
+		return array(
+			null,
+			'modules/uploadapplet/templates/ItemAddUploadApplet.tpl',
+			'modules_uploadapplet'
+		);
 	}
-
+	
 	/**
 	 * @see ItemAddPlugin::getTitle
 	 */
 	public function getTitle() {
 		list($ret, $module) = GalleryCoreApi::loadPlugin('module', 'uploadapplet');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
-		return array(null, $module->translate('Upload Applet'));
+		
+		return array(
+			null,
+			$module->translate('Upload Applet')
+		);
 	}
 }

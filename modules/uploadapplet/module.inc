@@ -27,7 +27,7 @@ class UploadAppletModule extends GalleryModule {
 	public function __construct() {
 		$this->UploadAppletModule();
 	}
-
+	
 	public function UploadAppletModule() {
 		global $gallery;
 		$this->setId('uploadapplet');
@@ -37,66 +37,68 @@ class UploadAppletModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('import', $gallery->i18n('Import'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryPlugin::upgrade
 	 */
 	public function upgrade($currentVersion, $x1 = null) {
 		global $gallery;
-
-		list($ret, $params) =
-		GalleryCoreApi::fetchAllPluginParameters('module', 'uploadapplet');
+		
+		list($ret, $params) = GalleryCoreApi::fetchAllPluginParameters('module', 'uploadapplet');
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		if (!isset($params['uploaddefaultVariables'])) {
 			$ret = $this->setParameter('uploaddefaultVariables', '');
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		if (!isset($params['uploadoverrideVariables'])) {
-			$ret = $this->setParameter(
-				'uploadoverrideVariables',
-				'toSysOut=true|htmlEscapeCaptions=true'
-			);
+			$ret = $this->setParameter('uploadoverrideVariables', 'toSysOut=true|htmlEscapeCaptions=true');
 			if ($ret) {
 				return $ret;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::performFactoryRegistrations
 	 */
 	public function performFactoryRegistrations() {
-		$ret = GalleryCoreApi::registerFactoryImplementation(
-			'ItemAddPlugin',
-			'ItemAddUploadApplet',
-			'ItemAddUploadApplet',
-			'modules/uploadapplet/ItemAddUploadApplet.inc',
-			'uploadapplet',
-			null
-		);
+		$ret = GalleryCoreApi::registerFactoryImplementation('ItemAddPlugin', 'ItemAddUploadApplet', 'ItemAddUploadApplet', 'modules/uploadapplet/ItemAddUploadApplet.inc', 'uploadapplet', null);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		return array(null, array(array('name' => $this->translate('Upload Applet'),
-					   'view' => 'uploadapplet.UploadAppletSiteAdmin')));
+		return array(
+			null,
+			array(
+				array(
+					'name' => $this->translate('Upload Applet'),
+					'view' => 'uploadapplet.UploadAppletSiteAdmin'
+				)
+			)
+		);
 	}
 }
