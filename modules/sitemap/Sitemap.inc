@@ -32,7 +32,7 @@ class SitemapView extends GalleryView {
 	public function isImmediate() {
 		return true;
 	}
-
+	
 	/**
 	 * @see GalleryView::renderImmediate
 	 */
@@ -41,15 +41,15 @@ class SitemapView extends GalleryView {
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		$ret = $this->renderSitemap($rootId);
 		if ($ret) {
 			return $ret;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * Output a site map rooted at the given id
 	 *
@@ -60,16 +60,16 @@ class SitemapView extends GalleryView {
 		global $gallery;
 		$urlGenerator =& $gallery->getUrlGenerator();
 		$phpVm = $gallery->getPhpVm();
-
-	/*
-	 * Ideas:
-	 *  - Calculate priority by using a percentage of item view count to max view counts
-	 */
-
-	/*
-	 * Don't use a template for this as we may wind up trying to buffer
-	 * way too much data
-	 */
+		
+		/*
+	     * Ideas:
+	     *  - Calculate priority by using a percentage of item view count to max view counts
+	     */
+		
+		/*
+	     * Don't use a template for this as we may wind up trying to buffer
+	     * way too much data
+	     */
 		$phpVm->header('Content-type: application/xhtml+xml');
 		echo '<?xml version=\'1.0\' encoding=\'UTF-8\'?>';
 		echo "\n";
@@ -78,12 +78,9 @@ class SitemapView extends GalleryView {
 		echo 'xsi:schemaLocation="http://www.google.com/schemas/sitemap/0.84 ';
 		echo 'http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">';
 		echo "\n";
-
+		
 		$gallery->guaranteeTimeLimit(120);
-		list($ret, $aclIds) = GalleryCoreApi::fetchAccessListIds(
-			'core.view',
-			$gallery->getActiveUserId()
-		);
+		list($ret, $aclIds) = GalleryCoreApi::fetchAccessListIds('core.view', $gallery->getActiveUserId());
 		if ($ret) {
 			return $ret;
 		}
@@ -92,7 +89,7 @@ class SitemapView extends GalleryView {
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			$data = array();
 			$matchJoin = $matchFrag = '';
 			if (!empty($parents)) {
@@ -106,11 +103,13 @@ class SitemapView extends GalleryView {
 		 [GalleryItemAttributesMap::parentSequence] LIKE ?)
 		AND
 		';
-				$data = array($rootId, implode('/', $parents) . '/' . $rootId . '/%');
+				$data = array(
+					$rootId,
+					implode('/', $parents) . '/' . $rootId . '/%'
+				);
 			}
-
-			$query = sprintf(
-				'
+			
+			$query = sprintf('
 	    SELECT
 	      [GalleryItem::id],
 	      [GalleryEntity::modificationTimestamp],
@@ -126,34 +125,33 @@ class SitemapView extends GalleryView {
 	      %s
 	      [GalleryAccessSubscriberMap::accessListId] IN (%s)
 	    ORDER BY [GalleryEntity::modificationTimestamp] ASC
-	    ',
-				$phpVm->time(),
-				$matchJoin,
-				$matchFrag,
-				GalleryUtilities::makeMarkers(count($aclIds))
-			);
-
+	    ', $phpVm->time(), $matchJoin, $matchFrag, GalleryUtilities::makeMarkers(count($aclIds)));
+			
 			$gallery->guaranteeTimeLimit(120);
 			list($ret, $searchResults) = $gallery->search($query, array_merge($data, $aclIds));
 			if ($ret) {
 				return $ret;
 			}
-
+			
 			$frequencyTable = array(
-			3600 => 'hourly',
-			24 * 3600 => 'daily',
-			7 * 24 * 3600 => 'weekly',
-			30 * 24 * 3600 => 'monthly',
-			365 * 24 * 3600 => 'yearly');
+				3600 => 'hourly',
+				24 * 3600 => 'daily',
+				7 * 24 * 3600 => 'weekly',
+				30 * 24 * 3600 => 'monthly',
+				365 * 24 * 3600 => 'yearly'
+			);
 			$i = 0;
 			while ($result = $searchResults->nextResult()) {
 				if (($i++ % 100) == 0) {
 					$gallery->guaranteeTimeLimit(200);
 				}
-				$loc = $urlGenerator->generateUrl(
-					array('view' => 'core.ShowItem', 'itemId' => $result[0]),
-					array('forceSessionId' => false, 'forceFullUrl' => true)
-				);
+				$loc = $urlGenerator->generateUrl(array(
+					'view' => 'core.ShowItem',
+					'itemId' => $result[0]
+				), array(
+					'forceSessionId' => false,
+					'forceFullUrl' => true
+				));
 				$lastmod = gmstrftime('%Y-%m-%dT%H:%M:%S+00:00', $result[1]);
 				$changefreq = 'never';
 				foreach ($frequencyTable as $comparison => $value) {
@@ -162,17 +160,12 @@ class SitemapView extends GalleryView {
 						break;
 					}
 				}
-				printf(
-					'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq></url>',
-					$loc,
-					$lastmod,
-					$changefreq
-				);
+				printf('<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq></url>', $loc, $lastmod, $changefreq);
 				echo "\n";
 			}
 		}
 		echo '</urlset>';
-
+		
 		return null;
 	}
 }

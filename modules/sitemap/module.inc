@@ -28,7 +28,7 @@ class SitemapModule extends GalleryModule {
 	public function __construct() {
 		$this->SitemapModule();
 	}
-
+	
 	public function SitemapModule() {
 		global $gallery;
 		$this->setId('sitemap');
@@ -38,32 +38,47 @@ class SitemapModule extends GalleryModule {
 		$this->_templateVersion = 1;
 		$this->setGroup('export', $gallery->i18n('Export'));
 		$this->setCallbacks('getSiteAdminViews');
-		$this->setRequiredCoreApi(array(8, 0));
-		$this->setRequiredModuleApi(array(4, 0));
+		$this->setRequiredCoreApi(array(
+			8,
+			0
+		));
+		$this->setRequiredModuleApi(array(
+			4,
+			0
+		));
 	}
-
+	
 	/**
 	 * @see GalleryModule::getSiteAdminViews
 	 */
 	public function getSiteAdminViews() {
-		$data = array(array('name' => $this->translate('Google Sitemap'),
-				'view' => 'sitemap.AdminSitemap'));
-
-		return array(null, $data);
+		$data = array(
+			array(
+				'name' => $this->translate('Google Sitemap'),
+				'view' => 'sitemap.AdminSitemap'
+			)
+		);
+		
+		return array(
+			null,
+			$data
+		);
 	}
-
+	
 	/**
 	 * @see GalleryModule::getRewriteRules
 	 */
 	public function getRewriteRules() {
 		$rules = array();
-
+		
 		$rule = array();
-		$rule['match'] = array('view' => 'sitemap.Sitemap');
+		$rule['match'] = array(
+			'view' => 'sitemap.Sitemap'
+		);
 		$rule['pattern'] = 'sitemap';
 		$rule['comment'] = $this->translate('Download Sitemap');
 		$rules[] = $rule;
-
+		
 		return $rules;
 	}
 }

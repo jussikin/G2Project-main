@@ -32,18 +32,28 @@ class AdminSitemapView extends GalleryView {
 	public function loadTemplate(&$template, &$form) {
 		$ret = GalleryCoreApi::assertUserIsSiteAdministrator();
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-
+		
 		list($ret, $moduleStatus) = GalleryCoreApi::fetchPluginStatus('module');
 		if ($ret) {
-			return array($ret, null);
+			return array(
+				$ret,
+				null
+			);
 		}
-		$template->setVariable(
-			'AdminSitemap',
-			array('canRewrite' => !empty($moduleStatus['rewrite']['active']))
+		$template->setVariable('AdminSitemap', array(
+			'canRewrite' => !empty($moduleStatus['rewrite']['active'])
+		));
+		
+		return array(
+			null,
+			array(
+				'body' => 'modules/sitemap/templates/AdminSitemap.tpl'
+			)
 		);
-
-		return array(null, array('body' => 'modules/sitemap/templates/AdminSitemap.tpl'));
 	}
 }
